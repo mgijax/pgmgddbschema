@@ -1,0 +1,66 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# 10/24/2002	lec
+#	- removed reference to user 'rpp'
+#
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger PRB_Reference_Update
+on PRB_Reference
+for update
+as
+
+/* update the accession reference that is attache to this J: */
+
+update ACC_AccessionReference
+set _Refs_key = i._Refs_key
+from ACC_Accession a, ACC_AccessionReference ar, inserted i, deleted d
+where a._Object_key = i._Probe_key
+and a._MGIType_key = 3
+and a._Accession_key = ar._Accession_key
+and ar._Refs_key = d._Refs_key
+
+go
+
+create trigger PRB_Reference_Delete
+on PRB_Reference
+for delete
+as
+
+/* Delete dependent records */
+
+delete PRB_Alias from PRB_Alias, deleted
+where PRB_Alias._Reference_key = deleted._Reference_key
+
+delete PRB_Ref_Notes from PRB_Ref_Notes, deleted
+where PRB_Ref_Notes._Reference_key = deleted._Reference_key
+
+delete PRB_RFLV from PRB_RFLV, deleted
+where PRB_RFLV._Reference_key = deleted._Reference_key
+
+delete ACC_AccessionReference 
+from ACC_Accession a, ACC_AccessionReference ar, deleted
+where a._Object_key = deleted._Probe_key
+and a._MGIType_key = 3
+and a._Accession_key = ar._Accession_key
+and ar._Refs_key = deleted._Refs_key
+ 
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

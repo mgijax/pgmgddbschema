@@ -1,0 +1,25 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# 03/11/2005	lec
+#	- TR 4289, MPR
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+drop trigger GXD_AllelePair_Insert
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

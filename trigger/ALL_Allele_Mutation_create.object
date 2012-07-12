@@ -1,0 +1,238 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# lec	02/10/2005
+#	- TR 6343; new permissions implementation
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger ALL_Allele_Mutation_Insert
+on ALL_Allele_Mutation
+for insert, update
+as
+
+if @@rowcount = 1
+begin
+	declare @userKey integer
+	select @userKey = _User_key from MGI_User where login = user_name()
+
+	declare @pendingStatus integer
+	select @pendingStatus = t._Term_key from VOC_Term t, VOC_Vocab v
+		where v.name = 'Allele Status'
+		and v._Vocab_key = t._Vocab_key
+		and t.term = 'In Progress'
+
+	declare @reservedStatus integer
+	select @reservedStatus = t._Term_key from VOC_Term t, VOC_Vocab v
+		where v.name = 'Allele Status'
+		and v._Vocab_key = t._Vocab_key
+		and t.term = 'Reserved'
+
+	declare @approvedStatus integer
+	select @approvedStatus = t._Term_key from VOC_Term t, VOC_Vocab v
+		where v.name = 'Allele Status'
+		and v._Vocab_key = t._Vocab_key
+		and t.term = 'Approved'
+
+	if (select user_name()) not in ('mgd_dbo', 'dbo')
+	begin
+
+	  /* pending */
+	  if (select a._Allele_Status_key from inserted i, ALL_Allele a where i._Allele_key = a._Allele_key) = @pendingStatus
+	     and
+	     (select @userKey) not in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify pending')
+	     and 
+	     (select @userKey) not in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify pending if owner')
+	  begin
+		rollback transaction
+		raiserror 99999 "You do not have permission to modify an Allele with In Progress status."
+		return
+	  end
+
+	  if (select a._Allele_Status_key from inserted i, ALL_Allele a where i._Allele_key = a._Allele_key) = @pendingStatus
+	     and
+	     (select @userKey) in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify pending if owner')
+   	     and
+	     (select a._CreatedBy_key from inserted i, ALL_Allele a where i._Allele_key = a._Allele_key) != @userKey
+	  begin
+		rollback transaction
+		raiserror 99999 "You do not have permission to modify this Allele."
+		return
+	  end
+
+	  /* reserved */
+	  if (select a._Allele_Status_key from inserted i, ALL_Allele a where i._Allele_key = a._Allele_key) = @reservedStatus
+	     and
+	     (select @userKey) not in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify reserved')
+	     and 
+	     (select @userKey) not in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify reserved if owner')
+	  begin
+		rollback transaction
+		raiserror 99999 "You do not have permission to modify an Allele with Reserved status."
+		return
+	  end
+
+	  if (select a._Allele_Status_key from inserted i, ALL_Allele a where i._Allele_key = a._Allele_key) = @reservedStatus
+	     and
+	     (select @userKey) in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify reserved if owner')
+   	     and
+	     (select a._CreatedBy_key from inserted i, ALL_Allele a where i._Allele_key = a._Allele_key) != @userKey
+	  begin
+		rollback transaction
+		raiserror 99999 "You do not have permission to modify this Allele."
+		return
+	  end
+
+	  /* approved */
+	  if (select a._Allele_Status_key from inserted i, ALL_Allele a where i._Allele_key = a._Allele_key) = @approvedStatus
+	     and
+	     (select @userKey) not in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify approved')
+	     and 
+	     (select @userKey) not in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify approved if owner')
+	  begin
+		rollback transaction
+		raiserror 99999 "You do not have permission to modify an Allele with Approved status."
+		return
+	  end
+
+	  if (select a._Allele_Status_key from inserted i, ALL_Allele a where i._Allele_key = a._Allele_key) = @approvedStatus
+	     and
+	     (select @userKey) in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify approved if owner')
+   	     and
+	     (select a._CreatedBy_key from inserted i, ALL_Allele a where i._Allele_key = a._Allele_key) != @userKey
+	  begin
+		rollback transaction
+		raiserror 99999 "You do not have permission to modify this Allele."
+		return
+	  end
+
+	end
+	/* end if user is not DBO */
+
+end
+
+go
+
+create trigger ALL_Allele_Mutation_Delete
+on ALL_Allele_Mutation
+for delete
+as
+
+/* For single row deletes ... */
+
+if @@rowcount = 1
+begin
+	declare @userKey integer
+	select @userKey = _User_key from MGI_User where login = user_name()
+
+	declare @pendingStatus integer
+	select @pendingStatus = t._Term_key from VOC_Term t, VOC_Vocab v
+		where v.name = 'Allele Status'
+		and v._Vocab_key = t._Vocab_key
+		and t.term = 'In Progress'
+
+	declare @reservedStatus integer
+	select @reservedStatus = t._Term_key from VOC_Term t, VOC_Vocab v
+		where v.name = 'Allele Status'
+		and v._Vocab_key = t._Vocab_key
+		and t.term = 'Reserved'
+
+	declare @approvedStatus integer
+	select @approvedStatus = t._Term_key from VOC_Term t, VOC_Vocab v
+		where v.name = 'Allele Status'
+		and v._Vocab_key = t._Vocab_key
+		and t.term = 'Approved'
+
+	if (select user_name()) not in ('mgd_dbo', 'dbo')
+	begin
+
+	  /* pending */
+	  if (select a._Allele_Status_key from deleted i, ALL_Allele a where i._Allele_key = a._Allele_key) = @pendingStatus
+	     and
+	     (select @userKey) not in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify pending')
+	     and 
+	     (select @userKey) not in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify pending if owner')
+	  begin
+		rollback transaction
+		raiserror 99999 "You do not have permission to modify an Allele with In Progress status."
+		return
+	  end
+
+	  if (select a._Allele_Status_key from deleted i, ALL_Allele a where i._Allele_key = a._Allele_key) = @pendingStatus
+	     and
+	     (select @userKey) in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify pending if owner')
+   	     and
+	     (select a._CreatedBy_key from deleted i, ALL_Allele a where i._Allele_key = a._Allele_key) != @userKey
+	  begin
+		rollback transaction
+		raiserror 99999 "You do not have permission to modify this Allele."
+		return
+	  end
+
+	  /* reserved */
+	  if (select a._Allele_Status_key from deleted i, ALL_Allele a where i._Allele_key = a._Allele_key) = @reservedStatus
+	     and
+	     (select @userKey) not in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify reserved')
+	     and 
+	     (select @userKey) not in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify reserved if owner')
+	  begin
+		rollback transaction
+		raiserror 99999 "You do not have permission to modify an Allele with Reserved status."
+		return
+	  end
+
+	  if (select a._Allele_Status_key from deleted i, ALL_Allele a where i._Allele_key = a._Allele_key) = @reservedStatus
+	     and
+	     (select @userKey) in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify reserved if owner')
+   	     and
+	     (select a._CreatedBy_key from deleted i, ALL_Allele a where i._Allele_key = a._Allele_key) != @userKey
+	  begin
+		rollback transaction
+		raiserror 99999 "You do not have permission to modify this Allele."
+		return
+	  end
+
+	  /* approved */
+	  if (select a._Allele_Status_key from deleted i, ALL_Allele a where i._Allele_key = a._Allele_key) = @approvedStatus
+	     and
+	     (select @userKey) not in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify approved')
+	     and 
+	     (select @userKey) not in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify approved if owner')
+	  begin
+		rollback transaction
+		raiserror 99999 "You do not have permission to modify an Allele with Approved status."
+		return
+	  end
+
+	  if (select a._Allele_Status_key from deleted i, ALL_Allele a where i._Allele_key = a._Allele_key) = @approvedStatus
+	     and
+	     (select @userKey) in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify approved if owner')
+   	     and
+	     (select a._CreatedBy_key from deleted i, ALL_Allele a where i._Allele_key = a._Allele_key) != @userKey
+	  begin
+		rollback transaction
+		raiserror 99999 "You do not have permission to modify this Allele."
+		return
+	  end
+
+	end
+	/* end if user is not DBO */
+
+end
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

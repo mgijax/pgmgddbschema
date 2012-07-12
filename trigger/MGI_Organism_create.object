@@ -1,0 +1,110 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# 05/13/2002	lec
+#	- TR 1463; SAO
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger MGI_Organism_Insert
+on MGI_Organism
+for insert
+as
+ 
+/* Assign MGI Accession number for each Organism */
+
+declare @key integer
+select @key = _Organism_key from inserted
+exec ACC_assignMGI @key, "Organism"
+
+if (@@error != 0)
+begin
+  rollback transaction
+  return
+end
+ 
+
+go
+
+create trigger MGI_Organism_Delete
+on MGI_Organism
+for delete
+as
+
+/* Disallow deletion of organism which is referenced in MRK_Marker table */
+
+if exists (select * from MRK_Marker, deleted
+         where MRK_Marker._Organism_key = deleted._Organism_key)
+begin
+        rollback transaction
+        raiserror 99999 "Organism is referenced in Marker Record(s)"
+	return
+end
+
+/* Disallow deletion of organism which is referenced in MRK_Label table */
+
+if exists (select * from MRK_Label, deleted
+         where MRK_Label._Organism_key = deleted._Organism_key)
+begin
+        rollback transaction
+        raiserror 99999 "Organism is referenced in Marker Label Record(s)"
+	return
+end
+
+/* Disallow deletion of organism which is referenced in ACC_LogicalDB table */
+
+if exists (select * from ACC_LogicalDB, deleted
+         where ACC_LogicalDB._Organism_key = deleted._Organism_key)
+begin
+        rollback transaction
+        raiserror 99999 "Organism is referenced in ACC_LogicalDB Record(s)"
+	return
+end
+
+/* Disallow deletion of organism which is referenced in GXD_Antibody table */
+
+if exists (select * from GXD_Antibody, deleted
+         where GXD_Antibody._Organism_key = deleted._Organism_key)
+begin
+        rollback transaction
+        raiserror 99999 "Organism is referenced in GXD Antibody Record(s)"
+	return
+end
+
+/* Disallow deletion of organism which is referenced in PRB_Source table */
+
+if exists (select * from PRB_Source, deleted
+         where PRB_Source._Organism_key = deleted._Organism_key)
+begin
+        rollback transaction
+        raiserror 99999 "Organism is referenced in Molecular Source Record(s)"
+	return
+end
+
+/* Delete records in dependent tables */
+
+delete MRK_Chromosome from MRK_Chromosome, deleted
+where MRK_Chromosome._Organism_key = deleted._Organism_key
+
+delete MGI_Organism_MGIType from MGI_Organism_MGIType, deleted
+where MGI_Organism_MGIType._Organism_key = deleted._Organism_key
+
+delete ACC_Accession from ACC_Accession a, deleted d
+where a._Object_key = d._Organism_key and a._MGIType_key = 20
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

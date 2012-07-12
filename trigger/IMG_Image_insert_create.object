@@ -1,0 +1,48 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
+
+--
+-- NAME: check_IMG_Image_insert()
+--
+-- DESCRIPTOIN:
+--
+--	this insert trigger will call ACC_assignMGI
+--	in order to add a distinct MGI accession id
+--	to the NEW object
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+CREATE OR REPLACE FUNCTION check_IMG_Image_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
+SELECT ACC_assignMGI(NEW._Image_key, 'Image');
+
+EXCEPTION WHEN OTHERS THEN
+    RAISE EXCEPTION 'check_IMG_Image_insert: error';
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION check_IMG_Image_insert() TO public;
+
+DROP TRIGGER check_IMG_Image_insert_trigger ON IMG_Image;
+
+CREATE TRIGGER check_IMG_Image_insert_trigger
+AFTER INSERT on IMG_Image
+FOR EACH ROW
+EXECUTE PROCEDURE check_IMG_Image_insert();
+
+COMMENT ON FUNCTION mgd.check_IMG_Image_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+
+EOSQL

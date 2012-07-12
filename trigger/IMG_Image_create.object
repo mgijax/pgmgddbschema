@@ -1,0 +1,174 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# 05/24/2011	lec
+#	- TR 10729; add call to GXD_loadCacheByRef but turn it off
+#	            see comments below
+#
+# 12/04/2006	lec
+#	- TR 7710; added IMG_Cache
+#
+# 09/28/2006	lec
+#	- TR 7919; fix deletion of ImagePane bug
+#
+# 06/14/2005	lec
+#	- TR 3557
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger IMG_Image_Insert
+on IMG_Image
+for insert
+as
+ 
+/* Assign MGI Accession number for each Image */
+ 
+declare @key integer
+select @key = _Image_key from inserted
+exec ACC_assignMGI @key, "Image"
+ 
+if (@@error != 0)
+begin
+  rollback transaction
+  return
+end
+ 
+
+go
+
+create trigger IMG_Image_Update
+on IMG_Image
+for update
+as
+
+/* trigger only works when updating a single row; bail out otherwise */
+if @@rowcount > 1
+	return
+
+/* be sure to update IMG_Cache with any cached values that changed */
+
+if update(_Refs_key) or update(figureLabel)
+begin
+	update IMG_Cache
+	set _Refs_key = ins._Refs_key,
+		figureLabel = ins.figureLabel
+	from IMG_Cache ic, inserted ins
+	where ic._Image_key = ins._Image_key
+end
+
+if update(_ThumbnailImage_key)
+begin
+	if (select _ThumbnailImage_key from inserted) is null
+	    begin
+		/* Each image has at most one thumbnail, so if we removed a
+		 * thumbnail, then we are safe to just delete the cached
+		 * records for that image.  (An image cannot be in the cache
+		 * table without a thumbnail.)
+		 */
+
+		delete IMG_Cache
+		from IMG_Cache ic, inserted ins
+		where ic._Image_key = ins._Image_key
+	    end
+	else
+	    begin
+	    	/* If we changed a thumbnail, then go ahead and update the
+		 * cached records.
+		 */
+
+		update IMG_Cache
+		set _ThumbnailImage_key = ins._ThumbnailImage_key,
+			thumbnailNumericPart = acc.numericPart
+		from IMG_Cache ic, inserted ins, ACC_Accession acc
+		where ic._Image_key = ins._Image_key
+			and acc._Object_key = ins._ThumbnailImage_key
+			and acc._MGIType_key = 9
+			and acc._LogicalDB_key = 19
+			and acc.preferred = 1
+	    end
+end
+
+/* Update Expression Cache for Assay by Reference */
+/* this is turned off, because it is very rare */
+/* for a curator to remove a pix id from an image */
+/* after the assay has been added */
+/* but if this becomes common, then this call can be turned on */
+
+/*declare @key integer*/
+/*select @key = _Refs_key from inserted*/
+/*exec GXD_loadCacheByRef @key */
+
+go
+
+create trigger IMG_Image_Delete
+on IMG_Image
+for delete
+as
+
+if exists (select * from IMG_ImagePane_Assoc ia, IMG_ImagePane ip, deleted d
+         where ia._ImagePane_key = ip._ImagePane_key
+         and ip._Image_key = d._Image_key)
+begin
+        rollback transaction
+        raiserror 99999 "Image has an Image Pane that is referenced to Allele or Genotype Record(s)"
+        return
+end
+
+delete MGI_Note from MGI_Note, deleted
+where MGI_Note._MGIType_key = 9
+and MGI_Note._Object_key = deleted._Image_key
+
+/* delete entries from the cache when the primary image is deleted */
+delete IMG_Cache from IMG_Cache, deleted
+where IMG_Cache._Image_key = deleted._Image_key
+ 
+/* delete entries from the cache when the thumbnail image is deleted */
+delete IMG_Cache from IMG_Cache, deleted
+where IMG_Cache._ThumbnailImage_key = deleted._Image_key
+ 
+delete IMG_ImagePane from IMG_ImagePane, deleted
+where IMG_ImagePane._Image_key = deleted._Image_key
+ 
+delete ACC_Accession
+from ACC_Accession a, deleted
+where a._Object_key = deleted._Image_key
+and a._MGIType_key = 9
+
+/* if this is a Full Size Image, then delete its Thumbnail */
+
+if exists (select t.term from deleted d, VOC_Term t
+	where d._ImageType_key = t._Term_key and t.term = 'Full Size')
+begin
+    delete IMG_Image from deleted d, IMG_Image i
+    where d._ThumbnailImage_key = i._Image_key
+
+    delete MGI_Note from MGI_Note, deleted
+    where MGI_Note._MGIType_key = 9
+    and MGI_Note._Object_key = deleted._ThumbnailImage_key
+
+    delete IMG_ImagePane from IMG_ImagePane, deleted
+    where IMG_ImagePane._Image_key = deleted._ThumbnailImage_key
+ 
+    delete ACC_Accession
+    from ACC_Accession a, deleted
+    where a._Object_key = deleted._ThumbnailImage_key
+    and a._MGIType_key = 9
+
+end
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

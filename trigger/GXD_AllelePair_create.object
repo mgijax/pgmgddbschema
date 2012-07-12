@@ -1,0 +1,153 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# 03/11/2009	lec
+#	- TR 7493/Gene Trap Lite/null markers will ignore certain checks
+#
+# 03/11/2005	lec
+#	- TR 4289, MPR
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger GXD_AllelePair_Insert
+on GXD_AllelePair
+for insert, update
+as
+ 
+if @@rowcount > 1
+  return
+
+/* Pair State error checks */
+
+if (select t.term from inserted i, VOC_Term t where i._PairState_key = t._Term_key) = 'Homozygous'
+   and
+   (select _Allele_key_1 from inserted) != (select _Allele_key_2 from inserted)
+begin
+	raiserror 99999 'State Attribute Error:  Homozygous state is not valid.'
+	rollback transaction
+	return
+end
+
+else if (select t.term from inserted i, VOC_Term t where i._PairState_key = t._Term_key) = 'Heterozygous'
+   and not
+   ( 
+     (select _Allele_key_1 from inserted) != (select _Allele_key_2 from inserted)
+     and
+     (select _Allele_key_2 from inserted) is not null
+   )
+begin
+	raiserror 99999 'State Attribute Error:  Heterozygous state is not valid.'
+	rollback transaction
+	return
+end
+
+else if (select _Marker_key from inserted) is not null
+   and (select t.term from inserted i, VOC_Term t where i._PairState_key = t._Term_key) = 'Hemizygous X-linked'
+   and not
+   (
+     (select _Allele_key_2 from inserted) is null
+     and
+     (select t.term from inserted i, VOC_Term t where i._Compound_key = t._Term_key) = 'Not Applicable'
+     and
+     ( ((select m.chromosome from inserted i, MRK_Marker m where i._Marker_key = m._Marker_key) = 'X') or exists (select 1 from inserted where _Marker_key = null) )
+   )
+begin
+	raiserror 99999 'State Attribute Error:  Hemizygous X-linked state is not valid.'
+	rollback transaction
+	return
+end
+
+else if (select _Marker_key from inserted) is not null
+   and (select t.term from inserted i, VOC_Term t where i._PairState_key = t._Term_key) = 'Hemizygous Y-linked'
+   and not
+   (
+     (select _Allele_key_2 from inserted) is null
+     and
+     (select t.term from inserted i, VOC_Term t where i._Compound_key = t._Term_key) = 'Not Applicable'
+     and
+     ( ((select m.chromosome from inserted i, MRK_Marker m where i._Marker_key = m._Marker_key) = 'Y') or exists (select 1 from inserted where _Marker_key = null) )
+   )
+begin
+	raiserror 99999 'State Attribute Error:  Hemizygous Y-linked state is not valid.'
+	rollback transaction
+	return
+end
+
+else if (select t.term from inserted i, VOC_Term t where i._PairState_key = t._Term_key) = 'Hemizygous Insertion'
+   and not
+   (
+     (select _Allele_key_2 from inserted) is null
+   )
+begin
+	raiserror 99999 'State Attribute Error:  Hemizygous Insertion state is not valid.'
+	rollback transaction
+	return
+end
+
+else if (select t.term from inserted i, VOC_Term t where i._PairState_key = t._Term_key) = 'Hemizygous Deletion'
+   and not
+   (
+     (select _Allele_key_2 from inserted) is null
+     and
+     (select t.term from inserted i, VOC_Term t where i._Compound_key = t._Term_key) != 'Not Applicable'
+   )
+begin
+	raiserror 99999 'State Attribute Error:  Hemizygous Deletion state is not valid.'
+	rollback transaction
+	return
+end
+
+else if (select t.term from inserted i, VOC_Term t where i._PairState_key = t._Term_key) = 'Indeterminate'
+   and not
+   (
+     (select _Allele_key_2 from inserted) is null
+     and
+     (select t.term from inserted i, VOC_Term t where i._Compound_key = t._Term_key) = 'Not Applicable'
+   )
+begin
+	raiserror 99999 'State Attribute Error:  Indeterminate state is not valid.'
+	rollback transaction
+	return
+end
+
+/* Compound error checks */
+
+if (select t.term from inserted i, VOC_Term t where i._Compound_key = t._Term_key) != 'Not Applicable'
+begin
+
+   if not ( (select _Allele_key_2 from inserted) is null
+            or
+            (select a.isWildType from inserted i, ALL_Allele a where i._Allele_key_2 = a._Allele_key) = 1
+          )
+   begin
+	raiserror 99999 'Compound Attribute Error:  Allele 2 for all Compound Allele Pairs must be null or wild type.'
+	rollback transaction
+	return
+   end
+
+   if (select t.term from inserted i, VOC_Term t where i._PairState_key = t._Term_key) 
+	in ('Hemizygous X-linked', 'Hemizygous Y-linked', 'Indeterminate')
+   begin
+	raiserror 99999 'Allele Compound Error:  Top/Bottom compound is not valid for Hemi-X, Hemi-Y or Indeterminate states.'
+	rollback transaction
+	return
+   end
+
+end
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

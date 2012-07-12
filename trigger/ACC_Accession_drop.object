@@ -1,0 +1,28 @@
+#!/bin/csh -f -x
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+drop trigger ACC_Accession_Insert
+go
+
+drop trigger ACC_Accession_Update
+go
+
+drop trigger ACC_Accession_Delete
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

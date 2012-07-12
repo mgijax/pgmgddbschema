@@ -1,0 +1,121 @@
+#!/bin/csh -f -x
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger ALL_CellLine_Update
+on ALL_CellLine
+for update
+as
+
+/* check permissions */
+
+declare @userKey integer
+select @userKey = _User_key from MGI_User where login = user_name()
+
+if exists (select * from inserted where isMutant = 0)
+    and
+    (select user_name()) not in ('mgd_dbo', 'dbo')
+    and
+    (select @userKey) not in (select _User_key from MGI_UserTask_View
+        where usertask = 'pheno:create/modify non-mutant cell line')
+begin
+        rollback transaction
+        raiserror 99999 "User cannot perform task 'pheno:create/modify non-mutant cell line'"
+        return
+end
+
+/* if the strain is updated, then...
+ *   1. if this is a mutant cell line, disallow it and rollback
+ *   2. if this is a parent cell line, propagate the new cell line to all
+ *      mutant cell lines derived form this parent
+ */
+if update(_Strain_key)
+begin
+    /* disallow strain changes for mutant cell lines (when done directly to
+     * this table; when the change is done by a trigger on another table, the
+     * nesting level will be > 1, indicating that the update is okay
+     */
+
+    if (@@nestlevel < 2) and exists(select 1 from inserted where isMutant = 1)
+    begin
+	rollback transaction
+	raiserror 99999 "Cannot change strain of mutant cell line"
+	return
+    end
+
+    /* update strains of mutant cell lines derived from this parent line */
+
+    update ALL_CellLine
+    set _Strain_key = i._Strain_key
+    from inserted i, ALL_CellLine_Derivation d, ALL_CellLine c
+    where i._CellLine_key = d._ParentCellLine_key
+	and d._Derivation_key = c._Derivation_key
+
+    /* Previously, when Strain was updated, we also needed to update all
+     * Alleles which reference this ES Cell Line AND the old Strain (excluding
+     * NA, NS, Other (see notes) cell lines).  Now, that is done by a nightly
+     * script rather than in this trigger.
+     */
+end
+
+/* If a mutant cell line has a change in its derivation key, then its strain
+ * key must change to match the strain of its new parent cell line.
+ */
+if update(_Derivation_key)
+begin
+    update ALL_CellLine
+    set _Strain_key = p._Strain_key
+    from ALL_CellLine m, ALL_CellLine_Derivation d, ALL_CellLine p, inserted i
+    where i._CellLine_key = m._CellLine_key
+	and m._Derivation_key = d._Derivation_key
+	and d._ParentCellLine_key = p._CellLine_key
+end
+go
+
+create trigger ALL_CellLine_Delete
+on ALL_CellLine
+for delete
+as
+
+/* Disallow deletion of cell type which is referenced in Allele join table */
+
+if exists (select * from ALL_Allele_CellLine a, deleted
+         where a._MutantCellLine_key = deleted._CellLine_key)
+begin
+        rollback transaction
+        raiserror 99999 "Cell Line is referenced in Allele Record(s) as Mutant ES Cell Line"
+	return
+end
+
+/* Disallow deletion of cell line which is parent of a derivation */
+
+if exists (select * from ALL_CellLine_Derivation a, deleted d
+         where a._ParentCellLine_key = d._CellLine_key)
+begin
+        rollback transaction
+        raiserror 99999 "Cell Line is referenced in parent of a Derivation"
+	return
+end
+
+delete ACC_Accession
+from ACC_Accession a, deleted d
+where a._Object_key = d._CellLine_key
+and a._MGIType_key = 28
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

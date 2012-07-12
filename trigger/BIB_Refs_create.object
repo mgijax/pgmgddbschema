@@ -1,0 +1,263 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# 10/18/2011	lec
+#	- remove update/modification date;because this is handled via EI
+#
+# 04/27/2010	lec
+#	- TR10197/remove call to GXD_Antibody._Refs_key
+#
+# 04/29/2008	lec
+#	- TR 8980; remove dupliate check
+#
+# 10/19/2006	lec
+#	- TR 6812; added BIB_Citation_Cache
+#
+# 12/09/2004	lec
+#	- TR 5686; MRK_Other replaced by MGI_Synonym
+#
+# 05/13/2002	lec
+#	- TR 1463; SAO
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger BIB_Refs_Insert
+on BIB_Refs
+for insert
+as
+ 
+declare @key integer
+select @key = _Refs_key from inserted
+exec ACC_assignMGI @key, "Reference"
+
+if (@@error != 0)
+begin
+  rollback transaction
+  return
+end
+
+
+go
+
+create trigger BIB_Refs_Delete
+on BIB_Refs
+for delete
+as
+
+/* Before deleting a record, verify that the J# is not being */
+/* referenced elsewhere in the database. */
+
+if exists (select 1 from MGI_Reference_Assoc, deleted
+    where MGI_Reference_Assoc._Refs_key = deleted._Refs_key
+    and MGI_Reference_Assoc._MGIType_key = 21)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in Nomenclature Record(s)"
+	return
+end
+
+if exists (select 1 from MGI_Reference_Assoc, deleted
+    where MGI_Reference_Assoc._Refs_key = deleted._Refs_key
+    and MGI_Reference_Assoc._MGIType_key = 2)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in Marker Record(s)"
+	return
+end
+
+if exists (select 1 from MGI_Reference_Assoc, deleted
+    where MGI_Reference_Assoc._Refs_key = deleted._Refs_key
+    and MGI_Reference_Assoc._MGIType_key = 11)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in Allele Record(s)"
+	return
+end
+
+if exists (select 1 from MGI_Reference_Assoc, deleted
+    where MGI_Reference_Assoc._Refs_key = deleted._Refs_key
+    and MGI_Reference_Assoc._MGIType_key = 19)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in Sequence Record(s)"
+	return
+end
+
+if exists (select 1 from ALL_CellLine_Derivation, deleted
+    where ALL_CellLine_Derivation._Refs_key = deleted._Refs_key)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in Cell Line Derivation"
+	return
+end
+
+if exists (select 1 from DAG_DAG, deleted
+    where DAG_DAG._Refs_key = deleted._Refs_key)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in DAG Record(s)"
+	return
+end
+
+if exists (select 1 from GXD_AntibodyAlias, deleted
+         where GXD_AntibodyAlias._Refs_key = deleted._Refs_key)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in GXD Antibody Alias Record(s)"
+	return
+end
+
+if exists (select 1 from GXD_Assay, deleted
+         where GXD_Assay._Refs_key = deleted._Refs_key)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in GXD Assay Record(s)"
+	return
+end
+
+if exists (select 1 from GXD_Index, deleted
+         where GXD_Index._Refs_key = deleted._Refs_key)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in GXD Index Record(s)"
+	return
+end
+
+if exists (select 1 from IMG_Image, deleted
+         where IMG_Image._Refs_key = deleted._Refs_key)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in GXD Image Record(s)"
+	return
+end
+
+if exists (select 1 from HMD_Homology, deleted
+         where HMD_Homology._Refs_key = deleted._Refs_key)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in Homology Record(s)"
+	return
+end
+
+if exists (select 1 from MGI_Reference_Assoc, deleted
+         where MGI_Reference_Assoc._Refs_key = deleted._Refs_key)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in MGI Reference Association Record(s)"
+	return
+end
+
+if exists (select 1 from MLC_Reference, deleted
+         where MLC_Reference._Refs_key = deleted._Refs_key)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in MLC Record(s)"
+	return
+end
+
+if exists (select 1 from MLD_Expts, deleted
+         where MLD_Expts._Refs_key = deleted._Refs_key)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in Mapping Record(s)"
+	return
+end
+
+if exists (select 1 from MRK_History, deleted
+    where MRK_History._Refs_key = deleted._Refs_key)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in Marker History Record(s)"
+	return
+end
+
+if exists (select 1 from MGI_Synonym, deleted
+    where MGI_Synonym._Refs_key = deleted._Refs_key)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in Synonym Record(s)"
+	return
+end
+
+if exists (select 1 from MRK_Reference, deleted
+    where MRK_Reference._Refs_key = deleted._Refs_key)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in Marker Reference Cache Record(s)"
+	return
+end
+
+if exists (select 1 from PRB_Reference, deleted
+         where PRB_Reference._Refs_key = deleted._Refs_key)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in Probe Record(s)"
+	return
+end
+
+if exists (select 1 from PRB_Source, deleted
+         where PRB_Source._Refs_key = deleted._Refs_key)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in Probe Source Record(s)"
+	return
+end
+
+if exists (select 1 from VOC_Evidence, deleted
+    where VOC_Evidence._Refs_key = deleted._Refs_key)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in Vocabulary Annotation Record(s)"
+	return
+end
+
+if exists (select 1 from VOC_Vocab, deleted
+    where VOC_Vocab._Refs_key = deleted._Refs_key)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in Vocabulary Record(s)"
+	return
+end
+
+if exists (select 1 from ALL_Marker_Assoc a, deleted
+    where a._Refs_key = deleted._Refs_key)
+begin
+        rollback transaction
+        raiserror 99999 "J# is referenced in Marker/Allele Association"
+	return
+end
+
+delete BIB_Citation_Cache from BIB_Citation_Cache b, deleted d
+where b._Refs_key = d._Refs_key
+
+delete BIB_Books from BIB_Books b, deleted d
+where b._Refs_key = d._Refs_key
+
+delete BIB_Notes from BIB_Notes b, deleted d
+where b._Refs_key = d._Refs_key
+
+delete BIB_DataSet_Assoc from BIB_DataSet_Assoc b, deleted d
+where b._Refs_key = d._Refs_key
+
+delete ACC_Accession
+from ACC_Accession a, deleted d
+where a._Object_key = d._Refs_key
+and a._MGIType_key = 1
+
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

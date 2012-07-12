@@ -1,0 +1,56 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# 03/03/2011 lec
+#	- TR10619/check @@rowcount
+#
+# 01/24/2008 lec
+#	- TR 8527; updated change re:TR8712
+#
+# 06/28/2005	lec
+#	- TR 6948
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger GXD_InSituResult_InsertUpdate
+on GXD_InSituResult
+for insert, update
+as
+
+-- Ignore multi-row data
+
+if @@rowcount > 1
+        return
+
+if (select _Strength_key from inserted) = 1
+   and (select _Pattern_key from inserted) != -2
+begin
+    raiserror 99999 'If Strength is "Absent", then Pattern must be "Not Applicable".'
+    rollback transaction
+    return
+end
+
+if (select _Strength_key from inserted) != 1
+   and (select _Pattern_key from inserted) = -2
+begin
+    raiserror 99999 'If Pattern is "Not Applicable", then Strength must be "Absent".'
+    rollback transaction
+    return
+end
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

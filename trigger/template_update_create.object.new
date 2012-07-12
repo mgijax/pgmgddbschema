@@ -1,0 +1,28 @@
+#!/bin/sh
+
+#
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
+
+CREATE OR REPLACE FUNCTION check_PG-TABLE_update() RETURNS TRIGGER AS \$\$
+BEGIN
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION check_PG-TABLE_update() TO public;
+
+DROP TRIGGER check_PG-TABLE_update_trigger ON PG-TABLE;
+
+CREATE TRIGGER check_PG-TABLE_update_trigger
+AFTER DELETE on PG-TABLE
+FOR EACH ROW
+EXECUTE PROCEDURE check_PG-TABLE_update();
+
+EOSQL

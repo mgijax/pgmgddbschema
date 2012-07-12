@@ -1,0 +1,132 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# 10/18/2011	lec
+#	- TR10841/MGI_AttributeHistory obsolete
+#
+# 12/01/2009	lec
+#	- TR 9974; add cms
+#
+# 10/24/2002	lec
+#	- removed referenced to user 'rpp'
+#	- TR 4186; removed unfertilized egg/Not Applicable rule
+#
+# 05/13/2002	lec
+#	- TR 1463; SAO
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger PRB_Source_InsertUpdate
+on PRB_Source
+for insert, update
+as
+
+/* The same exact logic to prevent invalid Age values must */
+/* be used in the update trigger as well */
+
+/* Ignore multi-row data */
+
+if @@rowcount > 1
+begin
+	return
+end
+
+declare @age varchar(50)
+select @age = age from inserted
+
+/* Separate agePrefix from ageSuffix (numerics) */
+
+declare @agePrefix varchar(50)
+declare @ageSuffix varchar(50)
+declare @idx integer
+
+select @agePrefix = @age
+select @idx = patindex("%[0-9]%", @age)
+
+if @idx > 0
+begin
+	select @agePrefix = substring(@age, 1, @idx - 1)
+	select @ageSuffix = substring(@age, @idx, char_length(@age))
+end
+
+/* If age is one of the following prefixes, then there can be no numeric values */
+
+if @agePrefix in ('Not Specified', 'Not Applicable', 'embryonic', 'postnatal', 'postnatal newborn', 'postnatal adult')
+   and @ageSuffix is not null
+begin
+        rollback transaction
+        raiserror 99999 "The Age value specified CANNOT contain numeric values"
+	return
+end
+
+/* If age is one of the following prefixes, then there must be numeric values */
+
+if @agePrefix in ('embryonic day', 'postnatal day', 'postnatal week',
+	'postnatal month', 'postnatal year')
+   and @ageSuffix is null
+begin
+        rollback transaction
+        raiserror 99999 "The Age value specified MUST contain numeric values"
+	return
+end
+
+go
+
+create trigger PRB_Source_Delete
+on PRB_Source
+for delete
+as
+
+/* Disallow deletion if Source is referenced elsewhere */
+
+if exists (select * from GXD_Antigen, deleted
+         where GXD_Antigen._Source_key = deleted._Source_key)
+begin
+        rollback transaction
+        raiserror 99999 "Molecular Segment Library is referenced in GXD Antigen Record(s)."
+	return
+end
+ 
+if exists (select * from PRB_Probe, deleted
+         where PRB_Probe._Source_key = deleted._Source_key)
+begin
+        rollback transaction
+        raiserror 99999 "Molecular Segment Library is referenced in Probe Record(s)."
+	return
+end
+ 
+if exists (select * from SEQ_Source_Assoc, deleted
+         where SEQ_Source_Assoc._Source_key = deleted._Source_key)
+begin
+        rollback transaction
+        raiserror 99999 "Molecular Segment Library is referenced in Sequence/Source Association Record(s)."
+	return
+end
+ 
+delete MGI_SetMember
+from MGI_Set s, MGI_SetMember m, deleted d
+where s._MGIType_key = 5
+and s._Set_key = m._Set_key
+and m._Object_key = d._Source_key
+
+delete ACC_Accession
+from ACC_Accession a, deleted d
+where a._Object_key = d._Source_key
+and a._MGIType_key = 5
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

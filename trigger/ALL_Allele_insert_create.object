@@ -1,0 +1,48 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
+
+--
+-- NAME: check_ALL_Allele_insert()
+--
+-- DESCRIPTOIN:
+--
+--	this insert trigger will call ACC_assignMGI
+--	in order to add a distinct MGI accession id
+--	to the NEW object
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+CREATE OR REPLACE FUNCTION check_ALL_Allele_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
+SELECT ACC_assignMGI(NEW._Allele_key, 'Allele');
+
+EXCEPTION WHEN OTHERS THEN
+    RAISE EXCEPTION 'check_ALL_Allele_insert: error';
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION check_ALL_Allele_insert() TO public;
+
+DROP TRIGGER check_ALL_Allele_insert_trigger ON ALL_Allele;
+
+CREATE TRIGGER check_ALL_Allele_insert_trigger
+AFTER INSERT on ALL_Allele
+FOR EACH ROW
+EXECUTE PROCEDURE check_ALL_Allele_insert();
+
+COMMENT ON FUNCTION mgd.check_ALL_Allele_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+
+EOSQL

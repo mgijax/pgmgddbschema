@@ -1,0 +1,46 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# 06/14/2005	lec
+#	- TR 3557
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+/*--------------------------------------------------------------------------*/
+
+create trigger IMG_ImagePane_Update
+on IMG_ImagePane
+for update
+as
+
+/* trigger only works when updating a single row; bail out otherwise */
+if @@rowcount > 1
+	return
+
+/* be sure to update IMG_Cache when a paneLabel is changed */
+if update(paneLabel)
+begin
+	update IMG_Cache
+	set paneLabel = ins.paneLabel
+	from IMG_Cache ic, inserted ins
+	where ic._ImagePane_key = ins._ImagePane_key
+end
+
+go
+
+/*--------------------------------------------------------------------------*/
+
+checkpoint
+go
+
+quit
+
+EOSQL

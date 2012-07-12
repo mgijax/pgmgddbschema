@@ -1,0 +1,217 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# 11/03/2010    lec
+#       - TR10044/GO-Notes
+#
+# 03/11/2009	lec
+#	- TR 9542; add J:72245 to check
+#
+# 06/19/2008	lec
+#	- TR 9057
+#
+# 10/03/2006	lec
+#	- TR 7865
+#
+# 11/21/2003	lec
+#	- TR 5348
+#
+# 11/20/2003	lec
+#	- TR 5341
+#
+# 09/17/2003	lec
+#	- TR 4724
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger VOC_Evidence_Insert
+on VOC_Evidence
+for insert, update
+as
+
+if @@rowcount != 1
+begin
+	return
+end
+
+/* determine _Refs_key of the new Annotation */
+declare @refsKey integer
+select @refsKey = _Refs_key from inserted
+
+/* determine _Term_key of the new Annotation */
+declare @termKey int
+select @termKey = _Term_key
+	from inserted i, VOC_Annot a
+	where i._Annot_key = a._Annot_key
+
+/* determine _DAG_key of the new Annotation */
+declare @dagKey int
+select @dagKey = _DAG_key
+	from inserted i, VOC_Annot_View a, DAG_Node_View d
+	where i._Annot_key = a._Annot_key
+	and a._Vocab_key = d._Vocab_key
+	and a._Term_key = d._Object_key
+
+/* determine _Object_key of the new Annotation */
+declare @objectKey int
+select @objectKey = _Object_key from VOC_Annot a, inserted i
+	where i._Annot_key = a._Annot_key
+
+/* TR 7865: Disallow Annotation if adding an Annotation to an "unknown" term (120, 1098, 6113) */
+/* and an Annotation to a known Term in the same DAG already exists */
+/* If the Annotation to a known Term is to */
+/* J:72247 (InterPro) */
+/* J:60000 (Swiss-Prot) */
+/* J:72245 (Swiss-Prot) */
+/* J:80000 (RIKEN) */
+/* J:56000 */
+/* then it's okay */
+
+if (select @termKey) in (120, 1098, 6113)
+begin
+	/* determine if the same Object contains an Annotation to a different Term */
+	/* within the same DAG */
+	if exists (select 1 from VOC_Evidence e, VOC_Annot a, VOC_AnnotType ap, VOC_VocabDAG v, DAG_Node n
+		where e._Refs_key not in (73199, 61933, 80961, 59154, 73197)
+		and e._Annot_key = a._Annot_key
+		and a._Object_key = @objectKey
+		and a._Term_key != @termKey
+		and a._AnnotType_key = ap._AnnotType_key
+		and ap._Vocab_key = v._Vocab_key
+		and v._DAG_key = @dagKey
+		and v._DAG_key = n._DAG_key
+		and a._Term_key = n._Object_key)
+	begin
+		rollback transaction
+		raiserror 99999 'This Object has already been annotated to this DAG.\\nTherefore, you cannot annotate it to an unknown term.'
+		return
+	end
+end
+
+/* If the new Object is already annotated to an unknown term in the same DAG */
+/* then delete the Annotation to the unknown term. */
+
+if (select @termKey) not in (120, 1098, 6113)
+begin
+	/* determine if the same Object contains an Annotation to an unknown Term */
+	/* within the same DAG */
+	if exists (select 1 
+		from VOC_Evidence e, VOC_Annot a, VOC_AnnotType ap, VOC_VocabDAG v, DAG_Node n
+		where e._Annot_key = a._Annot_key
+		and a._Object_key = @objectKey
+                and a._Term_key in (120, 1098, 6113)
+		and a._Term_key != @termKey
+		and a._AnnotType_key = ap._AnnotType_key
+		and ap._Vocab_key = v._Vocab_key
+		and v._DAG_key = @dagKey
+		and v._DAG_key = n._DAG_key
+		and a._Term_key = n._Object_key)
+	begin
+		delete VOC_Evidence
+		from VOC_Evidence e, VOC_Annot a, VOC_AnnotType ap, VOC_VocabDAG v, DAG_Node n
+		where e._Annot_key = a._Annot_key
+		and a._Object_key = @objectKey
+		and a._Term_key != @termKey
+                and a._Term_key in (120, 1098, 6113)
+		and a._AnnotType_key = ap._AnnotType_key
+		and ap._Vocab_key = v._Vocab_key
+		and v._DAG_key = @dagKey
+		and v._DAG_key = n._DAG_key
+		and a._Term_key = n._Object_key
+	end
+end
+
+/* if this is a GO annotation, then remove the NOGO designation for the reference */
+
+if (select a._AnnotType_key from inserted i, VOC_Annot a
+       where i._Annot_key = a._Annot_key) = 1000
+begin
+	exec BIB_removeNOGO @refsKey
+end
+
+/* if this an MP annotation                       */
+/* and the evidence code = CUR                    */
+/* and the Reference is associated with an Allele */
+/* then change the Allele Reference to "Used-CUR"  */
+
+if (select a._AnnotType_key from inserted i, VOC_Annot a
+       where i._Annot_key = a._Annot_key) = 1002
+   and (select t.abbreviation from inserted i, VOC_Term t
+       where i._EvidenceTerm_key = t._Term_key) = 'CUR'
+   and exists (select 1 from inserted i, VOC_Annot a, GXD_AlleleGenotype g, MGI_Reference_Assoc r, MGI_RefAssocType rt
+       where i._Annot_key = a._Annot_key
+       and a._Object_key = g._Genotype_key
+       and g._Allele_key = r._Object_key
+       and i._Refs_key = r._Refs_key
+       and r._MGIType_key = 11
+       and r._RefAssocType_key = rt._RefAssocType_key
+       and rt.assocType != 'Used-CUR')
+begin
+    exec MGI_updateReferenceAssoc 12, @objectKey, @refsKey, 'Used-CUR'
+end
+
+/* if this an MP annotation                       */
+/* and the evidence code != CUR                    */
+/* and the Reference is associated with an Allele */
+/* then change the Allele Reference to "Used-FC"  */
+
+if (select a._AnnotType_key from inserted i, VOC_Annot a
+       where i._Annot_key = a._Annot_key) = 1002
+   and (select t.abbreviation from inserted i, VOC_Term t
+       where i._EvidenceTerm_key = t._Term_key) != 'CUR'
+   and exists (select 1 from inserted i, VOC_Annot a, GXD_AlleleGenotype g, MGI_Reference_Assoc r, MGI_RefAssocType rt
+       where i._Annot_key = a._Annot_key
+       and a._Object_key = g._Genotype_key
+       and g._Allele_key = r._Object_key
+       and i._Refs_key = r._Refs_key
+       and r._MGIType_key = 11
+       and r._RefAssocType_key = rt._RefAssocType_key
+       and rt.assocType != 'Used-FC')
+begin
+    exec MGI_updateReferenceAssoc 12, @objectKey, @refsKey, 'Used-FC'
+end
+
+go
+
+create trigger VOC_Evidence_Delete
+on VOC_Evidence
+for delete
+as
+
+/* If there are no more Evidence records for this Annotation, then delete */
+/* the Annotation record as well */
+
+if not exists (select 1 from VOC_Evidence e, deleted d
+	where d._Annot_key = e._Annot_key)
+begin
+	delete VOC_Annot from VOC_Annot a, deleted d
+	where a._Annot_key = d._Annot_key
+end
+
+delete VOC_Evidence_Property from VOC_Evidence_Property, deleted
+where VOC_Evidence_Property._AnnotEvidence_key = deleted._AnnotEvidence_key
+
+delete MGI_Note from MGI_Note, deleted
+where MGI_Note._MGIType_key = 25
+and MGI_Note._Object_key = deleted._AnnotEvidence_key
+
+delete ACC_Accession from ACC_Accession, deleted
+where ACC_Accession._MGIType_key = 25
+and ACC_Accession._Object_key = deleted._AnnotEvidence_key
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

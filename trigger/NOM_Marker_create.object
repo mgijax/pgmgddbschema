@@ -1,0 +1,348 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# 01/23/2009 - jsb - added hdt; TR9166
+# lec	10/21/2005
+#	- TR 7185, added mberry, Tier 3
+#
+# 11/10/2004	lec
+#	- TR 6338; added smb
+#
+# 08/19/2004	lec
+#	- TR 6120; brs as Tier 4
+#
+# 07/19/2004	lec
+#	- TR 6020; mmh as Tier 4
+#
+# 07/06/2004	lec
+#	- TR 6009; added mmh as Tier 3; lmc as Tier 4
+#
+# lec	07/01/2004
+#	- added llw2
+#
+# 06/25/2004	lec
+#	- TR 5973; added lmc
+#
+# lec	06/23/2004
+#	- TR 5967; added brs
+#
+# 06/22/2004
+#	- TR 5961; add hdene as Tier 3
+#
+# 04/26/2004
+#	- TR 5751; add dlb as Tier 3
+#
+# 01/28/2004	lec
+#	- TR 5527; upgrade tbreddy to Tier 4
+#
+# 10/02/2003
+#	- TR 5192; add pvb as Tier 3
+#
+# 08/26/2003	lec
+#	- TR 4708
+#
+# 08/25/2003	lec
+#	- TR 5077; added tbreddy as Tier 3
+#
+# 06/06/2003
+#	- TR 4865; added djr as Tier 4
+#
+# 05/22/2003
+#	- TR 4829; added bobs as Tier 4
+#
+# 05/15/2003
+#	- TR 4812; removed pm and sr
+#
+# 04/30/2003
+#	- TR 4765; added rmb as Tier 4
+#
+# 03/19/2003
+#	- TR 4629; added bobs as Tier 3
+#
+# 01/24/2003	lec
+#       - TR 4467; added rjc as Tier 4
+#
+# 01/21/2003	lec
+#       - TR 4450; added rjc as Tier 3
+#
+# 09/03/2002      lec
+#       - TR 3950; added Unreviewed (6)
+#
+# 08/21/2002      lec
+#       - TR ; added ln as Tier 4
+#
+# 08/06/2002      lec
+#       - TR 3969; added ksf as Tier 3
+#
+# 08/14/2002	lec
+#	- TR 1463; renamed Species to Organism
+#
+# 05/29/2002	lec
+#	- TR 1463; SAO
+#
+# 04/18/2002      lec
+#       - TR 3590; added ln as Tier 3
+#
+# 04/02/2002      lec
+#       - TR 3519; modify update trigger so that anyone can
+#         update the modification date of a nomen record
+#
+# 03/19/2002      lec
+#       - TR 3447; added cms as Tier 3
+#
+
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger NOM_Marker_Insert
+on NOM_Marker
+for insert
+as
+
+if (select count(*) from NOM_Marker n, inserted i where n.symbol = i.symbol) > 1
+begin
+	rollback transaction
+	raiserror 99999 "NOM_Marker_Insert:  Duplicate. Symbol Already Exists in Nomen."
+	return
+end
+
+if (select count(*) from MRK_Marker m, inserted i
+	where m.symbol = i.symbol
+	   and m._Organism_key = 1
+	   and m._Marker_Status_key in (1, 3)) > 0
+begin
+	rollback transaction
+	raiserror 99999 "NOM_Marker_Insert:  Duplicate.  Symbol Already Exists in MGD."
+	return
+end
+
+if (select user_name()) not in ('mgd_dbo', 'dbo', 'brs', 'csmith', 'djr', 'hdene', 'lmc', 'ln', 'mberry', 'mmh', 'rbabiuk', 'rmb', 'smb', 'mnk')
+begin
+	if (select t.term from inserted i, VOC_Term t
+                where i._NomenStatus_key = _Term_key) != "In Progress"
+	begin
+		rollback transaction
+		raiserror 99999 "NOM_Marker_Insert:  You do not have permission to set the Status field to any value other than In Progress."
+		return
+	end
+end
+
+if (select user_name()) not in ('mgd_dbo', 'dbo')
+begin
+	if (select _Marker_Event_key from inserted) != 1
+	begin
+		rollback transaction
+		raiserror 99999 "NOM_Marker_Insert:  You do not have permission to set the Event field to any value other than Assigned."
+		return
+	end
+
+/* For Nucleotide Sequences, check that it is valid */
+
+if (select symbol from inserted) like '[A-Z][0-9][0-9][0-9][0-9][0-9]' or
+   (select symbol from inserted) like '[A-Z][A-Z][0-9][0-9][0-9][0-9][0-9][0-9]'
+begin
+        print "The gene symbol for this marker looks like a GenBank Seq Id. If so, please be sure to associate that Seq Id with this marker."
+end
+
+end
+
+/* Assign the MGI Acc ID */
+
+declare @key integer
+select @key = _Nomen_key from inserted
+exec ACC_assignMGI @key, "Nomenclature", @private = 1
+
+
+go
+
+create trigger NOM_Marker_Update
+on NOM_Marker
+for update
+as
+
+declare @userKey integer
+select @userKey = _User_key from MGI_User where login = user_name()
+
+if update(symbol)
+begin
+	if (select count(*) from NOM_Marker n, inserted i where n.symbol = i.symbol) > 1
+	begin
+		rollback transaction
+		raiserror 99999 "NOM_Marker_Update:  Duplicate. Symbol Already Exists in Nomen."
+		return
+	end
+
+	if (select count(*) from MRK_Marker m, inserted i
+		where m.symbol = i.symbol
+	   	and m._Organism_key = 1
+	   	and m._Marker_Status_key in (1, 3)) > 0
+	begin
+		rollback transaction
+		raiserror 99999 "NOM_Marker_Update:  Duplicate. Symbol Already Exists in MGD."
+		return
+	end
+end
+
+/* Any user (except dbo) */
+
+if (select user_name()) not in ('mgd_dbo', 'dbo')
+begin
+	if (select broadcast_date from deleted) is not null
+	   and
+	   (select t.term from inserted i, VOC_Term t
+                where i._NomenStatus_key = _Term_key) not in ("Broadcast - Official", "Broadcast - Interim")
+	begin
+		rollback transaction
+		raiserror 99999 "NOM_Marker_Update:  You cannot modify status from Broadcast."
+		return
+	end
+
+	if update(_Marker_Event_key)
+	begin
+		rollback transaction
+		raiserror 99999 "NOM_Marker_Update:  You do not have permission to modify the Event field."
+		return
+	end
+
+	if update(_CreatedBy_key)
+	begin
+		rollback transaction
+		raiserror 99999 "NOM_Marker_Update:  You do not have permission to modify the Created By field."
+		return
+	end
+end
+
+/* If the modification date is the ONLY field being updated, then let anyone update it */
+
+if update(modification_date) 
+   and not update(_Marker_Type_key)
+   and not update(_NomenStatus_key)
+   and not update(_Marker_Event_key)
+   and not update(_Marker_EventReason_key)
+   and not update(_CurationState_key)
+   and not update(symbol)
+   and not update(name)
+   and not update(chromosome)
+   and not update(humanSymbol)
+   and not update(statusNote)
+begin
+	return
+end
+
+/* If Tier3 user */
+
+if (select user_name()) in ('brs', 'cms', 'dlb', 'dph', 'hdt', 'hjd', 'llw2', 'mberry', 'rbabiuk', 'yz', 'mnk')
+begin
+	/* User modifying record must = user who created record */
+	/* unless the marker is reserved or unreviewed */
+
+	if (select _CreatedBy_key from deleted) != @userKey and
+	   (select t.term from deleted d, VOC_Term t
+                where d._NomenStatus_key = _Term_key) not in ("Reserved", "Unreviewed")
+	begin
+		rollback transaction
+		raiserror 99999 "NOM_Marker_Update:  You do not have permission to edit this record."
+		return
+	end
+end
+
+/* If Tier2 user */
+
+if (select user_name()) in ('tier2')
+begin
+	/* User modifying record must = user who created record */
+
+	if (select _CreatedBy_key from deleted) != @userKey
+	begin
+		rollback transaction
+		raiserror 99999 "NOM_Marker_Update:  You do not have permission to edit this record."
+		return
+	end
+end
+
+go
+
+create trigger NOM_Marker_Delete
+on NOM_Marker
+for delete
+as
+
+declare @userKey integer
+select @userKey = _User_key from MGI_User where login = user_name()
+
+/* Cannot delete records w/ primary reference of J:65060 (RIKEN) */
+
+if exists (select 1 from deleted d, MGI_Reference_Nomen_View r
+           where d._Nomen_key = r._Object_key and r.assocType = "Primary" and r.jnum = 65060)
+begin
+	rollback transaction
+	raiserror 99999 "NOM_Marker_Delete:  Nomen record is referenced by J:65060.  Cannot delete this record."
+	return
+end
+
+/* If Tier3 user */
+
+if (select user_name()) in ('brs', 'cms', 'dlb', 'dph', 'hdt', 'hjd', 'llw2', 'mberry', 'rbabiuk', 'yz', 'mnk')
+begin
+	/* User modifying record must = user who created record */
+	/* unless the record is reserved or unreviewed */
+
+	if (select _CreatedBy_key from deleted) != @userKey and
+	   (select t.term from deleted d, VOC_Term t
+                where d._NomenStatus_key = _Term_key) not in ("Reserved", "Unreviewed")
+	begin
+		rollback transaction
+		raiserror 99999 "NOM_Marker_Delete:  You do not have permission to edit this record."
+		return
+	end
+end
+
+/* If Tier2 user */
+
+if (select user_name()) in ('tier2')
+begin
+	/* User modifying record must = user who created record */
+
+	if (select _CreatedBy_key from deleted) != @userKey
+	begin
+		rollback transaction
+		raiserror 99999 "NOM_Marker_Delete:  You do not have permission to edit this record."
+		return
+	end
+end
+
+delete MGI_Synonym
+from MGI_Synonym s, deleted d
+where s._Object_key = d._Nomen_key
+and s._MGIType_key = 21
+ 
+delete MGI_Reference_Assoc 
+from MGI_Reference_Assoc r, deleted d
+where r._Object_key = d._Nomen_key
+and r._MGIType_key = 21
+ 
+delete MGI_Note 
+from MGI_Note n, deleted d
+where n._Object_key = d._Nomen_key
+and n._MGIType_key = 21
+ 
+delete ACC_Accession
+from ACC_Accession a, deleted d
+where a._Object_key = d._Nomen_key
+and a._MGIType_key = 21
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

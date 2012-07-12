@@ -1,0 +1,234 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# 12/19/2005	lec
+#	- TR 7338; removed "You have curated an encodes relationship even though"
+#	  warning.
+#
+# 01/22/2004	lec
+#	- JSAM; prevent auto-E edits
+#
+# 08/14/2002 	lec
+#	- TR 1463; renamed Species to Organism
+#
+# 05/13/2002	lec
+#	- TR 1463; SAO; replaced _ProbeSpecies_key with _Species_key
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger PRB_Marker_Insert
+on PRB_Marker
+for insert
+as
+
+/* Ignore multi-row transactions */
+
+if @@rowcount > 1
+    return
+
+/* Cannot annotate using the Auto-E reference */
+
+if (select user_name()) not in ('mgd_dbo', 'dbo')
+   and
+   (select _Refs_key from inserted) = (select _Object_key from ACC_Accession where accID = "J:85324")
+begin
+       	rollback transaction
+       	raiserror 99999 "PRB_Marker_Insert: Cannot use J:85324 (auto-E) reference."
+	return
+end
+
+/* Relationship cannot be null */
+
+if (select relationship from inserted) is null
+begin
+       	rollback transaction
+       	raiserror 99999 "PRB_Marker_Insert: Relationship cannot be NULL."
+	return
+end
+
+declare @primer int
+select @primer = t._Term_key 
+	from VOC_Term t, VOC_Vocab v 
+	where v.name = "Segment Type"
+	and v._Vocab_key = t._Vocab_key
+	and t.term = "primer"
+
+/* Relationship must be 'H' for Probes of non-mouse source */
+
+if exists (select * from inserted i, PRB_Probe p, PRB_Source s
+  	where i._Probe_key = p._Probe_key
+  	and p._SegmentType_key != @primer
+  	and p._Source_key = s._Source_key
+  	and s._Organism_key != 1
+  	and (i.relationship != 'H' or i.relationship is null))
+begin
+       	rollback transaction
+       	raiserror 99999 "PRB_Marker_Insert: Relationship Must be 'H'"
+	return
+end
+
+/* Relationship 'P' can only be used during an EST bulk load */
+
+if (select relationship from inserted) = 'P'
+begin
+       	rollback transaction
+       	raiserror 99999 "PRB_Marker_Insert: Relationship 'P' can only be used during EST load"
+	return
+end
+
+go
+
+create trigger PRB_Marker_Update
+on PRB_Marker
+for update
+as
+ 
+/* Ignore multi-row transactions */
+
+if @@rowcount > 1
+    return
+
+/* Cannot annotate using the Auto-E reference */
+
+if (select user_name()) not in ('mgd_dbo', 'dbo')
+   and
+   update(_Refs_key)
+   and
+   (select _Refs_key from inserted) = (select _Object_key from ACC_Accession where accID = "J:85324")
+begin
+       	rollback transaction
+       	raiserror 99999 "PRB_Marker_Update: Cannot use J:85324 (auto-E) reference."
+	return
+end
+
+/* Relationship cannot be changed from non-null to null */
+
+if (select relationship from deleted) is not null and (select relationship from inserted) is null
+begin
+       	rollback transaction
+       	raiserror 99999 "PRB_Marker_Modify: Relationship cannot be NULL."
+	return
+end
+
+declare @primer int
+select @primer = t._Term_key 
+	from VOC_Term t, VOC_Vocab v 
+	where v.name = "Segment Type"
+	and v._Vocab_key = t._Vocab_key
+	and t.term = "primer"
+
+/* Relationship must be 'H' for Probes of non-mouse source */
+
+if exists (select * from inserted i, PRB_Probe p, PRB_Source s
+	where i._Probe_key = p._Probe_key
+  	and p._SegmentType_key != @primer
+  	and p._Source_key = s._Source_key
+  	and s._Organism_key != 1
+  	and (i.relationship != 'H' or i.relationship is null))
+begin
+       	rollback transaction
+       	raiserror 99999 "PRB_Marker_Update: Relationship Must be 'H'"
+	return
+end
+
+/* Allow update of 'P' to other relationship */
+/* Disallow update of other relationship to 'P' */
+/* Only check on individual inserts */
+
+if ((select relationship from inserted) = 'P'
+    and (select _Marker_key from inserted) = (select _Marker_key from deleted))
+   or
+   ((select _Marker_key from inserted) != (select _Marker_key from deleted)
+    and (select relationship from inserted) = 'P'
+    and (select relationship from deleted) != 'P')
+begin
+       	rollback transaction
+       	raiserror 99999 "PRB_Marker_Update: Relationship 'P' can only be used during EST load"
+	return
+end
+
+/* If updating to an non-encoding Marker for a Molecular Segment and */
+/* Molecular Segment contains a Seq ID and */
+/* the Marker is associated with the Seq ID */
+ 
+if update(relationship) and 
+	   (select relationship from deleted) = 'E' and
+           (select relationship from inserted) != 'E'
+begin
+	if exists (select a1.accID
+                   from ACC_Accession a1, ACC_Accession a2, inserted i
+                   where a1._MGIType_key = 3 and
+                         a1. _LogicalDB_key = 9 and
+                         a1._Object_key = i._Probe_key and
+                         a1.accID = a2.accID and
+                         a2._MGIType_key = 2 and
+                         a2._LogicalDB_key = 9 and
+                         a2._Object_key = i._Marker_key)
+ 
+        begin
+        	print "Please review the relationship(s) between the updated Marker and its Seq IDs.  These relationships may no longer be appropriate."
+        end
+end 
+
+/* Propagate changes to _Marker_key to RFLV tables */
+
+if update(_Marker_key)
+begin
+	update PRB_RFLV
+	set _Marker_key = inserted._Marker_key
+	from PRB_RFLV, PRB_Reference, inserted, deleted
+	where inserted._Probe_key = PRB_Reference._Probe_key
+	      and PRB_Reference._Reference_key = PRB_RFLV._Reference_key
+	      and PRB_RFLV._Marker_key = deleted._Marker_key
+end
+
+go
+
+create trigger PRB_Marker_Delete
+on PRB_Marker
+for delete
+as
+
+/* Ignore multi-row transactions */
+
+if @@rowcount > 1
+    return
+
+/* If deleting an encoding Marker from a Molecular Segment and */
+/* Molecular Segment contains a Seq ID and */
+/* the Marker is associated with the Seq ID */
+ 
+if (select relationship from deleted) = 'E'
+begin
+	if exists (select a1.accID
+                   from ACC_Accession a1, ACC_Accession a2, deleted d
+                   where a1._MGIType_key = 3 and
+                         a1. _LogicalDB_key = 9 and
+                         a1._Object_key = d._Probe_key and
+                         a1.accID = a2.accID and
+                         a2._MGIType_key = 2 and
+                         a2._LogicalDB_key = 9 and
+                         a2._Object_key = d._Marker_key)
+ 
+        begin
+        	print "Please review the relationship(s) between the deleted Marker and its Seq IDs.  These relationships may no longer be appropriate."
+        end
+end
+
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

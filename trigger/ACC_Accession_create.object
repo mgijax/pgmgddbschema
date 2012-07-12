@@ -1,0 +1,496 @@
+#!/bin/csh -f -x
+
+#
+# History
+# 01/23/2009 - jsb - added hdt; TR9166
+#
+# lec	05/27/2009
+#	- remove tbreddy
+#
+# lec	10/21/2005
+#	- TR 7185, added mberry, Tier 3
+#
+# lec	02/15/2005
+#	- TR 6343; new permission implementation
+#
+# lec	04/05/2002
+#	- TR 3544; prevent the assignment of the same Jax Registr #
+#	  to more than one Strain
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger ACC_Accession_Insert
+on ACC_Accession
+for insert
+as
+
+if @@rowcount > 1
+  return
+
+declare @accID varchar(30)
+select @accID = accID from inserted
+declare @mgiTypeKey integer
+select @mgiTypeKey = _MGIType_key from inserted
+
+/* For Nucleotide Sequences, check that it is valid */
+
+if (select _LogicalDB_key from inserted) = 9 and
+   (select @accID) not like '[A-Z][0-9][0-9][0-9][0-9][0-9]' and
+   (select @accID) not like '[A-Z][A-Z][0-9][0-9][0-9][0-9][0-9][0-9]'
+begin
+	rollback transaction
+	raiserror 99999 "Invalid Nucleotide Sequence Accession Number '%1!'.  Number must be single uppercase letter + 5 numbers OR 2 uppercase letters + 6 numbers.", @accID
+	return
+end
+
+/* If adding Sequence ID for Molecular Segment */
+/* and the Sequence ID does not exist for one of the encoding Markers */
+
+if (select _LogicalDB_key from inserted) = 9 and
+   (select _MGIType_key from inserted) = 3
+begin
+    /* test to see if any markers are specified to encode this segment
+       (set within the Mol Probes EI's "Chr Marker Relationship" table) */
+    if exists (select *
+         from ACC_Accession a, PRB_Marker pm, inserted i
+         where i._Object_key = pm._Probe_key and
+         a._Object_key = pm._Marker_key and
+         a._MGIType_key = 2 and
+         a._LogicalDB_key = 9 and
+         pm.relationship = 'E')
+    begin
+      /* if so, see if all of them have associated Sequence IDs entered
+         for the encoding markers (from the Marker EI)*/
+        if exists (select * 
+                 from ACC_Accession a2, inserted i
+                 where i._Object_key = a2._Object_key and
+                 a2.accID = i.accID and
+                 a2._MGIType_key = 3 and
+                 a2.accID not in (select a.accID
+                               from ACC_Accession a, PRB_Marker pm, inserted i
+                               where i._Object_key = pm._Probe_key and 
+                               a._Object_key = pm._Marker_key and
+		                       a._MGIType_key = 2 and
+                               a._LogicalDB_key = 9 and
+                               pm.relationship = 'E'))
+        begin
+           /* No. one or more encodes relationships are missing seq ids */ 
+     	   print "Sequence IDs for Marker(s) encoding this segment do not exist for all encodes relationships specified. 
+Some Sequence ids might need to be added."
+        end
+    end
+end
+
+/* If inserting the Sequence for a Marker */
+/* and the same ID exists for another Marker...*/
+
+if (select _LogicalDB_key from inserted) = 9 and
+   (select _MGIType_key from inserted) = 2 and
+      exists (select a._Accession_key
+              from ACC_Accession a, inserted i
+              where i.accID = a.accID and
+		    i._Object_key != a._Object_key and
+	            a._MGIType_key = 2)
+begin
+	print "The Accession ID '%1!' is associated with another Marker.", @accID
+end
+
+/* If inserting a Jax Registry ID for a Strain */
+/* and the same ID exists for another Strain... */
+
+if (select _LogicalDB_key from inserted) = 22 and
+   (select _MGIType_key from inserted) = 10 and
+      exists (select a._Accession_key
+              from ACC_Accession a, inserted i
+              where i.accID = a.accID and
+		    i._Object_key != a._Object_key and
+		    a._LogicalDB_key = 22 and
+	            a._MGIType_key = 10)
+begin
+	rollback transaction
+	raiserror 99999 "The Accession ID '%1!' is associated with another Strain.", @accID
+	return
+end
+
+/* Nomenclature permissions */
+
+if (select _MGIType_key from inserted) = 21
+begin
+
+      declare @userKey integer
+      select @userKey = _User_key from MGI_User where login = user_name()
+
+      /* If Tier3 user */
+
+      if (select user_name()) in ('cms', 'dlb', 'dph', 'hdt', 'hjd', 'llw2', 'mberry', 'yz')
+      begin
+              /* User modifying record must = user who submitted record */
+              /* unless the marker is reserved */
+
+              if (select n._CreatedBy_key from inserted i, NOM_Marker n
+		    where i._Object_key = n._Nomen_key) != @userKey and
+	           (select distinct t.term from inserted i, NOM_Marker n, VOC_Term t
+		       where i._Object_key = n._Nomen_key and
+			     n._NomenStatus_key = _Term_key) not in ("Reserved", "Unreviewed")
+              begin
+                      rollback transaction
+                      raiserror 99999 "You do not have permission to edit this record."
+                      return
+              end
+      end
+
+      /* If Tier2 user */
+      
+      if (select user_name()) in ('tier2')
+      begin
+              /* User modifying record must = user who submitted record */
+              /* unless the marker is reserved */
+      
+              if (select n._CreatedBy_key from inserted i, NOM_Marker n
+		    where i._Object_key = n._Nomen_key) != @userKey
+              begin
+                      rollback transaction
+                      raiserror 99999 "You do not have permission to edit this record."
+                      return
+              end
+      end
+end
+
+/* end Nomenclature permissions */
+
+/* For Sequences, verify the Annotation */
+/* GenBank, SWISSProt, RefSeq, DFCI, DoTS, TrEMBL, NIA Mouse Gene Index */
+
+if (select @mgiTypeKey) in (2,3,21) and (select _LogicalDB_key from inserted) in (9,13,27,35,36,41,53)
+begin
+    -- if the sequence has already been associated with an allele (via the
+    -- ALO load), then give an error
+
+    if exists (select 1 from ACC_Accession a, SEQ_Allele_Assoc aa
+	where a.accID = @accID
+		and a._MGIType_key = 19		-- sequence
+		and a._Object_key = aa._Sequence_key
+		and aa._ModifiedBy_key in (select _User_key
+			from MGI_User
+			where login = "alomrkload") )
+    begin
+	raiserror 99999
+	   "Sequence is already associated with an allele by the ALO load; cannot also associate it with a marker'"
+	rollback transaction
+	return
+    end
+
+    declare @objectKey integer
+    select @objectKey = _Object_key from inserted
+    exec ACC_verifySequenceAnnotation @accID, @mgiTypeKey, @objectKey
+end
+
+go
+
+create trigger ACC_Accession_Update
+on ACC_Accession
+for update
+as
+
+if @@rowcount = 1
+begin
+
+declare @accID varchar(30)
+declare @deletedaccID varchar(30)
+select @accID = accID from inserted
+select @deletedaccID = accID from deleted
+declare @mgiTypeKey integer
+select @mgiTypeKey = _MGIType_key from inserted
+
+/* For Nucleotide Sequences, check that it is valid */
+
+if (select _LogicalDB_key from inserted) = 9 and
+   (select @accID) not like '[A-Z][0-9][0-9][0-9][0-9][0-9]' and
+   (select @accID) not like '[A-Z][A-Z][0-9][0-9][0-9][0-9][0-9][0-9]'
+begin
+	rollback transaction
+	raiserror 99999 "Invalid Nucleotide Sequence Accession Number '%1!'.  Number must be single uppercase letter + 5 numbers OR 2 uppercase letters + 6 numbers.", @accID
+	return
+end
+
+/* If updating Sequence ID for Molecular Segment */
+/* and the same Sequence ID exists for one of the Segment's Markers... */
+
+if (select _LogicalDB_key from inserted) = 9 and
+      (select _MGIType_key from inserted) = 3 and
+      exists (select a._Accession_key
+              from ACC_Accession a, PRB_Marker pm, deleted d
+              where d.accID = a.accID and
+		    d._Object_key = pm._Probe_key and
+		    pm._Marker_key = a._Object_key and
+	            a._MGIType_key = 2)
+begin
+	print "Please review the relationship(s) between the Sequence ID '%1!' and the Molecular Segment's Marker(s).  These relationships may no longer be appropriate.", @deletedaccID
+end
+
+/* If updating the Sequence ID for a Marker */
+/* and the same Sequence ID exists for one of the Marker's Segments...*/
+
+if (select _LogicalDB_key from inserted) = 9 and
+      (select _MGIType_key from inserted) = 2 and
+      exists (select a._Accession_key
+              from ACC_Accession a, PRB_Marker pm, deleted d
+              where d.accID = a.accID and
+		    d._Object_key = pm._Marker_key and
+		    pm._Probe_key = a._Object_key and
+	            a._MGIType_key = 3)
+begin
+	print "Please review the relationship(s) between the Sequence ID '%1!' and its Molecular Segments.  These relationships may no longer be appropriate.", @deletedaccID
+end
+
+/* If updating the Sequence for a Marker */
+/* and the same ID exists for another Marker...*/
+
+if (select _LogicalDB_key from inserted) = 9 and
+      (select _MGIType_key from inserted) = 2 and
+      exists (select a._Accession_key
+              from ACC_Accession a, inserted i
+              where i.accID = a.accID and
+		    i._Object_key != a._Object_key and
+	            a._MGIType_key = 2)
+begin
+	print "The Accession ID '%1!' is associated with another Marker.", @accID
+end
+
+/* If updating a Jax Registry ID for a Strain */
+/* and the same ID exists for another Strain... */
+
+if (select _LogicalDB_key from inserted) = 22 and
+      (select _MGIType_key from inserted) = 10 and
+      exists (select a._Accession_key
+              from ACC_Accession a, inserted i
+              where i.accID = a.accID and
+		    i._Object_key != a._Object_key and
+		    a._LogicalDB_key = 22 and
+	            a._MGIType_key = 10)
+begin
+	rollback transaction
+	raiserror 99999 "The Accession ID '%1!' is associated with another Strain.", @accID
+	return
+end
+
+/* Nomenclature permissions */
+
+if (select _MGIType_key from inserted) = 21
+begin
+      declare @userKey integer
+      select @userKey = _User_key from MGI_User where login = user_name()
+
+      /* If Tier3 user */
+
+      if (select user_name()) in ('cms', 'dlb', 'dph', 'hdt', 'hjd', 'llw2', 'mberry', 'yz')
+      begin
+              /* User modifying record must = user who submitted record */
+              /* unless the marker is reserved */
+
+              if (select n._CreatedBy_key from inserted i, NOM_Marker n
+		    where i._Object_key = n._Nomen_key) != @userKey and
+	           (select distinct t.term from inserted i, NOM_Marker n, VOC_Term t
+		       where i._Object_key = n._Nomen_key and
+			     n._NomenStatus_key = _Term_key) not in ("Reserved", "Unreviewed")
+              begin
+                      rollback transaction
+                      raiserror 99999 "You do not have permission to edit this record."
+                      return
+              end
+      end
+
+      /* If Tier2 user; we don't have any Tier2 users at present */
+      
+      if (select user_name()) in ('tier2')
+      begin
+              /* User modifying record must = user who submitted record */
+              /* unless the marker is reserved */
+      
+              if (select n._CreatedBy_key from inserted i, NOM_Marker n
+		    where i._Object_key = n._Nomen_key) != @userKey
+              begin
+                      rollback transaction
+                      raiserror 99999 "You do not have permission to edit this record."
+                      return
+              end
+      end
+end
+
+/* end Nomenclature permissions */
+
+/* For Sequences, verify the Annotation */
+/* GenBank, SWISSProt, RefSeq, DFCI, DoTS, TrEMBL, NIA Mouse Gene Index */
+
+if (select @mgiTypeKey) in (2,3,21) and (select _LogicalDB_key from inserted) in (9,13,27,35,36,41,53)
+begin
+    -- if the sequence has already been associated with an allele (via the
+    -- ALO load), then give an error
+
+    if exists (select 1 from ACC_Accession a, SEQ_Allele_Assoc aa
+	where a.accID = @accID
+		and a._MGIType_key = 19		-- sequence
+		and a._Object_key = aa._Sequence_key
+		and aa._ModifiedBy_key in (select _User_key
+			from MGI_User
+			where login = "alomrkload") )
+    begin
+	raiserror 99999
+	   "Sequence is already associated with an allele by the ALO load; cannot also associate it with a marker'"
+	rollback transaction
+	return
+    end
+
+    declare @objectKey integer
+    select @objectKey = _Object_key from inserted
+    exec ACC_verifySequenceAnnotation @accID, @mgiTypeKey, @objectKey
+end
+
+end /* rowcount = 1 */
+
+/* If max J: in Acc table does not equal max J: in max table, then re-set max J: in max table */
+
+if exists (select * from inserted where prefixPart = "J:" and _LogicalDB_key = 1)
+begin
+  declare @maxJ int
+  select @maxJ = max(numericPart) from ACC_Accession(index idx_prefixPart) where prefixPart = "J:"
+  if @maxJ != (select maxNumericPart from ACC_AccessionMax where prefixPart = "J:")
+  begin
+    update ACC_AccessionMax
+    set maxNumericPart = @maxJ
+    where prefixPart = "J:"
+  end
+end
+
+go
+
+create trigger ACC_Accession_Delete
+on ACC_Accession
+for delete
+as
+
+if @@rowcount = 1
+begin
+
+/* If deleting MGI Image Pixel number, then nullify X/Y Dimensions of IMG_Image record TR#134 */
+
+if (select _LogicalDB_key from deleted) = 19
+begin
+	update IMG_Image
+	set IMG_Image.xDim = null, 
+	    IMG_Image.yDim = null
+	from deleted, IMG_Image
+	where deleted._Object_key = IMG_Image._Image_key
+end
+
+/* If deleting Sequence ID from Molecular Segment */
+/* and the same Sequence ID exists for one of the Segment's Markers... */
+
+declare @accID varchar(30)
+select @accID = accID from deleted
+
+if (select _LogicalDB_key from deleted) = 9 and
+      (select _MGIType_key from deleted) = 3 and
+      exists (select a._Accession_key
+              from ACC_Accession a, PRB_Marker pm, deleted d
+              where d.accID = a.accID and
+		    d._Object_key = pm._Probe_key and
+		    pm._Marker_key = a._Object_key and
+	            a._MGIType_key = 2)
+begin
+	print "Please review the relationship(s) between the Sequence ID '%1!' and the Molecular Segment's Marker(s).  These relationships may no longer be appropriate.", @accID
+end
+
+/* If deleting the Sequence ID from a Marker */
+/* and the same Sequence ID exists for one of the Marker's Segments...*/
+
+if (select _LogicalDB_key from deleted) = 9 and
+      (select _MGIType_key from deleted) = 2 and
+      exists (select a._Accession_key
+              from ACC_Accession a, PRB_Marker pm, deleted d
+              where d.accID = a.accID and
+		    d._Object_key = pm._Marker_key and
+		    pm._Probe_key = a._Object_key and
+	            a._MGIType_key = 3)
+begin
+	print "Please review the relationship(s) between the Sequence ID '%1!' and its Molecular Segments.  These relationships may no longer be appropriate.", @accID
+end
+
+/* Nomenclature permissions */
+
+if (select _MGIType_key from deleted) = 21
+begin
+      declare @userKey integer
+      select @userKey = _User_key from MGI_User where login = user_name()
+
+      /* If Tier3 user */
+
+      if (select user_name()) in ('cms', 'dlb', 'dph', 'hdt', 'hjd', 'llw2', 'mberry', 'yz')
+      begin
+              /* User modifying record must = user who submitted record */
+              /* unless the marker is reserved */
+
+              if (select n._CreatedBy_key from deleted i, NOM_Marker n
+		    where i._Object_key = n._Nomen_key) != @userKey and
+	           (select distinct t.term from deleted i, NOM_Marker n, VOC_Term t
+		       where i._Object_key = n._Nomen_key and
+			     n._NomenStatus_key = _Term_key) not in ("Reserved", "Unreviewed")
+              begin
+                      rollback transaction
+                      raiserror 99999 "You do not have permission to edit this record."
+                      return
+              end
+      end
+
+      /* If Tier2 user */
+      
+      if (select user_name()) in ('tier2')
+      begin
+              /* User modifying record must = user who submitted record */
+              /* unless the marker is reserved */
+      
+              if (select n._CreatedBy_key from deleted i, NOM_Marker n
+		    where i._Object_key = n._Nomen_key) != @userKey
+              begin
+                      rollback transaction
+                      raiserror 99999 "You do not have permission to edit this record."
+                      return
+              end
+      end
+end
+
+/* end Nomenclature permissions */
+
+end /* rowcount = 1 */
+
+/* If max J: in Acc table does not equal max J: in max table, then re-set max J: in max table */
+
+if exists (select * from deleted where prefixPart = "J:" and _LogicalDB_key = 1)
+begin
+  declare @maxJ int
+  select @maxJ = max(numericPart) from ACC_Accession(index idx_prefixPart) where prefixPart = "J:"
+  if @maxJ != (select maxNumericPart from ACC_AccessionMax where prefixPart = "J:")
+  begin
+    update ACC_AccessionMax
+    set maxNumericPart = @maxJ
+    where prefixPart = "J:"
+  end
+end
+
+delete ACC_AccessionReference
+from ACC_AccessionReference a, deleted d
+where a._Accession_key = d._Accession_key
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

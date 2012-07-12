@@ -1,0 +1,120 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# 02/16/2011	lec
+#	- TR 10584/removed un-necessary permission checks
+#	  only need to check the master tables (MLD_Expt, MLD_Expt_Marker)
+#
+# 10/07/2005	lec
+#	- TR 5562
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger MLD_Expts_Insert
+on MLD_Expts
+for insert
+as
+
+/* Assign MGI Accession number for each Experiment */
+
+declare @key integer
+select @key = _Expt_key from inserted
+exec ACC_assignMGI @key, "Experiment"
+
+if (@@error != 0)
+begin
+  rollback transaction
+  return
+end
+ 
+go
+
+create trigger MLD_Expts_Delete
+on MLD_Expts
+for delete
+as
+
+/* Re-order the tag numbers for experiments if one is deleted */
+
+update MLD_Expts
+set MLD_Expts.tag = MLD_Expts.tag - 1
+from MLD_Expts, deleted
+where MLD_Expts._Refs_key = deleted._Refs_key
+and MLD_Expts.exptType = deleted.exptType
+and MLD_Expts.tag > deleted.tag
+
+/* Delete entries in all dependent experiment tables */
+
+delete MLD_Expt_Marker from MLD_Expt_Marker, deleted
+where MLD_Expt_Marker._Expt_key = deleted._Expt_key
+
+delete MLD_Expt_Notes from MLD_Expt_Notes, deleted
+where MLD_Expt_Notes._Expt_key = deleted._Expt_key
+
+delete MLD_FISH from MLD_FISH, deleted
+where MLD_FISH._Expt_key = deleted._Expt_key
+
+delete MLD_FISH_Region from MLD_FISH_Region, deleted
+where MLD_FISH_Region._Expt_key = deleted._Expt_key
+
+delete MLD_Hybrid from MLD_Hybrid, deleted
+where MLD_Hybrid._Expt_key = deleted._Expt_key
+
+delete MLD_Concordance from MLD_Concordance, deleted
+where MLD_Concordance._Expt_key = deleted._Expt_key
+
+delete MLD_InSitu from MLD_InSitu, deleted
+where MLD_InSitu._Expt_key = deleted._Expt_key
+
+delete MLD_ISRegion from MLD_ISRegion, deleted
+where MLD_ISRegion._Expt_key = deleted._Expt_key
+
+delete MLD_Matrix from MLD_Matrix, deleted
+where MLD_Matrix._Expt_key = deleted._Expt_key
+
+delete MLD_MC2point from MLD_MC2point, deleted
+where MLD_MC2point._Expt_key = deleted._Expt_key
+
+delete MLD_MCDataList from MLD_MCDataList, deleted
+where MLD_MCDataList._Expt_key = deleted._Expt_key
+
+delete MLD_RI from MLD_RI, deleted
+where MLD_RI._Expt_key = deleted._Expt_key
+
+delete MLD_RIData from MLD_RIData, deleted
+where MLD_RIData._Expt_key = deleted._Expt_key
+
+delete MLD_RI2Point from MLD_RI2Point, deleted
+where MLD_RI2Point._Expt_key = deleted._Expt_key
+
+delete MLD_Hit from MLD_Hit, deleted
+where MLD_Hit._Expt_key = deleted._Expt_key
+
+delete MLD_Contig from MLD_Contig, deleted
+where MLD_Contig._Expt_key = deleted._Expt_key
+
+delete MLD_Statistics from MLD_Statistics, deleted
+where MLD_Statistics._Expt_key = deleted._Expt_key
+
+delete ACC_Accession
+from ACC_Accession a, deleted
+where a._Object_key = deleted._Expt_key
+and a._MGIType_key = 4
+ 
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

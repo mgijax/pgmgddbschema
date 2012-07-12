@@ -1,0 +1,138 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# 10/18/2011	lec
+#	- TR10841/MGI_AttributeHistory obsolete
+#
+# 10/08/2008 - jsb - renamed SEQ_AdditionalInfo to be SEQ_GeneTrap
+#
+# 01/31/2008 - jsb - fixed delete trigger to handle two new associated tables
+#
+# 05/13/2002	lec
+#	- TR 1463; SAO
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger SEQ_Sequence_Delete
+on SEQ_Sequence
+for delete
+as
+
+if (select user_name()) not in ('mgd_dbo', 'dbo')
+begin
+    /* Disallow any deletion */
+
+    rollback transaction
+    raiserror 99999 "SEQ_Sequence_Delete:  No deletions allowed."
+    return
+
+    /* Leaving this code in for now...in case we loosen the "no delete" rule */
+
+    /* Disallow deletion if Sequence is Restricted */
+
+    if exists (select 1 from deleted d, MGI_Set_ResSequence_View s
+	    where d._SequenceProvider_key = s._Object_key)
+    begin
+            rollback transaction
+            raiserror 99999 "SEQ_Sequence_Delete:  Restricted Sequence.  No deletions allowed."
+	    return
+    end
+
+    /* Disallow deletion if Sequence is Not Loaded (a dummy sequence) */
+
+    if exists (select 1 from deleted d, VOC_Term s
+	    where d._SequenceStatus_key = s._Term_key
+	    and s._Vocab_key = 20
+	    and s.term = "Not Loaded")
+    begin
+            rollback transaction
+            raiserror 99999 "SEQ_Sequence_Delete:  Restricted Sequence.  No deletions allowed."
+	    return
+    end
+
+    /* Disallow deletion if Sequence is cross-referenced elsewhere */
+
+    if exists (select 1 from deleted d, SEQ_Sequence_Acc_View s, MRK_Acc_View m
+	    where d._Sequence_key = s._Object_key
+	    and s.accID = m.accID
+	    and s._LogicalDB_key = m._LogicalDB_key)
+    begin
+            rollback transaction
+            raiserror 99999 "SEQ_Sequence_Delete:  Sequence ID is associated with a Marker."
+	    return
+    end
+
+    if exists (select 1 from deleted d, SEQ_Sequence_Acc_View s, PRB_Acc_View p
+	    where d._Sequence_key = s._Object_key
+	    and s.accID = p.accID
+	    and s._LogicalDB_key = p._LogicalDB_key)
+    begin
+            rollback transaction
+            raiserror 99999 "SEQ_Sequence_Delete:  Sequence ID is associated with a Molecular Segment."
+	    return
+    end
+end
+
+/* Delete records in dependent tables */
+
+delete SEQ_Coord_Cache from SEQ_Coord_Cache, deleted
+where SEQ_Coord_Cache._Sequence_key = deleted._Sequence_key
+
+delete SEQ_Description_Cache from SEQ_Description_Cache, deleted
+where SEQ_Description_Cache._Sequence_key = deleted._Sequence_key
+
+delete SEQ_GeneModel from SEQ_GeneModel, deleted
+where SEQ_GeneModel._Sequence_key = deleted._Sequence_key
+
+delete SEQ_Marker_Cache from SEQ_Marker_Cache, deleted
+where SEQ_Marker_Cache._Sequence_key = deleted._Sequence_key
+
+delete SEQ_Probe_Cache from SEQ_Probe_Cache, deleted
+where SEQ_Probe_Cache._Sequence_key = deleted._Sequence_key
+
+delete SEQ_Sequence_Assoc from SEQ_Sequence_Assoc, deleted
+where SEQ_Sequence_Assoc._Sequence_key_1 = deleted._Sequence_key
+
+delete SEQ_Sequence_Assoc from SEQ_Sequence_Assoc, deleted
+where SEQ_Sequence_Assoc._Sequence_key_2 = deleted._Sequence_key
+
+delete SEQ_Sequence_Raw from SEQ_Sequence_Raw, deleted
+where SEQ_Sequence_Raw._Sequence_key = deleted._Sequence_key
+
+delete SEQ_Source_Assoc from SEQ_Source_Assoc, deleted
+where SEQ_Source_Assoc._Sequence_key = deleted._Sequence_key
+
+delete SEQ_GeneTrap from SEQ_GeneTrap, deleted
+where SEQ_GeneTrap._Sequence_key = deleted._Sequence_key
+
+delete SEQ_Allele_Assoc from SEQ_Allele_Assoc, deleted
+where SEQ_Allele_Assoc._Sequence_key = deleted._Sequence_key
+
+delete MGI_Reference_Assoc from MGI_Reference_Assoc, deleted
+where MGI_Reference_Assoc._MGIType_key = 19
+and MGI_Reference_Assoc._Object_key = deleted._Sequence_key
+
+delete MGI_Note from MGI_Note, deleted
+where MGI_Note._MGIType_key = 19
+and MGI_Note._Object_key = deleted._Sequence_key
+
+delete ACC_Accession
+from ACC_Accession a, deleted d
+where a._Object_key = d._Sequence_key
+and a._MGIType_key = 19
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

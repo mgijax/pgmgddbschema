@@ -1,0 +1,38 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
+
+--
+-- NAME:
+--
+-- DESCRIPTOIN:
+--
+-- INPUT:
+--
+-- RETURNS:
+--
+
+CREATE OR REPLACE FUNCTION check_PG-TABLE_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
+EXCEPTION WHEN OTHERS THEN
+    RAISE EXCEPTION 'check_PG-TABLE_insert: error';
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION check_PG-TABLE_insert() TO public;
+
+DROP TRIGGER check_PG-TABLE_insert_trigger ON PG-TABLE;
+
+CREATE TRIGGER check_PG-TABLE_insert_trigger
+AFTER INSERT on PG-TABLE
+FOR EACH ROW
+EXECUTE PROCEDURE check_PG-TABLE_insert();
+
+EOSQL

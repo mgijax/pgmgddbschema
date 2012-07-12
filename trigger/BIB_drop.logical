@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# Logical Group Script
+#
+# Executes all BIB*_drop.object scripts
+#
+
+cd `dirname $0`
+
+for i in BIB*_drop.object
+do
+$i $*
+done
+

@@ -1,0 +1,71 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# 03/16/2010	lec
+#	- TR8156; add MGI_Reference_Assoc to delete
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger GXD_Antibody_Insert
+on GXD_Antibody
+for insert
+as
+ 
+/* Assign MGI Accession number for each Antibody */
+ 
+declare @key integer
+select @key = _Antibody_key from inserted
+exec ACC_assignMGI @key, "Antibody"
+ 
+if (@@error != 0)
+begin
+  rollback transaction
+  return
+end
+go
+
+create trigger GXD_Antibody_Delete
+on GXD_Antibody
+for delete
+as
+
+/* Disallow deletion if record is referenced elsewhere */
+
+if exists (select * from GXD_AntibodyPrep, deleted
+    where GXD_AntibodyPrep._Antibody_key = deleted._Antibody_key)
+begin
+        rollback transaction
+        raiserror 99999 "Antibody is referenced in Antibody Prep Record(s)"
+	return
+end
+
+delete GXD_AntibodyMarker from GXD_AntibodyMarker, deleted
+where GXD_AntibodyMarker._Antibody_key = deleted._Antibody_key
+ 
+delete GXD_AntibodyAlias from GXD_AntibodyAlias, deleted
+where GXD_AntibodyAlias._Antibody_key = deleted._Antibody_key
+ 
+delete MGI_Reference_Assoc from MGI_Reference_Assoc, deleted
+where MGI_Reference_Assoc._MGIType_key = 6
+and MGI_Reference_Assoc._Object_key = deleted._Antibody_key
+
+delete ACC_Accession
+from ACC_Accession a, deleted
+where a._Object_key = deleted._Antibody_key
+and a._MGIType_key = 6
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

@@ -1,0 +1,99 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# 10/18/2011	lec
+#	- remove insert trigger; obsolete
+#
+# 02/16/2011	lec
+#	- TR 10584/removed un-necessary permission checks
+#	  only need to check the master tables (MLD_Expt, MLD_Expt_Marker)
+#
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger MLD_Expt_Marker_Update
+on MLD_Expt_Marker
+for update
+as
+
+if update(_Marker_key)
+begin
+	/* Propagate modification of Marker to experiment tables */
+
+	update MLD_Concordance 
+          set _Marker_key = inserted._Marker_key
+	  from MLD_Concordance, inserted, deleted
+	  where MLD_Concordance._Expt_key = inserted._Expt_key and
+		MLD_Concordance._Marker_key = deleted._Marker_key
+
+	update MLD_MC2point 
+          set _Marker_key_1 = inserted._Marker_key
+	  from MLD_MC2point, inserted, deleted
+	  where MLD_MC2point._Expt_key = inserted._Expt_key and
+		MLD_MC2point._Marker_key_1 = deleted._Marker_key
+
+	update MLD_MC2point 
+          set _Marker_key_2 = inserted._Marker_key
+	  from MLD_MC2point, inserted, deleted
+	  where MLD_MC2point._Expt_key = inserted._Expt_key and
+		MLD_MC2point._Marker_key_2 = deleted._Marker_key
+
+	update MLD_RIData 
+          set _Marker_key = inserted._Marker_key
+	  from MLD_RIData, inserted, deleted
+	  where MLD_RIData._Expt_key = inserted._Expt_key and
+		MLD_RIData._Marker_key = deleted._Marker_key
+
+	update MLD_RI2Point 
+          set _Marker_key_1 = inserted._Marker_key
+	  from MLD_RI2Point, inserted, deleted
+	  where MLD_RI2Point._Expt_key = inserted._Expt_key and
+		MLD_RI2Point._Marker_key_1 = deleted._Marker_key
+
+	update MLD_RI2Point 
+          set _Marker_key_2 = inserted._Marker_key
+	  from MLD_RI2Point, inserted, deleted
+	  where MLD_RI2Point._Expt_key = inserted._Expt_key and
+		MLD_RI2Point._Marker_key_2 = deleted._Marker_key
+
+        update MLD_Statistics
+          set _Marker_key_1 = inserted._Marker_key
+          from MLD_Statistics, inserted, deleted
+          where MLD_Statistics._Expt_key = inserted._Expt_key and
+                MLD_Statistics._Marker_key_1 = deleted._Marker_key
+
+        update MLD_Statistics
+          set _Marker_key_2 = inserted._Marker_key
+          from MLD_Statistics, inserted, deleted
+          where MLD_Statistics._Expt_key = inserted._Expt_key and
+                MLD_Statistics._Marker_key_2 = deleted._Marker_key
+
+        update MLD_Distance
+          set _Marker_key_1 = inserted._Marker_key
+          from MLD_Distance, inserted, deleted
+          where MLD_Distance._Expt_key = inserted._Expt_key and
+                MLD_Distance._Marker_key_1 = deleted._Marker_key
+
+        update MLD_Distance
+          set _Marker_key_2 = inserted._Marker_key
+          from MLD_Distance, inserted, deleted
+          where MLD_Distance._Expt_key = inserted._Expt_key and
+                MLD_Distance._Marker_key_2 = deleted._Marker_key
+
+end
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

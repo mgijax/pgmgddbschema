@@ -1,0 +1,69 @@
+#!/bin/csh -f -x
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger GXD_Antigen_Insert
+on GXD_Antigen
+for insert
+as
+ 
+/* Assign MGI Accession number for each Antigen */
+ 
+declare @key integer
+select @key = _Antigen_key from inserted
+exec ACC_assignMGI @key, "Antigen"
+ 
+if (@@error != 0)
+begin
+  rollback transaction
+  return
+end
+go
+
+create trigger GXD_Antigen_Delete
+on GXD_Antigen
+for delete
+as
+
+/* Disallow deletion if record is referenced elsewhere */
+
+if exists (select * from GXD_Antibody, deleted
+    where GXD_Antibody._Antigen_key = deleted._Antigen_key)
+begin
+        rollback transaction
+        raiserror 99999 "Antigen is referenced in Antibody Record(s)"
+	return
+end
+
+/* If Probe Source Name is null, then Anonymous Source */
+/* If Anonymous Source, delete upon deletion of Antigen */
+ 
+if not exists (select * from GXD_Antigen, deleted
+    where GXD_Antigen._Source_key = deleted._Source_key)
+begin
+        delete PRB_Source from PRB_Source, deleted
+        where PRB_Source._Source_key = deleted._Source_key
+              and PRB_Source.name is null
+end
+ 
+delete ACC_Accession 
+from ACC_Accession a, deleted
+where a._Object_key = deleted._Antigen_key
+and a._MGIType_key = 7
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

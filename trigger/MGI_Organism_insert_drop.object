@@ -1,0 +1,13 @@
+#!/bin/sh
+
+#
+# simply drops the trigger
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
+
+DROP TRIGGER check_MGI_Organism_insert_trigger ON MGI_Organism;
+
+EOSQL

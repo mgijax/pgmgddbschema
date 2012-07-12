@@ -1,0 +1,156 @@
+#!/bin/csh -f -x
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger GXD_StructureName_Insert
+on GXD_StructureName
+for insert
+as
+
+/* ensure that the structure specified exists */
+if not exists(select * 
+              from GXD_Structure s, inserted
+              where s._Structure_key = inserted._Structure_key)
+begin
+    rollback transaction
+    raiserror 99999 "GXD_StructureName_Insert: Inserted StructureName specifies a non-existent Structure"
+    return
+end
+
+/* look for duplicate (structure key, structure) tuples */
+
+if (select count(*) from 
+   GXD_StructureName sn, inserted
+   where sn._Structure_key = inserted._Structure_key
+   and sn.structure = inserted.structure) >  1
+begin
+    rollback transaction
+    raiserror 99999 "GXD_StructureName_Insert: Inserted StructureName has duplicate structure attribute"
+    return
+end
+
+/* Prevent two children from having the same preferred name */
+
+
+if (select count(*)
+    from GXD_Structure s1, GXD_Structure s2, GXD_StructureName sn2, inserted
+    where s1._Parent_key = s2._Parent_key
+    and sn2._StructureName_key = s2._StructureName_key
+    and inserted._StructureName_key = s1._StructureName_key 
+    and inserted.structure = sn2.structure) > 1
+begin
+    rollback transaction
+    raiserror 99999 "GXD_StructureName_Insert: Parent node cannot have two children with the same preferred name"
+    return
+end
+
+/* call stored procedure that recalculates printNames, if a preferred
+   structure name is changed.  Preferred StructureNames are those
+   that are referred to by a record in GXD_Structure */
+
+declare updatesk_cursor cursor
+for select s._Structure_key 
+    from GXD_Structure s, inserted
+    where s._StructureName_key = inserted._StructureName_key
+
+declare @isk integer
+
+open updatesk_cursor
+fetch updatesk_cursor into @isk
+
+while (@@sqlstatus = 0)
+begin
+   exec GXD_ComputePrintNamesFrom @isk 
+   if @@error != 0
+   begin
+        rollback transaction
+        raiserror 99999 "GXD_StructureName_Insert: GXD_ComputePrintNamesFrom failed"
+        close updatesk_cursor
+        return
+   end
+   fetch updatesk_cursor into @isk
+end
+
+close updatesk_cursor
+
+
+go
+
+create trigger GXD_StructureName_Update
+on GXD_StructureName
+for update
+as
+
+if (select count(*) from GXD_Structure s, inserted
+    where s._Structure_key = inserted._Structure_key) !=
+   (select count(*) from inserted)
+begin
+    rollback transaction
+    raiserror 99999 "GXD_StructureName_Update: Non-existent Structure in StructureName record"
+    return
+end
+
+
+if (select count(*) from 
+    GXD_StructureName sn, inserted
+    where sn._Structure_key = inserted._Structure_key
+    and sn.structure = inserted.structure) > 
+   (select count(*) from inserted)
+begin
+    rollback transaction
+    raiserror 99999 "GXD_StructureName_Update: Inserted StructureName has duplicate structure attribute"
+    return
+end
+
+update GXD_StructureName
+set sn.modification_date = getdate()  
+from GXD_StructureName sn, inserted
+where sn._Structure_key = inserted._Structure_key 
+
+/* call stored procedure that recalculates printNames, if a preferred
+   structure name is changed.  Preferred StructureNames are those
+   that are referred to by a record in GXD_Structure */
+
+declare updatesk_cursor cursor
+for select s._Structure_key 
+    from GXD_Structure s, inserted
+    where s._StructureName_key = inserted._StructureName_key
+
+declare @isk integer
+
+open updatesk_cursor
+fetch updatesk_cursor into @isk
+
+while (@@sqlstatus = 0)
+begin
+   exec GXD_ComputePrintNamesFrom @isk 
+   if @@error != 0
+   begin
+        rollback transaction
+        raiserror 99999 "GXD_StructureName_Update: GXD_ComputePrintNamesFrom failed"
+        close updatesk_cursor
+        return
+   end
+   fetch updatesk_cursor into @isk
+end
+
+close updatesk_cursor
+
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

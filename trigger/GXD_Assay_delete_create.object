@@ -1,0 +1,88 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
+
+--
+-- NAME: check_GXD_Assay_delete()
+--
+-- DESCRIPTOIN:
+--	
+-- the template creates a trigger for all tables that use:
+--	_Object_key
+--	_MGIType_key
+--
+-- because these tables cannot use referencial integrity due
+-- to the fact that their primary key is not necessarily the
+-- member of the _Object_key/_MGIType_key table
+--
+-- . remove the statements that are not active for your table
+-- . add the statements that are being active for your table
+--
+-- or you may keep all statements in the trigger even if your table
+-- does not currently utilize them.
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+CREATE OR REPLACE FUNCTION check_GXD_Assay_delete() RETURNS TRIGGER AS \$\$
+BEGIN
+
+DELETE FROM MGI_AttributeHistory a
+WHERE a._Object_key = OLD._Assay_key
+AND a._MGIType_key = 8;check probe prep deletion
+;
+
+DELETE FROM MGI_Note a
+WHERE a._Object_key = OLD._Assay_key
+AND a._MGIType_key = 8;check probe prep deletion
+;
+
+DELETE FROM MGI_Reference_Assoc a
+WHERE a._Object_key = OLD._Assay_key
+AND a._MGIType_key = 8;check probe prep deletion
+;
+
+DELETE FROM MGI_Synonym a
+WHERE a._Object_key = OLD._Assay_key
+AND a._MGIType_key = 8;check probe prep deletion
+;
+
+DELETE FROM IMG_ImagePane_Assoc a
+WHERE a._Object_key = OLD._Assay_key
+AND a._MGIType_key = 8;check probe prep deletion
+;
+
+DELETE FROM IMG_Cache a
+WHERE a._Object_key = OLD._Assay_key
+AND a._MGIType_key = 8;check probe prep deletion
+;
+
+DELETE FROM ACC_Accession a
+WHERE a._Object_key = OLD._Assay_key
+AND a._MGIType_key = 8;check probe prep deletion
+;
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION check_GXD_Assay_delete() TO public;
+
+DROP TRIGGER check_GXD_Assay_delete_trigger ON GXD_Assay;
+
+CREATE TRIGGER check_GXD_Assay_delete_trigger
+AFTER DELETE on GXD_Assay
+FOR EACH ROW
+EXECUTE PROCEDURE check_GXD_Assay_delete();
+
+COMMENT ON FUNCTION mgd.check_GXD_Assay_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
+
+EOSQL

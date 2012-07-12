@@ -1,0 +1,56 @@
+#!/bin/csh -f -x
+
+# HISTORY
+#
+# 06/23/2009 lec
+#	- TR7493: gene trap less filling, added permissions for new task
+#
+# 06/16/2009 - jsb - added for gene trap LF release (TR7493)
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger ALL_CellLine_Derivation_Update
+on ALL_CellLine_Derivation
+for update
+as
+
+/* check permissions */
+
+declare @userKey integer
+select @userKey = _User_key from MGI_User where login = user_name()
+
+if (select user_name()) not in ('mgd_dbo', 'dbo')
+    and
+    (select @userKey) not in (select _User_key from MGI_UserTask_View 
+	where usertask = 'pheno:create/modify derivation')
+begin
+        rollback transaction
+        raiserror 99999 "User cannot perform task 'pheno:create/modify derivation'"
+        return
+end
+
+/* if we update the derivation's parent cell line, then we need to propagate
+ * the new parent's strain down to all of the mutant cell lines using citing
+ * this derivation.
+ */
+if update(_ParentCellLine_key)
+begin
+    update ALL_CellLine
+    set _Strain_key = p._Strain_key
+    from inserted i, ALL_CellLine m, ALL_CellLine p
+    where i._Derivation_key = m._Derivation_key
+	and i._ParentCellLine_key = p._CellLine_key
+end
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

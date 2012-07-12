@@ -1,0 +1,76 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# lec	02/14/2005
+#	- TR 6343; new permissions implementation
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger MRK_Notes_Insert
+on MRK_Notes
+for insert, update
+as
+
+if @@rowcount = 1
+begin
+	declare @userKey integer
+	select @userKey = _User_key from MGI_User where login = user_name()
+
+	if (select m._Organism_key from inserted i, MRK_Marker m where i._Marker_key = m._Marker_key) = 1
+	   and
+	   (select user_name()) not in ('mgd_dbo', 'dbo')
+	   and
+	   (select @userKey) not in (select _User_key from MGI_UserTask_View where usertask = 'nomen:merges, renames')
+	begin
+	  if (select @userKey) not in (select _User_key from MGI_UserTask_View where usertask = 'pheno:edit marker clip')
+	  begin
+		rollback transaction
+		raiserror 99999 "You do not have permission to modify the Marker Clip."
+		return
+	  end
+	end
+end
+
+go
+
+create trigger MRK_Notes_Delete
+on MRK_Notes
+for delete
+as
+
+/* For single row deletes ... */
+
+if @@rowcount = 1
+begin
+	declare @userKey integer
+	select @userKey = _User_key from MGI_User where login = user_name()
+
+	if (select m._Organism_key from deleted i, MRK_Marker m where i._Marker_key = m._Marker_key) = 1
+	   and
+	   (select user_name()) not in ('mgd_dbo', 'dbo')
+	begin
+	  if (select @userKey) not in (select _User_key from MGI_UserTask_View where usertask = 'pheno:edit marker clip')
+	  begin
+		rollback transaction
+		raiserror 99999 "You do not have permission to modify the Marker Clip."
+		return
+	  end
+	end
+end
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

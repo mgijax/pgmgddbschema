@@ -1,0 +1,48 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
+
+--
+-- NAME: check_BIB_Refs_insert()
+--
+-- DESCRIPTOIN:
+--
+--	this insert trigger will call ACC_assignMGI
+--	in order to add a distinct MGI accession id
+--	to the NEW object
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+CREATE OR REPLACE FUNCTION check_BIB_Refs_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
+SELECT ACC_assignMGI(NEW._Refs_key, 'Reference');
+
+EXCEPTION WHEN OTHERS THEN
+    RAISE EXCEPTION 'check_BIB_Refs_insert: error';
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION check_BIB_Refs_insert() TO public;
+
+DROP TRIGGER check_BIB_Refs_insert_trigger ON BIB_Refs;
+
+CREATE TRIGGER check_BIB_Refs_insert_trigger
+AFTER INSERT on BIB_Refs
+FOR EACH ROW
+EXECUTE PROCEDURE check_BIB_Refs_insert();
+
+COMMENT ON FUNCTION mgd.check_BIB_Refs_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+
+EOSQL

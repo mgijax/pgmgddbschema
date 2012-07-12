@@ -1,0 +1,210 @@
+#!/bin/csh -f -x
+
+#
+# History
+#
+# 02/23/2011	lec
+# 02/15/2011	lec
+#	- TR 10584/check tasks for strains
+#	- do sequences and nomenclature when you re-do that entire section
+#
+# 01/28.2010	lec
+#	- TR8156; added Antibody/delete check
+#
+# 01/23/2009 - jsb - added hdt; TR9166
+#
+# 10/21/2005	lec
+#	- TR 7185, added mberry, Tier 3
+#
+# 07/01/2004	lec
+#	- added llw2
+#
+# 01/28/2004	lec
+#	- TR 5527; upgrade tbreddy to Tier 4
+#
+# 05/29/2002	lec
+#	- TR 1463; SAO
+#
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create trigger MGI_Reference_Assoc_Insert
+on MGI_Reference_Assoc
+for insert, update
+as
+
+if @@rowcount > 1
+begin
+	return
+end
+
+declare @userKey integer
+select @userKey = _User_key from MGI_User where login = user_name()
+
+/* Nomenclature objects .... */
+
+if (select _MGIType_key from inserted) = 21
+begin
+  /* If Tier3 user */
+
+  if (select user_name()) in ('cms', 'dbradt', 'dph', 'hdt', 'hjd', 'llw2', 'mberry', 'yz')
+  begin
+        if (select n._CreatedBy_key from inserted i, NOM_Marker n
+                where i._Object_key = n._Nomen_key) != @userKey and
+           (select t.term from inserted i, NOM_Marker n, VOC_Term t
+                where i._Object_key = n._Nomen_key and
+                      n._NomenStatus_key = _Term_key) not in ('Reserved', 'Unreviewed')
+        begin
+                rollback transaction
+                raiserror 99999 "You do not have permission to edit this record."
+                return
+        end
+
+        if (select n._CreatedBy_key from deleted d, NOM_Marker n
+                where d._Object_key = n._Nomen_key) != @userKey and
+           (select t.term from deleted d, NOM_Marker n, VOC_Term t
+                where d._Object_key = n._Nomen_key and
+                      n._NomenStatus_key = _Term_key) not in ('Reserved', 'Unreviewed')
+        begin
+                rollback transaction
+                raiserror 99999 "You do not have permission to edit this record."
+                return
+        end
+  end
+
+  /* If Tier2 user; we don't have any Tier2 users at present */
+
+  if (select user_name()) in ('tier2')
+  begin
+        if (select n._CreatedBy_key from inserted i, NOM_Marker n
+                where i._Object_key = n._Nomen_key) != @userKey
+        begin
+                rollback transaction
+                raiserror 99999 "You do not have permission to edit this record."
+                return
+        end
+
+        if (select n._CreatedBy_key from deleted d, NOM_Marker n
+                where d._Object_key = n._Nomen_key) != @userKey
+        begin
+                rollback transaction
+                raiserror 99999 "You do not have permission to edit this record."
+                return
+        end
+  end
+
+end /* Nomenclature permissions */
+
+go
+
+create trigger MGI_Reference_Assoc_Delete
+on MGI_Reference_Assoc
+for delete
+as
+
+if @@rowcount > 1
+begin
+	return
+end
+
+declare @userKey integer
+select @userKey = _User_key from MGI_User where login = user_name()
+
+/* Nomenclature objects .... */
+
+if (select _MGIType_key from deleted) = 21
+begin
+  /* If Tier3 user */
+
+  if (select user_name()) in ('cms', 'dbradt', 'dph', 'hdt', 'hjd', 'llw2', 'mberry', 'yz')
+  begin
+        if (select n._CreatedBy_key from deleted d, NOM_Marker n
+                where d._Object_key = n._Nomen_key) != @userKey and
+           (select t.term from deleted d, NOM_Marker n, VOC_Term t
+                where d._Object_key = n._Nomen_key and
+                      n._NomenStatus_key = _Term_key) not in ('Reserved', 'Unreviewed')
+        begin
+                rollback transaction
+                raiserror 99999 "You do not have permission to edit this record."
+                return
+        end
+  end
+
+  /* If Tier2 user */
+
+  if (select user_name()) in ('tier2')
+  begin
+        if (select n._CreatedBy_key from deleted d, NOM_Marker n
+                where d._Object_key = n._Nomen_key) != @userKey
+        begin
+                rollback transaction
+                raiserror 99999 "You do not have permission to edit this record."
+                return
+        end
+  end
+
+end /* Nomenclature permissions */
+
+/* Allele objects ... */
+
+if (select _MGIType_key from inserted) = 11
+begin
+	declare @deletedStatus integer
+	select @deletedStatus = t._Term_key from VOC_Term t, VOC_Vocab v
+		where v.name = 'Allele Status'
+		and v._Vocab_key = t._Vocab_key
+		and t.term = 'Deleted'
+
+    	if (select user_name()) not in ('mgd_dbo', 'dbo')
+    	begin
+
+	  if (select a._Allele_Status_key from inserted i, ALL_Allele a where i._Object_key = a._Allele_key) = @deletedStatus
+	     and
+	     (select @userKey) not in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify references/deleted')
+	  begin
+		rollback transaction
+		raiserror 99999 "You do not have permission to add/update a Reference of a 'Deleted' Allele."
+		return
+	  end
+
+	  if (select @userKey) not in (select _User_key from MGI_UserTask_View where usertask = 'pheno:create/modify references')
+	  begin
+		rollback transaction
+		raiserror 99999 "You do not have permission to add/update a Reference of an Allele."
+		return
+	  end
+
+	end
+
+end /* Allele permissions */
+
+/* Antibody objects .... */
+
+if (select _MGIType_key from deleted) = 6
+begin
+  if exists (select 1 from deleted d, GXD_AntibodyPrep p, GXD_Assay a
+             where d._MGIType_key = 6
+	           and d._Object_key = p._Antibody_key
+		   and p._AntibodyPrep_key = a._AntibodyPrep_key
+	           and d._Refs_key = a._Refs_key)
+  begin
+        rollback transaction
+        raiserror 99999 "You cannot delete an Antibody Reference that is cross-referenced to an Assay."
+        return
+  end
+end /* Antibody */
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

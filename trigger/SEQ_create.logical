@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# Logical Group Script
+#
+# Executes all SEQ*_create.object scripts
+#
+
+cd `dirname $0`
+
+for i in SEQ*_create.object
+do
+$i $*
+done
+
