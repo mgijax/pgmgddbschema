@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# Installation script for schema product
+#
+
+cd `dirname $0`
+
+#
+# Create symbolic links.
+#
+for i in table key index view procedure trigger
+do
+    cd $i
+    rm -rf Configuration logs
+    ln -s ../Configuration .
+    ln -s ../logs/$i logs
+    cd ..
+done
+

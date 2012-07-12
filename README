@@ -1,0 +1,47 @@
+
+table - yes
+
+index - yes
+
+keys - yes
+
+view - 1 left to fix
+	logs/GXD_GelRow_View_create.object.log:
+		psql:<stdin>:11: ERROR:  function str(double precision, integer, integer) does not exist
+
+trigger - no
+
+procedure - no
+
+.  data (bcp)
+
+.  ALTER TABLE will create the unique index
+
+ALTER TABLE ACC_Accession ADD PRIMARY KEY (_Accession_key);
+NOTICE:  ALTER TABLE / ADD PRIMARY KEY will create implicit index "acc_accession_pkey" for table "acc_accession"
+
+acc_accession_accession_key
+acc_accession_pkey
+
+Therefore:
+
+"create unique index"
+
+can be removed from the '/index' scripts.
+
+For now, the scripts may create a double index:
+one from '/index' 
+one from '/key'
+
+. cast
+
+  select stage::varchar(5) from GXD_TheilerStage;
+  select cast(stage as varchar(5)) from GXD_TheilerStage;
+
+  g/convert(varchar(5), t.stage)/s//cast(t.stage as varchar(5))/g
+  g/convert(varchar(30), a.accID)/s//cast(a.accID as varchar(30))/g
+  g/convert(varchar(10), r._Class_key)/s//cast( r._Class_key as varchar(10))/g
+  g/convert(varchar(5), tag)/s//cast(tag as varchar(5))/g
+  g/convert(char(10), h.event_date, 101)/s//cast(h.event_date as char(10))/g
+
+
