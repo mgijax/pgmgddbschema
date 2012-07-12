@@ -25,11 +25,6 @@ do
 t=`basename $i _create.object`
 
 ed $i <<END
-/idx_primary
-d
-d
-d
-.
 g/csh -f -x/s//sh/g
 g/ source/s// ./g
 g/ nonclustered /s// /g
@@ -68,6 +63,16 @@ d
 a
 
 EOSQL
+.
+w
+q
+END
+
+ed $i <<END
+/idx_primary
+d
+d
+d
 .
 w
 q
