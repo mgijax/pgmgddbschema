@@ -21,11 +21,6 @@ do
 t=`basename $i _drop.object`
 
 ed $i <<END
-/idx_primary
-d
-d
-d
-.
 g/csh -f -x/s//sh/g
 g/ source/s// ./g
 g/drop index /s//drop index mgd./g
@@ -49,6 +44,16 @@ d
 .
 a
 EOSQL
+.
+w
+q
+END
+
+ed $i <<END
+/idx_primary
+d
+d
+d
 .
 w
 q
