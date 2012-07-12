@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# HISTORY
+#     09/16/2008 - jsb - added for search tool release
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+truncate table mgd.VOC_Marker_Cache
+
+;
+EOSQL

@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#
+# History
+#
+# 08/14/2002	lec
+#	- TR 1463; SAO; Species renamed to Organism
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.MRK_Chromosome ADD PRIMARY KEY (_Chromosome_key);
+
+
+EOSQL

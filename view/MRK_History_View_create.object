@@ -1,0 +1,32 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MRK_History_View
+as
+select h.*, 
+cast(h.event_date as char(10)) as event_display, 
+e.event, er.eventReason, 
+m1.symbol as history, m1.name as historyName, m2.symbol, m2.name as markerName,
+u1.login as createdBy, u2.login as modifiedBy
+from MRK_History h, MRK_Event e, MRK_EventReason er, MRK_Marker m1, MRK_Marker m2,
+MGI_User u1, MGI_User u2
+where h._Marker_Event_key = e._Marker_Event_key
+and h._Marker_EventReason_key = er._Marker_EventReason_key
+and h._Marker_key = m2._Marker_key
+and h._History_key = m1._Marker_key
+and h._CreatedBy_key = u1._User_key
+and h._ModifiedBy_key = u2._User_key
+
+
+
+;
+
+EOSQL

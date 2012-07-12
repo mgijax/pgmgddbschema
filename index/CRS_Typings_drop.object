@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# HISTORY
+#     09/16/2008 - jsb - removed idx_Cross_key and idx_Cross_key_rowNumber
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+EOSQL

@@ -1,0 +1,9 @@
+#!/bin/sh
+#
+# History
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+ALTER TABLE mgd.MRK_Homology_Cache DROP CONSTRAINT MRK_Homology_Cache_pkey CASCADE;
+
+EOSQL

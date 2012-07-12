@@ -1,0 +1,22 @@
+#!/bin/sh
+
+#
+# History
+#
+# 03/31/2011	lec
+#	- TR10658/add _Cache_key
+#
+# 4/20/2009	pf
+#	- TR 9164
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+truncate table mgd.ALL_Cre_Cache
+
+;
+EOSQL

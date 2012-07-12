@@ -1,0 +1,39 @@
+#!/bin/sh
+
+#
+# History
+#
+# 07/14/2011	lec
+#	- convert to ansi outer join
+#
+# 08/20/2009    lec
+#       - removed 'union' and replaced with outer join to Marker
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.PRB_RFLV_View
+as
+select r.*, 
+       a._Allele_key, 
+       a.allele, 
+       a.fragments, 
+       s.strain, 
+       m.symbol, 
+       s._Strain_key, 
+       m.chromosome, 
+       m._Organism_key
+from PRB_RFLV r
+	INNER JOIN PRB_Allele a on (r._RFLV_key = a._RFLV_key)
+     	INNER JOIN PRB_Allele_Strain p on (a._Allele_key = p._Allele_key)
+     	INNER JOIN PRB_Strain s on (p._Strain_key = s._Strain_key)
+     	LEFT OUTER JOIN MRK_Marker m on (r._Marker_key = m._Marker_key)
+
+
+
+;
+
+EOSQL

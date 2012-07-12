@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# Logical Group Script
+#
+# Executes all DAG*_truncate.object scripts
+#
+
+cd `dirname $0`
+
+for i in DAG*_truncate.object
+do
+$i $*
+done
+

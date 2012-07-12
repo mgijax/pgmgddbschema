@@ -1,0 +1,48 @@
+#!/bin/sh
+
+#
+# History
+#
+# 04/04/2011	lec
+#	- TR 10658/add _Cache_key
+#
+# 02/16/2010	lec
+#	- TR 9239; add rawbiltype and biotypeconflict key
+#	  added _Marker_Type_key
+#
+# 06/07/2004	lec
+#	- Assembly Coordinates; added _Qualifier_key
+#
+# 08/14/2002    lec
+#       - TR 1463; SAO; _Species_key renamed to _Organism_key
+#
+# 05/13/2002	lec
+#	- TR 1463; SAO
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.SEQ_Marker_Cache (
+ 	_Cache_key                 int             not null,
+ 	_Sequence_key              int             not null,
+ 	_Marker_key                int             not null,
+	_Organism_key              int             not null,
+ 	_Refs_key                  int             not null,
+	_Qualifier_key             int             not null,
+	_SequenceProvider_key      int             not null,
+	_SequenceType_key          int             not null,
+	_LogicalDB_key             int             not null,
+	_Marker_Type_key	   int             not null,
+	_BiotypeConflict_key	   int             not null,
+	accID                      varchar(30)     not null,
+	rawbiotype                 varchar(255)    null,
+	annotation_date            timestamp DEFAULT now()        not null,
+	_CreatedBy_key             int             not null,
+	_ModifiedBy_key            int             not null,
+	creation_date              timestamp DEFAULT now()        not null,
+	modification_date          timestamp DEFAULT now()        not null 
+);
+EOSQL

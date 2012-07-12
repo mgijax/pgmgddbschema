@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/30/2005	lec
+#	- TR 7094; MGI 3.5
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+truncate table mgd.SEQ_Sequence_Raw
+
+;
+EOSQL

@@ -1,0 +1,8 @@
+#!/bin/sh
+# History:
+# 01/18/2010 - jsb - added for spring 2010 maintenance release (TR9782)
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+ALTER TABLE mgd.SEQ_Sequence_Assoc DROP CONSTRAINT SEQ_Sequence_Assoc_pkey CASCADE;
+
+EOSQL

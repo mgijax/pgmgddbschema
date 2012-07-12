@@ -1,0 +1,33 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/23/2010	lec
+#	- TR10033/add image class
+#
+# 10/17/2006	lec
+#	- TR 7710; added _MGIType_key
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.IMG_Image (
+ 	_Image_key                     int             not null,
+	_MGIType_key                   int             not null,
+	_ImageClass_key                int             not null,
+	_ImageType_key                 int             not null,
+	_Refs_key                      int             not null,
+	_ThumbnailImage_key            int             null,
+	xDim                           int             null,
+	yDim                           int             null,
+	figureLabel                    varchar(255)    not null,
+	_CreatedBy_key                 int             not null,
+	_ModifiedBy_key                int             not null,
+	creation_date                  timestamp DEFAULT now()        not null,
+	modification_date              timestamp DEFAULT now()        not null 
+);
+EOSQL

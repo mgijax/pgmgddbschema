@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 10/19/2006	lec
+#	- TR 6812
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop table mgd.VOC_GO_Cache
+
+CASCADE
+;
+EOSQL

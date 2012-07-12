@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# History
+#
+# 03/30/2004	lec
+#	- JSAM
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+ALTER TABLE mgd.SEQ_Description_Cache DROP CONSTRAINT SEQ_Description_Cache_pkey CASCADE;
+
+EOSQL

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 04/04/2011	lec
+#	- TR 10658; add _Cache_key
+#
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.MRK_Homology_Cache ADD PRIMARY KEY (_Cache_key);
+
+
+EOSQL

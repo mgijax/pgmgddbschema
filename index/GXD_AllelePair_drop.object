@@ -1,0 +1,36 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index mgd.GXD_AllelePair_idx_clustered
+;
+
+drop index mgd.GXD_AllelePair_idx_Allele_key_2
+;
+
+drop index mgd.GXD_AllelePair_idx_Genotype_key
+;
+
+drop index mgd.GXD_AllelePair_idx_Marker_key
+;
+
+drop index mgd.GXD_AllelePair_idx_PairState_key
+;
+
+drop index mgd.GXD_AllelePair_idx_Compound_key
+;
+
+drop index mgd.GXD_AllelePair_idx_CreatedBy_key
+;
+
+drop index mgd.GXD_AllelePair_idx_ModifiedBy_key
+;
+
+EOSQL

@@ -1,0 +1,36 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/03/2009	lec
+#	- TR 9797/9164; add Cre system/inherit system
+#
+# 05/07/2003	lec
+#	- TR 3432; add topoSort column
+#
+# 04/20/2009	pf
+#	- TR 9164; add system key column
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.GXD_Structure (
+	_Structure_key                 int             not null,
+	_Parent_key                    int             null,
+	_StructureName_key             int             not null,
+	_Stage_key                     int             not null,
+	_System_key                    int             not null,
+	edinburghKey                   int             null,
+	printName                      varchar(255)    null,
+	treeDepth                      int             not null,
+	printStop                      smallint             not null,
+	topoSort                       int             not null,
+	inheritSystem                  smallint         not null,
+	structureNote                  varchar(255)    null,
+	creation_date                  timestamp DEFAULT now()        not null,
+	modification_date              timestamp DEFAULT now()        not null 
+);
+EOSQL

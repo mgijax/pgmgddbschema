@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/01/2005 lec
+#	- TR 5565
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop view mgd.PRB_Strain_Genotype_View
+
+CASCADE
+;
+EOSQL

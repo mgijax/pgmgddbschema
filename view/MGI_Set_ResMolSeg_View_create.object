@@ -1,0 +1,27 @@
+#!/bin/sh
+
+#
+# History
+#
+# 12/30/2003	lec
+#	- JSAM
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MGI_Set_ResMolSeg_View
+as
+select m.*, s.name
+from MGI_Set s, MGI_SetMember m
+where s._MGIType_key = 15
+and s.name = 'Clone Set'
+and s._Set_key = m._Set_key
+
+
+
+;
+
+EOSQL

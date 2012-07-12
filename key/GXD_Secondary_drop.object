@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.GXD_AntibodyPrep DROP CONSTRAINT GXD_AntibodyPrep__Secondary_key_fkey CASCADE;
+ALTER TABLE mgd.GXD_Secondary DROP CONSTRAINT GXD_Secondary_pkey CASCADE;
+
+EOSQL

@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# HISTORY
+#    09/16/2008 - jsb - added for search tool release
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create unique index VOC_Annot_Count_Cache_idx_annotType on mgd.VOC_Annot_Count_Cache (annotType, _Term_key);
+
+
+
+EOSQL

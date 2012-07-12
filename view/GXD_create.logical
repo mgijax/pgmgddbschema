@@ -1,0 +1,45 @@
+#!/bin/sh
+
+#
+# Logical Group Script
+#
+# Executes all GXD*_create.object scripts
+#
+# Order is important!
+#
+
+cd `dirname $0` && . ./Configuration
+
+for i in \
+GXD_Antigen_Acc_View_create.object \
+GXD_Genotype_Acc_View_create.object \
+GXD_AntibodyAliasRef_View_create.object \
+GXD_AntibodyAlias_View_create.object \
+GXD_Antigen_View_create.object \
+GXD_AntibodyAntigen_View_create.object \
+GXD_AntibodyMarker_View_create.object \
+GXD_AntibodyPrep_View_create.object \
+GXD_Antibody_Summary_View_create.object \
+GXD_Antibody_View_create.object \
+GXD_Antigen_Summary_View_create.object \
+GXD_Assay_Acc_View_create.object \
+GXD_Assay_Summary_View_create.object \
+GXD_Assay_View_create.object \
+GXD_GelBand_View_create.object \
+GXD_GelLaneStructure_View_create.object \
+GXD_Genotype_View_create.object \
+GXD_AllelePair_View_create.object \
+GXD_Genotype_Summary_View_create.object \
+GXD_GelLane_View_create.object \
+GXD_GelRow_View_create.object \
+GXD_ISResultImage_View_create.object \
+GXD_ISResultStructure_View_create.object \
+GXD_InSituResult_View_create.object \
+GXD_Index_View_create.object \
+GXD_ProbePrep_View_create.object \
+GXD_Specimen_View_create.object \
+GXD_Structure_Acc_View_create.object
+do
+$i $*
+done
+

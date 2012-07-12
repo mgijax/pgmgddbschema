@@ -1,0 +1,22 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MRK_Anchors_View
+as
+select a.*, m.symbol
+from MRK_Anchors a, MRK_Marker m
+where a._Marker_key = m._Marker_key
+
+
+
+;
+
+EOSQL

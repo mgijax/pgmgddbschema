@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.GXD_AntibodyPrep (
+ 	_AntibodyPrep_key              int             not null,
+	_Antibody_key                  int             not null,
+	_Secondary_key                 int             not null,
+	_Label_key                     int             not null,
+	creation_date                  timestamp DEFAULT now()        not null,
+	modification_date              timestamp DEFAULT now()        not null 
+);
+EOSQL

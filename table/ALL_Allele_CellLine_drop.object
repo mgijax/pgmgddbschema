@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# HISTORY:
+#    11/21/08 - jsb - added for gene trap LF release (TR7493)
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop table mgd.ALL_Allele_CellLine
+
+CASCADE
+;
+EOSQL

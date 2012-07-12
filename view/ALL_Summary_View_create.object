@@ -1,0 +1,34 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.ALL_Summary_View
+as
+select a.*,
+a2.accID as mgiID,
+t.term as subType,
+al.symbol || ', ' || al.name as description,
+al.symbol as short_description
+from ACC_Accession a, ACC_Accession a2, ALL_Allele al, VOC_Term t
+where a._MGIType_key = 11
+and a.private = 0
+and a._Object_key = a2._Object_key
+and a2._LogicalDB_key = 1
+and a2._MGIType_key = 11
+and a2.prefixPart = 'MGI:'
+and a2.preferred = 1
+and a._Object_key = al._Allele_key
+and al._Allele_Type_key = t._Term_key
+
+
+
+;
+
+EOSQL

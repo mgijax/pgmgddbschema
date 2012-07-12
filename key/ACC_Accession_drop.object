@@ -1,0 +1,9 @@
+#!/bin/sh
+# History:
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.ACC_AccessionReference DROP CONSTRAINT ACC_AccessionReference__Accession_key_fkey CASCADE;
+ALTER TABLE mgd.ACC_Accession DROP CONSTRAINT ACC_Accession_pkey CASCADE;
+
+EOSQL

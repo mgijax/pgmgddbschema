@@ -1,0 +1,46 @@
+#!/bin/sh
+
+#
+# History
+#
+# 07/20/2011	lec
+#	- remove str(cmOffset)
+#
+# 05/13/2002	lec
+#	- TR 1463; SAO; replaced MRK_Species w/ MGI_Species
+#	- added curation state
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MRK_Mouse_View
+as
+select m.*, o.cmOffset,
+s.commonName || ' (' || s.latinName || ')' as organism, 
+s.commonName, s.latinName,
+ms.status as status,
+a.accID as mgiID, a.prefixPart, a.numericPart, a._Accession_key,
+t.name as markerType,
+v.term as curationState
+from MRK_Marker m, MRK_Offset o, MGI_Organism s, MRK_Status ms, ACC_Accession a, MRK_Types t, VOC_Term v
+where m._Organism_key = 1
+and m._Marker_key = o._Marker_key
+and o.source = 0
+and m._Organism_key = s._Organism_key
+and m._Marker_Status_key = ms._Marker_Status_key
+and m._Marker_key = a._Object_key
+and a._MGIType_key = 2
+and a._LogicalDB_key = 1
+and a.prefixPart = 'MGI:'
+and a.preferred = 1
+and m._Marker_Type_key = t._Marker_Type_key
+and m._CurationState_key = v._Term_key
+
+
+
+;
+
+EOSQL

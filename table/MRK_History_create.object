@@ -1,0 +1,26 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.MRK_History (
+ 	_Marker_key                    int             not null,
+	_Marker_Event_key              int             not null,
+	_Marker_EventReason_key        int             not null,
+	_History_key                   int             not null,
+	_Refs_key                      int             null,
+	sequenceNum                    int             not null,
+	name                           varchar(255)    null,
+	event_date                     timestamp DEFAULT now()        null,
+	_CreatedBy_key                 int             not null,
+	_ModifiedBy_key                int             not null,
+	creation_date                  timestamp DEFAULT now()        not null,
+	modification_date              timestamp DEFAULT now()        not null 
+);
+EOSQL

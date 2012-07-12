@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# HISTORY
+#     04/20/2010 - jsb - added to help add alleles to search tool
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop table mgd.VOC_Allele_Cache
+
+CASCADE
+;
+EOSQL

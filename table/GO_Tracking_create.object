@@ -1,0 +1,25 @@
+#!/bin/sh
+
+#
+# HISTORY
+#
+# 10/19/2006	lec
+#	- TR 7533
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.GO_Tracking (
+ 	_Marker_key                int             not null,
+	isReferenceGene            smallint             not null,
+ 	_CompletedBy_key           int             null,
+	_CreatedBy_key             int             not null,
+	_ModifiedBy_key            int             not null,
+	completion_date            timestamp DEFAULT now()        null,
+	creation_date              timestamp DEFAULT now()        not null,
+	modification_date          timestamp DEFAULT now()        not null
+);
+EOSQL

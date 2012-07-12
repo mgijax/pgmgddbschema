@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# HISTORY
+#    09/16/2008 - jsb - removed MRK_Anchors_idx_chromosome (TR 9037)
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+create index MRK_Anchors_idx_Marker_key on mgd.MRK_Anchors (_Marker_key);
+
+
+
+EOSQL

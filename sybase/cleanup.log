@@ -1,0 +1,274 @@
+Password: 
+1> 
+2> /* GXD_GelBand contains _GelLane_key that does not exist in GXD_GelLane */
+3> select b.* into #todelete1 from GXD_GelBand b 
+4> where not exists (select 1 from GXD_GelLane g where b._GelLane_key = g._GelLane_key)
+(73 rows affected)
+1> select * from #todelete1
+ _GelBand_key _GelLane_key _GelRow_key _Strength_key bandNote                                                                                                                                                                                                                                                        creation_date              modification_date          
+ ------------ ------------ ----------- ------------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -------------------------- -------------------------- 
+       160931       143607       24097             3 NULL                                                                                                                                                                                                                                                                   Feb  6 2007  3:42PM        Feb  6 2007  3:42PM 
+       161295       143908        3581             1 NULL                                                                                                                                                                                                                                                                   Feb 12 2007 12:34PM        Feb 12 2007 12:34PM 
+       163223       145736       30053            -2 NULL                                                                                                                                                                                                                                                                   May  2 2007 12:53PM        May  2 2007 12:53PM 
+       165936       148233       30963             5 NULL                                                                                                                                                                                                                                                                   Jul  2 2007  9:38AM        Jul  2 2007  9:38AM 
+       166382       148557       31050             4 NULL                                                                                                                                                                                                                                                                   Jul 11 2007 10:37AM        Jul 11 2007 10:37AM 
+       166427       148602       31060            -2 NULL                                                                                                                                                                                                                                                                   Jul 11 2007 10:40AM        Jul 11 2007 10:40AM 
+       166547       148719       31110             2 NULL                                                                                                                                                                                                                                                                   Jul 20 2007 11:16AM        Jul 20 2007 11:16AM 
+       166548       148720       31110             2 NULL                                                                                                                                                                                                                                                                   Jul 20 2007 11:16AM        Jul 20 2007 11:16AM 
+       169804       151518       31998             2 NULL                                                                                                                                                                                                                                                                   Dec 15 2007  8:17PM        Dec 15 2007  8:17PM 
+       170632       152227       32212             2 NULL                                                                                                                                                                                                                                                                   Jan 13 2008  9:46PM        Jan 13 2008  9:46PM 
+       170633       152228       32212             2 NULL                                                                                                                                                                                                                                                                   Jan 13 2008  9:46PM        Jan 13 2008  9:46PM 
+       170634       152229       32212             2 NULL                                                                                                                                                                                                                                                                   Jan 13 2008  9:46PM        Jan 13 2008  9:46PM 
+       170635       152230       32212             2 NULL                                                                                                                                                                                                                                                                   Jan 13 2008  9:46PM        Jan 13 2008  9:46PM 
+       170636       152231       32212             2 NULL                                                                                                                                                                                                                                                                   Jan 13 2008  9:46PM        Jan 13 2008  9:46PM 
+       170637       152232       32212             2 NULL                                                                                                                                                                                                                                                                   Jan 13 2008  9:46PM        Jan 13 2008  9:46PM 
+       170638       152233       32212             2 NULL                                                                                                                                                                                                                                                                   Jan 13 2008  9:46PM        Jan 13 2008  9:46PM 
+       170639       152234       32212             2 NULL                                                                                                                                                                                                                                                                   Jan 13 2008  9:46PM        Jan 13 2008  9:46PM 
+       173781       155137       32927             2 NULL                                                                                                                                                                                                                                                                   Apr  8 2008 12:31PM        Apr  8 2008 12:31PM 
+       176579       157762       33725             2 NULL                                                                                                                                                                                                                                                                   Jun  8 2008  4:46PM        Jun  8 2008  4:46PM 
+       176580       157763       33725             2 NULL                                                                                                                                                                                                                                                                   Jun  8 2008  4:46PM        Jun  8 2008  4:46PM 
+       176582       157765       33725             2 NULL                                                                                                                                                                                                                                                                   Jun  8 2008  4:46PM        Jun  8 2008  4:46PM 
+       178462       159531       34390             2 NULL                                                                                                                                                                                                                                                                   Aug  5 2008  9:17PM        Aug  5 2008  9:17PM 
+       180373       161220       34789            -2 NULL                                                                                                                                                                                                                                                                   Aug 19 2008 11:08AM        Aug 19 2008 11:08AM 
+       200961       180250       38876             2 NULL                                                                                                                                                                                                                                                                   Apr 17 2009 11:43AM        Apr 17 2009 11:43AM 
+       200962       180251       38876             2 NULL                                                                                                                                                                                                                                                                   Apr 17 2009 11:43AM        Apr 17 2009 11:43AM 
+       200963       180252       38876             2 NULL                                                                                                                                                                                                                                                                   Apr 17 2009 11:43AM        Apr 17 2009 11:43AM 
+       200968       180257       38876             2 NULL                                                                                                                                                                                                                                                                   Apr 17 2009 11:43AM        Apr 17 2009 11:43AM 
+       202626       181696       39372             1 NULL                                                                                                                                                                                                                                                                   May 13 2009  2:17PM        May 13 2009  2:17PM 
+       205412       140903        5868             2 NULL                                                                                                                                                                                                                                                                   May 27 2009  2:39PM        May 27 2009  2:39PM 
+       205769       184179       39863             2 NULL                                                                                                                                                                                                                                                                   May 28 2009 12:03PM        May 28 2009 12:03PM 
+       211861       189726       41585             2 NULL                                                                                                                                                                                                                                                                   Oct 14 2009  9:13PM        Oct 14 2009  9:13PM 
+       211864       189729       41585             2 NULL                                                                                                                                                                                                                                                                   Oct 14 2009  9:13PM        Oct 14 2009  9:13PM 
+       216248       193749       42685             2 NULL                                                                                                                                                                                                                                                                   Mar 29 2010  2:56PM        Mar 29 2010  2:56PM 
+       216249       193750       42685             1 NULL                                                                                                                                                                                                                                                                   Mar 29 2010  2:56PM        Mar 29 2010  2:56PM 
+       216256       193761       42687             2 NULL                                                                                                                                                                                                                                                                   Mar 29 2010  3:00PM        Mar 29 2010  3:00PM 
+       216258       193763       42687             2 NULL                                                                                                                                                                                                                                                                   Mar 29 2010  3:00PM        Mar 29 2010  3:00PM 
+       216882       194276       42807             2 NULL                                                                                                                                                                                                                                                                   Apr 26 2010  9:23PM        Apr 26 2010  9:23PM 
+       217440       194776       42931             5 NULL                                                                                                                                                                                                                                                                   May 11 2010  1:03PM        May 11 2010  1:03PM 
+       217930       195270       43040             2 NULL                                                                                                                                                                                                                                                                   Jun  9 2010 12:10PM        Jun  9 2010 12:10PM 
+       217931       195271       43040             2 NULL                                                                                                                                                                                                                                                                   Jun  9 2010 12:10PM        Jun  9 2010 12:10PM 
+       217932       195272       43040             2 NULL                                                                                                                                                                                                                                                                   Jun  9 2010 12:10PM        Jun  9 2010 12:10PM 
+       217933       195273       43040             2 NULL                                                                                                                                                                                                                                                                   Jun  9 2010 12:10PM        Jun  9 2010 12:10PM 
+       217934       195274       43040             2 NULL                                                                                                                                                                                                                                                                   Jun  9 2010 12:10PM        Jun  9 2010 12:10PM 
+       217935       195275       43040             2 NULL                                                                                                                                                                                                                                                                   Jun  9 2010 12:10PM        Jun  9 2010 12:10PM 
+       218174       195437       43095             2 NULL                                                                                                                                                                                                                                                                   Jun 15 2010 10:28AM        Jun 15 2010 10:28AM 
+       218175       195438       43095             2 NULL                                                                                                                                                                                                                                                                   Jun 15 2010 10:28AM        Jun 15 2010 10:28AM 
+       218176       195439       43095             2 NULL                                                                                                                                                                                                                                                                   Jun 15 2010 10:28AM        Jun 15 2010 10:28AM 
+       218177       195440       43095             2 NULL                                                                                                                                                                                                                                                                   Jun 15 2010 10:28AM        Jun 15 2010 10:28AM 
+       218296       195565       43133             2 NULL                                                                                                                                                                                                                                                                   Jun 25 2010  1:28PM        Jun 25 2010  1:28PM 
+       250938       205184       46030            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:35PM        Nov 18 2011 12:35PM 
+       250939       205185       46030            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:35PM        Nov 18 2011 12:35PM 
+       250940       205186       46030            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:35PM        Nov 18 2011 12:35PM 
+       250941       205187       46030            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:35PM        Nov 18 2011 12:35PM 
+       250942       205188       46030            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:35PM        Nov 18 2011 12:35PM 
+       250943       205189       46030            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:35PM        Nov 18 2011 12:35PM 
+       250944       205194       46032            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:36PM        Nov 18 2011 12:36PM 
+       250945       205195       46032            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:36PM        Nov 18 2011 12:36PM 
+       250946       205196       46032            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:36PM        Nov 18 2011 12:36PM 
+       250947       205197       46032            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:36PM        Nov 18 2011 12:36PM 
+       250948       205204       46034            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:36PM        Nov 18 2011 12:36PM 
+       250949       205205       46034            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:36PM        Nov 18 2011 12:36PM 
+       250950       205206       46036            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:38PM        Nov 18 2011 12:38PM 
+       250951       205207       46036            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:38PM        Nov 18 2011 12:38PM 
+       250952       205208       46036            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:38PM        Nov 18 2011 12:38PM 
+       250953       205209       46036            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:38PM        Nov 18 2011 12:38PM 
+       250954       205210       46036            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:38PM        Nov 18 2011 12:38PM 
+       250955       205211       46036            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:38PM        Nov 18 2011 12:38PM 
+       250956       205212       46036            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:38PM        Nov 18 2011 12:38PM 
+       250957       205213       46036            -2 NULL                                                                                                                                                                                                                                                                   Nov 18 2011 12:38PM        Nov 18 2011 12:38PM 
+       253448       229652       49314            -2 NULL                                                                                                                                                                                                                                                                   Feb  1 2012  3:29PM        Feb  1 2012  3:29PM 
+       255009       231184       49819            -2 NULL                                                                                                                                                                                                                                                                   Mar 22 2012  9:17AM        Mar 22 2012  9:17AM 
+       255638       231782       50018             2 NULL                                                                                                                                                                                                                                                                   Apr 24 2012  6:16PM        Apr 24 2012  6:16PM 
+       255641       231785       50018             2 NULL                                                                                                                                                                                                                                                                   Apr 24 2012  6:16PM        Apr 24 2012  6:16PM 
+
+(73 rows affected)
+1> delete GXD_GelBand from #todelete1 d
+2> where d._GelLane_key = GXD_GelBand._GelLane_key
+(73 rows affected)
+1> 
+2> /* GXD_Index_Stages contains _Index_key that does not exist in GXD_Index */
+3> select a.* into #todelete2 from GXD_Index_Stages a 
+4> where not exists (select 1 from GXD_Index b where a._Index_key = b._Index_key)
+(4 rows affected)
+1> select * from #todelete2
+ _Index_key  _IndexAssay_key _StageID_key _CreatedBy_key _ModifiedBy_key creation_date              modification_date          
+ ----------- --------------- ------------ -------------- --------------- -------------------------- -------------------------- 
+        5012           74722        74749           1306            1306        Feb 10 1998  4:30PM        Feb 10 1998  4:30PM 
+        5012           74722        74770           1306            1306        Feb 10 1998  4:30PM        Feb 10 1998  4:30PM 
+        5012           74724        74770           1306            1306        Feb 10 1998  4:30PM        Feb 10 1998  4:30PM 
+        5012           74727        74770           1306            1306        Feb 10 1998  4:30PM        Feb 10 1998  4:30PM 
+
+(4 rows affected)
+1> delete GXD_Index_Stages from #todelete2 d
+2> where d._Index_key = GXD_Index_Stages._Index_key
+(4 rows affected)
+1> 
+2> select a.* into #todelete3 from HMD_Homology_Marker a 
+3> where not exists (select 1 from HMD_Homology b where a._Homology_key = b._Homology_key)
+(1 row affected)
+1> select * from #todelete3
+ _Homology_key _Marker_key creation_date              modification_date          
+ ------------- ----------- -------------------------- -------------------------- 
+        129227      136670        Jul 27 2009  2:21AM        Jul 27 2009  2:21AM 
+
+(1 row affected)
+1> delete HMD_Homology_Marker from #todelete3 d
+2> where d._Homology_key = HMD_Homology_Marker._Homology_key
+(1 row affected)
+1> 
+2> select a.* into #todelete4 from IMG_ImagePane a 
+3> where not exists (select 1 from IMG_Image b where a._Image_key = b._Image_key)
+(1 row affected)
+1> select * from #todelete4
+ _ImagePane_key _Image_key  paneLabel                                                                                                                                                                                                                                                       x           y           width       height      creation_date              modification_date          
+ -------------- ----------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- ----------- ----------- ----------- ----------- -------------------------- -------------------------- 
+         287491      366597 NULL                                                                                                                                                                                                                                                                   NULL        NULL        NULL        NULL        Jun 16 2011  2:15PM        Jun 16 2011  2:15PM 
+
+(1 row affected)
+1> delete IMG_ImagePane from #todelete4 d
+2> where d._ImagePane_key = IMG_ImagePane._ImagePane_key
+(1 row affected)
+1> 
+2> select a.* into #todelete5 from CRS_Cross a 
+3> where not exists (select 1 from PRB_Strain b where a._malestrain_key = b._strain_key)
+(1 row affected)
+1> select * from #todelete5
+ _Cross_key  type _femaleStrain_key femaleAllele1 femaleAllele2 _maleStrain_key maleAllele1 maleAllele2 abbrevHO _StrainHO_key abbrevHT _StrainHT_key whoseCross                     alleleFromSegParent F1DirectionKnown nProgeny    displayed creation_date              modification_date          
+ ----------- ---- ----------------- ------------- ------------- --------------- ----------- ----------- -------- ------------- -------- ------------- ------------------------------ ------------------- ---------------- ----------- --------- -------------------------- -------------------------- 
+        4859 1                   -1 NULL          NULL                    29639 NULL        NULL        w                29634 w                  119 NULL                                             0                0           0         0        Jun  2 1999  9:35AM        Jun  2 1999  9:50AM 
+
+(1 row affected)
+1> delete CRS_Cross from #todelete5 d
+2> where d._Cross_key = CRS_Cross._Cross_key
+Msg 99999, Level 16, State 1:
+Server 'DEV1_MGI', Procedure 'CRS_Cross_Delete', Line 13:
+Cross is referenced in MLDP Record(s)
+1> 
+2> select a.* into #todelete6 from PRB_Strain_Genotype a 
+3> where not exists (select 1 from PRB_Strain b where a._strain_key = b._strain_key)
+(1 row affected)
+1> select * from #todelete6
+ _StrainGenotype_key _Strain_key _Genotype_key _Qualifier_key _CreatedBy_key _ModifiedBy_key creation_date              modification_date          
+ ------------------- ----------- ------------- -------------- -------------- --------------- -------------------------- -------------------------- 
+                9061       51626         48058         706916           1406            1406        Oct 28 2009 10:40AM        Mar 21 2011 10:26AM 
+
+(1 row affected)
+1> delete PRB_Strain_Genotype from #todelete6 d
+2> where d._StrainGenotype_key = PRB_Strain_Genotype._StrainGenotype_key
+(1 row affected)
+1> 
+2> select a.* into #todelete7 from PRB_Source a 
+3> where not exists (select 1 from PRB_Tissue b where a._Tissue_key = b._Tissue_key)
+(1 row affected)
+1> select * from #todelete7
+ _Source_key _SegmentType_key _Vector_key _Organism_key _Strain_key _Tissue_key _Gender_key _CellLine_key _Refs_key   name                                                                                                                                                                                                                                                           
+	 description                                                                                                                                                                                                                                                     age                                                ageMin               ageMax               isCuratorEdited _CreatedBy_key _ModifiedBy_key creation_date              modification_date          
+ ----------- ---------------- ----------- ------------- ----------- ----------- ----------- ------------- ----------- ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -------------------------------------------------- -------------------- -------------------- --------------- -------------- --------------- -------------------------- -------------------------- 
+       62432            63468      316370             1          -1           0      315167        316335      172505 NULL                                                                                                                                                                                                                                                           
+	 NULL                                                                                                                                                                                                                                                            Not Specified                                                 -1.000000            -1.000000               0           1000            1000        May 26 2011  8:48AM        May 26 2011  8:48AM 
+
+(1 row affected)
+1> delete PRB_Source from #todelete7 d
+2> where d._Source_key = PRB_Source._Source_key
+(1 row affected)
+1> 
+2> select a.* into #todelete8 from VOC_Evidence a 
+3> where not exists (select 1 from VOC_Annot b where a._Annot_key = b._Annot_key)
+(1 row affected)
+1> select * from #todelete8
+ _AnnotEvidence_key _Annot_key  _EvidenceTerm_key _Refs_key   inferredFrom                                                                                                                                                                                                                                                    _CreatedBy_key _ModifiedBy_key creation_date              modification_date          
+ ------------------ ----------- ----------------- ----------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -------------- --------------- -------------------------- -------------------------- 
+           60011200    47637815           5815097      165368 NULL                                                                                                                                                                                                                                                                      1093            1093        Oct 26 2011 11:12AM        Oct 26 2011 11:12AM 
+
+(1 row affected)
+1> delete VOC_Evidence from #todelete8 d
+2> where d._AnnotEvidence_key = VOC_Evidence._AnnotEvidence_key
+(1 row affected)
+1> 
+2> /* MouseCyc loads DAG edges whose parent does not exist in DGA_Node */
+3> /* this product needs to be looked at and fixed */
+4> select e.* into #todelete9 from DAG_Edge e 
+5> where not exists (select 1 from DAG_Node n where e._Parent_key = n._Node_key)
+(73 rows affected)
+1> select * from #todelete9
+ _Edge_key   _DAG_key    _Parent_key _Child_key  _Label_key  sequenceNum creation_date              modification_date          
+ ----------- ----------- ----------- ----------- ----------- ----------- -------------------------- -------------------------- 
+   116869894          10    75895904    75895903           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116869895          10    75895906    75895905           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116869896          10    75895908    75895907           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116869964          10    75896000    75895999           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116869972          10    75896009    75896008           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116869974          10    75896012    75895958           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116869980          10    75896020    75896019           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116869991          10    75896035    75896034           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116869997          10    75896042    75896041           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116869998          10    75896042    75896043           1           2        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870002          10    75896000    75896048           1           2        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870017          10    75896063    75896062           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870018          10    75896000    75896064           1           3        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870021          10    75896068    75896067           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870022          10    75896070    75896069           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870023          10    75896072    75896071           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870024          10    75896074    75896073           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870037          10    75896012    75895952           1           2        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870040          10    75896012    75895935           1           3        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870042          10    75895908    75896093           1           2        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870045          10    75896099    75896098           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870046          10    75896101    75896100           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870050          10    75896012    75895932           1           4        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870053          10    75896111    75896110           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870059          10    75896063    75896116           1           2        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870060          10    75896000    75895966           1           4        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870083          10    75896068    75896138           1           2        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870084          10    75896070    75896139           1           2        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870117          10    75896171    75896170           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870130          10    75896009    75896183           1           2        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870131          10    75896063    75896184           1           3        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870132          10    75896063    75896185           1           4        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870136          10    75896099    75896189           1           2        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870137          10    75896035    75896190           1           2        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870138          10    75896009    75896191           1           3        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870149          10    75896000    75896202           1           5        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870150          10    75896000    75896203           1           6        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870151          10    75896035    75896204           1           3        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870178          10    75896099    75896230           1           3        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870229          10    75896009    75896267           1           4        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870253          10    75896009    75896285           1           5        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870259          10    75896099    75896287           1           4        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870273          10    75896009    75896022           1           6        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870285          10    75896111    75896309           1           2        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870331          10    75896111    75896347           1           3        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870332          10    75896111    75896348           1           4        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870333          10    75896111    75896349           1           5        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870351          10    75896101    75896368           1           2        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870388          10    75896171    75896408           1           2        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870409          10    75896429    75896428           1           1        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870498          10    75896111    75896508           1           6        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870525          10    75896009    75896527           1           7        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870526          10    75896009    75896528           1           8        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870531          10    75896009    75896531           1           9        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870532          10    75896009    75896532           1          10        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870534          10    75896000    75896533           1           7        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870559          10    75896035    75895927           1           4        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870560          10    75896099    75895924           1           5        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870563          10    75896012    75896552           1           5        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870570          10    75896063    75896558           1           5        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870571          10    75896000    75896559           1           8        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870574          10    75896074    75896085           1           2        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870576          10    75896074    75896198           1           3        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870589          10    75896012    75895921           1           6        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870590          10    75896000    75896106           1           9        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870594          10    75896009    75896570           1          11        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870595          10    75896099    75896570           1           6        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870596          10    75896063    75896571           1           6        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870598          10    75896035    75896032           1           5        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870599          10    75896099    75895969           1           7        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870612          10    75896012    75896411           1           7        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870617          10    75896099    75896387           1           8        May  5 2012  9:31PM        May  5 2012  9:31PM 
+   116870619          10    75896009    75896584           1          12        May  5 2012  9:31PM        May  5 2012  9:31PM 
+
+(73 rows affected)
+1> delete DAG_Edge from #todelete9 d
+2> where d._Edge_key = DAG_Edge._Edge_key
+(73 rows affected)

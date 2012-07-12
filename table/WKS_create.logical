@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# Logical Group Script
+#
+# Executes all WKS*_create.object scripts
+#
+
+cd `dirname $0`
+
+for i in WKS*_create.object
+do
+$i $*
+done
+

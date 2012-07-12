@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.MRK_Homology_Cache DROP CONSTRAINT MRK_Homology_Cache__Homology_key_fkey CASCADE;
+
+ALTER TABLE mgd.HMD_Notes DROP CONSTRAINT HMD_Notes__Homology_key_fkey CASCADE;
+
+ALTER TABLE mgd.HMD_Homology_Marker DROP CONSTRAINT HMD_Homology_Marker__Homology_key_fkey CASCADE;
+
+ALTER TABLE mgd.HMD_Homology_Assay DROP CONSTRAINT HMD_Homology_Assay__Homology_key_fkey CASCADE;
+ALTER TABLE mgd.HMD_Homology DROP CONSTRAINT HMD_Homology_pkey CASCADE;
+
+EOSQL

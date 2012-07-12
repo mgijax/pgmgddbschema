@@ -1,0 +1,31 @@
+#!/bin/sh
+
+#
+# History
+#
+# 06/09/2010	lec
+#	- TR 6839/added _LogicalDB_key
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.VOC_Term_View
+as
+select t.*, v.name as vocabName, a.accID, a._LogicalDB_key,
+	case 
+		when t.isObsolete = 1 then 'Yes'
+		when t.isObsolete = 0 then 'No'
+	end as obsoleteState
+from VOC_Term t
+     INNER JOIN VOC_Vocab v on (t._Vocab_key = v._Vocab_key)
+     LEFT OUTER JOIN ACC_Accession a on (t._Term_key = a._Object_key
+		and a._MGIType_key = 13
+		and a.preferred = 1)
+
+
+;
+
+EOSQL

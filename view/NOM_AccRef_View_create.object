@@ -1,0 +1,35 @@
+#!/bin/sh
+
+#
+# History
+#
+# 05/21/2002	lec
+#	- TR 1463; SAO
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.NOM_AccRef_View
+as
+select a.*, 
+l.name as LogicalDB, 
+m.name as MGIType, 
+ar._Refs_key, 
+b.jnumID, 
+b.numericPart as jnum, 
+b.short_citation
+from ACC_Accession a, ACC_LogicalDB l, ACC_MGIType m, ACC_AccessionReference ar, BIB_Citation_Cache b
+where a._MGIType_key = 21
+and a._Accession_key = ar._Accession_key
+and a._LogicalDB_key = l._LogicalDB_key
+and a._MGIType_key = m._MGIType_key
+and ar._Refs_key = b._Refs_key
+
+
+
+;
+
+EOSQL

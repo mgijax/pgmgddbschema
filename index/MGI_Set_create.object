@@ -1,0 +1,35 @@
+#!/bin/sh
+
+#
+# History
+# 07/12/2011 - lec - index -> MGI_Set_idx for consistency
+# 04/22/2008 - jsb - restructured indexes for performance (MGI 4.B)
+# 04/17/2003 - lec - MGI 2.96
+#
+# Include most common fields in each index, to improve performance by
+# allowing more queries to use a covering index.  This is not a very big
+# table, so the increase in index size is minimal.
+#
+# optimized for retrieving all sets related to a particular MGI type, or for
+# selecting one of them based on mgd.name
+#
+# if we already know the set key, we're likely looking for a single set, so
+# this will provide a direct shot to the right data page; no need for extra
+# fields
+#
+# optimized for searching for a set by name, possibly restricting by MGI type
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index MGI_Set_idx_clustered on mgd.MGI_Set (_MGIType_key, name, _Set_key, sequenceNum);
+
+
+create index MGI_Set_idx_name on mgd.MGI_Set (name, _MGIType_key, _Set_key, sequenceNum);
+
+
+
+EOSQL

@@ -1,0 +1,26 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/16/2008 - jsb - removed MGI_NoteChunk_idx_Note_key (TR 9037)
+# 05/13/2002	lec
+#	- TR 1463; SAO
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index MGI_NoteChunk_idx_note on mgd.MGI_NoteChunk (note);
+
+
+create index MGI_NoteChunk_idx_CreatedBy_key on mgd.MGI_NoteChunk (_CreatedBy_key);
+
+
+create index MGI_NoteChunk_idx_ModifiedBy_key on mgd.MGI_NoteChunk (_ModifiedBy_key);
+
+
+
+EOSQL

@@ -1,0 +1,28 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/02/2010
+#	- TR 9784/added strain-specific marker
+#
+# 01/22/2006	lec
+#	- TR 8115
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MGI_NoteType_Marker_View
+as
+select *
+from MGI_NoteType
+where _NoteType_key in (1030, 1035)
+
+
+
+;
+
+EOSQL

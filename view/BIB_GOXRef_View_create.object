@@ -1,0 +1,91 @@
+#!/bin/sh
+
+#
+# History
+#
+# 03/02/2006	lec
+#	- added creation_date for TR 7532 qc report
+#
+# 01/04/2006	lec
+#	- TR 7359; exclude GenBank Submission and Mouse News Lett
+#
+# 02/26/2004	lec
+#	- TR 5615; include Review articles selected for GO
+#
+# 08/08/2003	lec
+#	- TR 5044; exclude 'Mouse News Lett' references
+#
+# 06/11/2002	lec
+#	- TR 3772; re-define what GO References are of interest to a curator
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.BIB_GOXRef_View
+as
+
+/* References which are: */
+/*                                                                  */
+/* a. not 'GenBank Submission' or 'Mouse News Lett'		    */
+/*                                                                  */
+/* b. cross-referenced to a Marker                                  */
+/*                                                                  */
+/* c. before <date>, not NO-GO references (i.e. not 'Never Used'),  */
+/*    selected for Nomenclature, Homology, Allele or Expression */
+/*	or                                                          */
+/*    after <date>, selected for GO and not 'Never Used'            */
+/*	or                                                          */
+/*    selected for GO and Review article                            */
+/*                                                                  */
+
+select r._Refs_key, r.jnum, r.short_citation, m._Marker_key, r.jnumID, r.title, r.abstract, r.creation_date
+from MRK_Reference m, BIB_All_View r
+where m._Refs_key = r._Refs_key
+and r.journal not in ('GenBank Submission', 'Mouse News Lett') and
+(
+  r.creation_date < '03/13/2002' and 
+  not exists (select 1 from BIB_DataSet_Assoc ba
+	  where r._Refs_key = ba._Refs_key and
+	  ba._DataSet_key = 1005 and
+	  ba.isNeverUsed = 1)
+  and
+  (
+  exists (select 1 from BIB_DataSet_Assoc ba
+	  where r._Refs_key = ba._Refs_key and
+	  ba._DataSet_key = 1006)
+  or
+  exists (select 1 from BIB_DataSet_Assoc ba
+	  where r._Refs_key = ba._Refs_key and
+	  ba._DataSet_key = 1003)
+  or
+  exists (select 1 from BIB_DataSet_Assoc ba
+	  where r._Refs_key = ba._Refs_key and
+	  ba._DataSet_key = 1002)
+  or
+  exists (select 1 from BIB_DataSet_Assoc ba
+	  where r._Refs_key = ba._Refs_key and
+	  ba._DataSet_key = 1004)
+  )
+  or
+  (r.creation_date >= '03/13/2002' and 
+   exists (select 1 from BIB_DataSet_Assoc ba
+	  where r._Refs_key = ba._Refs_key and
+	  ba._DataSet_key = 1005 and 
+	  ba.isNeverUsed = 0)
+  )
+  or
+  (r.isReviewArticle = 1 and 
+   exists (select 1 from BIB_DataSet_Assoc ba
+	  where r._Refs_key = ba._Refs_key and
+	  ba._DataSet_key = 1005 and 
+	  ba.isNeverUsed = 0)
+  )
+)
+
+
+;
+
+EOSQL

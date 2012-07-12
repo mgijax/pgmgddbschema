@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# HISTORY
+#    09/16/2008 - jsb - added _Vocab_key to VOC_Vocab_idx_name (TR 9062)
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create unique index VOC_Vocab_idx_name on mgd.VOC_Vocab (name, _Vocab_key);
+
+
+create index VOC_Vocab_idx_Refs_key on mgd.VOC_Vocab (_Refs_key);
+
+
+
+EOSQL

@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# HISTORY
+#     09/16/2008 - jsb - removed ACC_AccessionReference_idx_Accession_key (TR 9037)
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index ACC_AccessionReference_idx_Refs_key on mgd.ACC_AccessionReference (_Refs_key);
+
+
+create index ACC_AccessionReference_idx_CreatedBy_key on mgd.ACC_AccessionReference (_CreatedBy_key);
+
+
+create index ACC_AccessionReference_idx_ModifiedBy_key on mgd.ACC_AccessionReference (_ModifiedBy_key);
+
+
+
+EOSQL

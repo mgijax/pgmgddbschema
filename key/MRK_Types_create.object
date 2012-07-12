@@ -1,0 +1,31 @@
+#!/bin/sh
+
+#
+# HISTORY:
+#    10/06/2008 - jsb - added SEQ_GeneModel, TR9305
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.MRK_Types ADD PRIMARY KEY (_Marker_Type_key);
+
+
+ALTER TABLE mgd.MRK_Marker ADD FOREIGN KEY (_Marker_Type_key) REFERENCES mgd.MRK_Types;
+
+
+ALTER TABLE mgd.MRK_OMIM_Cache ADD FOREIGN KEY (_Marker_Type_key) REFERENCES mgd.MRK_Types;
+
+
+ALTER TABLE mgd.NOM_Marker ADD FOREIGN KEY (_Marker_Type_key) REFERENCES mgd.MRK_Types;
+
+
+ALTER TABLE mgd.SEQ_GeneModel ADD FOREIGN KEY (_GMMarker_Type_key) REFERENCES mgd.MRK_Types;
+
+
+ALTER TABLE mgd.SEQ_Marker_Cache ADD FOREIGN KEY (_Marker_Type_key) REFERENCES mgd.MRK_Types;
+
+
+EOSQL

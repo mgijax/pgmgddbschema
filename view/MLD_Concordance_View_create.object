@@ -1,0 +1,30 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MLD_Concordance_View
+as
+select c.jnumID, 
+       c.jnum, 
+       c.short_citation, 
+       e.*, 
+       m.symbol, 
+       c._primary, 
+       c.authors 
+from BIB_View c 
+	INNER JOIN MLD_Expts x on (c._Refs_key = x._Refs_key)
+	INNER JOIN MLD_Concordance e on (x._Expt_key = e._Expt_key)
+	LEFT OUTER JOIN MRK_Marker m on (e._Marker_key = m._Marker_key)
+
+
+
+;
+
+EOSQL

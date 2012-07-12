@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# History:
+# 11/24/2008 - jsb - initial addition for TR7493 (Gene Trap LF)
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index mgd.ALL_Marker_Assoc_idx_clustered
+;
+
+drop index mgd.ALL_Marker_Assoc_idx_Allele_key
+;
+
+drop index mgd.ALL_Marker_Assoc_idx_Status_key
+;
+
+drop index mgd.ALL_Marker_Assoc_idx_CreatedBy_key
+;
+
+drop index mgd.ALL_Marker_Assoc_idx_ModifiedBy_key
+;
+
+EOSQL

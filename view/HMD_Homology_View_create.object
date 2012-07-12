@@ -1,0 +1,32 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.HMD_Homology_View
+as
+select r._Class_key, r._Refs_key, r.creation_date, r.modification_date,
+cast( r._Class_key as varchar(10)) || ':' || cast(r._Refs_key as varchar(10)) as classRef,
+h._Homology_key, h._Marker_key,
+m.symbol, m.name, m.chromosome, m.cytogeneticOffset,
+m._Organism_key, 
+o.commonName || ' (' || o.latinName || ')' as organism, 
+o.commonName, o.latinName,
+b.jnumID, b.jnum, b.short_citation
+from HMD_Homology r, HMD_Homology_Marker h, MRK_Marker m, MGI_Organism o, BIB_View b
+where r._Homology_key = h._Homology_key
+and h._Marker_key = m._Marker_key
+and m._Organism_key = o._Organism_key
+and r._Refs_key = b._Refs_key
+
+
+
+;
+
+EOSQL

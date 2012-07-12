@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/16/2010	lec
+#	- TR 6839/marker types
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop view mgd.VOC_Term_MCV_View
+
+CASCADE
+;
+EOSQL

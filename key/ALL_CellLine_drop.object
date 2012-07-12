@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#
+# History:
+# 11/24/2008 - jsb - added ALL_Allele_CellLine
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.ALL_CellLine_Derivation DROP CONSTRAINT ALL_CellLine_Derivation__ParentCellLine_key_fkey CASCADE;
+
+ALTER TABLE mgd.ALL_Allele_CellLine DROP CONSTRAINT ALL_Allele_CellLine__MutantCellLine_key_fkey CASCADE;
+
+ALTER TABLE mgd.ALL_CellLine DROP CONSTRAINT ALL_CellLine_pkey CASCADE;
+
+EOSQL

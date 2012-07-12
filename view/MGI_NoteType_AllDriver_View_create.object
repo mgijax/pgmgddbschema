@@ -1,0 +1,26 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/23/2009	lec
+#	- TR 9797; cre
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MGI_NoteType_AllDriver_View
+as
+select *
+from MGI_NoteType
+where _MGIType_key = 11
+and noteType = 'Driver'
+
+
+
+;
+
+EOSQL

@@ -1,0 +1,30 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/30/2005	lec
+#	- TR 7094; MGI 3.5
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.SEQ_Sequence_Raw (
+ 	_Sequence_key              int             not null,
+	rawType                    varchar(15)     null,
+	rawLibrary                 varchar(255)    null,
+	rawOrganism                varchar(255)    null,
+	rawStrain                  varchar(255)    null,
+	rawTissue                  varchar(255)    null,
+	rawAge                     varchar(100)    null,
+	rawSex                     varchar(100)    null,
+	rawCellLine                varchar(100)    null,
+	_CreatedBy_key             int             not null,
+	_ModifiedBy_key            int             not null,
+	creation_date              timestamp DEFAULT now()        not null,
+	modification_date          timestamp DEFAULT now()        not null 
+);
+EOSQL

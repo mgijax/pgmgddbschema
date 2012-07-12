@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 12/30/2003	lec
+#	- JSAM
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop view mgd.MGI_Set_ResMolSeg_View
+
+CASCADE
+;
+EOSQL

@@ -1,0 +1,36 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/29/2004	lec
+#	- TR 5686
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index mgd.MGI_Synonym_idx_Object_key
+;
+
+drop index mgd.MGI_Synonym_idx_MGIType_key
+;
+
+drop index mgd.MGI_Synonym_idx_SynonymType_key
+;
+
+drop index mgd.MGI_Synonym_idx_Refs_key
+;
+
+drop index mgd.MGI_Synonym_idx_synonym
+;
+
+drop index mgd.MGI_Synonym_idx_CreatedBy_key
+;
+
+drop index mgd.MGI_Synonym_idx_ModifiedBy_key
+;
+
+EOSQL

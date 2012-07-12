@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# History
+#
+# 05/06/2010	sc
+#	- TR6839 Marker Types
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+EOSQL

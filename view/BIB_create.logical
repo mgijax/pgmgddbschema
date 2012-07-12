@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# Logical Group Script
+#
+# Executes all BIB*_create.object scripts
+#
+
+cd `dirname $0` && . ./Configuration
+
+for i in BIB*_create.object
+do
+$i $*
+done
+

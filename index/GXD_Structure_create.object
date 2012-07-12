@@ -1,0 +1,28 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/03/2009	lec
+#	- TR9797 Cre; add system key
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index GXD_Structure_idx_Parent_key on mgd.GXD_Structure (_Parent_key);
+
+
+create index GXD_Structure_idx_StructureName_key on mgd.GXD_Structure (_StructureName_key);
+
+
+create index GXD_Structure_idx_Stage_key on mgd.GXD_Structure (_Stage_key);
+
+
+create index GXD_Structure_idx_System_key on mgd.GXD_Structure (_System_key);
+
+
+
+EOSQL

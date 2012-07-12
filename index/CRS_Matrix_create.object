@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# HISTORY
+#     09/16/2008 - jsb - removed CRS_Matrix_idx_Cross_key (TR 9037)
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create unique index CRS_Matrix_idx_clustered on mgd.CRS_Matrix (_Cross_key, _Marker_key, otherSymbol, chromosome, rowNumber);
+
+
+create index CRS_Matrix_idx_Marker_key on mgd.CRS_Matrix (_Marker_key);
+
+
+
+EOSQL

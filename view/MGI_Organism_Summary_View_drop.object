@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/27/2003	lec
+#	- SAO
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop view mgd.MGI_Organism_Summary_View
+
+CASCADE
+;
+EOSQL

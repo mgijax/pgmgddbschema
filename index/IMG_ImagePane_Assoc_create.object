@@ -1,0 +1,31 @@
+#!/bin/sh
+
+#
+# History
+# 09/16/2008 - jsb - removed designation of IMG_ImagePane_Assoc_idx_Assoc_key (TR 9062)
+# 06/14/2005	lec
+#	- TR 3557
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index IMG_ImagePane_Assoc_idx_ImagePane_key on mgd.IMG_ImagePane_Assoc (_ImagePane_key);
+
+
+create index IMG_ImagePane_Assoc_idx_MGIType_key on mgd.IMG_ImagePane_Assoc (_MGIType_key);
+
+
+create index IMG_ImagePane_Assoc_idx_Object_key on mgd.IMG_ImagePane_Assoc (_Object_key);
+
+
+create index IMG_ImagePane_Assoc_idx_CreatedBy_key on mgd.IMG_ImagePane_Assoc (_CreatedBy_key);
+
+
+create index IMG_ImagePane_Assoc_idx_ModifiedBy_key on mgd.IMG_ImagePane_Assoc (_ModifiedBy_key);
+
+
+
+EOSQL

@@ -1,0 +1,25 @@
+#!/bin/sh
+
+#
+# History
+#
+# 05/14/2009	lec
+#	- TR 7493/gene trap less filling
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MGI_NoteType_Derivation_View
+as
+select *
+from MGI_NoteType
+where _MGIType_key = 36
+
+
+
+;
+
+EOSQL

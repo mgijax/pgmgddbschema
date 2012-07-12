@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#
+# History
+#
+# 05/13/2002	lec
+#	- TR 1463; SAO
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.MGI_NoteType ADD PRIMARY KEY (_NoteType_key);
+
+
+ALTER TABLE mgd.MGI_Note ADD FOREIGN KEY (_NoteType_key) REFERENCES mgd.MGI_NoteType;
+
+
+EOSQL

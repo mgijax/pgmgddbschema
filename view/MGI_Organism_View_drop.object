@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#
+# History
+#
+# 08/14/2002	lec
+#	- TR 1463; renamed Species to Organism
+#
+# 05/30/2002	lec
+#	- TR 1463; SAO
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop view mgd.MGI_Organism_View
+
+CASCADE
+;
+EOSQL

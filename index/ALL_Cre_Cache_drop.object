@@ -1,0 +1,30 @@
+#!/bin/sh
+
+#
+# History
+#
+# 03/31/2011	lec
+#	- TR10658/add _Cache_key
+#
+# 09/03/2009	lec
+#	- TR 9797/Cre; new
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index mgd.ALL_Cre_Cache_idx_clustered
+;
+
+drop index mgd.ALL_Cre_Cache_idx_Allele_key
+;
+
+drop index mgd.ALL_Cre_Cache_idx_CreatedBy_key
+;
+
+drop index mgd.ALL_Cre_Cache_idx_ModifiedBy_key
+;
+
+EOSQL

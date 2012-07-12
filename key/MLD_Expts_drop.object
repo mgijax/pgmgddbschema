@@ -1,0 +1,49 @@
+#!/bin/sh
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.RI_Summary_Expt_Ref DROP CONSTRAINT RI_Summary_Expt_Ref__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_Statistics DROP CONSTRAINT MLD_Statistics__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_RIData DROP CONSTRAINT MLD_RIData__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_RI2Point DROP CONSTRAINT MLD_RI2Point__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_RI DROP CONSTRAINT MLD_RI__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_PhysMap DROP CONSTRAINT MLD_PhysMap__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_MCDataList DROP CONSTRAINT MLD_MCDataList__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_MC2point DROP CONSTRAINT MLD_MC2point__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_Matrix DROP CONSTRAINT MLD_Matrix__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_ISRegion DROP CONSTRAINT MLD_ISRegion__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_InSitu DROP CONSTRAINT MLD_InSitu__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_Hybrid DROP CONSTRAINT MLD_Hybrid__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_Hit DROP CONSTRAINT MLD_Hit__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_FISH_Region DROP CONSTRAINT MLD_FISH_Region__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_FISH DROP CONSTRAINT MLD_FISH__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_Expt_Notes DROP CONSTRAINT MLD_Expt_Notes__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_Expt_Marker DROP CONSTRAINT MLD_Expt_Marker__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_Distance DROP CONSTRAINT MLD_Distance__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_Concordance DROP CONSTRAINT MLD_Concordance__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_Contig DROP CONSTRAINT MLD_Contig__Expt_key_fkey CASCADE;
+ALTER TABLE mgd.MLD_Expts DROP CONSTRAINT MLD_Expts_pkey CASCADE;
+
+EOSQL

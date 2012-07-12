@@ -1,0 +1,42 @@
+#!/bin/sh
+
+#
+# History
+#
+# 05/17/2002    lec
+#       - TR 1463; SAO
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index mgd.NOM_Marker_idx_clustered
+;
+
+drop index mgd.NOM_Marker_idx_Marker_Type_key
+;
+
+drop index mgd.NOM_Marker_idx_NomenStatus_key
+;
+
+drop index mgd.NOM_Marker_idx_Marker_Event_key
+;
+
+drop index mgd.NOM_Marker_idx_Marker_EventReason_key
+;
+
+drop index mgd.NOM_Marker_idx_BroadcastBy_key
+;
+
+drop index mgd.NOM_Marker_idx_broadcast_date
+;
+
+drop index mgd.NOM_Marker_idx_CreatedBy_key
+;
+
+drop index mgd.NOM_Marker_idx_ModifiedBy_key
+;
+
+EOSQL

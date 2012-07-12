@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# HISTORY
+#	5/1/08 - jsb - TR8747, removed redundant index
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index mgd.GXD_Expression_idx_clustered
+;
+
+drop index mgd.GXD_Expression_idx_Assay_key
+;
+
+drop index mgd.GXD_Expression_idx_Refs_key
+;
+
+drop index mgd.GXD_Expression_idx_AssayType_key
+;
+
+drop index mgd.GXD_Expression_idx_Genotype_key
+;
+
+drop index mgd.GXD_Expression_idx_Structure_key
+;
+
+EOSQL

@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#
+# History
+#
+# 03/31/2011	lec
+#	- new
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.VOC_Allele_Cache ADD PRIMARY KEY (_Term_key, _Allele_key);
+
+
+EOSQL

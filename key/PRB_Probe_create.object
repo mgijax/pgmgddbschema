@@ -1,0 +1,45 @@
+#!/bin/sh
+
+#
+# History
+#
+# 05/13/2002	lec
+#	- TR 1463; SAO
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.PRB_Probe ADD PRIMARY KEY (_Probe_key);
+
+
+ALTER TABLE mgd.PRB_Marker ADD FOREIGN KEY (_Probe_key) REFERENCES mgd.PRB_Probe ON DELETE CASCADE;
+
+
+ALTER TABLE mgd.PRB_Notes ADD FOREIGN KEY (_Probe_key) REFERENCES mgd.PRB_Probe ON DELETE CASCADE;
+
+
+ALTER TABLE mgd.PRB_Reference ADD FOREIGN KEY (_Probe_key) REFERENCES mgd.PRB_Probe ON DELETE CASCADE;
+
+
+ALTER TABLE mgd.SEQ_Probe_Cache ADD FOREIGN KEY (_Probe_key) REFERENCES mgd.PRB_Probe ON DELETE CASCADE;
+
+
+ALTER TABLE mgd.GXD_ProbePrep ADD FOREIGN KEY (_Probe_key) REFERENCES mgd.PRB_Probe;
+
+
+ALTER TABLE mgd.MLD_ContigProbe ADD FOREIGN KEY (_Probe_key) REFERENCES mgd.PRB_Probe;
+
+
+ALTER TABLE mgd.MLD_Hit ADD FOREIGN KEY (_Probe_key) REFERENCES mgd.PRB_Probe;
+
+
+ALTER TABLE mgd.MLD_Hit ADD FOREIGN KEY (_Target_key) REFERENCES mgd.PRB_Probe;
+
+
+ALTER TABLE mgd.PRB_Probe ADD FOREIGN KEY (derivedFrom) REFERENCES mgd.PRB_Probe;
+
+
+EOSQL

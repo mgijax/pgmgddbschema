@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by revengineer_schema.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.VOC_Text_View
+as
+select t._Term_key, t.sequenceNum, rtrim(t.note) as note, t.creation_date, t.modification_date,
+v._Vocab_key, v.sequenceNum as termsequenceNum
+from VOC_Text t, VOC_Term v
+where t._Term_key = v._Term_key
+
+
+
+;
+
+EOSQL

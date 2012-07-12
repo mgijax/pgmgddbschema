@@ -1,0 +1,24 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MRK_Acc_View
+as
+select a.*, l.name as LogicalDB, m._Organism_key
+from ACC_Accession a, ACC_LogicalDB l, MRK_Marker m
+where a._MGIType_key = 2
+and a._LogicalDB_key = l._LogicalDB_key
+and a._Object_key = m._Marker_key
+
+
+
+;
+
+EOSQL

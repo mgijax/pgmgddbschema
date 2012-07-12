@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.GXD_AntibodyClass ADD PRIMARY KEY (_AntibodyClass_key);
+
+
+ALTER TABLE mgd.GXD_Antibody ADD FOREIGN KEY (_AntibodyClass_key) REFERENCES mgd.GXD_AntibodyClass;
+
+
+EOSQL

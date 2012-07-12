@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+# 07/12/2011 - lec - index -> WKS_Rosetta_idx for consistency
+# 07/31/2003	lec
+#	- TR 4832
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index WKS_Rosetta_idx_clustered on mgd.WKS_Rosetta (_Marker_key);
+
+
+
+EOSQL

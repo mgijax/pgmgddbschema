@@ -1,0 +1,9 @@
+#!/bin/sh
+#
+# History
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+ALTER TABLE mgd.MRK_Location_Cache DROP CONSTRAINT MRK_Location_Cache_pkey CASCADE;
+
+EOSQL

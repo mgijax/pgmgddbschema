@@ -1,0 +1,44 @@
+#!/bin/sh
+
+#
+# History
+#
+# 05/13/2002	lec
+#	- TR 1463; SAO; replaced PRB_Species w/ MGI_Species
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.PRB_Source_View
+as
+select p.*, 
+c.commonName as organism,  
+s.strain, s.standard as sStandard, 
+t.tissue, t.standard as tStandard,
+v1.term as gender,
+v2.term as cellLine,
+v3.term as segmentType,
+v4.term as vectorType,
+u1.login as createdBy,
+u2.login as modifiedBy
+from PRB_Source p, MGI_Organism c, PRB_Strain s, PRB_Tissue t,
+VOC_Term v1, VOC_Term v2, VOC_Term v3, VOC_Term v4,
+MGI_User u1, MGI_User u2
+where p._Organism_key = c._Organism_key
+and p._Strain_key = s._Strain_key 
+and p._Tissue_key = t._Tissue_key 
+and p._Gender_key = v1._Term_key
+and p._CellLine_key = v2._Term_key
+and p._SegmentType_key = v3._Term_key
+and p._Vector_key = v4._Term_key
+and p._CreatedBy_key = u1._User_key
+and p._ModifiedBy_key = u2._User_key
+
+
+
+;
+
+EOSQL

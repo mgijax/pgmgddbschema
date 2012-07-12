@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/03/2009    lec
+#       - TR9797 Cre; add system key
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index mgd.GXD_TheilerStage_idx_defaultSystem_key
+;
+
+EOSQL

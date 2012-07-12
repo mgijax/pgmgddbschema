@@ -1,0 +1,14 @@
+#!/bin/csh -f -x
+
+#
+# Logical Group Script
+#
+# Executes all SEQ*_create.object scripts
+#
+
+cd `dirname $0`
+
+foreach i (SEQ*_create.object)
+$i $*
+end
+

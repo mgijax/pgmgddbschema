@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 07/23/2002 lec
+#	- TR 3802
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+truncate table mgd.GXD_AlleleGenotype
+
+;
+EOSQL

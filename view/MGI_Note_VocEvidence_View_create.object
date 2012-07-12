@@ -1,0 +1,27 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/18/2003	lec
+#	- TR 4579; SAO
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MGI_Note_VocEvidence_View
+as
+select n.*, t.noteType, c.note, c.sequenceNum
+from MGI_Note n, MGI_NoteType t, MGI_NoteChunk c
+where n._NoteType_key = t._NoteType_key
+and t._MGIType_key = 25
+and n._Note_key = c._Note_key
+
+
+
+;
+
+EOSQL

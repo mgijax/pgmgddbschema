@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+# 07/12/2011 - lec - index -> idx for consistency
+# 04/22/2008 - jsb - restructured indexes for performance (MGI 4.B)
+# 04/17/2003 - lec - MGI 2.96
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index mgd.MGI_Set_idx_clustered
+;
+
+drop index mgd.MGI_Set_idx_name
+;
+
+EOSQL

@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/15/2005	lec
+#	- TR 7194
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.ALL_Knockout_Cache ADD PRIMARY KEY (_Knockout_key);
+
+
+EOSQL

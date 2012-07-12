@@ -1,0 +1,37 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/29/2004	lec
+#	- TR 5686
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index MGI_Synonym_idx_Object_key on mgd.MGI_Synonym (_Object_key);
+
+
+create index MGI_Synonym_idx_MGIType_key on mgd.MGI_Synonym (_MGIType_key);
+
+
+create index MGI_Synonym_idx_SynonymType_key on mgd.MGI_Synonym (_SynonymType_key);
+
+
+create index MGI_Synonym_idx_Refs_key on mgd.MGI_Synonym (_Refs_key);
+
+
+create index MGI_Synonym_idx_synonym on mgd.MGI_Synonym (synonym);
+
+
+create index MGI_Synonym_idx_CreatedBy_key on mgd.MGI_Synonym (_CreatedBy_key);
+
+
+create index MGI_Synonym_idx_ModifiedBy_key on mgd.MGI_Synonym (_ModifiedBy_key);
+
+
+
+EOSQL

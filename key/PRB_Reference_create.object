@@ -1,0 +1,24 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.PRB_Reference ADD PRIMARY KEY (_Reference_key);
+
+
+ALTER TABLE mgd.PRB_Alias ADD FOREIGN KEY (_Reference_key) REFERENCES mgd.PRB_Reference ON DELETE CASCADE;
+
+
+ALTER TABLE mgd.PRB_RFLV ADD FOREIGN KEY (_Reference_key) REFERENCES mgd.PRB_Reference ON DELETE CASCADE;
+
+
+ALTER TABLE mgd.PRB_Ref_Notes ADD FOREIGN KEY (_Reference_key) REFERENCES mgd.PRB_Reference ON DELETE CASCADE;
+
+
+EOSQL

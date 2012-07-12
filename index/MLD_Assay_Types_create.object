@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create unique index MLD_Assay_Types_idx_description on mgd.MLD_Assay_Types (description);
+
+
+
+EOSQL

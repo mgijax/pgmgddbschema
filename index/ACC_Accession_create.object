@@ -1,0 +1,42 @@
+#!/bin/sh
+
+# HISTORY
+#
+# 01/04/2012	lec
+#	- re-arrange object/mgi_type to mgi_type/object per postgres results
+#
+# 09/16/2008 - jsb - removed ACC_Accession_idx_Object_key (TR 9037); made 
+#	ACC_Accession_idx_Object_MGIType_key the index
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index ACC_Accession_idx_clustered on mgd.ACC_Accession (_Object_key, _MGIType_key);
+
+
+create index ACC_Accession_idx_LogicalDB_key on mgd.ACC_Accession (_LogicalDB_key);
+
+
+create index ACC_Accession_idx_MGIType_key on mgd.ACC_Accession (_MGIType_key);
+
+
+create index ACC_Accession_idx_accID on mgd.ACC_Accession (accID);
+
+
+create index ACC_Accession_idx_numericPart on mgd.ACC_Accession (numericPart);
+
+
+create index ACC_Accession_idx_prefixPart on mgd.ACC_Accession (prefixPart);
+
+
+create index ACC_Accession_idx_CreatedBy_key on mgd.ACC_Accession (_CreatedBy_key);
+
+
+create index ACC_Accession_idx_ModifiedBy_key on mgd.ACC_Accession (_ModifiedBy_key);
+
+
+
+EOSQL

@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 04/03/2003	lec
+#	- TR 3608; MGI 2.96
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop view mgd.MGI_NoteType_MRKGO_View
+
+CASCADE
+;
+EOSQL

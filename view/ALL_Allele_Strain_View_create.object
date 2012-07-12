@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# HISTORY
+#   10/02/2008 - jsb - added for gene trap LF (TR7493) release
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.ALL_Allele_Strain_View
+as
+select a.*, t.term as alleleType,
+    case
+	when t.term = 'QTL' then 'Strain of Specimen'
+	when t.term != 'QTL' then 'Strain of Origin'
+    end as strainAssocType
+from ALL_Allele a, VOC_Term t
+where a._Allele_Type_key = t._Term_key
+
+
+;
+
+EOSQL

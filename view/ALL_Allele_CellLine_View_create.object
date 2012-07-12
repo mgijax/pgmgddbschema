@@ -1,0 +1,78 @@
+#!/bin/sh
+
+#
+# History
+#
+# 10/27/2009 lec
+#	- TR9918; see notes below...
+#
+#	  note that this view is selecting 
+#         the 'mutant cell line strain' (cellLineStrain_key, cellLineStrain)
+#         but not the 'parent cell line strain'
+#	  because it is doing an outer-join to its parent cell line
+#
+#	  however, it seems that the outer-join can be removed
+#	  because a mutant cell line will always have a
+#	  parent cell line (the PCL can equal 'Not Specified')
+#
+#	  in which case, both parentCellLineStrain_key and 
+#	  parentCellLineStrain can be added to this view.
+#
+#	  the EI Allele module uses this view to display
+#	  its 'parent cell line strain', and is grabbing
+#	  that info from the 'mutant cell line strain'.
+#
+# 09/01/2009 lec
+#	- TR9801/add creator, vector
+#
+# 03/03/2009 lec
+#	- TR7493/gene trap less filling
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.ALL_Allele_CellLine_View
+as
+select a.*, c.cellLine, c.isMutant,
+	p._Strain_key as cellLineStrain_key,
+	s.strain as cellLineStrain, 
+	d._Creator_key,
+	vd1.term as creator,
+	d._Vector_key,
+	vd2.term as vector,
+	p._CellLine_key as parentCellLine_key,
+	p.cellLine as parentCellLine,
+	c._Derivation_key as derivationKey,
+	d.name as derivationName,
+	p._CellLine_Type_key as parentCellLineType_key,
+	aa.symbol,
+	u1.login as createdBy,  
+	u2.login as modifiedBy
+from ALL_Allele_CellLine a,
+     ALL_CellLine c,
+     ALL_CellLine_Derivation d,
+     ALL_CellLine p,
+     ALL_Allele aa,
+     PRB_Strain s,
+     VOC_Term vd1,
+     VOC_Term vd2,
+     MGI_User u1,
+     MGI_User u2
+where a._MutantCellLine_key = c._CellLine_key
+and a._Allele_key = aa._Allele_key
+and c._Derivation_key = d._Derivation_key
+and d._Creator_key = vd1._Term_key
+and d._Vector_key = vd2._Term_key
+and d._ParentCellLine_key = p._CellLine_key
+and p._Strain_key = s._Strain_key
+and a._CreatedBy_key = u1._User_key
+and a._ModifiedBy_key = u2._User_key
+
+
+
+;
+
+EOSQL

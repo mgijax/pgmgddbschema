@@ -1,0 +1,46 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/27/2003	lec
+#	- SAO
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.PRB_Tissue_Summary_View
+as
+select a._Accession_key, 
+       a.accID, 
+       a.prefixPart, 
+       a.numericPart, 
+       a._LogicalDB_key, 
+       t._Tissue_key as _Object_key, 
+       a._MGIType_key, 
+       a.private, 
+       a.preferred, 
+       a.creation_date, 
+       a.modification_date,
+       a2.accID as mgiID,
+       a2.accID as subType,
+       t.tissue as description,
+       t.tissue as short_description
+from PRB_Tissue t
+     LEFT OUTER JOIN ACC_Accession a on (t._Tissue_key = a._Object_key
+		and a._MGIType_key = 24
+		and a.preferred = 1)
+     LEFT OUTER JOIN ACC_Accession a2 on (a._Object_key = a2._Object_key
+		and a2._LogicalDB_key = 1
+		and a2._MGIType_key = 24
+		and a2.prefixPart = 'MGI:'
+		and a2.preferred = 1)
+
+
+
+;
+
+EOSQL

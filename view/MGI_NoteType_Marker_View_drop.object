@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/22/2006	lec
+#	- TR 8115
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop view mgd.MGI_NoteType_Marker_View
+
+CASCADE
+;
+EOSQL

@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#
+# History
+#	10/23/07 - jsb - added for Home Page (MGI 4.0) release, TR 8087
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.MGI_StatisticSql ADD PRIMARY KEY (_Statistic_key, sequenceNum);
+
+
+EOSQL

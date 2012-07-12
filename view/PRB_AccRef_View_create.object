@@ -1,0 +1,30 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/10/2012	lec
+#	- add _MGIType_key = 3
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.PRB_AccRef_View
+as
+select a.*, l.name as LogicalDB, m.name as MGIType, r._Reference_key
+from ACC_Accession a, ACC_LogicalDB l, ACC_MGIType m, ACC_AccessionReference ar, PRB_Reference r
+where a._MGIType_key = 3
+and a._Accession_key = ar._Accession_key
+and a._LogicalDB_key = l._LogicalDB_key
+and a._MGIType_key = m._MGIType_key
+and a._Object_key = r._Probe_key
+and ar._Refs_key = r._Refs_key
+
+
+
+;
+
+EOSQL

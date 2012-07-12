@@ -1,0 +1,34 @@
+#!/bin/sh
+
+#
+# History
+#
+# 10/19/2006	lec
+#	- TR 6812; added VOC_GO_Cache
+#
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.DAG_DAG ADD PRIMARY KEY (_DAG_key);
+
+
+ALTER TABLE mgd.DAG_Closure ADD FOREIGN KEY (_DAG_key) REFERENCES mgd.DAG_DAG;
+
+
+ALTER TABLE mgd.DAG_Edge ADD FOREIGN KEY (_DAG_key) REFERENCES mgd.DAG_DAG;
+
+
+ALTER TABLE mgd.DAG_Node ADD FOREIGN KEY (_DAG_key) REFERENCES mgd.DAG_DAG;
+
+
+ALTER TABLE mgd.VOC_GO_Cache ADD FOREIGN KEY (_DAG_key) REFERENCES mgd.DAG_DAG;
+
+
+ALTER TABLE mgd.VOC_VocabDAG ADD FOREIGN KEY (_DAG_key) REFERENCES mgd.DAG_DAG;
+
+
+EOSQL

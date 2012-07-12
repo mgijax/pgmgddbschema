@@ -1,0 +1,35 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/20/2010	lec
+#	- TR9560/remove GXD_LableCoverage
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.GXD_ProbePrep_View
+as
+select a._Assay_key, pp.*, s.sense, l.label, v.visualization, p.name as probeName, ac.accID
+from GXD_Assay a, GXD_ProbePrep pp, GXD_ProbeSense s, GXD_Label l, GXD_VisualizationMethod v,
+PRB_Probe p, ACC_Accession ac
+where a._ProbePrep_key = pp._ProbePrep_key
+and pp._Sense_key = s._Sense_key
+and pp._Label_key = l._Label_key
+and pp._Visualization_key = v._Visualization_key
+and pp._Probe_key = p._Probe_key
+and p._Probe_key = ac._Object_key
+and ac._MGIType_key = 3
+and ac._LogicalDB_key = 1
+and ac.prefixPart = 'MGI:'
+and ac.preferred = 1
+
+
+
+;
+
+EOSQL

@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# Logical Group Script
+#
+# Executes all MRK*_truncate.object scripts
+#
+
+cd `dirname $0`
+
+for i in MRK*_truncate.object
+do
+$i $*
+done
+

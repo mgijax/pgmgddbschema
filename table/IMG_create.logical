@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# Logical Group Script
+#
+# Executes all IMG*_create.object scripts
+#
+
+cd `dirname $0`
+
+for i in IMG*_create.object
+do
+$i $*
+done
+

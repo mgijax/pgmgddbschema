@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/12/2002	lec
+#	- TR 1463; SAO
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.MGI_TranslationType ADD PRIMARY KEY (_TranslationType_key);
+
+
+ALTER TABLE mgd.MGI_Translation ADD FOREIGN KEY (_TranslationType_key) REFERENCES mgd.MGI_TranslationType;
+
+
+EOSQL

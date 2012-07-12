@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.GXD_InSituResult_View
+as
+select r.*, s.strength, p.pattern
+from GXD_InSituResult r, GXD_Strength s, GXD_Pattern p
+where r._Strength_key = s._Strength_key
+and r._Pattern_key = p._Pattern_key
+
+
+
+;
+
+EOSQL

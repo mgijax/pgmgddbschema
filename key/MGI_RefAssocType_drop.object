@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# History
+#
+# 05/13/2002	lec
+#	- TR 1463; SAO
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.MGI_Reference_Assoc DROP CONSTRAINT MGI_Reference_Assoc__RefAssocType_key_fkey CASCADE;
+ALTER TABLE mgd.MGI_RefAssocType DROP CONSTRAINT MGI_RefAssocType_pkey CASCADE;
+
+EOSQL

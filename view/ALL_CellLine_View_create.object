@@ -1,0 +1,52 @@
+#!/bin/sh
+
+#
+# History
+#
+# 07/14/2011	lec
+#	- convert to ansi outer join
+#
+#    10/30/08 - jsb - altered to use the derivation's creator as the provider
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.ALL_CellLine_View
+as
+select c.*,
+	vt.term as cellLineType,
+	s1.strain as cellLineStrain, 
+	d._Creator_key,
+	vt1.term as creator,
+	p._CellLine_key as parentCellLine_key,
+	p.cellLine as parentCellLine,
+	d.name as derivationName,
+	d._DerivationType_key,
+	d._Vector_key,
+	vt2.term as vector,
+	d._VectorType_key,
+	vt3.term as vectorType,
+	p._Strain_key as parentCellLineStrain_key,
+	s2.strain as parentCellLineStrain,
+	u1.login as createdBy, 
+	u2.login as modifiedBy
+from ALL_CellLine c 
+	INNER JOIN VOC_Term vt on (c._CellLine_Type_key = vt._Term_key)
+	INNER JOIN PRB_Strain s1 on (c._Strain_key = s1._Strain_key)
+        INNER JOIN MGI_User u1 on (c._CreatedBy_key = u1._User_key)
+        INNER JOIN MGI_User u2 on (c._ModifiedBy_key = u2._User_key)
+	LEFT OUTER JOIN ALL_CellLine_Derivation d on (c._Derivation_key = d._Derivation_key)
+	LEFT OUTER JOIN VOC_Term vt1 on (d._Creator_key = vt1._Term_key)
+     	LEFT OUTER JOIN VOC_Term vt2 on (d._Vector_key = vt2._Term_key)
+     	LEFT OUTER JOIN VOC_Term vt3 on (d._Vector_key = vt3._Term_key)
+     	LEFT OUTER JOIN ALL_CellLine p on (d._ParentCellLine_key = p._CellLine_key)
+     	LEFT OUTER JOIN PRB_Strain s2 on (p._Strain_key = s2._Strain_key)
+
+
+
+;
+
+EOSQL

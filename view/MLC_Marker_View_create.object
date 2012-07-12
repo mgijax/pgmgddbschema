@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MLC_Marker_View
+as
+select m.*, m1.symbol, m2.symbol as tagSymbol 
+from MLC_Marker m, MRK_Marker m1, MRK_Marker m2
+where m._Marker_key = m1._Marker_key
+and m._Marker_key_2 = m2._Marker_key
+
+
+
+;
+
+EOSQL

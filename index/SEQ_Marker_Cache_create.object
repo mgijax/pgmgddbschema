@@ -1,0 +1,57 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/16/2010	lec
+#	- TR 9239; add SEQ_Marker_Cache_idx_BiotypeConflict_key
+#
+# 09/16/2008 - jsb - removed SEQ_Marker_Cache_idx_Sequence_key (TR 9037); added _Sequence_key
+# 	to SEQ_Marker_Cache_idx_Marker_key (TR 9062)
+# 05/13/2002	lec
+#	- TR 1463; SAO
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index SEQ_Marker_Cache_idx_clustered on mgd.SEQ_Marker_Cache (_Sequence_key, _Marker_key, _Refs_key);
+
+
+create index SEQ_Marker_Cache_idx_Marker_key on mgd.SEQ_Marker_Cache (_Marker_key, _Sequence_key);
+
+
+create index SEQ_Marker_Cache_idx_Organism_key on mgd.SEQ_Marker_Cache (_Organism_key);
+
+
+create index SEQ_Marker_Cache_idx_Refs_key on mgd.SEQ_Marker_Cache (_Refs_key);
+
+
+create index SEQ_Marker_Cache_idx_SequenceProvider_key on mgd.SEQ_Marker_Cache (_SequenceProvider_key);
+
+
+create index SEQ_Marker_Cache_idx_SequenceType_key on mgd.SEQ_Marker_Cache (_SequenceType_key);
+
+
+create index SEQ_Marker_Cache_idx_LogicalDB_key on mgd.SEQ_Marker_Cache (_LogicalDB_key);
+
+
+create index SEQ_Marker_Cache_idx_Qualifier_key on mgd.SEQ_Marker_Cache (_Qualifier_key);
+
+
+create index SEQ_Marker_Cache_idx_Marker_Type_key on mgd.SEQ_Marker_Cache (_Marker_Type_key);
+
+
+create index SEQ_Marker_Cache_idx_BiotypeConflict_key on mgd.SEQ_Marker_Cache (_BiotypeConflict_key);
+
+
+create index SEQ_Marker_Cache_idx_accID on mgd.SEQ_Marker_Cache (accID);
+
+
+create index SEQ_Marker_Cache_idx_annotation_date on mgd.SEQ_Marker_Cache (annotation_date);
+
+
+
+EOSQL

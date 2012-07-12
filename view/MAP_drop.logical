@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# Logical Group Script
+#
+# Executes all MAP*_drop.object scripts
+#
+
+cd `dirname $0` && . ./Configuration
+
+for i in MAP*_drop.object
+do
+$i $*
+done
+

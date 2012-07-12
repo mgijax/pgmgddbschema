@@ -1,0 +1,35 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/16/2008 - jsb - removed MGI_Reference_Assoc_idx_Refs_key (TR 9037)
+# 05/13/2002	lec
+#	- TR 1463; SAO
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create unique index MGI_Reference_Assoc_idx_clustered on mgd.MGI_Reference_Assoc (_Refs_key, _Object_key, _MGIType_key, _RefAssocType_key);
+
+
+create index MGI_Reference_Assoc_idx_Object_key on mgd.MGI_Reference_Assoc (_Object_key);
+
+
+create index MGI_Reference_Assoc_idx_MGIType_key on mgd.MGI_Reference_Assoc (_MGIType_key);
+
+
+create index MGI_Reference_Assoc_idx_RefAssocType_key on mgd.MGI_Reference_Assoc (_RefAssocType_key);
+
+
+create index MGI_Reference_Assoc_idx_CreatedBy_key on mgd.MGI_Reference_Assoc (_CreatedBy_key);
+
+
+create index MGI_Reference_Assoc_idx_ModifiedBy_key on mgd.MGI_Reference_Assoc (_ModifiedBy_key);
+
+
+
+EOSQL

@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# lec   12/14/2010
+#       - TR10456/10457; add accession ids
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop view mgd.GXD_Structure_Acc_View
+
+CASCADE
+;
+EOSQL

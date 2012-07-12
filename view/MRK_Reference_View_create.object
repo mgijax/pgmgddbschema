@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MRK_Reference_View
+as
+select r.*, m.symbol, b.short_citation, b.isReviewArticle
+from MRK_Reference r, MRK_Marker m, BIB_View b
+where r._Marker_key = m._Marker_key
+and r._Refs_key = b._Refs_key
+
+
+
+;
+
+EOSQL

@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# HISTORY
+#    04/20/2010 - jsb - added when adding alleles to search tool
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index mgd.VOC_Allele_Cache_idx_Allele_key
+;
+
+drop index mgd.VOC_Allele_Cache_idx_annotType
+;
+
+EOSQL

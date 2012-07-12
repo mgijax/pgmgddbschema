@@ -1,0 +1,27 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/28/2003 lec
+#	- TR 1463 (SAO)
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MGI_TranslationType_View
+as
+select t.*, a.name, a.tableName, a.primaryKeyName, a.identityColumnName,
+u1.login as createdBy, u2.login as modifiedBy
+from MGI_TranslationType t, ACC_MGIType a, MGI_User u1, MGI_User u2
+where t._MGIType_key = a._MGIType_key
+and t._CreatedBy_key = u1._User_key
+and t._ModifiedBy_key = u2._User_key
+
+
+;
+
+EOSQL

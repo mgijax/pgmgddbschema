@@ -1,0 +1,39 @@
+#!/bin/sh
+
+#
+# History
+#
+# 08/14/2002    lec
+#       - TR 1463; SAO; _Species_key renamed to _Organism_key
+#
+# 05/13/2002	lec
+#	- TR 1463; SAO; _ProbeSpecies_key renamed to _Species_key
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.PRB_Source (
+ 	_Source_key                    int             not null,
+	_SegmentType_key               int             not null,
+	_Vector_key                    int             not null,
+	_Organism_key                  int             not null,
+	_Strain_key                    int             not null,
+	_Tissue_key                    int             not null,
+	_Gender_key                    int             not null,
+	_CellLine_key                  int             not null,
+	_Refs_key                      int             null,
+	name                           varchar(255)    null,
+	description                    varchar(255)    null,
+	age                            varchar(50)     not null,
+	ageMin                         float           not null,
+	ageMax                         float           not null,
+	isCuratorEdited                smallint             not null,
+	_CreatedBy_key                 int             not null,
+	_ModifiedBy_key                int             not null,
+	creation_date                  timestamp DEFAULT now()        not null,
+	modification_date              timestamp DEFAULT now()        not null 
+);
+EOSQL

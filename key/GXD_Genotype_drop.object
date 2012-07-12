@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# History
+#
+# 07/23/2002
+#       - TR 3802
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.PRB_Strain_Genotype DROP CONSTRAINT PRB_Strain_Genotype__Genotype_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_OMIM_Cache DROP CONSTRAINT MRK_OMIM_Cache__Genotype_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_AllelePair DROP CONSTRAINT GXD_AllelePair__Genotype_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_AlleleGenotype DROP CONSTRAINT GXD_AlleleGenotype__Genotype_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__Genotype_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_Specimen DROP CONSTRAINT GXD_Specimen__Genotype_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_GelLane DROP CONSTRAINT GXD_GelLane__Genotype_key_fkey CASCADE;
+ALTER TABLE mgd.GXD_Genotype DROP CONSTRAINT GXD_Genotype_pkey CASCADE;
+
+EOSQL

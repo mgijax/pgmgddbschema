@@ -1,0 +1,25 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index GXD_Genotype_idx_CreatedBy_key on mgd.GXD_Genotype (_CreatedBy_key);
+
+
+create index GXD_Genotype_idx_ModifiedBy_key on mgd.GXD_Genotype (_ModifiedBy_key);
+
+
+create index GXD_Genotype_idx_Strain_key on mgd.GXD_Genotype (_Strain_key);
+
+
+create index GXD_Genotype_idx_ExistsAs_key on mgd.GXD_Genotype (_ExistsAs_key);
+
+
+
+EOSQL

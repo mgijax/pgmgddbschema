@@ -1,0 +1,30 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.PRB_Probe (
+ 	_Probe_key                     int             not null,
+	name                           varchar(40)     not null,
+	derivedFrom                    int             null,
+	_Source_key                    int             not null,
+	_Vector_key                    int             not null,
+	_SegmentType_key               int             not null,
+	primer1sequence                varchar(80)     null,
+	primer2sequence                varchar(80)     null,
+	regionCovered                  varchar(255)    null,
+	insertSite                     varchar(30)     null,
+	insertSize                     varchar(30)     null,
+	productSize                    varchar(40)     null,
+	_CreatedBy_key                 int             not null,
+	_ModifiedBy_key                int             not null,
+	creation_date                  timestamp DEFAULT now()        not null,
+	modification_date              timestamp DEFAULT now()        not null 
+);
+EOSQL

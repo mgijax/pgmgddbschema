@@ -1,0 +1,28 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+# 05/27/2009	lec
+#	TT 9665; add assay key
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.GXD_GelBand_View
+as
+select b.*, s.strength, l._Assay_key, l.sequenceNum as laneNum, r.sequenceNum as rowNum
+from GXD_GelBand b, GXD_Strength s, GXD_GelLane l, GXD_GelRow r
+where b._Strength_key = s._Strength_key
+and b._GelLane_key = l._GelLane_key
+and b._GelRow_key = r._GelRow_key
+and r._Assay_key = l._Assay_key
+
+
+
+;
+
+EOSQL

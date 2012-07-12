@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#
+# History
+#
+# 04/04/2011	lec
+#	- TR 10658/add _Cache_key
+#
+# 05/13/2002	lec
+#	- TR 1463; SAO
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.SEQ_Marker_Cache ADD PRIMARY KEY (_Cache_key);
+
+
+EOSQL

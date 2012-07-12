@@ -1,0 +1,26 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.PRB_Strain_View
+as
+select s.*, sp.term as species, st.term as strainType,
+u1.login as createdBy, u2.login as modifiedBy
+from PRB_Strain s, VOC_Term sp, VOC_Term st, MGI_User u1, MGI_User u2
+where s._Species_key = sp._Term_key
+and s._StrainType_key = st._Term_key
+and s._CreatedBy_key = u1._User_key
+and s._ModifiedBy_key = u2._User_key
+
+
+
+;
+
+EOSQL

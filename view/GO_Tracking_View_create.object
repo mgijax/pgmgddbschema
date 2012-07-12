@@ -1,0 +1,29 @@
+#!/bin/sh
+
+#
+# History
+#
+# 07/14/2011	lec
+#	- convert to ansi outer join
+#
+# 10/23/2006	lec
+#	- TR 7533
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.GO_Tracking_View
+as
+select g.*,
+u.login as completedBy
+from GO_Tracking g
+	LEFT OUTER JOIN MGI_User u on (g._CompletedBy_key = u._User_key)
+
+
+
+;
+
+EOSQL

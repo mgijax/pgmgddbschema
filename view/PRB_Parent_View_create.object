@@ -1,0 +1,39 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.PRB_Parent_View
+as
+select p._Probe_key, p.name, a.accID,
+a.prefixPart as accPrefix, 
+a.numericPart as accNumeric,
+p2._Probe_key as parentKey, 
+p2.name as parentClone,
+a2.accID as parentID, 
+a2.prefixPart as parentPrefix, 
+a2.numericPart as parentNumeric
+from PRB_Probe p, ACC_Accession a, PRB_Probe p2, ACC_Accession a2
+where p._Probe_key = a._Object_key
+and a._MGIType_key = 3
+and a._LogicalDB_key = 1
+and a.prefixPart = 'MGI:'
+and a.preferred = 1
+and p.derivedFrom = p2._Probe_key
+and p2._Probe_key = a2._Object_key
+and a2._MGIType_key = 3
+and a2._LogicalDB_key = 1
+and a2.prefixPart = 'MGI:'
+and a2.preferred = 1
+
+
+
+;
+
+EOSQL

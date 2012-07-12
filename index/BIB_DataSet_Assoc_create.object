@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index BIB_DataSet_Assoc_idx_clustered on mgd.BIB_DataSet_Assoc (_Refs_key);
+
+
+create index BIB_DataSet_Assoc_idx_DataSet_key on mgd.BIB_DataSet_Assoc (_DataSet_key);
+
+
+
+EOSQL

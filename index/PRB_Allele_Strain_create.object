@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# HISTORY
+#     09/16/2008 - jsb - removed PRB_Allele_Strain_idx_Allele_key (TR 9037)
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index PRB_Allele_Strain_idx_Strain_key on mgd.PRB_Allele_Strain (_Strain_key);
+
+
+create index PRB_Allele_Strain_idx_CreatedBy_key on mgd.PRB_Allele_Strain (_CreatedBy_key);
+
+
+create index PRB_Allele_Strain_idx_ModifiedBy_key on mgd.PRB_Allele_Strain (_ModifiedBy_key);
+
+
+
+EOSQL

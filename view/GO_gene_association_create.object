@@ -1,0 +1,56 @@
+#!/bin/sh
+
+#
+# History
+#
+# 03/26/2012	lec
+#	- views for reports_db/daily/GO_gene_association.py
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.go_gene_association_gomarker1
+as
+
+    SELECT a._term_key, 
+           t.term, 
+           ta.accid as termid, 
+           q.synonym as qualifier, 
+           a._object_key,
+           e._annotevidence_key, 
+           e.inferredfrom, 
+           e.modification_date,
+           e._evidenceterm_key,
+           e._refs_key,
+           e._modifiedby_key,
+           m.symbol, 
+           m.name, 
+           lower(mt.name) as markertype
+    FROM voc_annot a,
+         acc_accession ta,
+         voc_term t,
+         voc_evidence e,
+         mrk_marker m,
+         mrk_types mt,
+         mgi_synonym q
+    WHERE a._annottype_key = 1000
+    AND a._annot_key = e._annot_key
+    AND a._object_key = m._marker_key
+    AND m._marker_type_key = 1
+    AND a._term_key = t._term_key
+    AND a._term_key = ta._object_key
+    AND ta._mgitype_key = 13
+    AND ta.preferred = 1
+    AND m._marker_type_key = mt._marker_type_key
+    AND a._qualifier_key = q._object_key
+    AND q._synonymtype_key = 1023
+    AND m.symbol = 'Zfpm2'
+
+
+
+;
+
+EOSQL

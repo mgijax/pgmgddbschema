@@ -1,0 +1,22 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index MLD_Expts_idx_Refs_key on mgd.MLD_Expts (_Refs_key);
+
+
+create index MLD_Expts_idx_chromosome on mgd.MLD_Expts (chromosome);
+
+
+create index MLD_Expts_idx_exptType on mgd.MLD_Expts (exptType);
+
+
+
+EOSQL

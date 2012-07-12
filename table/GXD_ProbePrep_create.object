@@ -1,0 +1,27 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+# History
+#
+# 01/20/2010	lec
+#	- TR9526/remove _Coverage_key
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.GXD_ProbePrep (
+ 	_ProbePrep_key                 int             not null,
+	_Probe_key                     int             not null,
+	_Sense_key                     int             not null,
+	_Label_key                     int             not null,
+	_Visualization_key             int             not null,
+	type                           varchar(15)     not null,
+	creation_date                  timestamp DEFAULT now()        not null,
+	modification_date              timestamp DEFAULT now()        not null 
+);
+EOSQL

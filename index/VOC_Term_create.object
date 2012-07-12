@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# HISTORY
+#    09/16/2008 - jsb - altered VOC_Term_idx_term to include _Vocab_key and to not be
+#	clustered; added new primary index
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index VOC_Term_idx_clustered on mgd.VOC_Term (_Vocab_key, sequenceNum, term, _Term_key);
+
+
+create index VOC_Term_idx_term on mgd.VOC_Term (term, _Term_key, _Vocab_key);
+
+
+create index VOC_Term_idx_Vocab_key on mgd.VOC_Term (_Vocab_key);
+
+
+create index VOC_Term_idx_CreatedBy_key on mgd.VOC_Term (_CreatedBy_key);
+
+
+create index VOC_Term_idx_ModifiedBy_key on mgd.VOC_Term (_ModifiedBy_key);
+
+
+
+EOSQL

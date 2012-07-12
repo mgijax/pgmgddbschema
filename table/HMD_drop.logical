@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# Logical Group Script
+#
+# Executes all HMD*_drop.object scripts
+#
+
+cd `dirname $0`
+
+for i in HMD*_drop.object
+do
+$i $*
+done
+

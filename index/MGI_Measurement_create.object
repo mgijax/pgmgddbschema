@@ -1,0 +1,24 @@
+#!/bin/sh
+
+#
+# History
+#	10/23/07 - jsb - added for Home Page (MGI 4.0) release, TR 8087
+#
+# While my initial thought was to have a index on mgd.(_Statistic_key,
+# timeRecorded), I will avoid that upon further reflection.  That ordering
+# would force a great deal of row shuffling; new rows would most often need
+# to be added to the middle of the table rather than at the end.  This would
+# be a substantial performance drain.
+#
+
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index MGI_Measurement_idx_isLatest on mgd.MGI_Measurement (isLatest, _Statistic_key);
+
+
+
+EOSQL

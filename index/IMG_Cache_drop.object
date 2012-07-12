@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#
+# History
+#
+# 12/06/2006	lec
+#	- TR 7710
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index mgd.IMG_Cache_idx_clustered
+;
+
+EOSQL

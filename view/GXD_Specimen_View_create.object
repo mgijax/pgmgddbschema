@@ -1,0 +1,24 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.GXD_Specimen_View
+as
+select s.*, e.embeddingMethod, f.fixation, g.strain, g.mgiID
+from GXD_Specimen s, GXD_EmbeddingMethod e, GXD_FixationMethod f, GXD_Genotype_View g
+where s._Embedding_key = e._Embedding_key
+and s._Fixation_key = f._Fixation_key
+and s._Genotype_key = g._Genotype_key
+
+
+
+;
+
+EOSQL

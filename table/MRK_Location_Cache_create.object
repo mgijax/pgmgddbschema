@@ -1,0 +1,42 @@
+#!/bin/sh
+
+#
+#
+# make sure that snpdbschema table is synced up with this table (see snpcacheload)
+#
+# History
+#
+# 08/31/2011	lec
+#	- TR 10805/add _Organism_key; set cmOffset to 'null'
+#
+# 04/04/2011	lec
+#	- TR 10658/add _Cache_key
+#
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.MRK_Location_Cache (
+ 	_Cache_key                 int             not null,
+ 	_Marker_key                int             not null,
+	_Marker_Type_key           int             not null,
+	_Organism_key		   int		   not null,
+        chromosome                 varchar(8)      not null,
+	sequenceNum                int             not null,
+	cytogeneticOffset          varchar(20)     null,
+	cmOffset                     float           null,
+        startCoordinate            float           null,
+        endCoordinate              float           null,
+        strand                     char(1)         null,
+        mapUnits                   varchar(50)     null,
+        provider                   varchar(255)    null,
+        version                    varchar(255)    null,
+	_CreatedBy_key             int             not null,
+	_ModifiedBy_key            int             not null,
+	creation_date              timestamp DEFAULT now()        not null,
+	modification_date          timestamp DEFAULT now()        not null 
+);
+EOSQL

@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# Logical Group Script
+#
+# Executes all GO*_create.object scripts
+#
+
+cd `dirname $0` && . ./Configuration
+
+for i in GO*_create.object
+do
+$i $*
+done
+

@@ -1,0 +1,12 @@
+#!/bin/sh
+#
+# History
+#
+# 07/23/2002
+#       - TR 3802
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+ALTER TABLE mgd.VOC_AnnotHeader DROP CONSTRAINT VOC_AnnotHeader_pkey CASCADE;
+
+EOSQL

@@ -1,0 +1,36 @@
+#!/bin/sh
+
+#
+# Logical Group Script
+#
+# Executes all VOC*_create.object scripts
+#
+
+cd `dirname $0` && . ./Configuration
+
+for i in \
+VOC_Term_Acc_View_create.object \
+VOC_Term_View_create.object \
+VOC_AnnotHeader_View_create.object \
+VOC_Annot_View_create.object \
+VOC_Evidence_View_create.object \
+VOC_EvidenceProperty_View_create.object \
+VOC_InterPro_Summary_View_create.object \
+VOC_Term_CellLine_View_create.object \
+VOC_Term_CurationState_View_create.object \
+VOC_Term_Gender_View_create.object \
+VOC_Term_MCV_View_create.object \
+VOC_Term_NomenStatus_View_create.object \
+VOC_Term_RepQualifier_View_create.object \
+VOC_Term_SegmentType_View_create.object \
+VOC_Term_StrainAllele_View_create.object \
+VOC_Term_StrainSpecies_View_create.object \
+VOC_Term_Summary_View_create.object \
+VOC_Text_View_create.object \
+VOC_Vocab_DAG_Summary_View_create.object \
+VOC_Vocab_Summary_View_create.object \
+VOC_VocabDAG_View_create.object \
+VOC_Vocab_View_create.object
+do
+$i $*
+done

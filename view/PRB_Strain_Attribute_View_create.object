@@ -1,0 +1,28 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.PRB_Strain_Attribute_View
+as
+select va._Annot_key,
+	va._Object_key as _Strain_key,
+	va._Term_key, 
+	vt.term
+from VOC_Annot va, 
+	VOC_AnnotType vat, 
+	VOC_Term vt
+where vat.name = 'Strain/Attributes'
+	and vat._AnnotType_key = va._AnnotType_key
+	and va._Term_key = vt._Term_key
+
+
+;
+
+EOSQL

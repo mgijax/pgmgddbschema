@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.VOC_VocabDAG_View
+as
+select a.*, v.name as vocab, d.name as dag, d.abbreviation as dagAbbrev
+from VOC_VocabDAG a, VOC_Vocab v, DAG_DAG d
+where a._Vocab_key = v._Vocab_key
+and a._DAG_key = d._DAG_key
+
+
+
+;
+
+EOSQL

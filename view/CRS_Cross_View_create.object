@@ -1,0 +1,30 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.CRS_Cross_View
+as
+select c.*, 
+whoseCross || ' [Type ' || type || ' (' || abbrevHO || '/' || abbrevHT || ')]' as display,
+s1.strain as femaleStrain, 
+s2.strain as maleStrain,
+s3.strain as strainHO, 
+s4.strain as strainHT
+from CRS_Cross c, PRB_Strain s1, PRB_Strain s2, PRB_Strain s3, PRB_Strain s4
+where c._femaleStrain_key = s1._Strain_key
+and c._maleStrain_key = s2._Strain_key
+and c._StrainHO_key = s3._Strain_key
+and c._StrainHT_key = s4._Strain_key
+
+
+
+;
+
+EOSQL

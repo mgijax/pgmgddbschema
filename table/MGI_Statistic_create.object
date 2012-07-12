@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#
+# History
+#	10/23/07 - jsb - added for Home Page (MGI 4.0) release, TR 8087
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.MGI_Statistic (
+	_Statistic_key		int		not null,
+	name			varchar(255)	not null,
+	abbreviation		varchar(30)	not null,
+	definition		varchar(255)	null,
+	isPrivate		smallint		not null,
+	hasIntValue		smallint		not null
+);
+EOSQL

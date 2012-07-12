@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# HISTORY
+#    09/16/2008 - jsb - removed idx_MGIType_key (TR 9037)
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index mgd.VOC_AnnotType_idx_MGITypeVocabEvidence
+;
+
+drop index mgd.VOC_AnnotType_idx_Vocab_key
+;
+
+drop index mgd.VOC_AnnotType_idx_EvidenceVocab_key
+;
+
+drop index mgd.VOC_AnnotType_idx_QualifierVocab_key
+;
+
+drop index mgd.VOC_AnnotType_idx_name
+;
+
+EOSQL

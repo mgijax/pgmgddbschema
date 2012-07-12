@@ -1,0 +1,26 @@
+#!/bin/sh
+
+#
+# History
+#
+# lec	12/14/2010
+#	- TR10456/10457; add accession ids
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.GXD_Structure_Acc_View
+as
+select a.*, l.name as LogicalDB
+from ACC_Accession a, ACC_LogicalDB l
+where a._MGIType_key = 38
+and a._LogicalDB_key = l._LogicalDB_key
+
+
+
+;
+
+EOSQL

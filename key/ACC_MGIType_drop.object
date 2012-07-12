@@ -1,0 +1,60 @@
+#!/bin/sh
+#
+# History
+# 09/16/2008 - jsb - added VOC_Annot_Count_Cache
+# 10/17/2006	lec
+#	- TR 7710; add IMG_Image
+#
+# 08/14/2002	lec
+#	- TR 1463; renamed Species to Organism
+#
+# 05/13/2002	lec
+#	- TR 1463; SAO
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.VOC_AnnotType DROP CONSTRAINT VOC_AnnotType__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.VOC_Annot_Count_Cache DROP CONSTRAINT VOC_Annot_Count_Cache__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_TranslationType DROP CONSTRAINT MGI_TranslationType__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_SynonymType DROP CONSTRAINT MGI_SynonymType__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Synonym DROP CONSTRAINT MGI_Synonym__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Set DROP CONSTRAINT MGI_Set__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Reference_Assoc DROP CONSTRAINT MGI_Reference_Assoc__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_RefAssocType DROP CONSTRAINT MGI_RefAssocType__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Organism_MGIType DROP CONSTRAINT MGI_Organism_MGIType__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_NoteType DROP CONSTRAINT MGI_NoteType__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Note DROP CONSTRAINT MGI_Note__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_AttributeHistory DROP CONSTRAINT MGI_AttributeHistory__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.MAP_Coordinate DROP CONSTRAINT MAP_Coordinate__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.MAP_Coord_Feature DROP CONSTRAINT MAP_Coord_Feature__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.IMG_ImagePane_Assoc DROP CONSTRAINT IMG_ImagePane_Assoc__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.IMG_Image DROP CONSTRAINT IMG_Image__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.IMG_Cache DROP CONSTRAINT IMG_Cache__ImageMGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.IMG_Cache DROP CONSTRAINT IMG_Cache__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.DAG_DAG DROP CONSTRAINT DAG_DAG__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.DAG_Closure DROP CONSTRAINT DAG_Closure__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.ACC_Accession DROP CONSTRAINT ACC_Accession__MGIType_key_fkey CASCADE;
+ALTER TABLE mgd.ACC_MGIType DROP CONSTRAINT ACC_MGIType_pkey CASCADE;
+
+EOSQL

@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# HISTORY
+# 07/12/2011 - lec - renamed ALL_CellLine_idx_derivation to ALL_CellLine_idx_Derivation_key for postgres
+# 07/09/2009 - jsb - added ALL_CellLine_idx_CellLine_Type_key
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index ALL_CellLine_idx_Strain_key on mgd.ALL_CellLine (_Strain_key);
+
+
+create index ALL_CellLine_idx_cellLine on mgd.ALL_CellLine (cellLine);
+
+
+create index ALL_CellLine_idx_CreatedBy_key on mgd.ALL_CellLine (_CreatedBy_key);
+
+
+create index ALL_CellLine_idx_ModifiedBy_key on mgd.ALL_CellLine (_ModifiedBy_key);
+
+
+create index ALL_CellLine_idx_Derivation_key on mgd.ALL_CellLine (_Derivation_key, _CellLine_key);
+
+
+create index ALL_CellLine_idx_CellLine_Type_key on mgd.ALL_CellLine (_CellLine_Type_key, _Derivation_key, _CellLine_key);
+
+
+
+EOSQL

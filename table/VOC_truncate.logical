@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# Logical Group Script
+#
+# Executes all VOC*_truncate.object scripts
+#
+
+cd `dirname $0`
+
+for i in VOC*_truncate.object
+do
+$i $*
+done
+

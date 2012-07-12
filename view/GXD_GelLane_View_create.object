@@ -1,0 +1,24 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.GXD_GelLane_View
+as
+select l.*, t.rnaType, g.strain, c.gelLaneContent, g.mgiID
+from GXD_GelLane l, GXD_GelRNAType t, GXD_Genotype_View g, GXD_GelControl c
+where l._GelRNAType_key = t._GelRNAType_key
+and l._Genotype_key = g._Genotype_key
+and l._GelControl_key = c._GelControl_key
+
+
+
+;
+
+EOSQL

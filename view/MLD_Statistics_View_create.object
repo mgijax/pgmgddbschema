@@ -1,0 +1,26 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MLD_Statistics_View
+as
+select c.jnumID, c.jnum, c.short_citation, e.*, 
+m1.symbol as symbol1, m2.symbol as symbol2, x.exptType, x.tag, c._primary, c.authors
+from BIB_View c, MLD_Expts x, MLD_Statistics e, MRK_Marker m1, MRK_Marker m2
+where c._Refs_key = x._Refs_key
+and x._Expt_key = e._Expt_key
+and e._Marker_key_1 = m1._Marker_key
+and e._Marker_key_2 = m2._Marker_key
+
+
+
+;
+
+EOSQL

@@ -1,0 +1,34 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MLD_Matrix_View
+as
+select c.jnumID, c.jnum, c.short_citation, x.tag,
+e._Expt_key, e.female, e.female2, e.male, e.male2,
+s.*,
+s1.strain as femaleStrain, s2.strain as maleStrain,
+s3.strain as strainHO, s4.strain as strainHT,
+c._primary, c.authors
+from BIB_View c, MLD_Expts x, MLD_Matrix e, CRS_Cross s,
+PRB_Strain s1, PRB_Strain s2, PRB_Strain s3, PRB_Strain s4
+where c._Refs_key = x._Refs_key
+and x._Expt_key = e._Expt_key
+and e._Cross_key = s._Cross_key
+and s._femaleStrain_key = s1._Strain_key
+and s._maleStrain_key = s2._Strain_key
+and s._StrainHO_key = s3._Strain_key
+and s._StrainHT_key = s4._Strain_key
+
+
+
+;
+
+EOSQL

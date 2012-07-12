@@ -1,0 +1,24 @@
+#!/bin/sh
+
+#
+# History
+#
+# 10/15/2003	lec
+#	- TR 1463; SAO
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.MAP_Coordinate ADD PRIMARY KEY (_Map_key);
+
+
+ALTER TABLE mgd.MAP_Coord_Feature ADD FOREIGN KEY (_Map_key) REFERENCES mgd.MAP_Coordinate ON DELETE CASCADE;
+
+
+ALTER TABLE mgd.SEQ_Coord_Cache ADD FOREIGN KEY (_Map_key) REFERENCES mgd.MAP_Coordinate ON DELETE CASCADE;
+
+
+EOSQL

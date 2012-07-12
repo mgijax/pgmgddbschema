@@ -1,0 +1,30 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.HMD_Summary_View
+as
+select a.*,
+a.accID as mgiID,
+mt.name as subType,
+m.symbol || ', ' || m.name || ', Chr ' || m.chromosome as description,
+m.symbol as short_description
+from ACC_Accession a, MRK_Marker m, MRK_Types mt
+where a._MGIType_key = 2
+and a.private = 0
+and a._Object_key = m._Marker_key
+and m._Organism_key != 1
+and m._Marker_Type_key = mt._Marker_Type_key
+
+
+
+;
+
+EOSQL

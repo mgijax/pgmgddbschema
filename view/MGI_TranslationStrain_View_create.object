@@ -1,0 +1,27 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/28/2003 lec
+#	- TR 1463 (SAO)
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MGI_TranslationStrain_View
+as
+select t.*, p._MGIType_key, p.translationType, p.compressionChars, p.regularExpression, 
+s.strain as goodName
+from MGI_Translation t, MGI_TranslationType p, PRB_Strain s
+where t._TranslationType_key = p._TranslationType_key
+and p._MGIType_key = 10
+and t._Object_key = s._Strain_key
+
+
+;
+
+EOSQL

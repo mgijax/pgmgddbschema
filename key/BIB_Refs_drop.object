@@ -1,0 +1,90 @@
+#!/bin/sh
+# History
+#
+# 02/04/2010	lec
+#	- TR8156; remove GXD_Antibody, BIB_Refs
+#
+# 02/13/2009 - jsb removed ALL_Cache
+# 11/24/2008 - jsb - added ALL_Marker_Assoc
+# 11/15/2007 - jsb - added ALL_Cache, SEQ_Allele_Assoc, and
+# 	ALL_CellLine_Derivation
+#
+# 03/16/2006	lec
+#	- TR 7530; remove MLD_Marker
+#
+# 05/13/2002	lec
+#	- TR 1463; SAO
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.VOC_Evidence DROP CONSTRAINT VOC_Evidence__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.VOC_Vocab DROP CONSTRAINT VOC_Vocab__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.SEQ_Probe_Cache DROP CONSTRAINT SEQ_Probe_Cache__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.SEQ_Marker_Cache DROP CONSTRAINT SEQ_Marker_Cache__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.SEQ_Allele_Assoc DROP CONSTRAINT SEQ_Allele_Assoc__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.RI_Summary_Expt_Ref DROP CONSTRAINT RI_Summary_Expt_Ref__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.PRB_Source DROP CONSTRAINT PRB_Source__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.PRB_Reference DROP CONSTRAINT PRB_Reference__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.PRB_Marker DROP CONSTRAINT PRB_Marker__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_Reference DROP CONSTRAINT MRK_Reference__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_OMIM_Cache DROP CONSTRAINT MRK_OMIM_Cache__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_Homology_Cache DROP CONSTRAINT MRK_Homology_Cache__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_History DROP CONSTRAINT MRK_History__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_Notes DROP CONSTRAINT MLD_Notes__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_Expts DROP CONSTRAINT MLD_Expts__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLC_Reference DROP CONSTRAINT MLC_Reference__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Synonym DROP CONSTRAINT MGI_Synonym__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Reference_Assoc DROP CONSTRAINT MGI_Reference_Assoc__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.IMG_Image DROP CONSTRAINT IMG_Image__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.IMG_Cache DROP CONSTRAINT IMG_Cache__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.HMD_Homology DROP CONSTRAINT HMD_Homology__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_Assay DROP CONSTRAINT GXD_Assay__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_AntibodyAlias DROP CONSTRAINT GXD_AntibodyAlias__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.DAG_DAG DROP CONSTRAINT DAG_DAG__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.CRS_References DROP CONSTRAINT CRS_References__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.BIB_Notes DROP CONSTRAINT BIB_Notes__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.BIB_DataSet_Assoc DROP CONSTRAINT BIB_DataSet_Assoc__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.BIB_Books DROP CONSTRAINT BIB_Books__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.BIB_Citation_Cache DROP CONSTRAINT BIB_Citation_Cache__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.ALL_Marker_Assoc DROP CONSTRAINT ALL_Marker_Assoc__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.ALL_CellLine_Derivation DROP CONSTRAINT ALL_CellLine_Derivation__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.ACC_AccessionReference DROP CONSTRAINT ACC_AccessionReference__Refs_key_fkey CASCADE;
+ALTER TABLE mgd.BIB_Refs DROP CONSTRAINT BIB_Refs_pkey CASCADE;
+
+EOSQL

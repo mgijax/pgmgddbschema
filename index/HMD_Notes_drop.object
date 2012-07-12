@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# HISTORY
+#     09/16/2008 - jsb - removed idx_Homology_key (TR 9037)
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index mgd.HMD_Notes_idx_notes
+;
+
+EOSQL

@@ -1,0 +1,22 @@
+#!/bin/sh
+
+#
+# History
+# 09/16/2008 - jsb - removed MRK_Chromosome_idx_Organism_key (TR 9037)
+# 08/14/2002	lec
+#	- TR 1463; SAO; Species renamed to Organism
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create unique index MRK_Chromosome_idx_clustered on mgd.MRK_Chromosome (_Organism_key, chromosome);
+
+
+create index MRK_Chromosome_idx_chromosome on mgd.MRK_Chromosome (chromosome)
+
+
+
+EOSQL

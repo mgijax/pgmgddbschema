@@ -1,0 +1,22 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.HMD_Homology_Assay_View
+as
+select h.*, a.assay, a.abbrev
+from HMD_Homology_Assay h, HMD_Assay a
+where h._Assay_key = a._Assay_key
+
+
+
+;
+
+EOSQL

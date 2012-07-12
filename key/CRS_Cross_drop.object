@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.CRS_Matrix DROP CONSTRAINT CRS_Matrix__Cross_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_Matrix DROP CONSTRAINT MLD_Matrix__Cross_key_fkey CASCADE;
+
+ALTER TABLE mgd.CRS_References DROP CONSTRAINT CRS_References__Cross_key_fkey CASCADE;
+
+ALTER TABLE mgd.CRS_Progeny DROP CONSTRAINT CRS_Progeny__Cross_key_fkey CASCADE;
+ALTER TABLE mgd.CRS_Cross DROP CONSTRAINT CRS_Cross_pkey CASCADE;
+
+EOSQL

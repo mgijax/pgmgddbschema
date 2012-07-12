@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.RI_Summary_Expt_Ref ADD PRIMARY KEY (_RISummary_key, _Expt_key);
+
+
+EOSQL

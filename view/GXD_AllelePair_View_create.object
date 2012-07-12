@@ -1,0 +1,41 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+# 07/14/2011	lec
+#	- convert to ansi outer join
+#
+# 08/20/2009 lec
+#	- add out join to MRK_Marker._Marker_key
+#
+# 08/18/2009 lec
+#       - TR7493/gene trap less filling
+#	- remove union where _Marker_key is null
+#	- short-term there will be no genotypes without markers added
+#
+# 11/20/2001 lec
+#	- TR 2239/PhenoSlim; added alleleState
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.GXD_AllelePair_View
+as
+select a.*, m.symbol, m.chromosome, a1.symbol as allele1,  
+a2.symbol as allele2, t1.term as alleleState, t2.term as compound
+from GXD_AllelePair a
+     	INNER JOIN ALL_Allele a1 on (a._Allele_key_1 = a1._Allele_key)
+     	INNER JOIN VOC_Term t1 on (a._PairState_key = t1._Term_key)
+     	INNER JOIN VOC_Term t2 on (a._Compound_key = t2._Term_key)
+     	LEFT OUTER JOIN MRK_Marker m on (a._Marker_key = m._Marker_key)
+     	LEFT OUTER JOIN ALL_Allele a2 on (a._Allele_key_2 = a2._Allele_key)
+
+
+
+;
+
+EOSQL

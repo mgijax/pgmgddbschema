@@ -1,0 +1,26 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MGI_Table_Column_View
+as 
+select t.table_name, 
+t.description as table_description,
+c.column_name, 
+c.description as column_description,
+c.example as example, 
+t.creation_date, t.modification_date
+from MGI_Tables t, MGI_Columns c
+where t.table_name = c.table_name
+
+
+;
+
+EOSQL

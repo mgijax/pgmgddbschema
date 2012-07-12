@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#	10/23/07 - jsb - added for Home Page (MGI 4.0) release, TR 8087
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.MGI_Measurement (
+	_Statistic_key		int		not null,
+	timeRecorded		timestamp DEFAULT now()	not null,
+	intValue		int		null,
+	floatValue		float		null,
+	isLatest		int		not null
+);
+EOSQL

@@ -1,0 +1,32 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.GXD_Antigen_View
+as
+select g.*, a.accID as mgiID, a.prefixPart, a.numericPart,
+s._Organism_key, s.age, s._Gender_key, s._CellLine_key, s.name as library,
+s.description, s._Refs_key, s._Strain_key, s._Tissue_key,
+u1.login as createdBy, u2.login as modifiedBy
+from GXD_Antigen g, ACC_Accession a, PRB_Source s, MGI_User u1, MGI_User u2
+where g._Antigen_key = a._Object_key
+and a._MGIType_key = 7
+and a._LogicalDB_key = 1
+and a.prefixPart = 'MGI:'
+and a.preferred = 1
+and g._Source_key = s._Source_key
+and g._CreatedBy_key = u1._User_key
+and g._ModifiedBy_key = u2._User_key
+
+
+
+;
+
+EOSQL

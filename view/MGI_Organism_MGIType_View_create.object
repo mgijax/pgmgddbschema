@@ -1,0 +1,28 @@
+#!/bin/sh
+
+#
+# History
+#
+# 08/14/2002	lec
+#	- TR 1463; renamed Species to Organism
+#
+# 05/16/2002	lec
+#	- TR 1463; SAO
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MGI_Organism_MGIType_View
+as 
+select st.*, s.commonName, s.latinName, t.name as typeName
+from MGI_Organism_MGIType st, MGI_Organism s, ACC_MGIType t
+where st._Organism_key = s._Organism_key
+and st._MGIType_key = t._MGIType_key
+
+
+;
+
+EOSQL

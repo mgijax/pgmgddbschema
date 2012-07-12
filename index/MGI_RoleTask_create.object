@@ -1,0 +1,28 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/10/2005	lec
+#	- TR 6343
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index MGI_RoleTask_idx_Role_key on mgd.MGI_RoleTask (_Role_key);
+
+
+create index MGI_RoleTask_idx_Task_key on mgd.MGI_RoleTask (_Task_key);
+
+
+create index MGI_RoleTask_idx_CreatedBy_key on mgd.MGI_RoleTask (_CreatedBy_key);
+
+
+create index MGI_RoleTask_idx_ModifiedBy_key on mgd.MGI_RoleTask (_ModifiedBy_key);
+
+
+
+EOSQL

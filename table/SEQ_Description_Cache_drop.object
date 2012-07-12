@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 03/30/2004	lec
+#	- JSAM
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop table mgd.SEQ_Description_Cache
+
+CASCADE
+;
+EOSQL

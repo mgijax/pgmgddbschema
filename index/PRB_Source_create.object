@@ -1,0 +1,52 @@
+#!/bin/sh
+
+#
+# History
+#
+# 08/14/2002    lec
+#       - TR 1463; SAO; Species renamed to Organism
+#
+# 05/13/2002	lec
+#	- TR 1463; SAO; _ProbeSpecies_key replaced with _Species_key
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index PRB_Source_idx_clustered on mgd.PRB_Source (_Organism_key, _Source_key);
+
+
+create index PRB_Source_idx_SegmentType_key on mgd.PRB_Source (_SegmentType_key);
+
+
+create index PRB_Source_idx_Vector_key on mgd.PRB_Source (_Vector_key);
+
+
+create index PRB_Source_idx_Strain_key on mgd.PRB_Source (_Strain_key);
+
+
+create index PRB_Source_idx_Tissue_key on mgd.PRB_Source (_Tissue_key);
+
+
+create index PRB_Source_idx_Gender_key on mgd.PRB_Source (_Gender_key);
+
+
+create index PRB_Source_idx_CellLine_key on mgd.PRB_Source (_CellLine_key);
+
+
+create index PRB_Source_idx_Refs_key on mgd.PRB_Source (_Refs_key);
+
+
+create index PRB_Source_idx_name on mgd.PRB_Source (name);
+
+
+create index PRB_Source_idx_CreatedBy_key on mgd.PRB_Source (_CreatedBy_key);
+
+
+create index PRB_Source_idx_ModifiedBy_key on mgd.PRB_Source (_ModifiedBy_key);
+
+
+
+EOSQL

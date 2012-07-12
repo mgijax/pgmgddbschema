@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# History:
+#    10/08/2008 - jsb - renamed SEQ_AdditionalInfo to be SEQ_GeneTrap
+#    11/09/2007 - jsb - initial addition for TR7493 (Gene Trap LF)
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+EOSQL

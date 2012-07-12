@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# Logical Group Script
+#
+# Executes all MLC*_drop.object scripts
+#
+
+cd `dirname $0`
+
+for i in MLC*_drop.object
+do
+$i $*
+done
+

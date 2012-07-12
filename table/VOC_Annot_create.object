@@ -1,0 +1,24 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/30/2005	lec
+#	- TR 5188; MGI 3.5
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.VOC_Annot (
+ 	_Annot_key                 int             not null,
+	_AnnotType_key             int             not null,
+	_Object_key                int             not null,
+	_Term_key                  int             not null,
+	_Qualifier_key             int             not null,
+	creation_date              timestamp DEFAULT now()        not null,
+	modification_date          timestamp DEFAULT now()        not null 
+);
+EOSQL

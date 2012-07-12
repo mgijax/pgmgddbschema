@@ -1,0 +1,14 @@
+#!/bin/csh -f -x
+
+#
+# Logical Group Script
+#
+# Executes all MLD*_create.object scripts
+#
+
+cd `dirname $0`
+
+foreach i (MLD*_create.object)
+$i $*
+end
+

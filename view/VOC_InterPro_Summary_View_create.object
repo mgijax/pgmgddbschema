@@ -1,0 +1,44 @@
+#!/bin/sh
+
+#
+# History
+#
+# 05/14/2003 lec
+#	- MGI 2.96
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.VOC_InterPro_Summary_View
+as
+select a._Accession_key, a.accID, a.prefixPart, a.numericPart,
+a._LogicalDB_key, va._Object_key, a2._MGIType_key, a.private,
+a.preferred, a.creation_date, a.modification_date,
+a2.accID as mgiID,
+mt.name as subType,
+m.symbol || ', ' || m.name || ', Chr ' || m.chromosome as description,
+m.symbol as short_description
+from ACC_Accession a, VOC_Term t, VOC_Annot va, MRK_Types mt, MRK_Marker m, ACC_Accession a2
+where a._MGIType_key = 13
+and a.private = 0
+and a._Object_key = t._Term_key
+and t._Term_key = va._Term_key
+and va._AnnotType_key = 1003
+and va._Object_key = m._Marker_key
+and m._Marker_Type_key = mt._Marker_Type_key
+and m._Marker_key = a2._Object_key
+and a2._MGIType_key = 2
+and a2._LogicalDB_key = 1
+and a2.prefixPart = 'MGI:'
+and a2.preferred = 1
+and not exists (select 1 from DAG_Node n
+where t._Term_key = n._Object_key)
+
+
+
+;
+
+EOSQL

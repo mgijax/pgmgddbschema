@@ -1,0 +1,35 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.IMG_Image_Summary_View
+as
+select a.*,
+a2.accID as mgiID,
+a2.accID as subType,
+g.figureLabel || ' ' || 
+b._primary || ', ' || b.journal || ' ' || b.date || ';' || b.vol || '(' || b.issue || '):' || b.pgs as description,
+g.figureLabel as short_description
+from ACC_Accession a, ACC_Accession a2, IMG_Image g, BIB_Refs b
+where a._MGIType_key = 9
+and a.private = 0
+and a._Object_key = a2._Object_key
+and a2._LogicalDB_key = 1
+and a2._MGIType_key = 9
+and a2.prefixPart = 'MGI:'
+and a2.preferred = 1
+and a._Object_key = g._Image_key
+and g._Refs_key = b._Refs_key
+
+
+
+;
+
+EOSQL

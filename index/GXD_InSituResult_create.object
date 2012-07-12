@@ -1,0 +1,22 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index GXD_InSituResult_idx_Specimen_key on mgd.GXD_InSituResult (_Specimen_key);
+
+
+create index GXD_InSituResult_idx_Strength_key on mgd.GXD_InSituResult (_Strength_key);
+
+
+create index GXD_InSituResult_idx_Pattern_key on mgd.GXD_InSituResult (_Pattern_key);
+
+
+
+EOSQL

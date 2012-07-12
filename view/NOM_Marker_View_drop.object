@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 05/21/2002	lec
+#	- TR 1463; SAO
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop view mgd.NOM_Marker_View
+
+CASCADE
+;
+EOSQL

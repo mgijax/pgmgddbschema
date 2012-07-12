@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/16/2008 - jsb - removed GXD_Index_Stages_idx_Index_key (TR 9037)
+# 05/05/2002	lec
+#	- TR 2459 (MGI 2.97)
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index GXD_Index_Stages_idx_IndexAssay_key on mgd.GXD_Index_Stages (_IndexAssay_key);
+
+
+create index GXD_Index_Stages_idx_StageID_key on mgd.GXD_Index_Stages (_StageID_key);
+
+
+
+EOSQL

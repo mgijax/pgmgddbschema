@@ -1,0 +1,40 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.PRB_Probe_View
+as
+select p.*,
+       v1.term as segmentType,
+       v2.term as vectorType,
+       p2.name as parentClone,
+       u1.login as createdBy, 
+       u2.login as modifiedBy,
+       a.accID as mgiID, 
+       a.prefixPart, 
+       a.numericPart
+from PRB_Probe p
+     	INNER JOIN ACC_Accession a on (p._Probe_key = a._Object_key
+		and a._MGIType_key = 3
+		and a._LogicalDB_key = 1
+		and a.prefixPart = 'MGI:'
+		and a.preferred = 1
+		)
+     	INNER JOIN VOC_Term v1 on (p._SegmentType_key = v1._Term_key)
+     	INNER JOIN VOC_Term v2 on (p._Vector_key = v2._Term_key)
+     	INNER JOIN MGI_User u1 on (p._CreatedBy_key = u1._User_key)
+     	INNER JOIN MGI_User u2 on (p._ModifiedBy_key = u2._User_key)
+     	LEFT OUTER JOIN PRB_Probe p2 on (p.derivedFrom = p2._Probe_key)
+
+
+
+;
+
+EOSQL

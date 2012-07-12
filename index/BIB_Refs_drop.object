@@ -1,0 +1,30 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index mgd.BIB_Refs_idx_isprimary
+;
+
+drop index mgd.BIB_Refs_idx_authors
+;
+
+drop index mgd.BIB_Refs_idx_year
+;
+
+drop index mgd.BIB_Refs_idx_journal
+;
+
+drop index mgd.BIB_Refs_idx_title
+;
+
+drop index mgd.BIB_Refs_idx_ReviewStatus_key
+;
+
+EOSQL

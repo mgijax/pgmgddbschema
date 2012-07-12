@@ -1,0 +1,31 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MRK_AccNoRef_View
+as
+select a.*, l.name as LogicalDB, 
+m.name as MGIType,
+mt.name as subType,
+ma.symbol || ', ' || ma.name || ', Chr ' || ma.chromosome as description
+from ACC_Accession a, ACC_LogicalDB l, ACC_MGIType m, MRK_Marker ma, MRK_Types mt
+where a._MGIType_key = 2
+and a._LogicalDB_key = l._LogicalDB_key
+and a._MGIType_key = m._MGIType_key
+and a._Object_key = ma._Marker_key
+and ma._Marker_Type_key = mt._Marker_Type_key
+and not exists (select r.* from ACC_AccessionReference r
+where a._Accession_key = r._Accession_key)
+
+
+
+;
+
+EOSQL

@@ -1,0 +1,27 @@
+#!/bin/sh
+
+#
+# HISTORY
+#
+# 08/27/2003	lec
+#	- SAO; increased abbreviation length from 5 to 255
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.VOC_Term (
+ 	_Term_key                  int             not null,
+ 	_Vocab_key                 int             not null,
+	term                       varchar(255)    null,
+	abbreviation               varchar(255)    null,
+	sequenceNum                int             null,
+	isObsolete                 smallint,
+	_CreatedBy_key             int             not null,
+	_ModifiedBy_key            int             not null,
+	creation_date              timestamp DEFAULT now()        not null,
+	modification_date          timestamp DEFAULT now()        not null 
+);
+EOSQL

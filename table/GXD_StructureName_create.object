@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.GXD_StructureName (
+ 	_StructureName_key             int             not null,
+	_Structure_key                 int             not null,
+	structure                      varchar(80)     not null,
+	mgiAdded                       smallint             not null,
+	creation_date                  timestamp DEFAULT now()        not null,
+	modification_date              timestamp DEFAULT now()        not null 
+);
+EOSQL

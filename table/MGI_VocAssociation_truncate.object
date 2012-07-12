@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 03/03/2005	lec
+#	- TR 4289; MPR
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+truncate table mgd.MGI_VocAssociation
+
+;
+EOSQL

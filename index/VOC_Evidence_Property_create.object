@@ -1,0 +1,28 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/03/2010	lec
+#	- TR10044/GO Notes
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index VOC_Evidence_Property_idx_clustered on mgd.VOC_Evidence_Property (_AnnotEvidence_key);
+
+
+create index VOC_Evidence_Property_idx_PropertyTerm_key on mgd.VOC_Evidence_Property (_PropertyTerm_key);
+
+
+create index VOC_Evidence_Property_idx_CreatedBy_key on mgd.VOC_Evidence_Property (_CreatedBy_key);
+
+
+create index VOC_Evidence_Property_idx_ModifiedBy_key on mgd.VOC_Evidence_Property (_ModifiedBy_key);
+
+
+
+EOSQL

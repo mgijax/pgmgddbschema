@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# History:
+# 02/13/2009 - added _Transmission_key and isMixed fields
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.ALL_Allele (
+ 	_Allele_key                    int             not null,
+	_Marker_key                    int             null,
+	_Strain_key                    int             not null,
+	_Mode_key                      int             not null,
+	_Allele_Type_key               int             not null,
+	_Allele_Status_key             int             not null,
+	_Transmission_key	       int	       not null,
+	symbol                         varchar(60)     not null,
+	name                           varchar(255)    not null,
+	nomenSymbol                    varchar(50)     null,
+	isWildType                     smallint             not null,
+	isExtinct		       smallint	       not null,
+	isMixed			       smallint	       not null,
+	_CreatedBy_key                 int             not null,
+	_ModifiedBy_key                int             not null,
+	_ApprovedBy_key                int             null,
+	approval_date                  timestamp DEFAULT now()        null,
+	creation_date                  timestamp DEFAULT now()        not null,
+	modification_date              timestamp DEFAULT now()        not null 
+);
+EOSQL

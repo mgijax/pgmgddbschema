@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# History:
+# 11/24/2008 - jsb - added ALL_Allele_CellLine
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.ALL_CellLine ADD PRIMARY KEY (_CellLine_key);
+
+
+ALTER TABLE mgd.ALL_Allele_CellLine ADD FOREIGN KEY (_MutantCellLine_key) REFERENCES mgd.ALL_CellLine;
+
+
+ALTER TABLE mgd.ALL_CellLine_Derivation ADD FOREIGN KEY (_ParentCellLine_key) REFERENCES mgd.ALL_CellLine;
+
+
+EOSQL

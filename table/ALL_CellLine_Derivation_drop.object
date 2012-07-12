@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# History:
+#	11/13/2007 - jsb - initial addition for TR7493 (Gene Trap LF)
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop table mgd.ALL_CellLine_Derivation
+
+CASCADE
+;
+EOSQL

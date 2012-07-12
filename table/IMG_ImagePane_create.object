@@ -1,0 +1,26 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/13/2012    lec
+#       - TR10798/Image Submission Tool
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.IMG_ImagePane (
+ 	_ImagePane_key                 int             not null,
+	_Image_key                     int             not null,
+	paneLabel                      varchar(255)    null,
+	x                              int             null,
+	y                              int             null,
+	width                          int             null,
+	height                         int             null,
+	creation_date                  timestamp DEFAULT now()        not null,
+	modification_date              timestamp DEFAULT now()        not null 
+);
+EOSQL

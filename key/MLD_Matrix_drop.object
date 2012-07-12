@@ -1,0 +1,13 @@
+#!/bin/sh
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.MLD_MCDataList DROP CONSTRAINT MLD_MCDataList__Expt_key_fkey CASCADE;
+
+ALTER TABLE mgd.MLD_MC2point DROP CONSTRAINT MLD_MC2point__Expt_key_fkey CASCADE;
+ALTER TABLE mgd.MLD_Matrix DROP CONSTRAINT MLD_Matrix_pkey CASCADE;
+
+EOSQL
