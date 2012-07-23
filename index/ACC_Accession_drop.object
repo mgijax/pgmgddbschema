@@ -13,7 +13,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.ACC_Accession_idx_cluster
+drop index mgd.ACC_Accession_idx_clustered
 ;
 
 drop index mgd.ACC_Accession_idx_LogicalDB_key
