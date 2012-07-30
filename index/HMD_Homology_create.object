@@ -9,6 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER hmd_notes_pkey on mgd.HMD_Notes;
+
 create index HMD_Homology_idx_clustered on mgd.HMD_Homology (_Class_key);
 
 

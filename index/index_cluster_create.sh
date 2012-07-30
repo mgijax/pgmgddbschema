@@ -55,10 +55,10 @@ CLUSTER gxd_gellanestructure_pkey on mgd.GXD_GelLaneStructure;
 CLUSTER gxd_gelrnatype_pkey on mgd.GXD_GelRNAType;
 CLUSTER gxd_gelunits_pkey on mgd.GXD_GelUnits;
 CLUSTER gxd_genotype_pkey on mgd.GXD_Genotype;
-CLUSTER gxd_index_stages_pkey on mgd.GXD_Index_Stages;
 CLUSTER gxd_isresultstructure_pkey on mgd.GXD_ISResultStructure;
 CLUSTER gxd_insituresultimage_pkey on mgd.GXD_InSituResultImage;
 CLUSTER gxd_insituresult_pkey on mgd.GXD_InSituResult;
+CLUSTER gxd_index_stages_pkey on mgd.GXD_Index_Stages;
 CLUSTER gxd_label_pkey on mgd.GXD_Label;
 CLUSTER gxd_pattern_pkey on mgd.GXD_Pattern;
 CLUSTER gxd_probeprep_pkey on mgd.GXD_ProbePrep;
@@ -77,8 +77,8 @@ CLUSTER hmd_homology_assay_pkey on mgd.HMD_Homology_Assay;
 CLUSTER hmd_homology_marker_pkey on mgd.HMD_Homology_Marker;
 CLUSTER hmd_notes_pkey on mgd.HMD_Notes;
 
-CLUSTER img_image_pkey on mgd.IMG_Image;
 CLUSTER img_imagepane_pkey on mgd.IMG_ImagePane;
+CLUSTER img_image_pkey on mgd.IMG_Image;
 
 CLUSTER map_coord_collection_pkey on mgd.MAP_Coord_Collection;
 CLUSTER map_coord_feature_pkey on mgd.MAP_Coord_Feature;

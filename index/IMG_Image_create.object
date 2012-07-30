@@ -15,6 +15,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER img_image_pkey on mgd.IMG_Image;
+
 create index IMG_Image_idx_MGIType_key on mgd.IMG_Image (_MGIType_key);
 
 
