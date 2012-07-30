@@ -1,8 +1,10 @@
+TAG: pgmgddbschema-5-0-0-6
 TAG: pgmgddbschema-5-0-0-5
 DATE: 07/30/2012
 STAFF: lec
 CHANGES: 
-added 'greptable.sh'
+a)added 'greptable.sh'
+b)add CLUSTER to index
 
 TAG: pgmgddbschema-5-0-0-4
 TAG: pgmgddbschema-5-0-0-3
