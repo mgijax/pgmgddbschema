@@ -4,10 +4,10 @@
 # grep the "product" for the "table"
 #
 # use the schema/table directory to find the list of tables
-# 	grepsource.sh /usr/local/mgi/live/femover
+# 	greptable.sh /usr/local/mgi/live/femover
 #
 # or specifiy a single table
-# 	grepsource.sh /usr/local/mgi/live/femover GXD_StructureClosure
+# 	greptable.sh /usr/local/mgi/live/femover GXD_StructureClosure
 #
 
 cd `dirname $0` && . ../Configuration
