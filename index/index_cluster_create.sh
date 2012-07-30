@@ -163,7 +163,10 @@ CLUSTER ri_riset_pkey on mgd.RI_RISet;
 CLUSTER ri_summary_expt_ref_pkey on mgd.RI_Summary_Expt_Ref;
 CLUSTER ri_summary_pkey on mgd.RI_Summary;
 
+CLUSTER seq_allele_assoc_pkey on mgd.SEQ_Allele_Assoc;
 CLUSTER seq_description_cache_pkey on mgd.SEQ_Description_Cache;
+CLUSTER seq_genemodel_pkey on mgd.SEQ_GeneModel;
+CLUSTER seq_genetrap_pkey on mgd.SEQ_GeneTrap;
 CLUSTER seq_probe_cache_pkey on mgd.SEQ_Probe_Cache;
 CLUSTER seq_sequence_raw_pkey on mgd.SEQ_Sequence_Raw;
 
@@ -219,8 +222,8 @@ CLUSTER nom_marker_idx_clustered ON mgd.NOM_Marker;
 CLUSTER prb_alias_idx_clustered ON mgd.PRB_Alias;
 CLUSTER prb_allele_idx_clustered ON mgd.PRB_Allele;
 CLUSTER prb_probe_idx_clustered ON mgd.PRB_Probe;
-CLUSTER prb_reference_idx_clustered ON mgd.PRB_Reference;
 CLUSTER prb_rflv_idx_clustered ON mgd.PRB_RFLV;
+CLUSTER prb_reference_idx_clustered ON mgd.PRB_Reference;
 CLUSTER prb_source_idx_clustered ON mgd.PRB_Source;
 CLUSTER prb_strain_genotype_idx_clustered ON mgd.PRB_Strain_Genotype;
 CLUSTER prb_strain_marker_idx_clustered ON mgd.PRB_Strain_Marker;

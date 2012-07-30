@@ -9,8 +9,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER prb_strain_pkey on mgd.PRB_Strain;
-
 create index PRB_Strain_idx_Species_key on mgd.PRB_Strain (_Species_key);
 
 
@@ -26,5 +24,7 @@ create index PRB_Strain_idx_CreatedBy_key on mgd.PRB_Strain (_CreatedBy_key);
 create index PRB_Strain_idx_ModifiedBy_key on mgd.PRB_Strain (_ModifiedBy_key);
 
 
+
+CLUSTER prb_strain_pkey on mgd.PRB_Strain;
 
 EOSQL

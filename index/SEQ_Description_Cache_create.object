@@ -12,10 +12,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER seq_description_cache_pkey on mgd.SEQ_Description_Cache;
-
 create index SEQ_Description_Cache_idx_description on mgd.SEQ_Description_Cache (description);
 
 
+
+CLUSTER seq_description_cache_pkey on mgd.SEQ_Description_Cache;
 
 EOSQL

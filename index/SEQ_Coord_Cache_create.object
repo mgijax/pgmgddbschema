@@ -20,4 +20,6 @@ create index SEQ_Coord_Cache_idx_Sequence_key on mgd.SEQ_Coord_Cache (_Sequence_
 
 
 
+CLUSTER seq_coord_cache_idx_clustered ON mgd.SEQ_Coord_Cache;
+
 EOSQL

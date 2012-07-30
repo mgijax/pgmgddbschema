@@ -22,4 +22,6 @@ create index PRB_Reference_idx_ModifiedBy_key on mgd.PRB_Reference (_ModifiedBy_
 
 
 
+CLUSTER prb_reference_idx_clustered ON mgd.PRB_Reference;
+
 EOSQL

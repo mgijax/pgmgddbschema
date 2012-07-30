@@ -16,4 +16,6 @@ create index SEQ_Allele_Assoc_idx_Allele_key on mgd.SEQ_Allele_Assoc (_Allele_ke
 
 
 
+CLUSTER seq_allele_assoc_pkey on mgd.SEQ_Allele_Assoc;
+
 EOSQL

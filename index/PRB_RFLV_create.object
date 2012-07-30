@@ -22,4 +22,6 @@ create index PRB_RFLV_idx_ModifiedBy_key on mgd.PRB_RFLV (_ModifiedBy_key);
 
 
 
+CLUSTER prb_rflv_idx_clustered ON mgd.PRB_RFLV;
+
 EOSQL

@@ -25,4 +25,6 @@ create index SEQ_GeneModel_idx_ModifiedBy_key on mgd.SEQ_GeneModel (_ModifiedBy_
 
 
 
+CLUSTER seq_genemodel_pkey on mgd.SEQ_GeneModel;
+
 EOSQL
