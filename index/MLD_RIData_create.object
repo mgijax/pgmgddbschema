@@ -9,13 +9,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER mld_ridata_pkey on mgd.MLD_RIData;
-
 create index MLD_RIData_idx_Marker_key on mgd.MLD_RIData (_Marker_key);
 
 
 create index MLD_RIData_idx_Expt_key on mgd.MLD_RIData (_Expt_key);
 
 
+
+CLUSTER mld_ridata_pkey on mgd.MLD_RIData;
 
 EOSQL

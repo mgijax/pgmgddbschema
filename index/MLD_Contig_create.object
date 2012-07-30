@@ -9,13 +9,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER mld_contrig_pkey on mgd.MLD_Contig;
-
 create unique index MLD_Contig_idx_name on mgd.MLD_Contig (name);
 
 
 create index MLD_Contig_idx_Expt_key on mgd.MLD_Contig (_Expt_key);
 
 
+
+CLUSTER mld_contrig_pkey on mgd.MLD_Contig;
 
 EOSQL

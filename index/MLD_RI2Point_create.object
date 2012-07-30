@@ -9,13 +9,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER mld_ri2poit_pkey on mgd.MLD_RI2Point;
-
 create index MLD_RI2Point_idx_Marker_key_1 on mgd.MLD_RI2Point (_Marker_key_1);
 
 
 create index MLD_RI2Point_idx_Marker_key_2 on mgd.MLD_RI2Point (_Marker_key_2);
 
 
+
+CLUSTER mld_ri2poit_pkey on mgd.MLD_RI2Point;
 
 EOSQL

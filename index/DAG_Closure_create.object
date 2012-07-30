@@ -32,6 +32,6 @@ create index DAG_Closure_idx_DescendentLabel_key on mgd.DAG_Closure (_Descendent
 
 
 
-CLUSTER dag_closure_clustered on mgd.DAG_Closure;
+CLUSTER dag_closure_idx_clustered on mgd.DAG_Closure;
 
 EOSQL

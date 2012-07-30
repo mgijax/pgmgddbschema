@@ -106,7 +106,7 @@ CLUSTER mgi_translation_pkey on mgd.MGI_Translation;
 CLUSTER mgi_userrole_pkey on mgd.MGI_UserRole;
 CLUSTER mgi_user_pkey on mgd.MGI_User;
 CLUSTER mgi_vocassociationtype_pkey on mgd.MGI_VocAssociationType;
-CLUSTER mgi_volaccociation_pkey on mgd.MGI_VocAssociation;
+CLUSTER mgi_vocassociation_pkey on mgd.MGI_VocAssociation;
 
 CLUSTER mlc_marker_pkey on mgd.MLC_Marker;
 CLUSTER mlc_reference_pkey on mgd.MLC_Reference;

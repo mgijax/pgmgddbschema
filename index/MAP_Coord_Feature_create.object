@@ -12,8 +12,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER map_coord_feature_pkey on mgd.MAP_Coord_Feature;
-
 create index MAP_Coord_Feature_idx_Map_key on mgd.MAP_Coord_Feature (_Map_key);
 
 
@@ -29,5 +27,7 @@ create index MAP_Coord_Feature_idx_CreatedBy_key on mgd.MAP_Coord_Feature (_Crea
 create index MAP_Coord_Feature_idx_ModifiedBy_key on mgd.MAP_Coord_Feature (_ModifiedBy_key);
 
 
+
+CLUSTER map_coord_feature_pkey on mgd.MAP_Coord_Feature;
 
 EOSQL
