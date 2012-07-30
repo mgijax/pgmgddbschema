@@ -16,4 +16,6 @@ create index GXD_GelRow_idx_GelUnits_key on mgd.GXD_GelRow (_GelUnits_key);
 
 
 
+CLUSTER gxd_gelrow_idx_clustered ON mgd.GXD_GelRow;
+
 EOSQL

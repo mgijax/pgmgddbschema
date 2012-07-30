@@ -19,4 +19,6 @@ create unique index ALL_Knockout_Cache_idx_Marker_key on mgd.ALL_Knockout_Cache 
 
 
 
+CLUSTER all_knockout_idx_clustered ON mgd.ALL_Knockout_Cache;
+
 EOSQL

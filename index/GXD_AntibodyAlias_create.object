@@ -16,4 +16,6 @@ create index GXD_AntibodyAlias_idx_Refs_key on mgd.GXD_AntibodyAlias (_Refs_key)
 
 
 
+CLUSTER gxd_antibodyalias_idx_clustered ON mgd.GXD_AntibodyAlias;
+
 EOSQL

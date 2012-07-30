@@ -22,4 +22,6 @@ create index GXD_Specimen_idx_Genotype_key on mgd.GXD_Specimen (_Genotype_key);
 
 
 
+CLUSTER gxd_specimen_idx_clustered ON mgd.GXD_Specimen;
+
 EOSQL

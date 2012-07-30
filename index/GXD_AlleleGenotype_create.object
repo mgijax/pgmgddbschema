@@ -14,8 +14,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER gxd_allelegenotype_pkey on mgd.GXD_AlleleGenotype;
-
 create index GXD_AlleleGenotype_idx_Marker_key on mgd.GXD_AlleleGenotype (_Marker_key);
 
 
@@ -28,5 +26,7 @@ create index GXD_AlleleGenotype_idx_CreatedBy_key on mgd.GXD_AlleleGenotype (_Cr
 create index GXD_AlleleGenotype_idx_ModifiedBy_key on mgd.GXD_AlleleGenotype (_ModifiedBy_key);
 
 
+
+CLUSTER gxd_allelegenotype_pkey on mgd.GXD_AlleleGenotype;
 
 EOSQL

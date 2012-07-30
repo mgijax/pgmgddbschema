@@ -10,8 +10,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER dag_closure_pkey on mgd.DAG_Closure;
-
 create index DAG_Closure_idx_clustered on mgd.DAG_Closure (_AncestorObject_key, _DescendentObject_key, _DAG_key);
 
 
@@ -33,5 +31,7 @@ create index DAG_Closure_idx_AncestorLabel_key on mgd.DAG_Closure (_AncestorLabe
 create index DAG_Closure_idx_DescendentLabel_key on mgd.DAG_Closure (_DescendentLabel_key);
 
 
+
+CLUSTER dag_closure_clustered on mgd.DAG_Closure;
 
 EOSQL

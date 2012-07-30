@@ -15,5 +15,7 @@ create unique index CRS_Matrix_idx_clustered on mgd.CRS_Matrix (_Cross_key, _Mar
 create index CRS_Matrix_idx_Marker_key on mgd.CRS_Matrix (_Marker_key);
 
 
+CLUSTER crs_matrix_idx_clustered ON mgd.CRS_Matrix;
+
 
 EOSQL

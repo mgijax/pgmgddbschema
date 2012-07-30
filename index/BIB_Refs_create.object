@@ -9,8 +9,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER bib_refs_pkey on mgd.BIB_Refs;
-
 create index BIB_Refs_idx_isprimary on mgd.BIB_Refs (_primary);
 
 
@@ -29,5 +27,7 @@ create index BIB_Refs_idx_title on mgd.BIB_Refs (title);
 create index BIB_Refs_idx_ReviewStatus_key on mgd.BIB_Refs (_ReviewStatus_key);
 
 
+
+CLUSTER bib_refs_pkey on mgd.BIB_Refs;
 
 EOSQL

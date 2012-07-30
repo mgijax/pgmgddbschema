@@ -17,7 +17,9 @@ CLUSTER acc_actualdb_pkey on mgd.ACC_ActualDB;
 CLUSTER acc_logicaldb_pkey on mgd.ACC_LogicalDB;
 CLUSTER acc_mgitype_pkey on mgd.ACC_MGIType;
 
+CLUSTER all_allele_cellline_pkey on mgd.ALL_Allele_CellLine;
 CLUSTER all_allele_mutation_pkey on mgd.ALL_Allele_Mutation;
+CLUSTER all_cellline_derivation_pkey on mgd.ALL_CellLine_Derivation;
 CLUSTER all_cellline_pkey on mgd.ALL_CellLine;
 CLUSTER all_label_pkey on mgd.ALL_Label;
 
@@ -33,7 +35,6 @@ CLUSTER crs_progeny_pkey on mgd.CRS_Progeny;
 CLUSTER crs_references_pkey on mgd.CRS_References;
 CLUSTER crs_typings_pkey on mgd.CRS_Typings;
 
-CLUSTER dag_closure_pkey on mgd.DAG_Closure;
 CLUSTER dag_dag_pkey on mgd.DAG_DAG;
 CLUSTER dag_label_pkey on mgd.DAG_Label;
 
@@ -156,8 +157,8 @@ CLUSTER prb_strain_pkey on mgd.PRB_Strain;
 CLUSTER prb_tissue_pkey on mgd.PRB_Tissue;
 
 CLUSTER ri_riset_pkey on mgd.RI_RISet;
-CLUSTER ri_summary_pkey on mgd.RI_Summary;
 CLUSTER ri_summary_expt_ref_pkey on mgd.RI_Summary_Expt_Ref;
+CLUSTER ri_summary_pkey on mgd.RI_Summary;
 
 CLUSTER seq_description_cache_pkey on mgd.SEQ_Description_Cache;
 CLUSTER seq_probe_cache_pkey on mgd.SEQ_Probe_Cache;
@@ -165,8 +166,8 @@ CLUSTER seq_sequence_raw_pkey on mgd.SEQ_Sequence_Raw;
 
 CLUSTER voc_annottype_pkey on mgd.VOC_AnnotType;
 CLUSTER voc_text_pkey on mgd.VOC_Text;
-CLUSTER voc_vocab_pkey on mgd.VOC_Vocab;
 CLUSTER voc_vocabdag_pkey on mgd.VOC_VocabDAG;
+CLUSTER voc_vocab_pkey on mgd.VOC_Vocab;
 
 /* clustered indexes that are not on the primary key */
 

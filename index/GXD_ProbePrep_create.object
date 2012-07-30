@@ -14,8 +14,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER gxd_probeprep_pkey on mgd.GXD_ProbePrep;
-
 create index GXD_ProbePrep_idx_Probe_key on mgd.GXD_ProbePrep (_Probe_key);
 
 
@@ -28,5 +26,7 @@ create index GXD_ProbePrep_idx_Label_key on mgd.GXD_ProbePrep (_Label_key);
 create index GXD_ProbePrep_idx_Visualization_key on mgd.GXD_ProbePrep (_Visualization_key);
 
 
+
+CLUSTER gxd_probeprep_pkey on mgd.GXD_ProbePrep;
 
 EOSQL

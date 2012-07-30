@@ -9,10 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER all_cellline_pkey on mgd.ALL_CellLine;
 
 create index ALL_CellLine_idx_Strain_key on mgd.ALL_CellLine (_Strain_key);
-
 
 create index ALL_CellLine_idx_cellLine on mgd.ALL_CellLine (cellLine);
 
@@ -29,5 +27,7 @@ create index ALL_CellLine_idx_Derivation_key on mgd.ALL_CellLine (_Derivation_ke
 create index ALL_CellLine_idx_CellLine_Type_key on mgd.ALL_CellLine (_CellLine_Type_key, _Derivation_key, _CellLine_key);
 
 
+
+CLUSTER all_cellline_pkey on mgd.ALL_CellLine;
 
 EOSQL

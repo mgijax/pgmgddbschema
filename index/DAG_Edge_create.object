@@ -21,4 +21,6 @@ create index DAG_Edge_idx_Label_key on mgd.DAG_Edge (_Label_key);
 
 
 
+CLUSTER dag_edge_idx_clustered ON mgd.DAG_Edge;
+
 EOSQL

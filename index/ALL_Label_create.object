@@ -12,8 +12,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER all_label_pkey on mgd.ALL_Label;
-
 create index ALL_Label_idx_label on mgd.ALL_Label (label);
 
 
@@ -23,5 +21,7 @@ create index ALL_Label_idx_Label_Status_key on mgd.ALL_Label (_Label_Status_key)
 create index ALL_Label_idx_Priority on mgd.ALL_Label (priority);
 
 
+
+CLUSTER all_label_pkey on mgd.ALL_Label;
 
 EOSQL

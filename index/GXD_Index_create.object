@@ -30,4 +30,6 @@ create index GXD_Index_idx_ConditionalMutants_key on mgd.GXD_Index (_Conditional
 
 
 
+CLUSTER gxd_index_idx_clustered ON mgd.GXD_Index;
+
 EOSQL

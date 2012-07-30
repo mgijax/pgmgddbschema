@@ -22,4 +22,6 @@ create index GXD_GelLane_idx_GelControl_key on mgd.GXD_GelLane (_GelControl_key)
 
 
 
+CLUSTER gxd_gellane_idx_clustered ON mgd.GXD_GelLane;
+
 EOSQL
