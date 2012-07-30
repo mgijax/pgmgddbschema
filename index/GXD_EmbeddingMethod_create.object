@@ -9,5 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER gxd_embeddingmethod_pkey on mgd.GXD_EmbeddingMethod;
+
 
 EOSQL

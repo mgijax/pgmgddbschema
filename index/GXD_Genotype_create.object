@@ -9,6 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER gxd_genotype_pkey on mgd.GXD_Genotype;
+
 create index GXD_Genotype_idx_CreatedBy_key on mgd.GXD_Genotype (_CreatedBy_key);
 
 

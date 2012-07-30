@@ -9,6 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER gxd_antibodymarker_pkey on mgd.GXD_AntibodyMarker;
+
 create index GXD_AntibodyMarker_idx_Marker_key on mgd.GXD_AntibodyMarker (_Marker_key);
 
 

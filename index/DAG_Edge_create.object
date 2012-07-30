@@ -11,7 +11,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create index DAG_Edge_idx_clustered on mgd.DAG_Edge (_Parent_key, _Child_key, _Label_key);
 
-
 create index DAG_Edge_idx_DAG_key on mgd.DAG_Edge (_DAG_key);
 
 

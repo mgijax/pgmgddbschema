@@ -9,6 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER crs_cross_pkey on mgd.CRS_Cross;
+
 create index CRS_Cross_idx_maleStrain_key on mgd.CRS_Cross (_maleStrain_key);
 
 

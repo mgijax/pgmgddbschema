@@ -9,5 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER gxd_fixationmethod_pkey on mgd.GXD_FixationMethod;
+
 
 EOSQL

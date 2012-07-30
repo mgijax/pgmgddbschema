@@ -9,5 +9,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER bib_books_pkey on mgd.BIB_Books;
 
 EOSQL

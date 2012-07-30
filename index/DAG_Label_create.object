@@ -9,6 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER dag_label_pkey on mgd.DAG_Label;
+
 create index DAG_Label_idx_label on mgd.DAG_Label (label);
 
 

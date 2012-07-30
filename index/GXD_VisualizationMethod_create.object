@@ -9,5 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER gxd_visualizationmethod_pkey on mgd.GXD_VisualizationMethod;
+
 
 EOSQL

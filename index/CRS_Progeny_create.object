@@ -9,5 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER crs_progeny_pkey on mgd.CRS_Progeny;
+
+
 
 EOSQL

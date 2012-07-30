@@ -9,6 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER gxd_structurename_pkey on mgd.GXD_StructureName;
+
 create index GXD_StructureName_idx_Structure_key on mgd.GXD_StructureName (_Structure_key);
 
 
