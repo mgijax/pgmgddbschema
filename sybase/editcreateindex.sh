@@ -16,7 +16,7 @@ fi
 #
 # copy mgddbschema/index/*_create.object to postgres directory
 #
-cd ../index
+cd ${PG_MGD_DBSCHEMADIR}/index
 cp ../../mgddbschema/index/${findObject} .
 
 for i in ${findObject}

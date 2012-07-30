@@ -32,7 +32,7 @@ fi
 # copy mgddbschema/key/*_create.object to postgres directory
 # copy mgddbschema/key/*_drop.object to postgres directory
 #
-cd ../key
+cd ${PG_MGD_DBSCHEMADIR}/key
 cp ../../mgddbschema/key/${findObject1} .
 cp ../../mgddbschema/key/${findObject2} .
 

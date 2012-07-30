@@ -9,7 +9,7 @@ cd `dirname $0` && . ../Configuration
 #
 # copy mgddbschema/table/*_truncate.object to postgres directory
 #
-cd ../table
+cd ${PG_MGD_DBSCHEMADIR}/table
 cp ../../mgddbschema/table/*truncate.object .
 
 #

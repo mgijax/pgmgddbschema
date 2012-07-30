@@ -20,7 +20,7 @@ fi
 #
 # copy mgddbschema/table/*_create.object to postgres directory
 #
-cd ../table
+cd ${PG_MGD_DBSCHEMADIR}/table
 cp ../../mgddbschema/table/${findObject} .
 
 #
