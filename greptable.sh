@@ -10,7 +10,7 @@
 # 	greptable.sh /usr/local/mgi/live/femover GXD_StructureClosure
 #
 
-cd `dirname $0` && . ../Configuration
+cd `dirname $0` && . ./Configuration
 
 product=$1
 
