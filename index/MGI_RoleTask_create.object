@@ -12,6 +12,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mgi_roletask_pkey on mgd.MGI_RoleTask;
+
 create index MGI_RoleTask_idx_Role_key on mgd.MGI_RoleTask (_Role_key);
 
 

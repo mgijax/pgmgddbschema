@@ -12,6 +12,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mgi_notetype_pkey on mgd.MGI_NoteType;
+
 create index MGI_NoteType_idx_MGIType_key on mgd.MGI_NoteType (_MGIType_key);
 
 

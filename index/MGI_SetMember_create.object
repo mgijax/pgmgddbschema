@@ -19,6 +19,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mgi_setmember_pkey on mgd.MGI_SetMember;
+
 create index MGI_SetMember_idx_ObjectSet_key on mgd.MGI_SetMember (_Object_key, _Set_key, sequenceNum);
 
 

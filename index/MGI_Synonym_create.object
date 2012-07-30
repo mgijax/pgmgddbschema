@@ -12,6 +12,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mgi_synonym_pkey on mgd.MGI_Synonym;
+
 create index MGI_Synonym_idx_Object_key on mgd.MGI_Synonym (_Object_key);
 
 
