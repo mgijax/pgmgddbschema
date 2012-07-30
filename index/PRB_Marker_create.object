@@ -9,6 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER prb_marker_pkey on mgd.PRB_Marker;
+
 create index PRB_Marker_idx_Probe_key on mgd.PRB_Marker (_Probe_key);
 
 
