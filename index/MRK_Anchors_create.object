@@ -14,6 +14,6 @@ create index MRK_Anchors_idx_Marker_key on mgd.MRK_Anchors (_Marker_key);
 
 
 
-CLUSTER mrk_anchors_idx_clustered ON mgd.MRK_Anchors;
+CLUSTER mrk_anchors_pkey ON mgd.MRK_Anchors;
 
 EOSQL

@@ -22,6 +22,6 @@ create index MRK_MCV_Cache_idx_term on mgd.MRK_MCV_Cache (term);
 
 
 
-CLUSTER mrk_mvc_cache_pkey on mgd.MRK_MCV_Cache;
+CLUSTER mrk_mcv_cache_pkey on mgd.MRK_MCV_Cache;
 
 EOSQL

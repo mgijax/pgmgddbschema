@@ -16,6 +16,6 @@ create index MLD_RI2Point_idx_Marker_key_2 on mgd.MLD_RI2Point (_Marker_key_2);
 
 
 
-CLUSTER mld_ri2poit_pkey on mgd.MLD_RI2Point;
+CLUSTER mld_ri2point_pkey on mgd.MLD_RI2Point;
 
 EOSQL

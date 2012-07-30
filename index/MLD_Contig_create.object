@@ -16,6 +16,6 @@ create index MLD_Contig_idx_Expt_key on mgd.MLD_Contig (_Expt_key);
 
 
 
-CLUSTER mld_contrig_pkey on mgd.MLD_Contig;
+CLUSTER mld_contig_pkey on mgd.MLD_Contig;
 
 EOSQL

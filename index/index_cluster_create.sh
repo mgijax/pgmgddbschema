@@ -114,9 +114,9 @@ CLUSTER mlc_text_pkey on mgd.MLC_Text;
 
 CLUSTER mld_assay_types_pkey on mgd.MLD_Assay_Types;
 CLUSTER mld_concordance_pkey on mgd.MLD_Concordance;
-CLUSTER mld_contrigprobe_pkey on mgd.MLD_ContigProbe;
-CLUSTER mld_contrig_pkey on mgd.MLD_Contig;
-CLUSTER mld_distrance_pkey on mgd.MLD_Distance;
+CLUSTER mld_contigprobe_pkey on mgd.MLD_ContigProbe;
+CLUSTER mld_contig_pkey on mgd.MLD_Contig;
+CLUSTER mld_distance_pkey on mgd.MLD_Distance;
 CLUSTER mld_expt_marker_pkey on mgd.MLD_Expt_Marker;
 CLUSTER mld_expt_notes_pkey on mgd.MLD_Expt_Notes;
 CLUSTER mld_expts_pkey on mgd.MLD_Expts;
@@ -131,20 +131,20 @@ CLUSTER mld_mcdatalist_pkey on mgd.MLD_MCDataList;
 CLUSTER mld_matrix_pkey on mgd.MLD_Matrix;
 CLUSTER mld_notes_pkey on mgd.MLD_Notes;
 CLUSTER mld_physmap_pkey on mgd.MLD_PhysMap;
-CLUSTER mld_ri2poit_pkey on mgd.MLD_RI2Point;
+CLUSTER mld_ri2point_pkey on mgd.MLD_RI2Point;
 CLUSTER mld_ridata_pkey on mgd.MLD_RIData;
 CLUSTER mld_ri_pkey on mgd.MLD_RI;
-CLUSTER mld_statisitics_pkey on mgd.MLD_Statistics;
+CLUSTER mld_statistics_pkey on mgd.MLD_Statistics;
 
 CLUSTER mrk_alias_pkey on mgd.MRK_Alias;
-CLUSTER mrk_anchors_idx_clustered ON mgd.MRK_Anchors;
+CLUSTER mrk_anchors_pkey on mgd.MRK_Anchors;
 CLUSTER mrk_class_pkey on mgd.MRK_Class;
 CLUSTER mrk_classes_pkey on mgd.MRK_Classes;
 CLUSTER mrk_current_pkey on mgd.MRK_Current;
 CLUSTER mrk_eventreason_pkey on mgd.MRK_EventReason;
 CLUSTER mrk_event_pkey on mgd.MRK_Event;
 CLUSTER mrk_history_pkey on mgd.MRK_History;
-CLUSTER mrk_mvc_cache_pkey on mgd.MRK_MCV_Cache;
+CLUSTER mrk_mcv_cache_pkey on mgd.MRK_MCV_Cache;
 CLUSTER mrk_mcv_count_cache_pkey on mgd.MRK_MCV_Count_Cache;
 CLUSTER mrk_notes_pkey on mgd.MRK_Notes;
 CLUSTER mrk_offset_pkey on mgd.MRK_Offset;
@@ -173,77 +173,77 @@ CLUSTER seq_sequence_raw_pkey on mgd.SEQ_Sequence_Raw;
 CLUSTER voc_allele_cache_pkey on mgd.VOC_Allele_Cache;
 CLUSTER voc_annottype_pkey on mgd.VOC_AnnotType;
 CLUSTER voc_annot_count_cache_pkey on mgd.VOC_Annot_Count_Cache;
-CLUSTER voc_marker_cache_idx_pkeyON mgd.VOC_Marker_Cache;
+CLUSTER voc_marker_cache_idx_pkeyon mgd.VOC_Marker_Cache;
 CLUSTER voc_text_pkey on mgd.VOC_Text;
 CLUSTER voc_vocabdag_pkey on mgd.VOC_VocabDAG;
 CLUSTER voc_vocab_pkey on mgd.VOC_Vocab;
 
 /* clustered indexes that are not on the primary key */
 
-CLUSTER acc_accession_idx_clustered ON mgd.ACC_Accession;
+CLUSTER acc_accession_idx_clustered on mgd.ACC_Accession;
 
-CLUSTER all_allele_idx_clustered ON mgd.ALL_Allele;
-CLUSTER all_cre_cache_idx_clustered ON mgd.ALL_Cre_Cache;
-CLUSTER all_knockout_idx_clustered ON mgd.ALL_Knockout_Cache;
-CLUSTER all_marker_assoc_idx_clustered ON mgd.ALL_Marker_Assoc;
+CLUSTER all_allele_idx_clustered on mgd.ALL_Allele;
+CLUSTER all_cre_cache_idx_clustered on mgd.ALL_Cre_Cache;
+CLUSTER all_knockout_idx_clustered on mgd.ALL_Knockout_Cache;
+CLUSTER all_marker_assoc_idx_clustered on mgd.ALL_Marker_Assoc;
 
-CLUSTER bib_dataset_assoc_idx_clustered ON mgd.BIB_DataSet_Assoc;
+CLUSTER bib_dataset_assoc_idx_clustered on mgd.BIB_DataSet_Assoc;
 
-CLUSTER crs_matrix_idx_clustered ON mgd.CRS_Matrix;
+CLUSTER crs_matrix_idx_clustered on mgd.CRS_Matrix;
 
-CLUSTER dag_closure_idx_clustered ON mgd.DAG_Closure;
-CLUSTER dag_edge_idx_clustered ON mgd.DAG_Edge;
-CLUSTER dag_node_idx_clustered ON mgd.DAG_Node;
+CLUSTER dag_closure_idx_clustered on mgd.DAG_Closure;
+CLUSTER dag_edge_idx_clustered on mgd.DAG_Edge;
+CLUSTER dag_node_idx_clustered on mgd.DAG_Node;
 
-CLUSTER gxd_allelepair_idx_clustered ON mgd.GXD_AllelePair;
-CLUSTER gxd_antibodyalias_idx_clustered ON mgd.GXD_AntibodyAlias;
-CLUSTER gxd_assay_idx_clustered ON mgd.GXD_Assay;
-CLUSTER gxd_expression_idx_clustered ON mgd.GXD_Expression;
-CLUSTER gxd_gelband_idx_clustered ON mgd.GXD_GelBand;
-CLUSTER gxd_gellane_idx_clustered ON mgd.GXD_GelLane;
-CLUSTER gxd_gelrow_idx_clustered ON mgd.GXD_GelRow;
-CLUSTER gxd_index_idx_clustered ON mgd.GXD_Index;
-CLUSTER gxd_specimen_idx_clustered ON mgd.GXD_Specimen;
+CLUSTER gxd_allelepair_idx_clustered on mgd.GXD_AllelePair;
+CLUSTER gxd_antibodyalias_idx_clustered on mgd.GXD_AntibodyAlias;
+CLUSTER gxd_assay_idx_clustered on mgd.GXD_Assay;
+CLUSTER gxd_expression_idx_clustered on mgd.GXD_Expression;
+CLUSTER gxd_gelband_idx_clustered on mgd.GXD_GelBand;
+CLUSTER gxd_gellane_idx_clustered on mgd.GXD_GelLane;
+CLUSTER gxd_gelrow_idx_clustered on mgd.GXD_GelRow;
+CLUSTER gxd_index_idx_clustered on mgd.GXD_Index;
+CLUSTER gxd_specimen_idx_clustered on mgd.GXD_Specimen;
 
-CLUSTER hmd_homology_idx_clustered ON mgd.HMD_Homology;
+CLUSTER hmd_homology_idx_clustered on mgd.HMD_Homology;
 
-CLUSTER img_cache_idx_clustered ON mgd.IMG_Cache;
+CLUSTER img_cache_idx_clustered on mgd.IMG_Cache;
 
-CLUSTER mgi_note_idx_clustered ON mgd.MGI_Note;
-CLUSTER mgi_reference_assoc_idx_clustered ON mgd.MGI_Reference_Assoc;
-CLUSTER mgi_set_idx_clustered ON mgd.MGI_Set;
+CLUSTER mgi_note_idx_clustered on mgd.MGI_Note;
+CLUSTER mgi_reference_assoc_idx_clustered on mgd.MGI_Reference_Assoc;
+CLUSTER mgi_set_idx_clustered on mgd.MGI_Set;
 
-CLUSTER mrk_chromosome_idx_clustered ON mgd.MRK_Chromosome;
-CLUSTER mrk_homology_cache_idx_clustered ON mgd.MRK_Homology_Cache;
-CLUSTER mrk_label_idx_clustered ON mgd.MRK_Label;
-CLUSTER mrk_location_cache_idx_clustered ON mgd.MRK_Location_Cache;
-CLUSTER mrk_marker_idx_clustered ON mgd.MRK_Marker;
-CLUSTER mrk_omim_cache_idx_clustered ON mgd.MRK_OMIM_Cache;
+CLUSTER mrk_chromosome_idx_clustered on mgd.MRK_Chromosome;
+CLUSTER mrk_homology_cache_idx_clustered on mgd.MRK_Homology_Cache;
+CLUSTER mrk_label_idx_clustered on mgd.MRK_Label;
+CLUSTER mrk_location_cache_idx_clustered on mgd.MRK_Location_Cache;
+CLUSTER mrk_marker_idx_clustered on mgd.MRK_Marker;
+CLUSTER mrk_omim_cache_idx_clustered on mgd.MRK_OMIM_Cache;
 
-CLUSTER nom_marker_idx_clustered ON mgd.NOM_Marker;
+CLUSTER nom_marker_idx_clustered on mgd.NOM_Marker;
 
-CLUSTER prb_alias_idx_clustered ON mgd.PRB_Alias;
-CLUSTER prb_allele_idx_clustered ON mgd.PRB_Allele;
-CLUSTER prb_probe_idx_clustered ON mgd.PRB_Probe;
-CLUSTER prb_rflv_idx_clustered ON mgd.PRB_RFLV;
-CLUSTER prb_reference_idx_clustered ON mgd.PRB_Reference;
-CLUSTER prb_source_idx_clustered ON mgd.PRB_Source;
-CLUSTER prb_strain_genotype_idx_clustered ON mgd.PRB_Strain_Genotype;
-CLUSTER prb_strain_marker_idx_clustered ON mgd.PRB_Strain_Marker;
+CLUSTER prb_alias_idx_clustered on mgd.PRB_Alias;
+CLUSTER prb_allele_idx_clustered on mgd.PRB_Allele;
+CLUSTER prb_probe_idx_clustered on mgd.PRB_Probe;
+CLUSTER prb_rflv_idx_clustered on mgd.PRB_RFLV;
+CLUSTER prb_reference_idx_clustered on mgd.PRB_Reference;
+CLUSTER prb_source_idx_clustered on mgd.PRB_Source;
+CLUSTER prb_strain_genotype_idx_clustered on mgd.PRB_Strain_Genotype;
+CLUSTER prb_strain_marker_idx_clustered on mgd.PRB_Strain_Marker;
 
-CLUSTER seq_coord_cache_idx_clustered ON mgd.SEQ_Coord_Cache;
-CLUSTER seq_marker_cache_idx_clustered ON mgd.SEQ_Marker_Cache;
-CLUSTER seq_sequence_assoc_idx_clustered ON mgd.SEQ_Sequence_Assoc;
-CLUSTER seq_sequence_idx_clustered ON mgd.SEQ_Sequence;
-CLUSTER seq_source_assoc_idx_clustered ON mgd.SEQ_Source_Assoc;
+CLUSTER seq_coord_cache_idx_clustered on mgd.SEQ_Coord_Cache;
+CLUSTER seq_marker_cache_idx_clustered on mgd.SEQ_Marker_Cache;
+CLUSTER seq_sequence_assoc_idx_clustered on mgd.SEQ_Sequence_Assoc;
+CLUSTER seq_sequence_idx_clustered on mgd.SEQ_Sequence;
+CLUSTER seq_source_assoc_idx_clustered on mgd.SEQ_Source_Assoc;
 
-CLUSTER voc_annotheader_idx_clustered ON mgd.VOC_AnnotHeader;
-CLUSTER voc_annot_idx_clustered ON mgd.VOC_Annot;
-CLUSTER voc_evidence_property_idx_clustered ON mgd.VOC_Evidence_Property;
-CLUSTER voc_evidence_idx_clustered ON mgd.VOC_Evidence;
-CLUSTER voc_go_cache_idx_clustered ON mgd.VOC_GO_Cache;
-CLUSTER voc_term_idx_clustered ON mgd.VOC_Term;
+CLUSTER voc_annotheader_idx_clustered on mgd.VOC_AnnotHeader;
+CLUSTER voc_annot_idx_clustered on mgd.VOC_Annot;
+CLUSTER voc_evidence_property_idx_clustered on mgd.VOC_Evidence_Property;
+CLUSTER voc_evidence_idx_clustered on mgd.VOC_Evidence;
+CLUSTER voc_go_cache_idx_clustered on mgd.VOC_GO_Cache;
+CLUSTER voc_term_idx_clustered on mgd.VOC_Term;
 
-CLUSTER wks_rosetta_idx_clustered ON mgd.WKS_Rosetta;
+CLUSTER wks_rosetta_idx_clustered on mgd.WKS_Rosetta;
 
 EOSQL
