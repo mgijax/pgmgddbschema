@@ -25,4 +25,6 @@ create index VOC_Evidence_Property_idx_ModifiedBy_key on mgd.VOC_Evidence_Proper
 
 
 
+CLUSTER voc_evidence_property_idx_clustered ON mgd.VOC_Evidence_Property;
+
 EOSQL

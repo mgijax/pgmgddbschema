@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER voc_vocabdag_pkey on mgd.VOC_VocabDAG;
-
 create index VOC_VocabDAG_idx_DAG_key on mgd.VOC_VocabDAG (_DAG_key);
 
 
+
+CLUSTER voc_vocabdag_pkey on mgd.VOC_VocabDAG;
 
 EOSQL

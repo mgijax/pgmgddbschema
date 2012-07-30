@@ -170,7 +170,10 @@ CLUSTER seq_genetrap_pkey on mgd.SEQ_GeneTrap;
 CLUSTER seq_probe_cache_pkey on mgd.SEQ_Probe_Cache;
 CLUSTER seq_sequence_raw_pkey on mgd.SEQ_Sequence_Raw;
 
+CLUSTER voc_allele_cache_pkey on mgd.VOC_Allele_Cache;
 CLUSTER voc_annottype_pkey on mgd.VOC_AnnotType;
+CLUSTER voc_annot_count_cache_pkey on mgd.VOC_Annot_Count_Cache;
+CLUSTER voc_marker_cache_idx_clustered ON mgd.VOC_Marker_Cache;
 CLUSTER voc_text_pkey on mgd.VOC_Text;
 CLUSTER voc_vocabdag_pkey on mgd.VOC_VocabDAG;
 CLUSTER voc_vocab_pkey on mgd.VOC_Vocab;
@@ -234,10 +237,10 @@ CLUSTER seq_sequence_assoc_idx_clustered ON mgd.SEQ_Sequence_Assoc;
 CLUSTER seq_sequence_idx_clustered ON mgd.SEQ_Sequence;
 CLUSTER seq_source_assoc_idx_clustered ON mgd.SEQ_Source_Assoc;
 
+CLUSTER voc_annotheader_idx_clustered ON mgd.VOC_AnnotHeader;
 CLUSTER voc_annot_idx_clustered ON mgd.VOC_Annot;
-CLUSTER voc_anotheader_idx_clustered ON mgd.VOC_AnnotHeader;
-CLUSTER voc_evidence_idx_clustered ON mgd.VOC_Evidence;
 CLUSTER voc_evidence_property_idx_clustered ON mgd.VOC_Evidence_Property;
+CLUSTER voc_evidence_idx_clustered ON mgd.VOC_Evidence;
 CLUSTER voc_go_cache_idx_clustered ON mgd.VOC_GO_Cache;
 CLUSTER voc_term_idx_clustered ON mgd.VOC_Term;
 
