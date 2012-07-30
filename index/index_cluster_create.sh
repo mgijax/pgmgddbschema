@@ -78,6 +78,7 @@ CLUSTER hmd_homology_assay_pkey on mgd.HMD_Homology_Assay;
 CLUSTER hmd_homology_marker_pkey on mgd.HMD_Homology_Marker;
 CLUSTER hmd_notes_pkey on mgd.HMD_Notes;
 
+CLUSTER img_imagepane_assoc_pkey on mgd.IMG_ImagePane_Assoc;
 CLUSTER img_imagepane_pkey on mgd.IMG_ImagePane;
 CLUSTER img_image_pkey on mgd.IMG_Image;
 
@@ -87,6 +88,7 @@ CLUSTER map_coordinate_pkey on mgd.MAP_Coordinate;
 
 CLUSTER mgi_attributehistory_pkey on mgd.MGI_AttributeHistory;
 CLUSTER mgi_columns_pkey on mgd.MGI_Columns;
+CLUSTER mgi_measurement_pkey on mgd.MGI_Measurement;
 CLUSTER mgi_notechunk_pkey on mgd.MGI_NoteChunk;
 CLUSTER mgi_notetype_pkey on mgd.MGI_NoteType;
 CLUSTER mgi_organism_mgitype_pkey on mgd.MGI_Organism_MGIType;

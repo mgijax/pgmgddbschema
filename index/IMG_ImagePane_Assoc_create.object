@@ -28,4 +28,6 @@ create index IMG_ImagePane_Assoc_idx_ModifiedBy_key on mgd.IMG_ImagePane_Assoc (
 
 
 
+CLUSTER img_imagepane_assoc_pkey on mgd.IMG_ImagePane_Assoc;
+
 EOSQL

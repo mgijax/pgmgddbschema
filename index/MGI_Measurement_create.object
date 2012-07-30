@@ -21,4 +21,6 @@ create index MGI_Measurement_idx_isLatest on mgd.MGI_Measurement (isLatest, _Sta
 
 
 
+CLUSTER mgi_measurement_pkey on mgd.MGI_Measurement;
+
 EOSQL

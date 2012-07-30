@@ -32,4 +32,6 @@ create index MGI_Reference_Assoc_idx_ModifiedBy_key on mgd.MGI_Reference_Assoc (
 
 
 
+CLUSTER mgi_reference_assoc_idx_clustered ON mgd.MGI_Reference_Assoc;
+
 EOSQL

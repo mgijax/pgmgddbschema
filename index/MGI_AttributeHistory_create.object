@@ -13,8 +13,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER mgi_attributehistory_pkey on mgd.MGI_AttributeHistory;
-
 create index MGI_AttributeHistory_idx_MGIType_key on mgd.MGI_AttributeHistory (_MGIType_key);
 
 
@@ -24,5 +22,7 @@ create index MGI_AttributeHistory_idx_CreatedBy_key on mgd.MGI_AttributeHistory 
 create index MGI_AttributeHistory_idx_ModifiedBy_key on mgd.MGI_AttributeHistory (_ModifiedBy_key);
 
 
+
+CLUSTER mgi_attributehistory_pkey on mgd.MGI_AttributeHistory;
 
 EOSQL

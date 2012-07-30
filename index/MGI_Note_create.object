@@ -29,4 +29,6 @@ create index MGI_Note_idx_ModifiedBy_key on mgd.MGI_Note (_ModifiedBy_key);
 
 
 
+CLUSTER mgi_note_idx_clustered ON mgd.MGI_Note;
+
 EOSQL

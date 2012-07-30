@@ -12,8 +12,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER mgi_translationtype_pkey on mgd.MGI_TranslationType;
-
 create unique index MGI_TranslationType_idx_translationType on mgd.MGI_TranslationType (translationType);
 
 
@@ -29,5 +27,7 @@ create index MGI_TranslationType_idx_CreatedBy_key on mgd.MGI_TranslationType (_
 create index MGI_TranslationType_idx_ModifiedBy_key on mgd.MGI_TranslationType (_ModifiedBy_key);
 
 
+
+CLUSTER mgi_translationtype_pkey on mgd.MGI_TranslationType;
 
 EOSQL
