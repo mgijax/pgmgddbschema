@@ -22,4 +22,6 @@ create index PRB_Alias_idx_alias on mgd.PRB_Alias (alias);
 
 
 
+CLUSTER prb_alias_idx_clustered ON mgd.PRB_Alias;
+
 EOSQL

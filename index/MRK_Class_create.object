@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER mrk_class_pkey on mgd.MRK_Class;
-
 create index MRK_Class_idx_name on mgd.MRK_Class (name);
 
 
+
+CLUSTER mrk_class_pkey on mgd.MRK_Class;
 
 EOSQL

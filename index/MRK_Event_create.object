@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER mrk_event_pkey on mgd.MRK_Event;
-
 create index MRK_Event_idx_event on mgd.MRK_Event (event);
 
 
+
+CLUSTER mrk_event_pkey on mgd.MRK_Event;
 
 EOSQL

@@ -137,6 +137,7 @@ CLUSTER mld_ri_pkey on mgd.MLD_RI;
 CLUSTER mld_statisitics_pkey on mgd.MLD_Statistics;
 
 CLUSTER mrk_alias_pkey on mgd.MRK_Alias;
+CLUSTER mrk_anchors_idx_clustered ON mgd.MRK_Anchors;
 CLUSTER mrk_class_pkey on mgd.MRK_Class;
 CLUSTER mrk_classes_pkey on mgd.MRK_Classes;
 CLUSTER mrk_current_pkey on mgd.MRK_Current;
