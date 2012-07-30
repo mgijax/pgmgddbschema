@@ -173,7 +173,7 @@ CLUSTER seq_sequence_raw_pkey on mgd.SEQ_Sequence_Raw;
 CLUSTER voc_allele_cache_pkey on mgd.VOC_Allele_Cache;
 CLUSTER voc_annottype_pkey on mgd.VOC_AnnotType;
 CLUSTER voc_annot_count_cache_pkey on mgd.VOC_Annot_Count_Cache;
-CLUSTER voc_marker_cache_idx_pkeyon mgd.VOC_Marker_Cache;
+CLUSTER voc_marker_cache_pkey on mgd.VOC_Marker_Cache;
 CLUSTER voc_text_pkey on mgd.VOC_Text;
 CLUSTER voc_vocabdag_pkey on mgd.VOC_VocabDAG;
 CLUSTER voc_vocab_pkey on mgd.VOC_Vocab;
