@@ -15,6 +15,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mrk_mvc_cache_pkey on mgd.MRK_MCV_Cache;
+
 create index MRK_MCV_Cache_idx_Marker_key on mgd.MRK_MCV_Cache (_Marker_key);
 
 

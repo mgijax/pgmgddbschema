@@ -9,6 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mrk_history_pkey on mgd.MRK_History;
+
 create index MRK_History_idx_History_key on mgd.MRK_History (_History_key);
 
 

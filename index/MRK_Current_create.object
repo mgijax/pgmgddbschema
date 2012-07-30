@@ -9,6 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mrk_current_pkey on mgd.MRK_Current;
+
 create index MRK_Current_idx_Marker_key on mgd.MRK_Current (_Marker_key);
 
 
