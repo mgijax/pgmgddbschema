@@ -9,6 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mld_notes_pkey on mgd.MLD_Notes;
+
 create index MLD_Notes_idx_note on mgd.MLD_Notes (note);
 
 

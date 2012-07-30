@@ -9,6 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mld_hit_pkey on mgd.MLD_Hit;
+
 create index MLD_Hit_idx_Target_key on mgd.MLD_Hit (_Probe_key);
 
 

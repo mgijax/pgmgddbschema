@@ -9,6 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mld_ri_pkey on mgd.MLD_RI;
+
 create index MLD_RI_idx_RIset_key on mgd.MLD_RI (_RISet_key);
 
 

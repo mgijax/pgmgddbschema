@@ -9,6 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mld_matrix_pkey on mgd.MLD_Matrix;
+
 create index MLD_Matrix_idx_Cross_key on mgd.MLD_Matrix (_Cross_key);
 
 

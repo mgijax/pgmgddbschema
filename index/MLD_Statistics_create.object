@@ -9,8 +9,9 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MLD_Statistics_idx_Marker_key_2 on mgd.MLD_Statistics (_Marker_key_2);
+CLUSTER mld_statisitics_pkey on mgd.MLD_Statistics;
 
+create index MLD_Statistics_idx_Marker_key_2 on mgd.MLD_Statistics (_Marker_key_2);
 
 create index MLD_Statistics_idx_Marker_key_1 on mgd.MLD_Statistics (_Marker_key_1);
 

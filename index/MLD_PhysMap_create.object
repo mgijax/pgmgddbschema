@@ -9,5 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mld_physmap_pkey on mgd.MLD_PhysMap;
+
 
 EOSQL

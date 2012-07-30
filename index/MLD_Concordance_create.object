@@ -9,6 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mld_concordance_pkey on mgd.MLD_Concordance;
+
 create index MLD_Concordance_idx_Marker_key on mgd.MLD_Concordance (_Marker_key)
 
 

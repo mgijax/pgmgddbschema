@@ -9,6 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mld_assay_types_pkey on mgd.MLD_Assay_Types;
+
 create unique index MLD_Assay_Types_idx_description on mgd.MLD_Assay_Types (description);
 
 

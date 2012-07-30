@@ -9,6 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mld_fish_pkey on mgd.MLD_FISH;
+
 create index MLD_FISH_idx_strain_key on mgd.MLD_FISH (_Strain_key);
 
 
