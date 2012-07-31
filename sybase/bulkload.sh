@@ -12,10 +12,11 @@ touch ${LOG}
 
 date >> ${LOG}
 
-echo ${MGD_DBUSER}
-echo ${MGD_DBNAME}
-echo ${PG_MGD_DBUSER}
-echo ${PG_MGD_DBNAME}
+echo ${MGD_DBUSER} | tee -a ${LOG}
+echo ${MGD_DBNAME} | tee -a ${LOG}
+echo ${PG_DBSERVER} | tee -a ${LOG}
+echo ${PG_DBUSER} | tee -a ${LOG}
+echo ${PG_DBNAME} | tee -a ${LOG}
 
 #
 # run exporter for all tables or just one table
@@ -107,14 +108,14 @@ cat $i.bcp | ${EXPORTER}/bin/postgresTextCleaner.py > $i.new
 rm $i.bcp
 mv $i.new $i.bcp
 
-echo "converting bcp using perl #1..." | tee -a ${LOG}
-/usr/local/bin/perl -p -i -e 's/&=&/\t/g' $i.bcp
+#echo "converting bcp using perl #1..." | tee -a ${LOG}
+#/usr/local/bin/perl -p -i -e 's/&=&/\t/g' $i.bcp
 
 echo "converting bcp using perl #2..." | tee -a ${LOG}
 /usr/local/bin/perl -p -i -e 's/\t(... {1,2}\d{1,2} \d{4} {1,2}\d{1,2}:\d\d:\d\d):(.{5})/\t\1.\2/g' $i.bcp
 
-echo "converting bcp using perl #3..." | tee -a ${LOG}
-/usr/local/bin/perl -p -i -e 's/#=#//g' $i.bcp
+#echo "converting bcp using perl #3..." | tee -a ${LOG}
+#/usr/local/bin/perl -p -i -e 's/#=#//g' $i.bcp
 
 fi
 #
@@ -124,12 +125,12 @@ fi
 #
 # copy data file into postgres
 #
-#vacuum analyze mgd.$i;
 #
 echo "calling postgres copy..." | tee -a ${LOG}
-psql -U ${PG_MGD_DBUSER} -d ${PG_MGD_DBNAME} <<END 
+psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} <<END
 \copy mgd.$i from '$i.bcp' with null as ''
 \g
+vacuum analyze mgd.$i;
 END
 
 #
@@ -173,7 +174,7 @@ fi
 #echo "updating comments..." | tee -a ${LOG}
 #cd ${MGDPOSTGRES}/bin
 #./comments.py
-#psql -U ${MGD_DBUSER} -d ${MGD_DBNAME} < comments.txt
+#psql -h ${PG_FE_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} < comments.txt
 
 date | tee -a ${LOG}
 
