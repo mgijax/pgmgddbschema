@@ -60,6 +60,28 @@ date | tee -a ${LOG}
 #
 
 #
+# convert sybase data to postgres format
+#
+if [ ${runBCP} -eq '1' ]
+then
+echo "converting bcp using python regular expressions..." | tee -a ${LOG}
+for i in ${findObject}
+do
+i=`basename $i _create.object`
+${PG_MGD_DBSCHEMADIR}/sybase/textcleaner.sh ${EXPORTDATA} ${i} | tee -a ${LOG}.${i}.textcleaner &
+done
+fi
+#
+# wait until all jobs invoked above have terminated
+wait
+echo 'done: converting bcp using python regular expressions...' | tee -a ${LOG}
+date | tee -a ${LOG}
+#
+# end: convert sybase data to postgres
+#
+exit 0
+
+#
 # if all tables, then run... 
 #
 if [ $runAll -eq '1' ]
@@ -69,7 +91,7 @@ ${PG_DBUTILS}/bin/dropDB.csh ${PG_DBSERVER} ${PG_DBNAME} | tee -a ${LOG}
 echo 'create database...' | tee -a ${LOG}
 ${PG_DBUTILS}/bin/buildDB_be.csh ${PG_DBSERVER} ${PG_DBNAME} | tee -a ${LOG}
 echo 'create tables...' | tee -a ${LOG}
-${PG_MGD_DBSCHEMADIR}/table/table_create.object
+${PG_MGD_DBSCHEMADIR}/table/table_create.sh
 fi
 
 #
@@ -102,36 +124,6 @@ ${PG_MGD_DBSCHEMADIR}/table/${i}_create.object
 fi
 
 cd ${EXPORTDATA}
-
-#
-# convert sybase data to postgres
-#
-if [ ${runBCP} -eq '1' ]
-then
-
-echo "converting bcp using python regular expressions..." | tee -a ${LOG}
-# exporter scrip
-cat $i.bcp | ${EXPORTER}/bin/postgresTextCleaner.py > $i.new
-rm $i.bcp
-mv $i.new $i.bcp
-
-#echo "converting bcp using perl #1..." | tee -a ${LOG}
-#/usr/local/bin/perl -p -i -e 's/&=&/\t/g' $i.bcp
-
-#
-# leave this in as it translates the timestamp
-# the 'exporter/postgresTestCleaner.py' does not do this
-#
-echo "converting bcp using perl #2..." | tee -a ${LOG}
-/usr/local/bin/perl -p -i -e 's/\t(... {1,2}\d{1,2} \d{4} {1,2}\d{1,2}:\d\d:\d\d):(.{5})/\t\1.\2/g' $i.bcp
-
-#echo "converting bcp using perl #3..." | tee -a ${LOG}
-#/usr/local/bin/perl -p -i -e 's/#=#//g' $i.bcp
-
-fi
-#
-# end: convert sybase data to postgres
-#
 
 #
 # copy data file into postgres
