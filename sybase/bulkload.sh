@@ -37,37 +37,43 @@ fi
 cd ${MGD_DBSCHEMADIR}/table
 
 #
-# if all tables, then run... 
-#
-if [ $runAll -eq '1' ]
-then
-echo 'drop database...' | tee -a ${LOG}
-${PG_DBUTILS}/bin/dropDB.csh ${PG_DBSERVER} ${PG_DBNAME}
-fi
-
-#
-# else run script by object (see below)
-#
-
-#
 # bcp out the sybase data
 #
 if [ ${runBCP} -eq '1' ]
 then
 echo 'bcp out the files from sybase...' | tee -a ${LOG}
+echo $$ > ${EXPORTLOGS}/$0.pid
 for i in ${findObject}
 do
 i=`basename $i _create.object`
 echo $i | tee -a ${LOG}
-${MGI_DBUTILS}/bin/bcpout.csh ${MGD_DBSERVER} ${MGD_DBNAME} $i ${EXPORTDATA} $i.bcp
+${MGI_DBUTILS}/bin/bcpout.csh ${MGD_DBSERVER} ${MGD_DBNAME} $i ${EXPORTDATA} $i.bcp | tee -a ${LOG}.${i}.bcp &
 done
 fi
+#
+# wait until all jobs invoked above have terminated
+wait
+echo 'done: bcp out the files from sybase...' | tee -a ${LOG}
+date | tee -a ${LOG}
 #
 # end: bcp out the sybase data
 #
 
 #
-# migrate bcp data format and load into postgres
+# if all tables, then run... 
+#
+if [ $runAll -eq '1' ]
+then
+echo 'drop database...' | tee -a ${LOG}
+${PG_DBUTILS}/bin/dropDB.csh ${PG_DBSERVER} ${PG_DBNAME} | tee -a ${LOG}
+echo 'create database...' | tee -a ${LOG}
+${PG_DBUTILS}/bin/buildDB_be.csh ${PG_DBSERVER} ${PG_DBNAME} | tee -a ${LOG}
+echo 'create tables...' | tee -a ${LOG}
+${PG_MGD_DBSCHEMADIR}/table/table_create.object
+fi
+
+#
+# one table
 #
 
 for i in ${findObject}
@@ -75,10 +81,11 @@ do
 
 i=`basename $i _create.object`
 
-echo "table name...", $i | tee -a ${LOG}
-
 if [ $runAll -eq '0' ]
 then
+
+echo "create table name...", $i | tee -a ${LOG}
+
 echo "dropping indexes..." | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/index/${i}_drop.object
 
@@ -158,6 +165,7 @@ ${PG_MGD_DBSCHEMADIR}/key/${i}_create.object
 fi
 
 echo "#########" | tee -a ${LOG}
+
 done
 
 #
