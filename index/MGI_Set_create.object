@@ -32,6 +32,6 @@ create index MGI_Set_idx_name on mgd.MGI_Set (name, _MGIType_key, _Set_key, sequ
 
 
 
-CLUSTER mgi_set_idx_clustered ON mgd.MGI_Set;
+CLUSTER mgi_set_idx_clustered USING mgd.MGI_Set;
 
 EOSQL

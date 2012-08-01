@@ -19,6 +19,6 @@ create index PRB_Allele_idx_ModifiedBy_key on mgd.PRB_Allele (_ModifiedBy_key);
 
 
 
-CLUSTER prb_allele_idx_clustered ON mgd.PRB_Allele;
+CLUSTER prb_allele_idx_clustered USING mgd.PRB_Allele;
 
 EOSQL

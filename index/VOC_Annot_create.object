@@ -21,6 +21,6 @@ create index VOC_Annot_idx_Qualifier_key on mgd.VOC_Annot (_Qualifier_key);
 
 
 
-CLUSTER voc_annot_idx_clustered ON mgd.VOC_Annot;
+CLUSTER voc_annot_idx_clustered USING mgd.VOC_Annot;
 
 EOSQL

@@ -38,7 +38,7 @@ create index ACC_Accession_idx_CreatedBy_key on mgd.ACC_Accession (_CreatedBy_ke
 create index ACC_Accession_idx_ModifiedBy_key on mgd.ACC_Accession (_ModifiedBy_key);
 
 
-CLUSTER acc_accession_idx_clustered ON mgd.ACC_Accession;
+CLUSTER acc_accession_idx_clustered USING mgd.ACC_Accession;
 
 
 EOSQL

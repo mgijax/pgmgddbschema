@@ -28,6 +28,6 @@ create index PRB_Strain_Genotype_idx_ModifiedBy_key on mgd.PRB_Strain_Genotype (
 
 
 
-CLUSTER prb_strain_genotype_idx_clustered ON mgd.PRB_Strain_Genotype;
+CLUSTER prb_strain_genotype_idx_clustered USING mgd.PRB_Strain_Genotype;
 
 EOSQL

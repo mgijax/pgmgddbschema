@@ -29,6 +29,6 @@ create index MRK_Label_idx_Priority on mgd.MRK_Label (priority);
 
 
 
-CLUSTER mrk_label_idx_clustered ON mgd.MRK_Label;
+CLUSTER mrk_label_idx_clustered USING mgd.MRK_Label;
 
 EOSQL

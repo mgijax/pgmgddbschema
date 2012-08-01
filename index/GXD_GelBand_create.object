@@ -19,6 +19,6 @@ create index GXD_GelBand_idx_Strength_key on mgd.GXD_GelBand (_Strength_key);
 
 
 
-CLUSTER gxd_gelband_idx_clustered ON mgd.GXD_GelBand;
+CLUSTER gxd_gelband_idx_clustered USING mgd.GXD_GelBand;
 
 EOSQL

@@ -49,6 +49,6 @@ create index PRB_Source_idx_ModifiedBy_key on mgd.PRB_Source (_ModifiedBy_key);
 
 
 
-CLUSTER prb_source_idx_clustered ON mgd.PRB_Source;
+CLUSTER prb_source_idx_clustered USING mgd.PRB_Source;
 
 EOSQL

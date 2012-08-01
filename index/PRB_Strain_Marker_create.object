@@ -34,6 +34,6 @@ create index PRB_Strain_Marker_idx_ModifiedBy_key on mgd.PRB_Strain_Marker (_Mod
 
 
 
-CLUSTER prb_strain_marker_idx_clustered ON mgd.PRB_Strain_Marker;
+CLUSTER prb_strain_marker_idx_clustered USING mgd.PRB_Strain_Marker;
 
 EOSQL

@@ -54,6 +54,6 @@ create index SEQ_Marker_Cache_idx_annotation_date on mgd.SEQ_Marker_Cache (annot
 
 
 
-CLUSTER seq_marker_cache_idx_clustered ON mgd.SEQ_Marker_Cache;
+CLUSTER seq_marker_cache_idx_clustered USING mgd.SEQ_Marker_Cache;
 
 EOSQL

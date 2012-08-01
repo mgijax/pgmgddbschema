@@ -23,6 +23,6 @@ create index ALL_Marker_Assoc_idx_CreatedBy_key on mgd.ALL_Marker_Assoc (_Create
 create index ALL_Marker_Assoc_idx_ModifiedBy_key on mgd.ALL_Marker_Assoc (_ModifiedBy_key);
 
 
-CLUSTER all_marker_assoc_idx_clustered ON mgd.ALL_Marker_Assoc;
+CLUSTER all_marker_assoc_idx_clustered USING mgd.ALL_Marker_Assoc;
 
 EOSQL

@@ -18,6 +18,6 @@ create index DAG_Node_idx_Label_key on mgd.DAG_Node (_Label_key);
 
 
 
-CLUSTER dag_node_idx_clustered ON mgd.DAG_Node;
+CLUSTER dag_node_idx_clustered USING mgd.DAG_Node;
 
 EOSQL

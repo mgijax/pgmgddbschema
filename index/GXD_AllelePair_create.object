@@ -34,6 +34,6 @@ create index GXD_AllelePair_idx_ModifiedBy_key on mgd.GXD_AllelePair (_ModifiedB
 
 
 
-CLUSTER gxd_allelepair_idx_clustered ON mgd.GXD_AllelePair;
+CLUSTER gxd_allelepair_idx_clustered USING mgd.GXD_AllelePair;
 
 EOSQL

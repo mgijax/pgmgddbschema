@@ -26,6 +26,6 @@ create index VOC_Term_idx_ModifiedBy_key on mgd.VOC_Term (_ModifiedBy_key);
 
 
 
-CLUSTER voc_term_idx_clustered ON mgd.VOC_Term;
+CLUSTER voc_term_idx_clustered USING mgd.VOC_Term;
 
 EOSQL

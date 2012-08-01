@@ -31,6 +31,6 @@ create index MRK_Location_Cache_idx_chromosome_cmOffset on mgd.MRK_Location_Cach
 
 
 
-CLUSTER mrk_location_cache_idx_clustered ON mgd.MRK_Location_Cache;
+CLUSTER mrk_location_cache_idx_clustered USING mgd.MRK_Location_Cache;
 
 EOSQL

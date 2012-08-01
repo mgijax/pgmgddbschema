@@ -28,6 +28,6 @@ create index VOC_AnnotHeader_idx_ApprovedBy_key on mgd.VOC_AnnotHeader (_Approve
 
 
 
-CLUSTER voc_annotheader_idx_clustered ON mgd.VOC_AnnotHeader;
+CLUSTER voc_annotheader_idx_clustered USING mgd.VOC_AnnotHeader;
 
 EOSQL

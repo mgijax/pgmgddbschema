@@ -28,6 +28,6 @@ create index GXD_Expression_idx_Structure_key on mgd.GXD_Expression (_Structure_
 
 
 
-CLUSTER gxd_expression_idx_clustered ON mgd.GXD_Expression;
+CLUSTER gxd_expression_idx_clustered USING mgd.GXD_Expression;
 
 EOSQL
