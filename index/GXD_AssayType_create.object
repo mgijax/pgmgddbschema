@@ -9,7 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER gxd_assaytype_pkey on mgd.GXD_AssayType;
+CLUSTER gxd_assaytype_pkey USING mgd.GXD_AssayType;
 
 
 EOSQL

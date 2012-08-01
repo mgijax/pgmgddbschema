@@ -12,31 +12,31 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MRK_OMIM_Cache_idx_clustered on mgd.MRK_OMIM_Cache (_Term_key, _Marker_key, _Allele_key);
+create index MRK_OMIM_Cache_idx_clustered USING mgd.MRK_OMIM_Cache (_Term_key, _Marker_key, _Allele_key);
 
 
-create index MRK_OMIM_Cache_idx_Organism_key on mgd.MRK_OMIM_Cache (_Organism_key);
+create index MRK_OMIM_Cache_idx_Organism_key USING mgd.MRK_OMIM_Cache (_Organism_key);
 
 
-create index MRK_OMIM_Cache_idx_Marker_key on mgd.MRK_OMIM_Cache (_Marker_key);
+create index MRK_OMIM_Cache_idx_Marker_key USING mgd.MRK_OMIM_Cache (_Marker_key);
 
 
-create index MRK_OMIM_Cache_idx_Marker_Type_key on mgd.MRK_OMIM_Cache (_Marker_Type_key);
+create index MRK_OMIM_Cache_idx_Marker_Type_key USING mgd.MRK_OMIM_Cache (_Marker_Type_key);
 
 
-create index MRK_OMIM_Cache_idx_Allele_key on mgd.MRK_OMIM_Cache (_Allele_key);
+create index MRK_OMIM_Cache_idx_Allele_key USING mgd.MRK_OMIM_Cache (_Allele_key);
 
 
-create index MRK_OMIM_Cache_idx_Genotype_key on mgd.MRK_OMIM_Cache (_Genotype_key);
+create index MRK_OMIM_Cache_idx_Genotype_key USING mgd.MRK_OMIM_Cache (_Genotype_key);
 
 
-create index MRK_OMIM_Cache_idx_Refs_key on mgd.MRK_OMIM_Cache (_Refs_key);
+create index MRK_OMIM_Cache_idx_Refs_key USING mgd.MRK_OMIM_Cache (_Refs_key);
 
 
-create index MRK_OMIM_Cache_idx_OrthologOrganism_key on mgd.MRK_OMIM_Cache (_OrthologOrganism_key);
+create index MRK_OMIM_Cache_idx_OrthologOrganism_key USING mgd.MRK_OMIM_Cache (_OrthologOrganism_key);
 
 
-create index MRK_OMIM_Cache_idx_OrthologMarker_key on mgd.MRK_OMIM_Cache (_OrthologMarker_key);
+create index MRK_OMIM_Cache_idx_OrthologMarker_key USING mgd.MRK_OMIM_Cache (_OrthologMarker_key);
 
 
 

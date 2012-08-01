@@ -15,16 +15,16 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index SEQ_GeneModel_idx_GMMarker_Type_key on mgd.SEQ_GeneModel (_GMMarker_Type_key);
+create index SEQ_GeneModel_idx_GMMarker_Type_key USING mgd.SEQ_GeneModel (_GMMarker_Type_key);
 
 
-create index SEQ_GeneModel_idx_CreatedBy_key on mgd.SEQ_GeneModel (_CreatedBy_key);
+create index SEQ_GeneModel_idx_CreatedBy_key USING mgd.SEQ_GeneModel (_CreatedBy_key);
 
 
-create index SEQ_GeneModel_idx_ModifiedBy_key on mgd.SEQ_GeneModel (_ModifiedBy_key);
+create index SEQ_GeneModel_idx_ModifiedBy_key USING mgd.SEQ_GeneModel (_ModifiedBy_key);
 
 
 
-CLUSTER seq_genemodel_pkey on mgd.SEQ_GeneModel;
+CLUSTER seq_genemodel_pkey USING mgd.SEQ_GeneModel;
 
 EOSQL

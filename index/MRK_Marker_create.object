@@ -16,28 +16,28 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MRK_Marker_idx_clustered on mgd.MRK_Marker (chromosome);
+create index MRK_Marker_idx_clustered USING mgd.MRK_Marker (chromosome);
 
 
-create unique index MRK_Marker_idx_Marker_key on mgd.MRK_Marker (_Marker_key, _Organism_key);
+create unique index MRK_Marker_idx_Marker_key USING mgd.MRK_Marker (_Marker_key, _Organism_key);
 
 
-create index MRK_Marker_idx_Organism_key on mgd.MRK_Marker (_Organism_key);
+create index MRK_Marker_idx_Organism_key USING mgd.MRK_Marker (_Organism_key);
 
 
-create index MRK_Marker_idx_Marker_Status_key on mgd.MRK_Marker (_Marker_Status_key);
+create index MRK_Marker_idx_Marker_Status_key USING mgd.MRK_Marker (_Marker_Status_key);
 
 
-create index MRK_Marker_idx_Marker_Type_key on mgd.MRK_Marker (_Marker_Type_key, _Marker_key);
+create index MRK_Marker_idx_Marker_Type_key USING mgd.MRK_Marker (_Marker_Type_key, _Marker_key);
 
 
-create index MRK_Marker_idx_symbol on mgd.MRK_Marker (symbol);
+create index MRK_Marker_idx_symbol USING mgd.MRK_Marker (symbol);
 
 
-create index MRK_Marker_idx_CreatedBy_key on mgd.MRK_Marker (_CreatedBy_key);
+create index MRK_Marker_idx_CreatedBy_key USING mgd.MRK_Marker (_CreatedBy_key);
 
 
-create index MRK_Marker_idx_ModifiedBy_key on mgd.MRK_Marker (_ModifiedBy_key);
+create index MRK_Marker_idx_ModifiedBy_key USING mgd.MRK_Marker (_ModifiedBy_key);
 
 
 

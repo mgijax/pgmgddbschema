@@ -9,19 +9,19 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MRK_History_idx_History_key on mgd.MRK_History (_History_key);
+create index MRK_History_idx_History_key USING mgd.MRK_History (_History_key);
 
 
-create index MRK_History_idx_Marker_Event_key on mgd.MRK_History (_Marker_Event_key);
+create index MRK_History_idx_Marker_Event_key USING mgd.MRK_History (_Marker_Event_key);
 
 
-create index MRK_History_idx_Marker_EventReason_key on mgd.MRK_History (_Marker_EventReason_key);
+create index MRK_History_idx_Marker_EventReason_key USING mgd.MRK_History (_Marker_EventReason_key);
 
 
-create index MRK_History_idx_Refs_key on mgd.MRK_History (_Refs_key);
+create index MRK_History_idx_Refs_key USING mgd.MRK_History (_Refs_key);
 
 
 
-CLUSTER mrk_history_pkey on mgd.MRK_History;
+CLUSTER mrk_history_pkey USING mgd.MRK_History;
 
 EOSQL

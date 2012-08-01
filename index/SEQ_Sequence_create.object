@@ -12,28 +12,28 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index SEQ_Sequence_idx_clustered on mgd.SEQ_Sequence (_SequenceType_key, _SequenceProvider_key, length);
+create index SEQ_Sequence_idx_clustered USING mgd.SEQ_Sequence (_SequenceType_key, _SequenceProvider_key, length);
 
 
-create index SEQ_Sequence_idx_SequenceQuality_key on mgd.SEQ_Sequence (_SequenceQuality_key);
+create index SEQ_Sequence_idx_SequenceQuality_key USING mgd.SEQ_Sequence (_SequenceQuality_key);
 
 
-create index SEQ_Sequence_idx_SequenceStatus_key on mgd.SEQ_Sequence (_SequenceStatus_key);
+create index SEQ_Sequence_idx_SequenceStatus_key USING mgd.SEQ_Sequence (_SequenceStatus_key);
 
 
-create index SEQ_Sequence_idx_SequenceProvider_key on mgd.SEQ_Sequence (_SequenceProvider_key);
+create index SEQ_Sequence_idx_SequenceProvider_key USING mgd.SEQ_Sequence (_SequenceProvider_key);
 
 
-create index SEQ_Sequence_idx_length on mgd.SEQ_Sequence (length);
+create index SEQ_Sequence_idx_length USING mgd.SEQ_Sequence (length);
 
 
-create index SEQ_Sequence_idx_seqrecord_date on mgd.SEQ_Sequence (seqrecord_date);
+create index SEQ_Sequence_idx_seqrecord_date USING mgd.SEQ_Sequence (seqrecord_date);
 
 
-create index SEQ_Sequence_idx_CreatedBy_key on mgd.SEQ_Sequence (_CreatedBy_key);
+create index SEQ_Sequence_idx_CreatedBy_key USING mgd.SEQ_Sequence (_CreatedBy_key);
 
 
-create index SEQ_Sequence_idx_ModifiedBy_key on mgd.SEQ_Sequence (_ModifiedBy_key);
+create index SEQ_Sequence_idx_ModifiedBy_key USING mgd.SEQ_Sequence (_ModifiedBy_key);
 
 
 

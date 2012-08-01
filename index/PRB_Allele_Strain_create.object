@@ -9,16 +9,16 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index PRB_Allele_Strain_idx_Strain_key on mgd.PRB_Allele_Strain (_Strain_key);
+create index PRB_Allele_Strain_idx_Strain_key USING mgd.PRB_Allele_Strain (_Strain_key);
 
 
-create index PRB_Allele_Strain_idx_CreatedBy_key on mgd.PRB_Allele_Strain (_CreatedBy_key);
+create index PRB_Allele_Strain_idx_CreatedBy_key USING mgd.PRB_Allele_Strain (_CreatedBy_key);
 
 
-create index PRB_Allele_Strain_idx_ModifiedBy_key on mgd.PRB_Allele_Strain (_ModifiedBy_key);
+create index PRB_Allele_Strain_idx_ModifiedBy_key USING mgd.PRB_Allele_Strain (_ModifiedBy_key);
 
 
 
-CLUSTER prb_allele_strain_pkey on mgd.PRB_Allele_Strain;
+CLUSTER prb_allele_strain_pkey USING mgd.PRB_Allele_Strain;
 
 EOSQL

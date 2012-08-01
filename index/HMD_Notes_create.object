@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index HMD_Notes_idx_notes on mgd.HMD_Notes (notes);
+create index HMD_Notes_idx_notes USING mgd.HMD_Notes (notes);
 
 
 
-CLUSTER hmd_notes_pkey on mgd.HMD_Notes;
+CLUSTER hmd_notes_pkey USING mgd.HMD_Notes;
 
 EOSQL

@@ -12,22 +12,22 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MGI_User_idx_UserType_key on mgd.MGI_User (_UserType_key);
+create index MGI_User_idx_UserType_key USING mgd.MGI_User (_UserType_key);
 
 
-create index MGI_User_idx_UserStatus_key on mgd.MGI_User (_UserStatus_key);
+create index MGI_User_idx_UserStatus_key USING mgd.MGI_User (_UserStatus_key);
 
 
-create index MGI_User_idx_login on mgd.MGI_User (login);
+create index MGI_User_idx_login USING mgd.MGI_User (login);
 
 
-create index MGI_User_idx_CreatedBy_key on mgd.MGI_User (_CreatedBy_key);
+create index MGI_User_idx_CreatedBy_key USING mgd.MGI_User (_CreatedBy_key);
 
 
-create index MGI_User_idx_ModifiedBy_key on mgd.MGI_User (_ModifiedBy_key);
+create index MGI_User_idx_ModifiedBy_key USING mgd.MGI_User (_ModifiedBy_key);
 
 
 
-CLUSTER mgi_user_pkey on mgd.MGI_User;
+CLUSTER mgi_user_pkey USING mgd.MGI_User;
 
 EOSQL

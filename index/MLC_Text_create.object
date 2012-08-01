@@ -9,7 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER mlc_text_pkey on mgd.MLC_Text;
+CLUSTER mlc_text_pkey USING mgd.MLC_Text;
 
 
 EOSQL

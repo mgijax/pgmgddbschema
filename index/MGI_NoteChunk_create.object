@@ -13,16 +13,16 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MGI_NoteChunk_idx_note on mgd.MGI_NoteChunk (note);
+create index MGI_NoteChunk_idx_note USING mgd.MGI_NoteChunk (note);
 
 
-create index MGI_NoteChunk_idx_CreatedBy_key on mgd.MGI_NoteChunk (_CreatedBy_key);
+create index MGI_NoteChunk_idx_CreatedBy_key USING mgd.MGI_NoteChunk (_CreatedBy_key);
 
 
-create index MGI_NoteChunk_idx_ModifiedBy_key on mgd.MGI_NoteChunk (_ModifiedBy_key);
+create index MGI_NoteChunk_idx_ModifiedBy_key USING mgd.MGI_NoteChunk (_ModifiedBy_key);
 
 
 
-CLUSTER mgi_notechunk_pkey on mgd.MGI_NoteChunk;
+CLUSTER mgi_notechunk_pkey USING mgd.MGI_NoteChunk;
 
 EOSQL

@@ -12,19 +12,19 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MRK_Homology_Cache_idx_clustered on mgd.MRK_Homology_Cache (_Class_key, _Organism_key);
+create index MRK_Homology_Cache_idx_clustered USING mgd.MRK_Homology_Cache (_Class_key, _Organism_key);
 
 
-create index MRK_Homology_Cache_idx_Refs_key on mgd.MRK_Homology_Cache (_Refs_key, _Class_key, _Organism_key);
+create index MRK_Homology_Cache_idx_Refs_key USING mgd.MRK_Homology_Cache (_Refs_key, _Class_key, _Organism_key);
 
 
-create index MRK_Homology_Cache_idx_Class_Marker_key on mgd.MRK_Homology_Cache (_Class_key, _Marker_key);
+create index MRK_Homology_Cache_idx_Class_Marker_key USING mgd.MRK_Homology_Cache (_Class_key, _Marker_key);
 
 
-create index MRK_Homology_Cache_idx_Class_Homology_key on mgd.MRK_Homology_Cache (_Class_key, _Homology_key);
+create index MRK_Homology_Cache_idx_Class_Homology_key USING mgd.MRK_Homology_Cache (_Class_key, _Homology_key);
 
 
-create index MRK_Homology_Cache_idx_Marker_key on mgd.MRK_Homology_Cache (_Marker_key, _Class_key, _Organism_key);
+create index MRK_Homology_Cache_idx_Marker_key USING mgd.MRK_Homology_Cache (_Marker_key, _Class_key, _Organism_key);
 
 
 

@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index GXD_GelRow_idx_clustered on mgd.GXD_GelRow (_Assay_key);
+create index GXD_GelRow_idx_clustered USING mgd.GXD_GelRow (_Assay_key);
 
 
-create index GXD_GelRow_idx_GelUnits_key on mgd.GXD_GelRow (_GelUnits_key);
+create index GXD_GelRow_idx_GelUnits_key USING mgd.GXD_GelRow (_GelUnits_key);
 
 
 

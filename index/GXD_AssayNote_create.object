@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index GXD_AssayNote_idx_assayNote on mgd.GXD_AssayNote (assayNote);
+create index GXD_AssayNote_idx_assayNote USING mgd.GXD_AssayNote (assayNote);
 
 
 
-CLUSTER gxd_assaynote_pkey on mgd.GXD_AssayNote;
+CLUSTER gxd_assaynote_pkey USING mgd.GXD_AssayNote;
 
 EOSQL

@@ -9,22 +9,22 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index GXD_Expression_idx_clustered on mgd.GXD_Expression (_Marker_key, _Structure_key, isForGXD);
+create index GXD_Expression_idx_clustered USING mgd.GXD_Expression (_Marker_key, _Structure_key, isForGXD);
 
 
-create index GXD_Expression_idx_Assay_key on mgd.GXD_Expression (_Assay_key);
+create index GXD_Expression_idx_Assay_key USING mgd.GXD_Expression (_Assay_key);
 
 
-create index GXD_Expression_idx_Refs_key on mgd.GXD_Expression (_Refs_key, _Structure_key, isForGXD);
+create index GXD_Expression_idx_Refs_key USING mgd.GXD_Expression (_Refs_key, _Structure_key, isForGXD);
 
 
-create index GXD_Expression_idx_AssayType_key on mgd.GXD_Expression (_AssayType_key);
+create index GXD_Expression_idx_AssayType_key USING mgd.GXD_Expression (_AssayType_key);
 
 
-create index GXD_Expression_idx_Genotype_key on mgd.GXD_Expression (_Genotype_key, isForGXD);
+create index GXD_Expression_idx_Genotype_key USING mgd.GXD_Expression (_Genotype_key, isForGXD);
 
 
-create index GXD_Expression_idx_Structure_key on mgd.GXD_Expression (_Structure_key, _Expression_key, isForGXD);
+create index GXD_Expression_idx_Structure_key USING mgd.GXD_Expression (_Structure_key, _Expression_key, isForGXD);
 
 
 

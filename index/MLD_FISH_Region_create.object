@@ -9,7 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER mld_fish_region_pkey on mgd.MLD_FISH_Region;
+CLUSTER mld_fish_region_pkey USING mgd.MLD_FISH_Region;
 
 
 EOSQL

@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index BIB_DataSet_Assoc_idx_clustered on mgd.BIB_DataSet_Assoc (_Refs_key);
+create index BIB_DataSet_Assoc_idx_clustered USING mgd.BIB_DataSet_Assoc (_Refs_key);
 
 
-create index BIB_DataSet_Assoc_idx_DataSet_key on mgd.BIB_DataSet_Assoc (_DataSet_key);
+create index BIB_DataSet_Assoc_idx_DataSet_key USING mgd.BIB_DataSet_Assoc (_DataSet_key);
 
 
 CLUSTER bib_dataset_assoc_idx_clustered USING mgd.BIB_DataSet_Assoc;

@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index PRB_Tissue_idx_Tissue on mgd.PRB_Tissue (tissue);
+create index PRB_Tissue_idx_Tissue USING mgd.PRB_Tissue (tissue);
 
 
 
-CLUSTER prb_tissue_pkey on mgd.PRB_Tissue;
+CLUSTER prb_tissue_pkey USING mgd.PRB_Tissue;
 
 EOSQL

@@ -10,7 +10,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER mgi_statisticsql_pkey on mgd.MGI_StatisticSql;
+CLUSTER mgi_statisticsql_pkey USING mgd.MGI_StatisticSql;
 
 
 EOSQL

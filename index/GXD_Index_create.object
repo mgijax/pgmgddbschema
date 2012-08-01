@@ -17,16 +17,16 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create unique index GXD_Index_idx_clustered on mgd.GXD_Index (_Marker_key, _Refs_key);
+create unique index GXD_Index_idx_clustered USING mgd.GXD_Index (_Marker_key, _Refs_key);
 
 
-create index GXD_Index_idx_Refs_key on mgd.GXD_Index (_Refs_key);
+create index GXD_Index_idx_Refs_key USING mgd.GXD_Index (_Refs_key);
 
 
-create index GXD_Index_idx_Priority_key on mgd.GXD_Index (_Priority_key);
+create index GXD_Index_idx_Priority_key USING mgd.GXD_Index (_Priority_key);
 
 
-create index GXD_Index_idx_ConditionalMutants_key on mgd.GXD_Index (_ConditionalMutants_key);
+create index GXD_Index_idx_ConditionalMutants_key USING mgd.GXD_Index (_ConditionalMutants_key);
 
 
 

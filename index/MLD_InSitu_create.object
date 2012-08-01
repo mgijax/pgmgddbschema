@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MLD_InSitu_idx_strain_key on mgd.MLD_InSitu (_Strain_key);
+create index MLD_InSitu_idx_strain_key USING mgd.MLD_InSitu (_Strain_key);
 
 
 
-CLUSTER mld_insitu_pkey on mgd.MLD_InSitu;
+CLUSTER mld_insitu_pkey USING mgd.MLD_InSitu;
 
 EOSQL

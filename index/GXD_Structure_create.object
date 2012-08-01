@@ -12,19 +12,19 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index GXD_Structure_idx_Parent_key on mgd.GXD_Structure (_Parent_key);
+create index GXD_Structure_idx_Parent_key USING mgd.GXD_Structure (_Parent_key);
 
 
-create index GXD_Structure_idx_StructureName_key on mgd.GXD_Structure (_StructureName_key);
+create index GXD_Structure_idx_StructureName_key USING mgd.GXD_Structure (_StructureName_key);
 
 
-create index GXD_Structure_idx_Stage_key on mgd.GXD_Structure (_Stage_key);
+create index GXD_Structure_idx_Stage_key USING mgd.GXD_Structure (_Stage_key);
 
 
-create index GXD_Structure_idx_System_key on mgd.GXD_Structure (_System_key);
+create index GXD_Structure_idx_System_key USING mgd.GXD_Structure (_System_key);
 
 
 
-CLUSTER gxd_structure_pkey on mgd.GXD_Structure;
+CLUSTER gxd_structure_pkey USING mgd.GXD_Structure;
 
 EOSQL

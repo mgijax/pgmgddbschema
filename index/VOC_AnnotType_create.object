@@ -9,22 +9,22 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create unique index VOC_AnnotType_idx_MGITypeVocabEvidence on mgd.VOC_AnnotType (_MGIType_key, _Vocab_key, _EvidenceVocab_key);
+create unique index VOC_AnnotType_idx_MGITypeVocabEvidence USING mgd.VOC_AnnotType (_MGIType_key, _Vocab_key, _EvidenceVocab_key);
 
 
-create index VOC_AnnotType_idx_Vocab_key on mgd.VOC_AnnotType (_Vocab_key);
+create index VOC_AnnotType_idx_Vocab_key USING mgd.VOC_AnnotType (_Vocab_key);
 
 
-create index VOC_AnnotType_idx_EvidenceVocab_key on mgd.VOC_AnnotType (_EvidenceVocab_key);
+create index VOC_AnnotType_idx_EvidenceVocab_key USING mgd.VOC_AnnotType (_EvidenceVocab_key);
 
 
-create index VOC_AnnotType_idx_QualifierVocab_key on mgd.VOC_AnnotType (_QualifierVocab_key);
+create index VOC_AnnotType_idx_QualifierVocab_key USING mgd.VOC_AnnotType (_QualifierVocab_key);
 
 
-create index VOC_AnnotType_idx_name on mgd.VOC_AnnotType (name);
+create index VOC_AnnotType_idx_name USING mgd.VOC_AnnotType (name);
 
 
 
-CLUSTER voc_annottype_pkey on mgd.VOC_AnnotType;
+CLUSTER voc_annottype_pkey USING mgd.VOC_AnnotType;
 
 EOSQL

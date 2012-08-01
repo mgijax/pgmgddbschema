@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index BIB_Notes_idx_note on mgd.BIB_Notes (note);
+create index BIB_Notes_idx_note USING mgd.BIB_Notes (note);
 
 
 
-CLUSTER bib_notes_pkey on mgd.BIB_Notes;
+CLUSTER bib_notes_pkey USING mgd.BIB_Notes;
 
 EOSQL

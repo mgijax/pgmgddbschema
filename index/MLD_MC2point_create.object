@@ -9,13 +9,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MLD_MC2point_idx_Marker_key on mgd.MLD_MC2point (_Marker_key_1);
+create index MLD_MC2point_idx_Marker_key USING mgd.MLD_MC2point (_Marker_key_1);
 
 
-create index MLD_MC2point_idx_Marker_key_2 on mgd.MLD_MC2point (_Marker_key_2);
+create index MLD_MC2point_idx_Marker_key_2 USING mgd.MLD_MC2point (_Marker_key_2);
 
 
 
-CLUSTER mld_mc2point_pkey on mgd.MLD_MC2point;
+CLUSTER mld_mc2point_pkey USING mgd.MLD_MC2point;
 
 EOSQL

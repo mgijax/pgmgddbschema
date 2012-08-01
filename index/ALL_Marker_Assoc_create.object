@@ -8,19 +8,19 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index ALL_Marker_Assoc_idx_clustered on mgd.ALL_Marker_Assoc (_Marker_key, _Allele_key, _Qualifier_key, _Status_key);
+create index ALL_Marker_Assoc_idx_clustered USING mgd.ALL_Marker_Assoc (_Marker_key, _Allele_key, _Qualifier_key, _Status_key);
 
 
-create index ALL_Marker_Assoc_idx_Allele_key on mgd.ALL_Marker_Assoc (_Allele_key, _Marker_key, _Qualifier_key, _Status_key);
+create index ALL_Marker_Assoc_idx_Allele_key USING mgd.ALL_Marker_Assoc (_Allele_key, _Marker_key, _Qualifier_key, _Status_key);
 
 
-create index ALL_Marker_Assoc_idx_Status_key on mgd.ALL_Marker_Assoc (_Status_key);
+create index ALL_Marker_Assoc_idx_Status_key USING mgd.ALL_Marker_Assoc (_Status_key);
 
 
-create index ALL_Marker_Assoc_idx_CreatedBy_key on mgd.ALL_Marker_Assoc (_CreatedBy_key);
+create index ALL_Marker_Assoc_idx_CreatedBy_key USING mgd.ALL_Marker_Assoc (_CreatedBy_key);
 
 
-create index ALL_Marker_Assoc_idx_ModifiedBy_key on mgd.ALL_Marker_Assoc (_ModifiedBy_key);
+create index ALL_Marker_Assoc_idx_ModifiedBy_key USING mgd.ALL_Marker_Assoc (_ModifiedBy_key);
 
 
 CLUSTER all_marker_assoc_idx_clustered USING mgd.ALL_Marker_Assoc;

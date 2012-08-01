@@ -12,7 +12,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index IMG_Cache_idx_clustered on mgd.IMG_Cache (_Object_key, _MGIType_key, sequenceNum);
+create index IMG_Cache_idx_clustered USING mgd.IMG_Cache (_Object_key, _MGIType_key, sequenceNum);
 
 CLUSTER img_cache_idx_clustered USING mgd.IMG_Cache;
 

@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create unique index ACC_MGIType_idx_name on mgd.ACC_MGIType (name);
+create unique index ACC_MGIType_idx_name USING mgd.ACC_MGIType (name);
 
 
 
-CLUSTER acc_mgitype_pkey on mgd.ACC_MGIType;
+CLUSTER acc_mgitype_pkey USING mgd.ACC_MGIType;
 
 EOSQL

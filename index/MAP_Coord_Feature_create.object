@@ -12,22 +12,22 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MAP_Coord_Feature_idx_Map_key on mgd.MAP_Coord_Feature (_Map_key);
+create index MAP_Coord_Feature_idx_Map_key USING mgd.MAP_Coord_Feature (_Map_key);
 
 
-create index MAP_Coord_Feature_idx_MGIType_key on mgd.MAP_Coord_Feature (_MGIType_key);
+create index MAP_Coord_Feature_idx_MGIType_key USING mgd.MAP_Coord_Feature (_MGIType_key);
 
 
-create index MAP_Coord_Feature_idx_Object_key on mgd.MAP_Coord_Feature (_Object_key);
+create index MAP_Coord_Feature_idx_Object_key USING mgd.MAP_Coord_Feature (_Object_key);
 
 
-create index MAP_Coord_Feature_idx_CreatedBy_key on mgd.MAP_Coord_Feature (_CreatedBy_key);
+create index MAP_Coord_Feature_idx_CreatedBy_key USING mgd.MAP_Coord_Feature (_CreatedBy_key);
 
 
-create index MAP_Coord_Feature_idx_ModifiedBy_key on mgd.MAP_Coord_Feature (_ModifiedBy_key);
+create index MAP_Coord_Feature_idx_ModifiedBy_key USING mgd.MAP_Coord_Feature (_ModifiedBy_key);
 
 
 
-CLUSTER map_coord_feature_pkey on mgd.MAP_Coord_Feature;
+CLUSTER map_coord_feature_pkey USING mgd.MAP_Coord_Feature;
 
 EOSQL

@@ -14,16 +14,16 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create unique index ALL_Cre_Cache_idx_clustered on mgd.ALL_Cre_Cache (_Allele_key, _Structure_key, _Assay_key, expressed);
+create unique index ALL_Cre_Cache_idx_clustered USING mgd.ALL_Cre_Cache (_Allele_key, _Structure_key, _Assay_key, expressed);
 
 
-create index ALL_Cre_Cache_idx_Allele_key on mgd.ALL_Cre_Cache (_Allele_key);
+create index ALL_Cre_Cache_idx_Allele_key USING mgd.ALL_Cre_Cache (_Allele_key);
 
 
-create index ALL_Cre_Cache_idx_CreatedBy_key on mgd.ALL_Cre_Cache (_CreatedBy_key);
+create index ALL_Cre_Cache_idx_CreatedBy_key USING mgd.ALL_Cre_Cache (_CreatedBy_key);
 
 
-create index ALL_Cre_Cache_idx_ModifiedBy_key on mgd.ALL_Cre_Cache (_ModifiedBy_key);
+create index ALL_Cre_Cache_idx_ModifiedBy_key USING mgd.ALL_Cre_Cache (_ModifiedBy_key);
 
 
 

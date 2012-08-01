@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index CRS_References_idx_Marker_key on mgd.CRS_References (_Marker_key);
+create index CRS_References_idx_Marker_key USING mgd.CRS_References (_Marker_key);
 
 
 
-CLUSTER crs_references_pkey on mgd.CRS_References;
+CLUSTER crs_references_pkey USING mgd.CRS_References;
 
 EOSQL

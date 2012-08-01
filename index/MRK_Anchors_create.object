@@ -10,7 +10,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 
-create index MRK_Anchors_idx_Marker_key on mgd.MRK_Anchors (_Marker_key);
+create index MRK_Anchors_idx_Marker_key USING mgd.MRK_Anchors (_Marker_key);
 
 
 

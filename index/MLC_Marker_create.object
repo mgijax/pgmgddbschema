@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MLC_Marker_idx_Marker_key_2 on mgd.MLC_Marker (_Marker_key_2);
+create index MLC_Marker_idx_Marker_key_2 USING mgd.MLC_Marker (_Marker_key_2);
 
 
 
-CLUSTER mlc_marker_pkey on mgd.MLC_Marker;
+CLUSTER mlc_marker_pkey USING mgd.MLC_Marker;
 
 EOSQL

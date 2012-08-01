@@ -9,7 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER crs_typings_pkey on mgd.CRS_Typings;
+CLUSTER crs_typings_pkey USING mgd.CRS_Typings;
 
 
 

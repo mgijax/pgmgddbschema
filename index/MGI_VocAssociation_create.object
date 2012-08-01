@@ -12,18 +12,18 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MGI_VocAssociation_idx_AssociationType_key on mgd.MGI_VocAssociation (_AssociationType_key);
+create index MGI_VocAssociation_idx_AssociationType_key USING mgd.MGI_VocAssociation (_AssociationType_key);
 
-create index MGI_VocAssociation_idx_Term_key_1 on mgd.MGI_VocAssociation (_Term_key_1);
+create index MGI_VocAssociation_idx_Term_key_1 USING mgd.MGI_VocAssociation (_Term_key_1);
 
-create index MGI_VocAssociation_idx_Term_key_2 on mgd.MGI_VocAssociation (_Term_key_2);
+create index MGI_VocAssociation_idx_Term_key_2 USING mgd.MGI_VocAssociation (_Term_key_2);
 
-create index MGI_VocAssociation_idx_CreatedBy_key on mgd.MGI_VocAssociation (_CreatedBy_key);
+create index MGI_VocAssociation_idx_CreatedBy_key USING mgd.MGI_VocAssociation (_CreatedBy_key);
 
-create index MGI_VocAssociation_idx_ModifiedBy_key on mgd.MGI_VocAssociation (_ModifiedBy_key);
+create index MGI_VocAssociation_idx_ModifiedBy_key USING mgd.MGI_VocAssociation (_ModifiedBy_key);
 
 
 
-CLUSTER mgi_vocassociation_pkey on mgd.MGI_VocAssociation;
+CLUSTER mgi_vocassociation_pkey USING mgd.MGI_VocAssociation;
 
 EOSQL

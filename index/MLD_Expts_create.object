@@ -9,16 +9,16 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MLD_Expts_idx_Refs_key on mgd.MLD_Expts (_Refs_key);
+create index MLD_Expts_idx_Refs_key USING mgd.MLD_Expts (_Refs_key);
 
 
-create index MLD_Expts_idx_chromosome on mgd.MLD_Expts (chromosome);
+create index MLD_Expts_idx_chromosome USING mgd.MLD_Expts (chromosome);
 
 
-create index MLD_Expts_idx_exptType on mgd.MLD_Expts (exptType);
+create index MLD_Expts_idx_exptType USING mgd.MLD_Expts (exptType);
 
 
 
-CLUSTER mld_expts_pkey on mgd.MLD_Expts;
+CLUSTER mld_expts_pkey USING mgd.MLD_Expts;
 
 EOSQL

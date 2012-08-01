@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index GXD_GelLaneStructure_idx_Structure_key on mgd.GXD_GelLaneStructure (_Structure_key);
+create index GXD_GelLaneStructure_idx_Structure_key USING mgd.GXD_GelLaneStructure (_Structure_key);
 
 
 
-CLUSTER gxd_gellanestructure_pkey on mgd.GXD_GelLaneStructure;
+CLUSTER gxd_gellanestructure_pkey USING mgd.GXD_GelLaneStructure;
 
 EOSQL

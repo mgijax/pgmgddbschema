@@ -9,16 +9,16 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index PRB_Alias_idx_clustered on mgd.PRB_Alias (_Reference_key);
+create index PRB_Alias_idx_clustered USING mgd.PRB_Alias (_Reference_key);
 
 
-create index PRB_Alias_idx_CreatedBy_key on mgd.PRB_Alias (_CreatedBy_key);
+create index PRB_Alias_idx_CreatedBy_key USING mgd.PRB_Alias (_CreatedBy_key);
 
 
-create index PRB_Alias_idx_ModifiedBy_key on mgd.PRB_Alias (_ModifiedBy_key);
+create index PRB_Alias_idx_ModifiedBy_key USING mgd.PRB_Alias (_ModifiedBy_key);
 
 
-create index PRB_Alias_idx_alias on mgd.PRB_Alias (alias);
+create index PRB_Alias_idx_alias USING mgd.PRB_Alias (alias);
 
 
 

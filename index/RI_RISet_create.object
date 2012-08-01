@@ -9,16 +9,16 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create unique index RI_RISet_idx_designation on mgd.RI_RISet (designation);
+create unique index RI_RISet_idx_designation USING mgd.RI_RISet (designation);
 
 
-create index RI_RISet_idx_Strain_key_1 on mgd.RI_RISet (_Strain_key_1);
+create index RI_RISet_idx_Strain_key_1 USING mgd.RI_RISet (_Strain_key_1);
 
 
-create index RI_RISet_idx_Strain_key_2 on mgd.RI_RISet (_Strain_key_2);
+create index RI_RISet_idx_Strain_key_2 USING mgd.RI_RISet (_Strain_key_2);
 
 
 
-CLUSTER ri_riset_pkey on mgd.RI_RISet;
+CLUSTER ri_riset_pkey USING mgd.RI_RISet;
 
 EOSQL

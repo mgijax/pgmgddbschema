@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index PRB_Ref_Notes_idx_note on mgd.PRB_Ref_Notes (note);
+create index PRB_Ref_Notes_idx_note USING mgd.PRB_Ref_Notes (note);
 
 
 
-CLUSTER prb_ref_notes_pkey on mgd.PRB_Ref_Notes;
+CLUSTER prb_ref_notes_pkey USING mgd.PRB_Ref_Notes;
 
 EOSQL

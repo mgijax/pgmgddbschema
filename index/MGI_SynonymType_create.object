@@ -12,19 +12,19 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MGI_SynonymType_idx_MGIType_key on mgd.MGI_SynonymType (_MGIType_key);
+create index MGI_SynonymType_idx_MGIType_key USING mgd.MGI_SynonymType (_MGIType_key);
 
 
-create index MGI_SynonymType_idx_Organism_key on mgd.MGI_SynonymType (_Organism_key);
+create index MGI_SynonymType_idx_Organism_key USING mgd.MGI_SynonymType (_Organism_key);
 
 
-create index MGI_SynonymType_idx_CreatedBy_key on mgd.MGI_SynonymType (_CreatedBy_key);
+create index MGI_SynonymType_idx_CreatedBy_key USING mgd.MGI_SynonymType (_CreatedBy_key);
 
 
-create index MGI_SynonymType_idx_ModifiedBy_key on mgd.MGI_SynonymType (_ModifiedBy_key);
+create index MGI_SynonymType_idx_ModifiedBy_key USING mgd.MGI_SynonymType (_ModifiedBy_key);
 
 
 
-CLUSTER mgi_synonymtype_pkey on mgd.MGI_SynonymType;
+CLUSTER mgi_synonymtype_pkey USING mgd.MGI_SynonymType;
 
 EOSQL

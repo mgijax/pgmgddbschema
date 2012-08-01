@@ -9,31 +9,31 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index GXD_Assay_idx_clustered on mgd.GXD_Assay (_Marker_key);
+create index GXD_Assay_idx_clustered USING mgd.GXD_Assay (_Marker_key);
 
 
-create index GXD_Assay_idx_AssayType_key on mgd.GXD_Assay (_AssayType_key);
+create index GXD_Assay_idx_AssayType_key USING mgd.GXD_Assay (_AssayType_key);
 
 
-create index GXD_Assay_idx_Refs_key on mgd.GXD_Assay (_Refs_key);
+create index GXD_Assay_idx_Refs_key USING mgd.GXD_Assay (_Refs_key);
 
 
-create index GXD_Assay_idx_ProbePrep_key on mgd.GXD_Assay (_ProbePrep_key);
+create index GXD_Assay_idx_ProbePrep_key USING mgd.GXD_Assay (_ProbePrep_key);
 
 
-create index GXD_Assay_idx_AntibodyPrep_key on mgd.GXD_Assay (_AntibodyPrep_key);
+create index GXD_Assay_idx_AntibodyPrep_key USING mgd.GXD_Assay (_AntibodyPrep_key);
 
 
-create index GXD_Assay_idx_ImagePane_key on mgd.GXD_Assay (_ImagePane_key);
+create index GXD_Assay_idx_ImagePane_key USING mgd.GXD_Assay (_ImagePane_key);
 
 
-create index GXD_Assay_idx_ReporterGene_key on mgd.GXD_Assay (_ReporterGene_key);
+create index GXD_Assay_idx_ReporterGene_key USING mgd.GXD_Assay (_ReporterGene_key);
 
 
-create index GXD_Assay_idx_CreatedBy_key on mgd.GXD_Assay (_CreatedBy_key);
+create index GXD_Assay_idx_CreatedBy_key USING mgd.GXD_Assay (_CreatedBy_key);
 
 
-create index GXD_Assay_idx_ModifiedBy_key on mgd.GXD_Assay (_ModifiedBy_key);
+create index GXD_Assay_idx_ModifiedBy_key USING mgd.GXD_Assay (_ModifiedBy_key);
 
 
 

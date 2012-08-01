@@ -10,19 +10,19 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index ALL_CellLine_Derivation_idx_Creator_key on mgd.ALL_CellLine_Derivation (_Creator_key);
+create index ALL_CellLine_Derivation_idx_Creator_key USING mgd.ALL_CellLine_Derivation (_Creator_key);
 
-create index ALL_CellLine_Derivation_idx_Refs_key on mgd.ALL_CellLine_Derivation (_Refs_key);
-
-
-create index ALL_CellLine_Derivation_idx_name on mgd.ALL_CellLine_Derivation (name, _Derivation_key);
-
-create index ALL_CellLine_Derivation_idx_pcl on mgd.ALL_CellLine_Derivation (_ParentCellLine_key, _Derivation_key);
-
-create index ALL_CellLine_Derivation_idx_DerivationType_key on mgd.ALL_CellLine_Derivation (_DerivationType_key, _ParentCellLine_key, _Creator_key);
+create index ALL_CellLine_Derivation_idx_Refs_key USING mgd.ALL_CellLine_Derivation (_Refs_key);
 
 
+create index ALL_CellLine_Derivation_idx_name USING mgd.ALL_CellLine_Derivation (name, _Derivation_key);
 
-CLUSTER all_cellline_derivation_pkey on mgd.ALL_CellLine_Derivation;
+create index ALL_CellLine_Derivation_idx_pcl USING mgd.ALL_CellLine_Derivation (_ParentCellLine_key, _Derivation_key);
+
+create index ALL_CellLine_Derivation_idx_DerivationType_key USING mgd.ALL_CellLine_Derivation (_DerivationType_key, _ParentCellLine_key, _Creator_key);
+
+
+
+CLUSTER all_cellline_derivation_pkey USING mgd.ALL_CellLine_Derivation;
 
 EOSQL
