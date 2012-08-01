@@ -28,6 +28,6 @@ create index MGI_Translation_idx_ModifiedBy_key on mgd.MGI_Translation (_Modifie
 
 
 
-CLUSTER mgd.MGI_Translation USING MGI_Translation_idx_pkey;
+CLUSTER mgd.MGI_Translation USING MGI_Translation_pkey;
 
 EOSQL

@@ -13,6 +13,6 @@ create index MLD_Matrix_idx_Cross_key on mgd.MLD_Matrix (_Cross_key);
 
 
 
-CLUSTER mgd.MLD_Matrix USING MLD_Matrix_idx_pkey;
+CLUSTER mgd.MLD_Matrix USING MLD_Matrix_pkey;
 
 EOSQL

@@ -22,6 +22,6 @@ create index MGI_NoteType_idx_ModifiedBy_key on mgd.MGI_NoteType (_ModifiedBy_ke
 
 
 
-CLUSTER mgd.MGI_NoteType USING MGI_NoteType_idx_pkey;
+CLUSTER mgd.MGI_NoteType USING MGI_NoteType_pkey;
 
 EOSQL

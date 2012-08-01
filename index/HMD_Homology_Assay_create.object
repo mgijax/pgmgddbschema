@@ -13,6 +13,6 @@ create index HMD_Homology_Assay_idx_Assay_key on mgd.HMD_Homology_Assay (_Assay_
 
 
 
-CLUSTER mgd.HMD_Homology_Assay USING HMD_Homology_Assay_idx_pkey;
+CLUSTER mgd.HMD_Homology_Assay USING HMD_Homology_Assay_pkey;
 
 EOSQL

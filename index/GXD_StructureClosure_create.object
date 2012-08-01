@@ -14,6 +14,6 @@ create index GXD_StructureClosure_idx_Descendent_key on mgd.GXD_StructureClosure
 
 
 
-CLUSTER mgd.GXD_StructureClosure USING GXD_StructureClosure_idx_pkey;
+CLUSTER mgd.GXD_StructureClosure USING GXD_StructureClosure_pkey;
 
 EOSQL

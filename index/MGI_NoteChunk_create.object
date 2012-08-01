@@ -23,6 +23,6 @@ create index MGI_NoteChunk_idx_ModifiedBy_key on mgd.MGI_NoteChunk (_ModifiedBy_
 
 
 
-CLUSTER mgd.MGI_NoteChunk USING MGI_NoteChunk_idx_pkey;
+CLUSTER mgd.MGI_NoteChunk USING MGI_NoteChunk_pkey;
 
 EOSQL

@@ -13,6 +13,6 @@ create index IMG_ImagePane_idx_Image_key on mgd.IMG_ImagePane (_Image_key);
 
 
 
-CLUSTER mgd.IMG_ImagePane USING IMG_ImagePane_idx_pkey;
+CLUSTER mgd.IMG_ImagePane USING IMG_ImagePane_pkey;
 
 EOSQL

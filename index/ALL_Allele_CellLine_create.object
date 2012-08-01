@@ -21,6 +21,6 @@ create index ALL_Allele_CellLine_idx_ModifiedBy_key on mgd.ALL_Allele_CellLine (
 
 
 
-CLUSTER mgd.ALL_Allele_CellLine USING ALL_Allele_CellLine_idx_pkey;
+CLUSTER mgd.ALL_Allele_CellLine USING ALL_Allele_CellLine_pkey;
 
 EOSQL

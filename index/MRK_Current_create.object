@@ -13,6 +13,6 @@ create index MRK_Current_idx_Marker_key on mgd.MRK_Current (_Marker_key);
 
 
 
-CLUSTER mgd.MRK_Current USING MRK_Current_idx_pkey;
+CLUSTER mgd.MRK_Current USING MRK_Current_pkey;
 
 EOSQL

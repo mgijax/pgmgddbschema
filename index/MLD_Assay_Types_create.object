@@ -13,6 +13,6 @@ create unique index MLD_Assay_Types_idx_description on mgd.MLD_Assay_Types (desc
 
 
 
-CLUSTER mgd.MLD_Assay_Types USING MLD_Assay_Types_idx_pkey;
+CLUSTER mgd.MLD_Assay_Types USING MLD_Assay_Types_pkey;
 
 EOSQL

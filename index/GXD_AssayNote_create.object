@@ -13,6 +13,6 @@ create index GXD_AssayNote_idx_assayNote on mgd.GXD_AssayNote (assayNote);
 
 
 
-CLUSTER mgd.GXD_AssayNote USING GXD_AssayNote_idx_pkey;
+CLUSTER mgd.GXD_AssayNote USING GXD_AssayNote_pkey;
 
 EOSQL

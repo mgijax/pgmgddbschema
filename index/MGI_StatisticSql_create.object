@@ -11,6 +11,6 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 
-CLUSTER mgd.MGI_StatisticSql USING MGI_StatisticSql_idx_pkey;
+CLUSTER mgd.MGI_StatisticSql USING MGI_StatisticSql_pkey;
 
 EOSQL

@@ -13,6 +13,6 @@ create index PRB_Notes_idx_note on mgd.PRB_Notes (note);
 
 
 
-CLUSTER mgd.PRB_Notes USING PRB_Notes_idx_pkey;
+CLUSTER mgd.PRB_Notes USING PRB_Notes_pkey;
 
 EOSQL

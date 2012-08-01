@@ -13,6 +13,6 @@ create index GXD_AntibodyMarker_idx_Marker_key on mgd.GXD_AntibodyMarker (_Marke
 
 
 
-CLUSTER mgd.GXD_AntibodyMarker USING GXD_AntibodyMarker_idx_pkey;
+CLUSTER mgd.GXD_AntibodyMarker USING GXD_AntibodyMarker_pkey;
 
 EOSQL

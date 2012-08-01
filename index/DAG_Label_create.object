@@ -13,6 +13,6 @@ create index DAG_Label_idx_label on mgd.DAG_Label (label);
 
 
 
-CLUSTER mgd.DAG_Label USING DAG_Label_idx_pkey;
+CLUSTER mgd.DAG_Label USING DAG_Label_pkey;
 
 EOSQL

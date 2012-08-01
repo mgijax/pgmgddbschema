@@ -16,6 +16,6 @@ create index MLD_Hit_idx_Probe_key on mgd.MLD_Hit (_Target_key);
 
 
 
-CLUSTER mgd.MLD_Hit USING MLD_Hit_idx_pkey;
+CLUSTER mgd.MLD_Hit USING MLD_Hit_pkey;
 
 EOSQL

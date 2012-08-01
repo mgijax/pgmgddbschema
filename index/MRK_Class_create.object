@@ -13,6 +13,6 @@ create index MRK_Class_idx_name on mgd.MRK_Class (name);
 
 
 
-CLUSTER mgd.MRK_Class USING MRK_Class_idx_pkey;
+CLUSTER mgd.MRK_Class USING MRK_Class_pkey;
 
 EOSQL

@@ -28,6 +28,6 @@ create index MGI_User_idx_ModifiedBy_key on mgd.MGI_User (_ModifiedBy_key);
 
 
 
-CLUSTER mgd.MGI_User USING MGI_User_idx_pkey;
+CLUSTER mgd.MGI_User USING MGI_User_pkey;
 
 EOSQL

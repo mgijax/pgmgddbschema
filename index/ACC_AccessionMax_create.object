@@ -10,6 +10,6 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 
-CLUSTER mgd.ACC_AccessionMax USING ACC_AccessionMax_idx_pkey;
+CLUSTER mgd.ACC_AccessionMax USING ACC_AccessionMax_pkey;
 
 EOSQL

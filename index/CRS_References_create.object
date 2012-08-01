@@ -13,6 +13,6 @@ create index CRS_References_idx_Marker_key on mgd.CRS_References (_Marker_key);
 
 
 
-CLUSTER mgd.CRS_References USING CRS_References_idx_pkey;
+CLUSTER mgd.CRS_References USING CRS_References_pkey;
 
 EOSQL

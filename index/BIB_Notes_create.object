@@ -13,6 +13,6 @@ create index BIB_Notes_idx_note on mgd.BIB_Notes (note);
 
 
 
-CLUSTER mgd.BIB_Notes USING BIB_Notes_idx_pkey;
+CLUSTER mgd.BIB_Notes USING BIB_Notes_pkey;
 
 EOSQL

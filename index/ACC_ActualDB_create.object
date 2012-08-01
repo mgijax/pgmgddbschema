@@ -16,6 +16,6 @@ create index ACC_ActualDB_idx_LogicalDB_key on mgd.ACC_ActualDB (_LogicalDB_key)
 
 
 
-CLUSTER mgd.ACC_ActualDB USING ACC_ActualDB_idx_pkey;
+CLUSTER mgd.ACC_ActualDB USING ACC_ActualDB_pkey;
 
 EOSQL

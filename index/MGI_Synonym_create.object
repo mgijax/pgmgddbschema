@@ -34,6 +34,6 @@ create index MGI_Synonym_idx_ModifiedBy_key on mgd.MGI_Synonym (_ModifiedBy_key)
 
 
 
-CLUSTER mgd.MGI_Synonym USING MGI_Synonym_idx_pkey;
+CLUSTER mgd.MGI_Synonym USING MGI_Synonym_pkey;
 
 EOSQL

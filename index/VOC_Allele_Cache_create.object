@@ -16,6 +16,6 @@ create index VOC_Allele_Cache_idx_annotType on mgd.VOC_Allele_Cache (annotType, 
 
 
 
-CLUSTER mgd.VOC_Allele_Cache USING VOC_Allele_Cache_idx_pkey;
+CLUSTER mgd.VOC_Allele_Cache USING VOC_Allele_Cache_pkey;
 
 EOSQL

@@ -16,6 +16,6 @@ create index SEQ_Description_Cache_idx_description on mgd.SEQ_Description_Cache 
 
 
 
-CLUSTER mgd.SEQ_Description_Cache USING SEQ_Description_Cache_idx_pkey;
+CLUSTER mgd.SEQ_Description_Cache USING SEQ_Description_Cache_pkey;
 
 EOSQL

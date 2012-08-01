@@ -31,6 +31,6 @@ create index GXD_Antibody_idx_Antigen_key on mgd.GXD_Antibody (_Antigen_key);
 
 
 
-CLUSTER mgd.GXD_Antibody USING GXD_Antibody_idx_pkey;
+CLUSTER mgd.GXD_Antibody USING GXD_Antibody_pkey;
 
 EOSQL

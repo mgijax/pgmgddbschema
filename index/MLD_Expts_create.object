@@ -19,6 +19,6 @@ create index MLD_Expts_idx_exptType on mgd.MLD_Expts (exptType);
 
 
 
-CLUSTER mgd.MLD_Expts USING MLD_Expts_idx_pkey;
+CLUSTER mgd.MLD_Expts USING MLD_Expts_pkey;
 
 EOSQL

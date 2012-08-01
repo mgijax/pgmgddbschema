@@ -26,6 +26,6 @@ create unique index MGI_SetMember_idx_SetMember_key on mgd.MGI_SetMember (_SetMe
 
 
 
-CLUSTER mgd.MGI_SetMember USING MGI_SetMember_idx_pkey;
+CLUSTER mgd.MGI_SetMember USING MGI_SetMember_pkey;
 
 EOSQL

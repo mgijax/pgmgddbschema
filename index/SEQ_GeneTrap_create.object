@@ -11,6 +11,6 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 
-CLUSTER mgd.SEQ_GeneTrap USING SEQ_GeneTrap_idx_pkey;
+CLUSTER mgd.SEQ_GeneTrap USING SEQ_GeneTrap_pkey;
 
 EOSQL

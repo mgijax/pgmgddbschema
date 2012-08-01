@@ -19,6 +19,6 @@ create index ACC_AccessionReference_idx_ModifiedBy_key on mgd.ACC_AccessionRefer
 
 
 
-CLUSTER mgd.ACC_AccessionReference USING ACC_AccessionReference_idx_pkey;
+CLUSTER mgd.ACC_AccessionReference USING ACC_AccessionReference_pkey;
 
 EOSQL

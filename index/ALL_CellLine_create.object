@@ -28,6 +28,6 @@ create index ALL_CellLine_idx_CellLine_Type_key on mgd.ALL_CellLine (_CellLine_T
 
 
 
-CLUSTER mgd.ALL_CellLine USING ALL_CellLine_idx_pkey;
+CLUSTER mgd.ALL_CellLine USING ALL_CellLine_pkey;
 
 EOSQL

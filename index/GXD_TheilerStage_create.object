@@ -16,6 +16,6 @@ create index GXD_TheilerStage_idx_defaultSystem_key on mgd.GXD_TheilerStage (_de
 
 
 
-CLUSTER mgd.GXD_TheilerStage USING GXD_TheilerStage_idx_pkey;
+CLUSTER mgd.GXD_TheilerStage USING GXD_TheilerStage_pkey;
 
 EOSQL

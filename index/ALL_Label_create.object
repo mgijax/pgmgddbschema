@@ -22,6 +22,6 @@ create index ALL_Label_idx_Priority on mgd.ALL_Label (priority);
 
 
 
-CLUSTER mgd.ALL_Label USING ALL_Label_idx_pkey;
+CLUSTER mgd.ALL_Label USING ALL_Label_pkey;
 
 EOSQL

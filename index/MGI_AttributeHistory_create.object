@@ -23,6 +23,6 @@ create index MGI_AttributeHistory_idx_ModifiedBy_key on mgd.MGI_AttributeHistory
 
 
 
-CLUSTER mgd.MGI_AttributeHistory USING MGI_AttributeHistory_idx_pkey;
+CLUSTER mgd.MGI_AttributeHistory USING MGI_AttributeHistory_pkey;
 
 EOSQL

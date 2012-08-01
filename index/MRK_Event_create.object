@@ -13,6 +13,6 @@ create index MRK_Event_idx_event on mgd.MRK_Event (event);
 
 
 
-CLUSTER mgd.MRK_Event USING MRK_Event_idx_pkey;
+CLUSTER mgd.MRK_Event USING MRK_Event_pkey;
 
 EOSQL

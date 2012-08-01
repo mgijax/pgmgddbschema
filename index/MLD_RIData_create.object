@@ -16,6 +16,6 @@ create index MLD_RIData_idx_Expt_key on mgd.MLD_RIData (_Expt_key);
 
 
 
-CLUSTER mgd.MLD_RIData USING MLD_RIData_idx_pkey;
+CLUSTER mgd.MLD_RIData USING MLD_RIData_pkey;
 
 EOSQL

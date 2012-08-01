@@ -19,6 +19,6 @@ create index GXD_InSituResult_idx_Pattern_key on mgd.GXD_InSituResult (_Pattern_
 
 
 
-CLUSTER mgd.GXD_InSituResult USING GXD_InSituResult_idx_pkey;
+CLUSTER mgd.GXD_InSituResult USING GXD_InSituResult_pkey;
 
 EOSQL

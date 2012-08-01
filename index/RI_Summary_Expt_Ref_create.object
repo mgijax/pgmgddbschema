@@ -16,6 +16,6 @@ create index RI_Summary_Expt_Ref_idx_Refs_key on mgd.RI_Summary_Expt_Ref (_Refs_
 
 
 
-CLUSTER mgd.RI_Summary_Expt_Ref USING RI_Summary_Expt_Ref_idx_pkey;
+CLUSTER mgd.RI_Summary_Expt_Ref USING RI_Summary_Expt_Ref_pkey;
 
 EOSQL

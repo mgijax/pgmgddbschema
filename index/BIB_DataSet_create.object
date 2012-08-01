@@ -13,6 +13,6 @@ create index BIB_DataSet_idx_abbrev on mgd.BIB_DataSet (abbreviation);
 
 
 
-CLUSTER mgd.BIB_DataSet USING BIB_DataSet_idx_pkey;
+CLUSTER mgd.BIB_DataSet USING BIB_DataSet_pkey;
 
 EOSQL

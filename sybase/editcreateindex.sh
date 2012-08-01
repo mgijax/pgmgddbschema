@@ -62,7 +62,7 @@ d
 .
 a
 
-CLUSTER mgd.${t} USING ${t}_idx_pkey;
+CLUSTER mgd.${t} USING ${t}_pkey;
 .
 a
 

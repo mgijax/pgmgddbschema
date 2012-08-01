@@ -22,6 +22,6 @@ create index MGI_RefAssocType_idx_ModifiedBy_key on mgd.MGI_RefAssocType (_Modif
 
 
 
-CLUSTER mgd.MGI_RefAssocType USING MGI_RefAssocType_idx_pkey;
+CLUSTER mgd.MGI_RefAssocType USING MGI_RefAssocType_pkey;
 
 EOSQL

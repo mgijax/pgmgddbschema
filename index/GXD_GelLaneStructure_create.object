@@ -13,6 +13,6 @@ create index GXD_GelLaneStructure_idx_Structure_key on mgd.GXD_GelLaneStructure 
 
 
 
-CLUSTER mgd.GXD_GelLaneStructure USING GXD_GelLaneStructure_idx_pkey;
+CLUSTER mgd.GXD_GelLaneStructure USING GXD_GelLaneStructure_pkey;
 
 EOSQL

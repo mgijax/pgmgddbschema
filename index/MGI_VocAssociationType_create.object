@@ -25,6 +25,6 @@ create index MGI_VocAssociationType_idx_ModifiedBy_key on mgd.MGI_VocAssociation
 
 
 
-CLUSTER mgd.MGI_VocAssociationType USING MGI_VocAssociationType_idx_pkey;
+CLUSTER mgd.MGI_VocAssociationType USING MGI_VocAssociationType_pkey;
 
 EOSQL

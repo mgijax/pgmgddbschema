@@ -13,6 +13,6 @@ create index HMD_Homology_Marker_idx_Homology_key on mgd.HMD_Homology_Marker (_H
 
 
 
-CLUSTER mgd.HMD_Homology_Marker USING HMD_Homology_Marker_idx_pkey;
+CLUSTER mgd.HMD_Homology_Marker USING HMD_Homology_Marker_pkey;
 
 EOSQL

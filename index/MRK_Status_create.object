@@ -13,6 +13,6 @@ create index MRK_Status_idx_status on mgd.MRK_Status (status);
 
 
 
-CLUSTER mgd.MRK_Status USING MRK_Status_idx_pkey;
+CLUSTER mgd.MRK_Status USING MRK_Status_pkey;
 
 EOSQL

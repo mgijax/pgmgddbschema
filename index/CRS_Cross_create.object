@@ -28,6 +28,6 @@ create index CRS_Cross_idx_type on mgd.CRS_Cross (type);
 
 
 
-CLUSTER mgd.CRS_Cross USING CRS_Cross_idx_pkey;
+CLUSTER mgd.CRS_Cross USING CRS_Cross_pkey;
 
 EOSQL

@@ -19,6 +19,6 @@ create index VOC_Marker_Cache_idx_annotType on mgd.VOC_Marker_Cache (annotType, 
 
 
 
-CLUSTER mgd.VOC_Marker_Cache USING VOC_Marker_Cache_idx_pkey;
+CLUSTER mgd.VOC_Marker_Cache USING VOC_Marker_Cache_pkey;
 
 EOSQL

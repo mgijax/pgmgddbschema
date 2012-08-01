@@ -13,6 +13,6 @@ create index MLD_InSitu_idx_strain_key on mgd.MLD_InSitu (_Strain_key);
 
 
 
-CLUSTER mgd.MLD_InSitu USING MLD_InSitu_idx_pkey;
+CLUSTER mgd.MLD_InSitu USING MLD_InSitu_pkey;
 
 EOSQL

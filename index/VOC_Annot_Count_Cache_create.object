@@ -13,6 +13,6 @@ create unique index VOC_Annot_Count_Cache_idx_annotType on mgd.VOC_Annot_Count_C
 
 
 
-CLUSTER mgd.VOC_Annot_Count_Cache USING VOC_Annot_Count_Cache_idx_pkey;
+CLUSTER mgd.VOC_Annot_Count_Cache USING VOC_Annot_Count_Cache_pkey;
 
 EOSQL

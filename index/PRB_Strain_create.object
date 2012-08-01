@@ -25,6 +25,6 @@ create index PRB_Strain_idx_ModifiedBy_key on mgd.PRB_Strain (_ModifiedBy_key);
 
 
 
-CLUSTER mgd.PRB_Strain USING PRB_Strain_idx_pkey;
+CLUSTER mgd.PRB_Strain USING PRB_Strain_pkey;
 
 EOSQL

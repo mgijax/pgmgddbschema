@@ -23,6 +23,6 @@ create index MGI_Organism_MGIType_idx_ModifiedBy_key on mgd.MGI_Organism_MGIType
 
 
 
-CLUSTER mgd.MGI_Organism_MGIType USING MGI_Organism_MGIType_idx_pkey;
+CLUSTER mgd.MGI_Organism_MGIType USING MGI_Organism_MGIType_pkey;
 
 EOSQL

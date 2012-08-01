@@ -13,6 +13,6 @@ create index MLD_ContigProbe_idx_Probe_key on mgd.MLD_ContigProbe (_Probe_key);
 
 
 
-CLUSTER mgd.MLD_ContigProbe USING MLD_ContigProbe_idx_pkey;
+CLUSTER mgd.MLD_ContigProbe USING MLD_ContigProbe_pkey;
 
 EOSQL

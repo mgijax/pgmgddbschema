@@ -27,6 +27,6 @@ create index GXD_AlleleGenotype_idx_ModifiedBy_key on mgd.GXD_AlleleGenotype (_M
 
 
 
-CLUSTER mgd.GXD_AlleleGenotype USING GXD_AlleleGenotype_idx_pkey;
+CLUSTER mgd.GXD_AlleleGenotype USING GXD_AlleleGenotype_pkey;
 
 EOSQL

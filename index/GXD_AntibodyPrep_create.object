@@ -19,6 +19,6 @@ create index GXD_AntibodyPrep_idx_Label_key on mgd.GXD_AntibodyPrep (_Label_key)
 
 
 
-CLUSTER mgd.GXD_AntibodyPrep USING GXD_AntibodyPrep_idx_pkey;
+CLUSTER mgd.GXD_AntibodyPrep USING GXD_AntibodyPrep_pkey;
 
 EOSQL

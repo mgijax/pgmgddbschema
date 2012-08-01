@@ -13,6 +13,6 @@ create index GXD_StructureName_idx_Structure_key on mgd.GXD_StructureName (_Stru
 
 
 
-CLUSTER mgd.GXD_StructureName USING GXD_StructureName_idx_pkey;
+CLUSTER mgd.GXD_StructureName USING GXD_StructureName_pkey;
 
 EOSQL

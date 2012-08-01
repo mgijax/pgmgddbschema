@@ -10,6 +10,6 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 
-CLUSTER mgd.BIB_ReviewStatus USING BIB_ReviewStatus_idx_pkey;
+CLUSTER mgd.BIB_ReviewStatus USING BIB_ReviewStatus_pkey;
 
 EOSQL

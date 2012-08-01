@@ -13,6 +13,6 @@ create index PRB_Tissue_idx_Tissue on mgd.PRB_Tissue (tissue);
 
 
 
-CLUSTER mgd.PRB_Tissue USING PRB_Tissue_idx_pkey;
+CLUSTER mgd.PRB_Tissue USING PRB_Tissue_pkey;
 
 EOSQL

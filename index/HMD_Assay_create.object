@@ -13,6 +13,6 @@ create unique index HMD_Assay_idx_assay on mgd.HMD_Assay (assay);
 
 
 
-CLUSTER mgd.HMD_Assay USING HMD_Assay_idx_pkey;
+CLUSTER mgd.HMD_Assay USING HMD_Assay_pkey;
 
 EOSQL

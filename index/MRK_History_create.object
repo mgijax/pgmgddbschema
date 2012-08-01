@@ -22,6 +22,6 @@ create index MRK_History_idx_Refs_key on mgd.MRK_History (_Refs_key);
 
 
 
-CLUSTER mgd.MRK_History USING MRK_History_idx_pkey;
+CLUSTER mgd.MRK_History USING MRK_History_pkey;
 
 EOSQL

@@ -16,6 +16,6 @@ create index GO_Tracking_idx_CompletedBy_key on mgd.GO_Tracking (_CompletedBy_ke
 
 
 
-CLUSTER mgd.GO_Tracking USING GO_Tracking_idx_pkey;
+CLUSTER mgd.GO_Tracking USING GO_Tracking_pkey;
 
 EOSQL

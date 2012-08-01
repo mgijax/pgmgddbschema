@@ -25,6 +25,6 @@ create index PRB_Marker_idx_ModifiedBy_key on mgd.PRB_Marker (_ModifiedBy_key);
 
 
 
-CLUSTER mgd.PRB_Marker USING PRB_Marker_idx_pkey;
+CLUSTER mgd.PRB_Marker USING PRB_Marker_pkey;
 
 EOSQL

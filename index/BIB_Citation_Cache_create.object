@@ -16,6 +16,6 @@ create index BIB_Citation_Cache_idx_journal on mgd.BIB_Citation_Cache (journal);
 
 
 
-CLUSTER mgd.BIB_Citation_Cache USING BIB_Citation_Cache_idx_pkey;
+CLUSTER mgd.BIB_Citation_Cache USING BIB_Citation_Cache_pkey;
 
 EOSQL

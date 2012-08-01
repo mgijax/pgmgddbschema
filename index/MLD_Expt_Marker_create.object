@@ -19,6 +19,6 @@ create index MLD_Expt_Marker_idx_Marker_key on mgd.MLD_Expt_Marker (_Marker_key)
 
 
 
-CLUSTER mgd.MLD_Expt_Marker USING MLD_Expt_Marker_idx_pkey;
+CLUSTER mgd.MLD_Expt_Marker USING MLD_Expt_Marker_pkey;
 
 EOSQL

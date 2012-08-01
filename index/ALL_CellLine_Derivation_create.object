@@ -26,6 +26,6 @@ create index ALL_CellLine_Derivation_idx_DerivationType_key on mgd.ALL_CellLine_
 
 
 
-CLUSTER mgd.ALL_CellLine_Derivation USING ALL_CellLine_Derivation_idx_pkey;
+CLUSTER mgd.ALL_CellLine_Derivation USING ALL_CellLine_Derivation_pkey;
 
 EOSQL

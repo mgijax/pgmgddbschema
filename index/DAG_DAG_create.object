@@ -16,6 +16,6 @@ create index DAG_DAG_idx_MGIType_key on mgd.DAG_DAG (_MGIType_key);
 
 
 
-CLUSTER mgd.DAG_DAG USING DAG_DAG_idx_pkey;
+CLUSTER mgd.DAG_DAG USING DAG_DAG_pkey;
 
 EOSQL

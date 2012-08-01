@@ -19,6 +19,6 @@ create index SEQ_Sequence_Raw_idx_ModifiedBy_key on mgd.SEQ_Sequence_Raw (_Modif
 
 
 
-CLUSTER mgd.SEQ_Sequence_Raw USING SEQ_Sequence_Raw_idx_pkey;
+CLUSTER mgd.SEQ_Sequence_Raw USING SEQ_Sequence_Raw_pkey;
 
 EOSQL

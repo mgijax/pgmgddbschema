@@ -16,6 +16,6 @@ create index MLD_MC2point_idx_Marker_key_2 on mgd.MLD_MC2point (_Marker_key_2);
 
 
 
-CLUSTER mgd.MLD_MC2point USING MLD_MC2point_idx_pkey;
+CLUSTER mgd.MLD_MC2point USING MLD_MC2point_pkey;
 
 EOSQL

@@ -22,6 +22,6 @@ create index MGI_Organism_idx_commonName on mgd.MGI_Organism (commonName);
 
 
 
-CLUSTER mgd.MGI_Organism USING MGI_Organism_idx_pkey;
+CLUSTER mgd.MGI_Organism USING MGI_Organism_pkey;
 
 EOSQL

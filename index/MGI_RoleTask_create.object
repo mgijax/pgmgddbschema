@@ -25,6 +25,6 @@ create index MGI_RoleTask_idx_ModifiedBy_key on mgd.MGI_RoleTask (_ModifiedBy_ke
 
 
 
-CLUSTER mgd.MGI_RoleTask USING MGI_RoleTask_idx_pkey;
+CLUSTER mgd.MGI_RoleTask USING MGI_RoleTask_pkey;
 
 EOSQL

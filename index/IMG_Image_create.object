@@ -37,6 +37,6 @@ create index IMG_Image_idx_ModifiedBy_key on mgd.IMG_Image (_ModifiedBy_key);
 
 
 
-CLUSTER mgd.IMG_Image USING IMG_Image_idx_pkey;
+CLUSTER mgd.IMG_Image USING IMG_Image_pkey;
 
 EOSQL

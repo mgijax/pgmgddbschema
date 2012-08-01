@@ -13,6 +13,6 @@ create index MLC_Marker_idx_Marker_key_2 on mgd.MLC_Marker (_Marker_key_2);
 
 
 
-CLUSTER mgd.MLC_Marker USING MLC_Marker_idx_pkey;
+CLUSTER mgd.MLC_Marker USING MLC_Marker_pkey;
 
 EOSQL

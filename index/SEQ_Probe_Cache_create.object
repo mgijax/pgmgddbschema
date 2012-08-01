@@ -24,6 +24,6 @@ create index SEQ_Probe_Cache_idx_annotation_date on mgd.SEQ_Probe_Cache (annotat
 
 
 
-CLUSTER mgd.SEQ_Probe_Cache USING SEQ_Probe_Cache_idx_pkey;
+CLUSTER mgd.SEQ_Probe_Cache USING SEQ_Probe_Cache_pkey;
 
 EOSQL

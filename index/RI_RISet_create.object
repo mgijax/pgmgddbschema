@@ -19,6 +19,6 @@ create index RI_RISet_idx_Strain_key_2 on mgd.RI_RISet (_Strain_key_2);
 
 
 
-CLUSTER mgd.RI_RISet USING RI_RISet_idx_pkey;
+CLUSTER mgd.RI_RISet USING RI_RISet_pkey;
 
 EOSQL

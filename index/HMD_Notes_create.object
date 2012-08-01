@@ -13,6 +13,6 @@ create index HMD_Notes_idx_notes on mgd.HMD_Notes (notes);
 
 
 
-CLUSTER mgd.HMD_Notes USING HMD_Notes_idx_pkey;
+CLUSTER mgd.HMD_Notes USING HMD_Notes_pkey;
 
 EOSQL

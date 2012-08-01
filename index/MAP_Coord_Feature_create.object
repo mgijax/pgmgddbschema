@@ -28,6 +28,6 @@ create index MAP_Coord_Feature_idx_ModifiedBy_key on mgd.MAP_Coord_Feature (_Mod
 
 
 
-CLUSTER mgd.MAP_Coord_Feature USING MAP_Coord_Feature_idx_pkey;
+CLUSTER mgd.MAP_Coord_Feature USING MAP_Coord_Feature_pkey;
 
 EOSQL

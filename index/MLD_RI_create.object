@@ -13,6 +13,6 @@ create index MLD_RI_idx_RIset_key on mgd.MLD_RI (_RISet_key);
 
 
 
-CLUSTER mgd.MLD_RI USING MLD_RI_idx_pkey;
+CLUSTER mgd.MLD_RI USING MLD_RI_pkey;
 
 EOSQL

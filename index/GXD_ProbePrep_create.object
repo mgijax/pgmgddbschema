@@ -27,6 +27,6 @@ create index GXD_ProbePrep_idx_Visualization_key on mgd.GXD_ProbePrep (_Visualiz
 
 
 
-CLUSTER mgd.GXD_ProbePrep USING GXD_ProbePrep_idx_pkey;
+CLUSTER mgd.GXD_ProbePrep USING GXD_ProbePrep_pkey;
 
 EOSQL

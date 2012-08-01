@@ -22,6 +22,6 @@ create index MAP_Coord_Collection_idx_ModifiedBy_key on mgd.MAP_Coord_Collection
 
 
 
-CLUSTER mgd.MAP_Coord_Collection USING MAP_Coord_Collection_idx_pkey;
+CLUSTER mgd.MAP_Coord_Collection USING MAP_Coord_Collection_pkey;
 
 EOSQL

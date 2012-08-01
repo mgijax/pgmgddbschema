@@ -25,6 +25,6 @@ create index VOC_AnnotType_idx_name on mgd.VOC_AnnotType (name);
 
 
 
-CLUSTER mgd.VOC_AnnotType USING VOC_AnnotType_idx_pkey;
+CLUSTER mgd.VOC_AnnotType USING VOC_AnnotType_pkey;
 
 EOSQL

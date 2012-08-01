@@ -34,6 +34,6 @@ create index MAP_Coordinate_idx_ModifiedBy_key on mgd.MAP_Coordinate (_ModifiedB
 
 
 
-CLUSTER mgd.MAP_Coordinate USING MAP_Coordinate_idx_pkey;
+CLUSTER mgd.MAP_Coordinate USING MAP_Coordinate_pkey;
 
 EOSQL

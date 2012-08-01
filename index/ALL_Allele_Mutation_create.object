@@ -13,6 +13,6 @@ create index ALL_Allele_Mutation_idx_Mutation_key on mgd.ALL_Allele_Mutation (_M
 
 
 
-CLUSTER mgd.ALL_Allele_Mutation USING ALL_Allele_Mutation_idx_pkey;
+CLUSTER mgd.ALL_Allele_Mutation USING ALL_Allele_Mutation_pkey;
 
 EOSQL

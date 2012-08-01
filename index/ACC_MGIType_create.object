@@ -13,6 +13,6 @@ create unique index ACC_MGIType_idx_name on mgd.ACC_MGIType (name);
 
 
 
-CLUSTER mgd.ACC_MGIType USING ACC_MGIType_idx_pkey;
+CLUSTER mgd.ACC_MGIType USING ACC_MGIType_pkey;
 
 EOSQL

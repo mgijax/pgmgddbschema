@@ -19,6 +19,6 @@ create unique index ACC_LogicalDB_idx_name on mgd.ACC_LogicalDB (name, _LogicalD
 
 
 
-CLUSTER mgd.ACC_LogicalDB USING ACC_LogicalDB_idx_pkey;
+CLUSTER mgd.ACC_LogicalDB USING ACC_LogicalDB_pkey;
 
 EOSQL

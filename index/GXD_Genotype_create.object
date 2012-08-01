@@ -22,6 +22,6 @@ create index GXD_Genotype_idx_ExistsAs_key on mgd.GXD_Genotype (_ExistsAs_key);
 
 
 
-CLUSTER mgd.GXD_Genotype USING GXD_Genotype_idx_pkey;
+CLUSTER mgd.GXD_Genotype USING GXD_Genotype_pkey;
 
 EOSQL

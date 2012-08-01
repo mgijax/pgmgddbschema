@@ -14,6 +14,6 @@ create unique index MGI_Statistic_idx_Abbreviation on mgd.MGI_Statistic (abbrevi
 
 
 
-CLUSTER mgd.MGI_Statistic USING MGI_Statistic_idx_pkey;
+CLUSTER mgd.MGI_Statistic USING MGI_Statistic_pkey;
 
 EOSQL

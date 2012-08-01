@@ -13,6 +13,6 @@ create index MLD_FISH_idx_strain_key on mgd.MLD_FISH (_Strain_key);
 
 
 
-CLUSTER mgd.MLD_FISH USING MLD_FISH_idx_pkey;
+CLUSTER mgd.MLD_FISH USING MLD_FISH_pkey;
 
 EOSQL

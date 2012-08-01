@@ -16,6 +16,6 @@ create index MLD_Statistics_idx_Marker_key_1 on mgd.MLD_Statistics (_Marker_key_
 
 
 
-CLUSTER mgd.MLD_Statistics USING MLD_Statistics_idx_pkey;
+CLUSTER mgd.MLD_Statistics USING MLD_Statistics_pkey;
 
 EOSQL

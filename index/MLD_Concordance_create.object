@@ -13,6 +13,6 @@ create index MLD_Concordance_idx_Marker_key on mgd.MLD_Concordance (_Marker_key)
 
 
 
-CLUSTER mgd.MLD_Concordance USING MLD_Concordance_idx_pkey;
+CLUSTER mgd.MLD_Concordance USING MLD_Concordance_pkey;
 
 EOSQL

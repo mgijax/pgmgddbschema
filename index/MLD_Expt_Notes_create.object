@@ -13,6 +13,6 @@ create index MLD_Expt_Notes_idx_note on mgd.MLD_Expt_Notes (note);
 
 
 
-CLUSTER mgd.MLD_Expt_Notes USING MLD_Expt_Notes_idx_pkey;
+CLUSTER mgd.MLD_Expt_Notes USING MLD_Expt_Notes_pkey;
 
 EOSQL
