@@ -8,60 +8,60 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER acc_accession_idx_clustered USING mgd.ACC_Accession;
-CLUSTER acc_accessionmax_pkey USING mgd.ACC_AccessionMax;
-CLUSTER acc_accessionreference_pkey USING mgd.ACC_AccessionReference;
-CLUSTER acc_actualdb_pkey USING mgd.ACC_ActualDB;
-CLUSTER acc_logicaldb_pkey USING mgd.ACC_LogicalDB;
-CLUSTER acc_mgitype_pkey USING mgd.ACC_MGIType;
+CLUSTER mgd.ACC_Accession USING acc_accession_idx_clustered;
+CLUSTER mgd.ACC_AccessionMax USING acc_accessionmax_pkey;
+CLUSTER mgd.ACC_AccessionReference USING acc_accessionreference_pkey;
+CLUSTER mgd.ACC_ActualDB USING acc_actualdb_pkey;
+CLUSTER mgd.ACC_LogicalDB USING acc_logicaldb_pkey;
+CLUSTER mgd.ACC_MGIType USING acc_mgitype_pkey;
 
-CLUSTER all_allele_cellline_pkey USING mgd.ALL_Allele_CellLine;
-CLUSTER all_allele_idx_clustered USING mgd.ALL_Allele;
-CLUSTER all_allele_mutation_pkey USING mgd.ALL_Allele_Mutation;
-CLUSTER all_cellline_pkey USING mgd.ALL_CellLine;
-CLUSTER all_cellline_derivation_pkey USING mgd.ALL_CellLine_Derivation;
-CLUSTER all_cre_cache_idx_clustered USING mgd.ALL_Cre_Cache;
-CLUSTER all_knockout_cache_idx_clustered USING mgd.ALL_Knockout_Cache;
-CLUSTER all_label_pkey USING mgd.ALL_Label;
-CLUSTER all_marker_assoc_idx_clustered USING mgd.ALL_Marker_Assoc;
+CLUSTER mgd.ALL_Allele_CellLine USING all_allele_cellline_pkey;
+CLUSTER mgd.ALL_Allele USING all_allele_idx_clustered;
+CLUSTER mgd.ALL_Allele_Mutation USING all_allele_mutation_pkey;
+CLUSTER mgd.ALL_CellLine USING all_cellline_pkey;
+CLUSTER mgd.ALL_CellLine_Derivation USING all_cellline_derivation_pkey;
+CLUSTER mgd.ALL_Cre_Cache USING all_cre_cache_idx_clustered;
+CLUSTER mgd.ALL_Knockout_Cache USING all_knockout_cache_idx_clustered;
+CLUSTER mgd.ALL_Label USING all_label_pkey;
+CLUSTER mgd.ALL_Marker_Assoc USING all_marker_assoc_idx_clustered;
 
-CLUSTER bib_books_pkey USING mgd.BIB_Books;
-CLUSTER bib_citation_cache_pkey USING mgd.BIB_Citation_Cache;
-CLUSTER bib_dataset_assoc_idx_clustered USING mgd.BIB_DataSet_Assoc;
-CLUSTER bib_dataset_pkey USING mgd.BIB_DataSet;
-CLUSTER bib_notes_pkey USING mgd.BIB_Notes;
-CLUSTER bib_refs_pkey USING mgd.BIB_Refs;
-CLUSTER bib_reviewstatus_pkey USING mgd.BIB_ReviewStatus;
+CLUSTER mgd.BIB_BOoks USING bib_books_pkey;
+CLUSTER mgd.BIB_Citation_Cache USING bib_citation_cache_pkey;
+CLUSTER mgd.BIB_DataSet_Assoc USING bib_dataset_assoc_idx_clustered;
+CLUSTER mgd.BIB_DataSet USING bib_dataset_pkey;
+CLUSTER mgd.BIB_Notes USING bib_notes_pkey;
+CLUSTER mgd.BIB_Refs USING bib_refs_pkey;
+CLUSTER mgd.BIB_ReviewStatus USING bib_reviewstatus_pkey;
 
-CLUSTER crs_cross_pkey USING mgd.CRS_Cross;
-CLUSTER crs_matrix_idx_clustered USING mgd.CRS_Matrix;
-CLUSTER crs_progeny_pkey USING mgd.CRS_Progeny;
-CLUSTER crs_references_pkey USING mgd.CRS_References;
-CLUSTER crs_typings_pkey USING mgd.CRS_Typings;
+CLUSTER mgd.CRS_Cross USING crs_cross_pkey;
+CLUSTER mgd.CRS_Matrix USING crs_matrix_idx_clustered;
+CLUSTER mgd.CRS_Progeny USING crs_progeny_pkey;
+CLUSTER mgd.CRS_References USING crs_references_pkey;
+CLUSTER mgd.CRS_Typings USING crs_typings_pkey;
 
-CLUSTER dag_closure_idx_clustered USING mgd.DAG_Closure;
-CLUSTER dag_dag_pkey USING mgd.DAG_DAG;
-CLUSTER dag_edge_idx_clustered USING mgd.DAG_Edge;
-CLUSTER dag_label_pkey USING mgd.DAG_Label;
-CLUSTER dag_node_idx_clustered USING mgd.DAG_Node;
+CLUSTER mgd.DAG_Closure USING dag_closure_idx_clustered;
+CLUSTER mgd.DAG_DAG USING dag_dag_pkey;
+CLUSTER mgd.DAG_Edge USING dag_edge_idx_clustered;
+CLUSTER mgd.DAG_Label USING dag_label_pkey;
+CLUSTER mgd.DAG_Node USING dag_node_idx_clustered;
 
-CLUSTER go_tracking_pkey USING mgd.GO_Tracking;
+CLUSTER mgd.GO_Tracking USING go_tracking_pkey;
 
-CLUSTER gxd_allelegenotype_pkey USING mgd.GXD_AlleleGenotype;
-CLUSTER gxd_allelepair_idx_clustered USING mgd.GXD_AllelePair;
-CLUSTER gxd_antibody_pkey USING mgd.GXD_Antibody;
-CLUSTER gxd_antibodyalias_idx_clustered USING mgd.GXD_AntibodyAlias;
-CLUSTER gxd_antibodyclass_pkey USING mgd.GXD_AntibodyClass;
-CLUSTER gxd_antibodymarker_pkey USING mgd.GXD_AntibodyMarker;
-CLUSTER gxd_antibodyprep_pkey USING mgd.GXD_AntibodyPrep;
-CLUSTER gxd_antibodytype_pkey USING mgd.GXD_AntibodyType;
-CLUSTER gxd_antigen_pkey USING mgd.GXD_Antigen;
-CLUSTER gxd_assay_idx_clustered USING mgd.GXD_Assay;
-CLUSTER gxd_assaynote_pkey USING mgd.GXD_AssayNote;
-CLUSTER gxd_assaytype_pkey USING mgd.GXD_AssayType;
-CLUSTER gxd_embeddingmethod_pkey USING mgd.GXD_EmbeddingMethod;
-CLUSTER gxd_expression_idx_clustered USING mgd.GXD_Expression;
-CLUSTER gxd_fixationmethod_pkey USING mgd.GXD_FixationMethod;
+CLUSTER mgd.GXD_AlleleGenotype USING gxd_allelegenotype_pkey USING mgd.GXD_AlleleGenotype;
+CLUSTER mgd.GXD_AllelePair USING gxd_allelepair_idx_clustered USING mgd.GXD_AllelePair;
+CLUSTER mgd.GXD_Antibody USING gxd_antibody_pkey USING mgd.GXD_Antibody;
+CLUSTER mgd.GXD_AntibodyAlias USING gxd_antibodyalias_idx_clustered USING mgd.GXD_AntibodyAlias;
+CLUSTER mgd.GXD_AntibodyClass USING gxd_antibodyclass_pkey USING mgd.GXD_AntibodyClass;
+CLUSTER mgd.GXD_AntibodyMarker USING gxd_antibodymarker_pkey USING mgd.GXD_AntibodyMarker;
+CLUSTER mgd.GXD_AntibodyPrep USING gxd_antibodyprep_pkey USING mgd.GXD_AntibodyPrep;
+CLUSTER mgd.GXD_AntibodyType USING gxd_antibodytype_pkey USING mgd.GXD_AntibodyType;
+CLUSTER mgd.GXD_Antigen USING gxd_antigen_pkey USING mgd.GXD_Antigen;
+CLUSTER mgd.GXD_Assay USING gxd_assay_idx_clustered USING mgd.GXD_Assay;
+CLUSTER mgd.GXD_AssayNote USING gxd_assaynote_pkey USING mgd.GXD_AssayNote;
+CLUSTER mgd.GXD_AssayType USING gxd_assaytype_pkey USING mgd.GXD_AssayType;
+CLUSTER mgd.GXD_EmbeddingMethod USING gxd_embeddingmethod_pkey USING mgd.GXD_EmbeddingMethod;
+CLUSTER mgd.GXD_Expression USING gxd_expression_idx_clustered USING mgd.GXD_Expression;
+CLUSTER mgd.GXD_FixationMethod USING gxd_fixationmethod_pkey USING mgd.GXD_FixationMethod;
 CLUSTER gxd_gelband_idx_clustered USING mgd.GXD_GelBand;
 CLUSTER gxd_gelcontrol_pkey USING mgd.GXD_GelControl;
 CLUSTER gxd_gellane_idx_clustered USING mgd.GXD_GelLane;
