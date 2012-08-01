@@ -20,7 +20,7 @@
 
 cd `dirname $0` && source ./Configuration
 
-cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh $0
 
 use ${DBNAME}
 go

@@ -19,5 +19,20 @@ fi
 
 . ${MGICONFIG}/master.config.sh
 
-LOGFILE_PG=${MGD_DBSCHEMADIR}/logs
-export LOGFILE_PG
+LOGFILE=${PG_MGD_DBSCHEMADIR}/logs
+export LOGFILE
+
+EXPORTDATA=${DATALOADSOUTPUT}/mgi/pgmgddbschema/data
+EXPORTLOGS=${DATALOADSOUTPUT}/mgi/pgmgddbschema/logs
+# LOGDIR is used by pgdbutilities/bin/bcpin.csh
+LOGDIR=${EXPORTLOGS}
+export EXPORTDATA EXPORTLOGS LOGDIR
+
+#
+# 0 : do not run sybase/bcpout.csh
+# 1 : run sybase/bcpout.csh
+# data files are saved in EXPORTDATA
+# 
+runBCP=0
+export runBCP
+
