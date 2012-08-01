@@ -12,10 +12,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index VOC_GO_Cache_idx_clustered USING mgd.VOC_GO_Cache (_Term_key);
+create index VOC_GO_Cache_idx_clustered on mgd.VOC_GO_Cache (_Term_key);
 
 
 
-CLUSTER voc_go_cache_idx_clustered USING mgd.VOC_GO_Cache;
+CLUSTER mgd.VOC_GO_Cache USING VOC_GO_Cache_idx_clustered;
 
 EOSQL

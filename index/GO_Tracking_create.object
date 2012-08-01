@@ -12,10 +12,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index GO_Tracking_idx_CompletedBy_key USING mgd.GO_Tracking (_CompletedBy_key);
+create index GO_Tracking_idx_CompletedBy_key on mgd.GO_Tracking (_CompletedBy_key);
 
 
 
-CLUSTER go_tracking_pkey USING mgd.GO_Tracking;
+CLUSTER mgd.GO_Tracking USING GO_Tracking_idx_pkey;
 
 EOSQL

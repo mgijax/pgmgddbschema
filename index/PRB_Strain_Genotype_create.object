@@ -12,22 +12,22 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index PRB_Strain_Genotype_idx_clustered USING mgd.PRB_Strain_Genotype (_Strain_key);
+create index PRB_Strain_Genotype_idx_clustered on mgd.PRB_Strain_Genotype (_Strain_key);
 
 
-create index PRB_Strain_Genotype_idx_Genotype_key USING mgd.PRB_Strain_Genotype (_Genotype_key);
+create index PRB_Strain_Genotype_idx_Genotype_key on mgd.PRB_Strain_Genotype (_Genotype_key);
 
 
-create index PRB_Strain_Genotype_idx_Qualifier_key USING mgd.PRB_Strain_Genotype (_Qualifier_key);
+create index PRB_Strain_Genotype_idx_Qualifier_key on mgd.PRB_Strain_Genotype (_Qualifier_key);
 
 
-create index PRB_Strain_Genotype_idx_CreatedBy_key USING mgd.PRB_Strain_Genotype (_CreatedBy_key);
+create index PRB_Strain_Genotype_idx_CreatedBy_key on mgd.PRB_Strain_Genotype (_CreatedBy_key);
 
 
-create index PRB_Strain_Genotype_idx_ModifiedBy_key USING mgd.PRB_Strain_Genotype (_ModifiedBy_key);
+create index PRB_Strain_Genotype_idx_ModifiedBy_key on mgd.PRB_Strain_Genotype (_ModifiedBy_key);
 
 
 
-CLUSTER prb_strain_genotype_idx_clustered USING mgd.PRB_Strain_Genotype;
+CLUSTER mgd.PRB_Strain_Genotype USING PRB_Strain_Genotype_idx_clustered;
 
 EOSQL

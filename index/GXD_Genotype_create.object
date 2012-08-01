@@ -9,19 +9,19 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index GXD_Genotype_idx_CreatedBy_key USING mgd.GXD_Genotype (_CreatedBy_key);
+create index GXD_Genotype_idx_CreatedBy_key on mgd.GXD_Genotype (_CreatedBy_key);
 
 
-create index GXD_Genotype_idx_ModifiedBy_key USING mgd.GXD_Genotype (_ModifiedBy_key);
+create index GXD_Genotype_idx_ModifiedBy_key on mgd.GXD_Genotype (_ModifiedBy_key);
 
 
-create index GXD_Genotype_idx_Strain_key USING mgd.GXD_Genotype (_Strain_key);
+create index GXD_Genotype_idx_Strain_key on mgd.GXD_Genotype (_Strain_key);
 
 
-create index GXD_Genotype_idx_ExistsAs_key USING mgd.GXD_Genotype (_ExistsAs_key);
+create index GXD_Genotype_idx_ExistsAs_key on mgd.GXD_Genotype (_ExistsAs_key);
 
 
 
-CLUSTER gxd_genotype_pkey USING mgd.GXD_Genotype;
+CLUSTER mgd.GXD_Genotype USING GXD_Genotype_idx_pkey;
 
 EOSQL

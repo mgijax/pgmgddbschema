@@ -12,28 +12,28 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MAP_Coordinate_idx_Collection_key USING mgd.MAP_Coordinate (_Collection_key);
+create index MAP_Coordinate_idx_Collection_key on mgd.MAP_Coordinate (_Collection_key);
 
 
-create index MAP_Coordinate_idx_Object_key USING mgd.MAP_Coordinate (_Object_key);
+create index MAP_Coordinate_idx_Object_key on mgd.MAP_Coordinate (_Object_key);
 
 
-create index MAP_Coordinate_idx_MGIType_key USING mgd.MAP_Coordinate (_MGIType_key);
+create index MAP_Coordinate_idx_MGIType_key on mgd.MAP_Coordinate (_MGIType_key);
 
 
-create index MAP_Coordinate_idx_MapType_key USING mgd.MAP_Coordinate (_MapType_key);
+create index MAP_Coordinate_idx_MapType_key on mgd.MAP_Coordinate (_MapType_key);
 
 
-create index MAP_Coordinate_idx_Units_key USING mgd.MAP_Coordinate (_Units_key);
+create index MAP_Coordinate_idx_Units_key on mgd.MAP_Coordinate (_Units_key);
 
 
-create index MAP_Coordinate_idx_CreatedBy_key USING mgd.MAP_Coordinate (_CreatedBy_key);
+create index MAP_Coordinate_idx_CreatedBy_key on mgd.MAP_Coordinate (_CreatedBy_key);
 
 
-create index MAP_Coordinate_idx_ModifiedBy_key USING mgd.MAP_Coordinate (_ModifiedBy_key);
+create index MAP_Coordinate_idx_ModifiedBy_key on mgd.MAP_Coordinate (_ModifiedBy_key);
 
 
 
-CLUSTER map_coordinate_pkey USING mgd.MAP_Coordinate;
+CLUSTER mgd.MAP_Coordinate USING MAP_Coordinate_idx_pkey;
 
 EOSQL

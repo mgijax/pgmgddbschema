@@ -12,19 +12,19 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index VOC_Evidence_Property_idx_clustered USING mgd.VOC_Evidence_Property (_AnnotEvidence_key);
+create index VOC_Evidence_Property_idx_clustered on mgd.VOC_Evidence_Property (_AnnotEvidence_key);
 
 
-create index VOC_Evidence_Property_idx_PropertyTerm_key USING mgd.VOC_Evidence_Property (_PropertyTerm_key);
+create index VOC_Evidence_Property_idx_PropertyTerm_key on mgd.VOC_Evidence_Property (_PropertyTerm_key);
 
 
-create index VOC_Evidence_Property_idx_CreatedBy_key USING mgd.VOC_Evidence_Property (_CreatedBy_key);
+create index VOC_Evidence_Property_idx_CreatedBy_key on mgd.VOC_Evidence_Property (_CreatedBy_key);
 
 
-create index VOC_Evidence_Property_idx_ModifiedBy_key USING mgd.VOC_Evidence_Property (_ModifiedBy_key);
+create index VOC_Evidence_Property_idx_ModifiedBy_key on mgd.VOC_Evidence_Property (_ModifiedBy_key);
 
 
 
-CLUSTER voc_evidence_property_idx_clustered USING mgd.VOC_Evidence_Property;
+CLUSTER mgd.VOC_Evidence_Property USING VOC_Evidence_Property_idx_clustered;
 
 EOSQL

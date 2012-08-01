@@ -9,16 +9,16 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index GXD_GelBand_idx_clustered USING mgd.GXD_GelBand (_GelLane_key);
+create index GXD_GelBand_idx_clustered on mgd.GXD_GelBand (_GelLane_key);
 
 
-create index GXD_GelBand_idx_GelRow_key USING mgd.GXD_GelBand (_GelRow_key);
+create index GXD_GelBand_idx_GelRow_key on mgd.GXD_GelBand (_GelRow_key);
 
 
-create index GXD_GelBand_idx_Strength_key USING mgd.GXD_GelBand (_Strength_key);
+create index GXD_GelBand_idx_Strength_key on mgd.GXD_GelBand (_Strength_key);
 
 
 
-CLUSTER gxd_gelband_idx_clustered USING mgd.GXD_GelBand;
+CLUSTER mgd.GXD_GelBand USING GXD_GelBand_idx_clustered;
 
 EOSQL

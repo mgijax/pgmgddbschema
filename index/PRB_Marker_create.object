@@ -9,22 +9,22 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index PRB_Marker_idx_Probe_key USING mgd.PRB_Marker (_Probe_key);
+create index PRB_Marker_idx_Probe_key on mgd.PRB_Marker (_Probe_key);
 
 
-create index PRB_Marker_idx_Refs_key USING mgd.PRB_Marker (_Refs_key);
+create index PRB_Marker_idx_Refs_key on mgd.PRB_Marker (_Refs_key);
 
 
-create index PRB_Marker_idx_relationship USING mgd.PRB_Marker (relationship);
+create index PRB_Marker_idx_relationship on mgd.PRB_Marker (relationship);
 
 
-create index PRB_Marker_idx_CreatedBy_key USING mgd.PRB_Marker (_CreatedBy_key);
+create index PRB_Marker_idx_CreatedBy_key on mgd.PRB_Marker (_CreatedBy_key);
 
 
-create index PRB_Marker_idx_ModifiedBy_key USING mgd.PRB_Marker (_ModifiedBy_key);
+create index PRB_Marker_idx_ModifiedBy_key on mgd.PRB_Marker (_ModifiedBy_key);
 
 
 
-CLUSTER prb_marker_pkey USING mgd.PRB_Marker;
+CLUSTER mgd.PRB_Marker USING PRB_Marker_idx_pkey;
 
 EOSQL

@@ -9,13 +9,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create unique index CRS_Matrix_idx_clustered USING mgd.CRS_Matrix (_Cross_key, _Marker_key, otherSymbol, chromosome, rowNumber);
+create unique index CRS_Matrix_idx_clustered on mgd.CRS_Matrix (_Cross_key, _Marker_key, otherSymbol, chromosome, rowNumber);
 
 
-create index CRS_Matrix_idx_Marker_key USING mgd.CRS_Matrix (_Marker_key);
+create index CRS_Matrix_idx_Marker_key on mgd.CRS_Matrix (_Marker_key);
 
 
-CLUSTER crs_matrix_idx_clustered USING mgd.CRS_Matrix;
 
+CLUSTER mgd.CRS_Matrix USING CRS_Matrix_idx_clustered;
 
 EOSQL

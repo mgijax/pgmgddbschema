@@ -9,19 +9,19 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index GXD_Specimen_idx_clustered USING mgd.GXD_Specimen (_Assay_key);
+create index GXD_Specimen_idx_clustered on mgd.GXD_Specimen (_Assay_key);
 
 
-create index GXD_Specimen_idx_Embedding_key USING mgd.GXD_Specimen (_Embedding_key);
+create index GXD_Specimen_idx_Embedding_key on mgd.GXD_Specimen (_Embedding_key);
 
 
-create index GXD_Specimen_idx_Fixation_key USING mgd.GXD_Specimen (_Fixation_key);
+create index GXD_Specimen_idx_Fixation_key on mgd.GXD_Specimen (_Fixation_key);
 
 
-create index GXD_Specimen_idx_Genotype_key USING mgd.GXD_Specimen (_Genotype_key);
+create index GXD_Specimen_idx_Genotype_key on mgd.GXD_Specimen (_Genotype_key);
 
 
 
-CLUSTER gxd_specimen_idx_clustered USING mgd.GXD_Specimen;
+CLUSTER mgd.GXD_Specimen USING GXD_Specimen_idx_clustered;
 
 EOSQL

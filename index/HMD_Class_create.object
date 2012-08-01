@@ -9,7 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER hmd_class_pkey USING mgd.HMD_Class;
 
+CLUSTER mgd.HMD_Class USING HMD_Class_idx_pkey;
 
 EOSQL

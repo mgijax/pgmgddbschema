@@ -12,13 +12,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create unique index MRK_Chromosome_idx_clustered USING mgd.MRK_Chromosome (_Organism_key, chromosome);
+create unique index MRK_Chromosome_idx_clustered on mgd.MRK_Chromosome (_Organism_key, chromosome);
 
 
-create index MRK_Chromosome_idx_chromosome USING mgd.MRK_Chromosome (chromosome);
+create index MRK_Chromosome_idx_chromosome on mgd.MRK_Chromosome (chromosome)
 
 
 
-CLUSTER mrk_chromosome_idx_clustered USING mgd.MRK_Chromosome;
+CLUSTER mgd.MRK_Chromosome USING MRK_Chromosome_idx_clustered;
 
 EOSQL

@@ -9,25 +9,25 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index BIB_Refs_idx_isprimary USING mgd.BIB_Refs (_primary);
+create index BIB_Refs_idx_isprimary on mgd.BIB_Refs (_primary);
 
 
-create index BIB_Refs_idx_authors USING mgd.BIB_Refs (authors);
+create index BIB_Refs_idx_authors on mgd.BIB_Refs (authors);
 
 
-create index BIB_Refs_idx_year USING mgd.BIB_Refs (year);
+create index BIB_Refs_idx_year on mgd.BIB_Refs (year);
 
 
-create index BIB_Refs_idx_journal USING mgd.BIB_Refs (journal);
+create index BIB_Refs_idx_journal on mgd.BIB_Refs (journal);
 
 
-create index BIB_Refs_idx_title USING mgd.BIB_Refs (title);
+create index BIB_Refs_idx_title on mgd.BIB_Refs (title);
 
 
-create index BIB_Refs_idx_ReviewStatus_key USING mgd.BIB_Refs (_ReviewStatus_key);
+create index BIB_Refs_idx_ReviewStatus_key on mgd.BIB_Refs (_ReviewStatus_key);
 
 
 
-CLUSTER bib_refs_pkey USING mgd.BIB_Refs;
+CLUSTER mgd.BIB_Refs USING BIB_Refs_idx_pkey;
 
 EOSQL

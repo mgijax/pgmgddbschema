@@ -9,39 +9,40 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index ALL_Allele_idx_clustered USING mgd.ALL_Allele (_Marker_key);
+create index ALL_Allele_idx_clustered on mgd.ALL_Allele (_Marker_key);
 
 
-create index ALL_Allele_idx_Allele_Type_key USING mgd.ALL_Allele (_Allele_Type_key);
+create index ALL_Allele_idx_Allele_Type_key on mgd.ALL_Allele (_Allele_Type_key);
 
 
-create index ALL_Allele_idx_Strain_key USING mgd.ALL_Allele (_Strain_key);
+create index ALL_Allele_idx_Strain_key on mgd.ALL_Allele (_Strain_key);
 
 
-create index ALL_Allele_idx_Mode_key USING mgd.ALL_Allele (_Mode_key);
+create index ALL_Allele_idx_Mode_key on mgd.ALL_Allele (_Mode_key);
 
 
-create index ALL_Allele_idx_name USING mgd.ALL_Allele (name);
+create index ALL_Allele_idx_name on mgd.ALL_Allele (name);
 
 
-create index ALL_Allele_idx_symbol USING mgd.ALL_Allele (symbol);
+create index ALL_Allele_idx_symbol on mgd.ALL_Allele (symbol);
 
 
-create index ALL_Allele_idx_Allele_Status_key USING mgd.ALL_Allele (_Allele_Status_key);
+create index ALL_Allele_idx_Allele_Status_key on mgd.ALL_Allele (_Allele_Status_key);
 
 
-create index ALL_Allele_idx_nomenSymbol USING mgd.ALL_Allele (nomenSymbol);
+create index ALL_Allele_idx_nomenSymbol on mgd.ALL_Allele (nomenSymbol);
 
 
-create index ALL_Allele_idx_CreatedBy_key USING mgd.ALL_Allele (_CreatedBy_key);
+create index ALL_Allele_idx_CreatedBy_key on mgd.ALL_Allele (_CreatedBy_key);
 
 
-create index ALL_Allele_idx_ModifiedBy_key USING mgd.ALL_Allele (_ModifiedBy_key);
+create index ALL_Allele_idx_ModifiedBy_key on mgd.ALL_Allele (_ModifiedBy_key);
 
 
-create index ALL_Allele_idx_Transmission_key USING mgd.ALL_Allele (_Transmission_key);
+create index ALL_Allele_idx_Transmission_key on mgd.ALL_Allele (_Transmission_key);
 
 
-CLUSTER all_allele_idx_clustered USING mgd.ALL_Allele;
+
+CLUSTER mgd.ALL_Allele USING ALL_Allele_idx_clustered;
 
 EOSQL

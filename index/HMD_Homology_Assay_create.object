@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index HMD_Homology_Assay_idx_Assay_key USING mgd.HMD_Homology_Assay (_Assay_key);
+create index HMD_Homology_Assay_idx_Assay_key on mgd.HMD_Homology_Assay (_Assay_key);
 
 
 
-CLUSTER hmd_homology_assay_pkey USING mgd.HMD_Homology_Assay;
+CLUSTER mgd.HMD_Homology_Assay USING HMD_Homology_Assay_idx_pkey;
 
 EOSQL

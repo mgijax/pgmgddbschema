@@ -13,22 +13,22 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MGI_Note_idx_clustered USING mgd.MGI_Note (_Object_key, _MGIType_key, _NoteType_key);
+create index MGI_Note_idx_clustered on mgd.MGI_Note (_Object_key, _MGIType_key, _NoteType_key);
 
 
-create index MGI_Note_idx_MGIType_key USING mgd.MGI_Note (_MGIType_key);
+create index MGI_Note_idx_MGIType_key on mgd.MGI_Note (_MGIType_key);
 
 
-create index MGI_Note_idx_NoteType_key USING mgd.MGI_Note (_NoteType_key);
+create index MGI_Note_idx_NoteType_key on mgd.MGI_Note (_NoteType_key);
 
 
-create index MGI_Note_idx_CreatedBy_key USING mgd.MGI_Note (_CreatedBy_key);
+create index MGI_Note_idx_CreatedBy_key on mgd.MGI_Note (_CreatedBy_key);
 
 
-create index MGI_Note_idx_ModifiedBy_key USING mgd.MGI_Note (_ModifiedBy_key);
+create index MGI_Note_idx_ModifiedBy_key on mgd.MGI_Note (_ModifiedBy_key);
 
 
 
-CLUSTER mgi_note_idx_clustered USING mgd.MGI_Note;
+CLUSTER mgd.MGI_Note USING MGI_Note_idx_clustered;
 
 EOSQL

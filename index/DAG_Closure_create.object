@@ -10,28 +10,28 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index DAG_Closure_idx_clustered USING mgd.DAG_Closure (_AncestorObject_key, _DescendentObject_key, _DAG_key);
+create index DAG_Closure_idx_clustered on mgd.DAG_Closure (_AncestorObject_key, _DescendentObject_key, _DAG_key);
 
 
-create index DAG_Closure_idx_MGIType_key USING mgd.DAG_Closure (_MGIType_key);
+create index DAG_Closure_idx_MGIType_key on mgd.DAG_Closure (_MGIType_key);
 
 
-create index DAG_Closure_idx_Ancestor_key USING mgd.DAG_Closure (_Ancestor_key);
+create index DAG_Closure_idx_Ancestor_key on mgd.DAG_Closure (_Ancestor_key);
 
 
-create index DAG_Closure_idx_Descendent_key USING mgd.DAG_Closure (_Descendent_key);
+create index DAG_Closure_idx_Descendent_key on mgd.DAG_Closure (_Descendent_key);
 
 
-create index DAG_Closure_idx_DescendentObject_key USING mgd.DAG_Closure (_DescendentObject_key, _AncestorObject_key, _DAG_key);
+create index DAG_Closure_idx_DescendentObject_key on mgd.DAG_Closure (_DescendentObject_key, _AncestorObject_key, _DAG_key);
 
 
-create index DAG_Closure_idx_AncestorLabel_key USING mgd.DAG_Closure (_AncestorLabel_key);
+create index DAG_Closure_idx_AncestorLabel_key on mgd.DAG_Closure (_AncestorLabel_key);
 
 
-create index DAG_Closure_idx_DescendentLabel_key USING mgd.DAG_Closure (_DescendentLabel_key);
+create index DAG_Closure_idx_DescendentLabel_key on mgd.DAG_Closure (_DescendentLabel_key);
 
 
 
-CLUSTER dag_closure_idx_clustered USING mgd.DAG_Closure;
+CLUSTER mgd.DAG_Closure USING DAG_Closure_idx_clustered;
 
 EOSQL

@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index ALL_Allele_Mutation_idx_Mutation_key USING mgd.ALL_Allele_Mutation (_Mutation_key);
+create index ALL_Allele_Mutation_idx_Mutation_key on mgd.ALL_Allele_Mutation (_Mutation_key);
 
 
 
-CLUSTER all_allele_mutation_pkey USING mgd.ALL_Allele_Mutation;
+CLUSTER mgd.ALL_Allele_Mutation USING ALL_Allele_Mutation_idx_pkey;
 
 EOSQL

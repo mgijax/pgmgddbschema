@@ -9,19 +9,19 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index PRB_RFLV_idx_clustered USING mgd.PRB_RFLV (_Reference_key);
+create index PRB_RFLV_idx_clustered on mgd.PRB_RFLV (_Reference_key);
 
 
-create index PRB_RFLV_idx_Marker_key USING mgd.PRB_RFLV (_Marker_key);
+create index PRB_RFLV_idx_Marker_key on mgd.PRB_RFLV (_Marker_key);
 
 
-create index PRB_RFLV_idx_CreatedBy_key USING mgd.PRB_RFLV (_CreatedBy_key);
+create index PRB_RFLV_idx_CreatedBy_key on mgd.PRB_RFLV (_CreatedBy_key);
 
 
-create index PRB_RFLV_idx_ModifiedBy_key USING mgd.PRB_RFLV (_ModifiedBy_key);
+create index PRB_RFLV_idx_ModifiedBy_key on mgd.PRB_RFLV (_ModifiedBy_key);
 
 
 
-CLUSTER prb_rflv_idx_clustered USING mgd.PRB_RFLV;
+CLUSTER mgd.PRB_RFLV USING PRB_RFLV_idx_clustered;
 
 EOSQL

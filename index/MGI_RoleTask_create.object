@@ -12,19 +12,19 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MGI_RoleTask_idx_Role_key USING mgd.MGI_RoleTask (_Role_key);
+create index MGI_RoleTask_idx_Role_key on mgd.MGI_RoleTask (_Role_key);
 
 
-create index MGI_RoleTask_idx_Task_key USING mgd.MGI_RoleTask (_Task_key);
+create index MGI_RoleTask_idx_Task_key on mgd.MGI_RoleTask (_Task_key);
 
 
-create index MGI_RoleTask_idx_CreatedBy_key USING mgd.MGI_RoleTask (_CreatedBy_key);
+create index MGI_RoleTask_idx_CreatedBy_key on mgd.MGI_RoleTask (_CreatedBy_key);
 
 
-create index MGI_RoleTask_idx_ModifiedBy_key USING mgd.MGI_RoleTask (_ModifiedBy_key);
+create index MGI_RoleTask_idx_ModifiedBy_key on mgd.MGI_RoleTask (_ModifiedBy_key);
 
 
 
-CLUSTER mgi_roletask_pkey USING mgd.MGI_RoleTask;
+CLUSTER mgd.MGI_RoleTask USING MGI_RoleTask_idx_pkey;
 
 EOSQL

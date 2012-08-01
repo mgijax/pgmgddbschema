@@ -9,12 +9,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index ACC_ActualDB_idx_name USING mgd.ACC_ActualDB (name);
-
-create index ACC_ActualDB_idx_LogicalDB_key USING mgd.ACC_ActualDB (_LogicalDB_key);
+create index ACC_ActualDB_idx_name on mgd.ACC_ActualDB (name);
 
 
+create index ACC_ActualDB_idx_LogicalDB_key on mgd.ACC_ActualDB (_LogicalDB_key);
 
-CLUSTER acc_actualdb_pkey USING mgd.ACC_ActualDB;
+
+
+CLUSTER mgd.ACC_ActualDB USING ACC_ActualDB_idx_pkey;
 
 EOSQL

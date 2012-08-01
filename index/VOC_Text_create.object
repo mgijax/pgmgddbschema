@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index VOC_Text_idx_note USING mgd.VOC_Text (note);
+create index VOC_Text_idx_note on mgd.VOC_Text (note);
 
 
 
-CLUSTER voc_text_pkey USING mgd.VOC_Text;
+CLUSTER mgd.VOC_Text USING VOC_Text_idx_pkey;
 
 EOSQL

@@ -9,16 +9,16 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index ACC_AccessionReference_idx_Refs_key USING mgd.ACC_AccessionReference (_Refs_key);
+create index ACC_AccessionReference_idx_Refs_key on mgd.ACC_AccessionReference (_Refs_key);
 
 
-create index ACC_AccessionReference_idx_CreatedBy_key USING mgd.ACC_AccessionReference (_CreatedBy_key);
+create index ACC_AccessionReference_idx_CreatedBy_key on mgd.ACC_AccessionReference (_CreatedBy_key);
 
 
-create index ACC_AccessionReference_idx_ModifiedBy_key USING mgd.ACC_AccessionReference (_ModifiedBy_key);
+create index ACC_AccessionReference_idx_ModifiedBy_key on mgd.ACC_AccessionReference (_ModifiedBy_key);
 
 
 
-CLUSTER acc_accessionreference_pkey USING mgd.ACC_AccessionReference;
+CLUSTER mgd.ACC_AccessionReference USING ACC_AccessionReference_idx_pkey;
 
 EOSQL

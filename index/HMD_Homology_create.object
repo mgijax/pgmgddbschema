@@ -9,13 +9,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index HMD_Homology_idx_clustered USING mgd.HMD_Homology (_Class_key);
+create index HMD_Homology_idx_clustered on mgd.HMD_Homology (_Class_key);
 
 
-create index HMD_Homology_idx_Refs_key USING mgd.HMD_Homology (_Refs_key);
+create index HMD_Homology_idx_Refs_key on mgd.HMD_Homology (_Refs_key);
 
 
 
-CLUSTER hmd_homology_idx_clustered USING mgd.HMD_Homology;
+CLUSTER mgd.HMD_Homology USING HMD_Homology_idx_clustered;
 
 EOSQL

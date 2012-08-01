@@ -12,10 +12,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index BIB_Citation_Cache_idx_journal USING mgd.BIB_Citation_Cache (journal);
+create index BIB_Citation_Cache_idx_journal on mgd.BIB_Citation_Cache (journal);
 
 
 
-CLUSTER bib_citation_cache_pkey USING mgd.BIB_Citation_Cache;
+CLUSTER mgd.BIB_Citation_Cache USING BIB_Citation_Cache_idx_pkey;
 
 EOSQL

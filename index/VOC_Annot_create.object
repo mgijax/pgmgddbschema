@@ -1,26 +1,26 @@
 #!/bin/sh
 
 # HISTORY
-# 04/29/2008 - jsb - removed solo index USING mgd._Object_key, revised VOC_Annot_idx_Term_key
+# 04/29/2008 - jsb - removed solo index on mgd._Object_key, revised VOC_Annot_idx_Term_key
 
 cd `dirname $0` && . ./Configuration
 
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index VOC_Annot_idx_clustered USING mgd.VOC_Annot (_Object_key, _Term_key, _AnnotType_key, _Qualifier_key);
+create index VOC_Annot_idx_clustered on mgd.VOC_Annot (_Object_key, _Term_key, _AnnotType_key, _Qualifier_key);
 
 
-create index VOC_Annot_idx_AnnotType_key USING mgd.VOC_Annot (_AnnotType_key);
+create index VOC_Annot_idx_AnnotType_key on mgd.VOC_Annot (_AnnotType_key);
 
 
-create index VOC_Annot_idx_Term_key USING mgd.VOC_Annot (_Term_key, _AnnotType_key, _Qualifier_key, _Object_key);
+create index VOC_Annot_idx_Term_key on mgd.VOC_Annot (_Term_key, _AnnotType_key, _Qualifier_key, _Object_key);
 
 
-create index VOC_Annot_idx_Qualifier_key USING mgd.VOC_Annot (_Qualifier_key);
+create index VOC_Annot_idx_Qualifier_key on mgd.VOC_Annot (_Qualifier_key);
 
 
 
-CLUSTER voc_annot_idx_clustered USING mgd.VOC_Annot;
+CLUSTER mgd.VOC_Annot USING VOC_Annot_idx_clustered;
 
 EOSQL

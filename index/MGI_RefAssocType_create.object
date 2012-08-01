@@ -12,16 +12,16 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MGI_RefAssocType_idx_MGIType_key USING mgd.MGI_RefAssocType (_MGIType_key);
+create index MGI_RefAssocType_idx_MGIType_key on mgd.MGI_RefAssocType (_MGIType_key);
 
 
-create index MGI_RefAssocType_idx_CreatedBy_key USING mgd.MGI_RefAssocType (_CreatedBy_key);
+create index MGI_RefAssocType_idx_CreatedBy_key on mgd.MGI_RefAssocType (_CreatedBy_key);
 
 
-create index MGI_RefAssocType_idx_ModifiedBy_key USING mgd.MGI_RefAssocType (_ModifiedBy_key);
+create index MGI_RefAssocType_idx_ModifiedBy_key on mgd.MGI_RefAssocType (_ModifiedBy_key);
 
 
 
-CLUSTER mgi_refassoctype_pkey USING mgd.MGI_RefAssocType;
+CLUSTER mgd.MGI_RefAssocType USING MGI_RefAssocType_idx_pkey;
 
 EOSQL

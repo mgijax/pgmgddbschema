@@ -11,7 +11,7 @@
 # table, so the increase in index size is minimal.
 #
 # optimized for retrieving all sets related to a particular MGI type, or for
-# selecting one of them based USING mgd.name
+# selecting one of them based on mgd.name
 #
 # if we already know the set key, we're likely looking for a single set, so
 # this will provide a direct shot to the right data page; no need for extra
@@ -25,13 +25,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MGI_Set_idx_clustered USING mgd.MGI_Set (_MGIType_key, name, _Set_key, sequenceNum);
+create index MGI_Set_idx_clustered on mgd.MGI_Set (_MGIType_key, name, _Set_key, sequenceNum);
 
 
-create index MGI_Set_idx_name USING mgd.MGI_Set (name, _MGIType_key, _Set_key, sequenceNum);
+create index MGI_Set_idx_name on mgd.MGI_Set (name, _MGIType_key, _Set_key, sequenceNum);
 
 
 
-CLUSTER mgi_set_idx_clustered USING mgd.MGI_Set;
+CLUSTER mgd.MGI_Set USING MGI_Set_idx_clustered;
 
 EOSQL

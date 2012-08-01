@@ -9,13 +9,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MRK_Offset_idx_cmOffset USING mgd.MRK_Offset (cmOffset);
+create index MRK_Offset_idx_cmOffset on mgd.MRK_Offset (cmOffset);
 
 
-create index MRK_Offset_idx_source USING mgd.MRK_Offset (source);
+create index MRK_Offset_idx_source on mgd.MRK_Offset (source);
 
 
 
-CLUSTER mrk_offset_pkey USING mgd.MRK_Offset;
+CLUSTER mgd.MRK_Offset USING MRK_Offset_idx_pkey;
 
 EOSQL

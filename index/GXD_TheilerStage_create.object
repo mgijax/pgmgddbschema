@@ -12,10 +12,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index GXD_TheilerStage_idx_defaultSystem_key USING mgd.GXD_TheilerStage (_defaultSystem_key);
+create index GXD_TheilerStage_idx_defaultSystem_key on mgd.GXD_TheilerStage (_defaultSystem_key);
 
 
 
-CLUSTER gxd_theilerstage_pkey USING mgd.GXD_TheilerStage;
+CLUSTER mgd.GXD_TheilerStage USING GXD_TheilerStage_idx_pkey;
 
 EOSQL

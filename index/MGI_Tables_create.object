@@ -9,7 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER mgi_tables_pkey USING mgd.MGI_Tables;
 
+CLUSTER mgd.MGI_Tables USING MGI_Tables_idx_pkey;
 
 EOSQL
