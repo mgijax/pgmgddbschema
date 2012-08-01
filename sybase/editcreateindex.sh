@@ -62,6 +62,10 @@ d
 .
 a
 
+CLUSTER mgd.${t} USING ${t}_idx_pkey;
+.
+a
+
 EOSQL
 .
 w
