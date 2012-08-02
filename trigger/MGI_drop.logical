@@ -8,7 +8,7 @@
 
 cd `dirname $0`
 
-for i in MGI*_drop.object
+for i in MGI*_delete_drop.object MGI*_insert_drop.object
 do
 $i $*
 done

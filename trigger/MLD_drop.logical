@@ -8,7 +8,7 @@
 
 cd `dirname $0`
 
-for i in MLD*_drop.object
+for i in MLD*_delete_drop.object MLD*_insert_drop.object
 do
 $i $*
 done

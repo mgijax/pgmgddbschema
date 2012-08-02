@@ -8,7 +8,7 @@
 
 cd `dirname $0`
 
-for i in GXD*_drop.object
+for i in GXD*_delete_drop.object GXD*_insert_drop.object
 do
 $i $*
 done

@@ -8,7 +8,7 @@
 
 cd `dirname $0`
 
-for i in NOM*_drop.object
+for i in NOM*_delete_drop.object NOM*_insert_drodrop.object
 do
 $i $*
 done

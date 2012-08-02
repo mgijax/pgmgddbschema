@@ -8,7 +8,7 @@
 
 cd `dirname $0`
 
-for i in ALL*_create.object
+for i in ALL*_delete_create.object ALL*_insert_create.object
 do
 $i $*
 done

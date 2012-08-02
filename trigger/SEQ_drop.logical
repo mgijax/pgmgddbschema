@@ -8,7 +8,7 @@
 
 cd `dirname $0`
 
-for i in SEQ*_drop.object
+for i in SEQ*_delete_drop.object SEQ*_insert_drop.object
 do
 $i $*
 done
