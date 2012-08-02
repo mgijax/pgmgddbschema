@@ -38,6 +38,7 @@ ALTER TABLE mgd.MGI_Organism_MGIType DROP CONSTRAINT MGI_Organism_MGIType__Organ
 ALTER TABLE mgd.GXD_Antibody DROP CONSTRAINT GXD_Antibody__Organism_key_fkey CASCADE;
 
 ALTER TABLE mgd.ACC_LogicalDB DROP CONSTRAINT ACC_LogicalDB__Organism_key_fkey CASCADE;
+
 ALTER TABLE mgd.MGI_Organism DROP CONSTRAINT MGI_Organism_pkey CASCADE;
 
 EOSQL

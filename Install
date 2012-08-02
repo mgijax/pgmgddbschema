@@ -4,12 +4,12 @@
 # Installation script for schema product
 #
 
-cd `dirname $0`
+cd `dirname $0` && . ./Configuration
 
 #
 # Create symbolic links.
 #
-for i in table key index view
+for i in table key index view trigger
 do
     cd $i
     rm -rf Configuration logs
@@ -17,4 +17,7 @@ do
     ln -s ../logs/$i logs
     cd ..
 done
+
+mkdir -p ${EXPORTDATA}
+mkdir -p ${EXPORTLOGS}
 

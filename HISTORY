@@ -1,3 +1,10 @@
+TAG: pgmgddbschema-5-0-0-7
+DATE: 08/02/2012
+STAFF: lec
+CHANGES: 
+a)added 'trigger'
+b)updated CLUSTER syntax
+
 TAG: pgmgddbschema-5-0-0-6
 TAG: pgmgddbschema-5-0-0-5
 DATE: 07/30/2012
