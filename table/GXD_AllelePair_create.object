@@ -15,6 +15,8 @@ create table mgd.GXD_AllelePair (
 	_Allele_key_1                  int             not null,
 	_Allele_key_2                  int             null,
 	_Marker_key                    int             null,
+        _MutantCellLine_key_1          int             null,
+        _MutantCellLine_key_2          int             null,
 	_PairState_key                 int             not null,
 	_Compound_key                  int             not null,
 	sequenceNum                    int             not null,
