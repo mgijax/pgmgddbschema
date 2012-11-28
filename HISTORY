@@ -1,3 +1,9 @@
+TAG: pgmgddbschema-5-1-1-1
+DATE: 11/02/2012
+STAFF: dbm
+CHANGES: TR7106
+1) table/MRK_Location_Cache_create.object: added genomicChromosome field
+
 TAG: pgmgddbschema-tr10273-BP
 DATE: 10/01/2012
 STAFF: lec
