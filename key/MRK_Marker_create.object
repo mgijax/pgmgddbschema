@@ -3,6 +3,7 @@
 #
 # HISTORY
 #
+# 12/04/2012 - jsb - added MRK_ClusterMember for TR6519 (n-to-m orthologs)
 # 06/09/2010	lec
 #	- TR 6839/added MRK_MCV_Cache
 #
@@ -36,6 +37,9 @@ ALTER TABLE mgd.ALL_Knockout_Cache ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.
 
 
 ALTER TABLE mgd.GXD_Expression ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker ON DELETE CASCADE;
+
+
+ALTER TABLE mgd.MRK_ClusterMember ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker ON DELETE CASCADE;
 
 
 ALTER TABLE mgd.MRK_Location_Cache ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker ON DELETE CASCADE;

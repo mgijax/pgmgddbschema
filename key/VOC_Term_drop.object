@@ -2,6 +2,7 @@
 #
 # History
 #
+# 12/04/2012 - jsb - added MRK_ClusterMember for TR6519 (n-to-m orthologs)
 # 11/23/2010	lec
 #	- TR10033/image class
 #
@@ -92,6 +93,10 @@ ALTER TABLE mgd.NOM_Marker DROP CONSTRAINT NOM_Marker__NomenStatus_key_fkey CASC
 ALTER TABLE mgd.NOM_Marker DROP CONSTRAINT NOM_Marker__CurationState_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_OMIM_Cache DROP CONSTRAINT MRK_OMIM_Cache__Term_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_Cluster DROP CONSTRAINT MRK_Cluster__ClusterSource_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_Cluster DROP CONSTRAINT MRK_Cluster__ClusterType_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Marker DROP CONSTRAINT MRK_Marker__CurationState_key_fkey CASCADE;
 

@@ -1,6 +1,7 @@
 #!/bin/sh
 #
 # History
+# 12/04/2012 - jsb - added MRK_ClusterMember for TR6519 (n-to-m orthologs) 
 # 03/0/2010	lec
 #	- TR9239; added SEQ_GeneModel
 #
@@ -146,6 +147,10 @@ ALTER TABLE mgd.MRK_Location_Cache DROP CONSTRAINT MRK_Location_Cache__CreatedBy
 ALTER TABLE mgd.MRK_History DROP CONSTRAINT MRK_History__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_History DROP CONSTRAINT MRK_History__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_Cluster DROP CONSTRAINT MRK_Cluster__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_Cluster DROP CONSTRAINT MRK_Cluster__CreatedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Chromosome DROP CONSTRAINT MRK_Chromosome__ModifiedBy_key_fkey CASCADE;
 
