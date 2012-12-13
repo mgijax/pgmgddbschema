@@ -13,6 +13,10 @@ ALTER TABLE mgd.ALL_CellLine_Derivation DROP CONSTRAINT ALL_CellLine_Derivation_
 
 ALTER TABLE mgd.ALL_Allele_CellLine DROP CONSTRAINT ALL_Allele_CellLine__MutantCellLine_key_fkey CASCADE;
 
+ALTER TABLE mgd.GXD_AllelePair DROP CONSTRAINT ALL_Allele_CellLine__MutantCellLine_key_1_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_AllelePair DROP CONSTRAINT ALL_Allele_CellLine__MutantCellLine_key_2_fkey CASCADE;
+
 ALTER TABLE mgd.ALL_CellLine DROP CONSTRAINT ALL_CellLine_pkey CASCADE;
 
 EOSQL
