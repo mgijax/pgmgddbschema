@@ -6,6 +6,9 @@
 # 07/14/2011	lec
 #	- convert to ansi outer join
 #
+# 01/06/2011 lec
+#	- TR10273/Europhenome Allele/Annotations
+#
 # 08/20/2009 lec
 #	- add out join to MRK_Marker._Marker_key
 #
@@ -26,14 +29,16 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create view mgd.GXD_AllelePair_View
 as
 select a.*, m.symbol, m.chromosome, a1.symbol as allele1,  
-a2.symbol as allele2, t1.term as alleleState, t2.term as compound
+a2.symbol as allele2, t1.term as alleleState, t2.term as compound,
+c1.cellLine as mutantCellLine1, c2.cellLine as mutantCellLine2
 from GXD_AllelePair a
      	INNER JOIN ALL_Allele a1 on (a._Allele_key_1 = a1._Allele_key)
      	INNER JOIN VOC_Term t1 on (a._PairState_key = t1._Term_key)
      	INNER JOIN VOC_Term t2 on (a._Compound_key = t2._Term_key)
      	LEFT OUTER JOIN MRK_Marker m on (a._Marker_key = m._Marker_key)
      	LEFT OUTER JOIN ALL_Allele a2 on (a._Allele_key_2 = a2._Allele_key)
-
+     	LEFT OUTER JOIN ALL_CellLine c1 on (a._MutantCellLine_key_1 = c1._CellLine_key)
+     	LEFT OUTER JOIN ALL_CellLine c2 on (a._MutantCellLine_key_2 = c2._CellLine_key)
 
 
 ;
