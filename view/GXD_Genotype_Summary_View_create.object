@@ -3,6 +3,9 @@
 #
 # History
 #
+# 10/30/2012	lec
+#	- use 'union' to select allele 1/allele 2/no alleles
+#
 # 07/14/2011	lec
 #	- convert to ansi outer join
 #
@@ -22,15 +25,54 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create view mgd.GXD_Genotype_Summary_View
 as
+
 select a.*,
-       g.mgiID as mgiID,
-       g.strain as subType,
-       g.strain || ' ' || ap.allele1 || ',' || ap.allele2 as description,
-       ap.allele1 || ',' || ap.allele2 as short_description
+       a.accID as mgiID,
+       s.strain as subType,
+       s.strain || ' ' || a1.symbol || ',' || a2.symbol as description,
+       a1.symbol || ',' || a2.symbol as short_description
 from ACC_Accession a
-     	INNER JOIN GXD_Genotype_View g on (a._Object_key = g._Genotype_key)
-     	LEFT OUTER JOIN GXD_AllelePair_View ap on (g._Genotype_key = ap._Genotype_key)
+        INNER JOIN GXD_Genotype g on (a._Object_key = g._Genotype_key)
+        INNER JOIN PRB_Strain s on (g._Strain_key = s._Strain_key)
+        INNER JOIN GXD_AllelePair ap on (g._Genotype_key = ap._Genotype_key)
+        INNER JOIN ALL_Allele a1 on (ap._Allele_key_1 = a1._Allele_key)
+        INNER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key)
 where a._MGIType_key = 12
+and a._LogicalDB_key = 1
+and a.prefixPart = 'MGI:'
+and a.preferred = 1
+
+union
+select a.*,
+       a.accID as mgiID,
+       s.strain as subType,
+       s.strain || ' ' || a1.symbol as description,
+       a1.symbol as short_description
+from ACC_Accession a
+        INNER JOIN GXD_Genotype g on (a._Object_key = g._Genotype_key)
+        INNER JOIN PRB_Strain s on (g._Strain_key = s._Strain_key)
+        INNER JOIN GXD_AllelePair ap on (g._Genotype_key = ap._Genotype_key
+		and ap._Allele_key_2 is null)
+        INNER JOIN ALL_Allele a1 on (ap._Allele_key_1 = a1._Allele_key)
+where a._MGIType_key = 12
+and a._LogicalDB_key = 1
+and a.prefixPart = 'MGI:'
+and a.preferred = 1
+
+union
+select a.*,
+       a.accID as mgiID,
+       s.strain as subType,
+       s.strain as description,
+       null as short_description
+from ACC_Accession a
+        INNER JOIN GXD_Genotype g on (a._Object_key = g._Genotype_key)
+        INNER JOIN PRB_Strain s on (g._Strain_key = s._Strain_key)
+where a._MGIType_key = 12
+and a._LogicalDB_key = 1
+and a.prefixPart = 'MGI:'
+and a.preferred = 1
+and not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key)
 
 
 
