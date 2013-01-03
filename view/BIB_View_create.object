@@ -16,7 +16,6 @@ c.reviewStatus, c.jnumID, c.numericPart as jnum, c.citation, c.short_citation,
 u1.login as createdBy, u2.login as modifiedBy
 from BIB_Refs r, BIB_Citation_Cache c, MGI_User u1, MGI_User u2
 where r._Refs_key = c._Refs_key
-and (r.journal != 'Submission' or r.journal is null)
 and r._CreatedBy_key = u1._User_key
 and r._ModifiedBy_key = u2._User_key
 
