@@ -36,3 +36,13 @@ export EXPORTDATA EXPORTLOGS LOGDIR
 runBCP=0
 export runBCP
 
+#
+# number of mutliple tasks to run
+counterMax=3
+export counterMax
+
+#
+# number of mutliple tasks to run
+counterMax=3
+export counterMax
+

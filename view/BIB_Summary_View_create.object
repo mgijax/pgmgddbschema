@@ -20,7 +20,6 @@ from ACC_Accession a, BIB_Citation_Cache c
 where a._MGIType_key = 1
 and a.private = 0
 and a._Object_key = c._Refs_key
-and (c.journal != 'Submission' or c.journal is null)
 
 
 

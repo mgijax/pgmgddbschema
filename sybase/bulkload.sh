@@ -66,7 +66,7 @@ echo 'converting bcp using python regular expressions...' | tee -a ${LOG}
 for i in ${findObject}
 do
 i=`basename $i _create.object`
-${PG_MGD_DBSCHEMADIR}/sybase/textcleaner.sh ${EXPORTDATA} ${i} | tee -a ${LOG}.${i}.textcleaner &
+${PG_MGD_DBSCHEMADIR}/sybase/textcleaner.sh ${EXPORTDATA} ${i} | tee -a ${LOG}.${i}.textcleaner
 done
 fi
 # wait until all jobs invoked above have terminated
@@ -119,13 +119,31 @@ fi
 #
 cd ${MGD_DBSCHEMADIR}/table
 echo 'calling postgres copy...' | tee -a ${LOG}
+counter=0
+
 for i in ${findObject}
 do
+
 i=`basename ${i} _create.object`
-psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "\copy mgd.$i from '${EXPORTDATA}/${i}.bcp' with null as ''" | tee -a ${LOG}.${i}.copy
+
+psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "\copy mgd.$i from '${EXPORTDATA}/${i}.bcp' with null as ''" | tee -a ${LOG}.${i}.copy &
+
+counter=`expr $counter + 1`
+
+#
+# if counter > counterMax, then wait
+#
+if [ ${counter} -gt ${counterMax} ]
+then
+    echo 'waiting for background copies to be completed...'
+    wait
+    counter=1
+fi
+
 done
 # wait until all jobs invoked above have terminated
 wait
+
 echo 'done: calling postgres copy...' | tee -a ${LOG}
 date | tee -a ${LOG}
 
@@ -144,11 +162,16 @@ date | tee -a ${LOG}
 #
 if [ $runAll -eq '1' ]
 then
-echo 'run create key/index/trigger/view for all tables...' | tee -a ${LOG}
+echo 'run create index for all tables...' | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/index/index_create.sh
+echo 'run create key for all tables...' | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/key/key_create.sh
+echo 'run create trigger for all tables...' | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/trigger/trigger_create.sh
+echo 'run create view for all tables...' | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/view/view_create.sh
+echo 'run create comments for all tables...' | tee -a ${LOG}
+${EXPORTER}/bin/commentsPostgres.py
 
 else
 #
@@ -163,17 +186,19 @@ ${PG_MGD_DBSCHEMADIR}/index/${i}_create.object
 echo 'adding keys...' | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/key/${i}_create.object
 
-#echo 'adding trigger...' | tee -a ${LOG}
-#${PG_MGD_DBSCHEMADIR}/trigger/${i}_create.object
-
+if [ -f ${PG_MGD_DBSCHEMADIR}/trigger/${i}_delete_create.object ]
+then
+	echo 'adding delete trigger...' | tee -a ${LOG}
+	${PG_MGD_DBSCHEMADIR}/trigger/${i}_delete_create.object
 fi
 
-#
-# comments
-#
-#echo 'updating comments...' | tee -a ${LOG}
-#${PG_MGD_DBSCHEMADIR/sybase/comments.py
-#psql -h ${PG_FE_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} < comments.txt
+if [ -f ${PG_MGD_DBSCHEMADIR}/trigger/${i}_insert_create.object ]
+then
+	echo 'adding insert trigger...' | tee -a ${LOG}
+	${PG_MGD_DBSCHEMADIR}/trigger/${i}_insert_create.object
+fi
+
+fi
 
 date | tee -a ${LOG}
 

@@ -17,4 +17,9 @@ ALTER TABLE mgd.ALL_Allele_CellLine ADD FOREIGN KEY (_MutantCellLine_key) REFERE
 ALTER TABLE mgd.ALL_CellLine_Derivation ADD FOREIGN KEY (_ParentCellLine_key) REFERENCES mgd.ALL_CellLine;
 
 
+ALTER TABLE mgd.GXD_AllelePair ADD FOREIGN KEY (_MutantCellLine_key_1) REFERENCES mgd.ALL_CellLine;
+
+
+ALTER TABLE mgd.GXD_AllelePair ADD FOREIGN KEY (_MutantCellLine_key_2) REFERENCES mgd.ALL_CellLine;
+
 EOSQL
