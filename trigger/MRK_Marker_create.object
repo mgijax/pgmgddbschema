@@ -2,7 +2,7 @@
 
 #
 # History
-#
+# 12/04/2012 - jsb - added checks for MRK_Cluster foreign keys (TR6519)
 # 03/28/2011	lec
 #	- remove permission checks for individual users
 #
@@ -311,6 +311,14 @@ if exists (select * from MLD_MC2point, deleted
 begin
 	rollback transaction
 	raiserror 99999 "Marker Symbol is referenced in MLDP Cross 2 Point Record(s)"
+	return
+end
+
+if exists (select * from MRK_ClusterMember, deleted
+         where MRK_ClusterMember._Marker_key = deleted._Marker_key)
+begin
+	rollback transaction
+	raiserror 99999 "Marker Symbol is referenced in Marker Cluster Record(s)"
 	return
 end
 

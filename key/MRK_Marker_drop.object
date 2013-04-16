@@ -2,6 +2,7 @@
 #
 # HISTORY
 #
+# 12/04/2012 - jsb - added MRK_ClusterMember for TR6519 (n-to-m orthologs)
 # 06/09/2010    lec
 #       - TR 6839/added MRK_MCV_Cache
 #
@@ -51,6 +52,8 @@ ALTER TABLE mgd.MRK_MCV_Cache DROP CONSTRAINT MRK_MCV_Cache__Marker_key_fkey CAS
 ALTER TABLE mgd.MRK_Location_Cache DROP CONSTRAINT MRK_Location_Cache__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Label DROP CONSTRAINT MRK_Label__Marker_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_ClusterMember DROP CONSTRAINT MRK_ClusterMember__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Homology_Cache DROP CONSTRAINT MRK_Homology_Cache__Marker_key_fkey CASCADE;
 

@@ -2,7 +2,7 @@
 
 #
 # History
-#
+# 12/04/2012 - jsb - added checks for MRK_Cluster foreign keys (TR6519)
 # 06/30/2011	lec
 #	- TR 10044; added VOC_Evidence_Property
 #
@@ -205,6 +205,22 @@ if exists (select 1 from MRK_Marker a, deleted d
 begin
         rollback transaction
         raiserror 99999 "Curation State is referenced in Marker Record(s)"
+        return
+end
+
+if exists (select 1 from MRK_Cluster a, deleted d
+    where d._Term_key = a._ClusterSource_key)
+begin
+        rollback transaction
+        raiserror 99999 "Cluster Source is referenced in Marker Cluster Record(s)"
+        return
+end
+
+if exists (select 1 from MRK_Cluster a, deleted d
+    where d._Term_key = a._ClusterType_key)
+begin
+        rollback transaction
+        raiserror 99999 "Cluster Type is referenced in Marker Cluster Record(s)"
         return
 end
 

@@ -2,7 +2,7 @@
 
 #
 # History
-
+# 12/04/2012 - jsb - added MRK_ClusterMember for TR6519 (n-to-m orthologs) 
 # 03/0/2010	lec
 #	- TR9239; added SEQ_GeneModel
 #
@@ -321,6 +321,12 @@ ALTER TABLE mgd.MRK_Chromosome ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.M
 
 
 ALTER TABLE mgd.MRK_Chromosome ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User;
+
+
+ALTER TABLE mgd.MRK_Cluster ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User;
+
+
+ALTER TABLE mgd.MRK_Cluster ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User;
 
 
 ALTER TABLE mgd.MRK_History ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User;

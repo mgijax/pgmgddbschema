@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#
+# History
+# 12/04/2012 - jsb - initial addition for TR6519 (n-to-m orthologs)
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+truncate table mgd.MRK_ClusterMember
+
+;
+EOSQL

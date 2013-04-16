@@ -2,6 +2,7 @@
 
 # History
 #
+# 12/04/2012 - jsb - added MRK_ClusterMember for TR6519 (n-to-m orthologs)
 # 11/23/2010	lec
 #	- TR10033/add image class
 #
@@ -169,6 +170,12 @@ ALTER TABLE mgd.MGI_VocAssociation ADD FOREIGN KEY (_Term_key_2) REFERENCES mgd.
 
 
 ALTER TABLE mgd.MRK_Marker ADD FOREIGN KEY (_CurationState_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.MRK_Cluster ADD FOREIGN KEY (_ClusterType_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.MRK_Cluster ADD FOREIGN KEY (_ClusterSource_key) REFERENCES mgd.VOC_Term;
 
 
 ALTER TABLE mgd.NOM_Marker ADD FOREIGN KEY (_CurationState_key) REFERENCES mgd.VOC_Term;
