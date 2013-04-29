@@ -1,3 +1,11 @@
+TAG: pgmgddbschema-tr11248-?
+DATE: ?
+STAFF: lec
+CHANGES:
+1) TR11248/procedure/GXD_loadCacheByAssay_create.object
+2) TR11248/table/ALL_Cre_Cache; add 'age'
+3) TR11248/view/MGI_NoteType_Image_View_create.object
+
 TAG: pgmgddbschema-tr11248-BP
 DATE: 04/29/1013
 STAFF: lec
