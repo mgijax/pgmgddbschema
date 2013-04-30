@@ -3,6 +3,9 @@
 #
 # History
 #
+# 04/30/2013    lec
+#       - TR11248 (gxd/cre/snp); add index for _assay_key
+#
 # 03/31/2011	lec
 #	- TR10658/add _Cache_key
 #
@@ -19,6 +22,9 @@ drop index mgd.ALL_Cre_Cache_idx_clustered
 ;
 
 drop index mgd.ALL_Cre_Cache_idx_Allele_key
+;
+
+drop index mgd.ALL_Cre_Cache_idx_Assay_key
 ;
 
 drop index mgd.ALL_Cre_Cache_idx_CreatedBy_key
