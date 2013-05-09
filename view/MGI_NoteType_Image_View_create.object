@@ -3,6 +3,9 @@
 #
 # History
 #
+# 04/18/2013    lec
+#       - TR11248/add 'age'
+#
 # 05/22/2002	lec
 #	- TR 1463; SAO
 #
@@ -17,7 +20,7 @@ as
 select *
 from MGI_NoteType
 where _MGIType_key = 9
-and private = 1
+and noteType in ('Private Curatorial', 'External Link')
 
 
 
