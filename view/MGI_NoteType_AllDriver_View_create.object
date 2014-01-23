@@ -1,7 +1,10 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # History
+#
+# 05/02/2013	lec
+#	- TR10248/add cre/user note
 #
 # 09/23/2009	lec
 #	- TR 9797; cre

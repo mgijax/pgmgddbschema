@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # This file was generated autopatically by dbschepaScripts.py -- edit with care.
