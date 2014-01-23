@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 # HISTORY
 # 04/24/2009 - jsb - added to allow translation load to run on derivations

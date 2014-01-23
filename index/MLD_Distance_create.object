@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 # HISTORY
 #    09/16/2008 - jsb - removed MLD_Distance_idx_Expt_key

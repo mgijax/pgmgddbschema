@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 # HISTORY
 #    09/16/2008 - jsb - removed GXD_StructureClosure_idx_Structure_key (TR 9037); added 

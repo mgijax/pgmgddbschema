@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 # HISTORY
 #	5/1/08 - jsb - TR8747, removed redundant index

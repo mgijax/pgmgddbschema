@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 # HISTORY
 #	4/17/2008 - jsb - initial addition for TR8511

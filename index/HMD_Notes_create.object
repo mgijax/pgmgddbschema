@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 # HISTORY
 #     09/16/2008 - jsb - removed HMD_Notes_idx_Homology_key (TR 9037)

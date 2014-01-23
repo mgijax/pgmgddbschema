@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 # HISTORY
 # 07/12/2011 - lec - renamed ALL_CellLine_idx_derivation to ALL_CellLine_idx_Derivation_key for postgres

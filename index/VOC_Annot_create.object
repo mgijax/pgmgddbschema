@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 # HISTORY
 # 04/29/2008 - jsb - removed solo index on mgd._Object_key, revised VOC_Annot_idx_Term_key

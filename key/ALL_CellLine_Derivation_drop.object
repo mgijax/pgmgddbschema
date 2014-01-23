@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 # History:
 # 	11/15/07 - jsb - added for Gene Trap LF release (TR7493)
 cd `dirname $0` && . ./Configuration

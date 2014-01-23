@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 # History:
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0

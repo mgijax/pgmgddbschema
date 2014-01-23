@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 # HISTORY:
 #    10/06/2008 - jsb - added SEQ_GeneModel, TR9305
 #

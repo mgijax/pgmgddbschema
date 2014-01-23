@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 #
 # HISTORY
 # 12/04/2012 - jsb - added MRK_ClusterMember foreign key

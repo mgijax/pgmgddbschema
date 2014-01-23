@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 # HISTORY
 #    09/16/2008 - jsb - altered VOC_Term_idx_term to include _Vocab_key and to not be

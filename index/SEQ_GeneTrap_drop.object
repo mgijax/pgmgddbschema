@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 # History:
 #    10/08/2008 - jsb - renamed SEQ_AdditionalInfo to be SEQ_GeneTrap

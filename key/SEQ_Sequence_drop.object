@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 #
 # History
 # 01/18/2010 - jsb - added SEQ_Sequence_Assoc

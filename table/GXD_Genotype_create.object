@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 # History:
 # 11/26/2008 - jsb - added "exists as" field to note the state of the genotype
