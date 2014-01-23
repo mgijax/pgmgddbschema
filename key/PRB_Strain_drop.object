@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 # HISTORY
 #
 # 02/14/2006    lec

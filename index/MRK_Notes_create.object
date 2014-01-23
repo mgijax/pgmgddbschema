@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # HISTORY
 #    09/16/2008 - jsb - removed MRK_Notes_idx_Marker_key (TR 9037)

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # This file was generated automatically by dbschemaScripts.py -- edit with care.
@@ -25,6 +25,12 @@ create index BIB_Refs_idx_title on mgd.BIB_Refs (title);
 
 
 create index BIB_Refs_idx_ReviewStatus_key on mgd.BIB_Refs (_ReviewStatus_key);
+
+
+create index BIB_Refs_idx_CreatedBy_key on mgd.BIB_Refs (_CreatedBy_key);
+
+
+create index BIB_Refs_idx_ModifiedBy_key on mgd.BIB_Refs (_ModifiedBy_key);
 
 
 

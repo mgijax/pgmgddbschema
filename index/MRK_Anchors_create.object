@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # HISTORY
 #    09/16/2008 - jsb - removed MRK_Anchors_idx_chromosome (TR 9037)

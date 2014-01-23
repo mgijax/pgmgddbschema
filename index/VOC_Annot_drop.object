@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # HISTORY
 # 04/29/2008 - jsb - removed solo index on _Object_key, revised idx_Term_key

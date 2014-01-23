@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # History
@@ -40,6 +40,6 @@ create index MRK_OMIM_Cache_idx_OrthologMarker_key on mgd.MRK_OMIM_Cache (_Ortho
 
 
 
-CLUSTER mgd.MRK_OMIM_Cache USING MRK_OMIM_Cache_idx_clustered;
+CLUSTER mgd.MRK_OMIM_Cache USING MRK_OMIM_Cache_pkey;
 
 EOSQL

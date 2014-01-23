@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # HISTORY
 #     04/20/2010 - jsb - added to help add alleles to search tool

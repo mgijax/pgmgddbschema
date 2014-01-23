@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # History
 # 01/18/2010 - jsb - initial addition for Spring 2010 maint release (TR9782)
@@ -24,6 +24,6 @@ create index SEQ_Sequence_Assoc_idx_ModifiedBy_key on mgd.SEQ_Sequence_Assoc (_M
 
 
 
-CLUSTER mgd.SEQ_Sequence_Assoc USING SEQ_Sequence_Assoc_idx_clustered;
+CLUSTER mgd.SEQ_Sequence_Assoc USING SEQ_Sequence_Assoc_pkey;
 
 EOSQL

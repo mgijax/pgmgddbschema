@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # History
 # 01/18/2010 - jsb - initial addition for Spring 2010 maint release (TR9782)

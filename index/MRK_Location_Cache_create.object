@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # History
@@ -31,6 +31,6 @@ create index MRK_Location_Cache_idx_chromosome_cmOffset on mgd.MRK_Location_Cach
 
 
 
-CLUSTER mgd.MRK_Location_Cache USING MRK_Location_Cache_idx_clustered;
+CLUSTER mgd.MRK_Location_Cache USING MRK_Location_Cache_pkey;
 
 EOSQL

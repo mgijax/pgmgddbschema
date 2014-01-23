@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # History
@@ -34,6 +34,6 @@ create index PRB_Strain_Marker_idx_ModifiedBy_key on mgd.PRB_Strain_Marker (_Mod
 
 
 
-CLUSTER mgd.PRB_Strain_Marker USING PRB_Strain_Marker_idx_clustered;
+CLUSTER mgd.PRB_Strain_Marker USING PRB_Strain_Marker_pkey;
 
 EOSQL

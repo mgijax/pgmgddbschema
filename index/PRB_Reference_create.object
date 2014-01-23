@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # This file was generated automatically by dbschemaScripts.py -- edit with care.
@@ -22,6 +22,6 @@ create index PRB_Reference_idx_ModifiedBy_key on mgd.PRB_Reference (_ModifiedBy_
 
 
 
-CLUSTER mgd.PRB_Reference USING PRB_Reference_idx_clustered;
+CLUSTER mgd.PRB_Reference USING PRB_Reference_pkey;
 
 EOSQL

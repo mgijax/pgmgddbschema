@@ -1,10 +1,14 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # History
 #
+# 01/13/2011 lec
+#	- TR 10273/Europhenome
+#
 # 09/16/2008 - jsb - removed GXD_AlleleGenotype_idx_Genotype_key (TR 9037); added _Genotype_key
 # 	to GXD_AlleleGenotype_idx_Allele_key (TR 9062)
+#
 # 07/23/2002 lec
 #	- TR 3802
 #
@@ -18,6 +22,9 @@ create index GXD_AlleleGenotype_idx_Marker_key on mgd.GXD_AlleleGenotype (_Marke
 
 
 create index GXD_AlleleGenotype_idx_Allele_key on mgd.GXD_AlleleGenotype (_Allele_key, _Genotype_key);
+
+
+create index GXD_AlleleGenotype_idx_MutantCellLine_key on mgd.GXD_AlleleGenotype (_MutantCellLine_key);
 
 
 create index GXD_AlleleGenotype_idx_CreatedBy_key on mgd.GXD_AlleleGenotype (_CreatedBy_key);

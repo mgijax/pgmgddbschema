@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # This file was generated automatically by dbschemaScripts.py -- edit with care.
@@ -22,6 +22,6 @@ create index PRB_Alias_idx_alias on mgd.PRB_Alias (alias);
 
 
 
-CLUSTER mgd.PRB_Alias USING PRB_Alias_idx_clustered;
+CLUSTER mgd.PRB_Alias USING PRB_Alias_pkey;
 
 EOSQL

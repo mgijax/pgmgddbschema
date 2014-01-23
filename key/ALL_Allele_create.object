@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # History
@@ -25,28 +25,22 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.ALL_Allele ADD PRIMARY KEY (_Allele_key);
 
 
-ALTER TABLE mgd.ALL_Allele_CellLine ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele ON DELETE CASCADE;
+ALTER TABLE mgd.ALL_Allele_CellLine ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele;
 
 
-ALTER TABLE mgd.ALL_Allele_Mutation ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele ON DELETE CASCADE;
+ALTER TABLE mgd.ALL_Allele_Mutation ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele;
 
 
-ALTER TABLE mgd.ALL_Marker_Assoc ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele ON DELETE CASCADE;
+ALTER TABLE mgd.ALL_Cre_Cache ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele;
 
 
-ALTER TABLE mgd.SEQ_Allele_Assoc ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele ON DELETE CASCADE;
+ALTER TABLE mgd.ALL_Knockout_Cache ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele;
 
 
-ALTER TABLE mgd.ALL_Label ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele ON DELETE CASCADE;
+ALTER TABLE mgd.ALL_Label ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele;
 
 
-ALTER TABLE mgd.ALL_Cre_Cache ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele ON DELETE CASCADE;
-
-
-ALTER TABLE mgd.ALL_Knockout_Cache ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele ON DELETE CASCADE;
-
-
-ALTER TABLE mgd.MRK_OMIM_Cache ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele ON DELETE CASCADE;
+ALTER TABLE mgd.ALL_Marker_Assoc ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele;
 
 
 ALTER TABLE mgd.GXD_AlleleGenotype ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele;
@@ -61,7 +55,13 @@ ALTER TABLE mgd.GXD_AllelePair ADD FOREIGN KEY (_Allele_key_2) REFERENCES mgd.AL
 ALTER TABLE mgd.MLD_Expt_Marker ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele;
 
 
+ALTER TABLE mgd.MRK_OMIM_Cache ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele;
+
+
 ALTER TABLE mgd.PRB_Strain_Marker ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele;
+
+
+ALTER TABLE mgd.SEQ_Allele_Assoc ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele;
 
 
 EOSQL

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # HISTORY
 #    09/16/2008 - jsb - altered VOC_Term_idx_term to include _Vocab_key and to not be
@@ -26,6 +26,6 @@ create index VOC_Term_idx_ModifiedBy_key on mgd.VOC_Term (_ModifiedBy_key);
 
 
 
-CLUSTER mgd.VOC_Term USING VOC_Term_idx_clustered;
+CLUSTER mgd.VOC_Term USING VOC_Term_pkey;
 
 EOSQL

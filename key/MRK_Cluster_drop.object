@@ -1,13 +1,12 @@
-#!/bin/sh
-
+#!/bin/csh -f
+#
 # History
-# 12/04/2012 - jsb - initial addition for TR6519 (n-to-m orthologs)
-
+# 12/04/2012 - jsb - initial addition for TR6519
+#
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.MRK_ClusterMember DROP CONSTRAINT MRK_ClusterMember__Cluster_key_fkey CASCADE;
-
 ALTER TABLE mgd.MRK_Cluster DROP CONSTRAINT MRK_Cluster_pkey CASCADE;
 
 EOSQL

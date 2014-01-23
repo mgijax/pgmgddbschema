@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # History
@@ -29,6 +29,6 @@ create index MGI_Note_idx_ModifiedBy_key on mgd.MGI_Note (_ModifiedBy_key);
 
 
 
-CLUSTER mgd.MGI_Note USING MGI_Note_idx_clustered;
+CLUSTER mgd.MGI_Note USING MGI_Note_pkey;
 
 EOSQL

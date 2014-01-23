@@ -1,10 +1,13 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 #
 # make sure that snpdbschema table is synced up with this table (see snpcacheload)
 #
 # History
+#
+# 08/02/2012	jsb
+#	- TR 7106/add genomicChromosome field
 #
 # 08/31/2011	lec
 #	- TR 10805/add _Organism_key; set cmOffset to 'null'
@@ -27,8 +30,8 @@ create table mgd.MRK_Location_Cache (
         chromosome                 varchar(8)      not null,
 	sequenceNum                int             not null,
 	cytogeneticOffset          varchar(20)     null,
-	cmOffset                   float           null,
-	genomicChromosome          varchar(8)      null,
+	cmOffset                     float           null,
+        genomicChromosome          varchar(8)      null,
         startCoordinate            float           null,
         endCoordinate              float           null,
         strand                     char(1)         null,

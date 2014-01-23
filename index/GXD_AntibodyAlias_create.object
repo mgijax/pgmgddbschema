@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # This file was generated automatically by dbschemaScripts.py -- edit with care.
@@ -16,6 +16,6 @@ create index GXD_AntibodyAlias_idx_Refs_key on mgd.GXD_AntibodyAlias (_Refs_key)
 
 
 
-CLUSTER mgd.GXD_AntibodyAlias USING GXD_AntibodyAlias_idx_clustered;
+CLUSTER mgd.GXD_AntibodyAlias USING GXD_AntibodyAlias_pkey;
 
 EOSQL

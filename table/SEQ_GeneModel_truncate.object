@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # HISTORY
 #     10/06/2008 - jsb - added for search tool release, TR9305

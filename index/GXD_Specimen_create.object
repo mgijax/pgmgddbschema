@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # This file was generated automatically by dbschemaScripts.py -- edit with care.
@@ -22,6 +22,6 @@ create index GXD_Specimen_idx_Genotype_key on mgd.GXD_Specimen (_Genotype_key);
 
 
 
-CLUSTER mgd.GXD_Specimen USING GXD_Specimen_idx_clustered;
+CLUSTER mgd.GXD_Specimen USING GXD_Specimen_pkey;
 
 EOSQL

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # History:
 # 12/13/07 - jsb - added for Gene Trap LF release (TR7493)

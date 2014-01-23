@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # HISTORY
 #    09/16/2008 - jsb - removed idx_Contig_key_fk (TR 9037)

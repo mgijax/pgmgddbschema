@@ -1,7 +1,10 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
+# History
+#
+# 01/04/2014	lec
+#	- TR11515/allele stuff
 #
 
 cd `dirname $0` && . ./Configuration
@@ -13,12 +16,6 @@ ALTER TABLE mgd.VOC_Vocab ADD PRIMARY KEY (_Vocab_key);
 
 
 ALTER TABLE mgd.MGI_TranslationType ADD FOREIGN KEY (_Vocab_key) REFERENCES mgd.VOC_Vocab;
-
-
-ALTER TABLE mgd.MGI_VocAssociationType ADD FOREIGN KEY (_Vocab_key_1) REFERENCES mgd.VOC_Vocab;
-
-
-ALTER TABLE mgd.MGI_VocAssociationType ADD FOREIGN KEY (_Vocab_key_2) REFERENCES mgd.VOC_Vocab;
 
 
 ALTER TABLE mgd.VOC_Term ADD FOREIGN KEY (_Vocab_key) REFERENCES mgd.VOC_Vocab;

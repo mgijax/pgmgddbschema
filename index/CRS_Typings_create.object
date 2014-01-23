@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # HISTORY
 #     09/16/2008 - jsb - removed CRS_Typings_idx_Cross_key and CRS_Typings_idx_Cross_key_rowNumber

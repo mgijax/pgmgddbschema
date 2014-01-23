@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # History
@@ -13,10 +13,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.MGI_Statistic ADD PRIMARY KEY (_Statistic_key);
 
 
-ALTER TABLE mgd.MGI_StatisticSql ADD FOREIGN KEY (_Statistic_key) REFERENCES mgd.MGI_Statistic ON DELETE CASCADE;
+ALTER TABLE mgd.MGI_StatisticSql ADD FOREIGN KEY (_Statistic_key) REFERENCES mgd.MGI_Statistic;
 
 
-ALTER TABLE mgd.MGI_Measurement ADD FOREIGN KEY (_Statistic_key) REFERENCES mgd.MGI_Statistic ON DELETE CASCADE;
+ALTER TABLE mgd.MGI_Measurement ADD FOREIGN KEY (_Statistic_key) REFERENCES mgd.MGI_Statistic;
 
 
 EOSQL

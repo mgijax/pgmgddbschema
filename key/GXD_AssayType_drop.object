@@ -1,11 +1,8 @@
-#!/bin/sh
-
+#!/bin/csh -f
 #
 # This file was generated automatically by dbschemaScripts.py -- edit with care.
 #
-
 cd `dirname $0` && . ./Configuration
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.IMG_Cache DROP CONSTRAINT IMG_Cache__AssayType_key_fkey CASCADE;
@@ -13,7 +10,6 @@ ALTER TABLE mgd.IMG_Cache DROP CONSTRAINT IMG_Cache__AssayType_key_fkey CASCADE;
 ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__AssayType_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Assay DROP CONSTRAINT GXD_Assay__AssayType_key_fkey CASCADE;
-
 ALTER TABLE mgd.GXD_AssayType DROP CONSTRAINT GXD_AssayType_pkey CASCADE;
 
 EOSQL

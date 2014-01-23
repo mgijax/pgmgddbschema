@@ -1,16 +1,28 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # History
-# 12/04/2012 - jsb - added MRK_ClusterMember for TR6519 (n-to-m orthologs) 
+#
+# 01/02/2014	lec
+#	- TR11515/allele stuff
+#       - TR11515/mgi_attribute_history : obsolete
+#
+# 11/14/2013 - sc  - added VOC_Term_EMAPA and VOC_Term_EMAPS FKs
+#
+# 12/04/2012 - jsb - added MRK_Cluster foreign keys
+#
 # 03/0/2010	lec
 #	- TR9239; added SEQ_GeneModel
 #
 # 01/18/2010 - jsb - added SEQ_Sequence_Assoc
+#
 # 11/24/2008 - jsb - added ALL_Marker_Assoc, ALL_Allele_CellLine
+#
 # 10/08/2008 - jsb - renamed SEQ_AdditionalInfo to be SEQ_GeneTrap
+#
 # 11/15/2007 - jsb - added SEQ_Allele_Assoc, SEQ_AdditionalInfo, and
 # 	ALL_CellLine_Derivation
+#
 # 09/30/2005	lec
 #	- TR 7094; MGI 3.5
 #
@@ -203,12 +215,6 @@ ALTER TABLE mgd.MAP_Coordinate ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.M
 ALTER TABLE mgd.MAP_Coordinate ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User;
 
 
-ALTER TABLE mgd.MGI_AttributeHistory ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User;
-
-
-ALTER TABLE mgd.MGI_AttributeHistory ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User;
-
-
 ALTER TABLE mgd.MGI_Note ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User;
 
 
@@ -303,18 +309,6 @@ ALTER TABLE mgd.MGI_UserRole ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI
 
 
 ALTER TABLE mgd.MGI_UserRole ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User;
-
-
-ALTER TABLE mgd.MGI_VocAssociation ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User;
-
-
-ALTER TABLE mgd.MGI_VocAssociation ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User;
-
-
-ALTER TABLE mgd.MGI_VocAssociationType ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User;
-
-
-ALTER TABLE mgd.MGI_VocAssociationType ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User;
 
 
 ALTER TABLE mgd.MRK_Chromosome ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User;
@@ -525,6 +519,18 @@ ALTER TABLE mgd.VOC_Term ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_Use
 
 
 ALTER TABLE mgd.VOC_Term ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User;
+
+
+ALTER TABLE mgd.VOC_Term_EMAPA ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User;
+
+
+ALTER TABLE mgd.VOC_Term_EMAPA ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User;
+
+
+ALTER TABLE mgd.VOC_Term_EMAPS ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User;
+
+
+ALTER TABLE mgd.VOC_Term_EMAPS ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User;
 
 
 EOSQL

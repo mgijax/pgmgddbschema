@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # HISTORY
 #    09/16/2008 - jsb - removed VOC_AnnotHeader_idx_AnnotType_key (TR 9037)
@@ -28,6 +28,6 @@ create index VOC_AnnotHeader_idx_ApprovedBy_key on mgd.VOC_AnnotHeader (_Approve
 
 
 
-CLUSTER mgd.VOC_AnnotHeader USING VOC_AnnotHeader_idx_clustered;
+CLUSTER mgd.VOC_AnnotHeader USING VOC_AnnotHeader_pkey;
 
 EOSQL

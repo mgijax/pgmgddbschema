@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # History:
 #	10/08/2008 - jsb - renamed to SEQ_GeneTrap

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # History
@@ -16,6 +16,6 @@ create index VOC_GO_Cache_idx_clustered on mgd.VOC_GO_Cache (_Term_key);
 
 
 
-CLUSTER mgd.VOC_GO_Cache USING VOC_GO_Cache_idx_clustered;
+CLUSTER mgd.VOC_GO_Cache USING VOC_GO_Cache_pkey;
 
 EOSQL

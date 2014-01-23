@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # This file was generated automatically by dbschemaScripts.py -- edit with care.
@@ -19,6 +19,6 @@ create index GXD_GelBand_idx_Strength_key on mgd.GXD_GelBand (_Strength_key);
 
 
 
-CLUSTER mgd.GXD_GelBand USING GXD_GelBand_idx_clustered;
+CLUSTER mgd.GXD_GelBand USING GXD_GelBand_pkey;
 
 EOSQL

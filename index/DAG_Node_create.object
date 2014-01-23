@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # This file was generated automatically by dbschemaScripts.py -- edit with care.
@@ -19,6 +19,6 @@ create index DAG_Node_idx_Label_key on mgd.DAG_Node (_Label_key);
 
 
 
-CLUSTER mgd.DAG_Node USING DAG_Node_idx_clustered;
+CLUSTER mgd.DAG_Node USING DAG_Node_pkey;
 
 EOSQL

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # HISTORY
 #    09/16/2008 - jsb - added _Vocab_key to VOC_Vocab_idx_name (TR 9062)

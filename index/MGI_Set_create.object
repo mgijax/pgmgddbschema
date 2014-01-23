@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # History
@@ -32,6 +32,6 @@ create index MGI_Set_idx_name on mgd.MGI_Set (name, _MGIType_key, _Set_key, sequ
 
 
 
-CLUSTER mgd.MGI_Set USING MGI_Set_idx_clustered;
+CLUSTER mgd.MGI_Set USING MGI_Set_pkey;
 
 EOSQL

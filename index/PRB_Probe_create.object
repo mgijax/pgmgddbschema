@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # HISTORY
 #     09/16/2008 - jsb - removed PRB_Probe_idx_SegmentType_key (TR 9037)
@@ -31,6 +31,6 @@ create index PRB_Probe_idx_ModifiedBy_key on mgd.PRB_Probe (_ModifiedBy_key);
 
 
 
-CLUSTER mgd.PRB_Probe USING PRB_Probe_idx_clustered;
+CLUSTER mgd.PRB_Probe USING PRB_Probe_pkey;
 
 EOSQL

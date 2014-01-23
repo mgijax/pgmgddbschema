@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # History:
 #	11/09/2007 - jsb - initial addition for TR7493 (Gene Trap LF)

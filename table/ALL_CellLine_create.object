@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # History
 # 02/13/09 - jsb - removed isMixed smallint field

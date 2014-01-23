@@ -1,20 +1,38 @@
-#!/bin/sh
+#!/bin/csh -f
 #
 # History
-# 12/04/2012 - jsb - added MRK_ClusterMember for TR6519 (n-to-m orthologs) 
+#
+# 01/02/2014	lec
+#	- TR11515/allele stuff
+#       - TR11515/mgi_attribute_history : obsolete
+#
+# 12/04/2012 - jsb - added MRK_Cluster foreign keys
+#
 # 03/0/2010	lec
 #	- TR9239; added SEQ_GeneModel
 #
 # 01/18/2010 - jsb - added SEQ_Sequence_Assoc
+#
 # 11/24/2008 - jsb - added ALL_Marker_Assoc, ALL_Allele_CellLine
+#
 # 10/08/2008 - jsb - renamed SEQ_AdditionalInfo to be SEQ_GeneTrap
+#
 # 11/15/2007 - jsb - added SEQ_Allele_Assoc, SEQ_AdditionalInfo, and
 # 	ALL_CellLine_Derivation
+#
 # 09/30/2005	lec
 #	- TR 7094; MGI 3.5
 #
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.VOC_Term_EMAPS DROP CONSTRAINT VOC_Term_EMAPS__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.VOC_Term_EMAPS DROP CONSTRAINT VOC_Term_EMAPS__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.VOC_Term_EMAPA DROP CONSTRAINT VOC_Term_EMAPA__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.VOC_Term_EMAPA DROP CONSTRAINT VOC_Term_EMAPA__CreatedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_Term DROP CONSTRAINT VOC_Term__ModifiedBy_key_fkey CASCADE;
 
@@ -156,14 +174,6 @@ ALTER TABLE mgd.MRK_Chromosome DROP CONSTRAINT MRK_Chromosome__ModifiedBy_key_fk
 
 ALTER TABLE mgd.MRK_Chromosome DROP CONSTRAINT MRK_Chromosome__CreatedBy_key_fkey CASCADE;
 
-ALTER TABLE mgd.MGI_VocAssociationType DROP CONSTRAINT MGI_VocAssociationType__ModifiedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_VocAssociationType DROP CONSTRAINT MGI_VocAssociationType__CreatedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_VocAssociation DROP CONSTRAINT MGI_VocAssociation__ModifiedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_VocAssociation DROP CONSTRAINT MGI_VocAssociation__CreatedBy_key_fkey CASCADE;
-
 ALTER TABLE mgd.MGI_UserRole DROP CONSTRAINT MGI_UserRole__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_UserRole DROP CONSTRAINT MGI_UserRole__CreatedBy_key_fkey CASCADE;
@@ -227,10 +237,6 @@ ALTER TABLE mgd.MGI_NoteChunk DROP CONSTRAINT MGI_NoteChunk__CreatedBy_key_fkey 
 ALTER TABLE mgd.MGI_Note DROP CONSTRAINT MGI_Note__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_Note DROP CONSTRAINT MGI_Note__CreatedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_AttributeHistory DROP CONSTRAINT MGI_AttributeHistory__ModifiedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_AttributeHistory DROP CONSTRAINT MGI_AttributeHistory__CreatedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MAP_Coordinate DROP CONSTRAINT MAP_Coordinate__ModifiedBy_key_fkey CASCADE;
 

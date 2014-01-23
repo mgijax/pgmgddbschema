@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # HISTORY
 #     09/16/2008 - jsb - removed idx_Allele_key (TR 9037)

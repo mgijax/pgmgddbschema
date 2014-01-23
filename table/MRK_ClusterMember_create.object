@@ -1,8 +1,9 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # History
-# 12/04/2012 - jsb - initial addition for TR6519 (n-to-m orthologs)
+#
+# 12/04/2012 : jsb : initial addition for TR6519
 #
 
 cd `dirname $0` && . ./Configuration
@@ -11,9 +12,9 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.MRK_ClusterMember (
-	_ClusterMember_key             int             not null,
- 	_Cluster_key                   int             not null,
- 	_Marker_key                    int             not null,
+ 	_ClusterMember_key             int             not null,
+	_Cluster_key                   int             not null,
+	_Marker_key                    int             not null,
 	sequenceNum                    int             not null
 );
 EOSQL

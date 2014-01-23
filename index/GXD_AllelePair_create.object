@@ -1,7 +1,10 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
+# History
+#
+# 10/01/2012	lec
+#	- TR10273/High Throughput Phenotypes/added _MutantCellLine_key (1,2)
 #
 
 cd `dirname $0` && . ./Configuration
@@ -15,16 +18,16 @@ create index GXD_AllelePair_idx_clustered on mgd.GXD_AllelePair (_Allele_key_1);
 create index GXD_AllelePair_idx_Allele_key_2 on mgd.GXD_AllelePair (_Allele_key_2);
 
 
-create index GXD_AllelePair_idx_Genotype_key on mgd.GXD_AllelePair (_Genotype_key);
-
-
-create index GXD_AllelePair_idx_Marker_key on mgd.GXD_AllelePair (_Marker_key);
-
-
 create index GXD_AllelePair_idx_MutantCellLine_key_1 on mgd.GXD_AllelePair (_MutantCellLine_key_1);
 
 
 create index GXD_AllelePair_idx_MutantCellLine_key_2 on mgd.GXD_AllelePair (_MutantCellLine_key_2);
+
+
+create index GXD_AllelePair_idx_Genotype_key on mgd.GXD_AllelePair (_Genotype_key);
+
+
+create index GXD_AllelePair_idx_Marker_key on mgd.GXD_AllelePair (_Marker_key);
 
 
 create index GXD_AllelePair_idx_PairState_key on mgd.GXD_AllelePair (_PairState_key);
@@ -40,6 +43,6 @@ create index GXD_AllelePair_idx_ModifiedBy_key on mgd.GXD_AllelePair (_ModifiedB
 
 
 
-CLUSTER mgd.GXD_AllelePair USING GXD_AllelePair_idx_clustered;
+CLUSTER mgd.GXD_AllelePair USING GXD_AllelePair_pkey;
 
 EOSQL

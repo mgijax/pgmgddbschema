@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # History
@@ -54,6 +54,6 @@ create index SEQ_Marker_Cache_idx_annotation_date on mgd.SEQ_Marker_Cache (annot
 
 
 
-CLUSTER mgd.SEQ_Marker_Cache USING SEQ_Marker_Cache_idx_clustered;
+CLUSTER mgd.SEQ_Marker_Cache USING SEQ_Marker_Cache_pkey;
 
 EOSQL

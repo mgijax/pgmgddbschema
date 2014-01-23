@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # History
@@ -25,6 +25,6 @@ create index VOC_Evidence_Property_idx_ModifiedBy_key on mgd.VOC_Evidence_Proper
 
 
 
-CLUSTER mgd.VOC_Evidence_Property USING VOC_Evidence_Property_idx_clustered;
+CLUSTER mgd.VOC_Evidence_Property USING VOC_Evidence_Property_pkey;
 
 EOSQL

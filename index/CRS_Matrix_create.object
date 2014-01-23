@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # HISTORY
 #     09/16/2008 - jsb - removed CRS_Matrix_idx_Cross_key (TR 9037)
@@ -16,6 +16,6 @@ create index CRS_Matrix_idx_Marker_key on mgd.CRS_Matrix (_Marker_key);
 
 
 
-CLUSTER mgd.CRS_Matrix USING CRS_Matrix_idx_clustered;
+CLUSTER mgd.CRS_Matrix USING CRS_Matrix_pkey;
 
 EOSQL

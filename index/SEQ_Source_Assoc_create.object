@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # History
@@ -25,6 +25,6 @@ create index SEQ_Source_Assoc_idx_ModifiedBy_key on mgd.SEQ_Source_Assoc (_Modif
 
 
 
-CLUSTER mgd.SEQ_Source_Assoc USING SEQ_Source_Assoc_idx_clustered;
+CLUSTER mgd.SEQ_Source_Assoc USING SEQ_Source_Assoc_pkey;
 
 EOSQL

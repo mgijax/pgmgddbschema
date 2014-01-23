@@ -1,16 +1,12 @@
-#!/bin/sh
-
+#!/bin/csh -f
 #
 # History
 #
 # 07/23/2002 lec
 #	- TR 3802
 #
-
 cd `dirname $0` && . ./Configuration
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
-
 ALTER TABLE mgd.GXD_AlleleGenotype DROP CONSTRAINT GXD_AlleleGenotype_pkey CASCADE;
 
 EOSQL

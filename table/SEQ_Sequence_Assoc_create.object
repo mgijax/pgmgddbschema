@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # History
 # 01/18/2010 - jsb - added for TR9774 (Ensembl/VEGA protein/transcript seqs)

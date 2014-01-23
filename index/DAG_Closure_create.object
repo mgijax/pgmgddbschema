@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # HISTORY
 #     09/16/2008 - jsb - removed DAG_Closure_idx_DAG_key (TR 9037); various changes to
@@ -32,6 +32,6 @@ create index DAG_Closure_idx_DescendentLabel_key on mgd.DAG_Closure (_Descendent
 
 
 
-CLUSTER mgd.DAG_Closure USING DAG_Closure_idx_clustered;
+CLUSTER mgd.DAG_Closure USING DAG_Closure_pkey;
 
 EOSQL

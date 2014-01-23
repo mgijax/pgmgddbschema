@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # HISTORY
 #	5/1/08 - jsb - TR8747, removed redundant index, added additional
@@ -28,6 +28,6 @@ create index GXD_Expression_idx_Structure_key on mgd.GXD_Expression (_Structure_
 
 
 
-CLUSTER mgd.GXD_Expression USING GXD_Expression_idx_clustered;
+CLUSTER mgd.GXD_Expression USING GXD_Expression_pkey;
 
 EOSQL

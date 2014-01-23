@@ -1,6 +1,10 @@
-#!/bin/sh
+#!/bin/csh -f
 #
 # History
+#
+# 01/23/2014	lec
+#	- TR11515/mgi_attribute_history : obsolete
+#
 # 09/16/2008 - jsb - added VOC_Annot_Count_Cache
 # 10/17/2006	lec
 #	- TR 7710; add IMG_Image
@@ -35,8 +39,6 @@ ALTER TABLE mgd.MGI_Organism_MGIType DROP CONSTRAINT MGI_Organism_MGIType__MGITy
 ALTER TABLE mgd.MGI_NoteType DROP CONSTRAINT MGI_NoteType__MGIType_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_Note DROP CONSTRAINT MGI_Note__MGIType_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_AttributeHistory DROP CONSTRAINT MGI_AttributeHistory__MGIType_key_fkey CASCADE;
 
 ALTER TABLE mgd.MAP_Coordinate DROP CONSTRAINT MAP_Coordinate__MGIType_key_fkey CASCADE;
 

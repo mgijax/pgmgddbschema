@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # History
@@ -30,6 +30,6 @@ create index GXD_Index_idx_ConditionalMutants_key on mgd.GXD_Index (_Conditional
 
 
 
-CLUSTER mgd.GXD_Index USING GXD_Index_idx_clustered;
+CLUSTER mgd.GXD_Index USING GXD_Index_pkey;
 
 EOSQL

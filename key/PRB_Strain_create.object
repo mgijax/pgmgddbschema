@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # History
@@ -16,12 +16,6 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.PRB_Strain ADD PRIMARY KEY (_Strain_key);
-
-
-ALTER TABLE mgd.PRB_Strain_Marker ADD FOREIGN KEY (_Strain_key) REFERENCES mgd.PRB_Strain ON DELETE CASCADE;
-
-
-ALTER TABLE mgd.PRB_Strain_Genotype ADD FOREIGN KEY (_Strain_key) REFERENCES mgd.PRB_Strain ON DELETE CASCADE;
 
 
 ALTER TABLE mgd.ALL_CellLine ADD FOREIGN KEY (_Strain_key) REFERENCES mgd.PRB_Strain;
@@ -52,6 +46,12 @@ ALTER TABLE mgd.MLD_InSitu ADD FOREIGN KEY (_Strain_key) REFERENCES mgd.PRB_Stra
 
 
 ALTER TABLE mgd.PRB_Allele_Strain ADD FOREIGN KEY (_Strain_key) REFERENCES mgd.PRB_Strain;
+
+
+ALTER TABLE mgd.PRB_Strain_Genotype ADD FOREIGN KEY (_Strain_key) REFERENCES mgd.PRB_Strain;
+
+
+ALTER TABLE mgd.PRB_Strain_Marker ADD FOREIGN KEY (_Strain_key) REFERENCES mgd.PRB_Strain;
 
 
 ALTER TABLE mgd.PRB_Source ADD FOREIGN KEY (_Strain_key) REFERENCES mgd.PRB_Strain;

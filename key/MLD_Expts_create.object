@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # This file was generated automatically by dbschemaScripts.py -- edit with care.
@@ -10,12 +10,6 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.MLD_Expts ADD PRIMARY KEY (_Expt_key);
-
-
-ALTER TABLE mgd.MLD_Statistics ADD FOREIGN KEY (_Expt_key) REFERENCES mgd.MLD_Expts ON DELETE CASCADE;
-
-
-ALTER TABLE mgd.RI_Summary_Expt_Ref ADD FOREIGN KEY (_Expt_key) REFERENCES mgd.MLD_Expts ON DELETE CASCADE;
 
 
 ALTER TABLE mgd.MLD_Contig ADD FOREIGN KEY (_Expt_key) REFERENCES mgd.MLD_Expts;
@@ -70,6 +64,12 @@ ALTER TABLE mgd.MLD_RI2Point ADD FOREIGN KEY (_Expt_key) REFERENCES mgd.MLD_Expt
 
 
 ALTER TABLE mgd.MLD_RIData ADD FOREIGN KEY (_Expt_key) REFERENCES mgd.MLD_Expts;
+
+
+ALTER TABLE mgd.MLD_Statistics ADD FOREIGN KEY (_Expt_key) REFERENCES mgd.MLD_Expts;
+
+
+ALTER TABLE mgd.RI_Summary_Expt_Ref ADD FOREIGN KEY (_Expt_key) REFERENCES mgd.MLD_Expts;
 
 
 EOSQL

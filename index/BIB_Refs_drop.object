@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # This file was generated automatically by dbschemaScripts.py -- edit with care.
@@ -25,6 +25,12 @@ drop index mgd.BIB_Refs_idx_title
 ;
 
 drop index mgd.BIB_Refs_idx_ReviewStatus_key
+;
+
+drop index mgd.BIB_Refs_idx_CreatedBy_key
+;
+
+drop index mgd.BIB_Refs_idx_ModifiedBy_key
 ;
 
 EOSQL

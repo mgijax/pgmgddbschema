@@ -1,7 +1,10 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
+# History
+#
+# 10/01/2012	lec
+#	- TR10273/High Throughput Phenotypes/added _MutantCellLine_key (1,2)
 #
 
 cd `dirname $0` && . ./Configuration
@@ -15,8 +18,8 @@ create table mgd.GXD_AllelePair (
 	_Allele_key_1                  int             not null,
 	_Allele_key_2                  int             null,
 	_Marker_key                    int             null,
-        _MutantCellLine_key_1          int             null,
-        _MutantCellLine_key_2          int             null,
+	_MutantCellLine_key_1          int             null,
+	_MutantCellLine_key_2          int             null,
 	_PairState_key                 int             not null,
 	_Compound_key                  int             not null,
 	sequenceNum                    int             not null,

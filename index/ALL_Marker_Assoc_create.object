@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 # History:
 # 11/24/2008 - jsb - initial addition for TR7493 (Gene Trap LF)
@@ -24,6 +24,6 @@ create index ALL_Marker_Assoc_idx_ModifiedBy_key on mgd.ALL_Marker_Assoc (_Modif
 
 
 
-CLUSTER mgd.ALL_Marker_Assoc USING ALL_Marker_Assoc_idx_clustered;
+CLUSTER mgd.ALL_Marker_Assoc USING ALL_Marker_Assoc_pkey;
 
 EOSQL
