@@ -18,9 +18,6 @@ ALTER TABLE mgd.MLD_Contig ADD FOREIGN KEY (_Expt_key) REFERENCES mgd.MLD_Expts;
 ALTER TABLE mgd.MLD_Concordance ADD FOREIGN KEY (_Expt_key) REFERENCES mgd.MLD_Expts;
 
 
-ALTER TABLE mgd.MLD_Distance ADD FOREIGN KEY (_Expt_key) REFERENCES mgd.MLD_Expts;
-
-
 ALTER TABLE mgd.MLD_Expt_Marker ADD FOREIGN KEY (_Expt_key) REFERENCES mgd.MLD_Expts;
 
 

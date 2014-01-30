@@ -87,12 +87,6 @@ ALTER TABLE mgd.MLC_Text ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker
 ALTER TABLE mgd.MLD_Concordance ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker;
 
 
-ALTER TABLE mgd.MLD_Distance ADD FOREIGN KEY (_Marker_key_1) REFERENCES mgd.MRK_Marker;
-
-
-ALTER TABLE mgd.MLD_Distance ADD FOREIGN KEY (_Marker_key_2) REFERENCES mgd.MRK_Marker;
-
-
 ALTER TABLE mgd.MLD_Expt_Marker ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker;
 
 
