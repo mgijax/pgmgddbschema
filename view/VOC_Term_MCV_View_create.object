@@ -3,6 +3,10 @@
 #
 # History
 #
+# 03/01/2013	lec
+#	- TR 11314
+#	endogenous retroviral region  MCV:0000050
+#
 # 11/01/2011	lec
 #	- TR 10895
 #	minisatellite MCV:0000048
@@ -79,7 +83,8 @@ and a.accID in (
   'MCV:0000046',
   'MCV:0000047',
   'MCV:0000048',
-  'MCV:0000049')
+  'MCV:0000049',
+  'MCV:0000050')
 
 
 

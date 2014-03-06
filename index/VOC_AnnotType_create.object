@@ -9,7 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create unique index VOC_AnnotType_idx_MGITypeVocabEvidence on mgd.VOC_AnnotType (_MGIType_key, _Vocab_key, _EvidenceVocab_key);
+create index VOC_AnnotType_idx_MGITypeVocabEvidence on mgd.VOC_AnnotType (_MGIType_key, _Vocab_key, _EvidenceVocab_key);
 
 
 create index VOC_AnnotType_idx_Vocab_key on mgd.VOC_AnnotType (_Vocab_key);

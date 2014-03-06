@@ -16,6 +16,6 @@ create index IMG_Cache_idx_clustered on mgd.IMG_Cache (_Object_key, _MGIType_key
 
 
 
-CLUSTER mgd.IMG_Cache USING IMG_Cache_idx_clustered;
+CLUSTER mgd.IMG_Cache USING IMG_Cache_pkey;
 
 EOSQL

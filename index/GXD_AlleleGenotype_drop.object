@@ -3,7 +3,11 @@
 #
 # History
 #
+# 01/11/2011 lec
+#	 - TR 10273/Europhenome
+#
 # 09/16/2008 - jsb - removed idx_Genotype_key (TR 9037)
+#
 # 07/23/2002 lec
 #	- TR 3802
 #
@@ -17,6 +21,9 @@ drop index mgd.GXD_AlleleGenotype_idx_Marker_key
 ;
 
 drop index mgd.GXD_AlleleGenotype_idx_Allele_key
+;
+
+drop index mgd.GXD_AlleleGenotype_idx_MutantCellLine_key
 ;
 
 drop index mgd.GXD_AlleleGenotype_idx_CreatedBy_key

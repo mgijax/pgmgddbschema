@@ -37,6 +37,6 @@ create index GXD_Assay_idx_ModifiedBy_key on mgd.GXD_Assay (_ModifiedBy_key);
 
 
 
-CLUSTER mgd.GXD_Assay USING GXD_Assay_idx_clustered;
+CLUSTER mgd.GXD_Assay USING GXD_Assay_pkey;
 
 EOSQL

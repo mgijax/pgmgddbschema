@@ -1,22 +1,22 @@
 #!/bin/sh
-
 #
 # History:
+#
+# 01/06/2011    lec
+#       - TR 10273/Europhenome Allele/Annotations
+#
 # 11/24/2008 - jsb - added ALL_Allele_CellLine
 #
-
 cd `dirname $0` && . ./Configuration
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.GXD_AllelePair DROP CONSTRAINT GXD_AllelePair__MutantCellLine_key_2_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_AllelePair DROP CONSTRAINT GXD_AllelePair__MutantCellLine_key_1_fkey CASCADE;
 
 ALTER TABLE mgd.ALL_CellLine_Derivation DROP CONSTRAINT ALL_CellLine_Derivation__ParentCellLine_key_fkey CASCADE;
 
 ALTER TABLE mgd.ALL_Allele_CellLine DROP CONSTRAINT ALL_Allele_CellLine__MutantCellLine_key_fkey CASCADE;
-
-ALTER TABLE mgd.GXD_AllelePair DROP CONSTRAINT ALL_Allele_CellLine__MutantCellLine_key_1_fkey CASCADE;
-
-ALTER TABLE mgd.GXD_AllelePair DROP CONSTRAINT ALL_Allele_CellLine__MutantCellLine_key_2_fkey CASCADE;
-
 ALTER TABLE mgd.ALL_CellLine DROP CONSTRAINT ALL_CellLine_pkey CASCADE;
 
 EOSQL

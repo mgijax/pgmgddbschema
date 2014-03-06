@@ -31,6 +31,6 @@ create index PRB_Probe_idx_ModifiedBy_key on mgd.PRB_Probe (_ModifiedBy_key);
 
 
 
-CLUSTER mgd.PRB_Probe USING PRB_Probe_idx_clustered;
+CLUSTER mgd.PRB_Probe USING PRB_Probe_pkey;
 
 EOSQL

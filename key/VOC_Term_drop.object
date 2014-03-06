@@ -2,7 +2,13 @@
 #
 # History
 #
-# 12/04/2012 - jsb - added MRK_ClusterMember for TR6519 (n-to-m orthologs)
+# 12/12/2013	lec
+#	- TR11515/high throughput part 2/allele stuff
+#
+# 10/14/13 - sc - added foreign keys to VOC_Term_EMAPS, VOC_Term_EMAPA
+#
+# 12/04/2012 - jsb - added MRK_Cluster foreign keys
+#
 # 11/23/2010	lec
 #	- TR10033/image class
 #
@@ -27,6 +33,16 @@
 #
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.VOC_Term_EMAPS DROP CONSTRAINT VOC_Term_EMAPS__EMAPA_Term_key_fkey CASCADE;
+
+ALTER TABLE mgd.VOC_Term_EMAPS DROP CONSTRAINT VOC_Term_EMAPS__DefaultParent_key_fkey CASCADE;
+
+ALTER TABLE mgd.VOC_Term_EMAPS DROP CONSTRAINT VOC_Term_EMAPS__Term_key_fkey CASCADE;
+
+ALTER TABLE mgd.VOC_Term_EMAPA DROP CONSTRAINT VOC_Term_EMAPA__DefaultParent_key_fkey CASCADE;
+
+ALTER TABLE mgd.VOC_Term_EMAPA DROP CONSTRAINT VOC_Term_EMAPA__Term_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_Text DROP CONSTRAINT VOC_Text__Term_key_fkey CASCADE;
 
@@ -94,15 +110,11 @@ ALTER TABLE mgd.NOM_Marker DROP CONSTRAINT NOM_Marker__CurationState_key_fkey CA
 
 ALTER TABLE mgd.MRK_OMIM_Cache DROP CONSTRAINT MRK_OMIM_Cache__Term_key_fkey CASCADE;
 
+ALTER TABLE mgd.MRK_Marker DROP CONSTRAINT MRK_Marker__CurationState_key_fkey CASCADE;
+
 ALTER TABLE mgd.MRK_Cluster DROP CONSTRAINT MRK_Cluster__ClusterSource_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Cluster DROP CONSTRAINT MRK_Cluster__ClusterType_key_fkey CASCADE;
-
-ALTER TABLE mgd.MRK_Marker DROP CONSTRAINT MRK_Marker__CurationState_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_VocAssociation DROP CONSTRAINT MGI_VocAssociation__Term_key_2_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_VocAssociation DROP CONSTRAINT MGI_VocAssociation__Term_key_1_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_User DROP CONSTRAINT MGI_User__UserType_key_fkey CASCADE;
 
@@ -157,6 +169,8 @@ ALTER TABLE mgd.ALL_CellLine_Derivation DROP CONSTRAINT ALL_CellLine_Derivation_
 ALTER TABLE mgd.ALL_CellLine_Derivation DROP CONSTRAINT ALL_CellLine_Derivation__VectorType_key_fkey CASCADE;
 
 ALTER TABLE mgd.ALL_CellLine DROP CONSTRAINT ALL_CellLine__CellLine_Type_key_fkey CASCADE;
+
+ALTER TABLE mgd.ALL_Allele DROP CONSTRAINT ALL_Allele__Collection_key_fkey CASCADE;
 
 ALTER TABLE mgd.ALL_Allele DROP CONSTRAINT ALL_Allele__Transmission_key_fkey CASCADE;
 

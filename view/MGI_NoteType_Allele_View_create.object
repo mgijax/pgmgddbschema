@@ -20,7 +20,7 @@ as
 select *
 from MGI_NoteType
 where _MGIType_key = 11
-and noteType != 'Driver'
+and noteType not in ('Driver', 'User (Cre)')
 
 
 

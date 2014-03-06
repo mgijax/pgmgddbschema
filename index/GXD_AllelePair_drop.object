@@ -1,7 +1,10 @@
 #!/bin/sh
 
 #
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
+# History
+#
+# 01/06/2011	lec
+#	- TR10273/Europhenome Allele/Annotations
 #
 
 cd `dirname $0` && . ./Configuration
@@ -15,16 +18,16 @@ drop index mgd.GXD_AllelePair_idx_clustered
 drop index mgd.GXD_AllelePair_idx_Allele_key_2
 ;
 
-drop index mgd.GXD_AllelePair_idx_Genotype_key
-;
-
-drop index mgd.GXD_AllelePair_idx_Marker_key
-;
-
 drop index mgd.GXD_AllelePair_idx_MutantCellLine_key_1
 ;
 
 drop index mgd.GXD_AllelePair_idx_MutantCellLine_key_2
+;
+
+drop index mgd.GXD_AllelePair_idx_Genotype_key
+;
+
+drop index mgd.GXD_AllelePair_idx_Marker_key
 ;
 
 drop index mgd.GXD_AllelePair_idx_PairState_key

@@ -3,6 +3,9 @@
 #
 # History
 #
+# 01/13/2011 lec
+#	- TR 10273/Europhenome/add mutant cell line
+#
 # 07/23/2002 lec
 #	- TR 3802
 #
@@ -16,6 +19,8 @@ create table mgd.GXD_AlleleGenotype (
 	_Genotype_key                  int             not null,
 	_Marker_key                    int             null,
 	_Allele_key                    int             not null,
+	_MutantCellLine_key            int             null,
+	isNotReported                  smallint             not null,
 	sequenceNum                    int             not null,
 	_CreatedBy_key                 int             not null,
 	_ModifiedBy_key                int             not null,

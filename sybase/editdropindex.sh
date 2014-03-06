@@ -13,7 +13,7 @@ fi
 # copy mgddbschema/index/*_drop.object to postgres directory
 #
 cd ${PG_MGD_DBSCHEMADIR}/index
-cp ../../mgddbschema-trunk/index/${findObject} .
+cp ../../mgddbschema/index/${findObject} .
 
 for i in ${findObject}
 do
@@ -21,7 +21,7 @@ do
 t=`basename $i _drop.object`
 
 ed $i <<END
-g/csh -f -x/s//sh/g
+g/csh -f/s//sh/g
 g/ source/s// ./g
 g/drop index /s//drop index mgd./g
 g/${t}.idx/s//${t}_idx/g

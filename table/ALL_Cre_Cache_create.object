@@ -3,8 +3,8 @@
 #
 # History
 #
-# 04/18/2013    lec
-#       - TR11248/add 'age'
+# 04/18/2013	lec
+#	- TR11248/add 'age'
 #
 # 03/31/2011	lec
 #	- TR10658/add _Cache_key
@@ -18,7 +18,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create table ALL_Cre_Cache (
+create table mgd.ALL_Cre_Cache (
     _Cache_key           int             not null,
     _Allele_key          int             not null,
     _Allele_Type_key     int             not null,

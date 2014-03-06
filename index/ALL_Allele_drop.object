@@ -1,7 +1,10 @@
 #!/bin/sh
 
 #
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
+# History
+#
+# 12/12/2013	lec
+#	- TR11515/high throughput part 2/allele stuff
 #
 
 cd `dirname $0` && . ./Configuration
@@ -40,6 +43,9 @@ drop index mgd.ALL_Allele_idx_ModifiedBy_key
 ;
 
 drop index mgd.ALL_Allele_idx_Transmission_key
+;
+
+drop index mgd.ALL_Allele_idx_Collection_key
 ;
 
 EOSQL

@@ -9,7 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.CRS_References ADD PRIMARY KEY (_Cross_key, _Marker_key, _Refs_key);
+ALTER TABLE mgd.CRS_References ADD PRIMARY KEY (_Cross_key, _Marker_key, sourceRefs_key);
 
 
 EOSQL

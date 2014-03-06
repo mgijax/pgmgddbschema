@@ -3,8 +3,8 @@
 #
 # History
 #
-# 11/12/2002	lec
-#	- TR 1463; SAO
+# 02/16/2012	lec
+#	- TR10987
 #
 
 cd `dirname $0` && . ./Configuration
@@ -13,7 +13,8 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 
-truncate table mgd.MGI_AttributeHistory
+drop view mgd.MGI_Note_Probe_View
 
+CASCADE
 ;
 EOSQL

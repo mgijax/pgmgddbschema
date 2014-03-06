@@ -9,7 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.MLD_Expt_Marker ADD PRIMARY KEY (_Expt_key, _Marker_key, sequenceNum);
+ALTER TABLE mgd.MLD_Expt_Marker ADD PRIMARY KEY (_Expt_key, sequenceNum);
 
 
 EOSQL

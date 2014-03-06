@@ -40,6 +40,6 @@ create index NOM_Marker_idx_ModifiedBy_key on mgd.NOM_Marker (_ModifiedBy_key);
 
 
 
-CLUSTER mgd.NOM_Marker USING NOM_Marker_idx_clustered;
+CLUSTER mgd.NOM_Marker USING NOM_Marker_pkey;
 
 EOSQL

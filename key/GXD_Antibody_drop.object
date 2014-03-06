@@ -10,7 +10,6 @@ ALTER TABLE mgd.GXD_AntibodyAlias DROP CONSTRAINT GXD_AntibodyAlias__Antibody_ke
 ALTER TABLE mgd.GXD_AntibodyPrep DROP CONSTRAINT GXD_AntibodyPrep__Antibody_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_AntibodyMarker DROP CONSTRAINT GXD_AntibodyMarker__Antibody_key_fkey CASCADE;
-
 ALTER TABLE mgd.GXD_Antibody DROP CONSTRAINT GXD_Antibody_pkey CASCADE;
 
 EOSQL

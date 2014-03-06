@@ -1,7 +1,6 @@
 #!/bin/sh
 
 # History:
-#
 
 cd `dirname $0` && . ./Configuration
 
@@ -11,7 +10,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.ACC_Accession ADD PRIMARY KEY (_Accession_key);
 
 
-ALTER TABLE mgd.ACC_AccessionReference ADD FOREIGN KEY (_Accession_key) REFERENCES mgd.ACC_Accession ON DELETE CASCADE;
+ALTER TABLE mgd.ACC_AccessionReference ADD FOREIGN KEY (_Accession_key) REFERENCES mgd.ACC_Accession;
 
 
 EOSQL

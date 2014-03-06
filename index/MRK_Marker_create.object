@@ -41,6 +41,6 @@ create index MRK_Marker_idx_ModifiedBy_key on mgd.MRK_Marker (_ModifiedBy_key);
 
 
 
-CLUSTER mgd.MRK_Marker USING MRK_Marker_idx_clustered;
+CLUSTER mgd.MRK_Marker USING MRK_Marker_pkey;
 
 EOSQL

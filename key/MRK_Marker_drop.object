@@ -1,8 +1,8 @@
 #!/bin/sh
 #
 # HISTORY
+# 12/04/2012 - jsb - added MRK_ClusterMember foreign key
 #
-# 12/04/2012 - jsb - added MRK_ClusterMember for TR6519 (n-to-m orthologs)
 # 06/09/2010    lec
 #       - TR 6839/added MRK_MCV_Cache
 #
@@ -53,8 +53,6 @@ ALTER TABLE mgd.MRK_Location_Cache DROP CONSTRAINT MRK_Location_Cache__Marker_ke
 
 ALTER TABLE mgd.MRK_Label DROP CONSTRAINT MRK_Label__Marker_key_fkey CASCADE;
 
-ALTER TABLE mgd.MRK_ClusterMember DROP CONSTRAINT MRK_ClusterMember__Marker_key_fkey CASCADE;
-
 ALTER TABLE mgd.MRK_Homology_Cache DROP CONSTRAINT MRK_Homology_Cache__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_History DROP CONSTRAINT MRK_History__Marker_key_fkey CASCADE;
@@ -64,6 +62,8 @@ ALTER TABLE mgd.MRK_History DROP CONSTRAINT MRK_History__History_key_fkey CASCAD
 ALTER TABLE mgd.MRK_Current DROP CONSTRAINT MRK_Current__Current_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Current DROP CONSTRAINT MRK_Current__Marker_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_ClusterMember DROP CONSTRAINT MRK_ClusterMember__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Classes DROP CONSTRAINT MRK_Classes__Marker_key_fkey CASCADE;
 
@@ -88,10 +88,6 @@ ALTER TABLE mgd.MLD_MC2point DROP CONSTRAINT MLD_MC2point__Marker_key_2_fkey CAS
 ALTER TABLE mgd.MLD_MC2point DROP CONSTRAINT MLD_MC2point__Marker_key_1_fkey CASCADE;
 
 ALTER TABLE mgd.MLD_Expt_Marker DROP CONSTRAINT MLD_Expt_Marker__Marker_key_fkey CASCADE;
-
-ALTER TABLE mgd.MLD_Distance DROP CONSTRAINT MLD_Distance__Marker_key_2_fkey CASCADE;
-
-ALTER TABLE mgd.MLD_Distance DROP CONSTRAINT MLD_Distance__Marker_key_1_fkey CASCADE;
 
 ALTER TABLE mgd.MLD_Concordance DROP CONSTRAINT MLD_Concordance__Marker_key_fkey CASCADE;
 

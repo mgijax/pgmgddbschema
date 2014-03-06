@@ -19,6 +19,6 @@ create index MRK_Chromosome_idx_chromosome on mgd.MRK_Chromosome (chromosome)
 
 
 
-CLUSTER mgd.MRK_Chromosome USING MRK_Chromosome_idx_clustered;
+CLUSTER mgd.MRK_Chromosome USING MRK_Chromosome_pkey;
 
 EOSQL

@@ -37,6 +37,6 @@ create index SEQ_Sequence_idx_ModifiedBy_key on mgd.SEQ_Sequence (_ModifiedBy_ke
 
 
 
-CLUSTER mgd.SEQ_Sequence USING SEQ_Sequence_idx_clustered;
+CLUSTER mgd.SEQ_Sequence USING SEQ_Sequence_pkey;
 
 EOSQL

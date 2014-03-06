@@ -346,22 +346,6 @@ begin
 	return
 end
 
-if exists (select * from MLD_Distance, deleted
-         where MLD_Distance._Marker_key_1 = deleted._Marker_key)
-begin
-	rollback transaction
-	raiserror 99999 "Marker Symbol is referenced in Physical Mapping Record(s)"
-	return
-end
-
-if exists (select * from MLD_Distance, deleted
-         where MLD_Distance._Marker_key_2 = deleted._Marker_key)
-begin
-	rollback transaction
-	raiserror 99999 "Marker Symbol is referenced in Physical Mapping Record(s)"
-	return
-end
-
 if exists (select * from HMD_Homology_Marker, deleted
          where HMD_Homology_Marker._Marker_key = deleted._Marker_key)
 begin

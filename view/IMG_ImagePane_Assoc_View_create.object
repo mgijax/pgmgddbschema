@@ -1,7 +1,10 @@
 #!/bin/sh
 
 #
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
+# History
+#
+# 12/16/2013	lec
+#	- allow display with/without PIX id
 #
 
 cd `dirname $0` && . ./Configuration
@@ -31,6 +34,29 @@ and a1.preferred = 1
 and p._Image_key = a2._Object_key 
 and a2._MGIType_key = 9 
 and a2._LogicalDB_key = 19 
+
+union
+
+select ip.*, substring(i.figureLabel,1,20) as figureLabel, 
+i._ImageClass_key, t.term,
+a1.accID as mgiID, null
+from IMG_ImagePane_Assoc ip, 
+     IMG_ImagePane p, 
+     IMG_Image i, 
+     VOC_Term t,
+     ACC_Accession a1
+where ip._ImagePane_key = p._ImagePane_key
+and p._Image_key = i._Image_key 
+and i._ImageClass_key = t._Term_key
+and p._Image_key = a1._Object_key 
+and a1._MGIType_key = 9 
+and a1._LogicalDB_key = 1 
+and a1.prefixPart = 'MGI:' 
+and a1.preferred = 1 
+and not exists (select 1 from ACC_Accession a2
+	where p._Image_key = a2._Object_key 
+	and a2._MGIType_key = 9 
+	and a2._LogicalDB_key = 19)
 
 
 

@@ -1,8 +1,15 @@
 #!/bin/sh
 
+#
 # History
 #
-# 12/04/2012 - jsb - added MRK_ClusterMember for TR6519 (n-to-m orthologs)
+# 12/12/2013	lec
+#	- TR11515/high throughput part 2/allele stuff
+#
+# 10/14/13 - sc - added foreign keys to VOC_Term_EMAPS, VOC_Term_EMAPA
+#
+# 12/04/2012 - jsb - added foreign keys from MRK_Cluster
+#
 # 11/23/2010	lec
 #	- TR10033/add image class
 #
@@ -43,36 +50,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.VOC_Term ADD PRIMARY KEY (_Term_key);
 
 
-ALTER TABLE mgd.VOC_Text ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE;
-
-
-ALTER TABLE mgd.ALL_Cre_Cache ADD FOREIGN KEY (_Allele_Type_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE;
-
-
-ALTER TABLE mgd.ALL_Cre_Cache ADD FOREIGN KEY (_System_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE;
-
-
-ALTER TABLE mgd.MRK_OMIM_Cache ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE;
-
-
-ALTER TABLE mgd.SEQ_Marker_Cache ADD FOREIGN KEY (_Qualifier_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE;
-
-
-ALTER TABLE mgd.SEQ_Marker_Cache ADD FOREIGN KEY (_SequenceProvider_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE;
-
-
-ALTER TABLE mgd.SEQ_Marker_Cache ADD FOREIGN KEY (_SequenceType_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE;
-
-
-ALTER TABLE mgd.SEQ_Marker_Cache ADD FOREIGN KEY (_BiotypeConflict_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE;
-
-
-ALTER TABLE mgd.VOC_Marker_Cache ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE;
-
-
-ALTER TABLE mgd.VOC_GO_Cache ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE;
-
-
 ALTER TABLE mgd.ALL_Allele ADD FOREIGN KEY (_Mode_key) REFERENCES mgd.VOC_Term;
 
 
@@ -88,6 +65,9 @@ ALTER TABLE mgd.ALL_Allele_Mutation ADD FOREIGN KEY (_Mutation_key) REFERENCES m
 ALTER TABLE mgd.ALL_Allele ADD FOREIGN KEY (_Transmission_key) REFERENCES mgd.VOC_Term;
 
 
+ALTER TABLE mgd.ALL_Allele ADD FOREIGN KEY (_Collection_key) REFERENCES mgd.VOC_Term;
+
+
 ALTER TABLE mgd.ALL_CellLine ADD FOREIGN KEY (_CellLine_Type_key) REFERENCES mgd.VOC_Term;
 
 
@@ -101,6 +81,12 @@ ALTER TABLE mgd.ALL_CellLine_Derivation ADD FOREIGN KEY (_Creator_key) REFERENCE
 
 
 ALTER TABLE mgd.ALL_CellLine_Derivation ADD FOREIGN KEY (_Vector_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.ALL_Cre_Cache ADD FOREIGN KEY (_Allele_Type_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.ALL_Cre_Cache ADD FOREIGN KEY (_System_key) REFERENCES mgd.VOC_Term;
 
 
 ALTER TABLE mgd.ALL_Marker_Assoc ADD FOREIGN KEY (_Qualifier_key) REFERENCES mgd.VOC_Term;
@@ -163,19 +149,16 @@ ALTER TABLE mgd.MGI_User ADD FOREIGN KEY (_UserStatus_key) REFERENCES mgd.VOC_Te
 ALTER TABLE mgd.MGI_User ADD FOREIGN KEY (_UserType_key) REFERENCES mgd.VOC_Term;
 
 
-ALTER TABLE mgd.MGI_VocAssociation ADD FOREIGN KEY (_Term_key_1) REFERENCES mgd.VOC_Term;
+ALTER TABLE mgd.MRK_Cluster ADD FOREIGN KEY (_ClusterType_key) REFERENCES mgd.VOC_Term;
 
 
-ALTER TABLE mgd.MGI_VocAssociation ADD FOREIGN KEY (_Term_key_2) REFERENCES mgd.VOC_Term;
+ALTER TABLE mgd.MRK_Cluster ADD FOREIGN KEY (_ClusterSource_key) REFERENCES mgd.VOC_Term;
 
 
 ALTER TABLE mgd.MRK_Marker ADD FOREIGN KEY (_CurationState_key) REFERENCES mgd.VOC_Term;
 
 
-ALTER TABLE mgd.MRK_Cluster ADD FOREIGN KEY (_ClusterType_key) REFERENCES mgd.VOC_Term;
-
-
-ALTER TABLE mgd.MRK_Cluster ADD FOREIGN KEY (_ClusterSource_key) REFERENCES mgd.VOC_Term;
+ALTER TABLE mgd.MRK_OMIM_Cache ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term;
 
 
 ALTER TABLE mgd.NOM_Marker ADD FOREIGN KEY (_CurationState_key) REFERENCES mgd.VOC_Term;
@@ -226,6 +209,18 @@ ALTER TABLE mgd.SEQ_GeneTrap ADD FOREIGN KEY (_VectorEnd_key) REFERENCES mgd.VOC
 ALTER TABLE mgd.SEQ_Allele_Assoc ADD FOREIGN KEY (_Qualifier_key) REFERENCES mgd.VOC_Term;
 
 
+ALTER TABLE mgd.SEQ_Marker_Cache ADD FOREIGN KEY (_Qualifier_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.SEQ_Marker_Cache ADD FOREIGN KEY (_SequenceProvider_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.SEQ_Marker_Cache ADD FOREIGN KEY (_SequenceType_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.SEQ_Marker_Cache ADD FOREIGN KEY (_BiotypeConflict_key) REFERENCES mgd.VOC_Term;
+
+
 ALTER TABLE mgd.SEQ_Sequence ADD FOREIGN KEY (_SequenceType_key) REFERENCES mgd.VOC_Term;
 
 
@@ -244,13 +239,37 @@ ALTER TABLE mgd.SEQ_Sequence_Assoc ADD FOREIGN KEY (_Qualifier_key) REFERENCES m
 ALTER TABLE mgd.VOC_Annot ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term;
 
 
+ALTER TABLE mgd.VOC_Marker_Cache ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term;
+
+
 ALTER TABLE mgd.VOC_AnnotHeader ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.VOC_GO_Cache ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term;
 
 
 ALTER TABLE mgd.VOC_Evidence ADD FOREIGN KEY (_EvidenceTerm_key) REFERENCES mgd.VOC_Term;
 
 
 ALTER TABLE mgd.VOC_Evidence_Property ADD FOREIGN KEY (_PropertyTerm_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.VOC_Text ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.VOC_Term_EMAPA ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.VOC_Term_EMAPA ADD FOREIGN KEY (_DefaultParent_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.VOC_Term_EMAPS ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.VOC_Term_EMAPS ADD FOREIGN KEY (_DefaultParent_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.VOC_Term_EMAPS ADD FOREIGN KEY (_EMAPA_Term_key) REFERENCES mgd.VOC_Term;
 
 
 EOSQL

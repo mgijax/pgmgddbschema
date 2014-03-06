@@ -16,6 +16,6 @@ create index BIB_DataSet_Assoc_idx_DataSet_key on mgd.BIB_DataSet_Assoc (_DataSe
 
 
 
-CLUSTER mgd.BIB_DataSet_Assoc USING BIB_DataSet_Assoc_idx_clustered;
+CLUSTER mgd.BIB_DataSet_Assoc USING BIB_DataSet_Assoc_pkey;
 
 EOSQL

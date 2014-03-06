@@ -76,18 +76,6 @@ begin
           where MLD_Statistics._Expt_key = inserted._Expt_key and
                 MLD_Statistics._Marker_key_2 = deleted._Marker_key
 
-        update MLD_Distance
-          set _Marker_key_1 = inserted._Marker_key
-          from MLD_Distance, inserted, deleted
-          where MLD_Distance._Expt_key = inserted._Expt_key and
-                MLD_Distance._Marker_key_1 = deleted._Marker_key
-
-        update MLD_Distance
-          set _Marker_key_2 = inserted._Marker_key
-          from MLD_Distance, inserted, deleted
-          where MLD_Distance._Expt_key = inserted._Expt_key and
-                MLD_Distance._Marker_key_2 = deleted._Marker_key
-
 end
 go
 

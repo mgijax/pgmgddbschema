@@ -21,7 +21,6 @@ ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__Genotype_key_fkey
 ALTER TABLE mgd.GXD_Specimen DROP CONSTRAINT GXD_Specimen__Genotype_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_GelLane DROP CONSTRAINT GXD_GelLane__Genotype_key_fkey CASCADE;
-
 ALTER TABLE mgd.GXD_Genotype DROP CONSTRAINT GXD_Genotype_pkey CASCADE;
 
 EOSQL

@@ -15,10 +15,10 @@ ALTER TABLE mgd.GXD_AssayType ADD PRIMARY KEY (_AssayType_key);
 ALTER TABLE mgd.GXD_Assay ADD FOREIGN KEY (_AssayType_key) REFERENCES mgd.GXD_AssayType;
 
 
-ALTER TABLE mgd.GXD_Expression ADD FOREIGN KEY (_AssayType_key) REFERENCES mgd.GXD_AssayType ON DELETE CASCADE;
+ALTER TABLE mgd.GXD_Expression ADD FOREIGN KEY (_AssayType_key) REFERENCES mgd.GXD_AssayType;
 
 
-ALTER TABLE mgd.IMG_Cache ADD FOREIGN KEY (_AssayType_key) REFERENCES mgd.GXD_AssayType ON DELETE CASCADE;
+ALTER TABLE mgd.IMG_Cache ADD FOREIGN KEY (_AssayType_key) REFERENCES mgd.GXD_AssayType;
 
 
 EOSQL

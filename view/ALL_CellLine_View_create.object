@@ -41,7 +41,7 @@ from ALL_CellLine c
 	LEFT OUTER JOIN ALL_CellLine_Derivation d on (c._Derivation_key = d._Derivation_key)
 	LEFT OUTER JOIN VOC_Term vt1 on (d._Creator_key = vt1._Term_key)
      	LEFT OUTER JOIN VOC_Term vt2 on (d._Vector_key = vt2._Term_key)
-     	LEFT OUTER JOIN VOC_Term vt3 on (d._Vector_key = vt3._Term_key)
+     	LEFT OUTER JOIN VOC_Term vt3 on (d._VectorType_key = vt3._Term_key)
      	LEFT OUTER JOIN ALL_CellLine p on (d._ParentCellLine_key = p._CellLine_key)
      	LEFT OUTER JOIN PRB_Strain s2 on (p._Strain_key = s2._Strain_key)
 

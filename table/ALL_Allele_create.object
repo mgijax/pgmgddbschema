@@ -16,6 +16,7 @@ create table mgd.ALL_Allele (
 	_Allele_Type_key               int             not null,
 	_Allele_Status_key             int             not null,
 	_Transmission_key	       int	       not null,
+	_Collection_key	       	       int	       not null,
 	symbol                         varchar(60)     not null,
 	name                           varchar(255)    not null,
 	nomenSymbol                    varchar(50)     null,

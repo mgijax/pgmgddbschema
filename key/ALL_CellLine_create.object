@@ -1,7 +1,12 @@
 #!/bin/sh
 
+#
 # History:
-# 11/24/2008 - jsb - added ALL_Allele_CellLine
+#
+# 10/01/2012	lec
+#	- TR10273/added GXD_AllelePair
+#
+#
 
 cd `dirname $0` && . ./Configuration
 
@@ -21,5 +26,6 @@ ALTER TABLE mgd.GXD_AllelePair ADD FOREIGN KEY (_MutantCellLine_key_1) REFERENCE
 
 
 ALTER TABLE mgd.GXD_AllelePair ADD FOREIGN KEY (_MutantCellLine_key_2) REFERENCES mgd.ALL_CellLine;
+
 
 EOSQL

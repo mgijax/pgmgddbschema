@@ -1,28 +1,21 @@
-#!/bin/csh -f -x
+#!/bin/sh
 
 # HISTORY
 #    09/16/2008 - jsb - added for search tool release
 #
 
-cd `dirname $0` && source ./Configuration
+cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
 
-use ${DBNAME}
-go
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index VOC_Marker_Cache.idx_Term_key
-go
+drop index mgd.VOC_Marker_Cache_idx_Term_key
+;
 
-drop index VOC_Marker_Cache.idx_Marker_key
-go
+drop index mgd.VOC_Marker_Cache_idx_Marker_key
+;
 
-drop index VOC_Marker_Cache.idx_annotType
-go
-
-checkpoint
-go
-
-quit
+drop index mgd.VOC_Marker_Cache_idx_annotType
+;
 
 EOSQL

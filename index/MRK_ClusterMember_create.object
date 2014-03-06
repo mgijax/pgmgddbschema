@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # HISTORY
-# 12/04/2012 - jsb - initial addition for TR6519 (n-to-m orthologs)
+#     12/04/2012 - sc - initial addition for TR6519
 #
 
 cd `dirname $0` && . ./Configuration
@@ -9,15 +9,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MRK_ClusterMember_idx_clustered on mgd.MRK_ClusterMember (_Cluster_key);
+create index MRK_ClusterMember_idx_Cluster_key on mgd.MRK_ClusterMember(_Cluster_key);
 
 
-create unique index MRK_ClusterMember_idx_ClusterMember_key on mgd.MRK_ClusterMember (_ClusterMember_key);
+create index MRK_ClusterMember_idx_Marker_key on mgd.MRK_ClusterMember(_Marker_key);
 
 
-create index MRK_ClusterMember_idx_Marker_key on mgd.MRK_ClusterMember (_Marker_key);
 
-
-CLUSTER mgd.MRK_ClusterMember USING MRK_ClusterMember_idx_clustered;
+CLUSTER mgd.MRK_ClusterMember USING MRK_ClusterMember_pkey;
 
 EOSQL

@@ -28,6 +28,6 @@ create index MRK_Homology_Cache_idx_Marker_key on mgd.MRK_Homology_Cache (_Marke
 
 
 
-CLUSTER mgd.MRK_Homology_Cache USING MRK_Homology_Cache_idx_clustered;
+CLUSTER mgd.MRK_Homology_Cache USING MRK_Homology_Cache_pkey;
 
 EOSQL

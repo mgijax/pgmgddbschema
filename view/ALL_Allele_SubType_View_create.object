@@ -1,0 +1,27 @@
+#!/bin/sh
+
+#
+# History
+#
+# 12/17/2013	lec
+#	- TR11515/allele stuff
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.ALL_Allele_SubType_View
+as
+select a._Allele_key, va.*, t.term
+from ALL_Allele a, VOC_Annot va, VOC_Term t
+where a._Allele_key = va._Object_key
+and va._AnnotType_key = 1014
+and va._Term_key = t._Term_key
+
+
+
+;
+
+EOSQL

@@ -16,6 +16,6 @@ create index WKS_Rosetta_idx_clustered on mgd.WKS_Rosetta (_Marker_key);
 
 
 
-CLUSTER mgd.WKS_Rosetta USING WKS_Rosetta_idx_clustered;
+CLUSTER mgd.WKS_Rosetta USING WKS_Rosetta_pkey;
 
 EOSQL

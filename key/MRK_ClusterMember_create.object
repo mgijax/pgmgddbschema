@@ -1,7 +1,9 @@
 #!/bin/sh
 
+#
 # History
-# 12/04/2012 - jsb - initial addition for TR6519 (n-to-m orthologs)
+# 12/04/2012 - jsb - initial addition for TR6519
+#
 
 cd `dirname $0` && . ./Configuration
 

@@ -12,7 +12,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.GXD_AlleleGenotype ADD PRIMARY KEY (_Genotype_key, _Marker_key, _Allele_key);
+ALTER TABLE mgd.GXD_AlleleGenotype ADD PRIMARY KEY (_Genotype_key, _Allele_key);
 
 
 EOSQL

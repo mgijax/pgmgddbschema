@@ -15,28 +15,28 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.GXD_Structure ADD PRIMARY KEY (_Structure_key);
 
 
-ALTER TABLE mgd.ALL_Cre_Cache ADD FOREIGN KEY (_Structure_key) REFERENCES mgd.GXD_Structure ON DELETE CASCADE;
-
-
-ALTER TABLE mgd.GXD_StructureName ADD FOREIGN KEY (_Structure_key) REFERENCES mgd.GXD_Structure ON DELETE CASCADE;
-
-
-ALTER TABLE mgd.GXD_StructureClosure ADD FOREIGN KEY (_Descendent_key) REFERENCES mgd.GXD_Structure ON DELETE CASCADE;
-
-
-ALTER TABLE mgd.GXD_Expression ADD FOREIGN KEY (_Structure_key) REFERENCES mgd.GXD_Structure ON DELETE CASCADE;
-
-
-ALTER TABLE mgd.GXD_StructureClosure ADD FOREIGN KEY (_Structure_key) REFERENCES mgd.GXD_Structure ON DELETE CASCADE;
+ALTER TABLE mgd.ALL_Cre_Cache ADD FOREIGN KEY (_Structure_key) REFERENCES mgd.GXD_Structure;
 
 
 ALTER TABLE mgd.GXD_Structure ADD FOREIGN KEY (_Parent_key) REFERENCES mgd.GXD_Structure;
+
+
+ALTER TABLE mgd.GXD_StructureName ADD FOREIGN KEY (_Structure_key) REFERENCES mgd.GXD_Structure;
+
+
+ALTER TABLE mgd.GXD_StructureClosure ADD FOREIGN KEY (_Structure_key) REFERENCES mgd.GXD_Structure;
+
+
+ALTER TABLE mgd.GXD_StructureClosure ADD FOREIGN KEY (_Descendent_key) REFERENCES mgd.GXD_Structure;
 
 
 ALTER TABLE mgd.GXD_GelLaneStructure ADD FOREIGN KEY (_Structure_key) REFERENCES mgd.GXD_Structure;
 
 
 ALTER TABLE mgd.GXD_ISResultStructure ADD FOREIGN KEY (_Structure_key) REFERENCES mgd.GXD_Structure;
+
+
+ALTER TABLE mgd.GXD_Expression ADD FOREIGN KEY (_Structure_key) REFERENCES mgd.GXD_Structure;
 
 
 EOSQL
