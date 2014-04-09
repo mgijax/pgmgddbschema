@@ -1,4 +1,4 @@
-#!/bin/csh -x -f
+#!/bin/csh -f
 
 # Remove log files
 
