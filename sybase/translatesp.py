@@ -78,19 +78,23 @@ for r in sybIn.readlines():
 		r = r.replace('\n', ';\n')
 		declarations.append(r)
 
-	elif r.find('select') >= 0 \
-	     or r.find('insert') >= 0 \
+	elif r.find('select') >= 0:
+		r = r.replace('user_name()', 'current_user')
+		r = r.replace('@', '')
+		r = r.replace('\n', ';\n')
+		statements.append(r)
+		isStatement = 1
+
+	elif r.find('insert') >= 0 \
 	     or r.find('update') >= 0 \
 	     or r.find('delete') >= 0 :
 
-		r = r.replace('user_name()', 'current_user')
-		r = r.replace('@', '')
 		statements.append(r)
 		isStatement = 1
 		needSemi = 1
 
 	elif isStatement and r.find('checkpoint') < 0:
-		r = r.replace('user_name()', 'current_user')
+
 		r = r.replace('go', '')
 		r = r.replace('@', '')
 
@@ -116,7 +120,6 @@ for r in sybIn.readlines():
 				+ string.join(variables, ',') + ') TO public;\n\n')
 			endUp.append('EOSQL')
 
-#	pgOut.write(r)
 sybIn.close()
 
 #
