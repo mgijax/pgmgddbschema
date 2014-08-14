@@ -1,0 +1,44 @@
+#!/bin/sh
+
+#
+# History
+#
+# lec	01/18/2006
+#	- TR 7182; increased prefixPart to 30
+#
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION ACC_setMax();
+
+CREATE OR REPLACE FUNCTION ACC_setMax (
+  increment int,
+  prefixPart varchar(30) = 'MGI:'
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+
+
+BEGIN
+
+update ACC_AccessionMax
+set maxNumericPart = maxNumericPart + increment
+where prefixPart= prefixPart
+;
+
+
+
+
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ACC_setMax(int,varchar) TO public;
+
+EOSQL

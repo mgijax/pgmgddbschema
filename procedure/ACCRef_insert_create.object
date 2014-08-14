@@ -9,7 +9,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 DROP FUNCTION ACCRef_insert();
@@ -17,24 +16,25 @@ DROP FUNCTION ACCRef_insert();
 CREATE OR REPLACE FUNCTION ACCRef_insert (
   accKey int,
   refsKey int
- 
 )
 RETURNS VOID AS
 \$\$
 
-/* Insert record into ACC_AccessionReference table */
+DECLARE
+userKey int;
 
-DECLARE userKey int
-;
 
 BEGIN
 
-select userKey = _User_key from MGI_User where login = current_user;
+select @userKey = _User_key from MGI_User where login = current_user
+;
 
 insert into ACC_AccessionReference
 (_Accession_key, _Refs_key, _CreatedBy_key, _ModifiedBy_key)
-values(accKey, refsKey, userKey, userKey)
+values(@accKey, @refsKey, @userKey, @userKey)
 ;
+
+
 
 
 
@@ -43,5 +43,6 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ACCRef_insert(int, int) TO public;
+GRANT EXECUTE ON FUNCTION ACCRef_insert(int,int) TO public;
+
 EOSQL

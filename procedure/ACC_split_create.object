@@ -1,0 +1,84 @@
+#!/bin/sh
+
+#
+# History
+#
+# lec	03/01/2012
+#	- TR10859; change (> 10) to (>= 10)
+#
+# lec   09/22/2011
+#       - TR 10859; ACC_split; added logicaldb; skip DOI (65)
+#
+# lec	01/18/2006
+#	- TR 7182; increased prefixPart to 30
+#
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION ACC_split();
+
+CREATE OR REPLACE FUNCTION ACC_split (
+  accID varchar(30),
+  prefixPart varchar(30) out,
+  numericPart int out
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+temp varchar(30) ;
+suffix varchar(30);
+acclen int;
+idx int;
+
+
+BEGIN
+
+select accID = rtrim(accID);
+select acclen = char_length(accID);
+select temp = reverse(accID);
+select idx  = patindex("%[^0-9]%",temp);
+
+/* If idx = 0, then no prefix */
+
+if idx = 0
+begin
+  select numericPart = convert(integer, accID);
+  select prefixPart = NULL;
+end
+
+else
+
+begin
+  select prefixPart = reverse(substring(temp,idx,acclen-idx+1));
+  select suffix = substring(accID, char_length(prefixPart)+1, acclen - char_length(prefixPart));
+
+  /* if length of the suffix will result in arithmatic overflow... */
+
+  if char_length(suffix) >= 10
+  begin
+      select prefixPart = accID;
+      select numericPart = NULL;
+  end
+  else
+  begin
+      if suffix is not NULL
+         select numericPart = convert(integer, suffix);
+      else
+         select numericPart = NULL;
+  end
+end
+
+
+
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ACC_split(varchar,varchar,int) TO public;
+
+EOSQL
