@@ -105,6 +105,7 @@ for r in sybIn.readlines():
 	     or r.find('update') >= 0 \
 	     or r.find('delete') >= 0 :
 
+		r = r.replace('@', '')
 		statements.append(r)
 		isStatement = 1
 		needSemi = 1
