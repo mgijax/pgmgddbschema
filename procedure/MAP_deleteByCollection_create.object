@@ -1,0 +1,38 @@
+#!/bin/sh
+
+#
+# History
+#
+# 08/17/2004
+#	- Assembly
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION MAP_deleteByCollection();
+
+CREATE OR REPLACE FUNCTION MAP_deleteByCollection (
+  collection varchar(255)
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+
+
+BEGIN
+
+delete from MAP_Coord_Collection where name = collection
+;
+
+commit transaction
+
+
+
+quit
+
+EOSQL
+
+
