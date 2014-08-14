@@ -31,6 +31,10 @@ needSemi = 0
 
 for r in sybIn.readlines():
 
+	#
+	# start block : begins where "#!/bin/csh" used to be
+	#
+
 	if r.find('#!/bin/csh') >= 0:
 		startUp.append(r.replace('csh -f', 'sh'))
 		isStartUp = 1
@@ -46,6 +50,10 @@ for r in sybIn.readlines():
 			continue
 		else:
 			startUp.append(r)
+
+	#
+	# create statement
+	#
 
 	elif r.find('create procedure') >= 0:
 		r = r.replace('create procedure', 'CREATE OR REPLACE FUNCTION')
@@ -71,12 +79,20 @@ for r in sybIn.readlines():
 			variables.append('varchar')
 			creation.append(r)
 
+	#
+	# declare variables
+	#
+
 	elif r.find('declare') >= 0:
 		r = r.replace('declare ', '')
 		r = r.replace('@', '')
 		r = r.replace('integer', 'int')
 		r = r.replace('\n', ';\n')
 		declarations.append(r)
+
+	#
+	# statments : select, insert, update, delete
+	#
 
 	elif r.find('select') >= 0:
 		r = r.replace('user_name()', 'current_user')
@@ -104,6 +120,10 @@ for r in sybIn.readlines():
 
 		statements.append(r)
 		isStatement = 1
+
+	#
+	# end block : begins where "checkpoint" used to be
+	#
 
 	elif r.find('checkpoint') >= 0:
 		isStatement = 0
