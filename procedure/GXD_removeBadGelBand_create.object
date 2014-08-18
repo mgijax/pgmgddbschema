@@ -23,14 +23,14 @@ RETURNS VOID AS
 
 BEGIN
 
-delete from GXD_GelBand b
-where (select GXD_GelRow r, GXD_GelLane l
+delete 
+from GXD_GelBand
+using GXD_GelBand b, GXD_GelRow r, GXD_GelLane l
 where b._GelLane_key = l._GelLane_key 
 and r._GelRow_key = b._GelRow_key 
 and r._Assay_key != l._Assay_key
-and r._Assay_key = assayKey)
+and r._Assay_key = @assayKey
 ;
-
 
 
 
