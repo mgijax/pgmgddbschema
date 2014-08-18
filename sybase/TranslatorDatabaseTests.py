@@ -27,6 +27,42 @@ class CommonProcedureLoadTest(object):
 	def getProcByName(self,procName):
 		return self.procLookup.get(procName)
 
+	# shared functions for inserting fake data 
+	def insertFakeAccessionRecord(self,accKey,mgiTypeKey=1,objectKey=1,accid="test",logicalDbKey=1):
+		insertSQL = """
+			insert into acc_accession 
+			(_accession_key,accid,_logicaldb_key,_object_key,_mgitype_key,private, 
+				_createdby_key,_modifiedby_key,creation_date,modification_date) 
+			values (%d,'%s',%d,%d,%d,1,1001,1001,now(),now())
+			"""%(accKey,accid,logicalDbKey,objectKey,mgiTypeKey)
+		self.pgCur.execute(insertSQL)
+
+	def insertFakeMarkerRecord(self,mrkKey):
+		insertSQL = """
+			insert into mrk_marker
+			(_marker_key,_organism_key,_marker_status_key,_marker_type_key,_curationstate_key,
+				symbol,name,chromosome,_createdby_key,_modifiedby_key,creation_date,modification_date)
+			values (%d,1,1,1,1,'test','test','1',1001,1001,now(),now())
+			"""%(mrkKey)
+		self.pgCur.execute(insertSQL)
+
+	def insertFakeProbeRecord(self,prbKey,name='test'):
+		insertSQL = """
+			insert into prb_probe
+			(_probe_key,name,_source_key,_vector_key,_segmenttype_key,
+				_createdby_key,_modifiedby_key,creation_date,modification_date) 
+			values (%d,'%s',1,1,1,1001,1001,now(),now())
+			"""%(prbKey,name)
+		self.pgCur.execute(insertSQL)
+
+	def insertFakeReferenceRecord(self,refKey):
+		insertSQL = """insert into bib_refs
+			(_refs_key,_reviewstatus_key,reftype,nlmstatus,isreviewarticle,
+				_createdby_key,_modifiedby_key,creation_date,modification_date) 
+			values (%d,1,'T','T',1,1001,1001,now(),now())
+			"""%refKey
+		self.pgCur.execute(insertSQL)
+
 # Test that these procedures can be loaded by the translator
 class SimpleProcedureLoadTest(unittest.TestCase,CommonProcedureLoadTest):
 
@@ -119,27 +155,12 @@ class ACCRefInsertTest(unittest.TestCase,CommonProcedureLoadTest):
 	def tearDown(self):
 		CommonProcedureLoadTest.tearDown(self)
 
-	def insertFakeAccessionRecord(self,accKey):
-		insertSQL = """
-			insert into acc_accession 
-			(_accession_key,accid,_logicaldb_key,_object_key,_mgitype_key,private, 
-				_createdby_key,_modifiedby_key,creation_date,modification_date) 
-			values (%d,'test',1,1,1,1,1001,1001,now(),now());
-			"""%accKey
-
-	def insertFakeReferenceRecord(self,refKey):
-		insertSQL = """insert into bib_refs
-			(_refs_key,_reviewstatus_key,reftype,nlmstatus,isreviewarticle,
-				_createdby_key,_modifiedby_key,creation_date,modification_date) 
-			values (%d,1,'T','T',1,1001,1001,now(),now())
-			"""%refKey
-
 	### TESTS ###
 
 	def testSimpleInsert(self):
 		accKey = 999999999
 		refKey = 999999999
-		self.insertFakeAccessionRecord(accKey)
+		self.insertFakeAccessionRecord(accKey,mgiTypeKey=1)
 		self.insertFakeReferenceRecord(refKey)
 
 		# call the procedure
@@ -153,10 +174,61 @@ class ACCRefInsertTest(unittest.TestCase,CommonProcedureLoadTest):
 		self.pgCur.execute(selectSQL)
 		self.assertEquals(1,self.pgCur.fetchone[0])
 
+# specifically test the behavior of the MRK_deleteIMAGESeqAssoc procedure
+class MRK_deleteIMAGESeqAssocTest(unittest.TestCase,CommonProcedureLoadTest):
+	
+	def setUp(self):
+		# call the common setUp first
+		CommonProcedureLoadTest.setUp(self)
+		# load the translated ACCRef_insert procedure
+		self.translateAndLoadProc("MRK_deleteIMAGESeqAssoc")
+
+	def tearDown(self):
+		CommonProcedureLoadTest.tearDown(self)
+
+	def insertProbeMarkerRelationship(self,prbKey,mrkKey,refKey=1001,relationship='E'):
+		insertSQL = """
+		insert into prb_marker
+		(_probe_key,_marker_key,_refs_key,relationship,
+			_createdby_key,_modifiedby_key,creation_date,modification_date)
+		values (%d,%d,%d,'%s',1001,1001,now(),now())
+		"""%(prbKey,mrkKey,refKey,relationship)
+		self.pgCur.execute(insertSQL)
+
+	### TESTS ###
+
+	def testSimpleInsert(self):
+		mrkKey = 999999999
+		prbKey = 999999999
+		accid = "testPrbMrk"
+
+		# make fake probe and marker
+		self.insertFakeMarkerRecord(mrkKey)
+		self.insertFakeProbeRecord(prbKey,name="IMAGE clone")
+
+		# insert relationship
+		self.insertProbeMarkerRelationship(prbKey,mrkKey)
+
+		# attach accid to probe
+		self.insertFakeAccessionRecord(accKey,mgiTypeKey=3,logicalDbKey=9,accid=accid,objectKey=prbKey)
+
+
+		# call the procedure
+		self.pgCur("select MRK_deleteIMAGESeqAssoc(%d,'%s')"%(mrkKey,accid))
+
+		# verify that the relationship was deleted
+		selectSQL = """select count(*) from prb_marker
+			where _probe_key=%d
+				and _marker_key=%d
+			"""%(prbKey,mrkKey)
+		self.pgCur.execute(selectSQL)
+		self.assertEquals(0,self.pgCur.fetchone[0])
+
 def suite():
 	suitesToRun = [
 		SimpleProcedureLoadTest,
 		ACCRefInsertTest,
+		 MRK_deleteIMAGESeqAssocTest,
 	]
 	suites = [unittest.TestLoader().loadTestsFromTestCase(ts) for ts in suitesToRun]
 	allTests = unittest.TestSuite(suites)
