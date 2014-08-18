@@ -22,6 +22,8 @@ class CommonProcedureLoadTest(object):
 	def translateAndLoadProc(self,procName):
 		procedureSQL = self.getProcByName(procName)
 		translation = self.translator.translate(procedureSQL)
+		translation = translation.replace('\\$','$')
+		translation = translation.replace('EOSQL','')
 		self.pgCur.execute(translation)
 
 	def getProcByName(self,procName):
@@ -42,7 +44,7 @@ class CommonProcedureLoadTest(object):
 			insert into mrk_marker
 			(_marker_key,_organism_key,_marker_status_key,_marker_type_key,_curationstate_key,
 				symbol,name,chromosome,_createdby_key,_modifiedby_key,creation_date,modification_date)
-			values (%d,1,1,1,1,'test','test','1',1001,1001,now(),now())
+			values (%d,1,1,1,107,'test','test','1',1001,1001,now(),now())
 			"""%(mrkKey)
 		self.pgCur.execute(insertSQL)
 
@@ -51,7 +53,7 @@ class CommonProcedureLoadTest(object):
 			insert into prb_probe
 			(_probe_key,name,_source_key,_vector_key,_segmenttype_key,
 				_createdby_key,_modifiedby_key,creation_date,modification_date) 
-			values (%d,'%s',1,1,1,1001,1001,now(),now())
+			values (%d,'%s',107,107,107,1001,1001,now(),now())
 			"""%(prbKey,name)
 		self.pgCur.execute(insertSQL)
 
@@ -164,7 +166,7 @@ class ACCRefInsertTest(unittest.TestCase,CommonProcedureLoadTest):
 		self.insertFakeReferenceRecord(refKey)
 
 		# call the procedure
-		self.pgCur("select ACCRef_insert(%d,%d)"%(accKey,refKey))
+		self.pgCur.execute("select ACCRef_insert(%d,%d)"%(accKey,refKey))
 
 		# verify that the record was inserted
 		selectSQL = """select count(*) from acc_accessionreference 
@@ -197,7 +199,8 @@ class MRK_deleteIMAGESeqAssocTest(unittest.TestCase,CommonProcedureLoadTest):
 
 	### TESTS ###
 
-	def testSimpleInsert(self):
+	def testStandardDelete(self):
+		accKey = 999999999
 		mrkKey = 999999999
 		prbKey = 999999999
 		accid = "testPrbMrk"
@@ -214,7 +217,7 @@ class MRK_deleteIMAGESeqAssocTest(unittest.TestCase,CommonProcedureLoadTest):
 
 
 		# call the procedure
-		self.pgCur("select MRK_deleteIMAGESeqAssoc(%d,'%s')"%(mrkKey,accid))
+		self.pgCur.execute("select MRK_deleteIMAGESeqAssoc(%d,'%s')"%(mrkKey,accid))
 
 		# verify that the relationship was deleted
 		selectSQL = """select count(*) from prb_marker

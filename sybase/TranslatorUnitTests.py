@@ -51,6 +51,32 @@ class GetBlocksTest(unittest.TestCase):
 		blocks = self.translator.getBlocks(lines)
 		self.assertEquals(translatesp.INSERT,blocks[0][0])
 
+	def testGeBlocksCommentBlockHasCorrectType(self):
+		lines = ["/* comment */"]
+		blocks = self.translator.getBlocks(lines)
+		self.assertEquals(translatesp.COMMENT,blocks[0][0])
+
+	def testGeBlocksCommentBlockSingleLine(self):
+		lines = ["/* comment */"]
+		blocks = self.translator.getBlocks(lines)
+		self.assertEquals(1,len(blocks[0][1]))
+		self.assertEquals("/* comment */",blocks[0][1][0])
+
+	def testGeBlocksCommentBlockMultiLine(self):
+		lines = ["/* comment line 1","* line 2 *","* final line */"]
+		blocks = self.translator.getBlocks(lines)
+		self.assertEquals(3,len(blocks[0][1]))
+		self.assertEquals(lines,blocks[0][1])
+
+	def testGetBlocksManyTypes(self):
+		lines = ["create procedure x","...","...","as",
+			"declare some var",
+			"/* comment 1 *","...","..."," end comment */",
+			"select something","...",
+			"delete something from something else","..."]
+		blocks = self.translator.getBlocks(lines)
+		self.assertEquals(5,len(blocks))
+
 
 class GetSpFuncNameTest(unittest.TestCase):
 	def setUp(self):
@@ -66,51 +92,6 @@ class GetSpFuncNameTest(unittest.TestCase):
 	def testGetSpFuncNameManyLines(self):
 		self.assertEquals("testFunc",self.translator.getSpFuncName(["blah blah blah","create procedure testFunc ","blah blah blah"]))
 
-
-# Test the translateCreateProcedure Section
-class CreateProcedureTest(unittest.TestCase):
-	### TESTS ###
-
-	def testCreateProcedureEmpty(self):
-		self.assertEquals("",translatesp.translateCreateProcedure(""))
-
-	def testCreateProcedureBasic(self):
-		original = """create procedure Test
-  @var1 int,
-  @var2 int
-as"""
-		expected = """CREATE OR REPLACE FUNCTION Test (
-  var1 int,
-  var2 int
- 
-)
-RETURNS VOID AS
-\$\$"""
-		self.assertEquals(expected,translatesp.translateCreateProcedure(original))
-
-	def testCreateProcedureWithVarchar(self):
-		original = """create procedure Test
-  @var1 varchar
-as"""
-		expected = """CREATE OR REPLACE FUNCTION Test (
-  var1 varchar
- 
-)
-RETURNS VOID AS
-\$\$"""
-		self.assertEquals(expected,translatesp.translateCreateProcedure(original))
-
-	def testCreateProcedureTrailingWhiteSpace(self):
-		original = """   create procedure Test
-  @var1 int
-as    """
-		expected = """CREATE OR REPLACE FUNCTION Test (
-  var1 int
- 
-)
-RETURNS VOID AS
-\$\$"""
-		self.assertEquals(expected,translatesp.translateCreateProcedure(original))
 
 def suite():
 	suitesToRun = [
