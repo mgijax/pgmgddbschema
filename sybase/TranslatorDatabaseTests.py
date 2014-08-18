@@ -1,7 +1,7 @@
 import unittest
 import psycopg2
 import SybaseProcedureLookup
-from Translator import Translator
+from translatesp import Translator
 
 # common values and methods for all the following test suites
 class CommonProcedureLoadTest(object):
