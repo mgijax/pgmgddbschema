@@ -60,6 +60,7 @@ class Translator(object):
 		#
 		# translate all convert statements first
 		#
+		originalLines = self.removeBlanks(originalLines)
 		originalLines = self.translateConvertStatements(originalLines)
 
 		# get the high level statement blocks
@@ -290,7 +291,7 @@ class Translator(object):
 				continue
 
 			# Look for using clause
-			if r.strip().find('from') == 0:
+			if r.strip().find('from') == 0 or r.strip().find('delete from') == 0:
 				# if there is a second line beginning with 'from',
 				# then it is a USING clause
 				if fromsFound == 1:
@@ -351,6 +352,14 @@ class Translator(object):
 		statements.append('end if;\n')
 		return statements, declarations
 
+
+	def removeBlanks(self,lines):
+		translated = []
+		for r in lines:
+			if r.strip() == '':
+				continue
+			translated.append(r)
+		return translated
 
 	# takes lines and translates all convert statements
 	def translateConvertStatements(self,lines):
@@ -462,6 +471,16 @@ class Translator(object):
 					if nextType:
 						return blockType, i
 		else:
+			# if INSERT INTO, only look for next type after incrementing past
+			# any immediate selects
+			if blockType == INSERT:
+				# check for following select statement
+				part = lines[index:]
+				if len(part) > 1 and \
+					part[0].find('insert into') >= 0 \
+					and part[1].strip().find('select') == 0:
+					index += 1
+
 			# search for next type
 			for i in range(index+1,len(lines)):
 				line = lines[i]

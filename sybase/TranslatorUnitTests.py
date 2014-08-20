@@ -124,6 +124,11 @@ class TranslateDeleteBlockTest(unittest.TestCase):
 		statements = self.translator.translateDeleteBlock(lines)
 		self.assertEquals(["delete x","from y","using x,y,z","where blah",";\n"],statements)
 
+	def testTranslateDeleteUsingTablesVariation2(self):
+		lines = ["delete from x","from x,y,z","where blah"]
+		statements = self.translator.translateDeleteBlock(lines)
+		self.assertEquals(["delete from x","using x,y,z","where blah",";\n"],statements)
+
 # Test the translateIfBlock() function
 # NOTE: this is a component test, rather than a unit test
 #	This may make it slightly fragile and break if underlying components change
@@ -237,6 +242,20 @@ class GetBlocksTest(unittest.TestCase):
 		lines = ["declare x","declare y","declare u"]
 		blocks = self.translator.getBlocks(lines)
 		self.assertEquals(3,len(blocks))
+
+	def testGetBlocksInsertIntoWithSelect(self):
+		lines = ["insert into table","select from table"]
+		blocks = self.translator.getBlocks(lines)
+		self.assertEquals(translatesp.INSERT,blocks[0][0])
+		self.assertEquals(1,len(blocks))
+		self.assertEquals(2,len(blocks[0][1]))
+
+	def testGetBlocksInsertIntoWithoutSelect(self):
+		lines = ["insert into","some values","select * from table"]
+		blocks = self.translator.getBlocks(lines)
+		self.assertEquals(2,len(blocks))
+		self.assertEquals(translatesp.INSERT,blocks[0][0])
+		self.assertEquals(translatesp.SELECT,blocks[1][0])
 
 	def testGetBlocksSingleIfBlock(self):
 		lines = ["if exists something","begin","\treturn","end"]
