@@ -314,8 +314,28 @@ class BIB_getCopyrightTest(unittest.TestCase,CommonProcedureLoadTest):
 		# call the procedure
 		self.pgCur.execute("select BIB_getCopyright(%d)"%(refKey))
 
-		# verify that it returns the default, which is the journal note
+		# verify that it returns correct copyright
 		self.assertEquals('Elsevier(testJnum)',self.pgCur.fetchone()[0].strip())
+
+	def testProcNatlAcadJournal(self):
+		refKey = 999999999
+		termKey = 999999999
+		noteKey = 999999999
+		journal = 'Proc Natl Acad Sci U S A'
+		note = 'test note'
+		jnumid = 'testJnum'
+		
+		self.insertFakeReferenceRecord(refKey,journal=journal)
+		self.insertFakeBibCitationCache(refKey)
+		self.insertFakeVocTerm(termKey,journal,vocabKey=self.journalVocabKey)
+		self.insertFakeNote(noteKey,termKey,note,mgiTypeKey=self.termMgiTypeKey,noteTypeKey=self.termNoteType)
+
+		# call the procedure
+		self.pgCur.execute("select BIB_getCopyright(%d)"%(refKey))
+
+		# verify that it returns the correct copyright
+		# TODO: not sure what this is supposed to return
+		self.assertEquals('',self.pgCur.fetchone()[0].strip())
 
 def suite():
 	suitesToRun = [
