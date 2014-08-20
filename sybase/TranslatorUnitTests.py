@@ -23,8 +23,13 @@ class TranslateCreateBlockTest(unittest.TestCase):
 		statements,variables = self.translator.translateCreateBlock(lines)
 		self.assertEquals(["int","varchar"],variables)
 
-	def testTranslateCreateBlockOutputParam(self):
+	def testTranslateCreateBlockOutParam(self):
 		lines = ["create procedure x","@prefixPart varchar(30) out","as"]
+		statements,variables = self.translator.translateCreateBlock(lines)
+		self.assertEquals(["CREATE OR REPLACE FUNCTION x (","out prefixPart varchar(30)",')\nAS\n\\$\\$'],statements)
+
+	def testTranslateCreateBlockOutputParam(self):
+		lines = ["create procedure x","@prefixPart varchar(30) output","as"]
 		statements,variables = self.translator.translateCreateBlock(lines)
 		self.assertEquals(["CREATE OR REPLACE FUNCTION x (","out prefixPart varchar(30)",')\nAS\n\\$\\$'],statements)
 		

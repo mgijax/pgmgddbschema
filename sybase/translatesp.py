@@ -66,8 +66,8 @@ class Translator(object):
 			# start block : begins where "#!/bin/csh" used to be
 			#
 			if blockType == STARTUP:
-				translated = self.translateStartUpBlock(lines,spFunc)
-				startUp.extend(translated)
+				# to be translated later when we have the variables
+				startUp = lines
 
 			#
 			# create statement
@@ -85,6 +85,12 @@ class Translator(object):
 					statements.extend(newStatements)
 				if newDeclarations:
 					declarations.extend(newDeclarations)
+		
+		#
+		# now translate the startUp with the found variables
+		#
+		if startUp:
+			startUp = self.translateStartUpBlock(startUp,spFunc,variables)
 
 		#
 		# end block : begins where "checkpoint" used to be
@@ -164,7 +170,7 @@ class Translator(object):
 	# 	and return the translated lines
 	#
 
-	def translateStartUpBlock(self,lines,spFunc):
+	def translateStartUpBlock(self,lines,spFunc,variables):
 		translated = []
 		translated.append(lines[0].replace('csh -f', 'sh'))
 		for r in lines[1:]:
@@ -172,7 +178,8 @@ class Translator(object):
 				translated.append(r.replace(' source', ' .'))
 			elif r.find('cat ') >= 0:
 				translated.append('cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0')
-				translated.append('\nDROP FUNCTION %s();' % (spFunc))
+				translated.append('\nDROP FUNCTION %s(%s);'%(spFunc, ','.join(variables)))
+				translated.append('GRANT EXECUTE ON FUNCTION %s(%s);'%(spFunc, ','.join(variables)))
 			elif r.find('use') >= 0 or r.find('go') >= 0:
 				continue
 			else:
@@ -195,6 +202,8 @@ class Translator(object):
 
 			# check if we have output parameter
 			if r.find('out') > 0:
+				# could be either output or out
+				r = r.replace(' output','')
 				r = r.replace(' out','')
 				r = 'out ' + r
 				hasOutput = 1

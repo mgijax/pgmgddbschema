@@ -6,7 +6,7 @@ from translatesp import Translator
 # common values and methods for all the following test suites
 class CommonProcedureLoadTest(object):
 
-	DB_CONN_STRING = "host='mgi-testdb4.jax.org' dbname='export' user='mgd_dbo' password='db0dev'"
+	DB_CONN_STRING = "host='mgi-testdb4.jax.org' dbname='pub_dev' user='mgd_dbo' password='db0dev'"
 
 	def setUp(self):
 		self.pgConn = psycopg2.connect(self.DB_CONN_STRING)
