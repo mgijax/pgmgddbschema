@@ -59,9 +59,9 @@ class TranslateCreateBlockTest(unittest.TestCase):
 		self.assertEquals(["int","varchar"],variables)
 
 	def testTranslateCreateBlockWithParamsCheckOutputVariables(self):
-		lines = ["create procedure x","@var1 integer,","@var2 varchar(10) out","as"]
+		lines = ["create procedure x","@var1 integer,","@var2 varchar(10) out,","@var3 integer","as"]
 		statements,variables = self.translator.translateCreateBlock(lines)
-		self.assertEquals(["int"],variables)
+		self.assertEquals(["int","int"],variables)
 
 	def testTranslateCreateBlockOutParam(self):
 		lines = ["create procedure x","@prefixPart varchar(30) out","as"]
