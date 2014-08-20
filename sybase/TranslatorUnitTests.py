@@ -110,6 +110,36 @@ class GetBlocksTest(unittest.TestCase):
 		self.assertEquals(1,len(blocks))
 		self.assertEquals(translatesp.IF,blocks[0][0])
 
+class TranslateSelectBlockTest(unittest.TestCase):
+	def setUp(self):
+		self.translator = Translator()
+	
+	### TESTS ###
+	def testTranslateSelectBasic(self):
+		lines = ["select * from table"]
+		statements = self.translator.translateSelectBlock(lines)
+		self.assertEquals(["select * from table",";\n"],statements)
+
+	def testTranslateSelectMultiline(self):
+		lines = ["select * from table","where x = 1","and y = 2"]
+		statements = self.translator.translateSelectBlock(lines)
+		self.assertEquals(["select * from table","where x = 1","and y = 2",";\n"],statements)
+
+	def testTranslateSelectInto(self):
+		lines = ["select @var1 = col from table"]
+		statements = self.translator.translateSelectBlock(lines)
+		self.assertEquals(["select into var1   col from table",";\n"],statements)
+
+	def testTranslateSelectIntoVariation2(self):
+		lines = ["select @var1=col from table"]
+		statements = self.translator.translateSelectBlock(lines)
+		self.assertEquals(["select into var1 col from table",";\n"],statements)
+
+	def testTranslateSelectIntoMultiline(self):
+		lines = ["select @var1 = col from table","where col='test'"]
+		statements = self.translator.translateSelectBlock(lines)
+		self.assertEquals(["select into var1   col from table","where col='test'",";\n"],statements)
+
 # Test the translateIfBlock() function
 # NOTE: this is a component test, rather than a unit test
 #	This may make it slightly fragile and break if underlying components change
@@ -155,6 +185,7 @@ class GetSpFuncNameTest(unittest.TestCase):
 def suite():
 	suitesToRun = [
 		GetBlocksTest,
+		TranslateSelectBlockTest,
 		TranslateIfBlockTest,
 		GetSpFuncNameTest
 	]

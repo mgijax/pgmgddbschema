@@ -217,6 +217,13 @@ class Translator(object):
 	def translateSelectBlock(self,lines):
 		translated = []
 		for r in lines:
+			# convert variable assignment to PG style
+			selectIntoPos = r.find('select @')
+			equalPos = r.find('=')
+			if selectIntoPos >= 0 and equalPos > selectIntoPos:
+				r = r.replace('select @','select into ')
+				r = r.replace('=',' ',1)
+				
 			r = r.replace('user_name()', 'current_user')
 			r = r.replace('@', '')
 			translated.append(r)
