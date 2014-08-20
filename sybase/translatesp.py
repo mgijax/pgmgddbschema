@@ -186,13 +186,24 @@ class Translator(object):
 		firstLine = firstLine.replace('create procedure', 'CREATE OR REPLACE FUNCTION')
 		firstLine = firstLine.strip() + ' ('
 		translated.append(firstLine)
+		hasOutput = 0
 
 		for r in lines[1:]:
 			r = r.replace('@', '')
 			r = r.replace('"', '\'')
 			r = r.replace('integer', 'int')
+
+			# check if we have output parameter
+			if r.find('out') > 0:
+				r = r.replace(' out','')
+				r = 'out ' + r
+				hasOutput = 1
+
 			if r.strip() == 'as':
-				r = ')\nRETURNS VOID AS\n\\$\\$'
+				if hasOutput:
+					r = ')\nAS\n\\$\\$'
+				else:
+					r = ')\nRETURNS VOID AS\n\\$\\$'
 				translated.append(r)
 
 			elif r.find('int') >= 0:
@@ -202,6 +213,7 @@ class Translator(object):
 			elif r.find('varchar') >= 0:
 				variables.append('varchar')
 				translated.append(r)
+
 		return translated,variables
 
 	def translateDeclareBlock(self,lines):
@@ -222,7 +234,10 @@ class Translator(object):
 			equalPos = r.find('=')
 			if selectIntoPos >= 0 and equalPos > selectIntoPos:
 				r = r.replace('select @','select into ')
-				r = r.replace('=',' ',1)
+				if r.find(' = ') >= selectIntoPos:
+					r = r.replace(' = ',' ',1)
+				else:
+					r = r.replace('=',' ',1)
 				
 			r = r.replace('user_name()', 'current_user')
 			r = r.replace('@', '')
@@ -275,24 +290,25 @@ class Translator(object):
 		for i in range(len(lines)):
 			r = lines[i]
 			r = r.replace('@','')
-			r = r.strip()
-			if r == '':
+			if r.strip() == '':
 				continue
 
-			if r == 'begin':
+			if r.strip() == 'begin':
 				if subIfCount == 0:
 					statements.append('then')	
 				else:
 					innerBlock.append(r)
 				subIfCount += 1	
 			
-			elif r == 'end':
+			elif r.strip() == 'end':
 				subIfCount -= 1
 				if subIfCount == 0:
 					# parse the inner block and append anything inside to the statements list
 					innerBlocks = self.getBlocks(innerBlock)
 					for blockType,innerLines in innerBlocks:
 						newStatements, newDeclarations = self.translateNestedBlock(blockType,innerLines)
+						# shift nested statements over nested dist
+						newStatements = ['\t' + l for l in newStatements]
 						statements.extend(newStatements)
 						declarations.extend(newDeclarations)
 					# reset the innerBlock lines

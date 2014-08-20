@@ -3,6 +3,97 @@ import translatesp
 
 Translator = translatesp.Translator
 
+class TranslateCreateBlockTest(unittest.TestCase):
+	def setUp(self):
+		self.translator = Translator()
+	
+	### TESTS ###
+	def testTranslateCreateBlockBasic(self):
+		lines = ["create procedure x","as"]
+		statements,variables = self.translator.translateCreateBlock(lines)
+		self.assertEquals(["CREATE OR REPLACE FUNCTION x (",')\nRETURNS VOID AS\n\\$\\$'],statements)
+
+	def testTranslateCreateBlockWithParams(self):
+		lines = ["create procedure x","@var1 integer,","@var2 varchar(10)","as"]
+		statements,variables = self.translator.translateCreateBlock(lines)
+		self.assertEquals(["CREATE OR REPLACE FUNCTION x (","var1 int,","var2 varchar(10)",')\nRETURNS VOID AS\n\\$\\$'],statements)
+
+	def testTranslateCreateBlockWithParamsCheckVariables(self):
+		lines = ["create procedure x","@var1 integer,","@var2 varchar(10)","as"]
+		statements,variables = self.translator.translateCreateBlock(lines)
+		self.assertEquals(["int","varchar"],variables)
+
+	def testTranslateCreateBlockOutputParam(self):
+		lines = ["create procedure x","@prefixPart varchar(30) out","as"]
+		statements,variables = self.translator.translateCreateBlock(lines)
+		self.assertEquals(["CREATE OR REPLACE FUNCTION x (","out prefixPart varchar(30)",')\nAS\n\\$\\$'],statements)
+		
+
+class TranslateSelectBlockTest(unittest.TestCase):
+	def setUp(self):
+		self.translator = Translator()
+	
+	### TESTS ###
+	def testTranslateSelectBasic(self):
+		lines = ["select * from table"]
+		statements = self.translator.translateSelectBlock(lines)
+		self.assertEquals(["select * from table",";\n"],statements)
+
+	def testTranslateSelectMultiline(self):
+		lines = ["select * from table","where x = 1","and y = 2"]
+		statements = self.translator.translateSelectBlock(lines)
+		self.assertEquals(["select * from table","where x = 1","and y = 2",";\n"],statements)
+
+	def testTranslateSelectInto(self):
+		lines = ["select @var1 = col from table"]
+		statements = self.translator.translateSelectBlock(lines)
+		self.assertEquals(["select into var1 col from table",";\n"],statements)
+
+	def testTranslateSelectIntoVariation2(self):
+		lines = ["select @var1=col from table"]
+		statements = self.translator.translateSelectBlock(lines)
+		self.assertEquals(["select into var1 col from table",";\n"],statements)
+
+	def testTranslateSelectIntoMultiline(self):
+		lines = ["select @var1 = col from table","where col='test'"]
+		statements = self.translator.translateSelectBlock(lines)
+		self.assertEquals(["select into var1 col from table","where col='test'",";\n"],statements)
+
+# Test the translateIfBlock() function
+# NOTE: this is a component test, rather than a unit test
+#	This may make it slightly fragile and break if underlying components change
+#	Like how nested blocks and statements are formatted
+class TranslateIfBlockTest(unittest.TestCase):
+	def setUp(self):
+		self.translator = Translator()
+	
+	### TESTS ###
+	def testTranslateIfBlockSingleEmptyIf(self):
+		lines = ["if exists something","begin","end"]
+		statements, declarations = self.translator.translateIfBlock(lines)
+		self.assertEquals("if exists something\nthen\nend if;\n","\n".join(statements))
+
+	def testTranslateIfBlockSingleIfWithSelect(self):
+		lines = ["if exists something","begin","select test","end"]
+		statements, declarations = self.translator.translateIfBlock(lines)
+		self.assertEquals("if exists something\nthen\n\tselect test\n\t;\n\nend if;\n","\n".join(statements))
+
+	def testTranslateIfBlockNestedIfs(self):
+		lines = ["if nest1","begin","if nest2","begin","if nest3","begin","end","end","end"]
+		statements, declarations = self.translator.translateIfBlock(lines)
+		self.assertEquals(["if nest1","then",
+			"\tif nest2","\tthen",
+				"\t\tif nest3","\t\tthen","\t\tend if;\n",
+			"\tend if;\n",
+			"end if;\n"],statements)
+
+	def testTranslateIfWithElses(self):
+		lines = ["if exists something","begin","end",
+			"else if exists something2","begin","end",
+			"else","begin","end"]
+		statements, declarations = self.translator.translateIfBlock(lines)
+		self.assertEquals("if exists something\nthen\nelse if exists something2\nthen\nelse\nthen\nend if;\n","\n".join(statements))
+
 # Test the getBlocks() function
 class GetBlocksTest(unittest.TestCase):
 	def setUp(self):
@@ -110,62 +201,6 @@ class GetBlocksTest(unittest.TestCase):
 		self.assertEquals(1,len(blocks))
 		self.assertEquals(translatesp.IF,blocks[0][0])
 
-class TranslateSelectBlockTest(unittest.TestCase):
-	def setUp(self):
-		self.translator = Translator()
-	
-	### TESTS ###
-	def testTranslateSelectBasic(self):
-		lines = ["select * from table"]
-		statements = self.translator.translateSelectBlock(lines)
-		self.assertEquals(["select * from table",";\n"],statements)
-
-	def testTranslateSelectMultiline(self):
-		lines = ["select * from table","where x = 1","and y = 2"]
-		statements = self.translator.translateSelectBlock(lines)
-		self.assertEquals(["select * from table","where x = 1","and y = 2",";\n"],statements)
-
-	def testTranslateSelectInto(self):
-		lines = ["select @var1 = col from table"]
-		statements = self.translator.translateSelectBlock(lines)
-		self.assertEquals(["select into var1   col from table",";\n"],statements)
-
-	def testTranslateSelectIntoVariation2(self):
-		lines = ["select @var1=col from table"]
-		statements = self.translator.translateSelectBlock(lines)
-		self.assertEquals(["select into var1 col from table",";\n"],statements)
-
-	def testTranslateSelectIntoMultiline(self):
-		lines = ["select @var1 = col from table","where col='test'"]
-		statements = self.translator.translateSelectBlock(lines)
-		self.assertEquals(["select into var1   col from table","where col='test'",";\n"],statements)
-
-# Test the translateIfBlock() function
-# NOTE: this is a component test, rather than a unit test
-#	This may make it slightly fragile and break if underlying components change
-#	Like how nested blocks and statements are formatted
-class TranslateIfBlockTest(unittest.TestCase):
-	def setUp(self):
-		self.translator = Translator()
-	
-	### TESTS ###
-	def testTranslateIfBlockSingleEmptyIf(self):
-		lines = ["if exists something","begin","end"]
-		statements, declarations = self.translator.translateIfBlock(lines)
-		self.assertEquals("if exists something\nthen\nend if;\n","\n".join(statements))
-
-	def testTranslateIfBlockSingleIfWithSelect(self):
-		lines = ["if exists something","begin","select test","end"]
-		statements, declarations = self.translator.translateIfBlock(lines)
-		self.assertEquals("if exists something\nthen\nselect test\n;\n\nend if;\n","\n".join(statements))
-
-	def testTranslateIfWithElses(self):
-		lines = ["if exists something","begin","end",
-			"else if exists something2","begin","end",
-			"else","begin","end"]
-		statements, declarations = self.translator.translateIfBlock(lines)
-		self.assertEquals("if exists something\nthen\nelse if exists something2\nthen\nelse\nthen\nend if;\n","\n".join(statements))
-
 
 class GetSpFuncNameTest(unittest.TestCase):
 	def setUp(self):
@@ -184,9 +219,10 @@ class GetSpFuncNameTest(unittest.TestCase):
 
 def suite():
 	suitesToRun = [
-		GetBlocksTest,
+		TranslateCreateBlockTest,
 		TranslateSelectBlockTest,
 		TranslateIfBlockTest,
+		GetBlocksTest,
 		GetSpFuncNameTest
 	]
 	suites = [unittest.TestLoader().loadTestsFromTestCase(ts) for ts in suitesToRun]
