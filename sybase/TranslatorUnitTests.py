@@ -38,6 +38,36 @@ class TranslateConvertStatementTest(unittest.TestCase):
 		translated = self.translator.translateConvert(line)
 		self.assertEquals("var1::integer + var2::varchar(20)", translated)
 
+class TranslateCharindexStatementTest(unittest.TestCase):
+	def setUp(self):
+		self.translator = Translator()
+	
+	### TESTS ###
+	def testTranslateConvertNotFount(self):
+		line = "select var from table"
+		translated = self.translator.translateCharindex(line)
+		self.assertEquals(line, translated)
+
+	def testTranslateCharindexBasic(self):
+		line = "charindex('t', var1)"
+		translated = self.translator.translateCharindex(line)
+		self.assertEquals("position('t' in var1)", translated)
+
+	def testTranslateCharindexWithSurroundingWords(self):
+		line = "if charindex('word', var1) > 0"
+		translated = self.translator.translateCharindex(line)
+		self.assertEquals("if position('word' in var1) > 0", translated)
+
+	def testTranslateCharindexWithParenInQuotes(self):
+		line = "charindex('word(', var1)"
+		translated = self.translator.translateCharindex(line)
+		self.assertEquals("position('word(' in var1)", translated)
+
+	def testTranslateCharindexMultiples(self):
+		line = "charindex('t', var1) + charindex('t', var2)"
+		translated = self.translator.translateCharindex(line)
+		self.assertEquals("position('t' in var1) + position('t' in var2)", translated)
+
 class TranslateCreateBlockTest(unittest.TestCase):
 	def setUp(self):
 		self.translator = Translator()
@@ -304,6 +334,7 @@ class GetSpFuncNameTest(unittest.TestCase):
 def suite():
 	suitesToRun = [
 		TranslateConvertStatementTest,
+		TranslateCharindexStatementTest,
 		TranslateCreateBlockTest,
 		TranslateSelectBlockTest,
 		TranslateDeleteBlockTest,

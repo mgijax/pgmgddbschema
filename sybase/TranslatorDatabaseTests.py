@@ -57,12 +57,48 @@ class CommonProcedureLoadTest(object):
 			"""%(prbKey,name)
 		self.pgCur.execute(insertSQL)
 
-	def insertFakeReferenceRecord(self,refKey):
+	def insertFakeReferenceRecord(self,refKey,journal='T'):
 		insertSQL = """insert into bib_refs
-			(_refs_key,_reviewstatus_key,reftype,nlmstatus,isreviewarticle,
+			(_refs_key,_reviewstatus_key,reftype,nlmstatus,isreviewarticle,journal,
 				_createdby_key,_modifiedby_key,creation_date,modification_date) 
-			values (%d,1,'T','T',1,1001,1001,now(),now())
-			"""%refKey
+			values (%d,1,'T','T',1,'%s',1001,1001,now(),now())
+			"""%(refKey,journal)
+		self.pgCur.execute(insertSQL)
+
+	def insertFakeBibCitationCache(self,refKey,jnumId='T'):
+		insertSQL = """
+			insert into bib_citation_cache
+			(_refs_key,numericpart,jnumid,mgiid,reviewstatus,citation,short_citation,
+				isreviewarticle,isreviewarticlestring)
+			values(%d,1,'%s','T','T','T','T',1,'T')
+			"""%(refKey,jnumId)
+		self.pgCur.execute(insertSQL)
+
+	def insertFakeVocTerm(self,termKey,term,vocabKey=2):
+		insertSQL = """
+			insert into voc_term
+			(_term_key,_vocab_key,term,isobsolete,
+				_createdby_key,_modifiedby_key,creation_date,modification_date)
+			values (%d,%d,'%s',0,1001,1001,now(),now())
+			"""%(termKey,vocabKey,term)
+		self.pgCur.execute(insertSQL)
+
+	def insertFakeNote(self,noteKey,objectKey,note,mgiTypeKey=1,noteTypeKey=1):
+		insertSQL = """
+			insert into mgi_note
+			(_note_key,_object_key,_mgitype_key,_notetype_key,
+				_createdby_key,_modifiedby_key,creation_date,modification_date)
+			values (%d,%d,%d,%d,1001,1001,now(),now())
+			"""%(noteKey,objectKey,mgiTypeKey,noteTypeKey)
+		self.pgCur.execute(insertSQL)
+
+		# insert the chunk
+		insertSQL = """
+			insert into mgi_notechunk
+			(_note_key,sequencenum,note,
+				_createdby_key,_modifiedby_key,creation_date,modification_date)
+			values (%d,1,'%s',1001,1001,now(),now())
+			"""%(noteKey,note)
 		self.pgCur.execute(insertSQL)
 
 # Test that these procedures can be loaded by the translator
@@ -179,7 +215,7 @@ class MRK_deleteIMAGESeqAssocTest(unittest.TestCase,CommonProcedureLoadTest):
 	def setUp(self):
 		# call the common setUp first
 		CommonProcedureLoadTest.setUp(self)
-		# load the translated ACCRef_insert procedure
+		# load the translated MRK_deleteIMAGESeqAssoc procedure
 		self.translateAndLoadProc("MRK_deleteIMAGESeqAssoc")
 
 	def tearDown(self):
@@ -224,11 +260,69 @@ class MRK_deleteIMAGESeqAssocTest(unittest.TestCase,CommonProcedureLoadTest):
 		self.pgCur.execute(selectSQL)
 		self.assertEquals(0,self.pgCur.fetchone()[0])
 
+# specifically test the behavior of the BIB_getCopyright procedure
+class BIB_getCopyrightTest(unittest.TestCase,CommonProcedureLoadTest):
+	
+	def setUp(self):
+		# call the common setUp first
+		CommonProcedureLoadTest.setUp(self)
+
+		# globals		
+		self.journalVocabKey = 48
+		self.termMgiTypeKey = 13
+		self.termNoteType = 1026
+
+		# load the translated BIB_getCopyright procedure
+		self.translateAndLoadProc("BIB_getCopyright")
+
+	def tearDown(self):
+		CommonProcedureLoadTest.tearDown(self)
+
+	### TESTS ###
+
+	def testDefault(self):
+		refKey = 999999999
+		termKey = 999999999
+		noteKey = 999999999
+		journal = 'test journal'
+		note = 'test note'
+		
+		self.insertFakeReferenceRecord(refKey,journal=journal)
+		self.insertFakeBibCitationCache(refKey)
+		self.insertFakeVocTerm(termKey,journal,vocabKey=self.journalVocabKey)
+		self.insertFakeNote(noteKey,termKey,note,mgiTypeKey=self.termMgiTypeKey,noteTypeKey=self.termNoteType)
+
+		# call the procedure
+		self.pgCur.execute("select BIB_getCopyright(%d)"%(refKey))
+
+		# verify that it returns the default, which is the journal note
+		self.assertEquals('test note',self.pgCur.fetchone()[0].strip())
+
+	def testElsevierNote(self):
+		refKey = 999999999
+		termKey = 999999999
+		noteKey = 999999999
+		journal = 'test journal'
+		note = 'Elsevier()'
+		jnumid = 'testJnum'
+		
+		self.insertFakeReferenceRecord(refKey,journal=journal)
+		self.insertFakeBibCitationCache(refKey)
+		self.insertFakeVocTerm(termKey,journal,vocabKey=self.journalVocabKey)
+		self.insertFakeNote(noteKey,termKey,note,mgiTypeKey=self.termMgiTypeKey,noteTypeKey=self.termNoteType)
+
+		# call the procedure
+		self.pgCur.execute("select BIB_getCopyright(%d)"%(refKey))
+
+		# verify that it returns the default, which is the journal note
+		self.assertEquals('Elsevier(testJnum)',self.pgCur.fetchone()[0].strip())
+
 def suite():
 	suitesToRun = [
 		SimpleProcedureLoadTest,
 		ACCRefInsertTest,
-		 MRK_deleteIMAGESeqAssocTest,
+		MRK_deleteIMAGESeqAssocTest,
+		BIB_getCopyrightTest
 	]
 	suites = [unittest.TestLoader().loadTestsFromTestCase(ts) for ts in suitesToRun]
 	allTests = unittest.TestSuite(suites)

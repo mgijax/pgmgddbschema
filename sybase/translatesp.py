@@ -58,10 +58,11 @@ class Translator(object):
 		spFunc = self.getSpFuncName(originalLines)
 
 		#
-		# translate all convert statements first
+		# translate all special functions statements first
+		# E.G. convert, charindex, etc
 		#
 		originalLines = self.removeBlanks(originalLines)
-		originalLines = self.translateConvertStatements(originalLines)
+		originalLines = self.translateSpecialFunctions(originalLines)
 
 		# get the high level statement blocks
 		topBlocks = self.getBlocks(originalLines)
@@ -361,11 +362,12 @@ class Translator(object):
 			translated.append(r)
 		return translated
 
-	# takes lines and translates all convert statements
-	def translateConvertStatements(self,lines):
+	# takes lines and translates all special functions
+	def translateSpecialFunctions(self,lines):
 		translated = []
 		for r in lines:
 			r = self.translateConvert(r)
+			r = self.translateCharindex(r)
 			translated.append(r)
 		return translated
 
@@ -389,17 +391,43 @@ class Translator(object):
 
 		return line
 
+	# takes a line and translates any charindex statements
+	def translateCharindex(self,line):
+		foundCharindex = 1
+		while foundCharindex:
+			# figure out the bounds of each charindex(...) statement
+			charindexStart = 'charindex('
+			charindexIndex = line.find(charindexStart)
+			argIndex = charindexIndex + len(charindexStart)
+			closeParenIndex = self.findClosedParenIndex(line,argIndex)
+			if charindexIndex >= 0 and closeParenIndex > charindexIndex:
+					args = line[argIndex:closeParenIndex].split(',')
+					arg1 = args[0].strip()	
+					arg2 = args[1].strip()
+					line = line[0:charindexIndex] + "position(%s in %s)"%(arg1,arg2) \
+						+ line[closeParenIndex+1:]
+			else:
+				foundCharindex = 0
+
+		return line
+
 	# returns the first find that closed the open paren at openParenIndex
 	def findClosedParenIndex(self,line,openParenIndex):
 		openParens = 0
+		inQuote = False
 		for i in range(openParenIndex,len(line)):
 			c = line[i]
-			if c == '(':
-				openParens += 1
-			elif c == ')':
-				if openParens == 0:
-					return i
-				openParens -= 1
+			if c == '\'':
+				inQuote = not inQuote
+			
+			# ignore any parens inside of quotes
+			if not inQuote:
+				if c == '(':
+					openParens += 1
+				elif c == ')':
+					if openParens == 0:
+						return i
+					openParens -= 1
 		return -1
 
 
