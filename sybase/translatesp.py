@@ -22,6 +22,10 @@ UPDATE = "update"
 DELETE = "delete"
 CHECKPOINT = "checkpoint"
 COMMENT = "comment"
+IF = "if"
+RETURN = "return"
+COMMIT = "commit"
+GO = "go"
 
 class Translator(object):
 
@@ -71,32 +75,16 @@ class Translator(object):
 			elif blockType == CREATE:
 				translated, variables = self.translateCreateBlock(lines)
 				creation.extend(translated)
-
-			#
-			# declare variables
-			#
-			elif blockType == DECLARE:
-				translated = self.translateDeclareBlock(lines)
-				declarations.extend(translated)
-
-			#
-			# statments : select, insert, update, delete
-			#
-			elif blockType == SELECT:
-				translated = self.translateSelectBlock(lines)
-				statements.extend(translated)
-
-			elif blockType == INSERT:
-				translated = self.translateInsertBlock(lines)
-				statements.extend(translated)
-
-			elif blockType == UPDATE:
-				translated = self.translateUpdateBlock(lines)
-				statements.extend(translated)
-
-			elif blockType == DELETE:
-				translated = self.translateDeleteBlock(lines)
-				statements.extend(translated)
+			
+			else:
+				# once we are past the create procedure block
+				# we can anticipate there could be control structures, like if/else and loops
+				# translateNestedBlocks will go through any control structures recursively
+				newStatements, newDeclarations = self.translateNestedBlock(blockType,lines)
+				if newStatements:
+					statements.extend(newStatements)
+				if newDeclarations:
+					declarations = newDeclarations
 
 		#
 		# end block : begins where "checkpoint" used to be
@@ -120,6 +108,54 @@ class Translator(object):
 		finalLines.append('\n'.join(map(str, endUp)) + '\n')
 
 		return ''.join(finalLines)
+
+	# recursively translates any nested blocks inside a control structures
+	# for example: if the blockType is IF,ELSEIF,ELSE, etc
+	# returns any statements plus any declarations as two lists
+	def translateNestedBlock(self,blockType,lines):
+		statements = []
+		declarations = []
+
+		if blockType in IF:
+			translated, declarations = self.translateIfBlock(lines)
+			statements.extend(translated)
+		#
+		# declare variables
+		#
+		elif blockType == DECLARE:
+			translated = self.translateDeclareBlock(lines)
+			declarations.extend(translated)
+
+		#
+		# statments : select, insert, update, delete
+		#
+		elif blockType == SELECT:
+			translated = self.translateSelectBlock(lines)
+			statements.extend(translated)
+
+		elif blockType == INSERT:
+			translated = self.translateInsertBlock(lines)
+			statements.extend(translated)
+
+		elif blockType == UPDATE:
+			translated = self.translateUpdateBlock(lines)
+			statements.extend(translated)
+
+		elif blockType == DELETE:
+			translated = self.translateDeleteBlock(lines)
+			statements.extend(translated)
+
+		elif blockType == RETURN:
+			translated = self.translateReturnBlock(lines)
+			statements.extend(translated)
+
+		# Add theses blocks untranslated
+		elif blockType in [COMMENT]:
+			statements.extend(lines)
+
+		# else: anything not speficially handled above gets omitted
+
+		return statements,declarations
 
 	### Functions for Translating Different Block Types ###
 	# 
@@ -216,6 +252,54 @@ class Translator(object):
 		translated.append(';\n')
 		return translated
 
+	def translateReturnBlock(self,lines):
+		translated = []
+		for r in lines:
+			translated.append(r + ';')
+		return translated
+
+	def translateIfBlock(self,lines):
+		statements = []
+		declarations = []
+		innerBlock = []
+		
+		subIfCount = 0
+		for i in range(len(lines)):
+			r = lines[i]
+			r = r.replace('@','')
+			r = r.strip()
+			if r == '':
+				continue
+
+			if r == 'begin':
+				if subIfCount == 0:
+					statements.append('then')	
+				else:
+					innerBlock.append(r)
+				subIfCount += 1	
+			
+			elif r == 'end':
+				subIfCount -= 1
+				if subIfCount == 0:
+					# parse the inner block and append anything inside to the statements list
+					innerBlocks = self.getBlocks(innerBlock)
+					for blockType,innerLines in innerBlocks:
+						newStatements, newDeclarations = self.translateNestedBlock(blockType,innerLines)
+						statements.extend(newStatements)
+						declarations.extend(newDeclarations)
+					# reset the innerBlock lines
+					innerBlock = []
+				else:
+					innerBlock.append(r)
+				
+			elif subIfCount > 0:
+				innerBlock.append(r)
+			else:
+				statements.append(r)
+		
+		statements.append('end if;\n')
+		return statements, declarations
+
 
 	# pulls the procedure name out of the create statement
 	# NOTE: this isn't 100% necessary, 
@@ -252,17 +336,38 @@ class Translator(object):
 
 		return blocks
 
+	# Starting at index, iterate through the lines
+	# returning the next block type and the index of the last line in the block
 	def getNextBlock(self,index,lines):
 		firstLine = lines[index]
 		# find the type
 		blockType = self.getBlockType(firstLine)
 
+		# handle blocks with special end characters first,
+		# else simply search for the next valid block after this one
 		if blockType == COMMENT:
 			# search for comment end
 			for i in range(index,len(lines)):
 				line = lines[i]
 				if line.find("*/") >= 0:
 					return blockType, i+1
+		elif blockType == IF:
+			# search for if statement end
+			# ignore any sub if statements (they will be parsed later)
+			# include all the else statements that are part of this entire if block
+			subIfCount = 0
+			for i in range(index+1,len(lines)):
+				line = lines[i].strip()
+				if line.find('begin') == 0:
+					subIfCount += 1
+				elif line.find('end') == 0:
+					subIfCount -= 1
+				if subIfCount == 0:
+					# here we essentially look for the next type of block that isn't 
+					# part of a sub-if, or else if/else block
+					nextType = self.getBlockType(line)
+					if nextType:
+						return blockType, i
 		else:
 			# search for next type
 			for i in range(index+1,len(lines)):
@@ -280,6 +385,12 @@ class Translator(object):
 		line = line.strip()
 		if line.find('/*') == 0:
 			return COMMENT
+		elif line.find('if') == 0:
+			return IF
+		elif line.find('return') == 0:
+			return RETURN
+		elif line.find('commit') >= 0:
+			return COMMIT
 		elif line.find('#!/bin/csh') == 0:
 			return STARTUP
 		elif line.find('create procedure') == 0:
@@ -300,6 +411,8 @@ class Translator(object):
 			return DELETE
 		elif line.find('checkpoint') == 0:
 			return CHECKPOINT
+		elif line.find("go") == 0:
+			return GO
 		return None
 
 	# Read input from the sybase procedure file

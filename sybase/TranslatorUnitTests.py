@@ -77,6 +77,60 @@ class GetBlocksTest(unittest.TestCase):
 		blocks = self.translator.getBlocks(lines)
 		self.assertEquals(5,len(blocks))
 
+	def testGetBlocksSingleIfBlock(self):
+		lines = ["if exists something","begin","\treturn","end"]
+		blocks = self.translator.getBlocks(lines)
+		self.assertEquals(translatesp.IF,blocks[0][0])
+		self.assertEquals(4,len(blocks[0][1]))
+
+	def testGetBlocksIfBlockWithSubIfs(self):
+		lines = ["if exists something","begin",
+			"...","if sub thing","begin","...","end",
+			"else if sub thing2","begin","\treturn","end"
+			,"\treturn","end"]
+		blocks = self.translator.getBlocks(lines)
+		self.assertEquals(len(lines),len(blocks[0][1]))
+
+	def testGetBlocksElseIfBlock(self):
+		lines = ["if exists something","begin","\treturn","end",
+			"else if somthing","begin","...","end"]
+		blocks = self.translator.getBlocks(lines)
+		self.assertEquals(1,len(blocks))
+		self.assertEquals(translatesp.IF,blocks[0][0])
+
+	def testGetBlocksElsefBlock(self):
+		lines = ["if exists something","begin","\treturn","end",
+			"else somthing","begin","...","end"]
+		blocks = self.translator.getBlocks(lines)
+		self.assertEquals(1,len(blocks))
+		self.assertEquals(translatesp.IF,blocks[0][0])
+
+# Test the translateIfBlock() function
+# NOTE: this is a component test, rather than a unit test
+#	This may make it slightly fragile and break if underlying components change
+#	Like how nested blocks and statements are formatted
+class TranslateIfBlockTest(unittest.TestCase):
+	def setUp(self):
+		self.translator = Translator()
+	
+	### TESTS ###
+	def testTranslateIfBlockSingleEmptyIf(self):
+		lines = ["if exists something","begin","end"]
+		statements, declarations = self.translator.translateIfBlock(lines)
+		self.assertEquals("if exists something\nthen\nend if;\n","\n".join(statements))
+
+	def testTranslateIfBlockSingleIfWithSelect(self):
+		lines = ["if exists something","begin","select test","end"]
+		statements, declarations = self.translator.translateIfBlock(lines)
+		self.assertEquals("if exists something\nthen\nselect test\n;\n\nend if;\n","\n".join(statements))
+
+	def testTranslateIfWithElses(self):
+		lines = ["if exists something","begin","end",
+			"else if exists something2","begin","end",
+			"else","begin","end"]
+		statements, declarations = self.translator.translateIfBlock(lines)
+		self.assertEquals("if exists something\nthen\nelse if exists something2\nthen\nelse\nthen\nend if;\n","\n".join(statements))
+
 
 class GetSpFuncNameTest(unittest.TestCase):
 	def setUp(self):
@@ -96,6 +150,7 @@ class GetSpFuncNameTest(unittest.TestCase):
 def suite():
 	suitesToRun = [
 		GetBlocksTest,
+		TranslateIfBlockTest,
 		GetSpFuncNameTest
 	]
 	suites = [unittest.TestLoader().loadTestsFromTestCase(ts) for ts in suitesToRun]
