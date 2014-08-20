@@ -64,6 +64,26 @@ class TranslateSelectBlockTest(unittest.TestCase):
 		statements = self.translator.translateSelectBlock(lines)
 		self.assertEquals(["select into var1 col from table","where col='test'",";\n"],statements)
 
+class TranslateDeleteBlockTest(unittest.TestCase):
+	def setUp(self):
+		self.translator = Translator()
+
+	### TESTS ###
+	def testTranslateDeleteBasic(self):
+		lines = ["delete x from y"]	
+		statements = self.translator.translateDeleteBlock(lines)
+		self.assertEquals(["delete x from y",";\n"],statements)
+
+	def testTranslateDeleteMultiline(self):
+		lines = ["delete x","from y","where y = 2"]
+		statements = self.translator.translateDeleteBlock(lines)
+		self.assertEquals(["delete x","from y","where y = 2",";\n"],statements)
+
+	def testTranslateDeleteUsingTables(self):
+		lines = ["delete x","from y","from x,y,z","where blah"]
+		statements = self.translator.translateDeleteBlock(lines)
+		self.assertEquals(["delete x","from y","using x,y,z","where blah",";\n"],statements)
+
 # Test the translateIfBlock() function
 # NOTE: this is a component test, rather than a unit test
 #	This may make it slightly fragile and break if underlying components change
@@ -226,6 +246,7 @@ def suite():
 	suitesToRun = [
 		TranslateCreateBlockTest,
 		TranslateSelectBlockTest,
+		TranslateDeleteBlockTest,
 		TranslateIfBlockTest,
 		GetBlocksTest,
 		GetSpFuncNameTest

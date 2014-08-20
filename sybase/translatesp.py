@@ -276,9 +276,19 @@ class Translator(object):
 
 	def translateDeleteBlock(self,lines):
 		translated = []
+		fromsFound = 0
 		for r in lines:
 			if r.strip() == 'go':
 				continue
+
+			# Look for using clause
+			if r.strip().find('from') == 0:
+				# if there is a second line beginning with 'from',
+				# then it is a USING clause
+				if fromsFound == 1:
+					r = r.replace('from','using')
+				fromsFound += 1
+
 			r = r.replace('@', '')
 			translated.append(r)
 		translated.append(';\n')
