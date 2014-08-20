@@ -77,6 +77,11 @@ class GetBlocksTest(unittest.TestCase):
 		blocks = self.translator.getBlocks(lines)
 		self.assertEquals(5,len(blocks))
 
+	def testGetBlocksMultipleDeclares(self):
+		lines = ["declare x","declare y","declare u"]
+		blocks = self.translator.getBlocks(lines)
+		self.assertEquals(3,len(blocks))
+
 	def testGetBlocksSingleIfBlock(self):
 		lines = ["if exists something","begin","\treturn","end"]
 		blocks = self.translator.getBlocks(lines)

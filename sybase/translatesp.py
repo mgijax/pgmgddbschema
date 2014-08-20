@@ -101,8 +101,9 @@ class Translator(object):
 		finalLines = []
 		finalLines.append('\n'.join(map(str, startUp)) + '\n\n')
 		finalLines.append('\n'.join(map(str, creation)) + '\n\n')
-		finalLines.append('DECLARE\n')
-		finalLines.append('\n'.join(map(str, declarations)) + '\n\n')
+		if declarations:
+			finalLines.append('DECLARE\n')
+			finalLines.append('\n'.join(map(str, declarations)) + '\n\n')
 		finalLines.append('\nBEGIN\n\n')
 		finalLines.append('\n'.join(map(str, statements)) + '\n\n')
 		finalLines.append('\n'.join(map(str, endUp)) + '\n')
