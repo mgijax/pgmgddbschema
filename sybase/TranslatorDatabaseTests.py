@@ -174,7 +174,7 @@ class ACCRefInsertTest(unittest.TestCase,CommonProcedureLoadTest):
 				and _refs_key=%d
 			"""%(accKey,refKey)
 		self.pgCur.execute(selectSQL)
-		self.assertEquals(1,self.pgCur.fetchone[0])
+		self.assertEquals(1,self.pgCur.fetchone()[0])
 
 # specifically test the behavior of the MRK_deleteIMAGESeqAssoc procedure
 class MRK_deleteIMAGESeqAssocTest(unittest.TestCase,CommonProcedureLoadTest):
@@ -225,7 +225,7 @@ class MRK_deleteIMAGESeqAssocTest(unittest.TestCase,CommonProcedureLoadTest):
 				and _marker_key=%d
 			"""%(prbKey,mrkKey)
 		self.pgCur.execute(selectSQL)
-		self.assertEquals(0,self.pgCur.fetchone[0])
+		self.assertEquals(0,self.pgCur.fetchone()[0])
 
 def suite():
 	suitesToRun = [
