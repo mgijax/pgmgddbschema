@@ -84,9 +84,6 @@ class SimpleProcedureLoadTest(unittest.TestCase,CommonProcedureLoadTest):
 	def testACC_split(self):
 		self.translateAndLoadProc("ACC_split")
 
-	def testACC_verifySequenceAnnotation(self):
-		self.translateAndLoadProc("ACC_verifySequenceAnnotation")
-
 	def testALL_mergeAllele(self):
 		self.translateAndLoadProc("ALL_mergeAllele")
 

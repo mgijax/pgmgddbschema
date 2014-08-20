@@ -3,6 +3,41 @@ import translatesp
 
 Translator = translatesp.Translator
 
+class TranslateConvertStatementTest(unittest.TestCase):
+	def setUp(self):
+		self.translator = Translator()
+	
+	### TESTS ###
+	def testTranslateConvertNotFount(self):
+		line = "select var from table"
+		translated = self.translator.translateConvert(line)
+		self.assertEquals(line, translated)
+
+	def testTranslateConvertInteger(self):
+		line = "convert(integer, var1)"
+		translated = self.translator.translateConvert(line)
+		self.assertEquals("var1::integer", translated)
+
+	def testTranslateConvertChar(self):
+		line = "convert(char(10), var1)"
+		translated = self.translator.translateConvert(line)
+		self.assertEquals("var1::char(10)", translated)
+
+	def testTranslateConvertVarchar(self):
+		line = "convert(varchar(100), var1)"
+		translated = self.translator.translateConvert(line)
+		self.assertEquals("var1::varchar(100)", translated)
+
+	def testTranslateConvertWithSurroundingWords(self):
+		line = "if t > convert(integer, var1) and isTest"
+		translated = self.translator.translateConvert(line)
+		self.assertEquals("if t > var1::integer and isTest", translated)
+
+	def testTranslateConvertMultiples(self):
+		line = "convert(integer, var1) + convert(varchar(20), var2)"
+		translated = self.translator.translateConvert(line)
+		self.assertEquals("var1::integer + var2::varchar(20)", translated)
+
 class TranslateCreateBlockTest(unittest.TestCase):
 	def setUp(self):
 		self.translator = Translator()
@@ -22,6 +57,11 @@ class TranslateCreateBlockTest(unittest.TestCase):
 		lines = ["create procedure x","@var1 integer,","@var2 varchar(10)","as"]
 		statements,variables = self.translator.translateCreateBlock(lines)
 		self.assertEquals(["int","varchar"],variables)
+
+	def testTranslateCreateBlockWithParamsCheckOutputVariables(self):
+		lines = ["create procedure x","@var1 integer,","@var2 varchar(10) out","as"]
+		statements,variables = self.translator.translateCreateBlock(lines)
+		self.assertEquals(["int"],variables)
 
 	def testTranslateCreateBlockOutParam(self):
 		lines = ["create procedure x","@prefixPart varchar(30) out","as"]
@@ -244,6 +284,7 @@ class GetSpFuncNameTest(unittest.TestCase):
 
 def suite():
 	suitesToRun = [
+		TranslateConvertStatementTest,
 		TranslateCreateBlockTest,
 		TranslateSelectBlockTest,
 		TranslateDeleteBlockTest,

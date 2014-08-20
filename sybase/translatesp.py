@@ -57,6 +57,11 @@ class Translator(object):
 		originalLines = originalSQL.split('\n')
 		spFunc = self.getSpFuncName(originalLines)
 
+		#
+		# translate all convert statements first
+		#
+		originalLines = self.translateConvertStatements(originalLines)
+
 		# get the high level statement blocks
 		topBlocks = self.getBlocks(originalLines)
 
@@ -179,7 +184,6 @@ class Translator(object):
 			elif r.find('cat ') >= 0:
 				translated.append('cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0')
 				translated.append('\nDROP FUNCTION %s(%s);'%(spFunc, ','.join(variables)))
-				translated.append('GRANT EXECUTE ON FUNCTION %s(%s);'%(spFunc, ','.join(variables)))
 			elif r.find('use') >= 0 or r.find('go') >= 0:
 				continue
 			else:
@@ -199,6 +203,7 @@ class Translator(object):
 			r = r.replace('@', '')
 			r = r.replace('"', '\'')
 			r = r.replace('integer', 'int')
+			thisRowIsOutput = 0
 
 			# check if we have output parameter
 			if r.find('out') > 0:
@@ -207,6 +212,7 @@ class Translator(object):
 				r = r.replace(' out','')
 				r = 'out ' + r
 				hasOutput = 1
+				thisRowIsOutput = 1
 
 			if r.strip() == 'as':
 				if hasOutput:
@@ -216,11 +222,13 @@ class Translator(object):
 				translated.append(r)
 
 			elif r.find('int') >= 0:
-				variables.append('int')
+				if not thisRowIsOutput:
+					variables.append('int')
 				translated.append(r)
 
 			elif r.find('varchar') >= 0:
-				variables.append('varchar')
+				if not thisRowIsOutput:
+					variables.append('varchar')
 				translated.append(r)
 
 		return translated,variables
@@ -238,7 +246,7 @@ class Translator(object):
 	def translateSelectBlock(self,lines):
 		translated = []
 		for r in lines:
-			# convert variable assignment to PG style
+			# translate variable assignment to PG style
 			selectIntoPos = r.find('select @')
 			equalPos = r.find('=')
 			if selectIntoPos >= 0 and equalPos > selectIntoPos:
@@ -342,6 +350,48 @@ class Translator(object):
 		
 		statements.append('end if;\n')
 		return statements, declarations
+
+
+	# takes lines and translates all convert statements
+	def translateConvertStatements(self,lines):
+		translated = []
+		for r in lines:
+			r = self.translateConvert(r)
+			translated.append(r)
+		return translated
+
+	# takes a line and translates any convert statements
+	def translateConvert(self,line):
+		foundConvert = 1
+		while foundConvert:
+			# figure out the bounds of each convert(...) statement
+			convertStart = 'convert('
+			convertIndex = line.find(convertStart)
+			argIndex = convertIndex + len(convertStart)
+			closeParenIndex = self.findClosedParenIndex(line,argIndex)
+			if convertIndex >= 0 and closeParenIndex > convertIndex:
+					args = line[argIndex:closeParenIndex].split(',')
+					argType = args[0].strip()	
+					argValue = args[1].strip()
+					line = line[0:convertIndex] + "%s::%s"%(argValue,argType) \
+						+ line[closeParenIndex+1:]
+			else:
+				foundConvert = 0
+
+		return line
+
+	# returns the first find that closed the open paren at openParenIndex
+	def findClosedParenIndex(self,line,openParenIndex):
+		openParens = 0
+		for i in range(openParenIndex,len(line)):
+			c = line[i]
+			if c == '(':
+				openParens += 1
+			elif c == ')':
+				if openParens == 0:
+					return i
+				openParens -= 1
+		return -1
 
 
 	# pulls the procedure name out of the create statement
