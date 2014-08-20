@@ -84,7 +84,7 @@ class Translator(object):
 				if newStatements:
 					statements.extend(newStatements)
 				if newDeclarations:
-					declarations = newDeclarations
+					declarations.extend(newDeclarations)
 
 		#
 		# end block : begins where "checkpoint" used to be
