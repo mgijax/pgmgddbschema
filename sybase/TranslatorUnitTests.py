@@ -68,6 +68,61 @@ class TranslateCharindexStatementTest(unittest.TestCase):
 		translated = self.translator.translateCharindex(line)
 		self.assertEquals("position('t' in var1) + position('t' in var2)", translated)
 
+# test the translateAddition method
+class TranslateAdditionTest(unittest.TestCase):
+	def setUp(self):
+		self.translator = Translator()
+	
+	### TESTS ###
+	def testTranslateAdditionNotFound(self):
+		line = "select var from table"
+		translated = self.translator.translateAddition(line)
+		self.assertEquals(line, translated)
+
+	def testTranslateAdditionOnlyNumbers(self):
+		line = "select var = 1 + 2"
+		translated = self.translator.translateAddition(line)
+		self.assertEquals(line, translated)
+
+	def testTranslateAdditionOnlyColumns(self):
+		line = "select var = col1 + col3"
+		translated = self.translator.translateAddition(line)
+		self.assertEquals(line, translated)
+
+	def testTranslateAdditionSringLiterals(self):
+		line = "select var = 'test' + 'test'"
+		translated = self.translator.translateAddition(line)
+		self.assertEquals("select var = 'test' || 'test'", translated)
+
+	def testTranslateAdditionSringVariables(self):
+		self.translator.variableMap['var1'] = 'char'
+		self.translator.variableMap['var2'] = 'char'
+		line = "select var = var1 + var2"
+		translated = self.translator.translateAddition(line)
+		self.assertEquals("select var = var1 || var2", translated)
+
+	def testTranslateAdditionVarcharVariables(self):
+		self.translator.variableMap['var1'] = 'varchar'
+		self.translator.variableMap['var2'] = 'varchar'
+		line = "select var = var1 + var2"
+		translated = self.translator.translateAddition(line)
+		self.assertEquals("select var = var1 || var2", translated)
+
+	def testTranslateAdditionIntVariables(self):
+		self.translator.variableMap['var1'] = 'int'
+		self.translator.variableMap['var2'] = 'int'
+		line = "select var = var1 + var2"
+		translated = self.translator.translateAddition(line)
+		self.assertEquals(line, translated)
+
+	def testTranslateAdditionMultiples(self):
+		self.translator.variableMap['var1'] = 'int'
+		self.translator.variableMap['var2'] = 'varchar'
+		line = "select var = var1 + 1, test = var2 + 'test'"
+		translated = self.translator.translateAddition(line)
+		self.assertEquals("select var = var1 + 1, test = var2 || 'test'", translated)
+
+
 class TranslateCreateBlockTest(unittest.TestCase):
 	def setUp(self):
 		self.translator = Translator()
@@ -193,6 +248,11 @@ class TranslateIfBlockTest(unittest.TestCase):
 			"else","begin","end"]
 		statements, declarations = self.translator.translateIfBlock(lines)
 		self.assertEquals("if exists something\nthen\nelse if exists something2\nthen\nelse\nthen\nend if;\n","\n".join(statements))
+
+	def testTranslateIfNestedWithAtSymbol(self):
+		lines = ["if exists @var","begin","select @var = 'T'","end"]
+		statements, declarations = self.translator.translateIfBlock(lines)
+		self.assertEquals("if exists var\nthen\n\tselect into var 'T'\n\t;\n\nend if;\n","\n".join(statements))
 
 # Test the getBlocks() function
 class GetBlocksTest(unittest.TestCase):
@@ -335,6 +395,7 @@ def suite():
 	suitesToRun = [
 		TranslateConvertStatementTest,
 		TranslateCharindexStatementTest,
+		TranslateAdditionTest,
 		TranslateCreateBlockTest,
 		TranslateSelectBlockTest,
 		TranslateDeleteBlockTest,

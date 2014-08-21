@@ -29,10 +29,15 @@ GO = "go"
 
 class Translator(object):
 
-	# Environment Variables
-	# set relative paths to this directory if environment variables not set
-	MGD_DBSCHEMADIR = os.getenv('MGD_DBSCHEMADIR') or '../../mgddbschema'
-	PG_MGD_DBSCHEMADIR = os.getenv('PG_MGD_DBSCHEMADIR') or '..'
+	def __init__(self):
+		# Environment Variables
+		# set relative paths to this directory if environment variables not set
+		self.MGD_DBSCHEMADIR = os.getenv('MGD_DBSCHEMADIR') or '../../mgddbschema'
+		self.PG_MGD_DBSCHEMADIR = os.getenv('PG_MGD_DBSCHEMADIR') or '..'
+
+		# globals
+		# a map to store variable name -> type 
+		self.variableMap = {}
 
 	# Main translator function
 	# converts sybase file to a pg file
@@ -47,6 +52,9 @@ class Translator(object):
 	def translate(self,originalSQL):
 		global STARTUP,DECLARE,CREATE,INSERT,UPDATE,DELETE
 
+		# initialize the variableMap for tracking variable names and types
+		self.variableMap = {}
+
 		startUp = []
 		endUp = []
 		creation = []
@@ -57,12 +65,7 @@ class Translator(object):
 		originalLines = originalSQL.split('\n')
 		spFunc = self.getSpFuncName(originalLines)
 
-		#
-		# translate all special functions statements first
-		# E.G. convert, charindex, etc
-		#
 		originalLines = self.removeBlanks(originalLines)
-		originalLines = self.translateSpecialFunctions(originalLines)
 
 		# get the high level statement blocks
 		topBlocks = self.getBlocks(originalLines)
@@ -93,6 +96,13 @@ class Translator(object):
 				if newDeclarations:
 					declarations.extend(newDeclarations)
 		
+
+		#
+		# translate all special functions statements 
+		# E.G. convert, charindex, etc
+		#
+		statements = self.translateSpecialFunctions(statements)
+
 		#
 		# now translate the startUp with the found variables
 		#
@@ -226,11 +236,13 @@ class Translator(object):
 			elif r.find('int') >= 0:
 				if not thisRowIsOutput:
 					variables.append('int')
+				self.addVariable('@'+r)
 				translated.append(r)
 
 			elif r.find('varchar') >= 0:
 				if not thisRowIsOutput:
 					variables.append('varchar')
+				self.addVariable('@'+r)
 				translated.append(r)
 
 		return translated,variables
@@ -238,6 +250,7 @@ class Translator(object):
 	def translateDeclareBlock(self,lines):
 		translated = []
 		for r in lines:
+			self.addVariable(r)
 			r = r.replace('declare ', '')
 			r = r.replace('@', '')
 			r = r.replace('integer', 'int')
@@ -318,7 +331,11 @@ class Translator(object):
 		subIfCount = 0
 		for i in range(len(lines)):
 			r = lines[i]
-			r = r.replace('@','')
+			# we don't want to replace things in the inner blocks,
+			# because they get translated on their own, and some 
+			# translators look for the @ symbol
+			if subIfCount == 0:
+				r = r.replace('@','')
 			if r.strip() == '':
 				continue
 
@@ -362,12 +379,17 @@ class Translator(object):
 			translated.append(r)
 		return translated
 
+	def replaceDoubleQuotes(self,line):
+		return line.replace('"','\'')
+
 	# takes lines and translates all special functions
 	def translateSpecialFunctions(self,lines):
 		translated = []
 		for r in lines:
+			r = self.replaceDoubleQuotes(r)
 			r = self.translateConvert(r)
 			r = self.translateCharindex(r)
+			r = self.translateAddition(r)
 			translated.append(r)
 		return translated
 
@@ -411,6 +433,42 @@ class Translator(object):
 
 		return line
 
+	# takes a line and translates any + signs to || if the variables are string (i.e. varchar or char)
+	def translateAddition(self,line):
+		# find each + sign
+		plusIndex = line.find(' + ')
+		while plusIndex >= 0:
+			boundLeft = line.rfind(' ',0,plusIndex)
+			boundRight = line.find(' ',plusIndex+3)
+			if boundRight < 0:
+				boundRight = len(line)
+
+			if boundLeft > 0 and \
+				plusIndex > boundLeft and \
+				boundRight > plusIndex:
+				# now we can parse out the variable operands
+				operand1 = line[boundLeft:plusIndex].replace('@','').strip()
+				operand1Type = operand1 in self.variableMap and self.variableMap[operand1] or ''
+
+				operand2 = line[plusIndex+3:boundRight].replace('@','').strip()
+				operand2Type = operand2 in self.variableMap and self.variableMap[operand2] or ''
+
+				isString = False
+				if '\'' in operand1 or '\'' in operand2:
+					isString = True
+				elif operand1Type in ['char','varchar'] or operand2Type in ['char','varchar']:
+					isString = True
+				
+				# for string operations only, + becomes ||
+				if isString:
+					line = line[:plusIndex] + ' || ' + line[plusIndex+3:]
+
+				plusIndex = line.find(' + ',plusIndex+3)
+			else:
+				plusIndex = -1
+
+		return line
+
 	# returns the first find that closed the open paren at openParenIndex
 	def findClosedParenIndex(self,line,openParenIndex):
 		openParens = 0
@@ -430,6 +488,25 @@ class Translator(object):
 					openParens -= 1
 		return -1
 
+
+	# takes in a line with a variable in it, and adds it to the variableMap
+	def addVariable(self,line):
+		line = line.strip()
+		# get var name
+		varIndex = line.find('@')
+		varEnd = line.find(' ',varIndex)
+		if varIndex >= 0 and varEnd > varIndex:
+			varName = line[varIndex:varEnd].replace('@','')
+			varType = None
+			if line.find('int',varIndex) >= 0:
+				varType = 'int'
+			elif line.find('varchar',varIndex) >= 0:
+				varType = 'varchar'
+			elif line.find('char',varIndex) >= 0:
+				varType = 'char'
+			
+			if varType:
+				self.variableMap[varName] = varType
 
 	# pulls the procedure name out of the create statement
 	# NOTE: this isn't 100% necessary, 

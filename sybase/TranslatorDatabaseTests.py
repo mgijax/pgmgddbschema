@@ -315,7 +315,7 @@ class BIB_getCopyrightTest(unittest.TestCase,CommonProcedureLoadTest):
 		self.pgCur.execute("select BIB_getCopyright(%d)"%(refKey))
 
 		# verify that it returns correct copyright
-		self.assertEquals('Elsevier(testJnum)',self.pgCur.fetchone()[0].strip())
+		self.assertEquals('Elsevier(testJnum)',self.pgCur.fetchone()[0])
 
 	def testProcNatlAcadJournal(self):
 		refKey = 999999999
@@ -334,8 +334,7 @@ class BIB_getCopyrightTest(unittest.TestCase,CommonProcedureLoadTest):
 		self.pgCur.execute("select BIB_getCopyright(%d)"%(refKey))
 
 		# verify that it returns the correct copyright
-		# TODO: not sure what this is supposed to return
-		self.assertEquals('',self.pgCur.fetchone()[0].strip())
+		self.assertEquals('test note',self.pgCur.fetchone()[0].strip())
 
 def suite():
 	suitesToRun = [
