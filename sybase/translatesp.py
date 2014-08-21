@@ -357,6 +357,7 @@ class Translator(object):
 			# translators look for the @ symbol
 			if subIfCount == 0:
 				r = r.replace('@','')
+				r = r.replace('else if','elsif')
 			if r.strip() == '':
 				continue
 

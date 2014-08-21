@@ -247,7 +247,7 @@ class TranslateIfBlockTest(unittest.TestCase):
 			"else if exists something2","begin","end",
 			"else","begin","end"]
 		statements, declarations = self.translator.translateIfBlock(lines)
-		self.assertEquals("if exists something\nthen\nelse if exists something2\nthen\nelse\nend if;\n","\n".join(statements))
+		self.assertEquals("if exists something\nthen\nelsif exists something2\nthen\nelse\nend if;\n","\n".join(statements))
 
 	def testTranslateIfNestedWithAtSymbol(self):
 		lines = ["if exists @var","begin","select @var = 'T'","end"]
