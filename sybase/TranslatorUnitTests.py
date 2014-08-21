@@ -247,12 +247,17 @@ class TranslateIfBlockTest(unittest.TestCase):
 			"else if exists something2","begin","end",
 			"else","begin","end"]
 		statements, declarations = self.translator.translateIfBlock(lines)
-		self.assertEquals("if exists something\nthen\nelse if exists something2\nthen\nelse\nthen\nend if;\n","\n".join(statements))
+		self.assertEquals("if exists something\nthen\nelse if exists something2\nthen\nelse\nend if;\n","\n".join(statements))
 
 	def testTranslateIfNestedWithAtSymbol(self):
 		lines = ["if exists @var","begin","select @var = 'T'","end"]
 		statements, declarations = self.translator.translateIfBlock(lines)
 		self.assertEquals("if exists var\nthen\n\tselect into var 'T'\n\t;\n\nend if;\n","\n".join(statements))
+
+	def testTranslateIfWithCommentsBetween(self):
+		lines = ["if x","begin","end","/* comment */","else","begin","end"]
+		statements, declarations = self.translator.translateIfBlock(lines)
+		self.assertEquals("if x\nthen\n/* comment */\nelse\nend if;\n","\n".join(statements))
 
 # Test the getBlocks() function
 class GetBlocksTest(unittest.TestCase):
@@ -368,13 +373,17 @@ class GetBlocksTest(unittest.TestCase):
 		self.assertEquals(1,len(blocks))
 		self.assertEquals(translatesp.IF,blocks[0][0])
 
-	def testGetBlocksElsefBlock(self):
+	def testGetBlocksElseBlock(self):
 		lines = ["if exists something","begin","\treturn","end",
-			"else somthing","begin","...","end"]
+			"else","begin","...","end"]
 		blocks = self.translator.getBlocks(lines)
 		self.assertEquals(1,len(blocks))
 		self.assertEquals(translatesp.IF,blocks[0][0])
 
+	def testGetBlocksIfElseWithCommentsBetween(self):
+		lines = ["if x","begin","end","/* comment */","else","begin","end"]
+		blocks = self.translator.getBlocks(lines)
+		self.assertEquals(1,len(blocks))
 
 class GetSpFuncNameTest(unittest.TestCase):
 	def setUp(self):

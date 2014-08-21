@@ -362,7 +362,9 @@ class Translator(object):
 
 			if r.strip() == 'begin':
 				if subIfCount == 0:
-					statements.append('then')	
+					# don't append then for an else block
+					if lines[i-1].strip() != 'else':
+						statements.append('then')	
 				else:
 					innerBlock.append(r)
 				subIfCount += 1	
@@ -598,7 +600,7 @@ class Translator(object):
 					# here we essentially look for the next type of block that isn't 
 					# part of a sub-if, or else if/else block
 					nextType = self.getBlockType(line)
-					if nextType:
+					if nextType and nextType not in [COMMENT,DASHCOMMENT]:
 						return blockType, i
 		else:
 			# if INSERT INTO, only look for next type after incrementing past
