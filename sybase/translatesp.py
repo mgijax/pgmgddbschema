@@ -22,10 +22,12 @@ UPDATE = "update"
 DELETE = "delete"
 CHECKPOINT = "checkpoint"
 COMMENT = "comment"
+DASHCOMMENT = "dashcomment"
 IF = "if"
 RETURN = "return"
 COMMIT = "commit"
 GO = "go"
+PRINT = "print"
 
 class Translator(object):
 
@@ -173,8 +175,12 @@ class Translator(object):
 			translated = self.translateReturnBlock(lines)
 			statements.extend(translated)
 
+		elif blockType == PRINT:
+			translated = self.translatePrintBlock(lines)
+			statements.extend(translated)
+
 		# Add theses blocks untranslated
-		elif blockType in [COMMENT]:
+		elif blockType in [COMMENT,DASHCOMMENT]:
 			statements.extend(lines)
 
 		# else: anything not speficially handled above gets omitted
@@ -245,6 +251,13 @@ class Translator(object):
 				self.addVariable('@'+r)
 				translated.append(r)
 
+			elif r.find('datetime') >= 0:
+				r = r.replace('datetime','timestamp')
+				if not thisRowIsOutput:
+					variables.append('timestamp')
+				self.addVariable('@'+r)
+				translated.append(r)
+
 		return translated,variables
 
 	def translateDeclareBlock(self,lines):
@@ -283,6 +296,7 @@ class Translator(object):
 			if r.strip() == 'go':
 				continue
 			r = r.replace('@', '')
+			r = r.replace('offset','"offset"')
 			translated.append(r)
 		translated.append(';\n')
 		return translated
@@ -320,6 +334,13 @@ class Translator(object):
 	def translateReturnBlock(self,lines):
 		translated = []
 		for r in lines:
+			translated.append(r + ';')
+		return translated
+
+	def translatePrintBlock(self,lines):
+		translated = []
+		for r in lines:
+			r = r.replace('print','raise notice')
 			translated.append(r + ';')
 		return translated
 
@@ -380,6 +401,8 @@ class Translator(object):
 		return translated
 
 	def replaceDoubleQuotes(self,line):
+		if line.find('"offset"'):
+			return line
 		return line.replace('"','\'')
 
 	# takes lines and translates all special functions
@@ -504,6 +527,8 @@ class Translator(object):
 				varType = 'varchar'
 			elif line.find('char',varIndex) >= 0:
 				varType = 'char'
+			elif line.find('timestamp',varIndex) >= 0:
+				varType = 'timestamp'
 			
 			if varType:
 				self.variableMap[varName] = varType
@@ -602,6 +627,8 @@ class Translator(object):
 		line = line.strip()
 		if line.find('/*') == 0:
 			return COMMENT
+		if line.find('--') == 0:
+			return DASHCOMMENT
 		elif line.find('if') == 0:
 			return IF
 		elif line.find('return') == 0:
@@ -630,6 +657,8 @@ class Translator(object):
 			return CHECKPOINT
 		elif line.find("go") == 0:
 			return GO
+		elif line.find('print') == 0:
+			return PRINT
 		return None
 
 	# Read input from the sybase procedure file
