@@ -57,12 +57,12 @@ class CommonProcedureLoadTest(object):
 			"""%(prbKey,name)
 		self.pgCur.execute(insertSQL)
 
-	def insertFakeReferenceRecord(self,refKey,journal='T'):
+	def insertFakeReferenceRecord(self,refKey,journal='T',year=2000):
 		insertSQL = """insert into bib_refs
-			(_refs_key,_reviewstatus_key,reftype,nlmstatus,isreviewarticle,journal,
+			(_refs_key,_reviewstatus_key,reftype,nlmstatus,isreviewarticle,journal,year,
 				_createdby_key,_modifiedby_key,creation_date,modification_date) 
-			values (%d,1,'T','T',1,'%s',1001,1001,now(),now())
-			"""%(refKey,journal)
+			values (%d,1,'T','T',1,'%s',%d,1001,1001,now(),now())
+			"""%(refKey,journal,year)
 		self.pgCur.execute(insertSQL)
 
 	def insertFakeBibCitationCache(self,refKey,jnumId='T'):
@@ -298,6 +298,10 @@ class BIB_getCopyrightTest(unittest.TestCase,CommonProcedureLoadTest):
 		# verify that it returns the default, which is the journal note
 		self.assertEquals('test note',self.pgCur.fetchone()[0].strip())
 
+	def logInsert(self,table,whereClause):
+		self.pgCur.execute("select * from %s where %s"%(table,whereClause))
+		print "inserted into %s = %s"%(table,self.pgCur.fetchall())
+
 	def testElsevierNote(self):
 		refKey = 999999999
 		termKey = 999999999
@@ -307,7 +311,7 @@ class BIB_getCopyrightTest(unittest.TestCase,CommonProcedureLoadTest):
 		jnumid = 'testJnum'
 		
 		self.insertFakeReferenceRecord(refKey,journal=journal)
-		self.insertFakeBibCitationCache(refKey)
+		self.insertFakeBibCitationCache(refKey,jnumId=jnumid)
 		self.insertFakeVocTerm(termKey,journal,vocabKey=self.journalVocabKey)
 		self.insertFakeNote(noteKey,termKey,note,mgiTypeKey=self.termMgiTypeKey,noteTypeKey=self.termNoteType)
 
@@ -315,17 +319,17 @@ class BIB_getCopyrightTest(unittest.TestCase,CommonProcedureLoadTest):
 		self.pgCur.execute("select BIB_getCopyright(%d)"%(refKey))
 
 		# verify that it returns correct copyright
-		self.assertEquals('Elsevier(testJnum)',self.pgCur.fetchone()[0])
+		self.assertEquals('Elsevier(testJnum)',self.pgCur.fetchone()[0].strip())
 
 	def testProcNatlAcadJournal(self):
 		refKey = 999999999
 		termKey = 999999999
 		noteKey = 999999999
 		journal = 'Proc Natl Acad Sci U S A'
-		note = 'test note'
-		jnumid = 'testJnum'
+		year = 2009
+		note = 'This image is from *. Copyright * National Academy of Sciences, U.S.A.'
 		
-		self.insertFakeReferenceRecord(refKey,journal=journal)
+		self.insertFakeReferenceRecord(refKey,journal=journal,year=year)
 		self.insertFakeBibCitationCache(refKey)
 		self.insertFakeVocTerm(termKey,journal,vocabKey=self.journalVocabKey)
 		self.insertFakeNote(noteKey,termKey,note,mgiTypeKey=self.termMgiTypeKey,noteTypeKey=self.termNoteType)
@@ -334,7 +338,7 @@ class BIB_getCopyrightTest(unittest.TestCase,CommonProcedureLoadTest):
 		self.pgCur.execute("select BIB_getCopyright(%d)"%(refKey))
 
 		# verify that it returns the correct copyright
-		self.assertEquals('test note',self.pgCur.fetchone()[0].strip())
+		self.assertEquals('This image is from T. Copyright 2009 National Academy of Sciences, U.S.A.',self.pgCur.fetchone()[0].strip())
 
 def suite():
 	suitesToRun = [

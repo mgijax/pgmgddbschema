@@ -273,21 +273,97 @@ class Translator(object):
 
 	def translateSelectBlock(self,lines):
 		translated = []
+		selectIntoBlock = []
+		isSelectIntoSection = 0
+	
+		newLines = []
+		#
+		# First check for select into variables
+		# translate variable assignment to PG style
+		#
 		for r in lines:
-			# translate variable assignment to PG style
-			selectIntoPos = r.find('select @')
-			equalPos = r.find('=')
-			if selectIntoPos >= 0 and equalPos > selectIntoPos:
-				r = r.replace('select @','select into ')
-				if r.find(' = ') >= selectIntoPos:
-					r = r.replace(' = ',' ',1)
+			if not isSelectIntoSection:
+				selectIntoPos = r.find('select @')
+				equalPos = r.find('=')
+				if selectIntoPos >= 0 and equalPos > selectIntoPos:
+					isSelectIntoSection = 1
+			if isSelectIntoSection:
+				if r.find('from') >= 0:
+					selectIntoBlock.append(r)
+					newLines.extend(self.translateSelectInto(selectIntoBlock))
+					selectIntoBlock = []
+					isSelectIntoSection = 0
+					continue
 				else:
-					r = r.replace('=',' ',1)
-				
+					selectIntoBlock.append(r)
+					continue
+			newLines.append(r)
+		if selectIntoBlock:
+			newLines.extend(self.translateSelectInto(selectIntoBlock))
+
+
+		for r in newLines:
 			r = r.replace('user_name()', 'current_user')
 			r = r.replace('@', '')
 			translated.append(r)
 		translated.append(';\n')
+		return translated
+
+	def translateSelectInto(self,lines):
+		translated = []
+		block = '\n'.join(lines)
+
+		atPos = 0
+		variables = []
+		values = []
+		endPos = -1 
+		while atPos >= 0:
+			atPos = block.find('@',atPos)
+			equalPos = block.find('=',atPos)
+			if atPos >= 0 and equalPos > atPos:
+				# find where this variable assignment ends
+				# check next @ sign first, 
+				# then check begin of from statement
+				# else, just use end of block
+				nextAtPos = block.find('@',atPos+1)
+				fromPos = block.find('from')
+				endPos = fromPos
+				if nextAtPos >= 0 and nextAtPos < fromPos:
+					endPos = nextAtPos
+
+				if endPos < 0:
+					endPos = len(block)
+
+				assignment = block[atPos:endPos].strip()
+				operands = assignment.split('=')
+				if len(operands) == 2:
+					variable = operands[0].strip()
+					value = operands[1].strip()
+					variables.append(variable)
+					values.append(value)
+
+				atPos += 1
+			else:
+				atPos = -1
+
+		# build from clause if included
+		fromClause = ''
+		if endPos >= 0:
+			fromClause = block[endPos:]
+
+		# assemble the pieces
+		if len(values) == 1:
+			parts = [variables[0],values[0]]
+			if fromClause:
+				parts.append(fromClause)
+			translated.append('select into %s'%' '.join(parts))
+		else:
+			translated.append('select')	
+			translated.extend(values)
+			translated.append('into')
+			translated.extend([r + ',' for r in variables[0:-1]] + [variables[-1]])
+			translated.append(fromClause)
+		
 		return translated
 
 	def translateInsertBlock(self,lines):
@@ -340,6 +416,7 @@ class Translator(object):
 	def translatePrintBlock(self,lines):
 		translated = []
 		for r in lines:
+			r = r.replace('@','')
 			r = r.replace('print','raise notice')
 			translated.append(r + ';')
 		return translated

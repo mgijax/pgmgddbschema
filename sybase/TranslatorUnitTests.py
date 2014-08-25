@@ -179,10 +179,30 @@ class TranslateSelectBlockTest(unittest.TestCase):
 		statements = self.translator.translateSelectBlock(lines)
 		self.assertEquals(["select into var1 col from table",";\n"],statements)
 
+	def testTranslateSelectIntoWithMultiples(self):
+		lines = ["select @var1 = col, @var2 = col2, @var3 = col3 from table"]
+		statements = self.translator.translateSelectBlock(lines)
+		self.assertEquals(["select","col,","col2,","col3","into","var1,","var2,","var3","from table",";\n"],statements)
+
+	def testTranslateSelectIntoWithMultiplesOnSeparateLines(self):
+		lines = ["select @var1 = col,","@var2 = col2,","@var3 = col3 from table"]
+		statements = self.translator.translateSelectBlock(lines)
+		self.assertEquals(["select","col,","col2,","col3","into","var1,","var2,","var3","from table",";\n"],statements)
+
+	def testTranslateSelectIntoWithMultiplesAndFunctions(self):
+		lines = ["select @var1 = col,","@var2 = convert(varchar(20),col2)","from table"]
+		statements = self.translator.translateSelectBlock(lines)
+		self.assertEquals(["select","col,","convert(varchar(20),col2)","into","var1,","var2","from table",";\n"],statements)
+
 	def testTranslateSelectIntoVariation2(self):
 		lines = ["select @var1=col from table"]
 		statements = self.translator.translateSelectBlock(lines)
 		self.assertEquals(["select into var1 col from table",";\n"],statements)
+
+	def testTranslateSelectIntoVariation3(self):
+		lines = ["select @oldCyto = cytogeneticOffset from MRK_Marker where _Marker_key = @oldKey"]
+		statements = self.translator.translateSelectBlock(lines)
+		self.assertEquals(["select into oldCyto cytogeneticOffset from MRK_Marker where _Marker_key = oldKey",";\n"],statements)
 
 	def testTranslateSelectIntoMultiline(self):
 		lines = ["select @var1 = col from table","where col='test'"]
