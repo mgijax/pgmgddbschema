@@ -481,20 +481,25 @@ class Translator(object):
 		return translated
 
 	def replaceDoubleQuotes(self,line):
-		if line.find('"offset"'):
+		if line.find('"offset"') >= 0:
 			return line
-		return line.replace('"','\'')
+		return line.replace('\"','\'')
 
 	# takes lines and translates all special functions
 	def translateSpecialFunctions(self,lines):
 		translated = []
 		for r in lines:
 			r = self.replaceDoubleQuotes(r)
+			r = self.translateGetdate(r)
 			r = self.translateConvert(r)
 			r = self.translateCharindex(r)
 			r = self.translateAddition(r)
 			translated.append(r)
 		return translated
+
+	# translate the getdate() function
+	def translateGetdate(self,line):
+		return line.replace('getdate()','current_date')
 
 	# takes a line and translates any convert statements
 	def translateConvert(self,line):

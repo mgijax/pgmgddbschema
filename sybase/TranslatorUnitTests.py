@@ -38,6 +38,47 @@ class TranslateConvertStatementTest(unittest.TestCase):
 		translated = self.translator.translateConvert(line)
 		self.assertEquals("var1::integer + var2::varchar(20)", translated)
 
+class TranslateGetdateStatementTest(unittest.TestCase):
+	def setUp(self):
+		self.translator = Translator()
+	
+	### TESTS ###
+	def testTranslateGetdateNotFound(self):
+		line = "select var from table"
+		translated = self.translator.translateGetdate(line)
+		self.assertEquals(line, translated)
+
+	def testTranslateGetdate(self):
+		line = "getdate()"
+		translated = self.translator.translateGetdate(line)
+		self.assertEquals("current_date", translated)
+
+	def testTranslateGetdateInMiddle(self):
+		line = "before getdate() after"
+		translated = self.translator.translateGetdate(line)
+		self.assertEquals("before current_date after", translated)
+
+class TranslateReplaceDoubleQuotesTest(unittest.TestCase):
+	def setUp(self):
+		self.translator = Translator()
+	
+	### TESTS ###
+	def testDoubleQuotesNotFound(self):
+		line = "select var from table"
+		translated = self.translator.replaceDoubleQuotes(line)
+		self.assertEquals(line, translated)
+
+	def testReplaceDoubleQuotes(self):
+		line = "\"text\""
+		translated = self.translator.replaceDoubleQuotes(line)
+		self.assertEquals("'text'", translated)
+
+	def testReplaceDoubleQuotesMultiples(self):
+		line = "var = \"text\" and var2 = \"text2\""
+		translated = self.translator.replaceDoubleQuotes(line)
+		self.assertEquals("var = 'text' and var2 = 'text2'", translated)
+
+
 class TranslateCharindexStatementTest(unittest.TestCase):
 	def setUp(self):
 		self.translator = Translator()
@@ -423,6 +464,8 @@ class GetSpFuncNameTest(unittest.TestCase):
 def suite():
 	suitesToRun = [
 		TranslateConvertStatementTest,
+		TranslateGetdateStatementTest,
+		TranslateReplaceDoubleQuotesTest,
 		TranslateCharindexStatementTest,
 		TranslateAdditionTest,
 		TranslateCreateBlockTest,
