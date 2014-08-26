@@ -372,7 +372,6 @@ class Translator(object):
 			if r.strip() == 'go':
 				continue
 			r = r.replace('@', '')
-			r = r.replace('offset','"offset"')
 			translated.append(r)
 		translated.append(';\n')
 		return translated
@@ -481,14 +480,16 @@ class Translator(object):
 		return translated
 
 	def replaceDoubleQuotes(self,line):
-		if line.find('"offset"') >= 0:
-			return line
 		return line.replace('\"','\'')
+
+	def replaceOffset(self,line):
+		return line.replace('offset','cmoffset')
 
 	# takes lines and translates all special functions
 	def translateSpecialFunctions(self,lines):
 		translated = []
 		for r in lines:
+			r = self.replaceOffset(r)
 			r = self.replaceDoubleQuotes(r)
 			r = self.translateGetdate(r)
 			r = self.translateConvert(r)

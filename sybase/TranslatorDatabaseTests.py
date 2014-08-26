@@ -39,13 +39,26 @@ class CommonProcedureLoadTest(object):
 			"""%(accKey,accid,logicalDbKey,objectKey,mgiTypeKey)
 		self.pgCur.execute(insertSQL)
 
-	def insertFakeMarkerRecord(self,mrkKey):
+	def insertFakeMarkerRecord(self,mrkKey,cytogeneticoffset=None):
+		if cytogeneticoffset:
+			cytogeneticoffset = "'%s'"%cytogeneticoffset
+		else:
+			cytogeneticoffset = 'null'
 		insertSQL = """
 			insert into mrk_marker
 			(_marker_key,_organism_key,_marker_status_key,_marker_type_key,_curationstate_key,
-				symbol,name,chromosome,_createdby_key,_modifiedby_key,creation_date,modification_date)
-			values (%d,1,1,1,107,'test','test','1',1001,1001,now(),now())
-			"""%(mrkKey)
+				symbol,name,chromosome,cytogeneticoffset,_createdby_key,_modifiedby_key,creation_date,modification_date)
+			values (%d,1,1,1,107,'test','test','1',%s,1001,1001,now(),now())
+			"""%(mrkKey,cytogeneticoffset)
+		self.pgCur.execute(insertSQL)
+
+	def insertFakeMarkerOffsetRecord(self,mrkKey,source=0,cmoffset=1.0):
+		insertSQL = """
+			insert into mrk_offset
+			(_marker_key,source,cmoffset,
+				creation_date,modification_date)
+			values (%d,%d,%1.2f,now(),now())
+			"""%(mrkKey,source,cmoffset)
 		self.pgCur.execute(insertSQL)
 
 	def insertFakeProbeRecord(self,prbKey,name='test'):
@@ -134,9 +147,6 @@ class SimpleProcedureLoadTest(unittest.TestCase,CommonProcedureLoadTest):
 
 	def testMGI_Table_Column_Cleanup(self):
 		self.translateAndLoadProc("MGI_Table_Column_Cleanup")
-
-	def testMGI_checkUserRole(self):
-		self.translateAndLoadProc("MGI_checkUserRole")
 
 	def testMGI_insertReferenceAssoc(self):
 		self.translateAndLoadProc("MGI_insertReferenceAssoc")
@@ -260,6 +270,100 @@ class MRK_deleteIMAGESeqAssocTest(unittest.TestCase,CommonProcedureLoadTest):
 		self.pgCur.execute(selectSQL)
 		self.assertEquals(0,self.pgCur.fetchone()[0])
 
+# specifically test the behavior of the MRK_updateOffset procedure
+class MRK_updateOffsetTest(unittest.TestCase,CommonProcedureLoadTest):
+	
+	def setUp(self):
+		# call the common setUp first
+		CommonProcedureLoadTest.setUp(self)
+		# load the translated MRK_updateOffset procedure
+		self.translateAndLoadProc("MRK_updateOffset")
+
+	def tearDown(self):
+		CommonProcedureLoadTest.tearDown(self)
+
+	def verifyOffset(self,mrkKey,source,offset):
+		self.pgCur.execute("select cmoffset from MRK_Offset where source=%d and _marker_key=%d"%(source,mrkKey))
+		self.assertEquals(offset,self.pgCur.fetchone()[0])
+
+	def verifyCyto(self,mrkKey,cyto):
+		self.pgCur.execute("select cytogeneticoffset from MRK_Marker where _marker_key=%d"%(mrkKey))
+		self.assertEquals(cyto,self.pgCur.fetchone()[0])
+
+	### TESTS ###
+
+	def testUpdateMGDOffset(self):
+		# setup
+		mrkKey1 = 999999999
+		cyto1 = 'Test'
+		cm1 = 10.0
+		# 0 for MGD
+		source = 0
+
+		self.insertFakeMarkerRecord(mrkKey1,cytogeneticoffset=cyto1)
+		self.insertFakeMarkerOffsetRecord(mrkKey1,source=source,cmoffset=cm1)
+		mrkKey2 = 999999998
+		self.insertFakeMarkerRecord(mrkKey2,cytogeneticoffset=cyto1)
+		self.insertFakeMarkerOffsetRecord(mrkKey2,source=source,cmoffset=-1)
+
+		# call the procedure
+		self.pgCur.execute("select MRK_updateOffset(%d,%d)"%(mrkKey1,mrkKey2))
+
+		# verify that MGD offset has been updated
+		self.verifyOffset(mrkKey2,source,cm1)
+
+	def testUpdateCCOffset(self):
+		# setup
+		mrkKey1 = 999999999
+		cyto1 = 'Test'
+		cm1 = 10.0
+		# 0 for CC
+		source = 1
+
+		self.insertFakeMarkerRecord(mrkKey1,cytogeneticoffset=cyto1)
+		self.insertFakeMarkerOffsetRecord(mrkKey1,source=source,cmoffset=cm1)
+		mrkKey2 = 999999998
+		self.insertFakeMarkerRecord(mrkKey2,cytogeneticoffset=cyto1)
+		self.insertFakeMarkerOffsetRecord(mrkKey2,source=source,cmoffset=-1)
+
+		# call the procedure
+		self.pgCur.execute("select MRK_updateOffset(%d,%d)"%(mrkKey1,mrkKey2))
+
+		# verify that MGD offset has been updated
+		self.verifyOffset(mrkKey2,source,cm1)
+
+	def testInsertCCOffset(self):
+		# setup
+		mrkKey1 = 999999999
+		cyto1 = 'Test'
+		cm1 = 10.0
+		# 0 for CC
+		source = 1
+
+		self.insertFakeMarkerRecord(mrkKey1,cytogeneticoffset=cyto1)
+		self.insertFakeMarkerOffsetRecord(mrkKey1,source=source,cmoffset=cm1)
+		mrkKey2 = 999999998
+		self.insertFakeMarkerRecord(mrkKey2,cytogeneticoffset=cyto1)
+
+		# call the procedure
+		self.pgCur.execute("select MRK_updateOffset(%d,%d)"%(mrkKey1,mrkKey2))
+
+		# verify that MGD offset has been updated
+		self.verifyOffset(mrkKey2,source,cm1)
+
+	def testUpdateCyto(self):
+		mrkKey1 = 999999999
+		cyto1 = 'Test'
+		self.insertFakeMarkerRecord(mrkKey1,cytogeneticoffset=cyto1)
+		mrkKey2 = 999999998
+		self.insertFakeMarkerRecord(mrkKey2)
+
+		# call the procedure
+		self.pgCur.execute("select MRK_updateOffset(%d,%d)"%(mrkKey1,mrkKey2))
+
+		# verify that cyto offset has been updated
+		self.verifyCyto(mrkKey2,cyto1)
+
 # specifically test the behavior of the BIB_getCopyright procedure
 class BIB_getCopyrightTest(unittest.TestCase,CommonProcedureLoadTest):
 	
@@ -345,6 +449,7 @@ def suite():
 		SimpleProcedureLoadTest,
 		ACCRefInsertTest,
 		MRK_deleteIMAGESeqAssocTest,
+		MRK_updateOffsetTest,
 		BIB_getCopyrightTest
 	]
 	suites = [unittest.TestLoader().loadTestsFromTestCase(ts) for ts in suitesToRun]
