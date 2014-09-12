@@ -47,7 +47,7 @@ then
 	where _Nomen_key = nomenKey
 	;
 
-	raise notice 'The symbol %1! was a Reserved symbol in Nomen.  \nPlease check the Nomenclature Notes in Nomen for possible Sequence information.', v_symbol;
+	raise notice E'The symbol %1! was a Reserved symbol in Nomen.  \nPlease check the Nomenclature Notes in Nomen for possible Sequence information.', v_symbol;
 end if;
 
 
