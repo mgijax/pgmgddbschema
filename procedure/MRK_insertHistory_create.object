@@ -1,0 +1,92 @@
+#!/bin/sh
+#
+# History
+#
+# 08/19/2014	lec
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION MRK_insertHistory(int,int,int,int,int,varchar,timestamp,int,int,timestamp,timestamp);
+
+CREATE OR REPLACE FUNCTION MRK_insertHistory (
+markerKey int,
+historyKey int,
+refKey int,
+eventKey int,
+eventReasonKey int,
+name varchar(255) = null,
+event_date timestamp = null,
+createdByKey int = null,
+modifiedByKey int = null,
+creation_date timestamp = null,
+modification_date timestamp = null
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+maxSeq int;
+
+
+BEGIN
+
+/* Insert new History record into MRK_History */
+select into maxSeq max(sequenceNum) from MRK_History where _Marker_key = markerKey
+;
+
+if maxSeq is null
+then
+	select into maxSeq 0
+	;
+
+end if;
+
+if event_date is null
+then
+	select into event_date current_date
+	;
+
+end if;
+
+if createdByKey is null
+then
+	select into createdByKey _User_key from MGI_User where login = current_user
+	;
+
+end if;
+
+if modifiedByKey is null
+then
+	select into modifiedByKey _User_key from MGI_User where login = current_user
+	;
+
+end if;
+
+if creation_date is null
+then
+	select into creation_date current_date
+	;
+
+end if;
+
+if modification_date is null
+then
+	select into modification_date current_date
+	;
+
+end if;
+
+insert into MRK_History
+(_Marker_key, _History_key, _Refs_key, _Marker_Event_key, _Marker_EventReason_key, sequenceNum, name, event_date, _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
+values(markerKey, historyKey, refKey, eventKey, eventReasonKey, maxSeq + 1, name, event_date, createdByKey, modifiedByKey, creation_date, modification_date)
+;
+
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MRK_insertHistory(int,int,int,int,int,varchar,timestamp,int,int,timestamp,timestamp) TO public;
+
+EOSQL

@@ -1,0 +1,133 @@
+#!/bin/sh
+#
+# History
+#
+# 08/18/2014    lec
+#
+# lec	04/26/2011
+#	- TR 10686/fix root/red deletion
+#
+# lec	10/04/2005
+#	- TR 5188; GO Qualifier
+#
+# lec	12/15/2003
+#	- TR 5425; delete Annotations to Unknown terms if Annotations
+#	  to non-Unknown terms exist (in same DAG of course).
+#
+# lec	01/31/2002
+#	- TR 2867; merge Annotations of old object to new object
+#	  eliminate duplicate Evidence entries
+#
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION VOC_mergeAnnotations(int,int,int);
+
+CREATE OR REPLACE FUNCTION VOC_mergeAnnotations (
+annotTypeKey int,
+oldKey int,
+newKey int
+)
+RETURNS VOID AS
+\$\$
+
+
+BEGIN
+
+/* Executed from MRK_updateKeys during merge process */
+/* A unique VOC_Annotation record is defined by: */
+/*	_AnnotType_key	*/
+/*	_Object_key	*/
+/*	_Term_key	*/
+/*	_Qualifier_key	*/
+/* A unique VOC_Evidence record is defined by: */
+/*	_Annot_key		*/
+/*	_EvidenceTerm_key	*/
+/*	_Refs_key		*/
+/* Compare Annotations to oldKey to Annotations to newKey */
+/* old set = annotations to oldKey                        */
+/* new set = annotations to newKey                        */
+/*                                                        */
+/* If:                                                    */
+/*    1) for records in old set but not in new set -> add to new set */
+/*    2) for records not in old set and in new set -> do nothing     */
+/*    3) for records in old set and in new set     -> merge          */
+/*                                                                   */
+/* So, what we're interested in doing is to move old set annotations */
+/* into the new set and old set evidences into the new set           */
+/* without duplications. */
+/* for annotations of the old set which are not present in the new set */
+/* move the annotations to the newKey */
+update VOC_Annot
+set _Object_key = newKey
+from VOC_Annot a
+where a._AnnotType_key = annotTypeKey
+and a._Object_key = oldKey
+and not exists (select 1 from VOC_Annot a2
+where a2._AnnotType_key = annotTypeKey
+and a2._Object_key = newKey
+and a._Term_key = a2._Term_key
+and a._Qualifier_key = a2._Qualifier_key)
+;
+
+/* for annotations of the old set which are present in the new set */
+/* and for evidences of the old set which are not present in the new set */
+/* move the evidences to the new set annotation key */
+update VOC_Evidence
+set _Annot_key = a2._Annot_key
+from VOC_Annot a, VOC_Evidence e, VOC_Annot a2
+where a._AnnotType_key = annotTypeKey
+and a._Object_key = oldKey
+and a._Annot_key = e._Annot_key
+and a2._AnnotType_key = annotTypeKey
+and a2._Object_key = newKey
+and a._Term_key = a2._Term_key
+and a._Qualifier_key = a2._Qualifier_key
+and not exists (select 1 from VOC_Evidence e2
+where a2._Annot_key = e2._Annot_key
+and e._EvidenceTerm_key = e2._EvidenceTerm_key
+and e._Refs_key = e2._Refs_key)
+;
+
+/* now delete all annotations to the old key that we haven't moved to the new key */
+delete from VOC_Annot where _AnnotType_key = annotTypeKey and _Object_key = oldKey
+;
+
+/* TR 5425 */
+/* TR 10686: (122, 1114, 6115) changed to (120, 1098, 6113) */
+/* now delete all annotations to unknown terms */
+/* where there exists a non-IEA annotation to a known term */
+/* in the same DAG */
+delete
+from VOC_Annot
+using VOC_Annot a1, VOC_AnnotType ap1, VOC_VocabDAG v1, DAG_Node n1
+where a1._Object_key = newKey
+and a1._Term_key in (120, 1098, 6113)
+and a1._AnnotType_key = annotTypeKey
+and a1._AnnotType_key = ap1._AnnotType_key
+and ap1._Vocab_key = v1._Vocab_key
+and v1._DAG_key = n1._DAG_key
+and a1._Term_key = n1._Object_key
+and exists (select 1 from VOC_Annot a2, VOC_Evidence e2, VOC_AnnotType ap2, VOC_VocabDAG v2, DAG_Node n2
+where a1._Object_key = a2._Object_key
+and a1._AnnotType_key = a2._AnnotType_key
+and a2._Term_key not in (120, 1098, 6113)
+and a2._Annot_key = e2._Annot_key
+and e2._EvidenceTerm_key != 115
+and a2._AnnotType_key = ap2._AnnotType_key
+and ap2._Vocab_key = v2._Vocab_key
+and v2._DAG_key = n2._DAG_key
+and a2._Term_key = n2._Object_key
+and v1._DAG_key = v2._DAG_key
+and n1._DAG_key = n2._DAG_key)
+;
+
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION VOC_mergeAnnotations(int,int,int) TO public;
+
+EOSQL

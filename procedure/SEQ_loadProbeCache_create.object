@@ -1,0 +1,52 @@
+#!/bin/sh
+#
+# History
+#
+# 01/12/2004
+#	- JSAM
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION SEQ_loadProbeCache(int);
+
+CREATE OR REPLACE FUNCTION SEQ_loadProbeCache (
+sequenceKey int
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+userKey int;
+
+
+BEGIN
+
+select into userKey _User_key from MGI_User where login = current_user
+;
+
+delete from SEQ_Probe_Cache where _Sequence_key = sequenceKey
+;
+
+insert into SEQ_Probe_Cache
+select distinct s._Object_key, p._Object_key, ar._Refs_key, p.modification_date, userKey, userKey, current_date, current_date
+from ACC_Accession s, ACC_Accession p, ACC_AccessionReference ar
+where s._MGIType_key = 19
+and s.accID = p.accID
+and s._LogicalDB_key = p._LogicalDB_key
+and p._MGIType_key = 3
+and p._Accession_key = ar._Accession_key
+and s._Object_key = sequenceKey
+and not exists (select 1 from PRB_Notes pn
+where p._Object_key = pn._Probe_key
+and pn.note like 'The source of the material used to create this cDNA probe was different%')
+;
+
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION SEQ_loadProbeCache(int) TO public;
+
+EOSQL

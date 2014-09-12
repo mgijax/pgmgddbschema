@@ -1,0 +1,189 @@
+#!/bin/sh
+#
+# History
+#
+# 08/25/2014    lec
+#       - TR11654/stored procedures for postgres
+# 03/29/2012	lec
+#	- TR 11025/default...copyright equals note
+#
+# 05/15/2008	lec
+#	- TR 8962; add J Biol Chem, J Lipid Res
+#
+# 02/09/2007	lec
+#	- TR 8147; added PNAS
+#	- moved substitution logic out of EI into here
+#
+# 02/01/2007	lec
+#	- TR 8138
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION BIB_getCopyright(int);
+
+CREATE OR REPLACE FUNCTION BIB_getCopyright (
+refsKey int,
+out copyright varchar(255)
+)
+AS
+\$\$
+
+DECLARE
+v_note varchar(255);
+v_short_citation varchar(255);
+v_journal varchar(255);
+v_jnumID varchar(30);
+v_pubmedID varchar(30);
+v_year char(4);
+s1 varchar(255);
+s2 varchar(255);
+s  varchar(255);
+idx int;
+
+
+BEGIN
+
+/* Returns copyright for journal */
+select
+c.note,
+r.short_citation,
+r.journal,
+r.jnumID,
+r.year::char(4),
+cc.pubmedID
+into
+v_note,
+v_short_citation,
+v_journal,
+v_jnumID,
+v_year,
+v_pubmedID
+from BIB_View r, BIB_Citation_Cache cc, VOC_Term t, MGI_Note n, MGI_NoteChunk c
+where r._Refs_key = refsKey
+and r._Refs_key = cc._Refs_key
+and r.journal = t.term
+and t._Term_key = n._Object_key
+and n._MGIType_key = 13
+and n._NoteType_key = 1026
+and n._Note_key = c._Note_key
+;
+
+/* default...copyright equals note */
+select into copyright v_note
+;
+
+if (v_journal = 'Proc Natl Acad Sci U S A')
+then
+	select into idx position('*' in v_note)
+	;
+
+	select into s1 substring(v_note, 1, idx - 1)
+	;
+
+	select into s substring(v_note, idx + 1, char_length(v_note))
+	;
+
+	select into idx position('*' in s)
+	;
+
+	select into s2 substring(s, 1, idx - 1)
+	;
+
+	select into s substring(s, idx + 1, char_length(s))
+	;
+
+	select into copyright s1 || v_short_citation || s2 || v_year || s
+	;
+
+	return;
+end if;
+
+select into idx position('Elsevier(' in v_note)
+;
+
+if (idx > 0)
+then
+	select into s1 substring(v_note, 1, idx + 8)
+	;
+
+	select into s2 substring(v_note, idx + 9, char_length(v_note))
+	;
+
+	select into v_note s1 || v_jnumID || s2
+	;
+
+	select into copyright v_note
+	;
+
+	return;
+end if;
+
+select into idx position('JBiolChem(' in v_note)
+;
+
+if (idx > 0)
+then
+	select into s1 substring(v_note, 1, idx + 9)
+	;
+
+	select into s2 substring(v_note, idx + 11, char_length(v_note))
+	;
+
+	select into v_note s1 || v_pubmedID || '|JBC' || s2
+	;
+
+	select into copyright v_note
+	;
+
+	return;
+end if;
+
+select into idx position('JLipidRes(' in v_note)
+;
+
+if (idx > 0)
+then
+	select into s1 substring(v_note, 1, idx + 9)
+	;
+
+	select into s2 substring(v_note, idx + 11, char_length(v_note))
+	;
+
+	select into v_note s1 || v_pubmedID || '|JLR' || s2
+	;
+
+	select into copyright v_note
+	;
+
+	return;
+end if;
+
+select into idx position('*' in v_note)
+;
+
+if (idx > 0)
+then
+	select into s1 substring(v_note, 1, idx - 1)
+	;
+
+	select into s2 substring(v_note, idx + 1, char_length(v_note))
+	;
+
+	select into v_note s1 || v_short_citation || s2
+	;
+
+	select into copyright v_note
+	;
+
+	return;
+end if;
+
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION BIB_getCopyright(int) TO public;
+
+EOSQL

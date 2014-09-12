@@ -1,0 +1,89 @@
+#!/bin/sh
+#
+# History
+#
+# 08/25/2014    lec
+#       - TR11654/stored procedures for postgres
+#
+# 05/25/2010 lec
+#	- TR 10226/add different logic for antibody's
+#
+# 05/13/2010 lec
+#	- TR 10216/add refsTypeKey to duplicate check
+#
+# 09/18/2003 lec
+#	- TR 4724
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION MGI_insertReferenceAssoc(int,int,int,varchar);
+
+CREATE OR REPLACE FUNCTION MGI_insertReferenceAssoc (
+v_mgiTypeKey int,
+v_objectKey int,
+v_refsKey int,
+v_refsType varchar(255)
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_refsTypeKey int;
+v_assocKey int;
+v_userKey int;
+
+
+BEGIN
+
+select into v_refsTypeKey _RefAssocType_key from MGI_RefAssocType
+where _MGIType_key = v_mgiTypeKey and assocType = v_refsType
+;
+
+select into v_assocKey max(_Assoc_key) + 1 from MGI_Reference_Assoc
+;
+
+select into v_userKey _User_key from MGI_User where login = current_user
+;
+
+/* Insert record into MGI_Reference_Assoc */
+/* if the reference does not already exist */
+if v_mgiTypeKey = 6 /* antibody */
+then
+	/* for antibody, do not include the reference type */
+	/* as part of the check for duplicate references */
+	if exists (select 1 from MGI_Reference_Assoc
+	where _Refs_key = v_refsKey
+	and _Object_key = v_objectKey
+	and _MGIType_key = v_mgiTypeKey)
+	then
+		return;
+	end if;
+
+else
+	/* for all other mgi types, include the reference type */
+	/* as part of the check for duplicate references */
+	if exists (select 1 from MGI_Reference_Assoc
+	where _Refs_key = v_refsKey
+	and _Object_key = v_objectKey
+	and _MGIType_key = v_mgiTypeKey
+	and _RefAssocType_key = v_refsTypeKey)
+	then
+		return;
+	end if;
+
+end if;
+
+insert into MGI_Reference_Assoc
+values (v_assocKey, v_refsKey, v_objectKey, v_mgiTypeKey, v_refsTypeKey,
+v_userKey, v_userKey, current_date, current_date)
+;
+
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MGI_insertReferenceAssoc(int,int,int,varchar) TO public;
+
+EOSQL

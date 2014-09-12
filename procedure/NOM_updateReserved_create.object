@@ -1,0 +1,60 @@
+#!/bin/sh
+#
+# History
+#
+# 06/30/2004	lec
+#	- TR 5998
+#
+# 06/27/2003	lec
+#	TR 4929
+#
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION NOM_updateReserved(varchar);
+
+CREATE OR REPLACE FUNCTION NOM_updateReserved (
+v_symbol varchar(50)
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+nomenKey int;
+approvedKey int;
+reservedKey int;
+
+
+BEGIN
+
+/* If the symbol exists in Nomen as Reserved, then change its status to Approved */
+select into approvedKey _Term_key from VOC_Term where _Vocab_key = 16 and term = 'Approved'
+;
+
+select into reservedKey _Term_key from VOC_Term where _Vocab_key = 16 and term = 'Reserved'
+;
+
+select into nomenKey _Nomen_key from NOM_Marker where symbol = v_symbol and _NomenStatus_key = reservedKey
+;
+
+if nomenKey is not null
+then
+	update NOM_Marker
+	set _NomenStatus_key = approvedKey,
+	statusNote = statusNote || '; Status changed to Approved on ' ||
+	current_date::char(10) || ' due to a rename in MGD.',
+	modification_date = current_date
+	where _Nomen_key = nomenKey
+	;
+
+	raise notice 'The symbol %1! was a Reserved symbol in Nomen.  \nPlease check the Nomenclature Notes in Nomen for possible Sequence information.', v_symbol;
+end if;
+
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION NOM_updateReserved(varchar) TO public;
+
+EOSQL
