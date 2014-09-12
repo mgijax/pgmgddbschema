@@ -1,42 +1,36 @@
 #!/bin/sh
-
 #
 # History
 #
 # lec 03/18/2003
 #	- SAO
 #
-
 cd `dirname $0` && . ./Configuration
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION ACCRef_insert();
+DROP FUNCTION ACCRef_insert(int,int);
 
 CREATE OR REPLACE FUNCTION ACCRef_insert (
-  accKey int,
-  refsKey int
+v_accKey int,
+v_refsKey int
 )
 RETURNS VOID AS
 \$\$
 
 DECLARE
-userKey int;
+v_userKey int;
 
 
 BEGIN
 
-select @userKey = _User_key from MGI_User where login = current_user
+/* Insert record into ACC_AccessionReference table */
+select into v_userKey _User_key from MGI_User where login = current_user
 ;
 
 insert into ACC_AccessionReference
 (_Accession_key, _Refs_key, _CreatedBy_key, _ModifiedBy_key)
-values(@accKey, @refsKey, @userKey, @userKey)
+values(v_accKey, v_refsKey, v_userKey, v_userKey)
 ;
-
-
-
-
 
 
 END;

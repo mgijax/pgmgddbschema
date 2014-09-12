@@ -1,37 +1,34 @@
 #!/bin/sh
-
 #
 # History
 #
-# 06/30/2014	lec
+# 08/18/2014	lec
 #
 # 05/10/2004	lec
 #	- remove bad gel lanes
 #
-
 cd `dirname $0` && . ./Configuration
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION GXD_removeBadGelBand();
+DROP FUNCTION GXD_removeBadGelBand(int);
 
 CREATE OR REPLACE FUNCTION GXD_removeBadGelBand (
-  assayKey int
+assayKey int
 )
 RETURNS VOID AS
 \$\$
 
+
 BEGIN
 
-delete 
+delete
 from GXD_GelBand
 using GXD_GelBand b, GXD_GelRow r, GXD_GelLane l
-where b._GelLane_key = l._GelLane_key 
-and r._GelRow_key = b._GelRow_key 
+where b._GelLane_key = l._GelLane_key
+and r._GelRow_key = b._GelRow_key
 and r._Assay_key != l._Assay_key
-and r._Assay_key = @assayKey
+and r._Assay_key = assayKey
 ;
-
 
 
 END;

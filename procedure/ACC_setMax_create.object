@@ -1,38 +1,33 @@
 #!/bin/sh
-
 #
 # History
+#
+# lec	08/20/2014
 #
 # lec	01/18/2006
 #	- TR 7182; increased prefixPart to 30
 #
 #
-
 cd `dirname $0` && . ./Configuration
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION ACC_setMax();
+DROP FUNCTION ACC_setMax(int,varchar);
 
 CREATE OR REPLACE FUNCTION ACC_setMax (
-  increment int,
-  prefixPart varchar(30) = 'MGI:'
+v_increment int,
+v_prefixPart varchar(30) = 'MGI:'
 )
 RETURNS VOID AS
 \$\$
 
-DECLARE
-
 
 BEGIN
 
+/* Increment the max MGI Accession Number by @v_increment */
 update ACC_AccessionMax
-set maxNumericPart = maxNumericPart + increment
-where prefixPart= prefixPart
+set maxNumericPart = maxNumericPart + v_increment
+where prefixPart = v_prefixPart
 ;
-
-
-
 
 
 END;
