@@ -10,24 +10,24 @@ class Lookup(object):
 	def __init__(self,sybaseProcedureDirectory="../procedure"):
 		self.procedureDirectory = sybaseProcedureDirectory
 
+		#"ACC_split",
+		#"ACC_verifySequenceAnnotation",
+		#"MAP_deleteByCollection",
+		#"MGI_checkUserRole",
+		#"MGI_Table_Column_Cleanup",
+		#"MRK_deleteIMAGESeqAssoc",
+		#"MRK_updateIMAGESeqAssoc",
 	# procedures we will use for tests
 	filenames = [
 		# Simple cases:
 		"ACCRef_insert",
 		"ACC_setMax",
-		"ACC_split",
-		"ACC_verifySequenceAnnotation",
 		"ALL_mergeAllele",
 		"BIB_getCopyright",
 		"GXD_removeBadGelBand",
-		"MAP_deleteByCollection",
-		"MGI_Table_Column_Cleanup",
-		"MGI_checkUserRole",
 		"MGI_insertReferenceAssoc",
 		"MGI_insertSynonym",
-		"MRK_deleteIMAGESeqAssoc",
 		"MRK_insertHistory",
-		"MRK_updateIMAGESeqAssoc",
 		"MRK_updateOffset",
 		"NOM_updateReserved",
 		"PRB_insertReference",

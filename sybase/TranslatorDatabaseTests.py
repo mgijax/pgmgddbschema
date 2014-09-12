@@ -130,8 +130,8 @@ class SimpleProcedureLoadTest(unittest.TestCase,CommonProcedureLoadTest):
 	def testACC_setMax(self):
 		self.translateAndLoadProc("ACC_setMax")
 
-	def testACC_split(self):
-		self.translateAndLoadProc("ACC_split")
+	#def testACC_split(self):
+	#	self.translateAndLoadProc("ACC_split")
 
 	def testALL_mergeAllele(self):
 		self.translateAndLoadProc("ALL_mergeAllele")
@@ -142,11 +142,11 @@ class SimpleProcedureLoadTest(unittest.TestCase,CommonProcedureLoadTest):
 	def testGXD_removeBadGelBand(self):
 		self.translateAndLoadProc("GXD_removeBadGelBand")
 
-	def testMAP_deleteByCollection(self):
-		self.translateAndLoadProc("MAP_deleteByCollection")
+	#def testMAP_deleteByCollection(self):
+	#	self.translateAndLoadProc("MAP_deleteByCollection")
 
-	def testMGI_Table_Column_Cleanup(self):
-		self.translateAndLoadProc("MGI_Table_Column_Cleanup")
+	#def testMGI_Table_Column_Cleanup(self):
+	#	self.translateAndLoadProc("MGI_Table_Column_Cleanup")
 
 	def testMGI_insertReferenceAssoc(self):
 		self.translateAndLoadProc("MGI_insertReferenceAssoc")
@@ -154,14 +154,14 @@ class SimpleProcedureLoadTest(unittest.TestCase,CommonProcedureLoadTest):
 	def testMGI_insertSynonym(self):
 		self.translateAndLoadProc("MGI_insertSynonym")
 
-	def testMRK_deleteIMAGESeqAssoc(self):
-		self.translateAndLoadProc("MRK_deleteIMAGESeqAssoc")
+	#def testMRK_deleteIMAGESeqAssoc(self):
+	#	self.translateAndLoadProc("MRK_deleteIMAGESeqAssoc")
 
 	def testMRK_insertHistory(self):
 		self.translateAndLoadProc("MRK_insertHistory")
 
-	def testMRK_updateIMAGESeqAssoc(self):
-		self.translateAndLoadProc("MRK_updateIMAGESeqAssoc")
+	#def testMRK_updateIMAGESeqAssoc(self):
+		#self.translateAndLoadProc("MRK_updateIMAGESeqAssoc")
 
 	def testMRK_updateOffset(self):
 		self.translateAndLoadProc("MRK_updateOffset")
@@ -445,10 +445,10 @@ class BIB_getCopyrightTest(unittest.TestCase,CommonProcedureLoadTest):
 		self.assertEquals('This image is from T. Copyright 2009 National Academy of Sciences, U.S.A.',self.pgCur.fetchone()[0].strip())
 
 def suite():
+#		MRK_deleteIMAGESeqAssocTest,
 	suitesToRun = [
 		SimpleProcedureLoadTest,
 		ACCRefInsertTest,
-		MRK_deleteIMAGESeqAssocTest,
 		MRK_updateOffsetTest,
 		BIB_getCopyrightTest
 	]
