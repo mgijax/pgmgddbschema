@@ -61,14 +61,13 @@ BEGIN
 /* move the annotations to the newKey */
 update VOC_Annot
 set _Object_key = newKey
-from VOC_Annot a
-where a._AnnotType_key = annotTypeKey
-and a._Object_key = oldKey
+where _AnnotType_key = annotTypeKey
+and _Object_key = oldKey
 and not exists (select 1 from VOC_Annot a2
 where a2._AnnotType_key = annotTypeKey
 and a2._Object_key = newKey
-and a._Term_key = a2._Term_key
-and a._Qualifier_key = a2._Qualifier_key)
+and VOC_Annot._Term_key = a2._Term_key
+and VOC_Annot._Qualifier_key = a2._Qualifier_key)
 ;
 
 /* for annotations of the old set which are present in the new set */
@@ -76,18 +75,18 @@ and a._Qualifier_key = a2._Qualifier_key)
 /* move the evidences to the new set annotation key */
 update VOC_Evidence
 set _Annot_key = a2._Annot_key
-from VOC_Annot a, VOC_Evidence e, VOC_Annot a2
+from VOC_Annot a, VOC_Annot a2
 where a._AnnotType_key = annotTypeKey
 and a._Object_key = oldKey
-and a._Annot_key = e._Annot_key
+and a._Annot_key = VOC_Evidence._Annot_key
 and a2._AnnotType_key = annotTypeKey
 and a2._Object_key = newKey
 and a._Term_key = a2._Term_key
 and a._Qualifier_key = a2._Qualifier_key
 and not exists (select 1 from VOC_Evidence e2
 where a2._Annot_key = e2._Annot_key
-and e._EvidenceTerm_key = e2._EvidenceTerm_key
-and e._Refs_key = e2._Refs_key)
+and VOC_Evidence._EvidenceTerm_key = e2._EvidenceTerm_key
+and VOC_Evidence._Refs_key = e2._Refs_key)
 ;
 
 /* now delete all annotations to the old key that we haven't moved to the new key */
