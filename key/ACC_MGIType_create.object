@@ -3,10 +3,18 @@
 #
 # History
 #
+# 02/25/2014    sc
+#       - TR11560 - added MGI_Relationship_Category FKs
+#
+# 01/09/2014	lec
+#	- TR11555/TR10841 - obsolete attribute/history table
+#
+#
 # 01/23/2014	lec
 #	- TR11515/mgi_attribute_history : obsolete
 #
 # 09/16/2008 - jsb - added VOC_Annot_Count_Cache
+#
 # 10/17/2006	lec
 #	- TR 7710; add IMG_Image
 #
@@ -83,6 +91,12 @@ ALTER TABLE mgd.VOC_Annot_Count_Cache ADD FOREIGN KEY (_MGIType_key) REFERENCES 
 
 
 ALTER TABLE mgd.VOC_AnnotType ADD FOREIGN KEY (_MGIType_key) REFERENCES mgd.ACC_MGIType;
+
+
+ALTER TABLE mgd.MGI_Relationship_Category ADD FOREIGN KEY (_MGIType_key_1) REFERENCES mgd.ACC_MGIType;
+
+
+ALTER TABLE mgd.MGI_Relationship_Category ADD FOREIGN KEY (_MGIType_key_2) REFERENCES mgd.ACC_MGIType;
 
 
 EOSQL

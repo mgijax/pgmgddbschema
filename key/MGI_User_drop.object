@@ -2,6 +2,14 @@
 #
 # History
 #
+#
+# 02/25/2014    sc
+#       - TR11560 - added MGI_Relationship* FKs
+#
+# 01/09/2014	lec
+#	- TR11555/TR10841 - obsolete attribute/history table
+#
+#
 # 01/02/2014	lec
 #	- TR11515/allele stuff
 #       - TR11515/mgi_attribute_history : obsolete
@@ -25,6 +33,18 @@
 #
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.MGI_Relationship_Property DROP CONSTRAINT MGI_Relationship_Property__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship_Property DROP CONSTRAINT MGI_Relationship_Property__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__CreatedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_Term_EMAPS DROP CONSTRAINT VOC_Term_EMAPS__ModifiedBy_key_fkey CASCADE;
 

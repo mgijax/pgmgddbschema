@@ -3,6 +3,10 @@
 #
 # History
 #
+#
+# 02/25/2014    sc
+#       - TR11560 - added MGI_Relationship* FK
+#
 # 02/04/2010    lec
 #       - TR8156; remove GXD_Antibody, BIB_Refs
 #
@@ -129,6 +133,9 @@ ALTER TABLE mgd.VOC_Vocab ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs;
 
 
 ALTER TABLE mgd.VOC_Evidence ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs;
+
+
+ALTER TABLE mgd.MGI_Relationship ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs;
 
 
 EOSQL

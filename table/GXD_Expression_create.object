@@ -2,6 +2,11 @@
 
 #
 # HISTORY:
+#
+# 08/28/2014	lec
+#	- TR11654
+#	added _emaps_key : _Object_key that belongs to this _Structure_key
+#
 #	5/1/08 - jsb - added isRecombinase, isForGXD, and hasImage for TR8747
 #       We use a smallint (a single byte) for isForGXD and isRecombinase because
 #       they will be commonly used in queries and counts; this will allow them
@@ -21,6 +26,7 @@ create table mgd.GXD_Expression (
 	_Genotype_key                  int             not null,
 	_Marker_key                    int             not null,
 	_Structure_key                 int             not null,
+	_emaps_key		       int             null,
 	expressed                      smallint             not null,
 	age                            varchar(50)     not null,
 	ageMin                         float           null,

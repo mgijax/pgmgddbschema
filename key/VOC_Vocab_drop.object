@@ -1,12 +1,21 @@
 #!/bin/sh
-#
 # History
+#
+#
+# 02/25/2014    sc
+#       - TR11560 - added MGI_Relationship_Category FKs
 #
 # 01/04/2014	lec
 #	- TR11515/allele stuff
 #
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__EvidenceVocab_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__QualifierVocab_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__RelationshipVocab_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_AnnotType DROP CONSTRAINT VOC_AnnotType__QualifierVocab_key_fkey CASCADE;
 

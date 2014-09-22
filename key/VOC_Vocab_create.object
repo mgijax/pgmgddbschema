@@ -7,6 +7,14 @@
 #	- TR11515/allele stuff
 #
 
+#
+# History
+#
+#
+# 02/25/2014    sc
+#       - TR11560 - added MGI_Relationship_Category FKs
+#
+
 cd `dirname $0` && . ./Configuration
 
 
@@ -31,6 +39,15 @@ ALTER TABLE mgd.VOC_AnnotType ADD FOREIGN KEY (_EvidenceVocab_key) REFERENCES mg
 
 
 ALTER TABLE mgd.VOC_AnnotType ADD FOREIGN KEY (_QualifierVocab_key) REFERENCES mgd.VOC_Vocab;
+
+
+ALTER TABLE mgd.MGI_Relationship_Category ADD FOREIGN KEY (_RelationshipVocab_key) REFERENCES mgd.VOC_Vocab;
+
+
+ALTER TABLE mgd.MGI_Relationship_Category ADD FOREIGN KEY (_QualifierVocab_key) REFERENCES mgd.VOC_Vocab;
+
+
+ALTER TABLE mgd.MGI_Relationship_Category ADD FOREIGN KEY (_EvidenceVocab_key) REFERENCES mgd.VOC_Vocab;
 
 
 EOSQL

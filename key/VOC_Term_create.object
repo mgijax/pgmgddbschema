@@ -3,6 +3,9 @@
 #
 # History
 #
+# 02/25/2014    sc
+#       - TR11560 - added MGI_Relationship FKs
+#
 # 12/12/2013	lec
 #	- TR11515/high throughput part 2/allele stuff
 #
@@ -270,6 +273,18 @@ ALTER TABLE mgd.VOC_Term_EMAPS ADD FOREIGN KEY (_DefaultParent_key) REFERENCES m
 
 
 ALTER TABLE mgd.VOC_Term_EMAPS ADD FOREIGN KEY (_EMAPA_Term_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.MGI_Relationship ADD FOREIGN KEY (_RelationshipTerm_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.MGI_Relationship ADD FOREIGN KEY (_Qualifier_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.MGI_Relationship ADD FOREIGN KEY (_Evidence_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.MGI_Relationship_Property ADD FOREIGN KEY (_PropertyName_key) REFERENCES mgd.VOC_Term;
 
 
 EOSQL

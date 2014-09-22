@@ -2,12 +2,17 @@
 #
 # History
 #
+# 02/25/2014    sc
+#       - TR11560 - added MGI_Relationship_Category FK
+#
 # 10/19/2006	lec
 #	- TR 6812; added VOC_GO_Cache
 #
 #
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__RelationshipDAG_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_VocabDAG DROP CONSTRAINT VOC_VocabDAG__DAG_key_fkey CASCADE;
 

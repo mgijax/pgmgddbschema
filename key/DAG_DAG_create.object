@@ -3,6 +3,10 @@
 #
 # History
 #
+#
+# 02/25/2014    sc
+#       - TR11560 - added MGI_Relationship_Category FK
+#
 # 10/19/2006	lec
 #	- TR 6812; added VOC_GO_Cache
 #
@@ -29,6 +33,9 @@ ALTER TABLE mgd.VOC_GO_Cache ADD FOREIGN KEY (_DAG_key) REFERENCES mgd.DAG_DAG;
 
 
 ALTER TABLE mgd.VOC_VocabDAG ADD FOREIGN KEY (_DAG_key) REFERENCES mgd.DAG_DAG;
+
+
+ALTER TABLE mgd.MGI_Relationship_Category ADD FOREIGN KEY (_RelationshipDAG_key) REFERENCES mgd.DAG_DAG;
 
 
 EOSQL

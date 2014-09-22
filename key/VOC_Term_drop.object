@@ -2,6 +2,9 @@
 #
 # History
 #
+# 02/25/2014    sc
+#       - TR11560 - added MGI_Relationship FKs
+#
 # 12/12/2013	lec
 #	- TR11515/high throughput part 2/allele stuff
 #
@@ -33,6 +36,14 @@
 #
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.MGI_Relationship_Property DROP CONSTRAINT MGI_Relationship_Property__PropertyName_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__Evidence_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__Qualifier_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__RelationshipTerm_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_Term_EMAPS DROP CONSTRAINT VOC_Term_EMAPS__EMAPA_Term_key_fkey CASCADE;
 

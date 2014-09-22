@@ -1,6 +1,9 @@
 #!/bin/sh
 
 # HISTORY
+#	9/5/2014	lec
+#	- TR11654/TR11756/added _emaps_key
+#
 #	5/1/08 - jsb - TR8747, removed redundant index, added additional
 #		fields to other indexes, including isForGXD
 
@@ -25,6 +28,9 @@ create index GXD_Expression_idx_Genotype_key on mgd.GXD_Expression (_Genotype_ke
 
 
 create index GXD_Expression_idx_Structure_key on mgd.GXD_Expression (_Structure_key, _Expression_key, isForGXD);
+
+
+create index GXD_Expression_idx_emaps_key on mgd.GXD_Expression (_emaps_key);
 
 
 

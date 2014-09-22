@@ -3,6 +3,13 @@
 #
 # History
 #
+# 02/25/2014	sc
+#	- TR11560 - added MGI_Relationship* FKs
+#
+# 01/09/2014	lec
+#	- TR11555/TR10841 - obsolete attribute/history table
+#
+#
 # 01/02/2014	lec
 #	- TR11515/allele stuff
 #       - TR11515/mgi_attribute_history : obsolete
@@ -531,6 +538,25 @@ ALTER TABLE mgd.VOC_Term_EMAPS ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.M
 
 
 ALTER TABLE mgd.VOC_Term_EMAPS ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User;
+
+
+ALTER TABLE mgd.MGI_Relationship_Category ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User;
+
+
+ALTER TABLE mgd.MGI_Relationship_Category ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User;
+
+
+ALTER TABLE mgd.MGI_Relationship ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User;
+
+
+ALTER TABLE mgd.MGI_Relationship ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User;
+
+
+ALTER TABLE mgd.MGI_Relationship_Property ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User;
+
+
+ALTER TABLE mgd.MGI_Relationship_Property ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User;
+
 
 
 EOSQL
