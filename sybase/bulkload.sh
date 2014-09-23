@@ -12,8 +12,11 @@ touch ${LOG}
 
 date >> ${LOG}
 
+echo 'from (Sybase)...'
 echo ${MGD_DBUSER} | tee -a ${LOG}
 echo ${MGD_DBNAME} | tee -a ${LOG}
+
+echo 'to (Posgres)...'
 echo ${PG_DBSERVER} | tee -a ${LOG}
 echo ${PG_DBUSER} | tee -a ${LOG}
 echo ${PG_DBNAME} | tee -a ${LOG}
@@ -39,12 +42,12 @@ fi
 #
 if [ ${runBCP} -eq '1' ]
 then
-echo 'bcp out the files from sybase...' | tee -a ${LOG}
 echo $$ > ${EXPORTLOGS}/$0.pid
 cd ${MGD_DBSCHEMADIR}/table
 for i in ${findObject}
 do
 i=`basename $i _create.object`
+echo 'bcp out the files from sybase...', ${i} | tee -a ${LOG}
 echo $i | tee -a ${LOG}
 ${MGI_DBUTILS}/bin/bcpout.csh ${MGD_DBSERVER} ${MGD_DBNAME} $i ${EXPORTDATA} $i.bcp | tee -a ${LOG}.${i}.bcp &
 done
@@ -62,10 +65,11 @@ date | tee -a ${LOG}
 #
 if [ ${runBCP} -eq '1' ]
 then
-echo 'converting bcp using python regular expressions...' | tee -a ${LOG}
+cd ${MGD_DBSCHEMADIR}/table
 for i in ${findObject}
 do
 i=`basename $i _create.object`
+echo 'converting bcp using python regular expressions...', ${i} | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/sybase/textcleaner.sh ${EXPORTDATA} ${i} | tee -a ${LOG}.${i}.textcleaner
 done
 fi
@@ -126,7 +130,7 @@ do
 
 i=`basename ${i} _create.object`
 
-psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "\copy mgd.$i from '${EXPORTDATA}/${i}.bcp' with null as ''" | tee -a ${LOG}.${i}.copy &
+psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "\copy mgd.$i from '${EXPORTDATA}/${i}.new' with null as ''" | tee -a ${LOG}.${i}.copy &
 
 counter=`expr $counter + 1`
 
