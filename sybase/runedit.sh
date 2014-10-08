@@ -2,8 +2,8 @@
 
 #
 # 1) run all edits
-# 2) cvs update : pgmgddbschema
-# 3) 
+# 2) cvs update this product
+# 3) run exporter
 #
 
 cd `dirname $0` && . ../Configuration
