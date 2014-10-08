@@ -19,7 +19,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.MRK_Marker (
- 	_Marker_key                    int             not null PRIMARY KEY,
+ 	_Marker_key                    int             not null,
 	_Organism_key                  int             not null,
 	_Marker_Status_key             int             not null,
 	_Marker_Type_key               int             not null,

@@ -19,6 +19,7 @@ select a.*,
 	t.term,
 	t.sequenceNum as statusNum,
 	s.strain,
+	t2.term as collection,
 	u1.login as createdBy,
 	u2.login as modifiedBy,
 	u3.login as approvedBy
@@ -27,9 +28,11 @@ from ALL_Allele a
         LEFT OUTER JOIN MGI_User u3 on (a._ApprovedBy_key = u3._User_key),
      PRB_Strain s,
      VOC_Term t,
+     VOC_Term t2,
      MGI_User u1,
      MGI_User u2
 where a._Allele_Status_key = t._Term_key
+	and a._Collection_key = t2._Term_key
 	and a._Strain_key = s._Strain_key
 	and a._CreatedBy_key = u1._User_key
 	and a._ModifiedBy_key = u2._User_key

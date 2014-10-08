@@ -28,62 +28,52 @@ create view mgd.BIB_GOXRef_View
 as
 
 /* References which are: */
-/*                                                                  */
-/* a. not 'GenBank Submission' or 'Mouse News Lett'		    */
-/*                                                                  */
-/* b. cross-referenced to a Marker                                  */
-/*                                                                  */
-/* c. before <date>, not NO-GO references (i.e. not 'Never Used'),  */
-/*    selected for Nomenclature, Homology, Allele or Expression */
-/*	or                                                          */
-/*    after <date>, selected for GO and not 'Never Used'            */
-/*	or                                                          */
-/*    selected for GO and Review article                            */
-/*                                                                  */
+/*                                                                         */
+/* a. not 'GenBank Submission' or 'Mouse News Lett'		           */
+/*                                                                         */
+/* b. < 03/13/2002, not in Gene Ontology bucket (1005) as never-used       */
+/*    and in Allele (1002), Expression (1004) bucket                       */
+/*                                                                         */
+/* c. >= 03/13/2002, in Gene Ontology bucket (1005) and not never-used     */
+/*                                                                         */
+/* d. is-reviewed = true in Gene Ontology bucket (1005) and not never-used */
+/*                                                                         */
 
-select r._Refs_key, r.jnum, r.short_citation, m._Marker_key, r.jnumID, r.title, r.abstract, r.creation_date
+select r._Refs_key, r.jnum, r.short_citation, m._Marker_key, r.jnumID, r.title, r.creation_date
 from MRK_Reference m, BIB_All_View r
 where m._Refs_key = r._Refs_key
-and r.journal not in ('GenBank Submission', 'Mouse News Lett') and
-(
-  r.creation_date < '03/13/2002' and 
-  not exists (select 1 from BIB_DataSet_Assoc ba
+and r.journal not in ('GenBank Submission', 'Mouse News Lett') 
+and r.creation_date < '03/13/2002' 
+and not exists (select 1 from BIB_DataSet_Assoc ba
 	  where r._Refs_key = ba._Refs_key and
 	  ba._DataSet_key = 1005 and
 	  ba.isNeverUsed = 1)
-  and
-  (
-  exists (select 1 from BIB_DataSet_Assoc ba
-	  where r._Refs_key = ba._Refs_key and
-	  ba._DataSet_key = 1006)
-  or
-  exists (select 1 from BIB_DataSet_Assoc ba
-	  where r._Refs_key = ba._Refs_key and
-	  ba._DataSet_key = 1003)
-  or
-  exists (select 1 from BIB_DataSet_Assoc ba
-	  where r._Refs_key = ba._Refs_key and
-	  ba._DataSet_key = 1002)
-  or
-  exists (select 1 from BIB_DataSet_Assoc ba
-	  where r._Refs_key = ba._Refs_key and
-	  ba._DataSet_key = 1004)
-  )
-  or
-  (r.creation_date >= '03/13/2002' and 
-   exists (select 1 from BIB_DataSet_Assoc ba
+and exists (select 1 from BIB_DataSet_Assoc ba
+  	  where r._Refs_key = ba._Refs_key and
+  	  ba._DataSet_key in (1002, 1004))
+
+union
+select r._Refs_key, r.jnum, r.short_citation, m._Marker_key, r.jnumID, r.title, r.creation_date
+from MRK_Reference m, BIB_All_View r
+where m._Refs_key = r._Refs_key
+and r.journal not in ('GenBank Submission', 'Mouse News Lett')
+and r.creation_date >= '03/13/2002' 
+and exists (select 1 from BIB_DataSet_Assoc ba
 	  where r._Refs_key = ba._Refs_key and
 	  ba._DataSet_key = 1005 and 
 	  ba.isNeverUsed = 0)
-  )
-  or
-  (r.isReviewArticle = 1 and 
-   exists (select 1 from BIB_DataSet_Assoc ba
+
+union
+select r._Refs_key, r.jnum, r.short_citation, m._Marker_key, r.jnumID, r.title, r.creation_date
+from MRK_Reference m, BIB_All_View r
+where m._Refs_key = r._Refs_key
+and r.journal not in ('GenBank Submission', 'Mouse News Lett')
+and r.isReviewArticle = 1 
+and exists (select 1 from BIB_DataSet_Assoc ba
 	  where r._Refs_key = ba._Refs_key and
 	  ba._DataSet_key = 1005 and 
 	  ba.isNeverUsed = 0)
-  )
-)
+
 
 
 ;

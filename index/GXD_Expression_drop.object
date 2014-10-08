@@ -1,6 +1,10 @@
 #!/bin/sh
 
+#
 # HISTORY
+#       9/5/2014        lec
+#       - TR11654/TR11756/added _emaps_key
+#
 #	5/1/08 - jsb - TR8747, removed redundant index
 
 cd `dirname $0` && . ./Configuration
@@ -24,6 +28,9 @@ drop index mgd.GXD_Expression_idx_Genotype_key
 ;
 
 drop index mgd.GXD_Expression_idx_Structure_key
+;
+
+drop index mgd.GXD_Expression_idx_emaps_key
 ;
 
 EOSQL
