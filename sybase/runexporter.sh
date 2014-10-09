@@ -166,10 +166,10 @@ date | tee -a ${LOG}
 #
 if [ $runAll -eq '1' ]
 then
-echo 'run create index for all tables...' | tee -a ${LOG}
-${PG_MGD_DBSCHEMADIR}/index/index_create.sh
 echo 'run create key for all tables...' | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/key/key_create.sh
+echo 'run create index for all tables...' | tee -a ${LOG}
+${PG_MGD_DBSCHEMADIR}/index/index_create.sh
 echo 'run create trigger for all tables...' | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/trigger/trigger_create.sh
 echo 'run create view for all tables...' | tee -a ${LOG}
@@ -203,6 +203,10 @@ then
 fi
 
 fi
+
+psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from pg_stat_user_tables where schemaname = 'mgd'"
+
+psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from pg_stat_user_indexes where schemaname = 'mgd'"
 
 date | tee -a ${LOG}
 
