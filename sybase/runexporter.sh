@@ -10,6 +10,8 @@ LOG=${EXPORTLOGS}/`basename $0`.log
 rm -rf ${LOG}
 touch ${LOG}
 
+rm -rf ${PG_MGD_DBSCHEMADIR}/logs/*/*
+
 date >> ${LOG}
 
 echo 'from (Sybase)...'
@@ -204,9 +206,11 @@ fi
 
 fi
 
-psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from pg_stat_user_tables where schemaname = 'mgd'"
+psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from pg_stat_user_tables where schemaname = 'mgd'" | tee -a ${LOG}
 
-psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from pg_stat_user_indexes where schemaname = 'mgd'"
+psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from pg_stat_user_indexes where schemaname = 'mgd'" | tee -a ${LOG}
+
+grep "psql:" ${PG_MGD_DBSCHEMADIR}/logs/*/*create.object.log | tee -a ${LOG}
 
 date | tee -a ${LOG}
 
