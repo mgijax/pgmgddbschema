@@ -9,7 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.MRK_Offset ADD PRIMARY KEY (_Marker_key, source);
+ALTER TABLE mgd.MRK_Offset ADD PRIMARY KEY (_Marker_key, cmoffset);
 
 
 EOSQL

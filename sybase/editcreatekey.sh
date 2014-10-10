@@ -71,6 +71,7 @@ fkey=`grep "sp_foreignkey" ${i} | sed "s/sp_foreignkey //g" | cut -f1,3 -d"," | 
 
 ed $i <<END
 g/csh -f/s//sh/g
+g/MRK_Offset, _Marker_key, source/s//MRK_Offset, _Marker_key, cmoffset/
 g/ source/s// ./g
 g/sp_primarykey ${t}, /s//ALTER TABLE mgd.${t} ADD PRIMARY KEY (/
 g/PRIMARY KEY/s/$/);/
@@ -78,7 +79,6 @@ g/sp_foreignkey/s//ALTER TABLE mgd./
 g/, ${t}, /s// ADD FOREIGN KEY (/
 g/FOREIGN KEY/s/$/) REFERENCES mgd.${t};/
 g/ALTER TABLE mgd. /s//ALTER TABLE mgd./
-g/_Marker_key, ./s//_Marker_key, source/
 /cat
 d
 a
