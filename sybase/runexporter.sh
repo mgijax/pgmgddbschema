@@ -3,6 +3,12 @@
 #
 # exporter that uses the schema product
 #
+# tables : 204
+# indexes : 750
+#
+# tables : 206 (txt_ tables)
+# indexes : 765 (lower = 11 + 7 = 18) = 747
+#
 
 cd `dirname $0` && . ../Configuration
 
