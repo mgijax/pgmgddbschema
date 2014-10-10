@@ -24,9 +24,6 @@ create index GXD_AlleleGenotype_idx_Marker_key on mgd.GXD_AlleleGenotype (_Marke
 create index GXD_AlleleGenotype_idx_Allele_key on mgd.GXD_AlleleGenotype (_Allele_key, _Genotype_key);
 
 
-create index GXD_AlleleGenotype_idx_MutantCellLine_key on mgd.GXD_AlleleGenotype (_MutantCellLine_key);
-
-
 create index GXD_AlleleGenotype_idx_CreatedBy_key on mgd.GXD_AlleleGenotype (_CreatedBy_key);
 
 

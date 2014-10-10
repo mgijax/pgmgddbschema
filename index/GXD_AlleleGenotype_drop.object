@@ -23,9 +23,6 @@ drop index mgd.GXD_AlleleGenotype_idx_Marker_key
 drop index mgd.GXD_AlleleGenotype_idx_Allele_key
 ;
 
-drop index mgd.GXD_AlleleGenotype_idx_MutantCellLine_key
-;
-
 drop index mgd.GXD_AlleleGenotype_idx_CreatedBy_key
 ;
 
