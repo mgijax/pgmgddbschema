@@ -9,6 +9,8 @@
 # tables : 206 (txt_ tables)
 # indexes : 765 (lower = 11 + 7 = 18) = 747
 #
+# tables in fe : 183
+#
 
 cd `dirname $0` && . ../Configuration
 
