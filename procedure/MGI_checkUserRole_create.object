@@ -38,9 +38,9 @@ if eiModule = 'AlleleModule'
 then
 	if userLogin in
 	(select login from MGI_UserRole_View
-	where userrole in ('Pheno:Tier 3 (jr curator)',
-	'Pheno:Tier 4 (curator)',
-	'Pheno:Tier 5 (guru)'))
+		where userrole in ('Pheno:Tier 3 (jr curator)',
+			'Pheno:Tier 4 (curator)',
+			'Pheno:Tier 5 (guru)'))
 	then
 		isVerified := 1;
 
@@ -53,7 +53,7 @@ elsif eiModule = 'ImageModule'
 then
 	if userLogin in
 	(select login from MGI_UserRole_View
-	where userrole in ('GXD ImageModule',
+		where userrole in ('GXD ImageModule',
 			'Pheno:Tier 4 (curator)',
 			'Pheno:Tier 5 (guru)'))
 	then
@@ -96,8 +96,7 @@ elsif eiModule in ('AlleleDerivationModule',
 		'UserRoleModule')
 then
 	if userLogin in
-	(select login from MGI_UserRole_View
-	where userrole in (eiModule))
+		(select login from MGI_UserRole_View where userrole in (eiModule))
 	then
 		isVerified := 1;
 
