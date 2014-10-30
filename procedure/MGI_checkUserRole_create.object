@@ -1,0 +1,123 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/23/2011	lec
+#	- TR10584/add all EI modules to this list
+#
+# 02/17/2011	lec
+#	- TR 10584/fix MPVocAnnot permissions
+#
+# 06/17/2005 lec
+#	- TR 3557/Images
+#
+# 02/14/2005 lec
+#	- check if User has appropriate Role based on the EI module
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION MGI_checkUserRole(varchar,varchar);
+
+CREATE OR REPLACE FUNCTION MGI_checkUserRole (
+	eiModule varchar(50),
+	userLogin varchar(30)
+)
+RETURNS INTEGER AS
+\$\$
+
+DECLARE
+	isVerified INTEGER := 1;
+
+BEGIN
+
+if eiModule = 'AlleleModule'
+then
+	if userLogin in
+	(select login from MGI_UserRole_View
+	where userrole in ('Pheno:Tier 3 (jr curator)',
+	'Pheno:Tier 4 (curator)',
+	'Pheno:Tier 5 (guru)'))
+	then
+		isVerified := 1;
+
+	else
+		isVerified := 0;
+
+	end if;
+
+elsif eiModule = 'ImageModule'
+then
+	if userLogin in
+	(select login from MGI_UserRole_View
+	where userrole in ('GXD ImageModule',
+			'Pheno:Tier 4 (curator)',
+			'Pheno:Tier 5 (guru)'))
+	then
+		isVerified := 1;
+
+	else
+		isVerified := 0;
+
+	end if;
+
+elsif eiModule in ('AlleleDerivationModule',
+		'AntibodyModule',
+		'AntigenModule',
+		'AssayModule',
+		'ControlledVocabModule',
+		'CrossModule',
+		'DictionaryModule',
+		'GenotypeModule',
+		'MappingModule',
+		'MarkerModule',
+		'MarkerNonMouseModule',
+		'MLCModule',
+		'MolecularSegmentModule',
+		'MolecularSourceModule',
+		'MPVocAnnot',
+		'NomenModule',
+		'GOVocAnnot',
+		'IndexStageModule',
+		'OMIMVocAnnot',
+		'OrganismModule',
+		'OrthologyModule',
+		'RISetModule',
+		'SequenceModule',
+		'SimpleVocabModule',
+		'StrainModule',
+		'StrainJAXModule',
+		'TDCVocAnnot',
+		'TissueModule',
+		'TranslationModule',
+		'UserRoleModule')
+then
+	if userLogin in
+	(select login from MGI_UserRole_View
+	where userrole in (eiModule))
+	then
+		isVerified := 1;
+
+	else
+		isVerified := 0;
+
+	end if;
+
+/* default is to give permissions if none have been given */
+else
+	isVerified := 1;
+
+end if;
+
+RETURN isVerified;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MGI_checkUserRole(varchar,varchar) TO public;
+
+EOSQL
