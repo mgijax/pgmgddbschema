@@ -17,7 +17,8 @@ date | tee -a ${LOG}
 ./editcreateindex.sh | tee -a ${LOG}
 ./editdropindex.sh | tee -a ${LOG}
 
-./editcreatekey.sh | tee -a ${LOG}
+# cascadeing has been manually added
+#./editcreatekey.sh | tee -a ${LOG}
 
 ./editcreateview.sh | tee -a ${LOG}
 ./editdropview.sh | tee -a ${LOG}
