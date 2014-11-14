@@ -1,0 +1,89 @@
+#!/bin/sh
+#
+# History
+#
+# lec	01/18/2006
+#	- TR 7182; increased prefixPart to 30
+#
+# lec 03/18/2003
+#	- SAO
+#
+# lec 09/26/2001
+#	- TR 2541; add "v_private" parameter
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION ACC_assignMGI(int,varchar);
+
+CREATE OR REPLACE FUNCTION ACC_assignMGI (
+  v_objectKey int,
+  v_mgiType varchar(80),
+  v_prefixPart varchar(30) = "MGI:",
+  v_nextMGI int = -1,
+  v_preferred int = 1,
+  v_private int = 0
+)
+RETURNS VOID AS
+\$\$
+
+/* Assign MGI or J accession number
+   Allow override of J accession number
+   Increment ACC_AccessionMax.maxNumericPart
+*/
+
+DECLARE
+v_nextACC int,
+v_mgiTypeKey int,
+v_accID varchar(30),
+v_userKey int;
+
+BEGIN
+
+select into v_nextACC max(_Accession_key) + 1 from ACC_Accession;
+select into v_mgiTypeKey _MGIType_key from ACC_MGIType where name = v_mgiType;
+
+if v_nextMGI = -1
+begin
+	select v_nextMGI = maxNumericPart + 1 
+	from ACC_AccessionMax where prefixPart = v_prefixPart;
+end
+else if v_prefixPart != "J:"
+begin
+    rollback transaction
+    raiserror 99999 "Cannot override generation of MGI accession number"
+    return
+end
+
+select into v_accID v_prefixPart + convert(varchar(30), v_nextMGI);
+select into v_userKey _User_key from MGI_User where login = current_user;
+
+insert into ACC_Accession 
+(_Accession_key, accID, prefixPart, numericPart, 
+_LogicalDB_key, _Object_key, _MGIType_key, preferred, private, 
+_CreatedBy_key, _ModifiedBy_key)
+values(v_nextACC, v_accID, v_prefixPart, v_nextMGI, 1, v_objectKey, 
+v_mgiTypeKey, v_preferred, v_private, v_userKey, v_userKey);
+
+if (select maxNumericPart from ACC_AccessionMax
+    where prefixPart = v_prefixPart) <= v_nextMGI
+begin
+	update ACC_AccessionMax 
+	set maxNumericPart = v_nextMGI 
+	where prefixPart = v_prefixPart;
+end
+
+
+go
+
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ACC_assignMGI(int,varchar) TO public;
+
+EOSQL
+
