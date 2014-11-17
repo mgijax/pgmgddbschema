@@ -37,6 +37,9 @@ from BIB_View c
         LEFT OUTER JOIN ALL_Allele al on (e._Allele_key = al._Allele_key)
         LEFT OUTER JOIN MRK_Marker m on (e._Marker_key = m._Marker_key)
                 INNER JOIN ACC_Accession aa on (m._Marker_key = aa._Object_key
+                        and aa._MGIType_key = 2
+                        and aa._LogicalDB_key = 1
+                        and aa.preferred = 1)
 ;
 
 EOSQL
