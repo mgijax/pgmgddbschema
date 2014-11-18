@@ -15,6 +15,8 @@ import string
 # These are only used to differentiate blocks
 STARTUP = "startup"
 DECLARE = "declare"
+DECLARE_CURSOR = "declareCursor"
+CURSOR_END = "cursorEnd"
 CREATE = "create"
 SELECT = "select"
 INSERT = "insert"
@@ -145,6 +147,14 @@ class Translator(object):
 		if blockType in IF:
 			translated, declarations = self.translateIfBlock(lines)
 			statements.extend(translated)
+		
+		#
+		# declare cursor
+		#
+		elif blockType == DECLARE_CURSOR:
+			translated = self.translateCursorDeclare(lines)
+			statements.extend(translated)
+
 		#
 		# declare variables
 		#
@@ -502,6 +512,15 @@ class Translator(object):
 	def translateGetdate(self,line):
 		return line.replace('getdate()','current_date')
 
+	# translate the cursor declaration
+	def translateCursorDeclare(self,lines):
+		translated = []
+		for r in lines:
+		    if 'declare ' in r and 'cursor' in r:
+			r = r.replace('declare ', '')
+		    translated.append(r)
+		return translated
+
 	# takes a line and translates any convert statements
 	def translateConvert(self,line):
 		foundConvert = 1
@@ -725,6 +744,10 @@ class Translator(object):
 			return STARTUP
 		elif line.find('create procedure') == 0:
 			return CREATE
+		elif line.find('declare') == 0 and line.find('cursor') > 0 :
+			return DECLARE_CURSOR
+		elif line.find('for read only') == 0 :
+			return CURSOR_END
 		elif line.find('declare') == 0:
 			return DECLARE
 		elif line.find('select') == 0:

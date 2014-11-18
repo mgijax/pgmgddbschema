@@ -200,6 +200,21 @@ class TranslateCreateBlockTest(unittest.TestCase):
 		self.assertEquals(["CREATE OR REPLACE FUNCTION x (","out prefixPart varchar(30)",')\nAS\n\\$\\$'],statements)
 		
 
+class TranslateCursorDeclareTest(unittest.TestCase):
+	def setUp(self):
+		self.translator = Translator()
+	
+	### TESTS ###
+	def testTranslateCursorDeclareNotFound(self):
+		line = ["select var from table"]
+		translated = self.translator.translateCursorDeclare(line)
+		self.assertEquals(line, translated)
+
+	def testTranslateCursorDeclare(self):
+		line = ["declare test1 cursor for"]
+		translated = self.translator.translateCursorDeclare(line)
+		self.assertEquals(["test1 cursor for"], translated)
+
 class TranslateSelectBlockTest(unittest.TestCase):
 	def setUp(self):
 		self.translator = Translator()
@@ -469,6 +484,7 @@ def suite():
 		TranslateCharindexStatementTest,
 		TranslateAdditionTest,
 		TranslateCreateBlockTest,
+		TranslateCursorDeclareTest,
 		TranslateSelectBlockTest,
 		TranslateDeleteBlockTest,
 		TranslateIfBlockTest,
