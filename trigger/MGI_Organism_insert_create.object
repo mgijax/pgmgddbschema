@@ -5,7 +5,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 
 --
--- NAME: check_VOC_Term_insert()
+-- NAME: check_MGI_Organism_insert()
 --
 -- DESCRIPTOIN:
 --
@@ -21,7 +21,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 --	NEW
 --
 
-CREATE OR REPLACE FUNCTION check_VOC_Term_insert() RETURNS TRIGGER AS \$\$
+CREATE OR REPLACE FUNCTION check_MGI_Organism_insert() RETURNS TRIGGER AS \$\$
 
 DECLARE
 	setPrivate boolean;
@@ -40,13 +40,13 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION check_VOC_Term_insert() TO public;
+GRANT EXECUTE ON FUNCTION check_MGI_Organism_insert() TO public;
 
-DROP TRIGGER check_VOC_Term_insert_trigger ON VOC_Term;
+DROP TRIGGER check_MGI_Organism_insert_trigger ON MGI_Organism;
 
-CREATE TRIGGER check_VOC_Term_insert_trigger
-AFTER INSERT on VOC_Term
+CREATE TRIGGER check_MGI_Organism_insert_trigger
+AFTER INSERT on MGI_Organism
 FOR EACH ROW
-EXECUTE PROCEDURE check_VOC_Term_insert();
+EXECUTE PROCEDURE check_MGI_Organism_insert();
 
 EOSQL
