@@ -10,6 +10,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 
 DROP FUNCTION check_ALL_Allele_delete();
 
-DROP TRIGGER check_ALL_Allele_delete_trigger ON ALL_Allele;
+--DROP TRIGGER check_ALL_Allele_delete_trigger ON ALL_Allele;
 
 EOSQL
