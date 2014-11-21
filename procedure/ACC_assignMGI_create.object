@@ -16,15 +16,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION ACC_assignMGI(int,varchar);
+DROP FUNCTION ACC_assignMGI(int,varchar,varchar,int);
 
 CREATE OR REPLACE FUNCTION ACC_assignMGI (
   v_objectKey int,
   v_mgiType varchar(80),
-  v_prefixPart varchar(30) = 'MGI:',
-  v_nextMGI int = -1,
-  v_preferred int = 1,
-  v_private int = 0
+  v_prefixPart varchar(30) DEFAULT 'MGI:',
+  v_nextMGI int DEFAULT -1
 )
 RETURNS VOID AS
 \$\$
@@ -35,10 +33,12 @@ RETURNS VOID AS
 */
 
 DECLARE
-v_nextACC int,
-v_mgiTypeKey int,
-v_accID varchar(30),
+v_nextACC int;
+v_mgiTypeKey int;
 v_userKey int;
+v_accID varchar(30);
+v_preferred int = 1;
+v_private int = 0;
 
 BEGIN
 
@@ -47,18 +47,16 @@ select into v_mgiTypeKey _MGIType_key from ACC_MGIType where name = v_mgiType;
 select into v_userKey _User_key from MGI_User where login = current_user;
 
 if v_nextMGI = -1
-begin
-	select maxNumericPart + 1 as v_nextMGI
+then
+	select into v_nextMGI maxNumericPart + 1
 	from ACC_AccessionMax where prefixPart = v_prefixPart;
-end
-else if v_prefixPart != "J:"
-begin
-    rollback transaction
-    raiserror 99999 "Cannot override generation of MGI accession number"
-    return
-end
+elsif v_prefixPart != "J:"
+then
+    raise notice E'Cannot override generation of MGI accession number';
+    return;
+end if;
 
-select into v_accID v_prefixPart + convert(varchar(30), v_nextMGI);
+select into v_accID v_prefixPart || v_nextMGI::char(30);
 
 insert into ACC_Accession 
 (_Accession_key, accID, prefixPart, numericPart, 
@@ -69,21 +67,17 @@ v_mgiTypeKey, v_preferred, v_private, v_userKey, v_userKey);
 
 if (select maxNumericPart from ACC_AccessionMax
     where prefixPart = v_prefixPart) <= v_nextMGI
-begin
+then
 	update ACC_AccessionMax 
 	set maxNumericPart = v_nextMGI 
 	where prefixPart = v_prefixPart;
-end
-
-
-go
-
+end if;
 
 END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ACC_assignMGI(int,varchar) TO public;
+GRANT EXECUTE ON FUNCTION ACC_assignMGI(int,varchar,varchar,int) TO public;
 
 EOSQL
 
