@@ -8,6 +8,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 
-DROP TRIGGER check_SEQ_Sequence_delete_trigger() ON SEQ_Sequence;
+DROP TRIGGER check_SEQ_Sequence_delete() ON SEQ_Sequence;
 
 EOSQL
