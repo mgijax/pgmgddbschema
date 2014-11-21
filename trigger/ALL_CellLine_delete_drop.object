@@ -8,6 +8,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 
-DROP TRIGGER check_ALL_CellLine_delete() ON ALL_CellLine;
+DROP TRIGGER check_ALL_CellLine_delete_trigger ON ALL_CellLine;
 
 EOSQL

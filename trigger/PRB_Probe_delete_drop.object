@@ -8,6 +8,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 
-DROP TRIGGER check_PRB_Probe_delete() ON PRB_Probe;
+DROP TRIGGER check_PRB_Probe_delete_trigger ON PRB_Probe;
 
 EOSQL
