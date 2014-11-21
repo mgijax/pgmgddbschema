@@ -10,6 +10,7 @@ cd `dirname $0` && . ./Configuration
 
 for i in *_delete_drop.object
 do
-$i $*
+echo $i
+$i
 done
 

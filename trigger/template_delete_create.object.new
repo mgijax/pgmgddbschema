@@ -32,6 +32,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 --	NEW
 --
 
+DROP TRIGGER check_PG-TABLE_delete_trigger ON PG-TABLE;
 DROP FUNCTION check_PG-TABLE_delete();
 
 CREATE OR REPLACE FUNCTION check_PG-TABLE_delete() RETURNS TRIGGER AS \$\$
@@ -79,8 +80,6 @@ END;
 LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION check_PG-TABLE_delete() TO public;
-
-DROP TRIGGER check_PG-TABLE_delete_trigger ON PG-TABLE;
 
 CREATE TRIGGER check_PG-TABLE_delete_trigger
 AFTER DELETE on PG-TABLE

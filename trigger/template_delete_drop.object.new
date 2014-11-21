@@ -8,8 +8,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 
-DROP FUNCTION check_PG-TABLE_delete();
+DROP TRIGGER check_PG-TABLE_delete_trigger ON PG-TABLE;
 
---DROP TRIGGER check_PG-TABLE_delete_trigger ON PG-TABLE;
+DROP FUNCTION check_PG-TABLE_delete();
 
 EOSQL
