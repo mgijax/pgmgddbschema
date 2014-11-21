@@ -8,8 +8,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 
-DROP FUNCTION check_GXD_Antibody_delete();
+DROP TRIGGER check_GXD_Antibody_delete_trigger ON GXD_Antibody;
 
---DROP TRIGGER check_GXD_Antibody_delete_trigger ON GXD_Antibody;
+DROP FUNCTION check_GXD_Antibody_delete();
 
 EOSQL

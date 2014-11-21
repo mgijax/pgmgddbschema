@@ -8,8 +8,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 
-DROP FUNCTION check_VOC_Evidence_delete();
+DROP TRIGGER check_VOC_Evidence_delete_trigger ON VOC_Evidence;
 
---DROP TRIGGER check_VOC_Evidence_delete_trigger ON VOC_Evidence;
+DROP FUNCTION check_VOC_Evidence_delete();
 
 EOSQL

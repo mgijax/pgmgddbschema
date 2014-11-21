@@ -32,6 +32,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 --	NEW
 --
 
+DROP TRIGGER check_GXD_Antibody_delete_trigger ON GXD_Antibody;
 DROP FUNCTION check_GXD_Antibody_delete();
 
 CREATE OR REPLACE FUNCTION check_GXD_Antibody_delete() RETURNS TRIGGER AS \$\$
@@ -79,8 +80,6 @@ END;
 LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION check_GXD_Antibody_delete() TO public;
-
-DROP TRIGGER check_GXD_Antibody_delete_trigger ON GXD_Antibody;
 
 CREATE TRIGGER check_GXD_Antibody_delete_trigger
 AFTER DELETE on GXD_Antibody

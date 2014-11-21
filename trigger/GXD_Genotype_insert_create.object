@@ -9,10 +9,9 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 --
 -- DESCRIPTOIN:
 --
---      this insert trigger will call ACC_assignMGI
---      in order to add a distinct MGI accession id
---      to the NEW object
---	and includes the setting of the "private" variable
+--	this insert trigger will call ACC_assignMGI
+--	in order to add a distinct MGI accession id
+--	to the NEW object
 --
 -- INPUT:
 --	none
@@ -24,7 +23,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 CREATE OR REPLACE FUNCTION check_GXD_Genotype_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-SELECT ACC_assignMGI(NEW._Genotype_key, 'Genotype', true);
+SELECT ACC_assignMGI(NEW.12, 'GXD_Genotype');
 
 EXCEPTION WHEN OTHERS THEN
     RAISE EXCEPTION 'check_GXD_Genotype_insert: error';
@@ -44,6 +43,6 @@ AFTER INSERT on GXD_Genotype
 FOR EACH ROW
 EXECUTE PROCEDURE check_GXD_Genotype_insert();
 
-COMMENT ON FUNCTION mgd.check_GXD_Genotype_insert() IS 'creates an insert trigger to call acc_assignmgi()/set private value';
+COMMENT ON FUNCTION mgd.check_GXD_Genotype_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
 
 EOSQL

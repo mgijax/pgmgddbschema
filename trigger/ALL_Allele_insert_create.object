@@ -23,7 +23,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 CREATE OR REPLACE FUNCTION check_ALL_Allele_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-SELECT ACC_assignMGI(NEW._Allele_key, 'Allele');
+SELECT ACC_assignMGI(NEW.11, 'ALL_Allele');
 
 EXCEPTION WHEN OTHERS THEN
     RAISE EXCEPTION 'check_ALL_Allele_insert: error';

@@ -23,7 +23,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 CREATE OR REPLACE FUNCTION check_IMG_Image_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-SELECT ACC_assignMGI(NEW._Image_key, 'Image');
+SELECT ACC_assignMGI(NEW.9, 'IMG_Image');
 
 EXCEPTION WHEN OTHERS THEN
     RAISE EXCEPTION 'check_IMG_Image_insert: error';

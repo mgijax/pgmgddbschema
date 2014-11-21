@@ -20,6 +20,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 --	NEW
 --
 
+--DROP TRIGGER check_PRB_Strain_insert_trigger ON PRB_Strain;
+
+--DROP FUNCTION check_PRB_Strain_insert();
+
 CREATE OR REPLACE FUNCTION check_PRB_Strain_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
@@ -35,8 +39,6 @@ END;
 LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION check_PRB_Strain_insert() TO public;
-
-DROP TRIGGER check_PRB_Strain_insert_trigger ON PRB_Strain;
 
 CREATE TRIGGER check_PRB_Strain_insert_trigger
 AFTER INSERT on PRB_Strain

@@ -32,6 +32,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 --	NEW
 --
 
+DROP TRIGGER check_NOM_Marker_delete_trigger ON NOM_Marker;
 DROP FUNCTION check_NOM_Marker_delete();
 
 CREATE OR REPLACE FUNCTION check_NOM_Marker_delete() RETURNS TRIGGER AS \$\$
@@ -79,8 +80,6 @@ END;
 LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION check_NOM_Marker_delete() TO public;
-
-DROP TRIGGER check_NOM_Marker_delete_trigger ON NOM_Marker;
 
 CREATE TRIGGER check_NOM_Marker_delete_trigger
 AFTER DELETE on NOM_Marker
