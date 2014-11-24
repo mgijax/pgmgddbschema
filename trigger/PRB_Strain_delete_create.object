@@ -38,11 +38,6 @@ DROP FUNCTION check_PRB_Strain_delete();
 CREATE OR REPLACE FUNCTION check_PRB_Strain_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
-DELETE FROM MGI_AttributeHistory a
-WHERE a._Object_key = OLD._Strain_key
-AND a._MGIType_key = 10
-;
-
 DELETE FROM MGI_Note a
 WHERE a._Object_key = OLD._Strain_key
 AND a._MGIType_key = 10

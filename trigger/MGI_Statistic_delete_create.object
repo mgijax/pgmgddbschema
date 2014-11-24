@@ -2,7 +2,7 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
 -- NAME: check_MGI_Statistic_delete()
@@ -37,11 +37,6 @@ DROP FUNCTION check_MGI_Statistic_delete();
 
 CREATE OR REPLACE FUNCTION check_MGI_Statistic_delete() RETURNS TRIGGER AS \$\$
 BEGIN
-
-DELETE FROM MGI_AttributeHistory a
-WHERE a._Object_key = OLD._Statistic_key
-AND a._MGIType_key = 34
-;
 
 DELETE FROM MGI_Note a
 WHERE a._Object_key = OLD._Statistic_key

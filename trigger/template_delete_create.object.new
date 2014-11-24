@@ -38,11 +38,6 @@ DROP FUNCTION check_PG-TABLE_delete();
 CREATE OR REPLACE FUNCTION check_PG-TABLE_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
-DELETE FROM MGI_AttributeHistory a
-WHERE a._Object_key = OLD.PG-KEY
-AND a._MGIType_key = PG-TYPE
-;
-
 DELETE FROM MGI_Note a
 WHERE a._Object_key = OLD.PG-KEY
 AND a._MGIType_key = PG-TYPE

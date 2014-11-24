@@ -2,7 +2,7 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
 -- NAME: check_PRB_Source_delete()
@@ -37,11 +37,6 @@ DROP FUNCTION check_PRB_Source_delete();
 
 CREATE OR REPLACE FUNCTION check_PRB_Source_delete() RETURNS TRIGGER AS \$\$
 BEGIN
-
-DELETE FROM MGI_AttributeHistory a
-WHERE a._Object_key = OLD._Source_key
-AND a._MGIType_key = 5
-;
 
 DELETE FROM MGI_Note a
 WHERE a._Object_key = OLD._Source_key
