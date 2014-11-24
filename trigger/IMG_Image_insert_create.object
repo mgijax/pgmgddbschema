@@ -2,7 +2,7 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
 -- NAME: check_IMG_Image_insert()
@@ -20,10 +20,13 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 --	NEW
 --
 
+DROP TRIGGER check_IMG_Image_insert_trigger ON IMG_Image;
+DROP FUNCTION check_IMG_Image_insert();
+
 CREATE OR REPLACE FUNCTION check_IMG_Image_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-SELECT ACC_assignMGI(NEW.9, 'IMG_Image');
+SELECT ACC_assignMGI(NEW._Image_key, 'Image');
 
 EXCEPTION WHEN OTHERS THEN
     RAISE EXCEPTION 'check_IMG_Image_insert: error';
@@ -35,8 +38,6 @@ END;
 LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION check_IMG_Image_insert() TO public;
-
-DROP TRIGGER check_IMG_Image_insert_trigger ON IMG_Image;
 
 CREATE TRIGGER check_IMG_Image_insert_trigger
 AFTER INSERT on IMG_Image

@@ -94,9 +94,6 @@ end
 delete MRK_Chromosome from MRK_Chromosome, deleted
 where MRK_Chromosome._Organism_key = deleted._Organism_key
 
-delete MGI_Organism_MGIType from MGI_Organism_MGIType, deleted
-where MGI_Organism_MGIType._Organism_key = deleted._Organism_key
-
 delete ACC_Accession from ACC_Accession a, deleted d
 where a._Object_key = d._Organism_key and a._MGIType_key = 20
 

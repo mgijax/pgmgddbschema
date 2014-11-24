@@ -2,7 +2,7 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
 -- NAME: check_MLD_Expts_insert()
@@ -20,10 +20,13 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 --	NEW
 --
 
+DROP TRIGGER check_MLD_Expts_insert_trigger ON MLD_Expts;
+DROP FUNCTION check_MLD_Expts_insert();
+
 CREATE OR REPLACE FUNCTION check_MLD_Expts_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-SELECT ACC_assignMGI(NEW.4, 'MLD_Expts');
+SELECT ACC_assignMGI(NEW._Expt_key, 'Experiment');
 
 EXCEPTION WHEN OTHERS THEN
     RAISE EXCEPTION 'check_MLD_Expts_insert: error';
@@ -35,8 +38,6 @@ END;
 LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION check_MLD_Expts_insert() TO public;
-
-DROP TRIGGER check_MLD_Expts_insert_trigger ON MLD_Expts;
 
 CREATE TRIGGER check_MLD_Expts_insert_trigger
 AFTER INSERT on MLD_Expts

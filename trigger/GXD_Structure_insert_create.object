@@ -2,7 +2,7 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
 -- NAME: check_GXD_Structure_insert()
@@ -20,10 +20,13 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 --	NEW
 --
 
+DROP TRIGGER check_GXD_Structure_insert_trigger ON GXD_Structure;
+DROP FUNCTION check_GXD_Structure_insert();
+
 CREATE OR REPLACE FUNCTION check_GXD_Structure_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-SELECT ACC_assignMGI(NEW.38, 'GXD_Structure');
+SELECT ACC_assignMGI(NEW._Structure_key, 'GXD Structures');
 
 EXCEPTION WHEN OTHERS THEN
     RAISE EXCEPTION 'check_GXD_Structure_insert: error';
@@ -35,8 +38,6 @@ END;
 LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION check_GXD_Structure_insert() TO public;
-
-DROP TRIGGER check_GXD_Structure_insert_trigger ON GXD_Structure;
 
 CREATE TRIGGER check_GXD_Structure_insert_trigger
 AFTER INSERT on GXD_Structure

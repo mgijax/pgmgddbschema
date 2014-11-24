@@ -2,7 +2,7 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
 -- NAME: check_PRB_Probe_insert()
@@ -20,10 +20,13 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 --	NEW
 --
 
+DROP TRIGGER check_PRB_Probe_insert_trigger ON PRB_Probe;
+DROP FUNCTION check_PRB_Probe_insert();
+
 CREATE OR REPLACE FUNCTION check_PRB_Probe_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-SELECT ACC_assignMGI(NEW.3, 'PRB_Probe');
+SELECT ACC_assignMGI(NEW._Probe_key, 'Segment');
 
 EXCEPTION WHEN OTHERS THEN
     RAISE EXCEPTION 'check_PRB_Probe_insert: error';
@@ -35,8 +38,6 @@ END;
 LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION check_PRB_Probe_insert() TO public;
-
-DROP TRIGGER check_PRB_Probe_insert_trigger ON PRB_Probe;
 
 CREATE TRIGGER check_PRB_Probe_insert_trigger
 AFTER INSERT on PRB_Probe

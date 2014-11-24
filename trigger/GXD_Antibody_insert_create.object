@@ -2,7 +2,7 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
 -- NAME: check_GXD_Antibody_insert()
@@ -20,10 +20,13 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
 --	NEW
 --
 
+DROP TRIGGER check_GXD_Antibody_insert_trigger ON GXD_Antibody;
+DROP FUNCTION check_GXD_Antibody_insert();
+
 CREATE OR REPLACE FUNCTION check_GXD_Antibody_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-SELECT ACC_assignMGI(NEW.6, 'GXD_Antibody');
+SELECT ACC_assignMGI(NEW._Antibody_key, 'Antibody');
 
 EXCEPTION WHEN OTHERS THEN
     RAISE EXCEPTION 'check_GXD_Antibody_insert: error';
@@ -35,8 +38,6 @@ END;
 LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION check_GXD_Antibody_insert() TO public;
-
-DROP TRIGGER check_GXD_Antibody_insert_trigger ON GXD_Antibody;
 
 CREATE TRIGGER check_GXD_Antibody_insert_trigger
 AFTER INSERT on GXD_Antibody
