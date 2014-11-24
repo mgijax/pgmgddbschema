@@ -3,6 +3,9 @@
 #
 # History
 #
+# 11/7/2014	lec
+#	- TR11835/add accession id
+#
 # 08/20/2009	lec
 #	- removed 'union' and replaced with outer join to Marker
 #
@@ -31,15 +34,17 @@ select distinct c.jnumID,
        m.chromosome,
        aa.accID
 from BIB_View c
-        INNER JOIN MLD_Expts x on (c._Refs_key = x._Refs_key)
-        INNER JOIN MLD_Expt_Marker e on (x._Expt_key = e._Expt_key)
+	INNER JOIN MLD_Expts x on (c._Refs_key = x._Refs_key)
+	INNER JOIN MLD_Expt_Marker e on (x._Expt_key = e._Expt_key)
         INNER JOIN MLD_Assay_Types a on (e._Assay_Type_key = a._Assay_Type_key)
         LEFT OUTER JOIN ALL_Allele al on (e._Allele_key = al._Allele_key)
         LEFT OUTER JOIN MRK_Marker m on (e._Marker_key = m._Marker_key)
-                INNER JOIN ACC_Accession aa on (m._Marker_key = aa._Object_key
-                        and aa._MGIType_key = 2
-                        and aa._LogicalDB_key = 1
-                        and aa.preferred = 1)
+        	INNER JOIN ACC_Accession aa on (m._Marker_key = aa._Object_key
+			and aa._MGIType_key = 2
+			and aa._LogicalDB_key = 1
+			and aa.preferred = 1)
+
+
 ;
 
 EOSQL
