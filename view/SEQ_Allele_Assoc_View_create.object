@@ -28,7 +28,8 @@ b.short_citation,
 b.jnumID,
 u2.login as modifiedBy,
 c.*, 
-u1.login as createdBy
+u1.login as createdBy,
+l.name as LogicalDB
 from SEQ_Allele_Assoc c, 
 ACC_Accession sa, 
 ACC_LogicalDB l,

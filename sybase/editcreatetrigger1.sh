@@ -39,7 +39,8 @@ END
 #
 # execute the script to create the delete function/trigger
 #
-${PG_MGD_DBSCHEMADIR}/trigger/${object}_insert_create.object
+#${PG_MGD_DBSCHEMADIR}/trigger/${object}_insert_drop.object
+#${PG_MGD_DBSCHEMADIR}/trigger/${object}_insert_create.object
 
 done < triggers_insert1.txt
 
