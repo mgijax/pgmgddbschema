@@ -28,9 +28,6 @@ BEGIN
 
 PERFORM ACC_assignMGI(NEW._Antigen_key, 'Antigen');
 
-EXCEPTION WHEN OTHERS THEN
-    RAISE EXCEPTION 'check_GXD_Antigen_insert: error';
-
 RETURN NEW;
 
 END;

@@ -28,9 +28,6 @@ BEGIN
 
 PERFORM ACC_assignMGI(NEW._Probe_key, 'Segment');
 
-EXCEPTION WHEN OTHERS THEN
-    RAISE EXCEPTION 'check_PRB_Probe_insert: error';
-
 RETURN NEW;
 
 END;

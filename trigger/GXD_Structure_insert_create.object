@@ -28,9 +28,6 @@ BEGIN
 
 PERFORM ACC_assignMGI(NEW._Structure_key, 'GXD Structures');
 
-EXCEPTION WHEN OTHERS THEN
-    RAISE EXCEPTION 'check_GXD_Structure_insert: error';
-
 RETURN NEW;
 
 END;

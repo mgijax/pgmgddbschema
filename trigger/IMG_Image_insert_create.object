@@ -28,9 +28,6 @@ BEGIN
 
 PERFORM ACC_assignMGI(NEW._Image_key, 'Image');
 
-EXCEPTION WHEN OTHERS THEN
-    RAISE EXCEPTION 'check_IMG_Image_insert: error';
-
 RETURN NEW;
 
 END;

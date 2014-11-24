@@ -28,9 +28,6 @@ BEGIN
 
 PERFORM ACC_assignMGI(NEW._Refs_key, 'Reference');
 
-EXCEPTION WHEN OTHERS THEN
-    RAISE EXCEPTION 'check_BIB_Refs_insert: error';
-
 RETURN NEW;
 
 END;

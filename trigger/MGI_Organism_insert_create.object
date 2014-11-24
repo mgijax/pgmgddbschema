@@ -28,9 +28,6 @@ BEGIN
 
 PERFORM ACC_assignMGI(NEW._Organism_key, 'Organism');
 
-EXCEPTION WHEN OTHERS THEN
-    RAISE EXCEPTION 'check_MGI_Organism_insert: error';
-
 RETURN NEW;
 
 END;

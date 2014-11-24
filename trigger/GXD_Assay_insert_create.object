@@ -28,9 +28,6 @@ BEGIN
 
 PERFORM ACC_assignMGI(NEW._Assay_key, 'Assay');
 
-EXCEPTION WHEN OTHERS THEN
-    RAISE EXCEPTION 'check_GXD_Assay_insert: error';
-
 RETURN NEW;
 
 END;

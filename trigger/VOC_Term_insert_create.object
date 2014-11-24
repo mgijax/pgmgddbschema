@@ -28,9 +28,6 @@ BEGIN
 
 PERFORM ACC_assignMGI(NEW._Term_key, 'Vocabulary Term');
 
-EXCEPTION WHEN OTHERS THEN
-    RAISE EXCEPTION 'check_VOC_Term_insert: error';
-
 RETURN NEW;
 
 END;

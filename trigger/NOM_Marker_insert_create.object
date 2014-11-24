@@ -28,9 +28,6 @@ BEGIN
 
 PERFORM ACC_assignMGI(NEW._Nomen_key, 'Nomenclature');
 
-EXCEPTION WHEN OTHERS THEN
-    RAISE EXCEPTION 'check_NOM_Marker_insert: error';
-
 RETURN NEW;
 
 END;

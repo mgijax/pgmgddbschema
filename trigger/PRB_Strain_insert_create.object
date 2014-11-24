@@ -28,9 +28,6 @@ BEGIN
 
 PERFORM ACC_assignMGI(NEW._Strain_key, 'Strain');
 
-EXCEPTION WHEN OTHERS THEN
-    RAISE EXCEPTION 'check_PRB_Strain_insert: error';
-
 RETURN NEW;
 
 END;
