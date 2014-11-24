@@ -38,6 +38,16 @@ DROP FUNCTION check_ALL_CellLine_delete();
 CREATE OR REPLACE FUNCTION check_ALL_CellLine_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
+DELETE FROM MAP_Coord_Feature a
+WHERE a._Object_key = OLD._CellLine_key
+AND a._MGIType_key = 28
+;
+
+DELETE FROM MAP_Coordinate a
+WHERE a._Object_key = OLD._CellLine_key
+AND a._MGIType_key = 28
+;
+
 DELETE FROM MGI_Note a
 WHERE a._Object_key = OLD._CellLine_key
 AND a._MGIType_key = 28

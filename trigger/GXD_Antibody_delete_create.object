@@ -38,6 +38,16 @@ DROP FUNCTION check_GXD_Antibody_delete();
 CREATE OR REPLACE FUNCTION check_GXD_Antibody_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
+DELETE FROM MAP_Coord_Feature a
+WHERE a._Object_key = OLD._Antibody_key
+AND a._MGIType_key = 6
+;
+
+DELETE FROM MAP_Coordinate a
+WHERE a._Object_key = OLD._Antibody_key
+AND a._MGIType_key = 6
+;
+
 DELETE FROM MGI_Note a
 WHERE a._Object_key = OLD._Antibody_key
 AND a._MGIType_key = 6
