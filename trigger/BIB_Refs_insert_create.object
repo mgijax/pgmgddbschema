@@ -26,7 +26,7 @@ DROP FUNCTION check_BIB_Refs_insert();
 CREATE OR REPLACE FUNCTION check_BIB_Refs_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-SELECT ACC_assignMGI(NEW._Refs_key, 'Reference');
+PERFORM ACC_assignMGI(NEW._Refs_key, 'Reference');
 
 EXCEPTION WHEN OTHERS THEN
     RAISE EXCEPTION 'check_BIB_Refs_insert: error';

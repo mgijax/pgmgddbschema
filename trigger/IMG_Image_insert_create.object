@@ -26,7 +26,7 @@ DROP FUNCTION check_IMG_Image_insert();
 CREATE OR REPLACE FUNCTION check_IMG_Image_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-SELECT ACC_assignMGI(NEW._Image_key, 'Image');
+PERFORM ACC_assignMGI(NEW._Image_key, 'Image');
 
 EXCEPTION WHEN OTHERS THEN
     RAISE EXCEPTION 'check_IMG_Image_insert: error';

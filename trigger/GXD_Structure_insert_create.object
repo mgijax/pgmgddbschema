@@ -26,7 +26,7 @@ DROP FUNCTION check_GXD_Structure_insert();
 CREATE OR REPLACE FUNCTION check_GXD_Structure_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-SELECT ACC_assignMGI(NEW._Structure_key, 'GXD Structures');
+PERFORM ACC_assignMGI(NEW._Structure_key, 'GXD Structures');
 
 EXCEPTION WHEN OTHERS THEN
     RAISE EXCEPTION 'check_GXD_Structure_insert: error';

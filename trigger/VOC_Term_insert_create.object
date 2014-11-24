@@ -26,7 +26,7 @@ DROP FUNCTION check_VOC_Term_insert();
 CREATE OR REPLACE FUNCTION check_VOC_Term_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-SELECT ACC_assignMGI(NEW._Term_key, 'Vocabulary Term');
+PERFORM ACC_assignMGI(NEW._Term_key, 'Vocabulary Term');
 
 EXCEPTION WHEN OTHERS THEN
     RAISE EXCEPTION 'check_VOC_Term_insert: error';

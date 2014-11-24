@@ -26,7 +26,7 @@ DROP FUNCTION check_MGI_Organism_insert();
 CREATE OR REPLACE FUNCTION check_MGI_Organism_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-SELECT ACC_assignMGI(NEW._Organism_key, 'Organism');
+PERFORM ACC_assignMGI(NEW._Organism_key, 'Organism');
 
 EXCEPTION WHEN OTHERS THEN
     RAISE EXCEPTION 'check_MGI_Organism_insert: error';

@@ -26,7 +26,7 @@ DROP FUNCTION check_GXD_Antigen_insert();
 CREATE OR REPLACE FUNCTION check_GXD_Antigen_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-SELECT ACC_assignMGI(NEW._Antigen_key, 'Antigen');
+PERFORM ACC_assignMGI(NEW._Antigen_key, 'Antigen');
 
 EXCEPTION WHEN OTHERS THEN
     RAISE EXCEPTION 'check_GXD_Antigen_insert: error';

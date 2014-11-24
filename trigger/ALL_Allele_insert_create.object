@@ -26,7 +26,7 @@ DROP FUNCTION check_ALL_Allele_insert();
 CREATE OR REPLACE FUNCTION check_ALL_Allele_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-SELECT ACC_assignMGI(NEW._Allele_key, 'Allele');
+PERFORM ACC_assignMGI(NEW._Allele_key, 'Allele');
 
 EXCEPTION WHEN OTHERS THEN
     RAISE EXCEPTION 'check_ALL_Allele_insert: error';

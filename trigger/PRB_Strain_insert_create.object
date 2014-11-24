@@ -26,7 +26,7 @@ DROP FUNCTION check_PRB_Strain_insert();
 CREATE OR REPLACE FUNCTION check_PRB_Strain_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-SELECT ACC_assignMGI(NEW._Strain_key, 'Strain');
+PERFORM ACC_assignMGI(NEW._Strain_key, 'Strain');
 
 EXCEPTION WHEN OTHERS THEN
     RAISE EXCEPTION 'check_PRB_Strain_insert: error';

@@ -26,7 +26,7 @@ DROP FUNCTION check_PRB_Probe_insert();
 CREATE OR REPLACE FUNCTION check_PRB_Probe_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-SELECT ACC_assignMGI(NEW._Probe_key, 'Segment');
+PERFORM ACC_assignMGI(NEW._Probe_key, 'Segment');
 
 EXCEPTION WHEN OTHERS THEN
     RAISE EXCEPTION 'check_PRB_Probe_insert: error';
