@@ -3,6 +3,9 @@
 #
 # History
 #
+# 11/25/2014    lec
+#       - add 'DEFAULT 166894 to _CurationState_key after postgres migration
+#
 # 09/26/2002    lec
 #	- added createdBy, modifiedBy
 #
