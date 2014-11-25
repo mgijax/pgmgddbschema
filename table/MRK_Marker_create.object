@@ -23,7 +23,7 @@ create table mgd.MRK_Marker (
 	_Organism_key                  int             not null,
 	_Marker_Status_key             int             not null,
 	_Marker_Type_key               int             not null,
-	_CurationState_key             int             not null,
+	_CurationState_key             int             not null DEFAULT 166894,
 	symbol                         varchar(50)     not null,
 	name                           varchar(255)    not null,
 	chromosome                     varchar(8)      not null,
