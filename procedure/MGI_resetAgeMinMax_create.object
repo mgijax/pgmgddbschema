@@ -1,0 +1,108 @@
+#!/bin/sh
+
+#
+# HISTORY
+#
+# lec	11/05/2003
+#	- TR 4826
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION MGI_resetAgeMinMax(varchar,int);
+
+CREATE OR REPLACE FUNCTION MGI_resetAgeMinMax (
+v_table varchar(255),		/* Table Name */
+v_key int			/* Primary key */
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_pkey int	/* primary key of records to update */;
+age varchar(50)
+ageMin float
+ageMax float
+age_cursor refcursor;
+
+BEGIN
+
+/* Update the Age Min, Age Max values */
+if (v_table = 'GXD_Expression')
+then
+	OPEN age_cursor FOR
+	select _Expression_key, age
+	from GXD_Expression
+	where _Expression_key = v_key
+	;
+
+elsif (v_table = 'GXD_GelLane')
+then
+	OPEN age_cursor FOR
+	select _GelLane_key, age
+	from GXD_GelLane
+	where _GelLane_key = v_key
+	;
+
+elsif (v_table = 'GXD_Specimen')
+then
+	OPEN age_cursor FOR
+	select _Specimen_key, age
+	from GXD_Specimen
+	where _Specimen_key = v_key
+	;
+
+elsif (v_table = 'PRB_Source')
+then
+	OPEN age_cursor FOR
+	select _Source_key, age
+	from PRB_Source
+	where _Source_key = v_key
+	;
+
+else
+	return;
+
+LOOP
+	FETCH age_cursor into v_pkey, age;
+	EXIT WHEN NOT FOUND;
+
+	exec PRB_ageMinMax @age, @ageMin output, @ageMax output
+
+	if (v_table = 'GXD_Expression')
+	then
+		update GXD_Expression 
+		set ageMin = ageMin, ageMax = ageMax where _Expression_key = v_pkey
+		;
+
+	elsif (v_table = 'GXD_GelLane')
+	then
+		update GXD_GelLane 
+		set ageMin = ageMin, ageMax = ageMax where _GelLane_key = v_pkey
+		;
+
+	elsif (v_table = 'GXD_Specimen')
+	then
+		update GXD_Specimen 
+		set ageMin = ageMin, ageMax = ageMax where _Specimen_key = v_pkey
+		;
+
+	elsif (v_table = 'PRB_Source')
+	then
+		update PRB_Source 
+		set ageMin = ageMin, ageMax = ageMax where _Source_key = v_pkey
+		;
+
+END LOOP;
+
+CLOSE age_cursor;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MGI_resetAgeMinMax(varchar,int) TO public;
+
+EOSQL
