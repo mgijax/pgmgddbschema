@@ -1,0 +1,111 @@
+#!/bin/sh
+
+#
+# History
+#
+# 07/22/2003	lec
+#	- TR 3404/JSAM
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION PRB_ageMinMax(varchar);
+
+CREATE OR REPLACE FUNCTION PRB_ageMinMax (
+age varchar(50),
+)
+AS
+\$\$
+
+DECLARE
+saveAge varchar(50);
+
+
+BEGIN
+
+select into saveAge age
+;
+
+/* return ageMin and ageMax values for given age */
+if age = 'Not Specified' 
+	or age = 'Not Applicable' 
+	or age = 'Not Resolved' 
+	or age = 'Not Loaded'
+then
+	select into ageMin -1.0
+	;
+
+	select into ageMax -1.0
+	;
+
+/* if there are no time units or ranges, then it's simple */
+elsif age = 'embryonic'
+then
+	select into ageMin 0.0
+	;
+
+	select into ageMax 21.0
+	;
+
+elsif age = 'perinatal'
+then
+	select into ageMin 17.0
+	;
+
+	select into ageMax 22.0
+	;
+
+elsif age = 'postnatal'
+then
+	select into ageMin 21.01
+	;
+
+	select into ageMax 1846.0
+	;
+
+elsif age = 'postnatal newborn'
+then
+	select into ageMin 21.01
+	;
+
+	select into ageMax 25.0
+	;
+
+elsif age = 'postnatal immature'
+then
+	select into ageMin 25.01
+	;
+
+	select into ageMax 42.0
+	;
+
+elsif age = 'postnatal adult'
+then
+	select into ageMin 42.01
+	;
+
+	select into ageMax 1846.0
+	;
+
+elsif age = 'postnatal day'
+	or age = 'postnatal week'
+	or age = 'postnatal month'
+	or age = 'postnatal year'
+then
+	/* parse the age into 3 parts:           */
+	/*     stem (embryonic, postnatal),      */
+	/*     time unit (day, week, month year) */
+	/*     time range (x   x,y,z   x-y)      */
+else
+end if;
+
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION PRB_ageMinMax(varchar) TO public;
+
+EOSQL

@@ -1,0 +1,83 @@
+#!/bin/sh
+
+#
+# HISTORY
+#
+# lec   08/27/2014
+#       - TR11654/remove obsolete TR1270/IMAGE sp
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION ACCRef_process(int,int,varchar,int,varchar,int,int);
+
+CREATE OR REPLACE FUNCTION ACCRef_process (
+objectKey int,
+refsKey int,
+accID varchar(30),
+logicalDB int,
+mgiType varchar(80),
+preferred int = 1,
+private int = 0
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+accKey int;
+
+
+BEGIN
+
+/* Disallow edits to WashU data - TR 611 */
+if exists (select * from BIB_Citation_Cache 
+	where _Refs_key = refsKey and numericPart = 57656)
+	and
+	not exists (select 1
+	from MGI_UserRole_View
+	where userrole = 'References:restrictions by J:'
+	and login = user_name() )
+then
+	return;
+/* Disallow edits to UniGene data - TR 983 */
+end if;
+
+if exists (select * from BIB_Citation_Cache 
+	where _Refs_key = refsKey and numericPart = 57747)
+	and
+	not exists (select 1
+	from MGI_UserRole_View
+	where userrole = 'References:restrictions by J:'
+	and login = user_name() )
+then
+	return;
+/* If the Object/Acc ID pair already exists, then use that _Accession_key */
+/* and simply insert a new ACC_AccessionReference record (ACCRef_insert) */
+/* Else, create a new ACC_Accession and ACC_AccessionReference record (ACC_insert) */
+end if;
+
+select into accKey a._Accession_key from ACC_Accession a, ACC_MGIType m
+where accID = accID
+and a._Object_key = objectKey
+and a._MGIType_key = m._MGIType_key
+and m.name = mgiType
+and a._LogicalDB_key = logicalDB
+begin tran
+;
+
+if accKey is not null
+	exec ACCRef_insert accKey, refsKey
+else
+	exec ACC_insert objectKey, accID, logicalDB, mgiType, refsKey, preferred, private
+end if;
+
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ACCRef_process(int,int,varchar,int,varchar,int,int) TO public;
+
+EOSQL

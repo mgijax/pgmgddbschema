@@ -73,6 +73,8 @@ then
 	where prefixPart = v_prefixPart;
 end if;
 
+RETURN;
+
 END;
 \$\$
 LANGUAGE plpgsql;
