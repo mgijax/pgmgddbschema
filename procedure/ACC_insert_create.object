@@ -22,6 +22,7 @@
 # lec 03/18/2003
 #	- SAO
 #
+
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
@@ -44,9 +45,9 @@ RETURNS VOID AS
 BEGIN
 
 if not exists (select 1
-from MGI_UserTask_View
-where usertask = 'accession: alter load ids'
-and login = user_name() )
+	from MGI_UserTask_View
+	where usertask = 'accession: alter load ids'
+	and login = user_name() )
 then
 	/* Disallow edits to SwissProt (13), TrEMBL (41), InterPro (28) */
 	/* Ensembl (33), TIGR (35), DoTS (36), UniGene (23), NIA Mouse Gene Index (53) */
@@ -57,10 +58,10 @@ then
 	end if;
 
 	if (select mgiType) = 'Marker'
-	and
-	(select logicalDB) = 55
-	and
-	(select _Organism_key from MRK_Marker where _Marker_key = objectKey) = 1
+	   and
+	   (select logicalDB) = 55
+	   and
+	   (select _Organism_key from MRK_Marker where _Marker_key = objectKey) = 1
 	then
 		return;
 	/* Disallow edits to J:53158 (SP load), J:63103 (Entrez Gene load), J:90500 (Orthology load) */
@@ -70,28 +71,30 @@ then
 	if (select refskey) in (53672, 64047, 91485, 58626)
 	then
 		return;
+
 	/* for mouse, anything other than XM_ or XR_ RefSeq (27) is invalid */
 	end if;
 
 	if (select logicalDB) = 27
-	and
-	(select _Organism_key from MRK_Marker where _Marker_key = objectKey) = 1
-	and
-	(select accID) not like 'XM_%'
-	and
-	(select accID) not like 'XR_%'
+	   and
+	   (select _Organism_key from MRK_Marker where _Marker_key = objectKey) = 1
+	   and
+	   (select accID) not like 'XM_%'
+	   and
+	   (select accID) not like 'XR_%'
 	then
 		return;
+
 	/* for other than mouse, anything other than XM_ or XP_ RefSeq (27) is invalid */
 	end if;
 
 	if (select logicalDB) = 27
-	and
-	(select _Organism_key from MRK_Marker where _Marker_key = objectKey) != 1
-	and
-	(select accID) not like 'XM_%'
-	and
-	(select accID) not like 'XP_%'
+	   and
+	   (select _Organism_key from MRK_Marker where _Marker_key = objectKey) != 1
+	   and
+	   (select accID) not like 'XM_%'
+	   and
+	   (select accID) not like 'XP_%'
 	then
 		return;
 	end if;
@@ -100,9 +103,9 @@ then
 end if;
 
 if not exists (select 1
-from MGI_UserTask_View
-where usertask = 'accession: alter gene model ids'
-and login = user_name() )
+	from MGI_UserTask_View
+	where usertask = 'accession: alter gene model ids'
+	and login = user_name() )
 then
 	/* Disallow edits to: */
 	/* NCBI Gene Model (59), Ensembl Gene Model (60), VEGA Gene Model (85) */
@@ -111,7 +114,7 @@ then
 		return;
 	end if;
 
-exec ACC_insertNoChecks objectKey, accID, logicalDB, mgiType, refsKey, preferred, private
+	exec ACC_insertNoChecks objectKey, accID, logicalDB, mgiType, refsKey, preferred, private
 end if;
 
 
