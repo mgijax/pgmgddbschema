@@ -54,6 +54,7 @@ select into v_mgiTypeKey _MGIType_key from ACC_MGIType where name = v_mgiType
 select into v_userKey _User_key from MGI_User where login = current_user
 ;
 
+/* Split Accession ID into prefixPart/numericPart */
 select * from ACC_split(v_accID) into v_prefixPart, v_numericPart
 ;
 
