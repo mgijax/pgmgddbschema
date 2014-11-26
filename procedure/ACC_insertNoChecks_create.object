@@ -1,0 +1,69 @@
+#!/bin/sh
+#
+# History
+#
+# lec   07/09/2008
+#       - TR 9057; new
+#
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION ACC_insertNoChecks(int,varchar,int,varchar,int,int,int);
+
+CREATE OR REPLACE FUNCTION ACC_insertNoChecks (
+objectKey int,
+accID varchar(30),
+logicalDB int,
+mgiType varchar(80),
+refsKey int DEFAULT -1,
+preferred int DEFAULT 1,
+private int DEFAULT 0
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+nextACC int;
+mgiTypeKey int;
+prefixPart varchar(30);
+numericPart int;
+exec ACC_split accID, prefixPart out, numericPart out;
+userKey int;
+
+
+BEGIN
+
+/* Insert record into master Accession table. */
+/* If reference is given, insert record into Accession Reference table. */
+if accID is null
+end if;
+
+return;
+select into nextACC max(_Accession_key) + 1 from ACC_Accession
+;
+
+select into mgiTypeKey _MGIType_key from ACC_MGIType where name = mgiType
+;
+
+select into userKey _User_key from MGI_User where login = current_user
+;
+
+insert into ACC_Accession
+(_Accession_key, accID, prefixPart, numericPart, _LogicalDB_key,
+_Object_key, _MGIType_key, private, preferred, _CreatedBy_key, _ModifiedBy_key)
+values(nextACC, accID, prefixPart, numericPart, logicalDB, objectKey, mgiTypeKey, private, preferred, userKey, userKey)
+;
+
+if refsKey != -1
+then
+end if;
+
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ACC_insertNoChecks(int,varchar,int,varchar,int,int,int) TO public;
+
+EOSQL
