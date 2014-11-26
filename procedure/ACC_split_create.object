@@ -2,6 +2,9 @@
 #
 # History
 #
+# lec	11/26/2014
+#	- converted from Sybase-to-Postgres
+#
 # lec	03/01/2012
 #	- TR10859; change (> 10) to (>= 10)
 #
@@ -19,83 +22,26 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 DROP FUNCTION ACC_split(varchar);
 
 CREATE OR REPLACE FUNCTION ACC_split (
-accID varchar(30),
-out prefixPart varchar(30),
-out numericPart int
+v_accID varchar(30),
+out v_prefixPart varchar(30),
+out v_numericPart int
 )
 AS
 \$\$
 
-DECLARE
-temp varchar(30);
-suffix varchar(30);
-acclen int;
-idx int;
-
-
 BEGIN
 
-/* Remove trailing blanks */
-select into accID rtrim(accID)
-;
+-- to call : select v_prefixPart, v_numericPart from ACC_split('MGI:12345');
+-- example : A2ALT2 -> (A2ALT, 2)
+-- example : MGI:12345 -> (MGI:, 12345)
 
-select into acclen char_length(accID)
-;
+-- v_prefixPart is alphanumeric
+v_prefixPart := (select regexp_matches(v_accID, E'^((.*[^0-9])?)([0-9]*)', 'g'))[2];
 
-select into temp reverse(accID)
-;
+-- v_numericPart is numeric only
+v_numericPart := (select regexp_matches(v_accID, E'^((.*[^0-9])?)([0-9]*)', 'g'))[3];
 
-select into idx patindex('%[^0-9]%',temp)
-;
-
-select accID, substring(accID, E'\\D+'), substring(accID, E'\\d+') from ACC_Accession 
-where _Object_key = 3
-
-select regexp_matches('A2ALT2', E'^((.*[^0-9])?)([0-9]*)', 'g')
-
-/* If @idx = 0, then no prefix */
-if idx = 0
-then
-	select into numericPart accID::integer
-	;
-
-	select into prefixPart NULL
-	;
-
-else
-	select into prefixPart reverse(substring(temp,idx,acclen-idx+1))
-	;
-
-	select into suffix substring(accID,
-		char_length(prefixPart)+1,
-		acclen - char_length(prefixPart))
-	;
-
-	/* if length of the suffix will result in arithmatic overflow... */
-	if char_length(suffix) >= 10
-	then
-		select into prefixPart accID
-		;
-
-		select into numericPart NULL
-		;
-
-	else
-		if suffix is not NULL
-		then
-			select into numericPart suffix::integer
-			;
-
-		else
-			select into numericPart NULL
-			;
-
-		end if;
-
-	end if;
-
-end if;
-
+RETURN;
 
 END;
 \$\$
