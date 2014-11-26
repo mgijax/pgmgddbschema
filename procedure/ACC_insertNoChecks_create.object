@@ -1,10 +1,15 @@
 #!/bin/sh
+
 #
 # History
 #
 # lec   07/09/2008
 #       - TR 9057; new
 #
+# example:
+#    ACC_insertNoChecks(1, 'test-A1B1C123', 1, 'Marker', -1, 0)
+#
+
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
@@ -43,7 +48,7 @@ end if;
 select into v_nextACC max(_Accession_key) + 1 from ACC_Accession
 ;
 
-select into v_mgiTypeKey _MGIType_key from ACC_MGIType where name = mgiType
+select into v_mgiTypeKey _MGIType_key from ACC_MGIType where name = v_mgiType
 ;
 
 select into v_userKey _User_key from MGI_User where login = current_user
