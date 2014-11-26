@@ -7,7 +7,7 @@
 #       - TR 9057; new
 #
 # example:
-#    ACC_insertNoChecks(1, 'test-A1B1C123', 1, 'Marker', -1, 0)
+#    select ACC_insertNoChecks(1, 'test-A1B1C123', 1, 'Marker', -1, 0)
 #
 
 cd `dirname $0` && . ./Configuration
@@ -40,7 +40,7 @@ BEGIN
 /* Insert record into master Accession table. */
 /* If reference is given, insert record into Accession Reference table. */
 
-if accID is null
+if v_accID is null
 then
 	return;
 end if;
@@ -54,7 +54,7 @@ select into v_mgiTypeKey _MGIType_key from ACC_MGIType where name = v_mgiType
 select into v_userKey _User_key from MGI_User where login = current_user
 ;
 
-select ACC_split(v_accID) into v_prefixPart, v_numericPart
+select * from ACC_split(v_accID) into v_prefixPart, v_numericPart
 ;
 
 insert into ACC_Accession
@@ -63,7 +63,7 @@ _Object_key, _MGIType_key, private, preferred, _CreatedBy_key, _ModifiedBy_key)
 values(v_nextACC, v_accID, v_prefixPart, v_numericPart, v_logicalDB, v_objectKey, v_mgiTypeKey, v_private, v_preferred, v_userKey, v_userKey)
 ;
 
-if refsKey != -1
+if v_refsKey != -1
 then
 	select ACCRef_insert(v_nextAcc, v_refsKey);
 end if;
