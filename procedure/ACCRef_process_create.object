@@ -46,11 +46,12 @@ and a._LogicalDB_key = v_logicalDB
 
 if v_accKey is not null
 then
-	select ACCRef_insert (v_accKey, v_refsKey);
+	PERFORM ACCRef_insert (v_accKey, v_refsKey);
 else
-	select ACC_insertNoChecks (v_objectKey, v_accID, v_logicalDB, v_mgiType, v_refsKey, v_preferred, v_private);
+	PERFORM ACC_insertNoChecks (v_objectKey, v_accID, v_logicalDB, v_mgiType, v_refsKey, v_preferred, v_private);
 end if;
 
+RETURN;
 
 END;
 \$\$

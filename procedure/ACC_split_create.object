@@ -24,7 +24,7 @@ DROP FUNCTION ACC_split(varchar);
 CREATE OR REPLACE FUNCTION ACC_split (
 v_accID varchar(30),
 out v_prefixPart varchar(30),
-out v_numericPart int
+out v_numericPart varchar(30)
 )
 AS
 \$\$

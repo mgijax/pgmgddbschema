@@ -32,7 +32,7 @@ DECLARE
 v_nextACC int;
 v_mgiTypeKey int;
 v_prefixPart varchar(30);
-v_numericPart int;
+v_numericPart varchar(30);
 v_userKey int;
 
 BEGIN
@@ -58,17 +58,29 @@ select into v_userKey _User_key from MGI_User where login = current_user
 select * from ACC_split(v_accID) into v_prefixPart, v_numericPart
 ;
 
-insert into ACC_Accession
-(_Accession_key, accID, prefixPart, numericPart, _LogicalDB_key,
-_Object_key, _MGIType_key, private, preferred, _CreatedBy_key, _ModifiedBy_key)
-values(v_nextACC, v_accID, v_prefixPart, v_numericPart, v_logicalDB, v_objectKey, v_mgiTypeKey, v_private, v_preferred, v_userKey, v_userKey)
-;
+if v_numericPart = ''
+then
+	insert into ACC_Accession
+	(_Accession_key, accID, prefixPart, numericPart, _LogicalDB_key, _Object_key, 
+ 	 _MGIType_key, private, preferred, _CreatedBy_key, _ModifiedBy_key)
+	values(v_nextACC, v_accID, v_prefixPart, null, 
+               v_logicalDB, v_objectKey, v_mgiTypeKey, v_private, v_preferred, v_userKey, v_userKey)
+	;
+else
+	insert into ACC_Accession
+	(_Accession_key, accID, prefixPart, numericPart, _LogicalDB_key, _Object_key, 
+ 	 _MGIType_key, private, preferred, _CreatedBy_key, _ModifiedBy_key)
+	values(v_nextACC, v_accID, v_prefixPart, v_numericPart::integer, 
+               v_logicalDB, v_objectKey, v_mgiTypeKey, v_private, v_preferred, v_userKey, v_userKey)
+	;
+end if;
 
 if v_refsKey != -1
 then
-	select ACCRef_insert(v_nextAcc, v_refsKey);
+	PERFORM ACCRef_insert(v_nextAcc, v_refsKey);
 end if;
 
+RETURN;
 
 END;
 \$\$
