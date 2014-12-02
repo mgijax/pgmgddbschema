@@ -25,26 +25,23 @@ DECLARE
 
 BEGIN
 
-update ALL_Knockout_Cache set _Allele_key = newAlleleKey where _Allele_key = oldAlleleKey
+UPDATE ALL_Knockout_Cache SET _Allele_key = newAlleleKey WHERE _Allele_key = oldAlleleKey
 ;
 
-update GXD_AlleleGenotype set _Allele_key = newAlleleKey where _Allele_key = oldAlleleKey
+UPDATE GXD_AlleleGenotype SET _Allele_key = newAlleleKey WHERE _Allele_key = oldAlleleKey
 ;
 
-update GXD_AllelePair set _Allele_key_1 = newAlleleKey where _Allele_key_1 = oldAlleleKey
+UPDATE GXD_AllelePair SET _Allele_key_1 = newAlleleKey WHERE _Allele_key_1 = oldAlleleKey
 ;
 
-update GXD_AllelePair set _Allele_key_2 = newAlleleKey where _Allele_key_2 = oldAlleleKey
+UPDATE GXD_AllelePair SET _Allele_key_2 = newAlleleKey WHERE _Allele_key_2 = oldAlleleKey
 ;
 
-update MLD_Expt_Marker set _Allele_key = newAlleleKey where _Allele_key = oldAlleleKey
+UPDATE MLD_Expt_Marker SET _Allele_key = newAlleleKey WHERE _Allele_key = oldAlleleKey
 ;
 
-delete from ALL_Allele where _Allele_key = oldAlleleKey
+DELETE FROM ALL_Allele WHERE _Allele_key = oldAlleleKey
 ;
-
-
-
 
 END;
 \$\$

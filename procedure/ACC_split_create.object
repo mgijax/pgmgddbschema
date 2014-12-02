@@ -1,4 +1,5 @@
 #!/bin/sh
+
 #
 # History
 #
@@ -15,6 +16,7 @@
 #	- TR 7182; increased prefixPart to 30
 #
 #
+
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
@@ -36,10 +38,10 @@ BEGIN
 -- example : MGI:12345 -> (MGI:, 12345)
 
 -- v_prefixPart is alphanumeric
-v_prefixPart := (select regexp_matches(v_accID, E'^((.*[^0-9])?)([0-9]*)', 'g'))[2];
+v_prefixPart := (SELECT regexp_matches(v_accID, E'^((.*[^0-9])?)([0-9]*)', 'g'))[2];
 
 -- v_numericPart is numeric only
-v_numericPart := (select regexp_matches(v_accID, E'^((.*[^0-9])?)([0-9]*)', 'g'))[3];
+v_numericPart := (SELECT regexp_matches(v_accID, E'^((.*[^0-9])?)([0-9]*)', 'g'))[3];
 
 RETURN;
 
@@ -49,6 +51,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION ACC_split(varchar) TO public;
 
-COMMENT ON FUNCTION mgd.ACC_split(varchar) IS '';
+COMMENT ON FUNCTION mgd.ACC_split(varchar) IS 'splits the accession id into prefix & numeric parts';
 
 EOSQL

@@ -37,7 +37,7 @@ BEGIN
 SELECT INTO saveAge v_age
 ;
 
-/* return ageMin and ageMax values for given age */
+/* return ageMin and ageMax values, given age */
 IF v_age = 'Not SpecIFied' 
 	or v_age = 'Not Applicable' 
 	or v_age = 'Not Resolved' 
@@ -101,16 +101,16 @@ ELSE
 
         IF idx > 0 THEN
             IF i = 0 THEN
-                SELECT INTO stem substring(v_age from 1 for idx - 1);
+                SELECT INTO stem substring(v_age, 1, idx - 1);
             ELSIF i = 1 THEN
-                SELECT INTO timeUnit substring(v_age from 1 for idx - 1);
+                SELECT INTO timeUnit substring(v_age, 1, idx - 1);
             ELSIF i = 1 THEN
-                SELECT INTO timeRange substring(v_age from 1 for char_length(v_age));
+                SELECT INTO timeRange substring(v_age, 1, char_length(v_age));
 	    END IF;
 
-            SELECT INTO v_age substring(v_age from idx + 1 for char_length(v_age));
+            SELECT INTO v_age substring(v_age, idx + 1, char_length(v_age));
         ELSE
-            SELECT INTO timeRange substring(v_age from 1 for char_length(v_age));
+            SELECT INTO timeRange substring(v_age, 1, char_length(v_age));
             SELECT INTO v_age null;
         END IF;
 
@@ -119,9 +119,9 @@ ELSE
     END LOOP; -- WHILE v_age != null...
 
     /* once the stem, time unit and time range have been parsed, */
-    /* determine the format of the time range and process accordingly. */
+    /* determine the,mat of the time range and process accordingly. */
 
-    /* format is:                     */
+    /*,mat is:                     */
     /*     embryonic day x,y,z        */
     /*     embryonic day x-y,z        */
     /*     embryonic day x,y-z        */
@@ -141,29 +141,29 @@ ELSE
                 /* the x-y of an "x-y,z..." */
 
                 IF idx > idx2 THEN
-                    IF minValue > substring(timeRange from 1 for idx2 - 1)::NUMERIC THEN
-                        SELECT INTO minValue substring(timeRange from 1 for idx2 - 1)::NUMERIC;
+                    IF minValue > substring(timeRange, 1, idx2 - 1)::NUMERIC THEN
+                        SELECT INTO minValue substring(timeRange, 1, idx2 - 1)::NUMERIC;
 		    END IF;
-                    IF maxValue < substring(timeRange from idx2 + 1 for idx - idx2 - 1)::NUMERIC THEN
-                        SELECT INTO maxValue substring(timeRange from idx2 + 1 for idx - idx2 - 1)::NUMERIC;
+                    IF maxValue < substring(timeRange, idx2 + 1, idx - idx2 - 1)::NUMERIC THEN
+                        SELECT INTO maxValue substring(timeRange, idx2 + 1, idx - idx2 - 1)::NUMERIC;
 		    END IF;
 
                 /* more timeRanges (more commas) */
                 ELSIF idx > 0 THEN
-                    IF minValue > substring(timeRange from 1 for idx - 1)::NUMERIC THEN
-                        SELECT INTO minValue substring(timeRange from 1 for idx - 1)::NUMERIC;
+                    IF minValue > substring(timeRange, 1, idx - 1)::NUMERIC THEN
+                        SELECT INTO minValue substring(timeRange, 1, idx - 1)::NUMERIC;
 		    END IF;
-                    IF maxValue < convert(numeric, substring(timeRange from 1 for idx - 1)) THEN
-                        SELECT INTO maxValue substring(timeRange from 1 for idx - 1)::NUMERIC;
+                    IF maxValue < convert(numeric, substring(timeRange, 1, idx - 1)) THEN
+                        SELECT INTO maxValue substring(timeRange, 1, idx - 1)::NUMERIC;
 		    END IF;
 
                 /* last timeRange */
                 ELSE
-                    IF minValue > substring(timeRange from 1 for idx2 - 1)::NUMERIC THEN
-                        SELECT INTO minValue substring(timeRange from 1 for idx2 - 1)::NUMERIC;
+                    IF minValue > substring(timeRange, 1, idx2 - 1)::NUMERIC THEN
+                        SELECT INTO minValue substring(timeRange, 1, idx2 - 1)::NUMERIC;
 		    END IF;
-                    IF maxValue < substring(timeRange from idx2 + 1 for char_length(timeRange))::NUMERIC THEN
-                        SELECT INTO maxValue substring(timeRange from idx2 + 1 for char_length(timeRange))::NUMERIC;
+                    IF maxValue < substring(timeRange, idx2 + 1, char_length(timeRange))::NUMERIC THEN
+                        SELECT INTO maxValue substring(timeRange, idx2 + 1, char_length(timeRange))::NUMERIC;
 		    END IF;
 
                 END IF;
@@ -171,11 +171,11 @@ ELSE
             ELSE
                 /* more timeRanges */
                 IF idx > 0 THEN
-                    IF minValue > substring(timeRange from 1 for idx - 1)::NUMERIC THEN
-                        SELECT INTO minValue substring(timeRange from 1 for idx - 1)::NUMERIC;
+                    IF minValue > substring(timeRange, 1, idx - 1)::NUMERIC THEN
+                        SELECT INTO minValue substring(timeRange, 1, idx - 1)::NUMERIC;
                     END IF;
-                    IF maxValue < substring(timeRange from 1 for idx - 1)::NUMERIC THEN
-                        SELECT INTO maxValue substring(timeRange from 1 for idx - 1)::NUMERIC;
+                    IF maxValue < substring(timeRange, 1, idx - 1)::NUMERIC THEN
+                        SELECT INTO maxValue substring(timeRange, 1, idx - 1)::NUMERIC;
                     END IF;
 
                 /* last timeRange */
@@ -192,14 +192,14 @@ ELSE
             IF position(',' in timeRange) = 0 THEN
                 SELECT INTO timeRange null;
             ELSE
-                SELECT INTO timeRange substring(timeRange from idx + 1 for char_length(timeRange));
+                SELECT INTO timeRange substring(timeRange, idx + 1, char_length(timeRange));
             END IF;
 
         END LOOP;
 
     ELSE
 
-        /* format is:                     */
+        /*,mat is:                     */
         /*     embryonic day x-y          */
 
         SELECT INTO idx position('-' in timeRange);
@@ -208,7 +208,7 @@ ELSE
             SELECT INTO minValue substring(timeRange, 1, idx - 1)::NUMERIC;
             SELECT INTO maxValue substring(timeRange, idx + 1, char_length(timeRange))::NUMERIC;
 
-        /* format is:                     */
+        /*,mat is:                     */
         /*     embryonic day x            */
 
         ELSE

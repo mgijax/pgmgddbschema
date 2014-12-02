@@ -1,4 +1,5 @@
 #!/bin/sh
+
 #
 # History
 #
@@ -8,7 +9,9 @@
 #	- TR 7182; increased prefixPart to 30
 #
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 DROP FUNCTION ACC_setMax(int,varchar);
@@ -23,10 +26,10 @@ RETURNS VOID AS
 
 BEGIN
 
-/* Increment the max MGI Accession Number by @v_increment */
-update ACC_AccessionMax
-set maxNumericPart = maxNumericPart + v_increment
-where prefixPart = v_prefixPart
+/* Increment the max MGI Accession Number by v_increment */
+UPDATE ACC_AccessionMax
+SET maxNumericPart = maxNumericPart + v_increment
+WHERE prefixPart = v_prefixPart
 ;
 
 
@@ -36,6 +39,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION ACC_setMax(int,varchar) TO public;
 
-COMMENT ON FUNCTION mgd.ACC_setMax(int,varchar) IS '';
+COMMENT ON FUNCTION mgd.ACC_setMax(int,varchar) IS 'updates the acc_accessionmax:maxNumericPart field';
 
 EOSQL

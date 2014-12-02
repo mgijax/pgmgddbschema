@@ -1,4 +1,5 @@
 #!/bin/sh
+
 #
 # History
 #
@@ -17,7 +18,9 @@
 # 02/01/2007	lec
 #	- TR 8138
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 DROP FUNCTION BIB_getCopyright(int);
@@ -41,143 +44,142 @@ s2 varchar(255);
 s  varchar(255);
 idx int;
 
-
 BEGIN
 
 /* Returns copyright for journal */
-select
+SELECT
 c.note,
 r.short_citation,
 r.journal,
 r.jnumID,
 r.year::char(4),
 cc.pubmedID
-into
+INTO
 v_note,
 v_short_citation,
 v_journal,
 v_jnumID,
 v_year,
 v_pubmedID
-from BIB_View r, BIB_Citation_Cache cc, VOC_Term t, MGI_Note n, MGI_NoteChunk c
-where r._Refs_key = refsKey
-and r._Refs_key = cc._Refs_key
-and r.journal = t.term
-and t._Term_key = n._Object_key
-and n._MGIType_key = 13
-and n._NoteType_key = 1026
-and n._Note_key = c._Note_key
+FROM BIB_View r, BIB_Citation_Cache cc, VOC_Term t, MGI_Note n, MGI_NoteChunk c
+WHERE r._Refs_key = refsKey
+AND r._Refs_key = cc._Refs_key
+AND r.journal = t.term
+AND t._Term_key = n._Object_key
+AND n._MGIType_key = 13
+AND n._NoteType_key = 1026
+AND n._Note_key = c._Note_key
 ;
 
 /* default...copyright equals note */
-select into copyright v_note
+SELECT INTO copyright v_note
 ;
 
-if (v_journal = 'Proc Natl Acad Sci U S A')
-then
-	select into idx position('*' in v_note)
+IF (v_journal = 'Proc Natl Acad Sci U S A')
+THEN
+	SELECT INTO idx position('*' in v_note)
 	;
 
-	select into s1 substring(v_note, 1, idx - 1)
+	SELECT INTO s1 substring(v_note, 1, idx - 1)
 	;
 
-	select into s substring(v_note, idx + 1, char_length(v_note))
+	SELECT INTO s substring(v_note, idx + 1, char_length(v_note))
 	;
 
-	select into idx position('*' in s)
+	SELECT INTO idx position('*' in s)
 	;
 
-	select into s2 substring(s, 1, idx - 1)
+	SELECT INTO s2 substring(s, 1, idx - 1)
 	;
 
-	select into s substring(s, idx + 1, char_length(s))
+	SELECT INTO s substring(s, idx + 1, char_length(s))
 	;
 
-	select into copyright s1 || v_short_citation || s2 || v_year || s
+	SELECT INTO copyright s1 || v_short_citation || s2 || v_year || s
+	;
+
+	RETURN;
+END IF;
+
+SELECT INTO idx position('Elsevier(' in v_note)
+;
+
+IF (idx > 0)
+THEN
+	SELECT INTO s1 substring(v_note, 1, idx + 8)
+	;
+
+	SELECT INTO s2 substring(v_note, idx + 9, char_length(v_note))
+	;
+
+	SELECT INTO v_note s1 || v_jnumID || s2
+	;
+
+	SELECT INTO copyright v_note
+	;
+
+	RETURN;
+END IF;
+
+SELECT INTO idx position('JBiolChem(' in v_note)
+;
+
+IF (idx > 0)
+THEN
+	SELECT INTO s1 substring(v_note, 1, idx + 9)
+	;
+
+	SELECT INTO s2 substring(v_note, idx + 11, char_length(v_note))
+	;
+
+	SELECT INTO v_note s1 || v_pubmedID || '|JBC' || s2
+	;
+
+	SELECT INTO copyright v_note
+	;
+
+	RETURN;
+END IF;
+
+SELECT INTO idx position('JLipidRes(' in v_note)
+;
+
+IF (idx > 0)
+THEN
+	SELECT INTO s1 substring(v_note, 1, idx + 9)
+	;
+
+	SELECT INTO s2 substring(v_note, idx + 11, char_length(v_note))
+	;
+
+	SELECT INTO v_note s1 || v_pubmedID || '|JLR' || s2
+	;
+
+	SELECT INTO copyright v_note
 	;
 
 	return;
-end if;
+END IF;
 
-select into idx position('Elsevier(' in v_note)
+SELECT INTO idx position('*' in v_note)
 ;
 
-if (idx > 0)
-then
-	select into s1 substring(v_note, 1, idx + 8)
+IF (idx > 0)
+THEN
+	SELECT INTO s1 substring(v_note, 1, idx - 1)
 	;
 
-	select into s2 substring(v_note, idx + 9, char_length(v_note))
+	SELECT INTO s2 substring(v_note, idx + 1, char_length(v_note))
 	;
 
-	select into v_note s1 || v_jnumID || s2
+	SELECT INTO v_note s1 || v_short_citation || s2
 	;
 
-	select into copyright v_note
+	SELECT INTO copyright v_note
 	;
 
 	return;
-end if;
-
-select into idx position('JBiolChem(' in v_note)
-;
-
-if (idx > 0)
-then
-	select into s1 substring(v_note, 1, idx + 9)
-	;
-
-	select into s2 substring(v_note, idx + 11, char_length(v_note))
-	;
-
-	select into v_note s1 || v_pubmedID || '|JBC' || s2
-	;
-
-	select into copyright v_note
-	;
-
-	return;
-end if;
-
-select into idx position('JLipidRes(' in v_note)
-;
-
-if (idx > 0)
-then
-	select into s1 substring(v_note, 1, idx + 9)
-	;
-
-	select into s2 substring(v_note, idx + 11, char_length(v_note))
-	;
-
-	select into v_note s1 || v_pubmedID || '|JLR' || s2
-	;
-
-	select into copyright v_note
-	;
-
-	return;
-end if;
-
-select into idx position('*' in v_note)
-;
-
-if (idx > 0)
-then
-	select into s1 substring(v_note, 1, idx - 1)
-	;
-
-	select into s2 substring(v_note, idx + 1, char_length(v_note))
-	;
-
-	select into v_note s1 || v_short_citation || s2
-	;
-
-	select into copyright v_note
-	;
-
-	return;
-end if;
+END IF;
 
 
 END;
