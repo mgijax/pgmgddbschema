@@ -1,9 +1,12 @@
 #!/bin/sh
+
 #
 # History
 #
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 DROP FUNCTION PRB_reloadSequence(int);
@@ -17,29 +20,27 @@ RETURNS VOID AS
 DECLARE
 userKey int;
 
-
 BEGIN
 
-select into userKey _User_key from MGI_User where login = current_user
+SELECT INTO userKey _User_key FROM MGI_User WHERE login = current_user
 ;
 
-delete from SEQ_Probe_Cache where _Probe_key = probeKey
+DELETE FROM SEQ_Probe_Cache WHERE _Probe_key = probeKey
 ;
 
-insert into SEQ_Probe_Cache
-select distinct s._Object_key, m._Object_key, ar._Refs_key, m.modification_date, userKey, userKey, current_date, current_date
-from ACC_Accession s, ACC_Accession m, ACC_AccessionReference ar
-where s._MGIType_key = 19
-and s.accID = m.accID
-and s._LogicalDB_key = m._LogicalDB_key
-and m._MGIType_key = 3
-and m._Accession_key = ar._Accession_key
-and m._Object_key = probeKey
-and not exists (select 1 from PRB_Notes pn
-where m._Object_key = pn._Probe_key
-and pn.note like 'The source of the material used to create this cDNA probe was different%')
+INSERT INTO SEQ_Probe_Cache
+SELECT distinct s._Object_key, m._Object_key, ar._Refs_key, m.modification_date, userKey, userKey, current_date, current_date
+FROM ACC_Accession s, ACC_Accession m, ACC_AccessionReference ar
+WHERE s._MGIType_key = 19
+AND s.accID = m.accID
+AND s._LogicalDB_key = m._LogicalDB_key
+AND m._MGIType_key = 3
+AND m._Accession_key = ar._Accession_key
+AND m._Object_key = probeKey
+AND not exists (SELECT 1 FROM PRB_Notes pn
+WHERE m._Object_key = pn._Probe_key
+AND pn.note LIKE 'The source of the material used to create this cDNA probe was different%')
 ;
-
 
 END;
 \$\$

@@ -40,45 +40,45 @@ BEGIN
 /* Insert record into master Accession table. */
 /* If reference is given, insert record into Accession Reference table. */
 
-if v_accID is null
-then
-	return;
-end if;
+IF v_accID IS NULL
+THEN
+	RETURN;
+END IF;
 
-select into v_nextACC max(_Accession_key) + 1 from ACC_Accession
+SELECT INTO v_nextACC max(_Accession_key) + 1 FROM ACC_Accession
 ;
 
-select into v_mgiTypeKey _MGIType_key from ACC_MGIType where name = v_mgiType
+SELECT INTO v_mgiTypeKey _MGIType_key FROM ACC_MGIType WHERE name = v_mgiType
 ;
 
-select into v_userKey _User_key from MGI_User where login = current_user
+SELECT INTO v_userKey _User_key FROM MGI_User WHERE login = current_user
 ;
 
-/* split accession id into prefixPart/numericPart */
-select * from ACC_split(v_accID) into v_prefixPart, v_numericPart
+/* split accession id INTO prefixPart/numericPart */
+SELECT * FROM ACC_split(v_accID) INTO v_prefixPart, v_numericPart
 ;
 
-if v_numericPart = ''
-then
-	insert into ACC_Accession
+IF v_numericPart = ''
+THEN
+	INSERT INTO ACC_Accession
 	(_Accession_key, accID, prefixPart, numericPart, _LogicalDB_key, _Object_key, 
  	 _MGIType_key, private, preferred, _CreatedBy_key, _ModifiedBy_key)
-	values(v_nextACC, v_accID, v_prefixPart, null, 
+	VALUES(v_nextACC, v_accID, v_prefixPart, null, 
                v_logicalDB, v_objectKey, v_mgiTypeKey, v_private, v_preferred, v_userKey, v_userKey)
 	;
-else
-	insert into ACC_Accession
+ELSE
+	INSERT INTO ACC_Accession
 	(_Accession_key, accID, prefixPart, numericPart, _LogicalDB_key, _Object_key, 
  	 _MGIType_key, private, preferred, _CreatedBy_key, _ModifiedBy_key)
-	values(v_nextACC, v_accID, v_prefixPart, v_numericPart::integer, 
+	VALUES(v_nextACC, v_accID, v_prefixPart, v_numericPart::integer, 
                v_logicalDB, v_objectKey, v_mgiTypeKey, v_private, v_preferred, v_userKey, v_userKey)
 	;
-end if;
+END IF;
 
-if v_refsKey != -1
-then
+IF v_refsKey != -1
+THEN
 	PERFORM ACCRef_insert(v_nextAcc, v_refsKey);
-end if;
+END IF;
 
 RETURN;
 

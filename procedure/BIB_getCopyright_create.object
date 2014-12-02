@@ -158,7 +158,7 @@ THEN
 	SELECT INTO copyright v_note
 	;
 
-	return;
+	RETURN;
 END IF;
 
 SELECT INTO idx position('*' in v_note)
@@ -178,7 +178,7 @@ THEN
 	SELECT INTO copyright v_note
 	;
 
-	return;
+	RETURN;
 END IF;
 
 

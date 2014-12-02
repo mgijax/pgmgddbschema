@@ -1,4 +1,5 @@
 #!/bin/sh
+
 #
 # History
 #
@@ -7,7 +8,9 @@
 # 05/10/2004	lec
 #	- remove bad gel lanes
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 DROP FUNCTION GXD_removeBadGelBand(int);
@@ -18,18 +21,15 @@ assayKey int
 RETURNS VOID AS
 \$\$
 
-
 BEGIN
 
-delete
-from GXD_GelBand
-using GXD_GelBand b, GXD_GelRow r, GXD_GelLane l
-where b._GelLane_key = l._GelLane_key
-and r._GelRow_key = b._GelRow_key
-and r._Assay_key != l._Assay_key
-and r._Assay_key = assayKey
+DELETE FROM GXD_GelBand
+USING GXD_GelBand b, GXD_GelRow r, GXD_GelLane l
+WHERE b._GelLane_key = l._GelLane_key
+AND r._GelRow_key = b._GelRow_key
+AND r._Assay_key != l._Assay_key
+AND r._Assay_key = assayKey
 ;
-
 
 END;
 \$\$
@@ -37,6 +37,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION GXD_removeBadGelBand(int) TO public;
 
-COMMENT ON FUNCTION mgd.GXD_removeBadGelBand(int) IS '';
+COMMENT ON FUNCTION mgd.GXD_removeBadGelBand(int) IS 'deletes bad gel lanes';
 
 EOSQL
