@@ -29,9 +29,6 @@ v_refsKey int DEFAULT -1
 RETURNS VOID AS
 \$\$
 
-DECLARE
-
-
 BEGIN
 
 if not exists (select 1 from MGI_UserTask_View 
@@ -116,12 +113,9 @@ end if;
 
 /* for gene models */
 
-if not exists (select 1
-    from MGI_UserTask_View
-    where usertask = 'accession: alter gene model ids'
-    and login = current_user )
+if not exists (select 1 from MGI_UserTask_View
+    	where usertask = 'accession: alter gene model ids' and login = current_user )
 then
-       
         /* Disallow edits to: */
         /* NCBI Gene Model (59), Ensembl Gene Model (60), VEGA Gene Model (85) */
 
@@ -131,6 +125,22 @@ then
             rollback transaction;
             raise notice E'You cannot delete an Accession id for a gene model (NCBI, Ensembl, VEGA).';
             return;
+        end if;
+end if;
+
+if v_refsKey = -1
+then
+        delete from ACC_Accession where _Accession_key = v_accKey;
+else
+        delete from ACC_AccessionReference where _Accession_key = v_accKey and _Refs_key = v_refsKey;
+
+        /* If the deletion of the detail would leave the master all alone...
+           then delete the master too.
+        */
+
+        if not exists (select * from ACC_AccessionReference where _Accession_key = v_accKey)
+        then
+            delete from ACC_Accession where _Accession_key = v_accKey;
         end if;
 end if;
 
