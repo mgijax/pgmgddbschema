@@ -21,9 +21,9 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-pkey int	/* primary key of records to update */;
-oldSeq int	/* current sequence number */;
-newSeq int	/* new sequence number */;
+pkey int;	/* primary key of records to update */
+oldSeq int;	/* current sequence number */
+newSeq int;	/* new sequence number */
 seq_cursor refcursor;
 
 BEGIN
