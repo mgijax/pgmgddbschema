@@ -38,6 +38,7 @@ g/create table /s//create table mgd./g
 g/tinyint/s//smallint/g
 g/datetime/s//timestamp DEFAULT now()/g
 g/bit/s//smallint/g
+g/float/s//numeric/g
 g/offset/s//cmOffset/g
 g/^)/s//);/
 /cat
