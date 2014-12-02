@@ -34,37 +34,37 @@ DECLARE
 
 BEGIN
 
-if eiModule = 'AlleleModule'
-then
-	if userLogin in
-	(select login from MGI_UserRole_View
-		where userrole in ('Pheno:Tier 3 (jr curator)',
+IF eiModule = 'AlleleModule'
+THEN
+	IF userLogin IN
+	(SELECT login FROM MGI_UserRole_View
+		WHERE userrole IN ('Pheno:Tier 3 (jr curator)',
 			'Pheno:Tier 4 (curator)',
 			'Pheno:Tier 5 (guru)'))
-	then
+	THEN
 		isVerified := 1;
 
-	else
+	ELSE
 		isVerified := 0;
 
-	end if;
+	END IF;
 
-elsif eiModule = 'ImageModule'
-then
-	if userLogin in
-	(select login from MGI_UserRole_View
-		where userrole in ('GXD ImageModule',
+ELSIF eiModule = 'ImageModule'
+THEN
+	IF userLogin IN
+	(SELECT login FROM MGI_UserRole_View
+		WHERE userrole IN ('GXD ImageModule',
 			'Pheno:Tier 4 (curator)',
 			'Pheno:Tier 5 (guru)'))
-	then
+	THEN
 		isVerified := 1;
 
-	else
+	ELSE
 		isVerified := 0;
 
-	end if;
+	END IF;
 
-elsif eiModule in ('AlleleDerivationModule',
+ELSIF eiModule IN ('AlleleDerivationModule',
 		'AntibodyModule',
 		'AntigenModule',
 		'AssayModule',
@@ -94,22 +94,22 @@ elsif eiModule in ('AlleleDerivationModule',
 		'TissueModule',
 		'TranslationModule',
 		'UserRoleModule')
-then
-	if userLogin in
-		(select login from MGI_UserRole_View where userrole in (eiModule))
-	then
+THEN
+	IF userLogin IN
+		(SELECT login FROM MGI_UserRole_View WHERE userrole in (eiModule))
+	THEN
 		isVerified := 1;
 
-	else
+	ELSE
 		isVerified := 0;
 
-	end if;
+	END IF;
 
 /* default is to give permissions if none have been given */
-else
+ELSE
 	isVerified := 1;
 
-end if;
+END IF;
 
 RETURN isVerified;
 
