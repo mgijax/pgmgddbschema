@@ -26,7 +26,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 DROP FUNCTION BIB_getCopyright(int);
 
 CREATE OR REPLACE FUNCTION BIB_getCopyright (
-refsKey int,
+v_refsKey int,
 out copyright varchar(255)
 )
 AS
@@ -62,7 +62,7 @@ v_jnumID,
 v_year,
 v_pubmedID
 FROM BIB_View r, BIB_Citation_Cache cc, VOC_Term t, MGI_Note n, MGI_NoteChunk c
-WHERE r._Refs_key = refsKey
+WHERE r._Refs_key = v_refsKey
 AND r._Refs_key = cc._Refs_key
 AND r.journal = t.term
 AND t._Term_key = n._Object_key
@@ -72,111 +72,84 @@ AND n._Note_key = c._Note_key
 ;
 
 /* default...copyright equals note */
-SELECT INTO copyright v_note
-;
+copyright := v_note;
 
 IF (v_journal = 'Proc Natl Acad Sci U S A')
 THEN
-	SELECT INTO idx position('*' in v_note)
-	;
+	idx := position('*' in v_note);
 
-	SELECT INTO s1 substring(v_note, 1, idx - 1)
-	;
+	s1 := substring(v_note, 1, idx - 1);
 
-	SELECT INTO s substring(v_note, idx + 1, char_length(v_note))
-	;
+	s := substring(v_note, idx + 1, char_length(v_note));
 
-	SELECT INTO idx position('*' in s)
-	;
+	idx := position('*' in s);
 
-	SELECT INTO s2 substring(s, 1, idx - 1)
-	;
+	s2 := substring(s, 1, idx - 1);
 
-	SELECT INTO s substring(s, idx + 1, char_length(s))
-	;
+	s := substring(s, idx + 1, char_length(s));
 
-	SELECT INTO copyright s1 || v_short_citation || s2 || v_year || s
+	copyright := s1 || v_short_citation || s2 || v_year || s;
+
+	RETURN;
+END IF;
+
+idx := position('Elsevier(' in v_note);
+
+IF (idx > 0)
+THEN
+	s1 := substring(v_note, 1, idx + 8);
+
+	s2 := substring(v_note, idx + 9, char_length(v_note));
+
+	v_note := s1 || v_jnumID || s2;
+
+	copyright := v_note;
+
+	RETURN;
+END IF;
+
+idx := position('JBiolChem(' in v_note);
+
+IF (idx > 0)
+THEN
+	s1 := substring(v_note, 1, idx + 9);
+
+	s2 := substring(v_note, idx + 11, char_length(v_note));
+
+	v_note := s1 || v_pubmedID || '|JBC' || s2;
+
+	copyright := v_note;
+
+	RETURN;
+END IF;
+
+idx := position('JLipidRes(' in v_note);
+
+IF (idx > 0)
+THEN
+	s1 := substring(v_note, 1, idx + 9);
+
+	s2 := substring(v_note, idx + 11, char_length(v_note));
+
+	v_note := s1 || v_pubmedID || '|JLR' || s2;
+
+	copyright := v_note
 	;
 
 	RETURN;
 END IF;
 
-SELECT INTO idx position('Elsevier(' in v_note)
-;
+idx := position('*' in v_note);
 
 IF (idx > 0)
 THEN
-	SELECT INTO s1 substring(v_note, 1, idx + 8)
-	;
+	s1 := substring(v_note, 1, idx - 1);
 
-	SELECT INTO s2 substring(v_note, idx + 9, char_length(v_note))
-	;
+	s2 := substring(v_note, idx + 1, char_length(v_note));
 
-	SELECT INTO v_note s1 || v_jnumID || s2
-	;
+	v_note := s1 || v_short_citation || s2;
 
-	SELECT INTO copyright v_note
-	;
-
-	RETURN;
-END IF;
-
-SELECT INTO idx position('JBiolChem(' in v_note)
-;
-
-IF (idx > 0)
-THEN
-	SELECT INTO s1 substring(v_note, 1, idx + 9)
-	;
-
-	SELECT INTO s2 substring(v_note, idx + 11, char_length(v_note))
-	;
-
-	SELECT INTO v_note s1 || v_pubmedID || '|JBC' || s2
-	;
-
-	SELECT INTO copyright v_note
-	;
-
-	RETURN;
-END IF;
-
-SELECT INTO idx position('JLipidRes(' in v_note)
-;
-
-IF (idx > 0)
-THEN
-	SELECT INTO s1 substring(v_note, 1, idx + 9)
-	;
-
-	SELECT INTO s2 substring(v_note, idx + 11, char_length(v_note))
-	;
-
-	SELECT INTO v_note s1 || v_pubmedID || '|JLR' || s2
-	;
-
-	SELECT INTO copyright v_note
-	;
-
-	RETURN;
-END IF;
-
-SELECT INTO idx position('*' in v_note)
-;
-
-IF (idx > 0)
-THEN
-	SELECT INTO s1 substring(v_note, 1, idx - 1)
-	;
-
-	SELECT INTO s2 substring(v_note, idx + 1, char_length(v_note))
-	;
-
-	SELECT INTO v_note s1 || v_short_citation || s2
-	;
-
-	SELECT INTO copyright v_note
-	;
+	copyright := v_note;
 
 	RETURN;
 END IF;

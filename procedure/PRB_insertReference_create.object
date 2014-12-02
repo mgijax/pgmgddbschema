@@ -32,9 +32,9 @@ THEN
 	RETURN;
 END IF;
 
-SELECT INTO maxReferenceKey max(_Reference_key) + 1 FROM PRB_Reference;
+maxReferenceKey := max(_Reference_key) + 1 FROM PRB_Reference;
 
-SELECT INTO userKey _User_key FROM MGI_User WHERE login = current_user;
+userKey := _User_key FROM MGI_User WHERE login = current_user;
 
 INSERT INTO PRB_Reference
 (_Reference_key, _Probe_key, _Refs_key, hasRmap, hasSequence, _CreatedBy_key, _ModifiedBy_key)

@@ -43,9 +43,9 @@ v_private int = 0;
 
 BEGIN
 
-SELECT INTO v_nextACC max(_Accession_key) + 1 FROM ACC_Accession;
-SELECT INTO v_mgiTypeKey _MGIType_key FROM ACC_MGIType WHERE name = v_mgiType;
-SELECT INTO v_userKey _User_key FROM MGI_User WHERE login = current_user;
+v_nextACC := max(_Accession_key) + 1 FROM ACC_Accession;
+v_mgiTypeKey := _MGIType_key FROM ACC_MGIType WHERE name = v_mgiType;
+v_userKey := _User_key FROM MGI_User WHERE login = current_user;
 
 IF v_nextMGI = -1
 THEN
@@ -57,7 +57,7 @@ THEN
     RETURN;
 END IF;
 
-SELECT INTO v_accID v_prefixPart || v_nextMGI::char(30);
+v_accID := v_prefixPart || v_nextMGI::char(30);
 
 INSERT INTO ACC_Accession 
 (_Accession_key, accID, prefixPart, numericPart, 

@@ -22,11 +22,9 @@ userKey int;
 
 BEGIN
 
-SELECT INTO userKey _User_key FROM MGI_User WHERE login = current_user
-;
+userKey := _User_key FROM MGI_User WHERE login = current_user;
 
-DELETE FROM SEQ_Probe_Cache WHERE _Probe_key = probeKey
-;
+DELETE FROM SEQ_Probe_Cache WHERE _Probe_key = probeKey;
 
 INSERT INTO SEQ_Probe_Cache
 SELECT distinct s._Object_key, m._Object_key, ar._Refs_key, m.modification_date, userKey, userKey, current_date, current_date

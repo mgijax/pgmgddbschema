@@ -26,7 +26,7 @@ v_userKey int;
 BEGIN
 
 /* Insert record into ACC_AccessionReference table */
-SELECT INTO v_userKey _User_key FROM MGI_User WHERE login = current_user;
+v_userKey := _User_key FROM MGI_User WHERE login = current_user;
 
 INSERT INTO ACC_AccessionReference
 (_Accession_key, _Refs_key, _CreatedBy_key, _ModifiedBy_key)
