@@ -1,0 +1,143 @@
+#!/bin/sh
+
+#
+# History
+#
+# lec	08/27/2014
+#	- TR11654/remove obsolete TR1270/IMAGE sp
+#
+# lec	07/10/2008
+#	- TR9125; gene model check
+#
+# 10/17/2005	lec
+#	- TR 7170; allow DoTS/TC/NIA deletions
+#
+# 02/15/2005	lec
+#	- permissions
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION ACC_delete_byAccKey(int,int);
+
+CREATE OR REPLACE FUNCTION ACC_delete_byAccKey (
+v_accKey int,
+v_refsKey int DEFAULT -1
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+
+
+BEGIN
+
+if not exists (select 1 from MGI_UserTask_View 
+	where usertask = 'accession: alter load ids' and login = current_user )
+then
+        /* TR 7170: ok to delete TIGR (35), DoTS (36), NIA Mouse Gene Index (53) */
+
+        /* Disallow edits to SwissProt (13), TrEMBL (41), InterPro (28) */
+        /* Ensembl (33), UniGene (23) */
+
+        if (select _LogicalDB_key from ACC_Accession where _Accession_key = v_accKey) 
+                in (13, 41, 28, 33, 23)
+        then
+            rollback transaction;
+	    raise notice E'You cannot delete an Accession id that is associated via a load program.';
+            return;
+        end if;
+
+        /* EntrezGene */
+
+        if (select _LogicalDB_key from ACC_Accession where _Accession_key = v_accKey) = 55
+           and 
+           (select m._Organism_key from ACC_Accession a, MRK_Marker m 
+                where a._Accession_key = v_accKey
+                and a._MGIType_key = 2
+                and a._Object_key = m._Marker_key) = 1
+        then
+            rollback transaction;
+            raise notice E'You cannot delete an Entrez Gene Accession id.';
+            return;
+        end if;
+
+        /* Disallow edits to J:53158 (SP load), J:63103 (Entrez Gene load), J:90500 (Orthology load) */
+        /* These loads may pick up GenBank ids that we can't check for with just the _LogicalDB_key */
+
+        if (select _Refs_key from ACC_AccessionReference where _Accession_key = v_accKey) 
+                in (53672, 64047, 91485)
+        then
+            rollback transaction;
+            raise notice E'You cannot delete an Accession id that is associated with J:53158, J:63103, 
+J:90500.';
+            return;
+        end if;
+
+        /* for mouse, anything other than XM_, XR_, NM_, NR_ RefSeq (27) is invalid */
+        /* note that we've already checked the reference above, so if an NM_ or NR_ gets */
+        /* to this point, then it's okay to delete it because it's MGI-curated */
+
+        else if (select _LogicalDB_key from ACC_Accession where _Accession_key = v_accKey) = 27 
+           and
+           (select m._Organism_key from ACC_Accession a, MRK_Marker m 
+                where a._Accession_key = v_accKey
+                and a._MGIType_key = 2
+                and a._Object_key = m._Marker_key) = 1
+           and
+           (select prefixPart from ACC_Accession where _Accession_key = v_accKey) 
+                not in ('XM_','NM_','XR_','NR_')
+        then
+            rollback transaction;
+            raise notice E'You can only delete XM_/XR_ RefSeqs.';
+            return;
+        end if;
+
+        /* for other than mouse, anything other than XM_, XP_ RefSeq (27) is invalid */
+        /* note that we've already checked the reference above */
+
+        if (select _LogicalDB_key from ACC_Accession where _Accession_key = v_accKey) = 27 
+           and
+           (select m._Organism_key from ACC_Accession a, MRK_Marker m 
+                where a._Accession_key = v_accKey
+                and a._Object_key = m._Marker_key) != 1
+           and
+           (select prefixPart from ACC_Accession where _Accession_key = v_accKey) 
+		not in ('XM_','XP_')
+        then
+            rollback transaction;
+            raise notice E'You can only delete XM_/XP_ RefSeqs.';
+            return;
+        end if;
+
+end if;
+
+/* for gene models */
+
+if not exists (select 1
+    from MGI_UserTask_View
+    where usertask = 'accession: alter gene model ids'
+    and login = current_user )
+then
+       
+        /* Disallow edits to: */
+        /* NCBI Gene Model (59), Ensembl Gene Model (60), VEGA Gene Model (85) */
+
+        if (select _LogicalDB_key from ACC_Accession where _Accession_key = V_accKey)
+                in (59, 60, 85)
+        then
+            rollback transaction;
+            raise notice E'You cannot delete an Accession id for a gene model (NCBI, Ensembl, VEGA).';
+            return;
+        end if;
+end if;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ACC_delete_byAccKey(int,int) TO public;
+
+EOSQL
