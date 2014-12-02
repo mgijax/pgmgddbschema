@@ -119,4 +119,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MGI_checkUserRole(varchar,varchar) TO public;
 
+COMMENT ON FUNCTION mgd.MGI_checkUserRole(varchar,varchar) IS '';
+
 EOSQL

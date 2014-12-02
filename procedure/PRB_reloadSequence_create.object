@@ -47,4 +47,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION PRB_reloadSequence(int) TO public;
 
+COMMENT ON FUNCTION mgd.PRB_reloadSequence(int) IS '';
+
 EOSQL

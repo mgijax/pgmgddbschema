@@ -109,4 +109,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MGI_resetAgeMinMax(varchar,int) TO public;
 
+COMMENT ON FUNCTION mgd.MGI_resetAgeMinMax(varchar,int) IS '';
+
 EOSQL

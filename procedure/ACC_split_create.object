@@ -49,4 +49,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION ACC_split(varchar) TO public;
 
+COMMENT ON FUNCTION mgd.ACC_split(varchar) IS '';
+
 EOSQL

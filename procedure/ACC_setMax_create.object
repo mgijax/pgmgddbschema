@@ -36,4 +36,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION ACC_setMax(int,varchar) TO public;
 
+COMMENT ON FUNCTION mgd.ACC_setMax(int,varchar) IS '';
+
 EOSQL

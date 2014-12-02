@@ -65,4 +65,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MGI_insertSynonym(int,int,int,varchar,int) TO public;
 
+COMMENT ON FUNCTION mgd.MGI_insertSynonym(int,int,int,varchar,int) IS '';
+
 EOSQL

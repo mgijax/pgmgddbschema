@@ -57,4 +57,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION NOM_updateReserved(varchar) TO public;
 
+COMMENT ON FUNCTION mgd.NOM_updateReserved(varchar) IS '';
+
 EOSQL

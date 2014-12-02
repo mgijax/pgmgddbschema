@@ -37,4 +37,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION GXD_removeBadGelBand(int) TO public;
 
+COMMENT ON FUNCTION mgd.GXD_removeBadGelBand(int) IS '';
+
 EOSQL

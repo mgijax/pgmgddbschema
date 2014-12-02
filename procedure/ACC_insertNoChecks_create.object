@@ -88,4 +88,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION ACC_insertNoChecks(int,varchar,int,varchar,int,int,int) TO public;
 
+COMMENT ON FUNCTION mgd.ACC_insertNoChecks(int,varchar,int,varchar,int,int,int) IS 'to-be-done';
+
 EOSQL

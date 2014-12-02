@@ -48,4 +48,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION PRB_insertReference(int,int) TO public;
 
+COMMENT ON FUNCTION mgd.PRB_insertReference(int,int) IS '';
+
 EOSQL

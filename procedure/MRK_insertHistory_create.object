@@ -89,4 +89,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MRK_insertHistory(int,int,int,int,int,varchar,timestamp,int,int,timestamp,timestamp) TO public;
 
+COMMENT ON FUNCTION mgd.MRK_insertHistory(int,int,int,int,int,varchar,timestamp,int,int,timestamp,timestamp) IS '';
+
 EOSQL

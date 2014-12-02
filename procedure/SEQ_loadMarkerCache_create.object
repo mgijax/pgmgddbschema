@@ -77,4 +77,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION SEQ_loadMarkerCache(int) TO public;
 
+COMMENT ON FUNCTION mgd.EQ_loadMarkerCache(int) IS '';
+
 EOSQL

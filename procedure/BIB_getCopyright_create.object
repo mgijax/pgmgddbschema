@@ -186,4 +186,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION BIB_getCopyright(int) TO public;
 
+COMMENT ON FUNCTION mgd.BIB_getCopyright(int) IS '';
+
 EOSQL

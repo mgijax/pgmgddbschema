@@ -103,4 +103,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MRK_updateOffset(int,int) TO public;
 
+COMMENT ON FUNCTION mgd.MRK_updateOffset(int,int) IS '';
+
 EOSQL

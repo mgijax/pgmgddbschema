@@ -313,4 +313,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MGI_resetSequenceNum(varchar,int) TO public;
 
+COMMENT ON FUNCTION mgd.MGI_resetSequenceNum(varchar,int) IS '';
+
 EOSQL

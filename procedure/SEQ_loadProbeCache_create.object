@@ -49,4 +49,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION SEQ_loadProbeCache(int) TO public;
 
+COMMENT ON FUNCTION mgd.SEQ_loadProbeCache(int) IS '';
+
 EOSQL

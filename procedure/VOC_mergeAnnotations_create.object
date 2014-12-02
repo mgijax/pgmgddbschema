@@ -129,4 +129,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION VOC_mergeAnnotations(int,int,int) TO public;
 
+COMMENT ON FUNCTION mgd.VOC_mergeAnnotations(int,int,int) IS '';
+
 EOSQL
