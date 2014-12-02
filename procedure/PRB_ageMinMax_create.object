@@ -14,93 +14,246 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 DROP FUNCTION PRB_ageMinMax(varchar);
 
 CREATE OR REPLACE FUNCTION PRB_ageMinMax (
-age varchar(50),
+v_age varchar(50),
+out v_ageMin numeric,
+out v_ageMax numeric
 )
 AS
 \$\$
 
 DECLARE
 saveAge varchar(50);
-
+stem varchar(50);
+timeUnit varchar(25);
+timeRange varchar(25);
+i integer;
+idx integer;
+idx2 integer;
+minValue numeric;
+maxValue numeric;
 
 BEGIN
 
-select into saveAge age
+SELECT INTO saveAge v_age
 ;
 
 /* return ageMin and ageMax values for given age */
-if age = 'Not Specified' 
-	or age = 'Not Applicable' 
-	or age = 'Not Resolved' 
-	or age = 'Not Loaded'
-then
-	select into ageMin -1.0
-	;
+IF v_age = 'Not SpecIFied' 
+	or v_age = 'Not Applicable' 
+	or v_age = 'Not Resolved' 
+	or v_age = 'Not Loaded'
+THEN
+	SELECT INTO v_ageMin -1.0;
+	SELECT INTO v_ageMax -1.0;
 
-	select into ageMax -1.0
-	;
+/* IF there are no time units or ranges, then it's simple */
+ELSIF v_age = 'embryonic'
+THEN
+	SELECT INTO v_ageMin 0.0;
+	SELECT INTO v_ageMax 21.0;
 
-/* if there are no time units or ranges, then it's simple */
-elsif age = 'embryonic'
-then
-	select into ageMin 0.0
-	;
+ELSIF v_age = 'perinatal'
+THEN
+	SELECT INTO v_ageMin 17.0;
+	SELECT INTO v_ageMax 22.0;
 
-	select into ageMax 21.0
-	;
+ELSIF v_age = 'postnatal'
+THEN
+	SELECT INTO v_ageMin 21.01;
+	SELECT INTO v_ageMax 1846.0;
 
-elsif age = 'perinatal'
-then
-	select into ageMin 17.0
-	;
+ELSIF v_age = 'postnatal newborn'
+THEN
+	SELECT INTO v_ageMin 21.01;
+	SELECT INTO v_ageMax 25.0;
 
-	select into ageMax 22.0
-	;
+ELSIF v_age = 'postnatal immature'
+THEN
+	SELECT INTO v_ageMin 25.01;
+	SELECT INTO v_ageMax 42.0;
 
-elsif age = 'postnatal'
-then
-	select into ageMin 21.01
-	;
+ELSIF v_age = 'postnatal adult'
+THEN
+	SELECT INTO v_ageMin 42.01;
+	SELECT INTO v_ageMax 1846.0;
 
-	select into ageMax 1846.0
-	;
+ELSIF v_age = 'postnatal day'
+	or v_age = 'postnatal week'
+	or v_age = 'postnatal month'
+	or v_age = 'postnatal year'
+THEN
+	--rollback transaction;
+	RAISE NOTICE E'Invalid Age Value %', v_age;
+	RETURN;
 
-elsif age = 'postnatal newborn'
-then
-	select into ageMin 21.01
-	;
+/* parse the age INTO 3 parts:           */
+/*     stem (embryonic, postnatal),      */
+/*     time unit (day, week, month year) */
+/*     time range (x   x,y,z   x-y)      */
+ELSE
 
-	select into ageMax 25.0
-	;
+    SELECT INTO minValue 5000.0;
+    SELECT INTO maxValue -1.0;
+    SELECT INTO i 0;
 
-elsif age = 'postnatal immature'
-then
-	select into ageMin 25.01
-	;
+    WHILE v_age is not null and i < 3 LOOP
 
-	select into ageMax 42.0
-	;
+        SELECT INTO idx position(' ' in v_age);
 
-elsif age = 'postnatal adult'
-then
-	select into ageMin 42.01
-	;
+        IF idx > 0 THEN
+            IF i = 0 THEN
+                SELECT INTO stem substring(v_age from 1 for idx - 1);
+            ELSIF i = 1 THEN
+                SELECT INTO timeUnit substring(v_age from 1 for idx - 1);
+            ELSIF i = 1 THEN
+                SELECT INTO timeRange substring(v_age from 1 for char_length(v_age));
+	    END IF;
 
-	select into ageMax 1846.0
-	;
+            SELECT INTO v_age substring(v_age from idx + 1 for char_length(v_age));
+        ELSE
+            SELECT INTO timeRange substring(v_age from 1 for char_length(v_age));
+            SELECT INTO v_age null;
+        END IF;
 
-elsif age = 'postnatal day'
-	or age = 'postnatal week'
-	or age = 'postnatal month'
-	or age = 'postnatal year'
-then
-	/* parse the age into 3 parts:           */
-	/*     stem (embryonic, postnatal),      */
-	/*     time unit (day, week, month year) */
-	/*     time range (x   x,y,z   x-y)      */
-else
-end if;
+        SELECT INTO i i + 1;
 
+    END LOOP; -- WHILE v_age != null...
+
+    /* once the stem, time unit and time range have been parsed, */
+    /* determine the format of the time range and process accordingly. */
+
+    /* format is:                     */
+    /*     embryonic day x,y,z        */
+    /*     embryonic day x-y,z        */
+    /*     embryonic day x,y-z        */
+    /*                                */
+    /* we assume that x is the min and z is the max */
+    /*                                              */
+    /* NOTE:  there are very fiew of these cases (29 as of 07/23/2003) */
+
+    IF position(',' in timeRange) > 0 THEN
+
+        WHILE timeRange != null LOOP
+            SELECT INTO idx position(',' in timeRange);
+            SELECT INTO idx2 position('-' in timeRange);
+
+            IF idx2 > 0 THEN
+
+                /* the x-y of an "x-y,z..." */
+
+                IF idx > idx2 THEN
+                    IF minValue > substring(timeRange from 1 for idx2 - 1)::NUMERIC THEN
+                        SELECT INTO minValue substring(timeRange from 1 for idx2 - 1)::NUMERIC;
+		    END IF;
+                    IF maxValue < substring(timeRange from idx2 + 1 for idx - idx2 - 1)::NUMERIC THEN
+                        SELECT INTO maxValue substring(timeRange from idx2 + 1 for idx - idx2 - 1)::NUMERIC;
+		    END IF;
+
+                /* more timeRanges (more commas) */
+                ELSIF idx > 0 THEN
+                    IF minValue > substring(timeRange from 1 for idx - 1)::NUMERIC THEN
+                        SELECT INTO minValue substring(timeRange from 1 for idx - 1)::NUMERIC;
+		    END IF;
+                    IF maxValue < convert(numeric, substring(timeRange from 1 for idx - 1)) THEN
+                        SELECT INTO maxValue substring(timeRange from 1 for idx - 1)::NUMERIC;
+		    END IF;
+
+                /* last timeRange */
+                ELSE
+                    IF minValue > substring(timeRange from 1 for idx2 - 1)::NUMERIC THEN
+                        SELECT INTO minValue substring(timeRange from 1 for idx2 - 1)::NUMERIC;
+		    END IF;
+                    IF maxValue < substring(timeRange from idx2 + 1 for char_length(timeRange))::NUMERIC THEN
+                        SELECT INTO maxValue substring(timeRange from idx2 + 1 for char_length(timeRange))::NUMERIC;
+		    END IF;
+
+                END IF;
+
+            ELSE
+                /* more timeRanges */
+                IF idx > 0 THEN
+                    IF minValue > substring(timeRange from 1 for idx - 1)::NUMERIC THEN
+                        SELECT INTO minValue substring(timeRange from 1 for idx - 1)::NUMERIC;
+                    END IF;
+                    IF maxValue < substring(timeRange from 1 for idx - 1)::NUMERIC THEN
+                        SELECT INTO maxValue substring(timeRange from 1 for idx - 1)::NUMERIC;
+                    END IF;
+
+                /* last timeRange */
+                ELSE
+                    IF minValue > timeRange::NUMERIC THEN
+                        SELECT INTO minValue timeRange::NUMERIC;
+                    END IF;
+                    IF maxValue < timeRange::NUMERIC THEN
+                        SELECT INTO maxValue timeRange::NUMERIC;
+		    END IF;
+                END IF;
+            END IF;
+
+            IF position(',' in timeRange) = 0 THEN
+                SELECT INTO timeRange null;
+            ELSE
+                SELECT INTO timeRange substring(timeRange from idx + 1 for char_length(timeRange));
+            END IF;
+
+        END LOOP;
+
+    ELSE
+
+        /* format is:                     */
+        /*     embryonic day x-y          */
+
+        SELECT INTO idx position('-' in timeRange);
+
+        IF idx > 0 THEN
+            SELECT INTO minValue substring(timeRange, 1, idx - 1)::NUMERIC;
+            SELECT INTO maxValue substring(timeRange, idx + 1, char_length(timeRange))::NUMERIC;
+
+        /* format is:                     */
+        /*     embryonic day x            */
+
+        ELSE
+            SELECT INTO minValue timeRange::NUMERIC;
+            SELECT INTO maxValue timeRange::NUMERIC;
+        END IF;
+
+    END IF; -- end IF position(',' in timeRange) > 0 THEN
+
+    IF minValue is null or maxValue is null THEN
+        --rollback transaction;
+        RAISE notice E'Invalid Age Range: Must enter a single (x), range (x-y), list (x,y,z) or list of ranges (x-y,w-z): %', saveAge;
+        RETURN;
+    END IF;
+
+    /* multiply postnatal values according to time unit */
+
+    IF stem = 'postnatal' THEN
+
+        IF timeUnit = 'day' THEN
+            SELECT INTO v_ageMin minValue + 21.01;
+            SELECT INTO v_ageMax maxValue + 21.01;
+
+        ELSEIF timeUnit = 'week' THEN
+            SELECT INTO v_ageMin minValue * 7 + 21.01;
+            SELECT INTO v_ageMax maxValue * 7 + 21.01;
+
+        ELSEIF timeUnit = 'month' THEN
+            SELECT INTO v_ageMin minValue * 30 + 21.01;
+            SELECT INTO v_ageMax maxValue * 30 + 21.01;
+
+        ELSEIF timeUnit = 'year' THEN
+            SELECT INTO v_ageMin minValue * 365 + 21.01;
+            SELECT INTO v_ageMax maxValue * 365 + 21.01;
+        END IF;
+
+    ELSE
+        SELECT INTO v_ageMin minValue;
+        SELECT INTO v_ageMax maxValue;
+    END IF;
+
+END IF; -- final
+
+RETURN;
 
 END;
 \$\$
