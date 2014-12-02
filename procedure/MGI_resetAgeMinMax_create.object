@@ -21,10 +21,10 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-v_pkey int	/* primary key of records to update */;
-age varchar(50)
-ageMin float
-ageMax float
+v_pkey int; 	/* primary key of records to update */
+v_age varchar(50);
+v_ageMin numeric;
+v_ageMax numeric;
 age_cursor refcursor;
 
 BEGIN
@@ -65,35 +65,39 @@ then
 else
 	return;
 
+end if;
+
 LOOP
-	FETCH age_cursor into v_pkey, age;
+	FETCH age_cursor into v_pkey, v_age;
 	EXIT WHEN NOT FOUND;
 
-	exec PRB_ageMinMax @age, @ageMin output, @ageMax output
+	select * from PRB_ageMinMax(v_age) into v_ageMin, v_ageMax;
 
 	if (v_table = 'GXD_Expression')
 	then
 		update GXD_Expression 
-		set ageMin = ageMin, ageMax = ageMax where _Expression_key = v_pkey
+		set ageMin = v_ageMin, ageMax = v_ageMax where _Expression_key = v_pkey
 		;
 
 	elsif (v_table = 'GXD_GelLane')
 	then
 		update GXD_GelLane 
-		set ageMin = ageMin, ageMax = ageMax where _GelLane_key = v_pkey
+		set ageMin = v_ageMin, ageMax = v_ageMax where _GelLane_key = v_pkey
 		;
 
 	elsif (v_table = 'GXD_Specimen')
 	then
 		update GXD_Specimen 
-		set ageMin = ageMin, ageMax = ageMax where _Specimen_key = v_pkey
+		set ageMin = v_ageMin, ageMax = v_ageMax where _Specimen_key = v_pkey
 		;
 
 	elsif (v_table = 'PRB_Source')
 	then
 		update PRB_Source 
-		set ageMin = ageMin, ageMax = ageMax where _Source_key = v_pkey
+		set ageMin = v_ageMin, ageMax = v_ageMax where _Source_key = v_pkey
 		;
+
+	end if;
 
 END LOOP;
 
