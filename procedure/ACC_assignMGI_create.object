@@ -1,4 +1,5 @@
 #!/bin/sh
+
 #
 # History
 #
@@ -42,36 +43,36 @@ v_private int = 0;
 
 BEGIN
 
-select into v_nextACC max(_Accession_key) + 1 from ACC_Accession;
-select into v_mgiTypeKey _MGIType_key from ACC_MGIType where name = v_mgiType;
-select into v_userKey _User_key from MGI_User where login = current_user;
+SELECT INTO v_nextACC max(_Accession_key) + 1 FROM ACC_Accession;
+SELECT INTO v_mgiTypeKey _MGIType_key FROM ACC_MGIType WHERE name = v_mgiType;
+SELECT INTO v_userKey _User_key FROM MGI_User WHERE login = current_user;
 
-if v_nextMGI = -1
-then
-	select into v_nextMGI maxNumericPart + 1
-	from ACC_AccessionMax where prefixPart = v_prefixPart;
-elsif v_prefixPart != "J:"
-then
-    raise notice E'Cannot override generation of MGI accession number';
-    return;
-end if;
+IF v_nextMGI = -1
+THEN
+	SELECT INTO v_nextMGI maxNumericPart + 1
+	FROM ACC_AccessionMax WHERE prefixPart = v_prefixPart;
+ELSIF v_prefixPart != "J:"
+THEN
+    RAISE NOTICE E'Cannot override generation of MGI accession number';
+    RETURN;
+END IF;
 
-select into v_accID v_prefixPart || v_nextMGI::char(30);
+SELECT INTO v_accID v_prefixPart || v_nextMGI::char(30);
 
-insert into ACC_Accession 
+INSERT INTO ACC_Accession 
 (_Accession_key, accID, prefixPart, numericPart, 
 _LogicalDB_key, _Object_key, _MGIType_key, preferred, private, 
 _CreatedBy_key, _ModifiedBy_key)
 values(v_nextACC, v_accID, v_prefixPart, v_nextMGI, 1, v_objectKey, 
 v_mgiTypeKey, v_preferred, v_private, v_userKey, v_userKey);
 
-if (select maxNumericPart from ACC_AccessionMax
-    where prefixPart = v_prefixPart) <= v_nextMGI
-then
-	update ACC_AccessionMax 
-	set maxNumericPart = v_nextMGI 
-	where prefixPart = v_prefixPart;
-end if;
+IF (SELECT maxNumericPart FROM ACC_AccessionMax
+    WHERE prefixPart = v_prefixPart) <= v_nextMGI
+THEN
+	UPDATE ACC_AccessionMax 
+	SET maxNumericPart = v_nextMGI 
+	WHERE prefixPart = v_prefixPart;
+END IF;
 
 RETURN;
 
@@ -80,6 +81,8 @@ END;
 LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION ACC_assignMGI(int,varchar,varchar,int) TO public;
+
+COMMENT ON FUNCTION mgd.ACC_assignMGI(int,varchar,varchar,int) IS 'creates a new MGI id in the acc_accession table';
 
 EOSQL
 

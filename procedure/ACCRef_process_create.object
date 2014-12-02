@@ -28,28 +28,27 @@ RETURNS VOID AS
 DECLARE
 v_accKey int;
 
-
 BEGIN
 
 /* If the Object/Acc ID pair already exists, then use that _Accession_key */
 /* and simply insert a new ACC_AccessionReference record (ACCRef_insert) */
 /* Else, create a new ACC_Accession and ACC_AccessionReference record (ACC_insert) */
 
-select into v_accKey a._Accession_key 
-from ACC_Accession a, ACC_MGIType m
-where a.accID = v_accID
-and a._Object_key = v_objectKey
-and a._MGIType_key = m._MGIType_key
-and m.name = v_mgiType
-and a._LogicalDB_key = v_logicalDB
+SELECT INTO v_accKey a._Accession_key 
+FROM ACC_Accession a, ACC_MGIType m
+WHERE a.accID = v_accID
+AND a._Object_key = v_objectKey
+AND a._MGIType_key = m._MGIType_key
+AND m.name = v_mgiType
+AND a._LogicalDB_key = v_logicalDB
 ;
 
-if v_accKey is not null
-then
+IF v_accKey is not null
+THEN
 	PERFORM ACCRef_insert (v_accKey, v_refsKey);
-else
+ELSE
 	PERFORM ACC_insertNoChecks (v_objectKey, v_accID, v_logicalDB, v_mgiType, v_refsKey, v_preferred, v_private);
-end if;
+END IF;
 
 RETURN;
 
@@ -58,5 +57,7 @@ END;
 LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION ACCRef_process(int,int,varchar,int,varchar,int,int) TO public;
+
+COMMENT ON FUNCTION mgd.ACCRef_process(int,int,varchar,int,varchar,int,int) IS 'creates a new acc_accessionreference row using a new or existing acc_accession row';
 
 EOSQL

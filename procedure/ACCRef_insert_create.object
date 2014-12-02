@@ -1,11 +1,14 @@
 #!/bin/sh
+
 #
 # History
 #
 # lec 03/18/2003
 #	- SAO
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 DROP FUNCTION ACCRef_insert(int,int);
@@ -20,23 +23,22 @@ RETURNS VOID AS
 DECLARE
 v_userKey int;
 
-
 BEGIN
 
 /* Insert record into ACC_AccessionReference table */
-select into v_userKey _User_key from MGI_User where login = current_user
-;
+SELECT INTO v_userKey _User_key FROM MGI_User WHERE login = current_user;
 
-insert into ACC_AccessionReference
+INSERT INTO ACC_AccessionReference
 (_Accession_key, _Refs_key, _CreatedBy_key, _ModifiedBy_key)
-values(v_accKey, v_refsKey, v_userKey, v_userKey)
+VALUES(v_accKey, v_refsKey, v_userKey, v_userKey)
 ;
-
 
 END;
 \$\$
 LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION ACCRef_insert(int,int) TO public;
+
+COMMENT ON FUNCTION mgd.ACCRef_insert(int, int) IS 'creates a new acc_accessionreference row';
 
 EOSQL
