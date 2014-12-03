@@ -94,7 +94,7 @@ ELSE
     maxValue := -1.0;
     i := 0;
 
-    WHILE v_age is not null and i < 3 LOOP
+    WHILE v_age IS NOT NULL AND i < 3 LOOP
 
         idx := position(' ' in v_age);
 
