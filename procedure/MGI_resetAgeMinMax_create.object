@@ -71,6 +71,7 @@ LOOP
 	FETCH age_cursor into v_pkey, v_age;
 	EXIT WHEN NOT FOUND;
 
+	-- see PRB_ageMinMex for exceptions
 	select * from PRB_ageMinMax(v_age) into v_ageMin, v_ageMax;
 
 	if (v_table = 'GXD_Expression')
@@ -98,6 +99,7 @@ LOOP
 		;
 
 	end if;
+
 
 END LOOP;
 

@@ -36,7 +36,6 @@ BEGIN
 
 saveAge := v_age;
 
-/* return ageMin and ageMax values, given age */
 IF v_age = 'Not Specified' 
 	or v_age = 'Not Applicable' 
 	or v_age = 'Not Resolved' 
@@ -45,7 +44,6 @@ THEN
 	v_ageMin := -1.0;
 	v_ageMax := -1.0;
 
-/* IF there are no time units or ranges, then it's simple */
 ELSIF v_age = 'embryonic'
 THEN
 	v_ageMin := 0.0;
@@ -81,7 +79,7 @@ ELSIF v_age = 'postnatal day'
 	or v_age = 'postnatal month'
 	or v_age = 'postnatal year'
 THEN
-	RAISE NOTICE E'Invalid Age Value %', v_age;
+        RAISE EXCEPTION E'Invalid Age Value (postnatal): "%"\n', saveAge;
 	RETURN;
 
 /* parse the age INTO 3 parts:           */
@@ -218,7 +216,6 @@ ELSE
     END IF; -- end IF position(',' in timeRange) > 0 THEN
 
     IF minValue is null or maxValue is null THEN
-        RAISE notice E'Invalid Age Range: Must enter a single (x), range (x-y), list (x,y,z) or list of ranges (x-y,w-z): %', saveAge;
         RETURN;
     END IF;
 
@@ -249,6 +246,10 @@ ELSE
     END IF;
 
 END IF; -- final
+
+IF v_ageMin IS NULL AND v_ageMax IS NULL THEN
+    RAISE EXCEPTION E'Invalid Age Value: "%"\n', saveAge;
+END IF;
 
 RETURN;
 
