@@ -37,7 +37,7 @@ BEGIN
 saveAge := v_age;
 
 /* return ageMin and ageMax values, given age */
-IF v_age = 'Not SpecIFied' 
+IF v_age = 'Not Specified' 
 	or v_age = 'Not Applicable' 
 	or v_age = 'Not Resolved' 
 	or v_age = 'Not Loaded'

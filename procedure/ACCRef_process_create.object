@@ -43,7 +43,7 @@ AND m.name = v_mgiType
 AND a._LogicalDB_key = v_logicalDB
 ;
 
-IF v_accKey is not null
+IF v_accKey IS NOT NULL
 THEN
 	PERFORM ACCRef_insert (v_accKey, v_refsKey);
 ELSE
