@@ -81,8 +81,9 @@ ELSIF v_age = 'postnatal day'
 	or v_age = 'postnatal week'
 	or v_age = 'postnatal month'
 	or v_age = 'postnatal year'
+	or v_age = 'embryonic day'
 THEN
-        RAISE EXCEPTION E'Invalid Age Value (postnatal): "%"\n', saveAge;
+        RAISE EXCEPTION E'Invalid Age Value: "%"\n', saveAge;
 	RETURN;
 
 /* parse the age INTO 3 parts:           */
@@ -249,6 +250,18 @@ ELSE
     END IF;
 
 END IF; -- final
+
+IF stem = 'Not' AND v_ageMin >= 0
+THEN
+    RAISE EXCEPTION E'Invalid Age Value: "%"\n', saveAge;
+END IF;
+
+RAISE NOTICE E'% % %\n', stem, timeUnit, timeRange;
+
+IF stem = 'embryonic' AND timeUnit IS NULL AND timeRange IS NOT NULL
+THEN
+    RAISE EXCEPTION E'Invalid Age Value: "%"\n', saveAge;
+END IF;
 
 IF v_ageMin IS NULL AND v_ageMax IS NULL THEN
     RAISE EXCEPTION E'Invalid Age Value: "%"\n', saveAge;
