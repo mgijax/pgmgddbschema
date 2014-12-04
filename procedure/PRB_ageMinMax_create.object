@@ -256,8 +256,6 @@ THEN
     RAISE EXCEPTION E'Invalid Age Value: "%"\n', saveAge;
 END IF;
 
-RAISE NOTICE E'% % %\n', stem, timeUnit, timeRange;
-
 IF stem = 'embryonic' AND timeUnit IS NULL AND timeRange IS NOT NULL
 THEN
     RAISE EXCEPTION E'Invalid Age Value: "%"\n', saveAge;
