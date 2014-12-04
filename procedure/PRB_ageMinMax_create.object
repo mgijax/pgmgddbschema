@@ -3,6 +3,20 @@
 #
 # History
 #
+# 12/4/2014	lec
+#	- TR11750/postgres
+#	  v_age values that are obsolete/no longer used
+#
+#ELSIF v_age = 'perinatal'
+#THEN
+#	v_ageMin := 17.0;
+#	v_ageMax := 22.0;
+#
+#ELSIF v_age = 'postnatal immature'
+#THEN
+#	v_ageMin := 25.01;
+#	v_ageMax := 42.0;
+#
 # 07/22/2003	lec
 #	- TR 3404/JSAM
 #
@@ -38,7 +52,6 @@ saveAge := v_age;
 
 IF v_age = 'Not Specified' 
 	or v_age = 'Not Applicable' 
-	or v_age = 'Not Resolved' 
 	or v_age = 'Not Loaded'
 THEN
 	v_ageMin := -1.0;
@@ -49,11 +62,6 @@ THEN
 	v_ageMin := 0.0;
 	v_ageMax := 21.0;
 
-ELSIF v_age = 'perinatal'
-THEN
-	v_ageMin := 17.0;
-	v_ageMax := 22.0;
-
 ELSIF v_age = 'postnatal'
 THEN
 	v_ageMin := 21.01;
@@ -63,11 +71,6 @@ ELSIF v_age = 'postnatal newborn'
 THEN
 	v_ageMin := 21.01;
 	v_ageMax := 25.0;
-
-ELSIF v_age = 'postnatal immature'
-THEN
-	v_ageMin := 25.01;
-	v_ageMax := 42.0;
 
 ELSIF v_age = 'postnatal adult'
 THEN
