@@ -154,7 +154,7 @@ ELSE
 	IF (v_prefixPart = 'J:' or substring(v_prefixPart,1,4) = 'MGD-')
 	THEN
 		IF (select count(*) from ACC_Accession
-		    where numericPart = v_numericPart 
+		    where numericPart = v_numericPart::integer
 			  and prefixPart = v_prefixPart) >= 1
 		THEN
                         ROLLBACK TRANSACTION;
@@ -164,14 +164,24 @@ ELSE
 
 	END IF;
 
-	update ACC_Accession
-	       set accID = v_accID,
-		   prefixPart = v_prefixPart,
-		   numericPart = v_numericPart,
-		   _ModifiedBy_key = v_userKey,
-		   modification_date = current_date
-	       where _Accession_key = v_accKey
-	       ;
+	IF v_numericPart = ''
+	THEN
+		update ACC_Accession
+	       	set accID = v_accID,
+		   	prefixPart = v_prefixPart,
+		   	numericPart = null,
+		   	_ModifiedBy_key = v_userKey,
+		   	modification_date = current_date
+	       	where _Accession_key = v_accKey;
+        ELSE
+		update ACC_Accession
+	       	set accID = v_accID,
+		   	prefixPart = v_prefixPart,
+		   	numericPart = v_numericPart::integer,
+		   	_ModifiedBy_key = v_userKey,
+		   	modification_date = current_date
+	       	where _Accession_key = v_accKey;
+	END IF;
 
 	IF v_refsKey > 0
 	THEN
@@ -179,10 +189,7 @@ ELSE
 		       set _Refs_key = v_refsKey,
 		           _ModifiedBy_key = v_userKey,
 		           modification_date = current_date
-		           where _Accession_key = v_accKey and
-		           _Refs_key = v_origRefsKey
-		           ;
-
+		           where _Accession_key = v_accKey and _Refs_key = v_origRefsKey;
 	END IF;
 
 END IF;

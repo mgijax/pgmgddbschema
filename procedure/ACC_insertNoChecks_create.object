@@ -52,8 +52,7 @@ v_mgiTypeKey := _MGIType_key FROM ACC_MGIType WHERE name = v_mgiType;
 v_userKey := _User_key FROM MGI_User WHERE login = current_user;
 
 /* split accession id INTO prefixPart/numericPart */
-SELECT * FROM ACC_split(v_accID) INTO v_prefixPart, v_numericPart
-;
+SELECT * FROM ACC_split(v_accID) INTO v_prefixPart, v_numericPart;
 
 IF v_numericPart = ''
 THEN
@@ -61,15 +60,13 @@ THEN
 	(_Accession_key, accID, prefixPart, numericPart, _LogicalDB_key, _Object_key, 
  	 _MGIType_key, private, preferred, _CreatedBy_key, _ModifiedBy_key)
 	VALUES(v_nextACC, v_accID, v_prefixPart, null, 
-               v_logicalDB, v_objectKey, v_mgiTypeKey, v_private, v_preferred, v_userKey, v_userKey)
-	;
+               v_logicalDB, v_objectKey, v_mgiTypeKey, v_private, v_preferred, v_userKey, v_userKey);
 ELSE
 	INSERT INTO ACC_Accession
 	(_Accession_key, accID, prefixPart, numericPart, _LogicalDB_key, _Object_key, 
  	 _MGIType_key, private, preferred, _CreatedBy_key, _ModifiedBy_key)
 	VALUES(v_nextACC, v_accID, v_prefixPart, v_numericPart::integer, 
-               v_logicalDB, v_objectKey, v_mgiTypeKey, v_private, v_preferred, v_userKey, v_userKey)
-	;
+               v_logicalDB, v_objectKey, v_mgiTypeKey, v_private, v_preferred, v_userKey, v_userKey);
 END IF;
 
 IF v_refsKey != -1
