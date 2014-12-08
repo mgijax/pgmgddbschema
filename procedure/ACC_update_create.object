@@ -1,0 +1,198 @@
+#!/bin/sh
+#
+# History
+#
+# lec	08/27/2014
+#	- TR11654/remove obsolete TR1270/IMAGE sp
+#
+# lec	07/10/2008
+#	- TR9125; gene model check
+#
+# 04/16/2007 jsb - added dbradt
+#
+# lec	01/22/2007
+#	- add djr, ljm, ksf, tbreddy, yz permissions
+#
+# lec	01/18/2006
+#	- TR 7182; increased prefixPart to 30
+#
+# lec 02/15/2005
+#	- permissions
+#
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION ACC_update(int,varchar,int,int);
+
+CREATE OR REPLACE FUNCTION ACC_update (
+v_accKey int,
+v_accID varchar(30),
+v_origRefsKey int DEFAULT -1,
+v_refsKey int DEFAULT -1
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_prefixPart varchar(30);
+v_numericPart varchar(30);
+v_userKey int;
+
+BEGIN
+
+v_userKey := _User_key FROM MGI_User WHERE login = current_user;
+
+IF NOT EXISTS (SELECT 1 FROM MGI_UserTask_View 
+	WHERE usertask = 'accession: alter load ids' and login = current_user )
+THEN
+        /* TR 7170: ok to UPDATE TIGR (35), DoTS (36), NIA Mouse Gene Index (53) */
+
+        /* Disallow edits to SwissProt (13), TrEMBL (41), InterPro (28) */
+        /* Ensembl (33), UniGene (23) */
+
+        IF (SELECT _LogicalDB_key FROM ACC_Accession WHERE _Accession_key = v_accKey) 
+                in (13, 41, 28, 33, 23)
+        THEN
+            ROLLBACK TRANSACTION;
+	    RAISE NOTICE E'You cannot UPDATE an Accession id that is associated via a load program.';
+            RETURN;
+        END IF;
+
+        /* EntrezGene */
+
+        IF (SELECT _LogicalDB_key FROM ACC_Accession WHERE _Accession_key = v_accKey) = 55
+           and 
+           (SELECT m._Organism_key FROM ACC_Accession a, MRK_Marker m 
+                WHERE a._Accession_key = v_accKey
+                and a._MGIType_key = 2
+                and a._Object_key = m._Marker_key) = 1
+        THEN
+            ROLLBACK TRANSACTION;
+            RAISE NOTICE E'You cannot UPDATE an Entrez Gene Accession id.';
+            RETURN;
+        END IF;
+
+        /* Disallow edits to J:53158 (SP load), J:63103 (Entrez Gene load), J:90500 (Orthology load) */
+        /* These loads may pick up GenBank ids that we can't check for with just the _LogicalDB_key */
+
+        IF (SELECT _Refs_key FROM ACC_AccessionReference WHERE _Accession_key = v_accKey) 
+                in (53672, 64047, 91485)
+        THEN
+            ROLLBACK TRANSACTION;
+            RAISE NOTICE E'You cannot UPDATE an Accession id that is associated with J:53158, J:63103, 
+J:90500.';
+            RETURN;
+        END IF;
+
+        /* for mouse, anything other than XM_, XR_, NM_, NR_ RefSeq (27) is invalid */
+        /* note that we've already checked the reference above, so if an NM_ or NR_ gets */
+        /* to this point, THEN it's okay to UPDATE it because it's MGI-curated */
+
+        ELSE IF (SELECT _LogicalDB_key FROM ACC_Accession WHERE _Accession_key = v_accKey) = 27 
+           and
+           (SELECT m._Organism_key FROM ACC_Accession a, MRK_Marker m 
+                WHERE a._Accession_key = v_accKey
+                and a._MGIType_key = 2
+                and a._Object_key = m._Marker_key) = 1
+           and
+           (SELECT prefixPart FROM ACC_Accession WHERE _Accession_key = v_accKey) 
+                not in ('XM_','NM_','XR_','NR_')
+        THEN
+            ROLLBACK TRANSACTION;
+            RAISE NOTICE E'You can only UPDATE XM_/XR_ RefSeqs.';
+            RETURN;
+        END IF;
+
+        /* for other than mouse, anything other than XM_, XP_ RefSeq (27) is invalid */
+        /* note that we've already checked the reference above */
+
+        IF (SELECT _LogicalDB_key FROM ACC_Accession WHERE _Accession_key = v_accKey) = 27 
+           and
+           (SELECT m._Organism_key FROM ACC_Accession a, MRK_Marker m 
+                WHERE a._Accession_key = v_accKey
+                and a._Object_key = m._Marker_key) != 1
+           and
+           (SELECT prefixPart FROM ACC_Accession WHERE _Accession_key = v_accKey) 
+		not in ('XM_','XP_')
+        THEN
+            ROLLBACK TRANSACTION;
+            RAISE NOTICE E'You can only UPDATE XM_/XP_ RefSeqs.';
+            RETURN;
+        END IF;
+
+END IF;
+
+/* for gene models */
+
+IF NOT EXISTS (SELECT 1 FROM MGI_UserTask_View
+    	WHERE usertask = 'accession: alter gene model ids' and login = current_user )
+THEN
+        /* Disallow edits to: */
+        /* NCBI Gene Model (59), Ensembl Gene Model (60), VEGA Gene Model (85) */
+
+        IF (SELECT _LogicalDB_key FROM ACC_Accession WHERE _Accession_key = V_accKey)
+                in (59, 60, 85)
+        THEN
+            ROLLBACK TRANSACTION;
+            RAISE NOTICE E'You cannot UPDATE an Accession id for a gene model (NCBI, Ensembl, VEGA).';
+            RETURN;
+        END IF;
+END IF;
+
+/* Update the Accession record for a given Accession key */
+
+IF v_accID IS NULL
+THEN
+	select ACC_delete_byAccKey (v_accKey);
+ELSE
+        /* split accession id INTO prefixPart/numericPart */
+        SELECT * FROM ACC_split(v_accID) INTO v_prefixPart, v_numericPart;
+
+	IF (v_prefixPart = 'J:' or substring(v_prefixPart,1,4) = 'MGD-')
+	THEN
+		IF (select count(*) from ACC_Accession
+		    where numericPart = v_numericPart 
+			  and prefixPart = v_prefixPart) >= 1
+		THEN
+                        ROLLBACK TRANSACTION;
+                        RAISE NOTICE E'Duplicate MGI Accession Number';
+                        RETURN;
+		END IF;
+
+	END IF;
+
+	update ACC_Accession
+	       set accID = v_accID,
+		   prefixPart = v_prefixPart,
+		   numericPart = v_numericPart,
+		   _ModifiedBy_key = v_userKey,
+		   modification_date = current_date
+	       where _Accession_key = v_accKey
+	       ;
+
+	IF v_refsKey > 0
+	THEN
+		update ACC_AccessionReference
+		       set _Refs_key = v_refsKey,
+		           _ModifiedBy_key = v_userKey,
+		           modification_date = current_date
+		           where _Accession_key = v_accKey and
+		           _Refs_key = v_origRefsKey
+		           ;
+
+	END IF;
+
+END IF;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ACC_update(int,varchar,int,int) TO public;
+
+COMMENT ON FUNCTION mgd.ACC_update(int,varchar,int,int) IS 'update acc_accession row';
+
+EOSQL
