@@ -38,10 +38,10 @@ BEGIN
 -- example : MGI:12345 -> (MGI:, 12345)
 
 -- v_prefixPart is alphanumeric
-v_prefixPart := (SELECT regexp_matches(v_accID, E'^((.*[^0-9])?)([0-9]*)', 'g'))[2];
+v_prefixPart := (SELECT (regexp_matches(v_accID, E'^((.*[^0-9])?)([0-9]*)', 'g'))[2]);
 
 -- v_numericPart is numeric only
-v_numericPart := (SELECT regexp_matches(v_accID, E'^((.*[^0-9])?)([0-9]*)', 'g'))[3];
+v_numericPart := (SELECT (regexp_matches(v_accID, E'^((.*[^0-9])?)([0-9]*)', 'g'))[3]);
 
 RETURN;
 
