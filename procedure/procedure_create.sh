@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 #
 # Object Group Script
@@ -8,11 +8,10 @@
 # Order is important!
 #
 
-cd `dirname $0`
+cd `dirname $0` && . ./Configuration
 
-foreach i (\
-*_create.object
-)
+for i in *create.object
+do
 $i $*
-end
+done
 
