@@ -1,0 +1,28 @@
+#!/bin/sh
+
+#
+# History
+#
+# kstone - Created for PWI
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.ALL_Annot_View
+as
+select agv._allele_key, va._annot_key, va._annottype_key, va._qualifier_key
+from all_genotype_view agv join
+	voc_annot va on (va._object_key=agv._genotype_key)
+union
+select a._allele_key, va._annot_key, va._annottype_key, va._qualifier_key
+from all_allele a join 
+	voc_annot va on (va._object_key=a._allele_key)
+
+
+
+;
+
+EOSQL

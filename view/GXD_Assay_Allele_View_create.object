@@ -1,0 +1,46 @@
+#!/bin/sh
+
+#
+# History
+#
+# kstone - Created for PWI
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.GXD_Assay_Allele_View
+as
+select distinct a._assay_key, ap._allele_key_1 as _allele_key
+from gxd_assay a join
+	gxd_specimen s on (s._assay_key=a._assay_key) join
+	gxd_genotype g on (g._genotype_key=s._genotype_key) join
+	gxd_allelepair ap on (ap._genotype_key=g._genotype_key)
+union
+select distinct a._assay_key, ap._allele_key_2 as _allele_key
+from gxd_assay a join
+	gxd_specimen s on (s._assay_key=a._assay_key) join
+	gxd_genotype g on (g._genotype_key=s._genotype_key) join
+	gxd_allelepair ap on (ap._genotype_key=g._genotype_key)
+where ap._allele_key_2 is not null
+union
+select distinct a._assay_key, ap._allele_key_1 as _allele_key
+from gxd_assay a join
+	gxd_gellane gl on (gl._assay_key=a._assay_key) join
+	gxd_genotype g on (g._genotype_key=gl._genotype_key) join
+	gxd_allelepair ap on (ap._genotype_key=g._genotype_key)
+union
+select distinct a._assay_key, ap._allele_key_2 as _allele_key
+from gxd_assay a join
+	gxd_gellane gl on (gl._assay_key=a._assay_key) join
+	gxd_genotype g on (g._genotype_key=gl._genotype_key) join
+	gxd_allelepair ap on (ap._genotype_key=g._genotype_key)
+where ap._allele_key_2 is not null
+
+
+
+;
+
+EOSQL
