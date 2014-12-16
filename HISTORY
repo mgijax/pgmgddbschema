@@ -1,8 +1,11 @@
-TAG: pgmgddbschema-5-2-1-?
-DATE: 10/08/2014
+TAG: pgmgddbschema-5-2-1-1
+DATE: 12/16/2014
 STAFF: lec
 CHANGES:
-1) TR11750
+1) TR11750/postgres
+
+2) stored procedures that are obsolete in postgres:
+ACC_insert() : using ACC_insertNoChecks() instead
 
 TAG: pgmgddbschema-5-2-0-1
 DATE: 09/15/2014
