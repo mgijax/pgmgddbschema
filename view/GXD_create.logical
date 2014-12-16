@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # Logical Group Script
@@ -8,9 +8,9 @@
 # Order is important!
 #
 
-cd `dirname $0` && . ./Configuration
+cd `dirname $0`
 
-for i in \
+foreach i (\
 GXD_Antigen_Acc_View_create.object \
 GXD_Genotype_Acc_View_create.object \
 GXD_AntibodyAliasRef_View_create.object \
@@ -38,8 +38,9 @@ GXD_InSituResult_View_create.object \
 GXD_Index_View_create.object \
 GXD_ProbePrep_View_create.object \
 GXD_Specimen_View_create.object \
-GXD_Structure_Acc_View_create.object
-do
+GXD_Structure_Acc_View_create.object \
+GXD_Assay_Allele_View_create.object \
+)
 $i $*
-done
+end
 
