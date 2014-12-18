@@ -12,7 +12,7 @@ DROP FUNCTION ACC_assignJ(int,int);
 
 CREATE OR REPLACE FUNCTION ACC_assignJ (
 objectKey int,
-nextMGI int = -1
+nextMGI int DEFAULT -1
 )
 RETURNS VOID AS
 \$\$
@@ -31,12 +31,14 @@ THEN
 
 	IF j_exists > 0
 	THEN
+		RAISE EXCEPTION E'This J Number is already in use: %s', j_exists;
 		RETURN;
 	END IF;
-
-	SELECT * FROM ACC_assignMGI (objectKey, 'Reference', 'J:', nextMGI);
 END IF;
 
+PERFORM ACC_assignMGI (objectKey, 'Reference', 'J:', nextMGI);
+
+RETURN;
 
 END;
 \$\$

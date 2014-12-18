@@ -212,7 +212,7 @@ class Translator(object):
 			if r.find('cd `dirname') >= 0:
 				translated.append(r.replace(' source', ' .'))
 			elif r.find('cat ') >= 0:
-				translated.append('\ncat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0')
+				translated.append('\n\ncat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0')
 				translated.append('\nDROP FUNCTION %s(%s);'%(spFunc, ','.join(variables)))
 			elif r.find('use') >= 0 or r.find('go') >= 0:
 				continue
