@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/21/2013    lec
+#       - TR11468/GXD-Anatomy
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop table mgd.MGI_EMAPS_Mapping
+
+CASCADE
+;
+EOSQL

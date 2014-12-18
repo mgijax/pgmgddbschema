@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/24/2014    sc
+#       - TR 11560; Feature Relationships
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+go
+CASCADE
+;
+
+EOSQL
