@@ -118,7 +118,9 @@ class Translator(object):
 		#
 		endUp.append('END;\n\\$\\$\nLANGUAGE plpgsql;\n')
 		endUp.append('GRANT EXECUTE ON FUNCTION %s(' % (spFunc) \
-			+ string.join(variables, ',') + ') TO public;\n')
+			+ string.join(variables, ',') + ') TO public;\n\n')
+		endUp.append('COMMENT ON FUNCTION %s(' % (spFunc) \
+			+ string.join(variables, ',') + ') IS \'\';\n')
 		endUp.append('EOSQL')
 
 				

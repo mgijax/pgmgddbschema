@@ -1,0 +1,49 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION ACC_assignJ(int,int);
+
+CREATE OR REPLACE FUNCTION ACC_assignJ (
+objectKey int,
+nextMGI int = -1
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+j_exists int;
+
+BEGIN
+
+IF nextMGI != -1
+THEN
+	j_exists := count(*) FROM BIB_Acc_View
+		WHERE prefixPart = 'J:' AND
+			_LogicalDB_key = 1 AND
+			numericPart = nextMGI;
+
+	IF j_exists > 0
+	THEN
+		RETURN;
+	END IF;
+
+	SELECT * FROM ACC_assignMGI (objectKey, 'Reference', 'J:', nextMGI);
+END IF;
+
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ACC_assignJ(int,int) TO public;
+
+COMMENT ON FUNCTION mgd.ACC_assignJ(int,int) IS 'creates a new J: in the acc_accession table';
+
+EOSQL
