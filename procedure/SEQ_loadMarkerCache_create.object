@@ -1,4 +1,5 @@
 #!/bin/sh
+
 #
 # History
 #
@@ -15,7 +16,9 @@
 # 01/12/2004
 #	- JSAM
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 DROP FUNCTION SEQ_loadMarkerCache(int);
@@ -36,37 +39,32 @@ nabiotypeKey int;
 BEGIN
 
 /* begin transaction */
-select into userKey _User_key from MGI_User where login = current_user
-;
+userKey := _User_key FROM MGI_User WHERE login = current_user;
 
-select into nextCacheKey max(_Cache_key) + 1 from SEQ_Marker_Cache
-;
+nextCacheKey := max(_Cache_key) + 1 FROM SEQ_Marker_Cache;
 
-select into nsqualityKey _Term_key from VOC_Term where _Vocab_key = 28 and term = 'Not Specified'
-;
+nsqualityKey := _Term_key FROM VOC_Term WHERE _Vocab_key = 28 AND term = 'Not Specified';
 
-select into nabiotypeKey _Term_key from VOC_Term where _Vocab_key = 76 and term = 'Not Applicable'
-;
+nabiotypeKey := _Term_key FROM VOC_Term WHERE _Vocab_key = 76 AND term = 'Not Applicable';
 
-delete from SEQ_Marker_Cache where _Sequence_key = sequenceKey
-;
+DELETE FROM SEQ_Marker_Cache WHERE _Sequence_key = sequenceKey;
 
-insert into SEQ_Marker_Cache
-select distinct nextCacheKey, s._Object_key, m._Object_key, mm._Organism_key, ar._Refs_key, nsqualityKey,
+INSERT INTO SEQ_Marker_Cache
+SELECT DISTINCT nextCacheKey, s._Object_key, m._Object_key, mm._Organism_key, ar._Refs_key, nsqualityKey,
 ss._SequenceProvider_key, ss._SequenceType_key, s._LogicalDB_key, mm._Marker_Type_key, nabiotypeKey, ac.accID, null,
 m.modification_date, userKey, userKey, current_date, current_date
-from ACC_Accession s, ACC_Accession m, ACC_AccessionReference ar, SEQ_Sequence ss, MRK_Marker mm, ACC_Accession ac
-where s._MGIType_key = 19
-and s.accID = m.accID
-and s._LogicalDB_key = m._LogicalDB_key
-and m._MGIType_key = 2
-and m._Accession_key = ar._Accession_key
-and s._Object_key = sequenceKey
-and s._Object_key = ss._Sequence_key
-and m._Object_key = mm._Marker_key
-and s._Object_key = ac._Object_key
-and ac._MGIType_key = 19
-and ac.preferred = 1
+FROM ACC_Accession s, ACC_Accession m, ACC_AccessionReference ar, SEQ_Sequence ss, MRK_Marker mm, ACC_Accession ac
+WHERE s._MGIType_key = 19
+AND s.accID = m.accID
+AND s._LogicalDB_key = m._LogicalDB_key
+AND m._MGIType_key = 2
+AND m._Accession_key = ar._Accession_key
+AND s._Object_key = sequenceKey
+AND s._Object_key = ss._Sequence_key
+AND m._Object_key = mm._Marker_key
+AND s._Object_key = ac._Object_key
+AND ac._MGIType_key = 19
+AND ac.preferred = 1
 ;
 
 /* commit transaction */
@@ -77,6 +75,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION SEQ_loadMarkerCache(int) TO public;
 
-COMMENT ON FUNCTION mgd.EQ_loadMarkerCache(int) IS '';
+COMMENT ON FUNCTION mgd.SEQ_loadMarkerCache(int) IS '';
 
 EOSQL

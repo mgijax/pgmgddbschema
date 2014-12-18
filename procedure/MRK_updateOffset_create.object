@@ -1,8 +1,11 @@
 #!/bin/sh
+
 #
 # This file was generated automatically by dbschemaScripts.py -- edit with care.
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 DROP FUNCTION MRK_updateOffset(int,int);
@@ -24,77 +27,60 @@ newCC float;
 oldMIT float;
 newMIT float;
 
-
 BEGIN
 
-/* Update cytogenetic and centimorgan cmoffsets for @newKey
-* using @oldKey values.
-*/
-select into oldCyto cytogeneticOffset from MRK_Marker where _Marker_key = oldKey
-;
+oldCyto := cytogeneticOffset from MRK_Marker WHERE _Marker_key = oldKey;
 
-select into newCyto cytogeneticOffset from MRK_Marker where _Marker_key = newKey
-;
+newCyto := cytogeneticOffset from MRK_Marker WHERE _Marker_key = newKey;
 
-select into oldMGD cmoffset from MRK_Offset where _Marker_key = oldKey and source = 0
-;
+oldMGD := cmoffset from MRK_Offset WHERE _Marker_key = oldKey AND source = 0;
 
-select into oldCC cmoffset from MRK_Offset where _Marker_key = oldKey and source = 1
-;
+oldCC := cmoffset from MRK_Offset WHERE _Marker_key = oldKey AND source = 1;
 
-select into oldMIT cmoffset from MRK_Offset where _Marker_key = oldKey and source = 2
-;
+oldMIT := cmoffset from MRK_Offset WHERE _Marker_key = oldKey AND source = 2;
 
-select into newMGD cmoffset from MRK_Offset where _Marker_key = newKey and source = 0
-;
+newMGD := cmoffset from MRK_Offset WHERE _Marker_key = newKey AND source = 0;
 
-select into newCC cmoffset from MRK_Offset where _Marker_key = newKey and source = 1
-;
+newCC := cmoffset from MRK_Offset WHERE _Marker_key = newKey AND source = 1;
 
-select into newMIT cmoffset from MRK_Offset where _Marker_key = newKey and source = 2
-;
+newMIT := cmoffset from MRK_Offset WHERE _Marker_key = newKey AND source = 2;
 
 -- If the new symbol lacks an Cytogenetic cmoffset, then use the old symbols' cmoffset
-if newCyto is null
-then
-	update MRK_Marker set cytogeneticOffset = oldCyto where _Marker_key = newKey
-	;
+
+IF newCyto IS NULL
+THEN
+	UPDATE MRK_Marker SET cytogeneticOffset = oldCyto WHERE _Marker_key = newKey;
 
 -- If the new symbol lacks an MGD cmoffset, then use the old symbols' cmoffset
-end if;
+END IF;
 
-if newMGD < 0
-then
-	update MRK_Offset set cmoffset = oldMGD where _Marker_key = newKey and source = 0
-	;
+IF newMGD < 0
+THEN
+	UPDATE MRK_Offset set cmoffset = oldMGD WHERE _Marker_key = newKey AND source = 0;
 
 -- If the new symbol lacks a CC cmoffset, then use the old symbol's CC cmoffset
-end if;
+END IF;
 
-if newCC < 0 and oldCC > 0
-then
-	update MRK_Offset set cmoffset = oldCC where _Marker_key = newKey and source = 1
-	;
+IF newCC < 0 AND oldCC > 0
+THEN
+	UPDATE MRK_Offset set cmoffset = oldCC WHERE _Marker_key = newKey AND source = 1;
 
-elsif newCC is null and oldCC is not null
-then
-	insert into MRK_Offset (_Marker_key, source, cmoffset) values(newKey, 1, oldCC)
-	;
+ELSIF newCC IS NULL AND oldCC IS NOT NULL
+THEN
+	INSERT INTO MRK_Offset (_Marker_key, source, cmoffset) values(newKey, 1, oldCC);
 
 -- If the new symbol lacks an MIT cmoffset, then use the old symbol's MIT cmoffset
-end if;
+END IF;
 
-if newMIT < 0 and oldMIT > 0
-then
-	update MRK_Offset set cmoffset = oldMIT where _Marker_key = newKey and source = 2
-	;
+IF newMIT < 0 AND oldMIT > 0
+THEN
+	UPDATE MRK_Offset set cmoffset = oldMIT WHERE _Marker_key = newKey AND source = 2;
 
-elsif newMIT is null and oldMIT is not null
-then
-	insert into MRK_Offset (_Marker_key, source, cmoffset) values(newKey, 2, oldMIT)
-	;
+ELSIF newMIT IS NULL AND oldMIT IS NOT NULL
+THEN
+	INSERT INTO MRK_Offset (_Marker_key, source, cmoffset) values(newKey, 2, oldMIT);
 
-end if;
+END IF;
 
 
 END;
@@ -103,6 +89,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MRK_updateOffset(int,int) TO public;
 
-COMMENT ON FUNCTION mgd.MRK_updateOffset(int,int) IS '';
+COMMENT ON FUNCTION mgd.MRK_updateOffset(int,int) IS 'update cytogenetic and centimorgan cmoffsets for newKey using oldKey values.';
 
 EOSQL

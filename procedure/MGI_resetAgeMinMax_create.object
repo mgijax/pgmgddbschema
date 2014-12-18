@@ -21,7 +21,7 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-v_pkey int; 	/* primary key of records to update */
+v_pkey int; 	/* primary key of records to UPDATE */
 v_age varchar(50);
 v_ageMin numeric;
 v_ageMax numeric;
@@ -30,75 +30,67 @@ age_cursor refcursor;
 BEGIN
 
 /* Update the Age Min, Age Max values */
-if (v_table = 'GXD_Expression')
-then
+IF (v_table = 'GXD_Expression')
+THEN
 	OPEN age_cursor FOR
-	select _Expression_key, age
-	from GXD_Expression
-	where _Expression_key = v_key
-	;
+	SELECT _Expression_key, age
+	FROM GXD_Expression
+	WHERE _Expression_key = v_key;
 
-elsif (v_table = 'GXD_GelLane')
-then
+ELSIF (v_table = 'GXD_GelLane')
+THEN
 	OPEN age_cursor FOR
-	select _GelLane_key, age
-	from GXD_GelLane
-	where _GelLane_key = v_key
-	;
+	SELECT _GelLane_key, age
+	FROM GXD_GelLane
+	WHERE _GelLane_key = v_key;
 
-elsif (v_table = 'GXD_Specimen')
-then
+ELSIF (v_table = 'GXD_Specimen')
+THEN
 	OPEN age_cursor FOR
-	select _Specimen_key, age
-	from GXD_Specimen
-	where _Specimen_key = v_key
-	;
+	SELECT _Specimen_key, age
+	FROM GXD_Specimen
+	WHERE _Specimen_key = v_key;
 
-elsif (v_table = 'PRB_Source')
-then
+ELSIF (v_table = 'PRB_Source')
+THEN
 	OPEN age_cursor FOR
-	select _Source_key, age
-	from PRB_Source
-	where _Source_key = v_key
-	;
+	SELECT _Source_key, age
+	FROM PRB_Source
+	WHERE _Source_key = v_key;
 
-else
-	return;
+ELSE
+	RETURN;
 
-end if;
+END IF;
 
 LOOP
-	FETCH age_cursor into v_pkey, v_age;
+	FETCH age_cursor INTO v_pkey, v_age;
 	EXIT WHEN NOT FOUND;
 
 	-- see PRB_ageMinMex for exceptions
-	select * from PRB_ageMinMax(v_age) into v_ageMin, v_ageMax;
+	SELECT * FROM PRB_ageMinMax(v_age) into v_ageMin, v_ageMax;
 
 	if (v_table = 'GXD_Expression')
-	then
-		update GXD_Expression 
-		set ageMin = v_ageMin, ageMax = v_ageMax where _Expression_key = v_pkey
-		;
+	THEN
+		UPDATE GXD_Expression 
+		SET ageMin = v_ageMin, ageMax = v_ageMax WHERE _Expression_key = v_pkey;
 
-	elsif (v_table = 'GXD_GelLane')
-	then
-		update GXD_GelLane 
-		set ageMin = v_ageMin, ageMax = v_ageMax where _GelLane_key = v_pkey
-		;
+	ELSIF (v_table = 'GXD_GelLane')
+	THEN
+		UPDATE GXD_GelLane 
+		SET ageMin = v_ageMin, ageMax = v_ageMax WHERE _GelLane_key = v_pkey;
 
-	elsif (v_table = 'GXD_Specimen')
-	then
-		update GXD_Specimen 
-		set ageMin = v_ageMin, ageMax = v_ageMax where _Specimen_key = v_pkey
-		;
+	ELSIF (v_table = 'GXD_Specimen')
+	THEN
+		UPDATE GXD_Specimen 
+		SET ageMin = v_ageMin, ageMax = v_ageMax WHERE _Specimen_key = v_pkey;
 
-	elsif (v_table = 'PRB_Source')
-	then
-		update PRB_Source 
-		set ageMin = v_ageMin, ageMax = v_ageMax where _Source_key = v_pkey
-		;
+	ELSIF (v_table = 'PRB_Source')
+	THEN
+		UPDATE PRB_Source 
+		SET ageMin = v_ageMin, ageMax = v_ageMax WHERE _Source_key = v_pkey;
 
-	end if;
+	END IF;
 
 
 END LOOP;

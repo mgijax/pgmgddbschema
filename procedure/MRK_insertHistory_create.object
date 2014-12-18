@@ -1,10 +1,13 @@
 #!/bin/sh
+
 #
 # History
 #
 # 08/19/2014	lec
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 DROP FUNCTION MRK_insertHistory(int,int,int,int,int,varchar,timestamp,int,int,timestamp,timestamp);
@@ -32,54 +35,47 @@ maxSeq int;
 BEGIN
 
 /* Insert new History record into MRK_History */
-select into maxSeq max(sequenceNum) from MRK_History where _Marker_key = markerKey
-;
+maxSeq := max(sequenceNum) from MRK_History where _Marker_key = markerKey;
 
-if maxSeq is null
-then
-	select into maxSeq 0
-	;
+IF maxSeq IS NULL
+THEN
+	maxSeq := 0;
 
-end if;
+END IF;
 
-if event_date is null
-then
-	select into event_date current_date
-	;
+IF event_date IS NULL
+THEN
+	event_date := current_date;
 
-end if;
+END IF;
 
-if createdByKey is null
-then
-	select into createdByKey _User_key from MGI_User where login = current_user
-	;
+IF createdByKey IS NULL
+THEN
+	createdByKey := _User_key from MGI_User where login = current_user;
 
-end if;
+END IF;
 
-if modifiedByKey is null
-then
-	select into modifiedByKey _User_key from MGI_User where login = current_user
-	;
+IF modifiedByKey IS NULL
+THEN
+	modifiedByKey := _User_key from MGI_User where login = current_user;
 
-end if;
+END IF;
 
-if creation_date is null
-then
-	select into creation_date current_date
-	;
+IF creation_date IS NULL
+THEN
+	creation_date := current_date;
 
-end if;
+END IF;
 
-if modification_date is null
-then
-	select into modification_date current_date
-	;
+IF modification_date IS NULL
+THEN
+	modification_date := current_date;
 
-end if;
+END IF;
 
-insert into MRK_History
+INSERT INTO MRK_History
 (_Marker_key, _History_key, _Refs_key, _Marker_Event_key, _Marker_EventReason_key, sequenceNum, name, event_date, _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
-values(markerKey, historyKey, refKey, eventKey, eventReasonKey, maxSeq + 1, name, event_date, createdByKey, modifiedByKey, creation_date, modification_date)
+VALUES(markerKey, historyKey, refKey, eventKey, eventReasonKey, maxSeq + 1, name, event_date, createdByKey, modifiedByKey, creation_date, modification_date)
 ;
 
 

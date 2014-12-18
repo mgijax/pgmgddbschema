@@ -1,4 +1,5 @@
 #!/bin/sh
+
 #
 # History
 #
@@ -8,7 +9,9 @@
 # 01/18/2002	lec
 #	- TR 2867; added GXD_AllelePair
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 DROP FUNCTION MGI_resetSequenceNum(varchar,int);
@@ -21,7 +24,7 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-pkey int;	/* primary key of records to update */
+pkey int;	/* primary key of records to UPDATE */
 oldSeq int;	/* current sequence number */
 newSeq int;	/* new sequence number */
 seq_cursor refcursor;
@@ -32,276 +35,259 @@ BEGIN
 continuous and there are no gaps.
 ex. 1,2,5,6,7 would be reordered to 1,2,3,4,5
 */
-select into newSeq 1
-;
 
-if (v_table = 'GXD_AllelePair')
-then
+newSeq := 1;
+
+IF (v_table = 'GXD_AllelePair')
+THEN
 	OPEN seq_cursor FOR
-	select _AllelePair_key, sequenceNum
-	from GXD_AllelePair
-	where _Genotype_key = v_key
-	order by sequenceNum
+	SELECT _AllelePair_key, sequenceNum
+	FROM GXD_AllelePair
+	WHERE _Genotype_key = v_key
+	ORDER BY sequenceNum
 	;
 
-elsif (v_table = 'GXD_AlleleGenotype')
-then
+ELSIF (v_table = 'GXD_AlleleGenotype')
+THEN
 	OPEN seq_cursor FOR
-	select _Allele_key, sequenceNum
-	from GXD_AlleleGenotype
-	where _Allele_key = v_key
-	order by sequenceNum
+	SELECT _Allele_key, sequenceNum
+	FROM GXD_AlleleGenotype
+	WHERE _Allele_key = v_key
+	ORDER BY sequenceNum
 	;
 
-elsif (v_table = 'GXD_GelLane')
-then
+ELSIF (v_table = 'GXD_GelLane')
+THEN
 	OPEN seq_cursor FOR
-	select _GelLane_key, sequenceNum
-	from GXD_GelLane
-	where _Assay_key = v_key
-	order by sequenceNum
+	SELECT _GelLane_key, sequenceNum
+	FROM GXD_GelLane
+	WHERE _Assay_key = v_key
+	ORDER BY sequenceNum
 	;
 
-elsif (v_table = 'GXD_GelRow')
-then
+ELSIF (v_table = 'GXD_GelRow')
+THEN
 	OPEN seq_cursor FOR
-	select _GelRow_key, sequenceNum
-	from GXD_GelRow
-	where _Assay_key = v_key
-	order by size desc
+	SELECT _GelRow_key, sequenceNum
+	FROM GXD_GelRow
+	WHERE _Assay_key = v_key
+	ORDER BY size desc
 	;
 
-elsif (v_table = 'GXD_Specimen')
-then
+ELSIF (v_table = 'GXD_Specimen')
+THEN
 	OPEN seq_cursor FOR
-	select _Specimen_key, sequenceNum
-	from GXD_Specimen
-	where _Assay_key = v_key
-	order by sequenceNum
+	SELECT _Specimen_key, sequenceNum
+	FROM GXD_Specimen
+	WHERE _Assay_key = v_key
+	ORDER BY sequenceNum
 	;
 
-elsif (v_table = 'GXD_InSituResult')
-then
+ELSIF (v_table = 'GXD_InSituResult')
+THEN
 	OPEN seq_cursor FOR
-	select _Result_key, sequenceNum
-	from GXD_InSituResult
-	where _Specimen_key = v_key
-	order by sequenceNum
+	SELECT _Result_key, sequenceNum
+	FROM GXD_InSituResult
+	WHERE _Specimen_key = v_key
+	ORDER BY sequenceNum
 	;
 
-elsif (v_table = 'MRK_History')
-then
+ELSIF (v_table = 'MRK_History')
+THEN
 	OPEN seq_cursor FOR
-	select _Marker_key, sequenceNum
-	from MRK_History
-	where _Marker_key = v_key
-	order by sequenceNum
+	SELECT _Marker_key, sequenceNum
+	FROM MRK_History
+	WHERE _Marker_key = v_key
+	ORDER BY sequenceNum
 	;
 
-elsif (v_table = 'MLD_Expt_Marker')
-then
+ELSIF (v_table = 'MLD_Expt_Marker')
+THEN
 	OPEN seq_cursor FOR
-	select _Expt_key, sequenceNum
-	from MLD_Expt_Marker
-	where _Expt_key = v_key
-	order by sequenceNum
+	SELECT _Expt_key, sequenceNum
+	FROM MLD_Expt_Marker
+	WHERE _Expt_key = v_key
+	ORDER BY sequenceNum
 	;
 
-elsif (v_table = 'MLD_MCDataList')
-then
+ELSIF (v_table = 'MLD_MCDataList')
+THEN
 	OPEN seq_cursor FOR
-	select _Expt_key, sequenceNum
-	from MLD_MCDataList
-	where _Expt_key = v_key
-	order by sequenceNum
+	SELECT _Expt_key, sequenceNum
+	FROM MLD_MCDataList
+	WHERE _Expt_key = v_key
+	ORDER BY sequenceNum
 	;
 
-elsif (v_table = 'MLD_MC2point')
-then
+ELSIF (v_table = 'MLD_MC2point')
+THEN
 	OPEN seq_cursor FOR
-	select _Expt_key, sequenceNum
-	from MLD_MC2point
-	where _Expt_key = v_key
-	order by sequenceNum
+	SELECT _Expt_key, sequenceNum
+	FROM MLD_MC2point
+	WHERE _Expt_key = v_key
+	ORDER BY sequenceNum
 	;
 
-elsif (v_table = 'MLD_RIData')
-then
+ELSIF (v_table = 'MLD_RIData')
+THEN
 	OPEN seq_cursor FOR
-	select _Expt_key, sequenceNum
-	from MLD_RIData
-	where _Expt_key = v_key
-	order by sequenceNum
+	SELECT _Expt_key, sequenceNum
+	FROM MLD_RIData
+	WHERE _Expt_key = v_key
+	ORDER BY sequenceNum
 	;
 
-elsif (v_table = 'MLD_RI2Point')
-then
+ELSIF (v_table = 'MLD_RI2Point')
+THEN
 	OPEN seq_cursor FOR
-	select _Expt_key, sequenceNum
-	from MLD_RI2Point
-	where _Expt_key = v_key
-	order by sequenceNum
+	SELECT _Expt_key, sequenceNum
+	FROM MLD_RI2Point
+	WHERE _Expt_key = v_key
+	ORDER BY sequenceNum
 	;
 
-elsif (v_table = 'MLD_FISH_Region')
-then
+ELSIF (v_table = 'MLD_FISH_Region')
+THEN
 	OPEN seq_cursor FOR
-	select _Expt_key, sequenceNum
-	from MLD_FISH_Region
-	where _Expt_key = v_key
-	order by sequenceNum
+	SELECT _Expt_key, sequenceNum
+	FROM MLD_FISH_Region
+	WHERE _Expt_key = v_key
+	ORDER BY sequenceNum
 	;
 
-elsif (v_table = 'MRK_Chromosome')
-then
+ELSIF (v_table = 'MRK_Chromosome')
+THEN
 	OPEN seq_cursor FOR
-	select _Chromosome_key, sequenceNum
-	from MRK_Chromosome
-	where _Organism_key = v_key
-	order by sequenceNum
+	SELECT _Chromosome_key, sequenceNum
+	FROM MRK_Chromosome
+	WHERE _Organism_key = v_key
+	ORDER BY sequenceNum
 	;
 
-elsif (v_table = 'MLD_Statistics')
-then
+ELSIF (v_table = 'MLD_Statistics')
+THEN
 	OPEN seq_cursor FOR
-	select _Expt_key, sequenceNum
-	from MLD_Statistics
-	where _Expt_key = v_key
-	order by sequenceNum
+	SELECT _Expt_key, sequenceNum
+	FROM MLD_Statistics
+	WHERE _Expt_key = v_key
+	ORDER BY sequenceNum
 	;
 
-elsif (v_table = 'MGI_Translation')
-then
+ELSIF (v_table = 'MGI_Translation')
+THEN
 	OPEN seq_cursor FOR
-	select _TranslationType_key, sequenceNum
-	from MGI_Translation
-	where _TranslationType_key = v_key
-	order by sequenceNum
+	SELECT _TranslationType_key, sequenceNum
+	FROM MGI_Translation
+	WHERE _TranslationType_key = v_key
+	ORDER BY sequenceNum
 	;
 
-elsif (v_table = 'VOC_Term')
-then
+ELSIF (v_table = 'VOC_Term')
+THEN
 	OPEN seq_cursor FOR
-	select _Vocab_key, sequenceNum
-	from VOC_Term
-	where _Vocab_key = v_key
-	order by sequenceNum
+	SELECT _Vocab_key, sequenceNum
+	FROM VOC_Term
+	WHERE _Vocab_key = v_key
+	ORDER BY sequenceNum
 	;
 
 else
 	return;
 
-end if;
+END IF;
 
 LOOP
         FETCH seq_cursor INTO pkey, oldSeq;
         EXIT WHEN NOT FOUND;
 
-	if (v_table = 'GXD_AllelePair')
-	then
-		update GXD_AllelePair set sequenceNum = newSeq
-		where _AllelePair_key = pkey
-		;
+	IF (v_table = 'GXD_AllelePair')
+	THEN
+		UPDATE GXD_AllelePair set sequenceNum = newSeq
+		WHERE _AllelePair_key = pkey;
 
-	elsif (v_table = 'GXD_AlleleGenotype')
-	then
-		update GXD_AlleleGenotype set sequenceNum = newSeq
-		where _Allele_key = pkey
-		;
+	ELSIF (v_table = 'GXD_AlleleGenotype')
+	THEN
+		UPDATE GXD_AlleleGenotype set sequenceNum = newSeq
+		WHERE _Allele_key = pkey;
 
-	elsif (v_table = 'GXD_GelLane')
-	then
-		update GXD_GelLane set sequenceNum = newSeq
-		where _GelLane_key = pkey
-		;
+	ELSIF (v_table = 'GXD_GelLane')
+	THEN
+		UPDATE GXD_GelLane set sequenceNum = newSeq
+		WHERE _GelLane_key = pkey;
 
-	elsif (v_table = 'GXD_GelRow')
-	then
-		update GXD_GelRow set sequenceNum = newSeq
-		where _GelRow_key = pkey
-		;
+	ELSIF (v_table = 'GXD_GelRow')
+	THEN
+		UPDATE GXD_GelRow set sequenceNum = newSeq
+		WHERE _GelRow_key = pkey;
 
-	elsif (v_table = 'GXD_Specimen')
-	then
-		update GXD_Specimen set sequenceNum = newSeq
-		where _Specimen_key = pkey
-		;
+	ELSIF (v_table = 'GXD_Specimen')
+	THEN
+		UPDATE GXD_Specimen set sequenceNum = newSeq
+		WHERE _Specimen_key = pkey;
 
-	elsif (v_table = 'GXD_InSituResult')
-	then
-		update GXD_InSituResult set sequenceNum = newSeq
-		where _Result_key = pkey
-		;
+	ELSIF (v_table = 'GXD_InSituResult')
+	THEN
+		UPDATE GXD_InSituResult set sequenceNum = newSeq
+		WHERE _Result_key = pkey;
 
-	elsif (v_table = 'MRK_History')
-	then
-		update MRK_History set sequenceNum = newSeq
-		where _Marker_key = pkey and sequenceNum = oldSeq
-		;
+	ELSIF (v_table = 'MRK_History')
+	THEN
+		UPDATE MRK_History set sequenceNum = newSeq
+		WHERE _Marker_key = pkey and sequenceNum = oldSeq;
 
-	elsif (v_table = 'MLD_Expt_Marker')
-	then
-		update MLD_Expt_Marker set sequenceNum = newSeq
-		where _Expt_key = pkey and sequenceNum = oldSeq
-		;
+	ELSIF (v_table = 'MLD_Expt_Marker')
+	THEN
+		UPDATE MLD_Expt_Marker set sequenceNum = newSeq
+		WHERE _Expt_key = pkey and sequenceNum = oldSeq;
 
-	elsif (v_table = 'MLD_MCDataList')
-	then
-		update MLD_MCDataList set sequenceNum = newSeq
-		where _Expt_key = pkey and sequenceNum = oldSeq
-		;
+	ELSIF (v_table = 'MLD_MCDataList')
+	THEN
+		UPDATE MLD_MCDataList set sequenceNum = newSeq
+		WHERE _Expt_key = pkey and sequenceNum = oldSeq;
 
-	elsif (v_table = 'MLD_MC2point')
-	then
-		update MLD_MC2point set sequenceNum = newSeq
-		where _Expt_key = pkey and sequenceNum = oldSeq
-		;
+	ELSIF (v_table = 'MLD_MC2point')
+	THEN
+		UPDATE MLD_MC2point set sequenceNum = newSeq
+		WHERE _Expt_key = pkey and sequenceNum = oldSeq;
 
-	elsif (v_table = 'MLD_RIData')
-	then
-		update MLD_RIData set sequenceNum = newSeq
-		where _Expt_key = pkey and sequenceNum = oldSeq
-		;
+	ELSIF (v_table = 'MLD_RIData')
+	THEN
+		UPDATE MLD_RIData set sequenceNum = newSeq
+		WHERE _Expt_key = pkey and sequenceNum = oldSeq;
 
-	elsif (v_table = 'MLD_RI2Point')
-	then
-		update MLD_RI2Point set sequenceNum = newSeq
-		where _Expt_key = pkey and sequenceNum = oldSeq
-		;
+	ELSIF (v_table = 'MLD_RI2Point')
+	THEN
+		UPDATE MLD_RI2Point set sequenceNum = newSeq
+		WHERE _Expt_key = pkey and sequenceNum = oldSeq;
 
-	elsif (v_table = 'MLD_FISH_Region')
-	then
-		update MLD_FISH_Region set sequenceNum = newSeq
-		where _Expt_key = pkey and sequenceNum = oldSeq
-		;
+	ELSIF (v_table = 'MLD_FISH_Region')
+	THEN
+		UPDATE MLD_FISH_Region set sequenceNum = newSeq
+		WHERE _Expt_key = pkey and sequenceNum = oldSeq;
 
-	elsif (v_table = 'MRK_Chromosome')
-	then
-		update MRK_Chromosome set sequenceNum = newSeq
-		where _Chromosome_key = pkey
-		;
+	ELSIF (v_table = 'MRK_Chromosome')
+	THEN
+		UPDATE MRK_Chromosome set sequenceNum = newSeq
+		WHERE _Chromosome_key = pkey;
 
-	elsif (v_table = 'MLD_Statistics')
-	then
-		update MLD_Statistics set sequenceNum = newSeq
-		where _Expt_key = pkey and sequenceNum = oldSeq
-		;
+	ELSIF (v_table = 'MLD_Statistics')
+	THEN
+		UPDATE MLD_Statistics set sequenceNum = newSeq
+		WHERE _Expt_key = pkey and sequenceNum = oldSeq;
 
-	elsif (v_table = 'MGI_Translation')
-	then
-		update MGI_Translation set sequenceNum = newSeq
-		where _TranslationType_key = pkey and sequenceNum = oldSeq
-		;
+	ELSIF (v_table = 'MGI_Translation')
+	THEN
+		UPDATE MGI_Translation set sequenceNum = newSeq
+		WHERE _TranslationType_key = pkey and sequenceNum = oldSeq;
 
-	elsif (v_table = 'VOC_Term')
-	then
-		update VOC_Term set sequenceNum = newSeq
-		where _Vocab_key = pkey and sequenceNum = oldSeq
-		;
+	ELSIF (v_table = 'VOC_Term')
+	THEN
+		UPDATE VOC_Term set sequenceNum = newSeq
+		WHERE _Vocab_key = pkey and sequenceNum = oldSeq;
 
-	end if;
+	END IF;
 
-        select into newSeq newSeq + 1;
+        newSeq := newSeq + 1;
 
 END LOOP;
 
@@ -313,6 +299,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MGI_resetSequenceNum(varchar,int) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_resetSequenceNum(varchar,int) IS '';
+COMMENT ON FUNCTION mgd.MGI_resetSequenceNum(varchar,int) IS 'resets the sequenceNum field on specific table/object';
 
 EOSQL

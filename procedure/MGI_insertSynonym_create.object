@@ -1,4 +1,5 @@
 #!/bin/sh
+
 #
 # History
 #
@@ -8,7 +9,9 @@
 # 12/09/2004	lec
 #	- TR 5686
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 DROP FUNCTION MGI_insertSynonym(int,int,int,varchar,int);
@@ -27,36 +30,31 @@ DECLARE
 v_userKey int;
 v_synKey int;
 
-
 BEGIN
 
 /* Insert new MGI_Synonym record */
-select into v_userKey _User_key from MGI_User where login = current_user
-;
+v_userKey := _User_key FROM MGI_User where login = current_user;
 
-select into v_synKey max(_Synonym_key + 1) from MGI_Synonym
-;
+v_synKey := max(_Synonym_key + 1) FROM MGI_Synonym;
 
-if v_synKey is null
-then
-	select into v_synKey 1000
-	;
+IF v_synKey IS NULL
+THEN
+	v_synKey := 1000;
 
 /* Don't add duplicate entries */
-end if;
+END IF;
 
-if not exists (select 1 from MGI_Synonym
-where _Object_key = v_objectKey
-and _MGIType_key = v_mgiTypeKey
-and _SynonymType_key = v_synTypeKey
-and synonym = v_synonym)
-then
-	insert into MGI_Synonym
+IF NOT EXISTS (SELECT 1 FROM MGI_Synonym
+	WHERE _Object_key = v_objectKey
+	AND _MGIType_key = v_mgiTypeKey
+	AND _SynonymType_key = v_synTypeKey
+	AND synonym = v_synonym)
+THEN
+	INSERT INTO MGI_Synonym
 	(_Synonym_key, _Object_key, _MGIType_key, _SynonymType_key, _Refs_key, synonym, _CreatedBy_key, _ModifiedBy_key)
-	values (v_synKey, v_objectKey, v_mgiTypeKey, v_synTypeKey, v_refsKey, v_synonym, v_userKey, v_userKey)
-	;
+	VALUES (v_synKey, v_objectKey, v_mgiTypeKey, v_synTypeKey, v_refsKey, v_synonym, v_userKey, v_userKey);
 
-end if;
+END IF;
 
 
 END;

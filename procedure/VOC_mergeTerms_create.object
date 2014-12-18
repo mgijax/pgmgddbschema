@@ -1,4 +1,5 @@
 #!/bin/sh
+
 #
 # History
 #
@@ -9,7 +10,9 @@
 #	- TR 2867; merge old Term into new Term
 #
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 DROP FUNCTION VOC_mergeTerms(int,int);
@@ -21,7 +24,6 @@ newKey int
 RETURNS VOID AS
 \$\$
 
-
 BEGIN
 
 /* To merge a term: */
@@ -31,22 +33,24 @@ BEGIN
 /* c.  delete the old term                                                */
 /**/
 /* a.  make the accID of the old term a secondary accID of the new term  */
-update ACC_Accession
-set _Object_key = newKey, preferred = 0
-where _Object_key = oldKey
-and _MGIType_key = 13
+
+UPDATE ACC_Accession
+SET _Object_key = newKey, preferred = 0
+WHERE _Object_key = oldKey
+AND _MGIType_key = 13
 ;
 
 /* b.  move annotations of the old term to the new term (avoid duplicates) */
-update VOC_Annot
-set _Term_key = newKey
-from VOC_Annot a
-where a._Term_key = oldKey
-and not exists (select 1 from VOC_Annot a2
-where a2._Term_key = newKey
-and a._AnnotType_key = a2._AnnotType_key
-and a._Object_key = a2._Object_key
-and a._Qualifier_key = a2._Qualifier_key)
+
+UPDATE VOC_Annot
+SET _Term_key = newKey
+FROM VOC_Annot a
+WHERE a._Term_key = oldKey
+AND NOT EXISTS (SELECT 1 FROM VOC_Annot a2
+	WHERE a2._Term_key = newKey
+	AND a._AnnotType_key = a2._AnnotType_key
+	AND a._Object_key = a2._Object_key
+	AND a._Qualifier_key = a2._Qualifier_key)
 ;
 
 /* move any evidences of the old term to the new term */
@@ -55,30 +59,28 @@ and a._Qualifier_key = a2._Qualifier_key)
 /* move the evidences to the new set annotation key */
 /* this moves the VOC_Evidence record to the new _Annot_key which essentially */
 /* moves the Evidence record to the new term */
-update VOC_Evidence
-set _Annot_key = a2._Annot_key
-from VOC_Annot a, VOC_Evidence e, VOC_Annot a2
-where a._Term_key = oldKey
-and a._Annot_key = e._Annot_key
-and a2._Term_key = newKey
-and a._Object_key = a2._Object_key
-and a._Qualifier_key = a2._Qualifier_key
-and not exists (select 1 from VOC_Evidence e2
-where a2._Annot_key = e2._Annot_key
-and e._EvidenceTerm_key = e2._EvidenceTerm_key
-and e._Refs_key = e2._Refs_key)
+
+UPDATE VOC_Evidence
+SET _Annot_key = a2._Annot_key
+FROM VOC_Annot a, VOC_Evidence e, VOC_Annot a2
+WHERE a._Term_key = oldKey
+AND a._Annot_key = e._Annot_key
+AND a2._Term_key = newKey
+AND a._Object_key = a2._Object_key
+AND a._Qualifier_key = a2._Qualifier_key
+AND NOT EXISTS (SELECT 1 FROM VOC_Evidence e2
+	WHERE a2._Annot_key = e2._Annot_key
+	AND e._EvidenceTerm_key = e2._EvidenceTerm_key
+	AND e._Refs_key = e2._Refs_key)
 ;
 
 /* now delete all annotations to the old key that we haven't moved to the new key */
-delete from VOC_Annot where _Term_key = oldKey
-;
+DELETE FROM VOC_Annot WHERE _Term_key = oldKey;
 
-delete from VOC_GO_Cache where _Term_key = oldKey
-;
+DELETE FROM VOC_GO_Cache WHERE _Term_key = oldKey;
 
 /* c.  delete the old term (this will delete the DAG_Node as well)        */
-delete from VOC_Term where _Term_key = oldKey
-;
+DELETE FROM VOC_Term WHERE _Term_key = oldKey;
 
 
 END;

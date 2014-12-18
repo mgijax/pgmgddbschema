@@ -273,6 +273,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION PRB_ageMinMax(varchar) TO public;
 
-COMMENT ON FUNCTION mgd.PRB_ageMinMax(varchar) IS '';
+COMMENT ON FUNCTION mgd.PRB_ageMinMax(varchar) IS 'set ageMin, ageMax values for given age value';
 
 EOSQL
