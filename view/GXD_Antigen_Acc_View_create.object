@@ -11,10 +11,11 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create view mgd.GXD_Antigen_Acc_View
 as
-select a.*, l.name as LogicalDB
-from ACC_Accession a, ACC_LogicalDB l
+select a.*, l.name as LogicalDB, g.antigenName as description
+from ACC_Accession a, ACC_LogicalDB l, GXD_Antigen g
 where a._MGIType_key = 7
 and a._LogicalDB_key = l._LogicalDB_key
+and a._Object_key = g._Antigen_key
 
 
 
