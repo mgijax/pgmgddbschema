@@ -1,12 +1,20 @@
 #!/bin/csh -f
 
 #
-# referential-integrity tests
+# Purpose:
 #
-# children with cascading deletes:
+# To test that the referential-integrity for the table is correct between the parents and children:
+#
+#	. FOREIGN KEY
+#	. REFERENCES/ON DELETE CASCADE
+#
+# Refer to the 'key/table_create.object' ALTER TABLE list (should match)
 #
 # children without cascading deletes:
-#	. find instances where deleting a child will return PGRES_FATAL_ERROR (7)
+#	. DELETE statements should fail
+#
+# children with cascading deletes:
+#	. DELETE statements should succeed
 #
 # table : BIB_Refs
 #
@@ -25,6 +33,7 @@
 # SEQ_Probe_Cache
 #
 # children other:
+# see 'foreach' loop below
 #
 
 #setenv MGICONFIG /usr/local/mgi/live/mgiconfig
