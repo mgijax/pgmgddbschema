@@ -78,8 +78,6 @@ EOSQL
 
 end
 
-exit 0
-
 #
 # test that a record without any referential integrity checks is properly deleted
 #
