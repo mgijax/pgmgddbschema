@@ -15,3 +15,5 @@ do
 $i $*
 done
 
+# assignJ may need to be re-run because it may not be successful unitl assignMGI exists
+# ACC_assignJ_create.object
