@@ -48,7 +48,7 @@ THEN
 	WHERE _Nomen_key = nomenKey
 	;
 
-	RAISE notice E'The symbol %1! was a Reserved symbol in Nomen.  \nPlease check the Nomenclature Notes in Nomen for possible Sequence information.', v_symbol;
+	RAISE NOTICE E'The symbol %1! was a Reserved symbol in Nomen.  \nPlease check the Nomenclature Notes in Nomen for possible Sequence information.', v_symbol;
 END IF;
 
 

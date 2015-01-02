@@ -51,7 +51,7 @@ IF v_nextMGI = -1
 THEN
 	SELECT INTO v_nextMGI maxNumericPart + 1
 	FROM ACC_AccessionMax WHERE prefixPart = v_prefixPart;
-ELSIF v_prefixPart != "J:"
+ELSIF v_prefixPart != 'J:'
 THEN
     RAISE NOTICE E'Cannot override generation of MGI accession number';
     RETURN;
