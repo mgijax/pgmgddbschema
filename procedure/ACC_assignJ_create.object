@@ -31,7 +31,7 @@ THEN
 
 	IF j_exists > 0
 	THEN
-		RAISE EXCEPTION E'This J Number is already in use: %s', j_exists;
+		RAISE EXCEPTION E'This J Number is already in use: %', j_exists;
 		RETURN;
 	END IF;
 END IF;
