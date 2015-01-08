@@ -42,8 +42,7 @@ THEN
         IF (SELECT _LogicalDB_key FROM ACC_Accession WHERE _Accession_key = v_accKey) 
                 in (13, 41, 28, 33, 23)
         THEN
-            ROLLBACK TRANSACTION;
-	    RAISE NOTICE E'You cannot DELETE an Accession id that is associated via a load program.';
+	    RAISE EXCEPTION E'You cannot DELETE an Accession id that is associated via a load program.';
             RETURN;
         END IF;
 
@@ -56,8 +55,7 @@ THEN
                 and a._MGIType_key = 2
                 and a._Object_key = m._Marker_key) = 1
         THEN
-            ROLLBACK TRANSACTION;
-            RAISE NOTICE E'You cannot DELETE an Entrez Gene Accession id.';
+            RAISE EXCEPTION E'You cannot DELETE an Entrez Gene Accession id.';
             RETURN;
         END IF;
 
@@ -67,8 +65,7 @@ THEN
         IF (SELECT _Refs_key FROM ACC_AccessionReference WHERE _Accession_key = v_accKey) 
                 in (53672, 64047, 91485)
         THEN
-            ROLLBACK TRANSACTION;
-            RAISE NOTICE E'You cannot DELETE an Accession id that is associated with J:53158, J:63103, 
+            RAISE EXCEPTION E'You cannot DELETE an Accession id that is associated with J:53158, J:63103, 
 J:90500.';
             RETURN;
         END IF;
@@ -87,8 +84,7 @@ J:90500.';
            (SELECT prefixPart FROM ACC_Accession WHERE _Accession_key = v_accKey) 
                 not in ('XM_','NM_','XR_','NR_')
         THEN
-            ROLLBACK TRANSACTION;
-            RAISE NOTICE E'You can only DELETE XM_/XR_ RefSeqs.';
+            RAISE EXCEPTION E'You can only DELETE XM_/XR_ RefSeqs.';
             RETURN;
         END IF;
 
@@ -104,8 +100,7 @@ J:90500.';
            (SELECT prefixPart FROM ACC_Accession WHERE _Accession_key = v_accKey) 
 		not in ('XM_','XP_')
         THEN
-            ROLLBACK TRANSACTION;
-            RAISE NOTICE E'You can only DELETE XM_/XP_ RefSeqs.';
+            RAISE EXCEPTION E'You can only DELETE XM_/XP_ RefSeqs.';
             RETURN;
         END IF;
 
@@ -122,8 +117,7 @@ THEN
         IF (SELECT _LogicalDB_key FROM ACC_Accession WHERE _Accession_key = V_accKey)
                 in (59, 60, 85)
         THEN
-            ROLLBACK TRANSACTION;
-            RAISE NOTICE E'You cannot DELETE an Accession id for a gene model (NCBI, Ensembl, VEGA).';
+            RAISE EXCEPTION E'You cannot DELETE an Accession id for a gene model (NCBI, Ensembl, VEGA).';
             RETURN;
         END IF;
 END IF;

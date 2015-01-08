@@ -1,0 +1,439 @@
+#!/bin/sh
+
+#
+# History
+#
+# 04/14/2014
+#	- TR11656/remove hard-coded permissions
+#
+# 04/11/2014
+#	- removed dbradt
+#
+# 07/08/2010
+#	- TR 9316; fix offset;
+#	  if chromosome = "UN" then offset = -999.00
+#	  else offset = -1.0
+#
+# 06/29/2010
+#	- TR 9316; fix offset;
+#	  if chromosome = "UN" then offset = -999.00
+#	  else offset = -1.0
+#
+# 11/17/2009	lec
+#	- TR 9956; select v_offset = -999.0  ==> needs to be changed to "-1.0"
+#
+# 01/23/2009 - jsb - added hdt; TR9166
+#
+# 12/11/2008	lec
+#	- TR 9416; remove default chromosome
+#
+# 03/18/2009	lec
+#	- TR 7493; added records for allele/marker association
+#
+# 10/21/2005	lec
+#	- TR 7185; added mberry as Tier 3
+#
+# 12/09/2004	lec
+#	- TR 5686; MRK_Other replaced by MGI_Synonym
+#
+# 06/30/2004	lec
+#	- TR 5998
+#
+# 08/26/2003	lec
+#	- TR 4708
+#
+# 11/22/2002	lec
+#	- add @transferOtherNames
+#
+# 05/29/2002	lec
+#	- TR 1463; SAO
+#
+# 04/18/2002	lec
+#	- TR 3590; added ln as Tier 3
+#
+# 03/19/2002	lec
+#	- TR 3447; added cms as Tier 3
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION NOM_transferToMGD(int,varchar,int);
+
+CREATE OR REPLACE FUNCTION NOM_transferToMGD (
+v_nomenKey int,
+v_status varchar(255),
+v_transferSynonyms int DEFAULT 1
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_userKey int;
+v_statusKey int;
+v_symbol varchar(50);
+v_nomenStatusKey int;
+v_name varchar(255);
+v_eventKey int;
+v_eventReasonKey int;
+v_curationStateKey int;
+v_primaryRefKey int;
+v_markerKey int;
+v_accID varchar(30);
+v_offset float;
+
+v_synName varchar(255)
+v_synRefKey int;
+v_synTypeKey int;
+v_relatedRefKey int;
+v_refsKey int;
+v_preferred int;
+v_private int;
+v_logicalDB int;
+v_alleleKey int;
+v_assocKey int;
+v_qualifierKey int;
+v_mrkstatusKey int;
+
+/* Transfer one marker to MGD */
+
+v_userKey := _User_key FROM MGI_User WHERE login = ccurrent_user;
+v_statusKey := _Marker_Status_key FROM MRK_Status where status = v_status;
+v_symbol := symbol FROM NOM_Marker where _Nomen_key = v_nomenKey;
+v_nomenStatusKey = _Term_key from VOC_Term where _Vocab_key = 16 and term = 'Broadcast';
+v_markerKey := max(_Marker_key) + 1 from MRK_Marker;
+
+if (select v_nomenKey) is null
+begin
+	RAISE EXCEPTION E'Must supply a key for NOM_transferToMGD.';
+	RETURN;
+end
+
+if (select v_statusKey) is null
+begin
+        RAISE EXCEPTION E'Nomen Status invalid for NOM_transferToMGD.';
+        RETURN;
+end
+
+if (select t.term from NOM_Marker n, VOC_Term t
+	where n._Nomen_key = v_nomenKey and
+	      n._NomenStatus_key = _Term_key) = 'Broadcast'
+begin
+	RAISE EXCEPTION E'Symbol % has already been broadcast.', v_symbol;
+	RETURN;
+end
+
+if (select t.term from NOM_Marker n, VOC_Term t
+	where n._Nomen_key = v_nomenKey and
+	      n._NomenStatus_key = _Term_key) = 'Approved'
+begin
+	RAISE EXCEPTION E'Symbol % has been approved and exists in MGD.', v_symbol;
+	RETURN;
+end
+
+if (select t.term from NOM_Marker n, VOC_Term t
+	where n._Nomen_key = v_nomenKey and
+	      n._NomenStatus_key = _Term_key) = 'Deleted'
+begin
+	RAISE EXCEPTION E'Symbol % has been deleted.', v_symbol;
+	RETURN;
+end
+
+if not exists 
+	(select _Refs_key from MGI_Reference_Nomen_View
+		where _Object_key = v_nomenKey and assocType = 'Primary')
+begin
+	RAISE EXCEPTION E'Symbol % has no Primary Reference.', v_symbol;
+	RETURN;
+end
+
+/* Create new marker record in MGD */
+
+select n.name as v_name,
+       n._Marker_Event_key as v_eventKey,
+       n._Marker_EventReason_key as v_eventReasonKey,
+       n._CurationState_key as v_curationStateKey,
+       r._Refs_key as v_primaryRefKey
+from NOM_Marker n, MGI_Reference_Nomen_View r
+where n._Nomen_key = v_nomenKey
+and n._Nomen_key = r._Object_key
+and r.assocType = 'Primary'
+;
+
+insert into MRK_Marker
+(_Marker_key, _Organism_key, _Marker_Status_key, _Marker_Type_key, _CurationState_key, symbol, name, chromosome, 
+_CreatedBy_key, _ModifiedBy_key)
+select v_markerKey, 1, v_statusKey, _Marker_Type_key, v_curationStateKey, symbol, name, chromosome, 
+v_userKey, v_userKey
+from NOM_Marker
+where _Nomen_key = v_nomenKey
+;
+
+if @@error != 0
+begin
+	RAISE EXCEPTION E'Could not add symbol %1! in NOM_transferToMGD.', @symbol
+	rollback transaction
+	RETURN;
+end
+
+/* Create Offset for new marker */
+
+if (select chromosome from NOM_Marker where _Nomen_key = v_nomenKey) = 'UN'
+begin
+	select v_offset = -999.0
+end
+else
+begin
+	select v_offset = -1.0
+end
+
+insert into MRK_Offset values(v_markerKey, 0, v_offset, getdate(), getdate())
+
+if @@error != 0
+begin
+	RAISE EXCEPTION E'Could not add offset for symbol %1! in NOM_transferToMGD.', @symbol
+	rollback transaction
+	RETURN;
+end
+
+/* Create History line for new marker */
+exec MRK_insertHistory v_markerKey, v_markerKey, v_primaryRefKey, v_eventKey, v_eventReasonKey, v_name
+
+if @@error != 0
+begin
+	RAISE EXCEPTION E'Could not add history for symbol %1! in NOM_transferToMGD.', @symbol
+	rollback transaction
+	RETURN;
+end
+
+/* Create Synonyms for new marker */
+
+if v_transferSynonyms = 1
+begin
+
+
+	declare synCursor cursor for
+	select synonym, _Refs_key, _SynonymType_key
+	from MGI_Synonym
+	where _Object_key = v_nomenKey
+	and _MGIType_key = 21
+	for read only
+
+	open synCursor
+
+	fetch synCursor into v_synName, v_synRefKey, v_synTypeKey
+
+	while (@@sqlstatus = 0)
+	begin
+		if v_synTypeKey = 1008
+		    select v_synTypeKey = 1004
+		else if v_synTypeKey = 1009
+		    select v_synTypeKey = 1005
+		else if v_synTypeKey = 1010
+		    select v_synTypeKey = 1006
+		else
+		    select v_synTypeKey = 1007
+
+		exec MGI_insertSynonym v_markerKey, 2, v_synTypeKey, v_synName, v_synRefKey
+
+		if @@error != 0
+		begin
+			RAISE EXCEPTION E'Could not add synonym %1! for symbol %2! in NOM_transferToMGD.', v_synName, @symbol
+			rollback transaction
+			RETURN;
+		end
+
+		fetch synCursor into v_synName, v_synRefKey, v_synTypeKey
+	end
+
+	close synCursor
+	deallocate cursor synCursor
+end
+/* v_transferSynonyms = 1 */
+
+/* Create Related References for new marker */
+
+
+declare refCursor cursor for
+select _Refs_key
+from MGI_Reference_Nomen_View
+where _Object_key = v_nomenKey
+and assocType = 'Related'
+for read only
+
+open refCursor
+
+fetch refCursor into v_relatedRefKey
+
+while (@@sqlstatus = 0)
+begin
+	exec MGI_insertReferenceAssoc 2,v_markerKey,v_relatedRefKey,'General'
+
+	if @@error != 0
+	begin
+		RAISE EXCEPTION E'Could not add related reference %1! for symbol %2! in NOM_transferToMGD.'
+		rollback transaction
+		RETURN;
+	end
+
+	fetch refCursor into v_relatedRefKey
+end
+
+close refCursor
+deallocate cursor refCursor
+
+
+/* Create Accession IDs for new marker; turn private bit off */
+/* 	MGI Accession IDs */
+/* 	Accession IDs which don't have references (older EC numbers) */
+
+declare acc_cursor cursor for
+select distinct a.accID, a._LogicalDB_key, a.preferred, 0 as private
+from ACC_Accession a
+where a._Object_key = v_nomenKey
+and a._MGIType_key = 21
+and a._LogicalDB_key = 1
+union
+select distinct a.accID, a._LogicalDB_key, a.preferred, 0 as private
+from ACC_Accession a
+where a._Object_key = v_nomenKey
+and a._MGIType_key = 21
+and a._LogicalDB_key != 1
+and not exists (select 1 from ACC_AccessionReference r
+where a._Accession_key = r._Accession_key)
+for read only
+
+open acc_cursor
+
+fetch acc_cursor into v_accID, v_logicalDB, v_preferred, v_private
+
+while (@@sqlstatus = 0)
+begin
+	exec ACC_insert v_markerKey, v_accID, v_logicalDB, 'Marker', -1, v_preferred, v_private
+
+	if @@error != 0
+	begin
+		RAISE EXCEPTION E'Could not add accession id %1! for symbol %2! in NOM_transferToMGD.', v_accID, @symbol
+		rollback transaction
+		RETURN;
+	end
+
+	fetch acc_cursor into v_accID, v_logicalDB, v_preferred, v_private
+end
+
+close acc_cursor
+deallocate cursor acc_cursor
+
+/* Create Accession IDs for new marker; turn private bit off */
+
+declare acc_cursor cursor for
+select distinct a.accID, a._LogicalDB_key, r._Refs_key, a.preferred, 0 as private
+from ACC_Accession a, ACC_AccessionReference r
+where a._Object_key = v_nomenKey
+and a._MGIType_key = 21
+and a._Accession_key = r._Accession_key
+for read only
+
+open acc_cursor
+
+fetch acc_cursor into v_accID, v_logicalDB, v_refsKey, v_preferred, v_private
+
+while (@@sqlstatus = 0)
+begin
+/*	exec ACC_insert v_markerKey, v_accID, v_logicalDB, 'Marker', v_refsKey, v_preferred, 1 */
+	exec ACCRef_process v_markerKey, v_refsKey, v_accID, v_logicalDB, 'Marker', v_preferred, v_private
+
+	if @@error != 0
+	begin
+		RAISE EXCEPTION E'Could not add accession id %1! for symbol %2! in NOM_transferToMGD.', v_accID, @symbol
+		rollback transaction
+		RETURN;
+	end
+
+	fetch acc_cursor into v_accID, v_logicalDB, v_refsKey, v_preferred, v_private
+end
+
+close acc_cursor
+deallocate cursor acc_cursor
+
+/* 
+ * If the Marker was originally used in Alleles as a Nomenclature Marker, then 
+ *    - set the ALL_Allele._Marker_key = real marker key    
+ *    - set the ALL_Allele.nomenSymbol = null
+ *    - add a record to ALL_Marker_Assoc
+*/
+
+select v_assocKey = max(_Assoc_key) + 1 from ALL_Marker_Assoc
+select v_qualifierKey = _Term_key from VOC_Term where _Vocab_key = 70 and term = 'Not Specified'
+select v_mrkstatusKey = _Term_key from VOC_Term where _Vocab_key = 73 and term = 'Curated'
+
+declare allele_cursor cursor for
+select _Allele_key 
+from ALL_Allele 
+where nomenSymbol = @symbol
+for read only
+
+open allele_cursor
+
+fetch allele_cursor into v_alleleKey
+
+while (@@sqlstatus = 0)
+begin
+
+	update ALL_Allele
+	set _Marker_key = v_markerKey, nomenSymbol = null
+	where _Allele_key = v_alleleKey
+
+	insert ALL_Marker_Assoc
+	(_Assoc_key, _Allele_key, _Marker_key, _Qualifier_key, _Refs_key, _Status_key,
+	 _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
+	values(v_assocKey, v_alleleKey, v_markerKey, v_qualifierKey, null, v_mrkstatusKey,
+	       @userKey, @userKey, getdate(), getdate())
+
+	if @@error != 0
+	begin
+		RAISE EXCEPTION E'Could not update Marker symbol %1! for Allele record in NOM_transferToMGD.', @symbol
+		rollback transaction
+		RETURN;
+	end
+
+	fetch allele_cursor into v_alleleKey
+end
+
+close allele_cursor
+deallocate cursor allele_cursor
+
+/* end of Allele/Marker */
+
+/* Load MRK_Label and MRK_Reference, SEQ_Marker_Cache */
+
+exec MRK_reloadLabel v_markerKey
+exec MRK_reloadReference v_markerKey
+exec MRK_reloadSequence v_markerKey
+exec MRK_reloadLocation v_markerKey
+
+/* Update Status, Broadcast date, Broadcast User */
+
+update NOM_Marker
+set _NomenStatus_key = v_nomenStatusKey,
+    _BroadcastBy_key = @userKey,
+    broadcast_date = getdate()
+where _Nomen_key = v_nomenKey
+
+
+if @@error != 0
+begin
+	RAISE EXCEPTION E'Could not update Status, Broadcast Date and Broadcast By for symbol %1! in NOM_transferToMGD.', @symbol
+	rollback transaction
+	RETURN;
+end
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

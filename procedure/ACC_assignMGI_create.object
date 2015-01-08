@@ -53,7 +53,7 @@ THEN
 	FROM ACC_AccessionMax WHERE prefixPart = v_prefixPart;
 ELSIF v_prefixPart != 'J:'
 THEN
-    RAISE NOTICE E'Cannot override generation of MGI accession number';
+    RAISE EXCEPTION E'Cannot override generation of MGI accession number';
     RETURN;
 END IF;
 
