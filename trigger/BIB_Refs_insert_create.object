@@ -5,7 +5,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
--- NAME: check_BIB_Refs_insert()
+-- NAME: BIB_Refs_insert()
 --
 -- DESCRIPTOIN:
 --
@@ -20,10 +20,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER check_BIB_Refs_insert_trigger ON BIB_Refs;
-DROP FUNCTION check_BIB_Refs_insert();
+DROP TRIGGER BIB_Refs_insert_trigger ON BIB_Refs;
+DROP FUNCTION BIB_Refs_insert();
 
-CREATE OR REPLACE FUNCTION check_BIB_Refs_insert() RETURNS TRIGGER AS \$\$
+CREATE OR REPLACE FUNCTION BIB_Refs_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
 PERFORM ACC_assignMGI(NEW._Refs_key, 'Reference');
@@ -34,13 +34,13 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION check_BIB_Refs_insert() TO public;
+GRANT EXECUTE ON FUNCTION BIB_Refs_insert() TO public;
 
-CREATE TRIGGER check_BIB_Refs_insert_trigger
+CREATE TRIGGER BIB_Refs_insert_trigger
 AFTER INSERT on BIB_Refs
 FOR EACH ROW
-EXECUTE PROCEDURE check_BIB_Refs_insert();
+EXECUTE PROCEDURE BIB_Refs_insert();
 
-COMMENT ON FUNCTION mgd.check_BIB_Refs_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+COMMENT ON FUNCTION mgd.BIB_Refs_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
 
 EOSQL

@@ -8,8 +8,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP TRIGGER check_GXD_Antigen_delete_trigger ON GXD_Antigen;
+DROP TRIGGER GXD_Antigen_delete_trigger ON GXD_Antigen;
 
-DROP FUNCTION check_GXD_Antigen_delete();
+DROP FUNCTION GXD_Antigen_delete();
 
 EOSQL

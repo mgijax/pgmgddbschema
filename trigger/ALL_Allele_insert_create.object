@@ -5,7 +5,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
--- NAME: check_ALL_Allele_insert()
+-- NAME: ALL_Allele_insert()
 --
 -- DESCRIPTOIN:
 --
@@ -20,10 +20,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER check_ALL_Allele_insert_trigger ON ALL_Allele;
-DROP FUNCTION check_ALL_Allele_insert();
+DROP TRIGGER ALL_Allele_insert_trigger ON ALL_Allele;
+DROP FUNCTION ALL_Allele_insert();
 
-CREATE OR REPLACE FUNCTION check_ALL_Allele_insert() RETURNS TRIGGER AS \$\$
+CREATE OR REPLACE FUNCTION ALL_Allele_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
 PERFORM ACC_assignMGI(NEW._Allele_key, 'Allele');
@@ -34,13 +34,13 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION check_ALL_Allele_insert() TO public;
+GRANT EXECUTE ON FUNCTION ALL_Allele_insert() TO public;
 
-CREATE TRIGGER check_ALL_Allele_insert_trigger
+CREATE TRIGGER ALL_Allele_insert_trigger
 AFTER INSERT on ALL_Allele
 FOR EACH ROW
-EXECUTE PROCEDURE check_ALL_Allele_insert();
+EXECUTE PROCEDURE ALL_Allele_insert();
 
-COMMENT ON FUNCTION mgd.check_ALL_Allele_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+COMMENT ON FUNCTION mgd.ALL_Allele_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
 
 EOSQL

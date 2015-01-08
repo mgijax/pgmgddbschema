@@ -8,8 +8,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP TRIGGER check_MLD_Expts_delete_trigger ON MLD_Expts;
+DROP TRIGGER MLD_Expts_delete_trigger ON MLD_Expts;
 
-DROP FUNCTION check_MLD_Expts_delete();
+DROP FUNCTION MLD_Expts_delete();
 
 EOSQL

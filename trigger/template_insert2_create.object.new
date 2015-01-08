@@ -5,7 +5,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
--- NAME: check_PG-TABLE_insert()
+-- NAME: PG-TABLE_insert()
 --
 -- DESCRIPTOIN:
 --
@@ -21,13 +21,13 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-CREATE OR REPLACE FUNCTION check_PG-TABLE_insert() RETURNS TRIGGER AS \$\$
+CREATE OR REPLACE FUNCTION PG-TABLE_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
 SELECT ACC_assignMGI(NEW.PG-KEY, 'PG-NAME', PG-PRIVATE);
 
 EXCEPTION WHEN OTHERS THEN
-    RAISE EXCEPTION 'check_PG-TABLE_insert: error';
+    RAISE EXCEPTION 'PG-TABLE_insert: error';
 
 RETURN NEW;
 
@@ -35,15 +35,15 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION check_PG-TABLE_insert() TO public;
+GRANT EXECUTE ON FUNCTION PG-TABLE_insert() TO public;
 
-DROP TRIGGER check_PG-TABLE_insert_trigger ON PG-TABLE;
+DROP TRIGGER PG-TABLE_insert_trigger ON PG-TABLE;
 
-CREATE TRIGGER check_PG-TABLE_insert_trigger
+CREATE TRIGGER PG-TABLE_insert_trigger
 AFTER INSERT on PG-TABLE
 FOR EACH ROW
-EXECUTE PROCEDURE check_PG-TABLE_insert();
+EXECUTE PROCEDURE PG-TABLE_insert();
 
-COMMENT ON FUNCTION mgd.check_PG-TABLE_insert() IS 'creates an insert trigger to call acc_assignmgi()/set private value';
+COMMENT ON FUNCTION mgd.PG-TABLE_insert() IS 'creates an insert trigger to call acc_assignmgi()/set private value';
 
 EOSQL

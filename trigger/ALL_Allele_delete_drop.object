@@ -8,8 +8,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP TRIGGER check_ALL_Allele_delete_trigger ON ALL_Allele;
+DROP TRIGGER ALL_Allele_delete_trigger ON ALL_Allele;
 
-DROP FUNCTION check_ALL_Allele_delete();
+DROP FUNCTION ALL_Allele_delete();
 
 EOSQL

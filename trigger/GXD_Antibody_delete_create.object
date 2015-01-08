@@ -5,7 +5,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
--- NAME: check_GXD_Antibody_delete()
+-- NAME: GXD_Antibody_delete()
 --
 -- DESCRIPTOIN:
 --	
@@ -32,10 +32,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER check_GXD_Antibody_delete_trigger ON GXD_Antibody;
-DROP FUNCTION check_GXD_Antibody_delete();
+DROP TRIGGER GXD_Antibody_delete_trigger ON GXD_Antibody;
+DROP FUNCTION GXD_Antibody_delete();
 
-CREATE OR REPLACE FUNCTION check_GXD_Antibody_delete() RETURNS TRIGGER AS \$\$
+CREATE OR REPLACE FUNCTION GXD_Antibody_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
 DELETE FROM MAP_Coord_Feature a
@@ -84,13 +84,13 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION check_GXD_Antibody_delete() TO public;
+GRANT EXECUTE ON FUNCTION GXD_Antibody_delete() TO public;
 
-CREATE TRIGGER check_GXD_Antibody_delete_trigger
+CREATE TRIGGER GXD_Antibody_delete_trigger
 AFTER DELETE on GXD_Antibody
 FOR EACH ROW
-EXECUTE PROCEDURE check_GXD_Antibody_delete();
+EXECUTE PROCEDURE GXD_Antibody_delete();
 
-COMMENT ON FUNCTION mgd.check_GXD_Antibody_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
+COMMENT ON FUNCTION mgd.GXD_Antibody_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
 
 EOSQL

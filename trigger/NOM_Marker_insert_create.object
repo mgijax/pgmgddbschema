@@ -5,7 +5,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
--- NAME: check_NOM_Marker_insert()
+-- NAME: NOM_Marker_insert()
 --
 -- DESCRIPTOIN:
 --
@@ -20,10 +20,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER check_NOM_Marker_insert_trigger ON NOM_Marker;
-DROP FUNCTION check_NOM_Marker_insert();
+DROP TRIGGER NOM_Marker_insert_trigger ON NOM_Marker;
+DROP FUNCTION NOM_Marker_insert();
 
-CREATE OR REPLACE FUNCTION check_NOM_Marker_insert() RETURNS TRIGGER AS \$\$
+CREATE OR REPLACE FUNCTION NOM_Marker_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
 PERFORM ACC_assignMGI(NEW._Nomen_key, 'Nomenclature');
@@ -34,13 +34,13 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION check_NOM_Marker_insert() TO public;
+GRANT EXECUTE ON FUNCTION NOM_Marker_insert() TO public;
 
-CREATE TRIGGER check_NOM_Marker_insert_trigger
+CREATE TRIGGER NOM_Marker_insert_trigger
 AFTER INSERT on NOM_Marker
 FOR EACH ROW
-EXECUTE PROCEDURE check_NOM_Marker_insert();
+EXECUTE PROCEDURE NOM_Marker_insert();
 
-COMMENT ON FUNCTION mgd.check_NOM_Marker_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+COMMENT ON FUNCTION mgd.NOM_Marker_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
 
 EOSQL

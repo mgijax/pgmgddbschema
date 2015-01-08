@@ -5,7 +5,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
--- NAME: check_GXD_Structure_insert()
+-- NAME: GXD_Structure_insert()
 --
 -- DESCRIPTOIN:
 --
@@ -20,10 +20,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER check_GXD_Structure_insert_trigger ON GXD_Structure;
-DROP FUNCTION check_GXD_Structure_insert();
+DROP TRIGGER GXD_Structure_insert_trigger ON GXD_Structure;
+DROP FUNCTION GXD_Structure_insert();
 
-CREATE OR REPLACE FUNCTION check_GXD_Structure_insert() RETURNS TRIGGER AS \$\$
+CREATE OR REPLACE FUNCTION GXD_Structure_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
 PERFORM ACC_assignMGI(NEW._Structure_key, 'GXD Structures');
@@ -34,13 +34,13 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION check_GXD_Structure_insert() TO public;
+GRANT EXECUTE ON FUNCTION GXD_Structure_insert() TO public;
 
-CREATE TRIGGER check_GXD_Structure_insert_trigger
+CREATE TRIGGER GXD_Structure_insert_trigger
 AFTER INSERT on GXD_Structure
 FOR EACH ROW
-EXECUTE PROCEDURE check_GXD_Structure_insert();
+EXECUTE PROCEDURE GXD_Structure_insert();
 
-COMMENT ON FUNCTION mgd.check_GXD_Structure_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+COMMENT ON FUNCTION mgd.GXD_Structure_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
 
 EOSQL

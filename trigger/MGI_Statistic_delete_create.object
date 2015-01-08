@@ -5,7 +5,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
--- NAME: check_MGI_Statistic_delete()
+-- NAME: MGI_Statistic_delete()
 --
 -- DESCRIPTOIN:
 --	
@@ -32,10 +32,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER check_MGI_Statistic_delete_trigger ON MGI_Statistic;
-DROP FUNCTION check_MGI_Statistic_delete();
+DROP TRIGGER MGI_Statistic_delete_trigger ON MGI_Statistic;
+DROP FUNCTION MGI_Statistic_delete();
 
-CREATE OR REPLACE FUNCTION check_MGI_Statistic_delete() RETURNS TRIGGER AS \$\$
+CREATE OR REPLACE FUNCTION MGI_Statistic_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
 DELETE FROM MAP_Coord_Feature a
@@ -84,13 +84,13 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION check_MGI_Statistic_delete() TO public;
+GRANT EXECUTE ON FUNCTION MGI_Statistic_delete() TO public;
 
-CREATE TRIGGER check_MGI_Statistic_delete_trigger
+CREATE TRIGGER MGI_Statistic_delete_trigger
 AFTER DELETE on MGI_Statistic
 FOR EACH ROW
-EXECUTE PROCEDURE check_MGI_Statistic_delete();
+EXECUTE PROCEDURE MGI_Statistic_delete();
 
-COMMENT ON FUNCTION mgd.check_MGI_Statistic_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
+COMMENT ON FUNCTION mgd.MGI_Statistic_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
 
 EOSQL

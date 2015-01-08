@@ -5,7 +5,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
--- NAME: check_GXD_Antigen_insert()
+-- NAME: GXD_Antigen_insert()
 --
 -- DESCRIPTOIN:
 --
@@ -20,10 +20,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER check_GXD_Antigen_insert_trigger ON GXD_Antigen;
-DROP FUNCTION check_GXD_Antigen_insert();
+DROP TRIGGER GXD_Antigen_insert_trigger ON GXD_Antigen;
+DROP FUNCTION GXD_Antigen_insert();
 
-CREATE OR REPLACE FUNCTION check_GXD_Antigen_insert() RETURNS TRIGGER AS \$\$
+CREATE OR REPLACE FUNCTION GXD_Antigen_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
 PERFORM ACC_assignMGI(NEW._Antigen_key, 'Antigen');
@@ -34,13 +34,13 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION check_GXD_Antigen_insert() TO public;
+GRANT EXECUTE ON FUNCTION GXD_Antigen_insert() TO public;
 
-CREATE TRIGGER check_GXD_Antigen_insert_trigger
+CREATE TRIGGER GXD_Antigen_insert_trigger
 AFTER INSERT on GXD_Antigen
 FOR EACH ROW
-EXECUTE PROCEDURE check_GXD_Antigen_insert();
+EXECUTE PROCEDURE GXD_Antigen_insert();
 
-COMMENT ON FUNCTION mgd.check_GXD_Antigen_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+COMMENT ON FUNCTION mgd.GXD_Antigen_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
 
 EOSQL

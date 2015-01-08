@@ -5,7 +5,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
--- NAME: check_BIB_Refs_delete()
+-- NAME: BIB_Refs_delete()
 --
 -- DESCRIPTOIN:
 --	
@@ -32,10 +32,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER check_BIB_Refs_delete_trigger ON BIB_Refs;
-DROP FUNCTION check_BIB_Refs_delete();
+DROP TRIGGER BIB_Refs_delete_trigger ON BIB_Refs;
+DROP FUNCTION BIB_Refs_delete();
 
-CREATE OR REPLACE FUNCTION check_BIB_Refs_delete() RETURNS TRIGGER AS \$\$
+CREATE OR REPLACE FUNCTION BIB_Refs_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
 DELETE FROM MAP_Coord_Feature a
@@ -84,13 +84,13 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION check_BIB_Refs_delete() TO public;
+GRANT EXECUTE ON FUNCTION BIB_Refs_delete() TO public;
 
-CREATE TRIGGER check_BIB_Refs_delete_trigger
+CREATE TRIGGER BIB_Refs_delete_trigger
 AFTER DELETE on BIB_Refs
 FOR EACH ROW
-EXECUTE PROCEDURE check_BIB_Refs_delete();
+EXECUTE PROCEDURE BIB_Refs_delete();
 
-COMMENT ON FUNCTION mgd.check_BIB_Refs_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
+COMMENT ON FUNCTION mgd.BIB_Refs_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
 
 EOSQL

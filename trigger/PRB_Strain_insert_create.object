@@ -5,7 +5,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
--- NAME: check_PRB_Strain_insert()
+-- NAME: PRB_Strain_insert()
 --
 -- DESCRIPTOIN:
 --
@@ -20,10 +20,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER check_PRB_Strain_insert_trigger ON PRB_Strain;
-DROP FUNCTION check_PRB_Strain_insert();
+DROP TRIGGER PRB_Strain_insert_trigger ON PRB_Strain;
+DROP FUNCTION PRB_Strain_insert();
 
-CREATE OR REPLACE FUNCTION check_PRB_Strain_insert() RETURNS TRIGGER AS \$\$
+CREATE OR REPLACE FUNCTION PRB_Strain_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
 PERFORM ACC_assignMGI(NEW._Strain_key, 'Strain');
@@ -34,13 +34,13 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION check_PRB_Strain_insert() TO public;
+GRANT EXECUTE ON FUNCTION PRB_Strain_insert() TO public;
 
-CREATE TRIGGER check_PRB_Strain_insert_trigger
+CREATE TRIGGER PRB_Strain_insert_trigger
 AFTER INSERT on PRB_Strain
 FOR EACH ROW
-EXECUTE PROCEDURE check_PRB_Strain_insert();
+EXECUTE PROCEDURE PRB_Strain_insert();
 
-COMMENT ON FUNCTION mgd.check_PRB_Strain_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+COMMENT ON FUNCTION mgd.PRB_Strain_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
 
 EOSQL

@@ -5,7 +5,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
--- NAME: check_SEQ_Sequence_delete()
+-- NAME: SEQ_Sequence_delete()
 --
 -- DESCRIPTOIN:
 --	
@@ -32,10 +32,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER check_SEQ_Sequence_delete_trigger ON SEQ_Sequence;
-DROP FUNCTION check_SEQ_Sequence_delete();
+DROP TRIGGER SEQ_Sequence_delete_trigger ON SEQ_Sequence;
+DROP FUNCTION SEQ_Sequence_delete();
 
-CREATE OR REPLACE FUNCTION check_SEQ_Sequence_delete() RETURNS TRIGGER AS \$\$
+CREATE OR REPLACE FUNCTION SEQ_Sequence_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
 DELETE FROM MAP_Coord_Feature a
@@ -84,13 +84,13 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION check_SEQ_Sequence_delete() TO public;
+GRANT EXECUTE ON FUNCTION SEQ_Sequence_delete() TO public;
 
-CREATE TRIGGER check_SEQ_Sequence_delete_trigger
+CREATE TRIGGER SEQ_Sequence_delete_trigger
 AFTER DELETE on SEQ_Sequence
 FOR EACH ROW
-EXECUTE PROCEDURE check_SEQ_Sequence_delete();
+EXECUTE PROCEDURE SEQ_Sequence_delete();
 
-COMMENT ON FUNCTION mgd.check_SEQ_Sequence_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
+COMMENT ON FUNCTION mgd.SEQ_Sequence_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
 
 EOSQL

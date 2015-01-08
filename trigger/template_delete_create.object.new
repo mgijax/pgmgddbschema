@@ -5,7 +5,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
--- NAME: check_PG-TABLE_delete()
+-- NAME: PG-TABLE_delete()
 --
 -- DESCRIPTOIN:
 --	
@@ -32,10 +32,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER check_PG-TABLE_delete_trigger ON PG-TABLE;
-DROP FUNCTION check_PG-TABLE_delete();
+DROP TRIGGER PG-TABLE_delete_trigger ON PG-TABLE;
+DROP FUNCTION PG-TABLE_delete();
 
-CREATE OR REPLACE FUNCTION check_PG-TABLE_delete() RETURNS TRIGGER AS \$\$
+CREATE OR REPLACE FUNCTION PG-TABLE_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
 DELETE FROM MAP_Coord_Feature a
@@ -84,13 +84,13 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION check_PG-TABLE_delete() TO public;
+GRANT EXECUTE ON FUNCTION PG-TABLE_delete() TO public;
 
-CREATE TRIGGER check_PG-TABLE_delete_trigger
+CREATE TRIGGER PG-TABLE_delete_trigger
 AFTER DELETE on PG-TABLE
 FOR EACH ROW
-EXECUTE PROCEDURE check_PG-TABLE_delete();
+EXECUTE PROCEDURE PG-TABLE_delete();
 
-COMMENT ON FUNCTION mgd.check_PG-TABLE_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
+COMMENT ON FUNCTION mgd.PG-TABLE_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
 
 EOSQL

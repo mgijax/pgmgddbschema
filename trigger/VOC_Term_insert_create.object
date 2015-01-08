@@ -5,7 +5,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
--- NAME: check_VOC_Term_insert()
+-- NAME: VOC_Term_insert()
 --
 -- DESCRIPTOIN:
 --
@@ -20,10 +20,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER check_VOC_Term_insert_trigger ON VOC_Term;
-DROP FUNCTION check_VOC_Term_insert();
+DROP TRIGGER VOC_Term_insert_trigger ON VOC_Term;
+DROP FUNCTION VOC_Term_insert();
 
-CREATE OR REPLACE FUNCTION check_VOC_Term_insert() RETURNS TRIGGER AS \$\$
+CREATE OR REPLACE FUNCTION VOC_Term_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
 PERFORM ACC_assignMGI(NEW._Term_key, 'Vocabulary Term');
@@ -34,13 +34,13 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION check_VOC_Term_insert() TO public;
+GRANT EXECUTE ON FUNCTION VOC_Term_insert() TO public;
 
-CREATE TRIGGER check_VOC_Term_insert_trigger
+CREATE TRIGGER VOC_Term_insert_trigger
 AFTER INSERT on VOC_Term
 FOR EACH ROW
-EXECUTE PROCEDURE check_VOC_Term_insert();
+EXECUTE PROCEDURE VOC_Term_insert();
 
-COMMENT ON FUNCTION mgd.check_VOC_Term_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+COMMENT ON FUNCTION mgd.VOC_Term_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
 
 EOSQL

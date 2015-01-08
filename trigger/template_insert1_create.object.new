@@ -5,7 +5,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
--- NAME: check_PG-TABLE_insert()
+-- NAME: PG-TABLE_insert()
 --
 -- DESCRIPTOIN:
 --
@@ -20,10 +20,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER check_PG-TABLE_insert_trigger ON PG-TABLE;
-DROP FUNCTION check_PG-TABLE_insert();
+DROP TRIGGER PG-TABLE_insert_trigger ON PG-TABLE;
+DROP FUNCTION PG-TABLE_insert();
 
-CREATE OR REPLACE FUNCTION check_PG-TABLE_insert() RETURNS TRIGGER AS \$\$
+CREATE OR REPLACE FUNCTION PG-TABLE_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
 PERFORM ACC_assignMGI(NEW.PG-KEY, 'PG-NAME');
@@ -34,13 +34,13 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION check_PG-TABLE_insert() TO public;
+GRANT EXECUTE ON FUNCTION PG-TABLE_insert() TO public;
 
-CREATE TRIGGER check_PG-TABLE_insert_trigger
+CREATE TRIGGER PG-TABLE_insert_trigger
 AFTER INSERT on PG-TABLE
 FOR EACH ROW
-EXECUTE PROCEDURE check_PG-TABLE_insert();
+EXECUTE PROCEDURE PG-TABLE_insert();
 
-COMMENT ON FUNCTION mgd.check_PG-TABLE_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+COMMENT ON FUNCTION mgd.PG-TABLE_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
 
 EOSQL

@@ -5,7 +5,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
--- NAME: check_PRB_Probe_insert()
+-- NAME: PRB_Probe_insert()
 --
 -- DESCRIPTOIN:
 --
@@ -20,10 +20,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER check_PRB_Probe_insert_trigger ON PRB_Probe;
-DROP FUNCTION check_PRB_Probe_insert();
+DROP TRIGGER PRB_Probe_insert_trigger ON PRB_Probe;
+DROP FUNCTION PRB_Probe_insert();
 
-CREATE OR REPLACE FUNCTION check_PRB_Probe_insert() RETURNS TRIGGER AS \$\$
+CREATE OR REPLACE FUNCTION PRB_Probe_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
 PERFORM ACC_assignMGI(NEW._Probe_key, 'Segment');
@@ -34,13 +34,13 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION check_PRB_Probe_insert() TO public;
+GRANT EXECUTE ON FUNCTION PRB_Probe_insert() TO public;
 
-CREATE TRIGGER check_PRB_Probe_insert_trigger
+CREATE TRIGGER PRB_Probe_insert_trigger
 AFTER INSERT on PRB_Probe
 FOR EACH ROW
-EXECUTE PROCEDURE check_PRB_Probe_insert();
+EXECUTE PROCEDURE PRB_Probe_insert();
 
-COMMENT ON FUNCTION mgd.check_PRB_Probe_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+COMMENT ON FUNCTION mgd.PRB_Probe_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
 
 EOSQL

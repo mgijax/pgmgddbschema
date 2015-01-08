@@ -8,8 +8,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP TRIGGER check_PRB_Probe_insert_trigger ON PRB_Probe;
+DROP TRIGGER PRB_Probe_insert_trigger ON PRB_Probe;
 
-DROP FUNCTION check_PRB_Probe_insert();
+DROP FUNCTION PRB_Probe_insert();
 
 EOSQL
