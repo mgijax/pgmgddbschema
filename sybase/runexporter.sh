@@ -214,6 +214,15 @@ ${PG_MGD_DBSCHEMADIR}/key/${i}_create.object
 
 fi
 
+echo 'adding views...' | tee -a ${LOG}
+${PG_MGD_DBSCHEMADIR}/view/view_create.sh | tee -a ${LOG}
+
+echo 'adding stored-procedures...' | tee -a ${LOG}
+${PG_MGD_DBSCHEMADIR}/procedure/procedure_create.sh | tee -a ${LOG}
+
+echo 'adding triggers...' | tee -a ${LOG}
+${PG_MGD_DBSCHEMADIR}/trigger/trigger_create.sh | tee -a ${LOG}
+
 #
 # grant permissions
 #
