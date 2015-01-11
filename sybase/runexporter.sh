@@ -200,17 +200,17 @@ ${PG_MGD_DBSCHEMADIR}/index/${i}_create.object
 echo 'adding keys...' | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/key/${i}_create.object
 
-#if [ -f ${PG_MGD_DBSCHEMADIR}/trigger/${i}_delete_create.object ]
-#then
-#	echo 'adding delete trigger...' | tee -a ${LOG}
-#	${PG_MGD_DBSCHEMADIR}/trigger/${i}_delete_create.object
-#fi
+if [ -f ${PG_MGD_DBSCHEMADIR}/trigger/${i}_delete_create.object ]
+then
+	echo 'adding delete trigger...' | tee -a ${LOG}
+	${PG_MGD_DBSCHEMADIR}/trigger/${i}_delete_create.object
+fi
 
-#if [ -f ${PG_MGD_DBSCHEMADIR}/trigger/${i}_insert_create.object ]
-#then
-#	echo 'adding insert trigger...' | tee -a ${LOG}
-#	${PG_MGD_DBSCHEMADIR}/trigger/${i}_insert_create.object
-#fi
+if [ -f ${PG_MGD_DBSCHEMADIR}/trigger/${i}_insert_create.object ]
+then
+	echo 'adding insert trigger...' | tee -a ${LOG}
+	${PG_MGD_DBSCHEMADIR}/trigger/${i}_insert_create.object
+fi
 
 fi
 
