@@ -28,6 +28,7 @@ DAG_create.logical \
 NOM_create.logical \
 SEQ_create.logical \
 GO_create.logical
+PWI_create.logical
 do
 $i $*
 done

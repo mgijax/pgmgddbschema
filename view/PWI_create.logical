@@ -1,0 +1,16 @@
+#!/bin/csh -f
+
+#
+# Logical Group Script
+#
+# Executes all PRB*_create.object scripts
+#
+# Order is important!
+#
+
+cd `dirname $0`
+
+foreach i (PWI*_create.object)
+$i $*
+end
+

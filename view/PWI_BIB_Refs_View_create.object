@@ -1,0 +1,31 @@
+#!/bin/sh
+
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.PWI_BIB_Refs_View
+as
+select r.*, jnum.accid as jnumid, pubmed.accid as pubmedid
+from bib_refs r join
+	acc_accession jnum on (
+		jnum._object_key=r._refs_key
+		and jnum.preferred=1
+		and jnum.prefixpart='J:'
+		and jnum._logicaldb_key=1
+		and jnum._mgitype_key=1
+	) left outer join
+	acc_accession pubmed on (
+		pubmed._object_key=r._refs_key
+		and pubmed.preferred=1
+		and pubmed._logicaldb_key=29
+		and pubmed._mgitype_key=1
+	)
+
+
+
+;
+
+EOSQL
