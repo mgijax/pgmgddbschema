@@ -180,10 +180,12 @@ echo 'run create key for all tables...' | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/key/key_create.sh
 echo 'run create index for all tables...' | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/index/index_create.sh
-#echo 'run create trigger for all tables...' | tee -a ${LOG}
-#${PG_MGD_DBSCHEMADIR}/trigger/trigger_create.sh
+echo 'run create trigger for all tables...' | tee -a ${LOG}
+${PG_MGD_DBSCHEMADIR}/trigger/trigger_create.sh
 echo 'run create view for all tables...' | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/view/view_create.sh
+echo 'run create procedure for all tables...' | tee -a ${LOG}
+${PG_MGD_DBSCHEMADIR}/procedure/procedure_create.sh
 echo 'run create comments for all tables...' | tee -a ${LOG}
 ${EXPORTER}/bin/commentsPostgres.py
 
@@ -213,15 +215,6 @@ then
 fi
 
 fi
-
-echo 'adding views...' | tee -a ${LOG}
-${PG_MGD_DBSCHEMADIR}/view/view_create.sh | tee -a ${LOG}
-
-echo 'adding stored-procedures...' | tee -a ${LOG}
-${PG_MGD_DBSCHEMADIR}/procedure/procedure_create.sh | tee -a ${LOG}
-
-echo 'adding triggers...' | tee -a ${LOG}
-${PG_MGD_DBSCHEMADIR}/trigger/trigger_create.sh | tee -a ${LOG}
 
 #
 # grant permissions
