@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# simply drops the trigger
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP TRIGGER MRK_Marker_insert_trigger ON MRK_Marker;
+
+DROP FUNCTION MRK_Marker_insert();
+
+EOSQL

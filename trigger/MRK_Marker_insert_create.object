@@ -1,0 +1,46 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: MRK_Marker_insert()
+--
+-- DESCRIPTOIN:
+--
+--	this insert trigger will call ACC_assignMGI
+--	in order to add a distinct MGI accession id
+--	to the NEW object
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER MRK_Marker_insert_trigger ON MRK_Marker;
+DROP FUNCTION MRK_Marker_insert();
+
+CREATE OR REPLACE FUNCTION MRK_Marker_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
+PERFORM ACC_assignMGI(NEW._Marker_key, 'Marker');
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MRK_Marker_insert() TO public;
+
+CREATE TRIGGER MRK_Marker_insert_trigger
+AFTER INSERT on MRK_Marker
+FOR EACH ROW
+EXECUTE PROCEDURE MRK_Marker_insert();
+
+COMMENT ON FUNCTION mgd.MRK_Marker_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+
+EOSQL

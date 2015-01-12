@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# simply drops the trigger
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP TRIGGER MGI_Statistic_insert_trigger ON MGI_Statistic;
+
+DROP FUNCTION MGI_Statistic_insert();
+
+EOSQL

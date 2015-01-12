@@ -1,0 +1,46 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: VOC_Evidence_insert()
+--
+-- DESCRIPTOIN:
+--
+--	this insert trigger will call ACC_assignMGI
+--	in order to add a distinct MGI accession id
+--	to the NEW object
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER VOC_Evidence_insert_trigger ON VOC_Evidence;
+DROP FUNCTION VOC_Evidence_insert();
+
+CREATE OR REPLACE FUNCTION VOC_Evidence_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
+PERFORM ACC_assignMGI(NEW._AnnotEvidence_key, 'Annotation Evidence');
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION VOC_Evidence_insert() TO public;
+
+CREATE TRIGGER VOC_Evidence_insert_trigger
+AFTER INSERT on VOC_Evidence
+FOR EACH ROW
+EXECUTE PROCEDURE VOC_Evidence_insert();
+
+COMMENT ON FUNCTION mgd.VOC_Evidence_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+
+EOSQL

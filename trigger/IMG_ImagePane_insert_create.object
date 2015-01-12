@@ -1,0 +1,46 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: IMG_ImagePane_insert()
+--
+-- DESCRIPTOIN:
+--
+--	this insert trigger will call ACC_assignMGI
+--	in order to add a distinct MGI accession id
+--	to the NEW object
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IMG_ImagePane_insert_trigger ON IMG_ImagePane;
+DROP FUNCTION IMG_ImagePane_insert();
+
+CREATE OR REPLACE FUNCTION IMG_ImagePane_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
+PERFORM ACC_assignMGI(NEW._ImagePane_key, 'Image Pane');
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION IMG_ImagePane_insert() TO public;
+
+CREATE TRIGGER IMG_ImagePane_insert_trigger
+AFTER INSERT on IMG_ImagePane
+FOR EACH ROW
+EXECUTE PROCEDURE IMG_ImagePane_insert();
+
+COMMENT ON FUNCTION mgd.IMG_ImagePane_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+
+EOSQL

@@ -1,0 +1,46 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: PRB_Source_insert()
+--
+-- DESCRIPTOIN:
+--
+--	this insert trigger will call ACC_assignMGI
+--	in order to add a distinct MGI accession id
+--	to the NEW object
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER PRB_Source_insert_trigger ON PRB_Source;
+DROP FUNCTION PRB_Source_insert();
+
+CREATE OR REPLACE FUNCTION PRB_Source_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
+PERFORM ACC_assignMGI(NEW._Source_key, 'Source');
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION PRB_Source_insert() TO public;
+
+CREATE TRIGGER PRB_Source_insert_trigger
+AFTER INSERT on PRB_Source
+FOR EACH ROW
+EXECUTE PROCEDURE PRB_Source_insert();
+
+COMMENT ON FUNCTION mgd.PRB_Source_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+
+EOSQL

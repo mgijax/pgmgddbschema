@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# simply drops the trigger
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP TRIGGER ALL_CellLine_insert_trigger ON ALL_CellLine;
+
+DROP FUNCTION ALL_CellLine_insert();
+
+EOSQL

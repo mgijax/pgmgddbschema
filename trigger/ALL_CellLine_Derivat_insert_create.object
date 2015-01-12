@@ -1,0 +1,46 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: ALL_CellLine_Derivat_insert()
+--
+-- DESCRIPTOIN:
+--
+--	this insert trigger will call ACC_assignMGI
+--	in order to add a distinct MGI accession id
+--	to the NEW object
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER ALL_CellLine_Derivat_insert_trigger ON ALL_CellLine_Derivat;
+DROP FUNCTION ALL_CellLine_Derivat_insert();
+
+CREATE OR REPLACE FUNCTION ALL_CellLine_Derivat_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
+PERFORM ACC_assignMGI(NEW._Derivation_key, 'Cell Line Derivation');
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ALL_CellLine_Derivat_insert() TO public;
+
+CREATE TRIGGER ALL_CellLine_Derivat_insert_trigger
+AFTER INSERT on ALL_CellLine_Derivat
+FOR EACH ROW
+EXECUTE PROCEDURE ALL_CellLine_Derivat_insert();
+
+COMMENT ON FUNCTION mgd.ALL_CellLine_Derivat_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+
+EOSQL
