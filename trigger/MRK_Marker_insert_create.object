@@ -19,35 +19,31 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
--- IMPORTANT NOTE:
---
+
+DROP TRIGGER MRK_Marker_insert_trigger ON MRK_Marker;
+DROP FUNCTION MRK_Marker_insert();
+
+CREATE OR REPLACE FUNCTION MRK_Marker_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
 -- Since the Marker Accession ID is actually created by NOM_Marker,
--- we are turning this OFF.
---
+-- we do *not* want to run ACC_assignMGI()
 -- See procedure/NOM_transferToMGD for more details.
---
-
---DROP TRIGGER MRK_Marker_insert_trigger ON MRK_Marker;
---DROP FUNCTION MRK_Marker_insert();
-
---CREATE OR REPLACE FUNCTION MRK_Marker_insert() RETURNS TRIGGER AS \$\$
---BEGIN
-
 --PERFORM ACC_assignMGI(NEW._Marker_key, 'Marker');
 
 --RETURN NEW;
 
---END;
---\$\$
---LANGUAGE plpgsql;
+END;
+\$\$
+LANGUAGE plpgsql;
 
---GRANT EXECUTE ON FUNCTION MRK_Marker_insert() TO public;
+GRANT EXECUTE ON FUNCTION MRK_Marker_insert() TO public;
 
---CREATE TRIGGER MRK_Marker_insert_trigger
---AFTER INSERT on MRK_Marker
---FOR EACH ROW
---EXECUTE PROCEDURE MRK_Marker_insert();
+CREATE TRIGGER MRK_Marker_insert_trigger
+AFTER INSERT on MRK_Marker
+FOR EACH ROW
+EXECUTE PROCEDURE MRK_Marker_insert();
 
---COMMENT ON FUNCTION mgd.MRK_Marker_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+COMMENT ON FUNCTION mgd.MRK_Marker_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
 
 EOSQL
