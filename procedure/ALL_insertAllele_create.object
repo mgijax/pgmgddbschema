@@ -1,0 +1,148 @@
+#!/bin/sh
+#
+# History
+#
+# 12/12/2013	lec
+#	- TR11515/high throughput part 2/allele stuff
+#
+# 08/19/2010	lec
+#	- TR10317; remove allele/cellline edits
+#
+# 03/18/2009	lec
+#	- TR7493; add call to insert alelel/marker associations
+#
+#    10/23/2008 - jsb - added check for null marker keys
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION ALL_insertAllele(int,int,varchar,varchar,int,int,int,int,timestamp,int,varchar,varchar,varchar,varchar,varchar,varchar,varchar,varchar);
+
+CREATE OR REPLACE FUNCTION ALL_insertAllele (
+v_markerKey int,
+v_refsKey int,
+v_symbol all_allele.symbol%TYPE,
+v_name all_allele.name%TYPE,
+v_isWildType int DEFAULT 0,
+v_createdBy all_allele._CreatedBy_key%TYPE DEFAULT null,
+v_modifiedBy all_allele._ModifiedBy_key%TYPE DEFAULT null,
+v_approvedBy all_allele._ApprovedBy_key%TYPE DEFAULT null,
+v_approval_date all_allele.approval_date%TYPE DEFAULT null,
+v_strainKey int DEFAULT -1,
+v_amode voc_term.term%TYPE DEFAULT 'Not Specified',
+v_atype voc_term.term%TYPE DEFAULT 'Not Specified',
+v_astatus voc_term.term%TYPE DEFAULT 'Approved',
+v_oldSymbol mld_expt_marker.gene%TYPE DEFAULT null,
+v_transmission voc_term.term%TYPE DEFAULT 'Not Applicable',
+v_collection voc_term.term%TYPE DEFAULT 'Not Specified',
+v_qualifier voc_term.term%TYPE DEFAULT 'Not Specified',
+v_mrkstatus voc_term.term%TYPE DEFAULT 'Curated'
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_userKey int;
+v_alleleKey int;
+
+v_createdByKey int;
+v_modifiedByKey int;
+v_approvedByKey int;
+
+v_modeKey int;
+v_typeKey int;
+v_statusKey int;
+v_transmissionKey int;
+v_collectionKey int;
+v_isExtinct bit;
+v_isMixed bit;
+v_assocKey int;
+v_qualifierKey int;
+v_mrkstatusKey int;
+
+BEGIN
+
+v_userKey := _User_key from MGI_User where login = current_user;
+v_alleleKey := max(_Allele_key) + 1 from ALL_Allele;
+
+IF v_createdBy IS NULL
+THEN
+	v_createdByKey := v_userKey;
+ELSE
+	v_createdByKey := _User_key from MGI_User where login = v_createdBy;
+END IF;
+
+IF v_modifiedBy IS NULL
+THEN
+	v_modifiedByKey := v_userKey;
+ELSE
+	v_modifiedByKey := _User_key from MGI_User where login = v_createdBy;
+END IF;
+
+IF v_approvedBy IS NULL
+THEN
+	v_approvedByKey := v_userKey;
+ELSE
+	v_approvedByKey := _User_key from MGI_User where login = v_createdBy;
+END IF;
+
+v_modeKey := _Term_key from VOC_Term where _Vocab_key = 35 and term = v_amode;
+v_typeKey := _Term_key from VOC_Term where _Vocab_key = 38 and term = v_atype;
+v_statusKey := _Term_key from VOC_Term where _Vocab_key = 37 and term = v_astatus;
+v_transmissionKey := _Term_key from VOC_Term where _Vocab_key = 61 and term = v_transmission;
+v_collectionKey := _Term_key from VOC_Term where _Vocab_key = 92 and term = v_collection;
+v_assocKey := max(_Assoc_key) + 1 from ALL_Marker_Assoc;
+v_qualifierKey := _Term_key from VOC_Term where _Vocab_key = 70 and term = v_qualifier;
+v_mrkstatusKey := _Term_key from VOC_Term where _Vocab_key = 73 and term = v_mrkstatus;
+v_isExtinct := 0;
+v_isMixed := 0;
+
+IF v_astatus = 'Approved' AND v_approval_date IS NULL
+THEN
+	v_approval_date := current_date;
+END IF;
+
+/* Insert New Allele into ALL_Allele */
+
+INSERT INTO ALL_Allele
+(_Allele_key, _Marker_key, _Strain_key, _Mode_key, _Allele_Type_key, _Allele_Status_key, _Transmission_key,
+        _Collection_key, symbol, name, nomenSymbol, isWildType, isExtinct, isMixed,
+        _CreatedBy_key, _ModifiedBy_key, _ApprovedBy_key, approval_date, creation_date, modification_date)
+values(v_alleleKey, v_markerKey, v_strainKey, v_modeKey, v_typeKey, v_statusKey, v_transmissionKey,
+        v_collectionKey, v_symbol, v_name, null, v_isWildType, v_isExtinct, v_isMixed,
+        v_createdByKey, v_modifiedByKey, v_approvedByKey, v_approval_date, current_date, current_date)
+;
+
+/* Insert New Allele/Marker into ALL_Marker_Assoc */
+
+INSERT INTO ALL_Marker_Assoc
+(_Assoc_key, _Allele_key, _Marker_key, _Qualifier_key, _Refs_key, _Status_key,
+        _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
+values(v_assocKey, v_alleleKey, v_markerKey, v_qualifierKey, v_refsKey, v_mrkstatusKey,
+        v_createdByKey, v_modifiedByKey, current_date, current_date)
+;
+
+IF v_refsKey is not null
+THEN
+        PERFORM MGI_insertReferenceAssoc (11, v_alleleKey, v_refsKey, 'Original');
+END IF;
+
+IF (v_oldSymbol is not null) and (v_markerKey is not null)
+THEN
+        update MLD_Expt_Marker set _Allele_key = v_alleleKey 
+	where _Marker_key = v_markerKey and gene = v_oldSymbol;
+END IF;
+
+END;
+
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ALL_insertAllele(int,int,varchar,varchar,int,int,int,int,timestamp,int,varchar,varchar,varchar,varchar,varchar,varchar,varchar,varchar) TO public;
+
+COMMENT ON FUNCTION mgd.ALL_insertAllele(int,int,varchar,varchar,int,int,int,int,timestamp,int,varchar,varchar,varchar,varchar,varchar,varchar,varchar,varchar) IS '';
+
+EOSQL
