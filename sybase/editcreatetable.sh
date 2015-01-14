@@ -37,8 +37,8 @@ g/ source/s// ./g
 g/create table /s//create table mgd./g
 g/tinyint/s//smallint/g
 g/datetime/s//timestamp DEFAULT now()/g
-g/_CreatedBy_key/ g/int/s//int DEFAULT 1001/g
-g/_ModifiedBy_key/ g/int/s//int DEFAULT 1001/g
+/_CreatedBy_key/ g/int/s//int DEFAULT 1001/g
+/_ModifiedBy_key/ g/int/s//int DEFAULT 1001/g
 g/bit/s//smallint/g
 g/float/s//numeric/g
 g/offset/s//cmOffset/g
