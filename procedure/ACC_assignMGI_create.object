@@ -37,7 +37,7 @@ DECLARE
 v_nextACC int;
 v_mgiTypeKey int;
 v_userKey int;
-v_accID varchar(30);
+v_accID acc_accession.accid%TYPE;
 v_preferred int = 1;
 v_private int = 0;
 
@@ -63,7 +63,7 @@ INSERT INTO ACC_Accession
 (_Accession_key, accID, prefixPart, numericPart, 
 _LogicalDB_key, _Object_key, _MGIType_key, preferred, private, 
 _CreatedBy_key, _ModifiedBy_key)
-values(v_nextACC, v_accID, v_prefixPart, v_nextMGI, 1, v_objectKey, 
+VALUES(v_nextACC, v_accID, v_prefixPart, v_nextMGI, 1, v_objectKey, 
 v_mgiTypeKey, v_preferred, v_private, v_userKey, v_userKey);
 
 IF (SELECT maxNumericPart FROM ACC_AccessionMax

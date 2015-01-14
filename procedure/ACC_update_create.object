@@ -30,7 +30,7 @@ DROP FUNCTION ACC_update(int,varchar,int,int);
 
 CREATE OR REPLACE FUNCTION ACC_update (
 v_accKey int,
-v_accID varchar(30),
+v_accID acc_accession.accid%TYPE,
 v_origRefsKey int DEFAULT -1,
 v_refsKey int DEFAULT -1
 )

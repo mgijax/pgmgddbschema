@@ -26,7 +26,7 @@ CREATE OR REPLACE FUNCTION MGI_insertReferenceAssoc (
 v_mgiTypeKey int,
 v_objectKey int,
 v_refsKey int,
-v_refsType varchar(255)
+v_refsType mgi_refassoctype.assocType%TYPE
 )
 RETURNS VOID AS
 \$\$
@@ -36,21 +36,15 @@ v_refsTypeKey int;
 v_assocKey int;
 v_userKey int;
 
-
 BEGIN
 
-SELECT INTO v_refsTypeKey _RefAssocType_key FROM MGI_RefAssocType
-WHERE _MGIType_key = v_mgiTypeKey AND assocType = v_refsType
-;
-
-SELECT INTO v_assocKey max(_Assoc_key) + 1 FROM MGI_Reference_Assoc
-;
-
-SELECT INTO v_userKey _User_key FROM MGI_User where login = current_user
-;
+v_refsTypeKey := _RefAssocType_key FROM MGI_RefAssocType WHERE _MGIType_key = v_mgiTypeKey AND assocType = v_refsType;
+v_assocKey := max(_Assoc_key) + 1 FROM MGI_Reference_Assoc;
+v_userKey := _User_key FROM MGI_User where login = current_user;
 
 /* Insert record into MGI_Reference_Assoc */
 /* if the reference does not already exist */
+
 IF v_mgiTypeKey = 6 /* antibody */
 THEN
 	/* for antibody, do not include the reference type */

@@ -1,0 +1,51 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/23/2003 lec
+#	- TR 4463; set J: (reference) to Null (was J:23000)
+#
+# 07/18/2002 lec
+#	- TR 3588
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION ALL_createWildType(int,varchar);
+
+CREATE OR REPLACE FUNCTION ALL_createWildType (
+v_markerKey int,
+v_symbol mrk_marker.symbol%TYPE
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_userKey int;
+v_alleleSymbol all_allele.symbol%TYPE;
+
+BEGIN
+
+/* Create a Wild Type Allele */
+/* Use Reference = J:23000 */
+/* Set all other attributes = Not Applicable */
+
+v_userKey := _User_key FROM MGI_User WHERE login = current_user;
+v_alleleSymbol := v_symbol + '<+>';
+
+PERFORM ALL_insertAllele (v_markerKey, null, v_alleleSymbol, 1, 'wild type', 
+	v_userKey, v_userKey, v_userKey, -2, 'Not Applicable', 'Not Applicable', -2);
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ALL_createWildType(int,varchar) TO public;
+
+
+COMMENT ON FUNCTION ALL_createWildType(int,varchar) IS 'create wild type allele';
+
+EOSQL

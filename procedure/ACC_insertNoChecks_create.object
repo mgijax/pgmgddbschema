@@ -18,7 +18,7 @@ DROP FUNCTION ACC_insertNoChecks(int,varchar,int,varchar,int,int,int);
 
 CREATE OR REPLACE FUNCTION ACC_insertNoChecks (
 v_objectKey int,
-v_accID varchar(30),
+v_accID acc_accession.accid%TYPE,
 v_logicalDB int,
 v_mgiType varchar(80),
 v_refsKey int DEFAULT -1,

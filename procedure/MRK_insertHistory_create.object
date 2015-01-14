@@ -18,19 +18,18 @@ historyKey int,
 refKey int,
 eventKey int,
 eventReasonKey int,
-name varchar(255) = null,
-event_date timestamp = null,
-createdByKey int = null,
-modifiedByKey int = null,
-creation_date timestamp = null,
-modification_date timestamp = null
+name varchar(255) DEFAULT null,
+event_date timestamp DEFAULT null,
+createdByKey int DEFAULT null,
+modifiedByKey int DEFAULT null,
+creation_date timestamp DEFAULT null,
+modification_date timestamp DEFAULT null
 )
 RETURNS VOID AS
 \$\$
 
 DECLARE
 maxSeq int;
-
 
 BEGIN
 
@@ -40,44 +39,39 @@ maxSeq := max(sequenceNum) from MRK_History where _Marker_key = markerKey;
 IF maxSeq IS NULL
 THEN
 	maxSeq := 0;
-
 END IF;
 
 IF event_date IS NULL
 THEN
 	event_date := current_date;
-
 END IF;
 
 IF createdByKey IS NULL
 THEN
 	createdByKey := _User_key from MGI_User where login = current_user;
-
 END IF;
 
 IF modifiedByKey IS NULL
 THEN
 	modifiedByKey := _User_key from MGI_User where login = current_user;
-
 END IF;
 
 IF creation_date IS NULL
 THEN
 	creation_date := current_date;
-
 END IF;
 
 IF modification_date IS NULL
 THEN
 	modification_date := current_date;
-
 END IF;
 
 INSERT INTO MRK_History
-(_Marker_key, _History_key, _Refs_key, _Marker_Event_key, _Marker_EventReason_key, sequenceNum, name, event_date, _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
-VALUES(markerKey, historyKey, refKey, eventKey, eventReasonKey, maxSeq + 1, name, event_date, createdByKey, modifiedByKey, creation_date, modification_date)
+(_Marker_key, _History_key, _Refs_key, _Marker_Event_key, _Marker_EventReason_key, sequenceNum, name, 
+ event_date, _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
+VALUES(markerKey, historyKey, refKey, eventKey, eventReasonKey, maxSeq + 1, name, 
+       event_date, createdByKey, modifiedByKey, creation_date, modification_date)
 ;
-
 
 END;
 \$\$
