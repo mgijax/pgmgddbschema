@@ -89,14 +89,14 @@ ELSE
 	v_approvedByKey := _User_key from MGI_User where login = v_createdBy;
 END IF;
 
-v_modeKey := _Term_key from VOC_Term where _Vocab_key = 35 and term = v_amode;
-v_typeKey := _Term_key from VOC_Term where _Vocab_key = 38 and term = v_atype;
-v_statusKey := _Term_key from VOC_Term where _Vocab_key = 37 and term = v_astatus;
-v_transmissionKey := _Term_key from VOC_Term where _Vocab_key = 61 and term = v_transmission;
-v_collectionKey := _Term_key from VOC_Term where _Vocab_key = 92 and term = v_collection;
+v_modeKey := _Term_key from VOC_Term where _Vocab_key = 35 AND term = v_amode;
+v_typeKey := _Term_key from VOC_Term where _Vocab_key = 38 AND term = v_atype;
+v_statusKey := _Term_key from VOC_Term where _Vocab_key = 37 AND term = v_astatus;
+v_transmissionKey := _Term_key from VOC_Term where _Vocab_key = 61 AND term = v_transmission;
+v_collectionKey := _Term_key from VOC_Term where _Vocab_key = 92 AND term = v_collection;
 v_assocKey := max(_Assoc_key) + 1 from ALL_Marker_Assoc;
-v_qualifierKey := _Term_key from VOC_Term where _Vocab_key = 70 and term = v_qualifier;
-v_mrkstatusKey := _Term_key from VOC_Term where _Vocab_key = 73 and term = v_mrkstatus;
+v_qualifierKey := _Term_key from VOC_Term where _Vocab_key = 70 AND term = v_qualifier;
+v_mrkstatusKey := _Term_key from VOC_Term where _Vocab_key = 73 AND term = v_mrkstatus;
 v_isExtinct := 0;
 v_isMixed := 0;
 
@@ -111,7 +111,7 @@ INSERT INTO ALL_Allele
 (_Allele_key, _Marker_key, _Strain_key, _Mode_key, _Allele_Type_key, _Allele_Status_key, _Transmission_key,
         _Collection_key, symbol, name, nomenSymbol, isWildType, isExtinct, isMixed,
         _CreatedBy_key, _ModifiedBy_key, _ApprovedBy_key, approval_date, creation_date, modification_date)
-values(v_alleleKey, v_markerKey, v_strainKey, v_modeKey, v_typeKey, v_statusKey, v_transmissionKey,
+VALUES(v_alleleKey, v_markerKey, v_strainKey, v_modeKey, v_typeKey, v_statusKey, v_transmissionKey,
         v_collectionKey, v_symbol, v_name, null, v_isWildType, v_isExtinct, v_isMixed,
         v_createdByKey, v_modifiedByKey, v_approvedByKey, v_approval_date, current_date, current_date)
 ;
@@ -121,19 +121,19 @@ values(v_alleleKey, v_markerKey, v_strainKey, v_modeKey, v_typeKey, v_statusKey,
 INSERT INTO ALL_Marker_Assoc
 (_Assoc_key, _Allele_key, _Marker_key, _Qualifier_key, _Refs_key, _Status_key,
         _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
-values(v_assocKey, v_alleleKey, v_markerKey, v_qualifierKey, v_refsKey, v_mrkstatusKey,
+VALUES(v_assocKey, v_alleleKey, v_markerKey, v_qualifierKey, v_refsKey, v_mrkstatusKey,
         v_createdByKey, v_modifiedByKey, current_date, current_date)
 ;
 
-IF v_refsKey is not null
+IF v_refsKey IS NOT NULL
 THEN
         PERFORM MGI_insertReferenceAssoc (11, v_alleleKey, v_refsKey, 'Original');
 END IF;
 
-IF (v_oldSymbol is not null) and (v_markerKey is not null)
+IF (v_oldSymbol IS NOT NULL) AND (v_markerKey IS NOT NULL)
 THEN
-        update MLD_Expt_Marker set _Allele_key = v_alleleKey 
-	where _Marker_key = v_markerKey and gene = v_oldSymbol;
+        UPDATE MLD_Expt_Marker SET _Allele_key = v_alleleKey 
+	WHERE _Marker_key = v_markerKey AND gene = v_oldSymbol;
 END IF;
 
 END;
