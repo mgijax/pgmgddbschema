@@ -9,25 +9,25 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.PRB_Probe_idx_clustered
+drop index if exists mgd.PRB_Probe_idx_clustered
 ;
 
-drop index mgd.PRB_Probe_idx_Source_key
+drop index if exists mgd.PRB_Probe_idx_Source_key
 ;
 
-drop index mgd.PRB_Probe_idx_derivedFrom
+drop index if exists mgd.PRB_Probe_idx_derivedFrom
 ;
 
-drop index mgd.PRB_Probe_idx_Vector_key
+drop index if exists mgd.PRB_Probe_idx_Vector_key
 ;
 
-drop index mgd.PRB_Probe_idx_name
+drop index if exists mgd.PRB_Probe_idx_name
 ;
 
-drop index mgd.PRB_Probe_idx_CreatedBy_key
+drop index if exists mgd.PRB_Probe_idx_CreatedBy_key
 ;
 
-drop index mgd.PRB_Probe_idx_ModifiedBy_key
+drop index if exists mgd.PRB_Probe_idx_ModifiedBy_key
 ;
 
 EOSQL

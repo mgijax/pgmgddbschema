@@ -13,13 +13,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.SEQ_Probe_Cache_idx_Probe_key
+drop index if exists mgd.SEQ_Probe_Cache_idx_Probe_key
 ;
 
-drop index mgd.SEQ_Probe_Cache_idx_Refs_key
+drop index if exists mgd.SEQ_Probe_Cache_idx_Refs_key
 ;
 
-drop index mgd.SEQ_Probe_Cache_idx_annotation_date
+drop index if exists mgd.SEQ_Probe_Cache_idx_annotation_date
 ;
 
 EOSQL

@@ -15,28 +15,28 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.MRK_Marker_idx_clustered
+drop index if exists mgd.MRK_Marker_idx_clustered
 ;
 
-drop index mgd.MRK_Marker_idx_Marker_key
+drop index if exists mgd.MRK_Marker_idx_Marker_key
 ;
 
-drop index mgd.MRK_Marker_idx_Organism_key
+drop index if exists mgd.MRK_Marker_idx_Organism_key
 ;
 
-drop index mgd.MRK_Marker_idx_Marker_Status_key
+drop index if exists mgd.MRK_Marker_idx_Marker_Status_key
 ;
 
-drop index mgd.MRK_Marker_idx_Marker_Type_key
+drop index if exists mgd.MRK_Marker_idx_Marker_Type_key
 ;
 
-drop index mgd.MRK_Marker_idx_symbol
+drop index if exists mgd.MRK_Marker_idx_symbol
 ;
 
-drop index mgd.MRK_Marker_idx_CreatedBy_key
+drop index if exists mgd.MRK_Marker_idx_CreatedBy_key
 ;
 
-drop index mgd.MRK_Marker_idx_ModifiedBy_key
+drop index if exists mgd.MRK_Marker_idx_ModifiedBy_key
 ;
 
 EOSQL

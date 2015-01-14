@@ -9,7 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.MLD_FISH_idx_strain_key
+drop index if exists mgd.MLD_FISH_idx_strain_key
 ;
 
 EOSQL

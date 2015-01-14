@@ -9,7 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.MLD_Assay_Types_idx_description
+drop index if exists mgd.MLD_Assay_Types_idx_description
 ;
 
 EOSQL

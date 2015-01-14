@@ -12,19 +12,19 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.MGI_User_idx_UserType_key
+drop index if exists mgd.MGI_User_idx_UserType_key
 ;
 
-drop index mgd.MGI_User_idx_UserStatus_key
+drop index if exists mgd.MGI_User_idx_UserStatus_key
 ;
 
-drop index mgd.MGI_User_idx_login
+drop index if exists mgd.MGI_User_idx_login
 ;
 
-drop index mgd.MGI_User_idx_CreatedBy_key
+drop index if exists mgd.MGI_User_idx_CreatedBy_key
 ;
 
-drop index mgd.MGI_User_idx_ModifiedBy_key
+drop index if exists mgd.MGI_User_idx_ModifiedBy_key
 ;
 
 EOSQL

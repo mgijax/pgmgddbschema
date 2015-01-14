@@ -9,13 +9,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.DAG_Node_idx_clustered
+drop index if exists mgd.DAG_Node_idx_clustered
 ;
 
-drop index mgd.DAG_Node_idx_Object_key
+drop index if exists mgd.DAG_Node_idx_Object_key
 ;
 
-drop index mgd.DAG_Node_idx_Label_key
+drop index if exists mgd.DAG_Node_idx_Label_key
 ;
 
 EOSQL

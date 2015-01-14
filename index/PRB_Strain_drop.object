@@ -9,19 +9,19 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.PRB_Strain_idx_Species_key
+drop index if exists mgd.PRB_Strain_idx_Species_key
 ;
 
-drop index mgd.PRB_Strain_idx_StrainType_key
+drop index if exists mgd.PRB_Strain_idx_StrainType_key
 ;
 
-drop index mgd.PRB_Strain_idx_strain
+drop index if exists mgd.PRB_Strain_idx_strain
 ;
 
-drop index mgd.PRB_Strain_idx_CreatedBy_key
+drop index if exists mgd.PRB_Strain_idx_CreatedBy_key
 ;
 
-drop index mgd.PRB_Strain_idx_ModifiedBy_key
+drop index if exists mgd.PRB_Strain_idx_ModifiedBy_key
 ;
 
 EOSQL

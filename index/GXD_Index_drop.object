@@ -16,16 +16,16 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.GXD_Index_idx_clustered
+drop index if exists mgd.GXD_Index_idx_clustered
 ;
 
-drop index mgd.GXD_Index_idx_Refs_key
+drop index if exists mgd.GXD_Index_idx_Refs_key
 ;
 
-drop index mgd.GXD_Index_idx_Priority_key
+drop index if exists mgd.GXD_Index_idx_Priority_key
 ;
 
-drop index mgd.GXD_Index_idx_ConditionalMutants_key
+drop index if exists mgd.GXD_Index_idx_ConditionalMutants_key
 ;
 
 EOSQL

@@ -9,10 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.MRK_ClusterMember_idx_Cluster_key
+drop index if exists mgd.MRK_ClusterMember_idx_Cluster_key
 ;
 
-drop index mgd.MRK_ClusterMember_idx_Marker_key
+drop index if exists mgd.MRK_ClusterMember_idx_Marker_key
 ;
 
 EOSQL

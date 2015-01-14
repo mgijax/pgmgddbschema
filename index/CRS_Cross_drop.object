@@ -9,22 +9,22 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.CRS_Cross_idx_maleStrain_key
+drop index if exists mgd.CRS_Cross_idx_maleStrain_key
 ;
 
-drop index mgd.CRS_Cross_idx_femaleStrain_key
+drop index if exists mgd.CRS_Cross_idx_femaleStrain_key
 ;
 
-drop index mgd.CRS_Cross_idx_strainHO_key
+drop index if exists mgd.CRS_Cross_idx_strainHO_key
 ;
 
-drop index mgd.CRS_Cross_idx_strainHT_key
+drop index if exists mgd.CRS_Cross_idx_strainHT_key
 ;
 
-drop index mgd.CRS_Cross_idx_whoseCross
+drop index if exists mgd.CRS_Cross_idx_whoseCross
 ;
 
-drop index mgd.CRS_Cross_idx_type
+drop index if exists mgd.CRS_Cross_idx_type
 ;
 
 EOSQL

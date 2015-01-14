@@ -9,13 +9,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.MLD_Expts_idx_Refs_key
+drop index if exists mgd.MLD_Expts_idx_Refs_key
 ;
 
-drop index mgd.MLD_Expts_idx_chromosome
+drop index if exists mgd.MLD_Expts_idx_chromosome
 ;
 
-drop index mgd.MLD_Expts_idx_exptType
+drop index if exists mgd.MLD_Expts_idx_exptType
 ;
 
 EOSQL

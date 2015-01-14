@@ -9,7 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.HMD_Notes_idx_notes
+drop index if exists mgd.HMD_Notes_idx_notes
 ;
 
 EOSQL

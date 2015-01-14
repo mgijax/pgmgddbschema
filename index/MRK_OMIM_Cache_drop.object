@@ -12,31 +12,31 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.MRK_OMIM_Cache_idx_clustered
+drop index if exists mgd.MRK_OMIM_Cache_idx_clustered
 ;
 
-drop index mgd.MRK_OMIM_Cache_idx_Organism_key
+drop index if exists mgd.MRK_OMIM_Cache_idx_Organism_key
 ;
 
-drop index mgd.MRK_OMIM_Cache_idx_Marker_key
+drop index if exists mgd.MRK_OMIM_Cache_idx_Marker_key
 ;
 
-drop index mgd.MRK_OMIM_Cache_idx_Marker_Type_key
+drop index if exists mgd.MRK_OMIM_Cache_idx_Marker_Type_key
 ;
 
-drop index mgd.MRK_OMIM_Cache_idx_Allele_key
+drop index if exists mgd.MRK_OMIM_Cache_idx_Allele_key
 ;
 
-drop index mgd.MRK_OMIM_Cache_idx_Genotype_key
+drop index if exists mgd.MRK_OMIM_Cache_idx_Genotype_key
 ;
 
-drop index mgd.MRK_OMIM_Cache_idx_Refs_key
+drop index if exists mgd.MRK_OMIM_Cache_idx_Refs_key
 ;
 
-drop index mgd.MRK_OMIM_Cache_idx_OrthologOrganism_key
+drop index if exists mgd.MRK_OMIM_Cache_idx_OrthologOrganism_key
 ;
 
-drop index mgd.MRK_OMIM_Cache_idx_OrthologMarker_key
+drop index if exists mgd.MRK_OMIM_Cache_idx_OrthologMarker_key
 ;
 
 EOSQL

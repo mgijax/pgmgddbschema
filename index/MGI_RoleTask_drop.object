@@ -12,16 +12,16 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.MGI_RoleTask_idx_Role_key
+drop index if exists mgd.MGI_RoleTask_idx_Role_key
 ;
 
-drop index mgd.MGI_RoleTask_idx_Task_key
+drop index if exists mgd.MGI_RoleTask_idx_Task_key
 ;
 
-drop index mgd.MGI_RoleTask_idx_CreatedBy_key
+drop index if exists mgd.MGI_RoleTask_idx_CreatedBy_key
 ;
 
-drop index mgd.MGI_RoleTask_idx_ModifiedBy_key
+drop index if exists mgd.MGI_RoleTask_idx_ModifiedBy_key
 ;
 
 EOSQL

@@ -17,13 +17,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.SEQ_GeneModel_idx_GMMarker_Type_key
+drop index if exists mgd.SEQ_GeneModel_idx_GMMarker_Type_key
 ;
 
-drop index mgd.SEQ_GeneModel_idx_CreatedBy_key
+drop index if exists mgd.SEQ_GeneModel_idx_CreatedBy_key
 ;
 
-drop index mgd.SEQ_GeneModel_idx_ModifiedBy_key
+drop index if exists mgd.SEQ_GeneModel_idx_ModifiedBy_key
 ;
 
 EOSQL

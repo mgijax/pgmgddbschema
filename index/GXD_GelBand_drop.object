@@ -9,13 +9,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.GXD_GelBand_idx_clustered
+drop index if exists mgd.GXD_GelBand_idx_clustered
 ;
 
-drop index mgd.GXD_GelBand_idx_GelRow_key
+drop index if exists mgd.GXD_GelBand_idx_GelRow_key
 ;
 
-drop index mgd.GXD_GelBand_idx_Strength_key
+drop index if exists mgd.GXD_GelBand_idx_Strength_key
 ;
 
 EOSQL

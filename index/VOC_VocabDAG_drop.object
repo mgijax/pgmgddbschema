@@ -9,7 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.VOC_VocabDAG_idx_DAG_key
+drop index if exists mgd.VOC_VocabDAG_idx_DAG_key
 ;
 
 EOSQL

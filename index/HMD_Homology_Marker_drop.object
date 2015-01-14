@@ -9,7 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index mgd.HMD_Homology_Marker_idx_Homology_key
+drop index if exists mgd.HMD_Homology_Marker_idx_Homology_key
 ;
 
 EOSQL
