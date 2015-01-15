@@ -26,12 +26,14 @@ DROP FUNCTION MRK_Marker_insert();
 CREATE OR REPLACE FUNCTION MRK_Marker_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
--- Since the Marker Accession ID is actually created by NOM_Marker,
--- we do *not* want to run ACC_assignMGI()
--- See procedure/NOM_transferToMGD for more details.
---PERFORM ACC_assignMGI(NEW._Marker_key, 'Marker');
+INSERT INTO MRK_Current VALUES(NEW._Marker_key, NEW._Marker_key, current_date, current_date);
 
---RETURN NEW;
+IF NOT FOUND
+THEN
+	RAISE EXCEPTION E'MRK_Marker_insert_trigger: Could not insert MRK_Current';
+END IF;
+
+RETURN NEW;
 
 END;
 \$\$
@@ -44,6 +46,6 @@ AFTER INSERT on MRK_Marker
 FOR EACH ROW
 EXECUTE PROCEDURE MRK_Marker_insert();
 
-COMMENT ON FUNCTION mgd.MRK_Marker_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+COMMENT ON FUNCTION mgd.MRK_Marker_insert() IS 'create a new MRK_Current record';
 
 EOSQL
