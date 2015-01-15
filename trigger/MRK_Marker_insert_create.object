@@ -24,6 +24,10 @@ DROP TRIGGER MRK_Marker_insert_trigger ON MRK_Marker;
 DROP FUNCTION MRK_Marker_insert();
 
 CREATE OR REPLACE FUNCTION MRK_Marker_insert() RETURNS TRIGGER AS \$\$
+
+DECLARE
+v_userKey int;
+
 BEGIN
 
 INSERT INTO MRK_Current VALUES(NEW._Marker_key, NEW._Marker_key, current_date, current_date);
@@ -31,6 +35,37 @@ INSERT INTO MRK_Current VALUES(NEW._Marker_key, NEW._Marker_key, current_date, c
 IF NOT FOUND
 THEN
 	RAISE EXCEPTION E'MRK_Marker_insert_trigger: Could not insert MRK_Current';
+END IF;
+
+IF NEW._Marker_Type_key = 1
+THEN
+	v_userKey := _User_key from MGI_User where login = current_user;
+
+        INSERT INTO GO_Tracking VALUES (NEW._Marker_key, 0, null, v_userKey, v_userKey, null, current_date, current_date);
+
+        IF NOT FOUND
+        THEN
+                RAISE EXCEPTION E'MRK_Marker_insert_trigger: Could not create GO-tracking record (GO_Tracking).';
+        END IF;
+END IF;
+
+-- For Genes only....
+-- and other restrictions - see TR 3588
+-- restrictions revised - see TR 11223
+
+IF NEW._Marker_Type_key = 1
+      AND NEW.symbol not like 'mt-%'
+      AND NEW.name not like 'withdrawn, =%'
+      AND NEW.name not like '%dna segment%'
+      AND NEW.name not like 'EST %'
+      AND NEW.name not like '%expressed sequence%'
+      AND NEW.name not like '%cDNA sequence%'
+      AND NEW.name not like '%gene model%'
+      AND NEW.name not like '%hypothetical protein%'
+      AND NEW.name not like '%ecotropic viral integration site%'
+      AND NEW.name not like '%viral polymerase%'
+THEN
+        PERFORM ALL_createWildType (NEW._Marker_key, NEW.symbol);
 END IF;
 
 RETURN NEW;
