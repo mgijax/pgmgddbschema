@@ -30,6 +30,9 @@ create index NOM_Marker_idx_Marker_EventReason_key on mgd.NOM_Marker (_Marker_Ev
 create index NOM_Marker_idx_BroadcastBy_key on mgd.NOM_Marker (_BroadcastBy_key);
 
 
+create index NOM_Marker_idx_CurationState_key on mgd.NOM_Marker (_BroadcastBy_key);
+
+
 create index NOM_Marker_idx_broadcast_date on mgd.NOM_Marker (broadcast_date);
 
 

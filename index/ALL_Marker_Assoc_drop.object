@@ -17,6 +17,9 @@ drop index if exists mgd.ALL_Marker_Assoc_idx_Allele_key
 drop index if exists mgd.ALL_Marker_Assoc_idx_Status_key
 ;
 
+drop index if exists mgd.ALL_Marker_Assoc_idx_Qualifier_key
+;
+
 drop index if exists mgd.ALL_Marker_Assoc_idx_CreatedBy_key
 ;
 

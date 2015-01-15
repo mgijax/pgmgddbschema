@@ -10,4 +10,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+drop index if exists mgd.SEQ_GeneTrap_idx_TagMethod_key
+;
+
+drop index if exists mgd.SEQ_GeneTrap_idx_VectorEnd_key
+;
+
+drop index if exists mgd.SEQ_GeneTrap_idx_ReverseComp_key
+;
+
 EOSQL

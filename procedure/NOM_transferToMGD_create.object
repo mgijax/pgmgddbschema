@@ -107,7 +107,7 @@ BEGIN
 --
 
 v_userKey := _User_key from MGI_User where login = current_user;
-v_markerKey := max(_Marker_key) + 1 whereMRK_Marker;
+v_markerKey := max(_Marker_key) + 1 from MRK_Marker;
 v_assocKey := max(_Assoc_key) + 1 from ALL_Marker_Assoc;
 v_qualifierKey := _Term_key from VOC_Term where _Vocab_key = 70 and term = 'Not Specified';
 v_mrkstatusKey := _Term_key from VOC_Term where _Vocab_key = 73 and term = 'Curated';
@@ -326,18 +326,18 @@ CLOSE allele_cursor;
 
 -- Update Status, Broadcast date, Broadcast User
 
-UPDATE NOM_Marker
-SET _NomenStatus_key = 166903, 
-    _BroadcastBy_key = v_userKey, 
-    broadcast_date = current_date
-WHERE _Nomen_key = v_nomenKey
-;
+--UPDATE NOM_Marker
+--SET _NomenStatus_key = 166903, 
+    --_BroadcastBy_key = v_userKey, 
+    --broadcast_date = current_date
+--WHERE _Nomen_key = v_nomenKey
+--;
 
-IF NOT FOUND
-THEN
-        RAISE EXCEPTION E'NOM_transferToMGD: Could not update Status/Broadcast Date/Broadcast By for symbol.';
-        RETURN;
-END IF;
+--IF NOT FOUND
+--THEN
+        --RAISE EXCEPTION E'NOM_transferToMGD: Could not update Status/Broadcast Date/Broadcast By for symbol.';
+        --RETURN;
+--END IF;
 
 RETURN;
 

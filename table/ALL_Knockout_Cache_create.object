@@ -22,8 +22,8 @@ create table mgd.ALL_Knockout_Cache (
 	companyID                  varchar(30)     null,
 	nihID                      varchar(30)     null,
 	jrsID                      varchar(30)     null,
-	_CreatedBy_key             int             not null,
-	_ModifiedBy_key            int             not null,
+	_CreatedBy_key                 int DEFAULT 1001             not null,
+	_ModifiedBy_key                int DEFAULT 1001             not null,
 	creation_date              timestamp DEFAULT now()        not null,
 	modification_date          timestamp DEFAULT now()        not null 
 );

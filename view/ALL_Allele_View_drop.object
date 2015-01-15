@@ -10,7 +10,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 
-drop view mgd.ALL_Allele_View
+drop view if exists mgd.ALL_Allele_View
 
 CASCADE
 ;

@@ -30,6 +30,9 @@ drop index if exists mgd.MRK_Marker_idx_Marker_Status_key
 drop index if exists mgd.MRK_Marker_idx_Marker_Type_key
 ;
 
+drop index if exists mgd.MRK_Marker_idx_CurationState_key
+;
+
 drop index if exists mgd.MRK_Marker_idx_symbol
 ;
 

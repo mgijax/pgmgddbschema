@@ -15,4 +15,7 @@ drop index if exists mgd.SEQ_Allele_Assoc_idx_Allele_key
 drop index if exists mgd.SEQ_Allele_Assoc_idx_Sequence_key
 ;
 
+drop index if exists mgd.SEQ_Allele_Assoc_idx_Qualifier_key
+;
+
 EOSQL

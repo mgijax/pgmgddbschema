@@ -22,8 +22,8 @@ create table mgd.SEQ_Sequence_Raw (
 	rawAge                     varchar(100)    null,
 	rawSex                     varchar(100)    null,
 	rawCellLine                varchar(100)    null,
-	_CreatedBy_key             int             not null,
-	_ModifiedBy_key            int             not null,
+	_CreatedBy_key                 int DEFAULT 1001             not null,
+	_ModifiedBy_key                int DEFAULT 1001             not null,
 	creation_date              timestamp DEFAULT now()        not null,
 	modification_date          timestamp DEFAULT now()        not null 
 );

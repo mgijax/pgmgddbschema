@@ -10,6 +10,15 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+create index SEQ_GeneTrap_idx_TagMethod_key on mgd.SEQ_GeneTrap (_TagMethod_key);
+
+
+create index SEQ_GeneTrap_idx_VectorEnd_key on mgd.SEQ_GeneTrap (_VectorEnd_key);
+
+
+create index SEQ_GeneTrap_idx_ReverseComp_key on mgd.SEQ_GeneTrap (_ReverseComp_key);
+
+
 
 CLUSTER mgd.SEQ_GeneTrap USING SEQ_GeneTrap_pkey;
 

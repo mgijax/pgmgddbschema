@@ -17,8 +17,8 @@ create table mgd.GXD_TheilerStage (
 	_defaultSystem_key             int             not null,
 	stage                          int             not null,
 	description                    varchar(255)    null,
-	dpcMin                         float           not null,
-	dpcMax                         float           not null,
+	dpcMin                         numeric           not null,
+	dpcMax                         numeric           not null,
 	creation_date                  timestamp DEFAULT now()        not null,
 	modification_date              timestamp DEFAULT now()        not null 
 );

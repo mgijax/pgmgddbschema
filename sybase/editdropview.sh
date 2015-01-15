@@ -29,7 +29,7 @@ do
 ed $i <<END
 g/csh -f/s//sh/g
 g/ source/s// ./g
-g/drop view /s//drop view mgd./g
+g/drop view /s//drop view if exists mgd./g
 /cat
 d
 a

@@ -10,7 +10,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 
-drop view mgd.MGI_Table_Column_View
+drop view if exists mgd.MGI_Table_Column_View
 
 CASCADE
 ;

@@ -17,6 +17,9 @@ create index ALL_Marker_Assoc_idx_Allele_key on mgd.ALL_Marker_Assoc (_Allele_ke
 create index ALL_Marker_Assoc_idx_Status_key on mgd.ALL_Marker_Assoc (_Status_key);
 
 
+create index ALL_Marker_Assoc_idx_Qualifier_key on mgd.ALL_Marker_Assoc (_Qualifier_key);
+
+
 create index ALL_Marker_Assoc_idx_CreatedBy_key on mgd.ALL_Marker_Assoc (_CreatedBy_key);
 
 

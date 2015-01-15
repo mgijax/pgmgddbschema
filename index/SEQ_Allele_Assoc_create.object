@@ -15,6 +15,9 @@ create index SEQ_Allele_Assoc_idx_Sequence_key on mgd.SEQ_Allele_Assoc (_Sequenc
 create index SEQ_Allele_Assoc_idx_Allele_key on mgd.SEQ_Allele_Assoc (_Allele_key);
 
 
+create index SEQ_Allele_Assoc_idx_Qualifier_key on mgd.SEQ_Allele_Assoc (_Allele_key);
+
+
 
 CLUSTER mgd.SEQ_Allele_Assoc USING SEQ_Allele_Assoc_pkey;
 

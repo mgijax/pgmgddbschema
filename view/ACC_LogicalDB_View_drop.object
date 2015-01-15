@@ -10,7 +10,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 
-drop view mgd.ACC_LogicalDB_View
+drop view if exists mgd.ACC_LogicalDB_View
 
 CASCADE
 ;

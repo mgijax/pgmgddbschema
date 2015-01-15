@@ -27,6 +27,12 @@ drop index if exists mgd.ALL_Cre_Cache_idx_Allele_key
 drop index if exists mgd.ALL_Cre_Cache_idx_Assay_key
 ;
 
+drop index if exists mgd.ALL_Cre_Cache_idx_Allele_Type_key
+;
+
+drop index if exists mgd.ALL_Cre_Cache_idx_System_key
+;
+
 drop index if exists mgd.ALL_Cre_Cache_idx_CreatedBy_key
 ;
 

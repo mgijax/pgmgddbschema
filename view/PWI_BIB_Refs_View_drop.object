@@ -10,7 +10,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 
-drop view mgd.PWI_BIB_Refs_View
+drop view if exists mgd.PWI_BIB_Refs_View
 
 CASCADE
 ;

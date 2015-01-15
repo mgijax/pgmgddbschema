@@ -30,6 +30,9 @@ drop index if exists mgd.NOM_Marker_idx_Marker_EventReason_key
 drop index if exists mgd.NOM_Marker_idx_BroadcastBy_key
 ;
 
+drop index if exists mgd.NOM_Marker_idx_CurationState_key
+;
+
 drop index if exists mgd.NOM_Marker_idx_broadcast_date
 ;
 
