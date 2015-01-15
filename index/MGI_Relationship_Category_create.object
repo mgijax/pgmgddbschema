@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# HISTORY
+#
+# 02/24/2014    sc
+#       - TR 11560; Feature Relationships
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index MGI_Relationship_Category_idx_name on mgd.MGI_Relationship_Category (name);
+
+
+
+CLUSTER mgd.MGI_Relationship_Category USING MGI_Relationship_Category_pkey;
+
+EOSQL

@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/21/2013    lec
+#       - TR11468/GXD-Anatomy
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index if exists mgd.VOC_Term_EMAPA_idx_parent
+;
+
+EOSQL

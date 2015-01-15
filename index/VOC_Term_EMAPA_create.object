@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# HISTORY
+#  
+# sc - created GXD Anatomy TR11468
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index VOC_Term_EMAPA_idx_parent on mgd.VOC_Term_EMAPA (_DefaultParent_key);
+
+
+
+CLUSTER mgd.VOC_Term_EMAPA USING VOC_Term_EMAPA_pkey;
+
+EOSQL

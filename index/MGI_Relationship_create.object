@@ -1,0 +1,44 @@
+#!/bin/sh
+
+#
+# HISTORY
+#
+# 02/24/2014    sc
+#       - TR 11560; Feature Relationships
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index MGI_Relationship_idx_clustered on mgd.MGI_Relationship (_Object_key_1, _Object_key_2);
+
+
+create index MGI_Relationship_idx_Object_key_2 on mgd.MGI_Relationship (_Object_key_2);
+
+
+create index MGI_Relationship_idx_Category_key on mgd.MGI_Relationship (_Category_key);
+
+
+create index MGI_Relationship_idx_RelationshipTerm_key on mgd.MGI_Relationship (_RelationshipTerm_key);
+
+
+create index MGI_Relationship_idx_Refs_key on mgd.MGI_Relationship (_Refs_key);
+
+
+create index MGI_Relationship_idx_Evidence_key on mgd.MGI_Relationship (_Refs_key);
+
+
+create index MGI_Relationship_idx_Qualifier_key on mgd.MGI_Relationship (_Refs_key);
+
+
+create index MGI_Relationship_idx_CreatedBy_key on mgd.MGI_Relationship (_CreatedBy_key);
+
+
+create index MGI_Relationship_idx_ModifiedBy_key on mgd.MGI_Relationship (_ModifiedBy_key);
+
+
+
+CLUSTER mgd.MGI_Relationship USING MGI_Relationship_pkey;
+
+EOSQL

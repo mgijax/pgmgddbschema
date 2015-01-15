@@ -1,3 +1,12 @@
+TAG: pgmgddbschema-5-2-1-4
+DATE: 01/15/2015
+STAFF: lec
+CHANGES:
+1) TR11750/postgres
+a) adding "if exists" to all views
+b) adding defaults to tables with _createdby_key, _modifiedby_key
+c) added some new indexes (pg only so far) for VOC_Term._Term_key foreign key
+
 TAG: pgmgddbschema-5-2-1-3
 TAG: pgmgddbschema-5-2-1-2
 TAG: pgmgddbschema-5-2-1-1
