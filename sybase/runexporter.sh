@@ -184,10 +184,8 @@ echo 'run create view for all tables...' | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/view/view_create.sh
 echo 'run create procedure for all tables...' | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/procedure/procedure_create.sh
-
-#this is causing an error : find out why
-#echo 'run create comments for all tables...' | tee -a ${LOG}
-#${EXPORTER}/bin/commentsPostgres.py
+echo 'run create comments for all tables...' | tee -a ${LOG}
+${EXPORTER}/bin/commentsPostgres.py
 
 else
 #

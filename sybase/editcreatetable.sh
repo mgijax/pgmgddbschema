@@ -41,6 +41,7 @@ g/_CreatedBy_key.*int/s//_CreatedBy_key                 int DEFAULT 1001/g
 g/_ModifiedBy_key.*int/s//_ModifiedBy_key                int DEFAULT 1001/g
 g/bit/s//smallint/g
 g/float/s//numeric/g
+g/numericValue/s//floatValue/g
 g/offset/s//cmOffset/g
 g/^)/s//);/
 /cat
