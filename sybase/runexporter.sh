@@ -184,8 +184,10 @@ echo 'run create view for all tables...' | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/view/view_create.sh
 echo 'run create procedure for all tables...' | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/procedure/procedure_create.sh
-echo 'run create comments for all tables...' | tee -a ${LOG}
-${EXPORTER}/bin/commentsPostgres.py
+
+#this is causing an error : find out why
+#echo 'run create comments for all tables...' | tee -a ${LOG}
+#${EXPORTER}/bin/commentsPostgres.py
 
 else
 #
@@ -224,9 +226,6 @@ psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*
 psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from pg_stat_user_indexes where schemaname = 'mgd'" | tee -a ${LOG}
 
 psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from information_schema.views where table_schema = 'mgd'" | tee -a ${LOG}
-
-echo "granting public permissions" | tee -a ${LOG}
-${PG_DBUTILS}/bin/grantPublicPerms.csh ${PG_DBSERVER} ${PG_DBNAME} mgd
 
 grep "psql:" ${PG_MGD_DBSCHEMADIR}/logs/*/*create.object.log | tee -a ${LOG}
 
