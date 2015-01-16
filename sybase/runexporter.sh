@@ -18,8 +18,6 @@ LOG=${EXPORTLOGS}/`basename $0`.log
 rm -rf ${LOG}
 touch ${LOG}
 
-#rm -rf ${PG_MGD_DBSCHEMADIR}/logs/*/*
-
 date >> ${LOG}
 
 echo 'from (Sybase)...'
