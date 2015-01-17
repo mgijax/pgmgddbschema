@@ -100,7 +100,7 @@ ${PG_DBUTILS}/bin/dropSchema.csh ${PG_DBSERVER} ${PG_DBNAME} mgd | tee -a ${LOG}
 echo 'create schema for 'mgd'...' | tee -a ${LOG}
 ${PG_DBUTILS}/bin/createSchema.csh ${PG_DBSERVER} ${PG_DBNAME} mgd | tee -a ${LOG}
 echo 'create tables for 'mgd'...' | tee -a ${LOG}
-${PG_MGD_DBSCHEMADIR}/table/table_create.sh
+${PG_MGD_DBSCHEMADIR}/table/table_create.sh | tee -a ${LOG}
 
 else
 #
@@ -112,17 +112,17 @@ i=`basename ${findObject} _create.object`
 echo 'create table name...', $i | tee -a ${LOG}
 
 echo 'dropping indexes...' | tee -a ${LOG}
-${PG_MGD_DBSCHEMADIR}/index/${i}_drop.object
+${PG_MGD_DBSCHEMADIR}/index/${i}_drop.object | tee -a ${LOG}
 
 echo 'dropping key...' | tee -a ${LOG}
-${PG_MGD_DBSCHEMADIR}/key/${i}_drop.object
+${PG_MGD_DBSCHEMADIR}/key/${i}_drop.object | tee -a ${LOG}
 
 #echo 'dropping trigger...' | tee -a ${LOG}
-#${PG_MGD_DBSCHEMADIR}/trigger/${i}_drop.object
+#${PG_MGD_DBSCHEMADIR}/trigger/${i}_drop.object | tee -a ${LOG}
 
 echo 'dropping/creating table...' | tee -a ${LOG}
-${PG_MGD_DBSCHEMADIR}/table/${i}_drop.object
-${PG_MGD_DBSCHEMADIR}/table/${i}_create.object
+${PG_MGD_DBSCHEMADIR}/table/${i}_drop.object | tee -a ${LOG}
+${PG_MGD_DBSCHEMADIR}/table/${i}_create.object | tee -a ${LOG}
 
 fi
 
@@ -175,15 +175,15 @@ date | tee -a ${LOG}
 if [ $runAll -eq '1' ]
 then
 echo 'run create key for all tables...' | tee -a ${LOG}
-${PG_MGD_DBSCHEMADIR}/key/key_create.sh
+${PG_MGD_DBSCHEMADIR}/key/key_create.sh | tee -a ${LOG}
 echo 'run create index for all tables...' | tee -a ${LOG}
-${PG_MGD_DBSCHEMADIR}/index/index_create.sh
+${PG_MGD_DBSCHEMADIR}/index/index_create.sh | tee -a ${LOG}
 echo 'run create trigger for all tables...' | tee -a ${LOG}
-${PG_MGD_DBSCHEMADIR}/trigger/trigger_create.sh
+${PG_MGD_DBSCHEMADIR}/trigger/trigger_create.sh | tee -a ${LOG}
 echo 'run create view for all tables...' | tee -a ${LOG}
-${PG_MGD_DBSCHEMADIR}/view/view_create.sh
+${PG_MGD_DBSCHEMADIR}/view/view_create.sh | tee -a ${LOG}
 echo 'run create procedure for all tables...' | tee -a ${LOG}
-${PG_MGD_DBSCHEMADIR}/procedure/procedure_create.sh
+${PG_MGD_DBSCHEMADIR}/procedure/procedure_create.sh | tee -a ${LOG}
 echo 'run create comments for all tables...' | tee -a ${LOG}
 ${EXPORTER}/bin/commentsPostgres.py
 
@@ -203,13 +203,13 @@ ${PG_MGD_DBSCHEMADIR}/key/${i}_create.object
 if [ -f ${PG_MGD_DBSCHEMADIR}/trigger/${i}_delete_create.object ]
 then
 	echo 'adding delete trigger...' | tee -a ${LOG}
-	${PG_MGD_DBSCHEMADIR}/trigger/${i}_delete_create.object
+	${PG_MGD_DBSCHEMADIR}/trigger/${i}_delete_create.object | tee -a ${LOG}
 fi
 
 if [ -f ${PG_MGD_DBSCHEMADIR}/trigger/${i}_insert_create.object ]
 then
 	echo 'adding insert trigger...' | tee -a ${LOG}
-	${PG_MGD_DBSCHEMADIR}/trigger/${i}_insert_create.object
+	${PG_MGD_DBSCHEMADIR}/trigger/${i}_insert_create.object | tee -a ${LOG}
 fi
 
 fi
