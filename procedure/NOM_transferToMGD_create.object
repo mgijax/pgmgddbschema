@@ -59,7 +59,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION NOM_transferToMGD(int,int);
+--DROP FUNCTION NOM_transferToMGD(int,int);
 
 CREATE OR REPLACE FUNCTION NOM_transferToMGD (
 v_nomenKey int,
@@ -283,16 +283,14 @@ CLOSE acc_cursor;
 --
 -- Allele Stuff
 --
-
-/* 
- * If the Marker was originally used in Alleles as a Nomenclature Marker, then 
- *    - set the ALL_Allele._Marker_key = real marker key    
- *    - set the ALL_Allele.nomenSymbol = null
- *    - add a record to ALL_Marker_Assoc
-*/
+-- If the Marker was originally used in Alleles as a Nomenclature Marker, then 
+--    set the ALL_Allele._Marker_key = real marker key    
+--    set the ALL_Allele.nomenSymbol = null
+--    add a record to ALL_Marker_Assoc
+--
 
 OPEN allele_cursor FOR
-SELECT _Allele_key FROM ALL_Allele WHERE nomenSymbol = v_symbol;
+SELECT _Allele_key FROM ALL_Allele WHERE nomenSymbol = (SELECT symbol FROM nom_transfer);
 LOOP
 	FETCH allele_cursor INTO v_alleleKey;
         EXIT WHEN NOT FOUND;
@@ -317,27 +315,29 @@ LOOP
 END LOOP;
 CLOSE allele_cursor;
 
--- Load MRK_Label and MRK_Reference, SEQ_Marker_Cache
+-- Create MRK_Location_Cache row
+PERFORM MRK_reloadLocation (v_markerKey);
 
---PERFORM MRK_reloadLabel (v_markerKey);
---PERFORM MRK_reloadReference (v_markerKey);
---PERFORM MRK_reloadSequence (v_markerKey);
---PERFORM MRK_reloadLocation (v_markerKey);
+IF NOT FOUND
+THEN
+	RAISE EXCEPTION E'NOM_transferToMGD: Could not create location cache record (MRK_Location_Cache).';
+	RETURN;
+END IF;
 
 -- Update Status, Broadcast date, Broadcast User
 
---UPDATE NOM_Marker
---SET _NomenStatus_key = 166903, 
-    --_BroadcastBy_key = v_userKey, 
-    --broadcast_date = current_date
---WHERE _Nomen_key = v_nomenKey
---;
+UPDATE NOM_Marker
+SET _NomenStatus_key = 166903, 
+    _BroadcastBy_key = v_userKey, 
+    broadcast_date = current_date
+WHERE _Nomen_key = v_nomenKey
+;
 
---IF NOT FOUND
---THEN
-        --RAISE EXCEPTION E'NOM_transferToMGD: Could not update Status/Broadcast Date/Broadcast By for symbol.';
-        --RETURN;
---END IF;
+IF NOT FOUND
+THEN
+        RAISE EXCEPTION E'NOM_transferToMGD: Could not update Status/Broadcast Date/Broadcast By for symbol.';
+        RETURN;
+END IF;
 
 RETURN;
 
