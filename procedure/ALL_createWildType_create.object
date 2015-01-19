@@ -36,8 +36,13 @@ BEGIN
 v_userKey := _User_key FROM MGI_User WHERE login = current_user;
 v_alleleSymbol := v_symbol || '<+>';
 
-PERFORM ALL_insertAllele (v_markerKey, null, v_alleleSymbol, 'wild type', 1,
+PERFORM ALL_insertAllele (v_markerKey, v_alleleSymbol, 'wild type', null, 1,
 	v_userKey, v_userKey, v_userKey, null, -2, 'Not Applicable', 'Not Applicable', -2);
+
+IF NOT FOUND
+THEN
+	RAISE EXCEPTION E'ALL_createWildType: PERFORM ALL_insertAllele failed';
+END IF;
 
 END;
 \$\$

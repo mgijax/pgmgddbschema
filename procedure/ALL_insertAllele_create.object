@@ -19,13 +19,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION ALL_insertAllele(int,int,varchar,varchar,int,int,int,int,timestamp,int,varchar,varchar,varchar,varchar,varchar,varchar,varchar,varchar);
+DROP FUNCTION ALL_insertAllele(int,varchar,varchar,int,int,int,int,int,timestamp,int,varchar,varchar,varchar,varchar,varchar,varchar,varchar,varchar);
 
 CREATE OR REPLACE FUNCTION ALL_insertAllele (
 v_markerKey int,
-v_refsKey int,
 v_symbol all_allele.symbol%TYPE,
 v_name all_allele.name%TYPE,
+v_refsKey int DEFAULT null,
 v_isWildType int DEFAULT 0,
 v_createdBy all_allele._CreatedBy_key%TYPE DEFAULT null,
 v_modifiedBy all_allele._ModifiedBy_key%TYPE DEFAULT null,
@@ -141,8 +141,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ALL_insertAllele(int,int,varchar,varchar,int,int,int,int,timestamp,int,varchar,varchar,varchar,varchar,varchar,varchar,varchar,varchar) TO public;
+GRANT EXECUTE ON FUNCTION ALL_insertAllele(int,varchar,varchar,int,int,int,int,int,timestamp,int,varchar,varchar,varchar,varchar,varchar,varchar,varchar,varchar) TO public;
 
-COMMENT ON FUNCTION mgd.ALL_insertAllele(int,int,varchar,varchar,int,int,int,int,timestamp,int,varchar,varchar,varchar,varchar,varchar,varchar,varchar,varchar) IS '';
+COMMENT ON FUNCTION mgd.ALL_insertAllele(int,varchar,varchar,int,int,int,int,int,timestamp,int,varchar,varchar,varchar,varchar,varchar,varchar,varchar,varchar) IS 'insert all_allele row';
 
 EOSQL
