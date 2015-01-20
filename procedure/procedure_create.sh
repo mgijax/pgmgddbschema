@@ -3,7 +3,7 @@
 #
 # Object Group Script
 #
-# Executes all *_create.logical scripts
+# Executes all *_create.object scripts
 #
 # Order is important!
 #
