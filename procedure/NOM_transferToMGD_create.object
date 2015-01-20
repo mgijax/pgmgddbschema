@@ -108,7 +108,6 @@ BEGIN
 
 v_userKey := _User_key from MGI_User where login = current_user;
 v_markerKey := max(_Marker_key) + 1 from MRK_Marker;
-v_assocKey := max(_Assoc_key) + 1 from ALL_Marker_Assoc;
 v_qualifierKey := _Term_key from VOC_Term where _Vocab_key = 70 and term = 'Not Specified';
 v_mrkstatusKey := _Term_key from VOC_Term where _Vocab_key = 73 and term = 'Curated';
 
@@ -289,6 +288,8 @@ CLOSE acc_cursor;
 --    add a record to ALL_Marker_Assoc
 --
 
+v_assocKey := max(_Assoc_key) + 1 from ALL_Marker_Assoc;
+
 OPEN allele_cursor FOR
 SELECT _Allele_key FROM ALL_Allele WHERE nomenSymbol = (SELECT symbol FROM nom_transfer);
 LOOP
@@ -300,18 +301,20 @@ LOOP
         WHERE _Allele_key = v_alleleKey
 	;
 
-        --INSERT INTO ALL_Marker_Assoc
-        --(_Assoc_key, _Allele_key, _Marker_key, _Qualifier_key, _Refs_key, _Status_key,
-         --_CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
-        --VALUES(v_assocKey, v_alleleKey, v_markerKey, v_qualifierKey, null, v_mrkstatusKey,
-               --v_userKey, v_userKey, current_date, current_date)
-	--;
+        INSERT INTO ALL_Marker_Assoc
+        (_Assoc_key, _Allele_key, _Marker_key, _Qualifier_key, _Refs_key, _Status_key,
+         _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
+        VALUES(v_assocKey, v_alleleKey, v_markerKey, v_qualifierKey, null, v_mrkstatusKey,
+               v_userKey, v_userKey, current_date, current_date)
+	;
 
 	IF NOT FOUND
 	THEN
 		RAISE EXCEPTION E'NOM_transferToMGD: Could not update Marker symbol in Allele record (ALL_Allele)';
 		RETURN;
 	END IF;
+
+	v_assocKey := v_assocKey + 1;
 END LOOP;
 CLOSE allele_cursor;
 
