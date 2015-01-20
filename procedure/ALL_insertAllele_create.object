@@ -57,11 +57,12 @@ v_typeKey int;
 v_statusKey int;
 v_transmissionKey int;
 v_collectionKey int;
-v_isExtinct bit;
-v_isMixed bit;
 v_assocKey int;
 v_qualifierKey int;
 v_mrkstatusKey int;
+
+v_isExtinct all_allele.isextinct%TYPE;
+v_isMixed all_allele.ismixed%TYPE;
 
 BEGIN
 
@@ -72,21 +73,21 @@ IF v_createdBy IS NULL
 THEN
 	v_createdByKey := v_userKey;
 ELSE
-	v_createdByKey := _User_key from MGI_User where login = v_createdBy;
+	v_createdByKey := _User_key from MGI_User where login = current_user;
 END IF;
 
 IF v_modifiedBy IS NULL
 THEN
 	v_modifiedByKey := v_userKey;
 ELSE
-	v_modifiedByKey := _User_key from MGI_User where login = v_createdBy;
+	v_modifiedByKey := _User_key from MGI_User where login = current_user;
 END IF;
 
 IF v_approvedBy IS NULL
 THEN
 	v_approvedByKey := v_userKey;
 ELSE
-	v_approvedByKey := _User_key from MGI_User where login = v_createdBy;
+	v_approvedByKey := _User_key from MGI_User where login = current_user;
 END IF;
 
 v_modeKey := _Term_key from VOC_Term where _Vocab_key = 35 AND term = v_amode;

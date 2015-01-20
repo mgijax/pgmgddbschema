@@ -300,16 +300,16 @@ LOOP
         WHERE _Allele_key = v_alleleKey
 	;
 
-        INSERT INTO ALL_Marker_Assoc
-        (_Assoc_key, _Allele_key, _Marker_key, _Qualifier_key, _Refs_key, _Status_key,
-         _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
-        VALUES(v_assocKey, v_alleleKey, v_markerKey, v_qualifierKey, null, v_mrkstatusKey,
-               v_userKey, v_userKey, current_date, current_date)
-	;
+        --INSERT INTO ALL_Marker_Assoc
+        --(_Assoc_key, _Allele_key, _Marker_key, _Qualifier_key, _Refs_key, _Status_key,
+         --_CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
+        --VALUES(v_assocKey, v_alleleKey, v_markerKey, v_qualifierKey, null, v_mrkstatusKey,
+               --v_userKey, v_userKey, current_date, current_date)
+	--;
 
 	IF NOT FOUND
 	THEN
-		RAISE EXCEPTION E'NOM_transferToMGD: Cound not update Marker symbol in Allele record (ALL_Allele)';
+		RAISE EXCEPTION E'NOM_transferToMGD: Could not update Marker symbol in Allele record (ALL_Allele)';
 		RETURN;
 	END IF;
 END LOOP;

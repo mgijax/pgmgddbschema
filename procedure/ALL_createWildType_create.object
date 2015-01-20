@@ -25,7 +25,7 @@ RETURNS VOID AS
 
 DECLARE
 v_userKey int;
-v_alleleSymbol all_allele.symbol%TYPE;
+v_asymbol all_allele.symbol%TYPE;
 
 BEGIN
 
@@ -34,10 +34,22 @@ BEGIN
 /* Set all other attributes = Not Applicable */
 
 v_userKey := _User_key FROM MGI_User WHERE login = current_user;
-v_alleleSymbol := v_symbol || '<+>';
+v_asymbol := v_symbol || '<+>';
 
-PERFORM ALL_insertAllele (v_markerKey, v_alleleSymbol, 'wild type', null, 1,
-	v_userKey, v_userKey, v_userKey, null, -2, 'Not Applicable', 'Not Applicable', -2);
+PERFORM ALL_insertAllele (
+	v_markerKey,
+	v_asymbol,
+	'wild type',
+	null,
+	1,
+	v_userKey,
+	v_userKey,
+	v_userKey,
+	current_date,
+	-2,
+	'Not Applicable',
+	'Not Applicable'
+	);
 
 IF NOT FOUND
 THEN
