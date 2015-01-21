@@ -1,19 +1,23 @@
 #!/bin/sh
 
 #
-# Usage:
-# enable_triggers.sh <table name> [<trigger name>]
+# Enables "user" triggers on a postgres table
+#	(NOTE: there are system triggers for things like
+#		referential integrity. Those remain unaffected)
 #
-# Purpose:
-# enable all triggers on the given table, or a
-# single trigger if one is specified by name
+#	Usage: 
+#		enable_triggers.sh table_name
+#
+#	Assumes:
+#		Database environment variables
+#		(DBSERVER, DBNAME, PG_DBUSER, PG_DBPASSWORDFILE)
+#		Schema is mgd
 #
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh ${MGD_DBSERVER} ${MGD_DBNAME} $0
+TABLE=${1}
+SCHEMA=mgd
 
-ALTER TABLE $1 ENABLE TRIGGER $2 ALL
-go
+psql -h${DBSERVER} -d${DBNAME} -U${PG_DBUSER} --command "ALTER TABLE ${SCHEMA}.${TABLE} ENABLE TRIGGER USER;"
 
-EOSQL
