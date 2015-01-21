@@ -10,7 +10,7 @@
 #
 #	Assumes:
 #		Database environment variables
-#		(DBSERVER, DBNAME, PG_DBUSER, PG_DBPASSWORDFILE)
+#		(PG_DBSERVER, PG_DBNAME, PG_DBUSER, PG_DBPASSWORDFILE)
 #		Schema is mgd
 #
 
@@ -19,5 +19,5 @@ cd `dirname $0` && . ./Configuration
 TABLE=${1}
 SCHEMA=mgd
 
-psql -h${DBSERVER} -d${DBNAME} -U${PG_DBUSER} --command "ALTER TABLE ${SCHEMA}.${TABLE} DISABLE TRIGGER USER;"
+psql -h${PG_DBSERVER} -d${PG_DBNAME} -U${PG_DBUSER} --command "ALTER TABLE ${SCHEMA}.${TABLE} DISABLE TRIGGER USER;"
 
