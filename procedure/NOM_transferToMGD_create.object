@@ -127,14 +127,6 @@ END IF;
 
 IF (SELECT t.term FROM NOM_Marker n, VOC_Term t
 	WHERE n._Nomen_key = v_nomenKey AND
-	      n._NomenStatus_key = _Term_key) = 'Approved'
-THEN
-	RAISE EXCEPTION E'NOM_transferToMGD: Symbol has been approved AND exists in MGD.';
-	RETURN;
-END IF;
-
-IF (SELECT t.term FROM NOM_Marker n, VOC_Term t
-	WHERE n._Nomen_key = v_nomenKey AND
 	      n._NomenStatus_key = _Term_key) = 'Deleted'
 THEN
 	RAISE EXCEPTION E'NOM_transferToMGD: Symbol has been deleted.';
