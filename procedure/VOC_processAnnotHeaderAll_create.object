@@ -1,0 +1,284 @@
+#!/bin/sh
+#
+# History
+#
+# lec 01/24/2008
+#	- TR8216, fix selection of "toAdd" table
+#
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION VOC_processAnnotHeaderAll(int);
+
+CREATE OR REPLACE FUNCTION VOC_processAnnotHeaderAll (
+annotTypeKey int
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+userKey int;
+headerLabel int;
+headerKey int;
+pkey int;
+objectKey int;
+oldSeq int	/* current sequence number */;
+newSeq int	/* new sequence number */;
+prevObjectKey int;
+rec record;
+
+
+BEGIN
+
+/* incrementally update VOC_AnnotHeader by annotation type */
+select into userKey _User_key from MGI_User where login = current_user
+;
+
+select into headerLabel _Label_key from DAG_Label where label = 'Header'
+;
+
+select into headerKey max(_AnnotHeader_key) from VOC_AnnotHeader
+;
+
+if headerKey = null
+then
+	select into headerKey 1000
+	;
+end if;
+
+/* set of 'new' headers based on most recent annotation update */
+/* need to check if any ancestors are header terms */
+/* and if the annotated term is itself a header term */
+
+create temp table set0 as
+select distinct a._Object_key, h._Term_key, h.sequenceNum, a._Qualifier_key, isNormal = 0
+from VOC_Annot a, VOC_Term t, VOC_VocabDAG vd, DAG_Node d, DAG_Closure dc, DAG_Node dh, VOC_Term h
+where a._AnnotType_key = annotTypeKey
+and a._Term_key = t._Term_key
+and t._Vocab_key = vd._Vocab_key
+and vd._DAG_key = d._DAG_key
+and t._Term_key = d._Object_key
+and d._Node_key = dc._Descendent_key
+and dc._Ancestor_key = dh._Node_key
+and dh._Label_key = headerLabel
+and dh._Object_key = h._Term_key
+union
+select distinct a._Object_key, h._Term_key, h.sequenceNum, a._Qualifier_key, isNormal = 0
+from VOC_Annot a, VOC_Term t, VOC_VocabDAG vd, DAG_Node d, DAG_Closure dc, DAG_Node dh, VOC_Term h
+where a._AnnotType_key = annotTypeKey
+and a._Term_key = t._Term_key
+and t._Vocab_key = vd._Vocab_key
+and vd._DAG_key = d._DAG_key
+and t._Term_key = d._Object_key
+and d._Node_key = dc._Descendent_key
+and dc._Descendent_key = dh._Node_key
+and dh._Label_key = headerLabel
+and dh._Object_key = h._Term_key
+order by a._Object_key, h.sequenceNum
+;
+
+create index idx1 on set0(_Term_key)
+;
+
+create index idx2 on set0(_Object_key)
+;
+
+create index idx3 on set0(_Qualifier_key)
+;
+
+/* set isNormal */
+/* isNormal = 1 if all of the qualifiers for a given header term = 2181424 */
+/* else isNormal = 0 */
+create temp table normal as
+select distinct _Object_key, _Term_key
+from set0 s1
+where s1._Qualifier_key = 2181424
+and not exists (select 1 from set0 s2
+where s1._Object_key = s2._Object_key
+and s1._Term_key = s2._Term_key
+and s2._Qualifier_key != 2181424)
+;
+
+update set0
+set isNormal = 1
+from normal n
+where n._Object_key = set0._Object_key
+and n._Term_key = set0._Term_key
+;
+
+/* now select the distinct headers */
+create temp table set1 as
+select distinct _Object_key, _Term_key, sequenceNum, isNormal
+from set0
+;
+
+create index idx1 on set1(_Term_key)
+;
+
+create index idx2 on set1(_Object_key)
+;
+
+/* set of headers that are currently cached */
+create temp table set2 as 
+select _AnnotHeader_key, _Object_key, _Term_key, sequenceNum, isNormal
+from VOC_AnnotHeader
+where _AnnotType_key = annotTypeKey
+order by _Object_key, sequenceNum
+;
+
+create index idx1 on set2(_Term_key)
+;
+create index idx2 on set2(_Object_key)
+;
+
+/* any headers in set2 that is not in set1 are deleted */
+create temp table toDelete as 
+select s2._AnnotHeader_key 
+from set2 s2
+where not exists
+(select 1 from set1 s1 where s2._Term_key = s1._Term_key and s2._Object_key = s1._Object_key)
+;
+
+create index idx1 on toDelete(_AnnotHeader_key)
+;
+
+delete from VOC_AnnotHeader
+using toDelete d
+where d._AnnotHeader_key = VOC_AnnotHeader._AnnotHeader_key
+;
+
+/* set of headers that are currently cached after deletion */
+create temp table set3 as
+select _Object_key, _Term_key, sequenceNum
+from VOC_AnnotHeader
+where _AnnotType_key = annotTypeKey
+order by _Object_key, sequenceNum
+;
+
+create index idx1 on set3(_Term_key)
+;
+create index idx2 on set3(_Object_key)
+;
+
+/* any headers in set1 that are not in set3 are added */
+create temp table toAdd as
+select row_number() over() as i, _Object_key, _Term_key, sequenceNum, isNormal
+from set1 s1
+where not exists (select 1 from set3 s3 where s1._Term_key = s3._Term_key and s1._Object_key = s3._Object_key)
+order by s1._Object_key, s1.sequenceNum
+;
+
+/* update the isNormal bit for any headers in #set1 that are in #set3 (existing headers) */
+update VOC_AnnotHeader
+set isNormal = s1.isNormal
+from set1 s1, set3 s3
+where voc_annotheader._AnnotType_key = annotTypeKey
+and voc_annotheader._Object_key = s1._Object_key
+and voc_annotheader._Term_key = s1._Term_key
+and s1._Object_key = s3._Object_key
+and s1._Term_key = s3._Term_key
+;
+
+/* get the maximum sequence number for existing headers */
+create temp table maxSequence as
+select max(sequenceNum) as maxSeq, _Object_key
+from set3
+group by _Object_key
+;
+
+/* get the maximum sequence number for any new headers */
+insert into maxSequence select distinct 0, _Object_key from toAdd t
+where not exists (select 1 from set3 s where t._Object_key = s._Object_key)
+;
+
+create index idx1 on maxSequence(_Object_key)
+;
+
+insert into VOC_AnnotHeader
+select headerKey + i, annotTypeKey, t._Object_key, t._Term_key, m.maxSeq + i, isNormal,
+userKey, userKey, NULL, NULL, current_date, current_date
+from toAdd t, maxSequence m
+where t._Object_key = m._Object_key
+;
+
+/* automatically approve all annotations with one header */
+create temp table toApprove as
+select _AnnotHeader_key
+from VOC_AnnotHeader
+where _AnnotType_key = annotTypeKey
+and _ApprovedBy_key is null
+group by _Object_key having count(*) = 1
+;
+
+create index idx1 on toApprove(_AnnotHeader_key)
+;
+
+update VOC_AnnotHeader
+set _ApprovedBy_key = userKey, approval_date = current_date
+from toApprove t
+where t._AnnotHeader_key = voc_annotheader._AnnotHeader_key
+;
+
+/* automatically set all headers to non-approved if there is at least one header (by object) that is non-approved */
+create temp table toNotApprove as
+select _AnnotHeader_key
+from VOC_AnnotHeader v1
+where v1._AnnotType_key = annotTypeKey
+and v1._ApprovedBy_key is null
+and exists (select 1 from VOC_AnnotHeader v2 where v2._AnnotType_key = annotTypeKey
+and v1._AnnotHeader_key != v2._AnnotHeader_key
+and v1._Object_key = v2._Object_key
+and v2._ApprovedBy_key is not null)
+;
+
+create index idx1 on toNotApprove(_AnnotHeader_key)
+;
+
+update VOC_AnnotHeader
+set _ApprovedBy_key = null, approval_date = null
+from toNotApprove t
+where t._AnnotHeader_key = voc_annotheader._AnnotHeader_key
+;
+
+/* re-order */
+select into prevObjectKey -1
+;
+
+for rec in 
+select _AnnotHeader_key, _Object_key, sequenceNum
+from VOC_AnnotHeader
+where _AnnotType_key = annotTypeKey
+order by _Object_key, sequenceNum
+loop
+
+    select into pkey, objectKey, oldSeq
+	rec._annotheader_key, rec._object_key, rec.sequencenum;
+
+    if objectKey != prevObjectKey
+    then
+	select into newSeq 1
+	;
+    end if;
+
+    update VOC_AnnotHeader set sequenceNum = newSeq where _AnnotHeader_key = pkey
+    ;
+
+    select into newSeq newSeq + 1
+    ;
+
+    select into prevObjectKey objectKey;
+
+end loop;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION VOC_processAnnotHeaderAll(int) TO public;
+
+
+COMMENT ON FUNCTION VOC_processAnnotHeaderAll(int) IS '';
+
+EOSQL
