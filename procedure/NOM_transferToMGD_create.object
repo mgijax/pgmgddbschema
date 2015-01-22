@@ -119,7 +119,7 @@ END IF;
 
 IF (SELECT t.term FROM NOM_Marker n, VOC_Term t
 	WHERE n._Nomen_key = v_nomenKey AND
-	      n._NomenStatus_key = _Term_key) in ('Broadcast', 'Broadcast - Official')
+	      n._NomenStatus_key = _Term_key) in ('Broadcast')
 THEN
 	RAISE EXCEPTION E'NOM_transferToMGD: Symbol has already been broadcast.';
 	RETURN;
