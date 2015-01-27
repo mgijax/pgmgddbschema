@@ -16,7 +16,7 @@ create table mgd.MGI_Relationship_Property (
 	_RelationshipProperty_key	int             not null,
 	_Relationship_key		int             not null,
 	_PropertyName_key		int		not null,
-	value				varchar(255)    not null,
+	value				text    not null,
         sequenceNum			int             not null,
 	_CreatedBy_key                 int DEFAULT 1001             not null,
 	_ModifiedBy_key                int DEFAULT 1001             not null,

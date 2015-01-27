@@ -66,6 +66,11 @@ IF NEW._Marker_Type_key = 1
       AND NEW.name not like '%viral polymerase%'
 THEN
         PERFORM ALL_createWildType (NEW._Marker_key, NEW.symbol);
+
+        IF NOT FOUND
+        THEN
+                RAISE EXCEPTION E'MRK_Marker_insert_trigger: PERFORM ALL_createWildType failed';
+        END IF;
 END IF;
 
 RETURN NEW;

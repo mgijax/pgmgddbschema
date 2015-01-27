@@ -50,5 +50,6 @@ DROP FUNCTION SEQ_loadProbeCache(int);
 
 DROP FUNCTION VOC_mergeAnnotations(int,int,int);
 DROP FUNCTION VOC_mergeTerms(int,int);
+DROP FUNCTION VOC_processAnnotHeaderAll(int);
 
 EOSQL

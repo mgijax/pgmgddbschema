@@ -24,12 +24,12 @@ create table mgd.GXD_Structure (
 	_Stage_key                     int             not null,
 	_System_key                    int             not null,
 	edinburghKey                   int             null,
-	printName                      varchar(255)    null,
+	printName                      text    null,
 	treeDepth                      int             not null,
 	printStop                      smallint             not null,
 	topoSort                       int             not null,
 	inheritSystem                  smallint         not null,
-	structureNote                  varchar(255)    null,
+	structureNote                  text    null,
 	creation_date                  timestamp DEFAULT now()        not null,
 	modification_date              timestamp DEFAULT now()        not null 
 );

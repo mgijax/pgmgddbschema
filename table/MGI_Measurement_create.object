@@ -14,7 +14,7 @@ create table mgd.MGI_Measurement (
 	_Statistic_key		int		not null,
 	timeRecorded		timestamp DEFAULT now()	not null,
 	intValue		int		null,
-	numericValue		numeric		null,
+	floatValue		numeric		null,
 	isLatest		int		not null
 );
 EOSQL

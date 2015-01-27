@@ -19,7 +19,7 @@ create table mgd.PRB_Strain (
  	_Strain_key                    int             not null,
 	_Species_key                   int             not null,
 	_StrainType_key		       int	       not null,
-	strain                         varchar(255)    not null,
+	strain                         text    not null,
 	standard                       smallint             not null,
 	private                        smallint             not null,
 	geneticBackground	       smallint             not null,

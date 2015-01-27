@@ -17,6 +17,6 @@ create table mgd.VOC_GO_Cache (
  	_DAG_key                   int             not null,
 	dagAbbrev                  char(5)         not null,
 	accID                      varchar(30)     not null,
-	term                       varchar(255)    not null
+	term                       text    not null
 );
 EOSQL

@@ -15,7 +15,7 @@ create table mgd.GXD_Genotype (
  	_Genotype_key                  int             not null,
 	_Strain_key                    int             not null,
 	isConditional                  smallint             not null,
-	note                           varchar(255)    null,
+	note                           text    null,
 	_ExistsAs_key		       int	       not null,
 	_CreatedBy_key                 int DEFAULT 1001             not null,
 	_ModifiedBy_key                int DEFAULT 1001             not null,

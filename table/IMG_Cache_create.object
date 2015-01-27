@@ -39,7 +39,7 @@ create table mgd.IMG_Cache (
 	thumbnailNumericPart       int             not null,
 	sequenceNum                int             not null,
  	assayType                  varchar(80)     null,
-	figureLabel                varchar(255)    not null,
-	paneLabel                  varchar(255)    null
+	figureLabel                text    not null,
+	paneLabel                  text    null
 );
 EOSQL

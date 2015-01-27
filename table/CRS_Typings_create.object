@@ -13,7 +13,7 @@ create table mgd.CRS_Typings (
  	_Cross_key                     int             not null,
 	rowNumber                      int             not null,
 	colNumber                      int             not null,
-	data                           varchar(255)    null,
+	data                           text    null,
 	creation_date                  timestamp DEFAULT now()        not null,
 	modification_date              timestamp DEFAULT now()        not null 
 );

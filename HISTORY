@@ -1,3 +1,11 @@
+TAG: pgmgddbschema-5-2-1-5
+DATE: 01/27/2015
+STAFF: lec
+CHANGES:
+1) TR11750/postgres
+key/enable_triggers.sh
+key/disable_triggers.sh
+
 TAG: pgmgddbschema-5-2-1-4
 DATE: 01/15/2015
 STAFF: lec

@@ -14,7 +14,7 @@ create table mgd.VOC_Evidence (
  	_Annot_key                 int             not null,
  	_EvidenceTerm_key          int             not null,
 	_Refs_key                  int             not null,
-	inferredFrom               varchar(255)    null,
+	inferredFrom               text    null,
 	_CreatedBy_key                 int DEFAULT 1001             not null,
 	_ModifiedBy_key                int DEFAULT 1001             not null,
 	creation_date              timestamp DEFAULT now()        not null,

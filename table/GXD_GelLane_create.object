@@ -16,14 +16,14 @@ create table mgd.GXD_GelLane (
 	_GelRNAType_key                int             not null,
 	_GelControl_key                int             not null,
 	sequenceNum                    int             not null,
-	laneLabel                      varchar(255)    null,
+	laneLabel                      text    null,
 	sampleAmount                   varchar(10)     null,
 	sex                            varchar(15)     not null,
 	age                            varchar(50)     not null,
 	ageMin                         numeric           null,
 	ageMax                         numeric           null,
-	ageNote                        varchar(255)    null,
-	laneNote                       varchar(255)    null,
+	ageNote                        text    null,
+	laneNote                       text    null,
 	creation_date                  timestamp DEFAULT now()        not null,
 	modification_date              timestamp DEFAULT now()        not null 
 );

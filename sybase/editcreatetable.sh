@@ -43,6 +43,7 @@ g/bit/s//smallint/g
 g/float/s//numeric/g
 g/numericValue/s//floatValue/g
 g/offset/s//cmOffset/g
+g/varchar(255)/s//text/g
 g/^)/s//);/
 /cat
 d

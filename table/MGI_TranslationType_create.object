@@ -16,7 +16,7 @@ create table mgd.MGI_TranslationType (
  	_TranslationType_key           int             not null,
  	_MGIType_key                   int             not null,
 	_Vocab_key                     int             null,
-	translationType                varchar(255)    not null,
+	translationType                text    not null,
 	compressionChars               varchar(50)     null,
 	regularExpression              smallint             not null,
 	_CreatedBy_key                 int DEFAULT 1001             not null,

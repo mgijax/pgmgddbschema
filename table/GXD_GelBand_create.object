@@ -14,7 +14,7 @@ create table mgd.GXD_GelBand (
 	_GelLane_key                   int             not null,
 	_GelRow_key                    int             not null,
 	_Strength_key                  int             not null,
-	bandNote                       varchar(255)    null,
+	bandNote                       text    null,
 	creation_date                  timestamp DEFAULT now()        not null,
 	modification_date              timestamp DEFAULT now()        not null 
 );

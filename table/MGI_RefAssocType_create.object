@@ -15,7 +15,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create table mgd.MGI_RefAssocType (
  	_RefAssocType_key              int             not null,
  	_MGIType_key                   int             null,
-	assocType                      varchar(255)    not null,
+	assocType                      text    not null,
 	allowOnlyOne                   smallint             not null,
 	_CreatedBy_key                 int DEFAULT 1001             not null,
 	_ModifiedBy_key                int DEFAULT 1001             not null,

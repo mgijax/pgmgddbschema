@@ -15,7 +15,7 @@ create table mgd.MLD_InSitu (
 	_Strain_key                    int             not null,
 	cellOrigin                     varchar(30)     null,
 	karyotype                      varchar(30)     null,
-	robertsonians                  varchar(255)    null,
+	robertsonians                  text    null,
 	numMetaphase                   int             null,
 	totalGrains                    int             null,
 	grainsOnChrom                  int             null,

@@ -13,6 +13,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create table mgd.MGI_StatisticSql (
 	_Statistic_key		int		not null,
 	sequenceNum		int		not null,
-	sqlChunk		varchar(255)	not null
+	sqlChunk		text	not null
 );
 EOSQL

@@ -15,8 +15,8 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create table mgd.VOC_Term (
  	_Term_key                  int             not null,
  	_Vocab_key                 int             not null,
-	term                       varchar(255)    null,
-	abbreviation               varchar(255)    null,
+	term                       text    null,
+	abbreviation               text    null,
 	sequenceNum                int             null,
 	isObsolete                 smallint,
 	_CreatedBy_key                 int DEFAULT 1001             not null,

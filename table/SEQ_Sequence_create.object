@@ -23,7 +23,7 @@ create table mgd.SEQ_Sequence (
 	_SequenceProvider_key      int             not null,
 	_Organism_key              int             not null,
 	length                     int             null,
-	description                varchar(255)    null,
+	description                text    null,
 	version                    varchar(15)     null,
 	division                   char(3)         null,
 	virtual                    smallint             not null,

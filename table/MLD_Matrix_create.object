@@ -12,10 +12,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create table mgd.MLD_Matrix (
  	_Expt_key                      int             not null,
 	_Cross_key                     int             not null,
-	female                         varchar(255)    null,
-	female2                        varchar(255)    null,
-	male                           varchar(255)    null,
-	male2                          varchar(255)    null,
+	female                         text    null,
+	female2                        text    null,
+	male                           text    null,
+	male2                          text    null,
 	creation_date                  timestamp DEFAULT now()        not null,
 	modification_date              timestamp DEFAULT now()        not null 
 );

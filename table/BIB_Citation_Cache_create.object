@@ -21,8 +21,8 @@ create table mgd.BIB_Citation_Cache (
 	pubmedID                   varchar(30)     null,
 	reviewStatus		   varchar(40)     not null,
 	journal		           varchar(100)    null,
-	citation                   varchar(255)    not null,
-	short_citation             varchar(255)    not null,
+	citation                   text    not null,
+	short_citation             text    not null,
 	isReviewArticle            smallint             not null,
 	isReviewArticleString      char(3)         not null
 );
