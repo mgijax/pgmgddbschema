@@ -111,7 +111,7 @@ END IF;
 -- Remove Wild Type Allele (if one was created) from new Marker object */
 -- A marker/insert trigger will create a wild-type allele.
 -- In the case of a rename, this will create a duplicate wild-type allele.
-
+-- This looks obsolete/not needed
 --DELETE FROM ALL_Allele WHERE _Marker_key = v_newKey;
 
 --IF NOT FOUND
@@ -163,36 +163,36 @@ THEN
 END IF;
 
 -- Add History line for withdrawal
---exec MRK_insertHistory (v_oldKey, v_newKey, v_refKey, 2, v_eventReasonKey, v_oldName);
+PERFORM MRK_insertHistory (v_oldKey, v_newKey, v_refKey, 2, v_eventReasonKey, v_oldName);
 
---IF NOT FOUND
---THEN
-	--RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add history (withdrawal)';
-	--RETURN;
---END IF;
+IF NOT FOUND
+THEN
+	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add history (withdrawal)';
+	RETURN;
+END IF;
 
 -- Add History line for assignment
---exec MRK_insertHistory (v_oldKey, v_oldKey, v_refKey, 1, v_eventReasonKey, v_newName);
+PERFORM MRK_insertHistory (v_oldKey, v_oldKey, v_refKey, 1, v_eventReasonKey, v_newName);
 
---IF NOT FOUND
---THEN
-	--RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add history (assignment)';
-	--RETURN;
---END IF;
+IF NOT FOUND
+THEN
+	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add history (assignment)';
+	RETURN;
+END IF;
 
 -- If no wild type allele exists for new symbol, create it
 
---IF (SELECT _Marker_Type_key FROM MRK_Marker WHERE _Marker_key = v_newKey) = 1
---AND not exists (SELECT 1 FROM ALL_Allele WHERE _Marker_key = v_oldKey AND isWildType = 1)
---THEN
-	--exec ALL_createWildType (v_oldKey, v_newSymbol);
+IF (SELECT _Marker_Type_key FROM MRK_Marker WHERE _Marker_key = v_newKey) = 1
+AND not exists (SELECT 1 FROM ALL_Allele WHERE _Marker_key = v_oldKey AND isWildType = 1)
+THEN
+	PERFORM ALL_createWildType (v_oldKey, v_newSymbol);
 
-	--IF NOT FOUND
-	--THEN
-		--RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add wild type allele';
-		--RETURN;
-	--END IF;
---END IF;
+	IF NOT FOUND
+	THEN
+		RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add wild type allele';
+		RETURN;
+	END IF;
+END IF;
 
 -- Insert withdrawn symbol into Synonym table
 -- Use assigning reference
@@ -213,7 +213,7 @@ END IF;
 --		AND _Organism_key = 1
 --		AND synonymType = 'exact'
 
-	--exec MGI_insertSynonym v_oldKey, 2, v_synTypeKey, v_oldSymbol, v_assigningRefKey
+	--PERFORM MGI_insertSynonym v_oldKey, 2, v_synTypeKey, v_oldSymbol, v_assigningRefKey
 
 	--IF NOT FOUND
 	--THEN
@@ -223,7 +223,7 @@ END IF;
 --END IF;
 
 -- Update needsReview flag for strains
---exec PRB_setStrainReview v_oldKey
+--PERFORM PRB_setStrainReview v_oldKey
 
 --IF NOT FOUND
 --THEN
