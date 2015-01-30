@@ -143,8 +143,6 @@ END IF;
 
 -- Create new marker record in MGD
 
-DROP TABLE IF EXISTS nom_transfer;
-
 CREATE TEMP TABLE nom_transfer ON COMMIT DROP
 AS SELECT n.symbol, n.name, n.chromosome, n._Marker_Type_key, n._Marker_Event_key, n._Marker_EventReason_key,
        n._CurationState_key, r._Refs_key

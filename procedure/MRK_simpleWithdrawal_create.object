@@ -55,27 +55,24 @@ v_withdrawnName mrk_marker.name%TYPE;
 
 BEGIN
 
-/*
- * This procedure will process a simple marker withdrawal.
- * A simple marker withdrawal requires:
- *	a) the "old" marker key
- *	b) the reference key
- *	c) the event reason key
- *	c) the "new" marker symbol which does not already exist
- *	d) the "new" marker name
- *	e) the "add as synonym" flag
- *
- * Since the server is not case-sensitive, the caller is
- * responsible for making sure the new symbol is unique and correct.
- *
-*/
+--
+-- This procedure will process a simple marker withdrawal.
+-- A simple marker withdrawal requires:
+--	a) the "old" marker key
+--	b) the reference key
+--	c) the event reason key
+--	c) the "new" marker symbol which does not already exist
+--	d) the "new" marker name
+--	e) the "add as synonym" flag
+-- 
+--  Since the server is not case-sensitive, the caller is
+--  responsible for making sure the new symbol is unique and correct.
+-- 
 
 v_modifiedByKey := _User_key from MGI_User where login = current_user;
 v_curationStateKey := _Term_key from VOC_Term where _Vocab_key = 15 and term = 'Internal';
-v_withdrawnName := 'withdrawn, = ' + v_newSymbol;
+v_withdrawnName := 'withdrawn, = ' || v_newSymbol;
 v_newKey := max(_Marker_key) + 1 from MRK_Marker;
-
-DROP TABLE IF EXISTS mrk_tmp;
 
 CREATE TEMP TABLE mrk_tmp ON COMMIT DROP
 AS SELECT symbol as v_oldSymbol, name as v_oldName
@@ -84,7 +81,7 @@ FROM MRK_Marker WHERE _Marker_key = v_oldKey
      AND _Marker_Status_key in (1,3)
 ;
 
-/* Check for duplicates; exclude cytogenetic markers */
+-- Check for duplicates; exclude cytogenetic markers
 
 IF EXISTS (SELECT * FROM MRK_Marker 
 	WHERE _Organism_key = 1 
@@ -92,11 +89,11 @@ IF EXISTS (SELECT * FROM MRK_Marker
 	AND _Marker_Type_key != 3
 	AND symbol = v_newSymbol)
 THEN
-	RAISE EXCEPTION E'MRK_simpleWithdrawal: Duplicate Symbol (%)', v_newSymbol;
+	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Duplicate Symbol (%)', v_newSymbol;
 	RETURN;
 END IF;
 
-/* Create a new marker record using the old marker record as the template */
+-- Create a new marker record using the old marker record as the template
 
 INSERT INTO MRK_Marker 
 (_Marker_key, _Organism_key, _Marker_Type_key, _Marker_Status_key, _CurationState_key, symbol, name, chromosome, _CreatedBy_key, _ModifiedBy_key)
@@ -107,102 +104,107 @@ WHERE _Marker_key = v_oldKey
 
 IF NOT FOUND
 THEN
-	RAISE EXCEPTION E'MRK_simpleWithdrawal: Could not add marker (%)', v_newSymbol;
+	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add marker (%)', v_newSymbol;
 	RETURN;
 END IF;
 
-/* Remove Wild Type Allele (if one was created) from new Marker object */
-DELETE FROM ALL_Allele WHERE _Marker_key = v_newKey;
+-- Remove Wild Type Allele (if one was created) from new Marker object */
+-- A marker/insert trigger will create a wild-type allele.
+-- In the case of a rename, this will create a duplicate wild-type allele.
 
-IF NOT FOUND
-THEN
-	RAISE EXCEPTION E'MRK_simpleWithdrawal: Could not delete wild type allele';
-	RETURN;
-END IF;
+--DELETE FROM ALL_Allele WHERE _Marker_key = v_newKey;
 
-/* Create Offset for new marker */
+--IF NOT FOUND
+--THEN
+	--RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not delete wild type allele %\n', v_newKey;
+	--RETURN;
+--END IF;
+
+-- Create Offset for new marker
 INSERT INTO MRK_Offset values(v_newKey, 0, -999.0, current_date, current_date);
 
 IF NOT FOUND
 THEN
-	RAISE EXCEPTION E'MRK_simpleWithdrawal: Could not add offset';
+	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add offset';
 	RETURN;
 END IF;
 
-/* Update the Current marker of the new marker */
+-- Update the Current marker of the new marker
 UPDATE MRK_Current 
 SET _Current_key = v_oldKey 
 WHERE _Marker_key = v_newKey;
 
 IF NOT FOUND
 THEN
-	RAISE EXCEPTION E'MRK_simpleWithdrawal: Could not update current';
+	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not update current';
 	RETURN;
 END IF;
 
-/* Update old marker record with new symbol and name values */
+-- Update old marker record with new symbol and name values
 UPDATE MRK_Marker 
 SET symbol = v_newSymbol, name = v_newName, _ModifiedBy_key = v_modifiedByKey, modification_date = current_date
 WHERE _Marker_key = v_oldKey;
 
 IF NOT FOUND
 THEN
-	RAISE EXCEPTION E'MRK_simpleWithdrawal: Could not update marker';
+	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not update marker';
 	RETURN;
 END IF;
 
-/* Update history lines */
+-- Update history lines
 UPDATE MRK_History 
 SET _History_key = v_newKey 
 WHERE _Marker_key = v_oldKey AND _History_key = v_oldKey;
 
 IF NOT FOUND
 THEN
-	RAISE EXCEPTION E'MRK_simpleWithdrawal: Could not update history';
+	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not update history';
 	RETURN;
 END IF;
 
-/* Add History line for withdrawal */
---exec MRK_insertHistory v_oldKey, v_newKey, v_refKey, 2, v_eventReasonKey, v_oldName
+-- Add History line for withdrawal
+--exec MRK_insertHistory (v_oldKey, v_newKey, v_refKey, 2, v_eventReasonKey, v_oldName);
 
 --IF NOT FOUND
 --THEN
-	--RAISE EXCEPTION E'MRK_simpleWithdrawal: Could not add history (withdrawal)';
+	--RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add history (withdrawal)';
 	--RETURN;
 --END IF;
 
-/* Add History line for assignment */
---exec MRK_insertHistory v_oldKey, v_oldKey, v_refKey, 1, v_eventReasonKey, v_newName
+-- Add History line for assignment
+--exec MRK_insertHistory (v_oldKey, v_oldKey, v_refKey, 1, v_eventReasonKey, v_newName);
 
 --IF NOT FOUND
 --THEN
-	--RAISE EXCEPTION E'MRK_simpleWithdrawal: Could not add history (assignment)';
+	--RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add history (assignment)';
 	--RETURN;
 --END IF;
 
-/* If no wild type allele exists for new symbol, create it */
+-- If no wild type allele exists for new symbol, create it
 
 --IF (SELECT _Marker_Type_key FROM MRK_Marker WHERE _Marker_key = v_newKey) = 1
 --AND not exists (SELECT 1 FROM ALL_Allele WHERE _Marker_key = v_oldKey AND isWildType = 1)
 --THEN
-	--exec ALL_createWildType v_oldKey, v_newSymbol
+	--exec ALL_createWildType (v_oldKey, v_newSymbol);
 
 	--IF NOT FOUND
 	--THEN
-		--RAISE EXCEPTION E'MRK_simpleWithdrawal: Could not add wild type allele';
+		--RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add wild type allele';
 		--RETURN;
 	--END IF;
 --END IF;
 
-/* Insert withdrawn symbol into Synonym table */
-/* Use assigning reference */
+-- Insert withdrawn symbol into Synonym table
+-- Use assigning reference
+
 --IF v_addAsSynonym = 1
 --THEN
 --	declare v_assigningRefKey int
---	SELECT distinct v_assigningRefKey = _Refs_key FROM MRK_History_View
---		WHERE _Marker_key = v_oldKey
---		AND history = v_oldSymbol
---		AND _Marker_Event_key = 1
+--	SELECT distinct _Refs_key as v_assigningRefKey
+--	FROM MRK_History_View m, mrk_tmp mm
+--		WHERE m._Marker_key = v_oldKey
+--		AND m._Marker_Event_key = 1
+--		AND m.history = mm.v_oldSymbol
 --
 --	declare v_synTypeKey int
 --
@@ -215,17 +217,17 @@ END IF;
 
 	--IF NOT FOUND
 	--THEN
-		--RAISE EXCEPTION E'MRK_simpleWithdrawal: Could not add synonym';
+		--RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add synonym';
 		--RETURN;
 	--END IF;
 --END IF;
 
-/* Update needsReview flag for strains */
+-- Update needsReview flag for strains
 --exec PRB_setStrainReview v_oldKey
 
 --IF NOT FOUND
 --THEN
-	--RAISE EXCEPTION E'MRK_simpleWithdrawal: Could not flag Strain record for needing review';
+	--RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not flag Strain record for needing review';
 	--RETURN;
 --END IF;
 
@@ -237,6 +239,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MRK_simpleWithdrawal(int,int,int,varchar,text,int) TO public;
 
-COMMENT ON FUNCTION mgd.MRK_simpleWithdrawal(int,int,int,varchar,text,int) IS '';
+COMMENT ON FUNCTION mgd.MRK_simpleWithdrawal(int,int,int,varchar,text,int) IS 'process a simple marker withdrawal';
 
 EOSQL
