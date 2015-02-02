@@ -47,7 +47,6 @@ RETURNS VOID AS
 
 DECLARE
 v_modifiedByKey int;
-v_curationStateKey int;
 v_newKey int;
 v_oldSymbol mrk_marker.symbol%TYPE;
 v_oldName mrk_marker.name%TYPE;
@@ -70,7 +69,6 @@ BEGIN
 -- 
 
 v_modifiedByKey := _User_key from MGI_User where login = current_user;
-v_curationStateKey := _Term_key from VOC_Term where _Vocab_key = 15 and term = 'Internal';
 v_withdrawnName := 'withdrawn, = ' || v_newSymbol;
 v_newKey := max(_Marker_key) + 1 from MRK_Marker;
 
@@ -97,7 +95,7 @@ END IF;
 
 INSERT INTO MRK_Marker 
 (_Marker_key, _Organism_key, _Marker_Type_key, _Marker_Status_key, _CurationState_key, symbol, name, chromosome, _CreatedBy_key, _ModifiedBy_key)
-SELECT v_newKey, _Organism_key, _Marker_Type_key, 2, v_curationStateKey, symbol, v_withdrawnName, chromosome, v_modifiedByKey, v_modifiedByKey
+SELECT v_newKey, _Organism_key, _Marker_Type_key, 2, 166894, symbol, v_withdrawnName, chromosome, v_modifiedByKey, v_modifiedByKey
 FROM MRK_Marker
 WHERE _Marker_key = v_oldKey
 ;
@@ -114,12 +112,6 @@ END IF;
 -- This looks obsolete/not needed
 --DELETE FROM ALL_Allele WHERE _Marker_key = v_newKey;
 
---IF NOT FOUND
---THEN
-	--RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not delete wild type allele %\n', v_newKey;
-	--RETURN;
---END IF;
-
 -- Create Offset for new marker
 INSERT INTO MRK_Offset values(v_newKey, 0, -999.0, current_date, current_date);
 
@@ -134,33 +126,16 @@ UPDATE MRK_Current
 SET _Current_key = v_oldKey 
 WHERE _Marker_key = v_newKey;
 
-IF NOT FOUND
-THEN
-	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not update current';
-	RETURN;
-END IF;
-
 -- Update old marker record with new symbol and name values
 UPDATE MRK_Marker 
 SET symbol = v_newSymbol, name = v_newName, _ModifiedBy_key = v_modifiedByKey, modification_date = current_date
 WHERE _Marker_key = v_oldKey;
 
-IF NOT FOUND
-THEN
-	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not update marker';
-	RETURN;
-END IF;
-
 -- Update history lines
 UPDATE MRK_History 
 SET _History_key = v_newKey 
-WHERE _Marker_key = v_oldKey AND _History_key = v_oldKey;
-
-IF NOT FOUND
-THEN
-	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not update history';
-	RETURN;
-END IF;
+WHERE _Marker_key = v_oldKey 
+AND _History_key = v_oldKey;
 
 -- Add History line for withdrawal
 PERFORM MRK_insertHistory (v_oldKey, v_newKey, v_refKey, 2, v_eventReasonKey, v_oldName);
