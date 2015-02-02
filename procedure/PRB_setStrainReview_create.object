@@ -1,0 +1,128 @@
+#!/bin/sh
+
+#
+# History
+#
+# 06/19/2012	lec
+#	- TR 1110/"Needs Review - nomen" moved to "Needs Review - symbol"
+#
+# 04/17/2008 - jsb - new addition for TR8511
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION PRB_setStrainReview(int,int);
+
+CREATE OR REPLACE FUNCTION PRB_setStrainReview(
+v_markerKey int DEFAULT null,
+v_alleleKey int DEFAULT null
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_userKey int;
+v_nomenReviewKey int;
+v_strainKey int;
+v_annotTypeKey int;
+v_qualifierKey int;
+v_seqNum int;
+v_annotKey int;
+
+BEGIN
+
+--
+-- Set the "Needs Review - symbol" flag for all strains of a marker or allele.
+-- This is needed for the nomen update process.
+--
+
+v_userKey := _User_key from MGI_User where login = current_user;
+v_nomenReviewKey := 8581446;
+v_annotTypeKey := 1008;
+v_qualifierKey := 1614158;
+v_seqNum := 1;
+v_annotKey := max(_Annot_key) from VOC_Annot;
+
+IF (v_markerKey = null) and (@alleleKey = null)
+THEN
+    rollback transaction
+    raiserror 99999 "Either marker or allele key must be non-null"
+    return
+END IF;
+
+IF v_markerKey != null
+THEN
+    declare strainCursor cursor for
+    SELECT _Strain_key
+    FROM PRB_Strain_Marker
+    WHERE _Marker_key = v_markerKey
+    for read only
+
+    open strainCursor
+    fetch strainCursor into v_strainKey
+    
+    while (@@sqlstatus = 0)
+    begin
+	if 0 = (select count(1) from VOC_Annot
+	    where _AnnotType_key = v_annotTypeKey
+		and _Object_key = v_strainKey
+		and _Term_key = v_nomenReviewKey)
+	begin
+	    insert VOC_Annot (_Annot_key, _AnnotType_key, _Object_key,
+	        _Term_key, _Qualifier_key)
+	    values (v_annotKey + v_seqNum, v_annotTypeKey, v_strainKey,
+	        v_nomenReviewKey, v_qualifierKey)
+
+	    select v_seqNum = v_seqNum + 1
+        end /* if */
+
+	fetch strainCursor into v_strainKey
+    end	/* while */
+
+    close strainCursor
+    deallocate cursor strainCursor
+
+-- allele key is non-null
+ELSE	
+
+    declare strainCursor cursor for
+    select _Strain_key
+    from PRB_Strain_Marker
+    where _Allele_key = @alleleKey
+    for read only
+
+    open strainCursor
+    fetch strainCursor into v_strainKey
+    
+    while (@@sqlstatus = 0)
+    begin
+	if 0 = (select count(1) from VOC_Annot
+	    where _AnnotType_key = v_annotTypeKey
+		and _Object_key = v_strainKey
+		and _Term_key = v_nomenReviewKey)
+	begin
+	    INSERT INTO VOC_Annot (_Annot_key, _AnnotType_key, _Object_key,
+	        _Term_key, _Qualifier_key)
+	    VALUES (v_annotKey + v_seqNum, v_annotTypeKey, v_strainKey,
+	        v_nomenReviewKey, v_qualifierKey)
+
+	    v_seqNum := v_seqNum + 1;
+        end /* if */
+
+	fetch strainCursor into v_strainKey
+    end	/* while */
+
+    close strainCursor
+    deallocate cursor strainCursor
+END IF; -- if
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ACCRef_insert(int,int) TO public;
+
+COMMENT ON FUNCTION mgd.ACCRef_insert(int, int) IS 'creates a new acc_accessionreference row';
+
+EOSQL

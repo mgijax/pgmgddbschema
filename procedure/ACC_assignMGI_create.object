@@ -21,7 +21,7 @@ DROP FUNCTION ACC_assignMGI(int,varchar,varchar,int);
 
 CREATE OR REPLACE FUNCTION ACC_assignMGI (
   v_objectKey int,
-  v_mgiType varchar(80),
+  v_mgiType acc_mgitype.name%TYPE,
   v_prefixPart varchar(30) DEFAULT 'MGI:',
   v_nextMGI int DEFAULT -1
 )

@@ -20,7 +20,7 @@ CREATE OR REPLACE FUNCTION ACC_insertNoChecks (
 v_objectKey int,
 v_accID acc_accession.accid%TYPE,
 v_logicalDB int,
-v_mgiType varchar(80),
+v_mgiType acc_mgitype.name%TYPE,
 v_refsKey int DEFAULT -1,
 v_preferred int DEFAULT 1,
 v_private int DEFAULT 0

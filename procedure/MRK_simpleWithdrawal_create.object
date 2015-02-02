@@ -48,6 +48,7 @@ RETURNS VOID AS
 DECLARE
 v_modifiedByKey int;
 v_newKey int;
+v_assigningRefKey int;
 v_oldSymbol mrk_marker.symbol%TYPE;
 v_oldName mrk_marker.name%TYPE;
 v_withdrawnName mrk_marker.name%TYPE;
@@ -73,10 +74,14 @@ v_withdrawnName := 'withdrawn, = ' || v_newSymbol;
 v_newKey := max(_Marker_key) + 1 from MRK_Marker;
 
 CREATE TEMP TABLE mrk_tmp ON COMMIT DROP
-AS SELECT symbol as v_oldSymbol, name as v_oldName
-FROM MRK_Marker WHERE _Marker_key = v_oldKey 
-     AND _Organism_key = 1
-     AND _Marker_Status_key in (1,3)
+AS SELECT m.symbol as v_oldSymbol, m.name as v_oldName, h._Refs_key as v_assigningRefKey
+FROM MRK_Marker m, MRK_History h
+WHERE m._Organism_key = 1
+     AND m._Marker_Status_key in (1,3)
+     AND m._Marker_key = v_oldKey 
+     AND m._Marker_key = h._Marker_key
+     AND h._History_key = v_oldKey
+     AND h._Marker_Event_key = 1
 ;
 
 -- Check for duplicates; exclude cytogenetic markers
@@ -172,30 +177,16 @@ END IF;
 -- Insert withdrawn symbol into Synonym table
 -- Use assigning reference
 
---IF v_addAsSynonym = 1
---THEN
---	declare v_assigningRefKey int
---	SELECT distinct _Refs_key as v_assigningRefKey
---	FROM MRK_History_View m, mrk_tmp mm
---		WHERE m._Marker_key = v_oldKey
---		AND m._Marker_Event_key = 1
---		AND m.history = mm.v_oldSymbol
---
---	declare v_synTypeKey int
---
---	SELECT v_synTypeKey = _SynonymType_key FROM MGI_SynonymType 
---		WHERE _MGIType_key = 2 
---		AND _Organism_key = 1
---		AND synonymType = 'exact'
+IF v_addAsSynonym = 1
+THEN
+	PERFORM MGI_insertSynonym v_oldKey, 2, 1004, v_oldSymbol, v_assigningRefKey
 
-	--PERFORM MGI_insertSynonym v_oldKey, 2, v_synTypeKey, v_oldSymbol, v_assigningRefKey
-
-	--IF NOT FOUND
-	--THEN
-		--RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add synonym';
-		--RETURN;
-	--END IF;
---END IF;
+	IF NOT FOUND
+	THEN
+		RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add synonym';
+		RETURN;
+	END IF;
+END IF;
 
 -- Update needsReview flag for strains
 --PERFORM PRB_setStrainReview v_oldKey

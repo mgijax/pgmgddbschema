@@ -18,9 +18,9 @@ v_objectKey int,
 v_refsKey int,
 v_accID acc_accession.accid%TYPE,
 v_logicalDB int,
-v_mgiType varchar(80),
-v_preferred int = 1,
-v_private int = 0
+v_mgiType acc_mgitype.name%TYPE,
+v_preferred int DEFAULT 1,
+v_private int DEFAULT 0
 )
 RETURNS VOID AS
 \$\$
