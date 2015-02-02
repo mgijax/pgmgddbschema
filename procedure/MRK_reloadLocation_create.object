@@ -1,0 +1,143 @@
+#!/bin/sh
+#
+# History
+#
+# 09/01/2011	lec
+#	- TR 10805/_Organism_key
+#
+# 06/02/2005 lec
+#	- OMIM release
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION MRK_reloadLocation(int);
+
+CREATE OR REPLACE FUNCTION MRK_reloadLocation (
+v_markerKey int
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+marker_cursor refcursor;
+maxKey int;
+v_markerTypeKey int;
+v_organismKey int;
+v_sequenceNum int;
+v_chromosome mrk_marker.chromosome%TYPE;
+v_cytogeneticOffset mrk_marker.cytogeneticOffset%TYPE;
+v_cmoffset mrk_offset.cmoffset%TYPE;
+v_startCoordinate seq_coord_cache.startCoordinate%TYPE;
+v_endCoordinate seq_coord_cache.endCoordinate%TYPE;
+v_strand seq_coord_cache.strand%TYPE;
+v_mapUnits voc_term.term%TYPE;
+v_provider map_coord_collection.abbreviation%TYPE;
+v_version seq_coord_cache.version%TYPE;
+v_genomicChromosome seq_coord_cache.chromosome%TYPE;
+
+BEGIN
+
+delete from MRK_Location_Cache where _Marker_key = v_markerKey;
+
+select into maxKey max(_Cache_key) + 1 from MRK_Location_Cache;
+
+OPEN marker_cursor FOR
+select m.chromosome, m.cytogeneticOffset, m._Marker_Type_key, m._Organism_key,
+o.cmoffset, c.sequenceNum,
+f.startCoordinate, f.endCoordinate, f.strand, u.term, cl.abbreviation, cc.version, gc.chromosome as genomicChromosome
+from MRK_Marker m, MRK_Offset o, MRK_Chromosome c,
+MAP_Coord_Collection cl, MAP_Coordinate cc, MAP_Coord_Feature f, VOC_Term u, MRK_Chromosome gc
+where m._Marker_key = v_markerKey
+and m._Marker_key = o._Marker_key
+and o.source = 0
+and m._Organism_key = c._Organism_key
+and m.chromosome = c.chromosome
+and m._Marker_key = f._Object_key
+and f._MGIType_key = 2
+and f._Map_key = cc._Map_key
+and cc._Collection_key = cl._Collection_key
+and cc._Units_key = u._Term_key
+and cc._Object_key = gc._Chromosome_key
+
+union
+select m.chromosome, m.cytogeneticOffset, m._Marker_Type_key, m._Organism_key, 
+o.cmoffset, ch.sequenceNum,
+c.startCoordinate, c.endCoordinate, c.strand, c.mapUnits, cl.abbreviation, c.version, c.chromosome as genomicChromosome
+from MRK_Marker m, MRK_Offset o, MRK_Chromosome ch, 
+     SEQ_Marker_Cache mc, SEQ_Coord_Cache c, MAP_Coordinate cc,
+     MAP_Coord_Collection cl
+where m._Marker_key = v_markerKey
+and m._Marker_key = o._Marker_key 
+and o.source = 0 
+and m._Organism_key = ch._Organism_key 
+and m.chromosome = ch.chromosome 
+and m._Marker_key = mc._Marker_key
+and mc._Qualifier_key = 615419
+and mc._Sequence_key = c._Sequence_key
+and c._Map_key = cc._Map_key
+and cc._Collection_key = cl._Collection_key
+
+union
+select m.chromosome, m.cytogeneticOffset, m._Marker_Type_key, m._Organism_key,
+o.cmoffset, c.sequenceNum,NULL,NULL,NULL,NULL,NULL,NULL,NULL
+from MRK_Marker m, MRK_Offset o, MRK_Chromosome c
+where m._Marker_key = v_markerKey
+and m._Marker_key = o._Marker_key
+and o.source = 0
+and m._Organism_key = c._Organism_key
+and m.chromosome = c.chromosome
+and not exists (select 1 from SEQ_Marker_Cache mc, SEQ_Coord_Cache c
+where m._Marker_key = mc._Marker_key
+and mc._Qualifier_key = 615419
+and mc._Sequence_key = c._Sequence_key)
+and not exists (select 1 from MAP_Coord_Feature f
+where m._Marker_key = f._Object_key
+and f._MGIType_key = 2)
+
+union
+select m.chromosome, m.cytogeneticOffset, m._Marker_Type_key, m._Organism_key,
+o.cmoffset, c.sequenceNum,NULL,NULL,NULL,NULL,NULL,NULL,NULL
+from MRK_Marker m, MRK_Offset o, MRK_Chromosome c
+where m._Marker_key = v_markerKey
+and m._Marker_key = o._Marker_key
+and o.source = 0
+and m._Organism_key = c._Organism_key
+and m.chromosome = c.chromosome
+and not exists (select 1 from SEQ_Marker_Cache mc, SEQ_Coord_Cache c
+where m._Marker_key = mc._Marker_key
+and mc._Qualifier_key = 615419
+and mc._Sequence_key = c._Sequence_key)
+and not exists (select 1 from MAP_Coord_Feature f
+where m._Marker_key = f._Object_key
+and f._MGIType_key = 2)
+;
+LOOP
+        FETCH marker_cursor INTO v_chromosome, v_cytogeneticOffset, v_markerTypeKey, v_organismKey, v_cmoffset, 
+		v_sequenceNum, v_startCoordinate, v_endCoordinate, v_strand, v_mapUnits, 
+		v_provider, v_version, v_genomicChromosome;
+        EXIT WHEN NOT FOUND;
+
+	INSERT INTO MRK_Location_Cache
+	(_Cache_key, _Marker_key, _Marker_Type_key, _Organism_key, chromosome, sequenceNum, cytogeneticOffset, 
+		cmoffset, genomicChromosome, startCoordinate, endCoordinate, strand, mapUnits, provider, version)
+	VALUES(maxKey, v_markerKey, v_markerTypeKey, v_organismKey, v_chromosome, v_sequenceNum, v_cytogeneticOffset, 
+		v_cmoffset, v_genomicChromosome, v_startCoordinate, v_endCoordinate, v_strand, v_mapUnits, v_provider, v_version)
+	;
+
+	maxKey := maxKey + 1;
+END LOOP;
+CLOSE marker_cursor;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MRK_reloadLocation(int) TO public;
+
+
+COMMENT ON FUNCTION MRK_reloadLocation(int) IS '';
+
+EOSQL

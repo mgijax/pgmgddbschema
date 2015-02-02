@@ -179,7 +179,7 @@ END IF;
 
 IF v_addAsSynonym = 1
 THEN
-	PERFORM MGI_insertSynonym v_oldKey, 2, 1004, v_oldSymbol, v_assigningRefKey
+	PERFORM MGI_insertSynonym (v_oldKey, 2, 1004, v_oldSymbol, v_assigningRefKey);
 
 	IF NOT FOUND
 	THEN
@@ -189,13 +189,13 @@ THEN
 END IF;
 
 -- Update needsReview flag for strains
---PERFORM PRB_setStrainReview v_oldKey
+PERFORM PRB_setStrainReview (v_oldKey);
 
---IF NOT FOUND
---THEN
-	--RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not flag Strain record for needing review';
-	--RETURN;
---END IF;
+IF NOT FOUND
+THEN
+	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not flag Strain record for needing review';
+	RETURN;
+END IF;
 
 RETURN;
 

@@ -28,6 +28,7 @@ v_annotTypeKey int;
 v_qualifierKey int;
 v_annotKey int;
 v_strainKey int;
+strain_cursor refcursor;
 
 BEGIN
 
@@ -41,8 +42,6 @@ v_nomenReviewKey := 8581446;
 v_annotTypeKey := 1008;
 v_qualifierKey := 1614158;
 v_annotKey := max(_Annot_key) + 1 from VOC_Annot;
-
-strain_cursor refcursor;
 
 IF (v_markerKey = null) AND (v_alleleKey = null)
 THEN
@@ -60,10 +59,10 @@ THEN
     ;
 
     LOOP
-        FETCH strain_cursor INTO v_strainKey
+        FETCH strain_cursor INTO v_strainKey;
         EXIT WHEN NOT FOUND;
 
-	IF EXISTS (SELECT 1 FROM VOC_Annot
+	IF NOT EXISTS (SELECT 1 FROM VOC_Annot
 	    WHERE _AnnotType_key = v_annotTypeKey
 		AND _Object_key = v_strainKey
 		AND _Term_key = v_nomenReviewKey)
@@ -72,6 +71,7 @@ THEN
 		creation_date, modification_date)
 	    VALUES (v_annotKey, v_annotTypeKey, v_strainKey,
 	        v_nomenReviewKey, v_qualifierKey, current_date, current_date)
+	    ;
 
 	    v_annotKey := v_annotKey + 1;
         END IF;
@@ -87,10 +87,10 @@ ELSE
     ;
 
     LOOP
-        FETCH strain_cursor INTO v_strainKey
+        FETCH strain_cursor INTO v_strainKey;
         EXIT WHEN NOT FOUND;
 
-	IF EXISTS (SELECT 1 FROM VOC_Annot
+	IF NOT EXISTS (SELECT 1 FROM VOC_Annot
 	    WHERE _AnnotType_key = v_annotTypeKey
 		AND _Object_key = v_strainKey
 		AND _Term_key = v_nomenReviewKey)
@@ -99,6 +99,7 @@ ELSE
 		creation_date, modification_date)
 	    VALUES (v_annotKey, v_annotTypeKey, v_strainKey,
 	        v_nomenReviewKey, v_qualifierKey, current_date, current_date)
+	    ;
 
 	    v_annotKey := v_annotKey + 1;
         END IF;
