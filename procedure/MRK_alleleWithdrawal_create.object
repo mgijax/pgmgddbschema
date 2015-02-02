@@ -1,0 +1,86 @@
+#!/bin/sh
+
+#
+# History
+#
+# 06/30/2004	lec
+#	- TR 5998
+#
+# 08/26/2003	lec
+#	- TR 4708
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION MRK_alleleWithdrawal(int,int,int,int,int);
+
+CREATE OR REPLACE FUNCTION MRK_alleleWithdrawal (
+v_oldKey int,
+v_newKey int,
+v_refKey int,
+v_eventReasonKey int,
+v_addAsSynonym int DEFAULT 1
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_oldSymbol mrk_marker.symbol%TYPE;
+v_oldName mrk_marker.name%TYPE;
+v_newSymbol  mrk_marker.symbol%TYPE;
+
+BEGIN
+
+--
+-- This procedure will process an allele marker withdrawal.
+--
+-- An allele marker withdrawal requires:
+--	a) the "old" marker key
+--	b) the "new" marker key
+--	c) the reference key
+--	d) the event reason key
+--
+
+SELECT symbol AS v_oldSymbol, name AS v_oldName
+FROM MRK_Marker WHERE _Marker_key = v_oldKey
+     AND _Organism_key = 1
+     AND _Marker_Status_key in (1,3)
+
+IF v_oldSymbol IS NULL
+THEN
+        RAISE EXCEPTION E'\nMRK_alleleWithdrawal : Invalid Old Symbol Key %', v_oldKey;
+        RETURN;
+END IF;
+
+SELECT symbol AS v_newSymbol
+FROM MRK_Marker WHERE _Marker_key = v_newKey
+     AND _Organism_key = 1
+     AND _Marker_Status_key in (1,3)
+
+IF v_newSymbol IS NULL
+THEN
+        RAISE EXCEPTION E'\nMRK_alleleWithdrawal : Invalid New Symbol Key %', v_newKey;
+        RETURN;
+END IF;
+
+PERFORM MRK_mergeWithdrawal (v_oldKey, v_newKey, v_refKey, 4, v_eventReasonKey, v_addAsSynonym);
+
+IF NOT FOUND
+THEN
+        RAISE EXCEPTION E'\nMRK_alleleWithdrawal : Could not execute allele withdrawal call to merge withdrawal';
+        RETURN;
+END IF;
+
+RETURN;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MRK_alleleWithdrawal(int,int,int,int,int) TO public;
+
+COMMENT ON FUNCTION mgd.MRK_alleleWithdrawal(int,int,int,int,int) IS 'process an allele/marker withdrawal';
+
+EOSQL
