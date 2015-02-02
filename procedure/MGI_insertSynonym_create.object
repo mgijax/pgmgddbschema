@@ -14,14 +14,14 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION MGI_insertSynonym(int,int,int,varchar,int);
+DROP FUNCTION MGI_insertSynonym(int,int,int,text,int);
 
 CREATE OR REPLACE FUNCTION MGI_insertSynonym (
 v_objectKey int,
 v_mgiTypeKey int,
 v_synTypeKey int,
-v_synonym varchar(255),
-v_refsKey int = null
+v_synonym mgi_synonym.synonym%TYPE,
+v_refsKey int DEFAULT null
 )
 RETURNS VOID AS
 \$\$
@@ -51,8 +51,10 @@ IF NOT EXISTS (SELECT 1 FROM MGI_Synonym
 	AND synonym = v_synonym)
 THEN
 	INSERT INTO MGI_Synonym
-	(_Synonym_key, _Object_key, _MGIType_key, _SynonymType_key, _Refs_key, synonym, _CreatedBy_key, _ModifiedBy_key)
-	VALUES (v_synKey, v_objectKey, v_mgiTypeKey, v_synTypeKey, v_refsKey, v_synonym, v_userKey, v_userKey);
+	(_Synonym_key, _Object_key, _MGIType_key, _SynonymType_key, _Refs_key, synonym, 
+	 _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
+	VALUES (v_synKey, v_objectKey, v_mgiTypeKey, v_synTypeKey, v_refsKey, v_synonym, 
+		v_userKey, v_userKey, current_date, current_date);
 
 END IF;
 
@@ -61,8 +63,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MGI_insertSynonym(int,int,int,varchar,int) TO public;
+GRANT EXECUTE ON FUNCTION MGI_insertSynonym(int,int,int,text,int) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_insertSynonym(int,int,int,varchar,int) IS '';
+COMMENT ON FUNCTION mgd.MGI_insertSynonym(int,int,int,text,int) IS 'create a new synonym in the mgi_synonym table';
 
 EOSQL
