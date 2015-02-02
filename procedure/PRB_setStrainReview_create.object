@@ -24,11 +24,10 @@ RETURNS VOID AS
 DECLARE
 v_userKey int;
 v_nomenReviewKey int;
-v_strainKey int;
 v_annotTypeKey int;
 v_qualifierKey int;
-v_seqNum int;
 v_annotKey int;
+v_strainKey int;
 
 BEGIN
 
@@ -41,81 +40,74 @@ v_userKey := _User_key from MGI_User where login = current_user;
 v_nomenReviewKey := 8581446;
 v_annotTypeKey := 1008;
 v_qualifierKey := 1614158;
-v_seqNum := 1;
-v_annotKey := max(_Annot_key) from VOC_Annot;
+v_annotKey := max(_Annot_key) + 1 from VOC_Annot;
 
-IF (v_markerKey = null) and (@alleleKey = null)
+strain_cursor refcursor;
+
+IF (v_markerKey = null) AND (v_alleleKey = null)
 THEN
-    rollback transaction
-    raiserror 99999 "Either marker or allele key must be non-null"
-    return
+    RAISE EXCEPTION E'Either marker or allele key must be non-null';
+    RETURN;
 END IF;
 
-IF v_markerKey != null
+-- marker key is non-null
+IF v_markerKey IS NOT null
 THEN
-    declare strainCursor cursor for
-    SELECT _Strain_key
+    OPEN strain_cursor FOR
+    SELECT DISTINCT _Strain_key
     FROM PRB_Strain_Marker
     WHERE _Marker_key = v_markerKey
-    for read only
+    ;
 
-    open strainCursor
-    fetch strainCursor into v_strainKey
-    
-    while (@@sqlstatus = 0)
-    begin
-	if 0 = (select count(1) from VOC_Annot
-	    where _AnnotType_key = v_annotTypeKey
-		and _Object_key = v_strainKey
-		and _Term_key = v_nomenReviewKey)
-	begin
-	    insert VOC_Annot (_Annot_key, _AnnotType_key, _Object_key,
-	        _Term_key, _Qualifier_key)
-	    values (v_annotKey + v_seqNum, v_annotTypeKey, v_strainKey,
-	        v_nomenReviewKey, v_qualifierKey)
+    LOOP
+        FETCH strain_cursor INTO v_strainKey
+        EXIT WHEN NOT FOUND;
 
-	    select v_seqNum = v_seqNum + 1
-        end /* if */
+	IF EXISTS (SELECT 1 FROM VOC_Annot
+	    WHERE _AnnotType_key = v_annotTypeKey
+		AND _Object_key = v_strainKey
+		AND _Term_key = v_nomenReviewKey)
+	THEN
+	    INSERT INTO VOC_Annot (_Annot_key, _AnnotType_key, _Object_key, _Term_key, _Qualifier_key,
+		creation_date, modification_date)
+	    VALUES (v_annotKey, v_annotTypeKey, v_strainKey,
+	        v_nomenReviewKey, v_qualifierKey, current_date, current_date)
 
-	fetch strainCursor into v_strainKey
-    end	/* while */
-
-    close strainCursor
-    deallocate cursor strainCursor
+	    v_annotKey := v_annotKey + 1;
+        END IF;
+    END LOOP;
+    CLOSE strain_cursor;
 
 -- allele key is non-null
 ELSE	
+    OPEN strain_cursor FOR
+    SELECT DISTINCT _Strain_key
+    FROM PRB_Strain_Marker
+    WHERE _Allele_key = v_alleleKey
+    ;
 
-    declare strainCursor cursor for
-    select _Strain_key
-    from PRB_Strain_Marker
-    where _Allele_key = @alleleKey
-    for read only
+    LOOP
+        FETCH strain_cursor INTO v_strainKey
+        EXIT WHEN NOT FOUND;
 
-    open strainCursor
-    fetch strainCursor into v_strainKey
-    
-    while (@@sqlstatus = 0)
-    begin
-	if 0 = (select count(1) from VOC_Annot
-	    where _AnnotType_key = v_annotTypeKey
-		and _Object_key = v_strainKey
-		and _Term_key = v_nomenReviewKey)
-	begin
-	    INSERT INTO VOC_Annot (_Annot_key, _AnnotType_key, _Object_key,
-	        _Term_key, _Qualifier_key)
-	    VALUES (v_annotKey + v_seqNum, v_annotTypeKey, v_strainKey,
-	        v_nomenReviewKey, v_qualifierKey)
+	IF EXISTS (SELECT 1 FROM VOC_Annot
+	    WHERE _AnnotType_key = v_annotTypeKey
+		AND _Object_key = v_strainKey
+		AND _Term_key = v_nomenReviewKey)
+	THEN
+	    INSERT INTO VOC_Annot (_Annot_key, _AnnotType_key, _Object_key, _Term_key, _Qualifier_key, 
+		creation_date, modification_date)
+	    VALUES (v_annotKey, v_annotTypeKey, v_strainKey,
+	        v_nomenReviewKey, v_qualifierKey, current_date, current_date)
 
-	    v_seqNum := v_seqNum + 1;
-        end /* if */
+	    v_annotKey := v_annotKey + 1;
+        END IF;
 
-	fetch strainCursor into v_strainKey
-    end	/* while */
+    END LOOP;
+    CLOSE strain_cursor;
+END IF;
 
-    close strainCursor
-    deallocate cursor strainCursor
-END IF; -- if
+RETURN;
 
 END;
 \$\$
