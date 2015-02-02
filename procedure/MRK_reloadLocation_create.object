@@ -1,4 +1,5 @@
 #!/bin/sh
+
 #
 # History
 #
@@ -37,12 +38,13 @@ v_mapUnits voc_term.term%TYPE;
 v_provider map_coord_collection.abbreviation%TYPE;
 v_version seq_coord_cache.version%TYPE;
 v_genomicChromosome seq_coord_cache.chromosome%TYPE;
+v_maxKey int;
 
 BEGIN
 
-delete from MRK_Location_Cache where _Marker_key = v_markerKey;
+DELETE FROM MRK_Location_Cache where _Marker_key = v_markerKey;
 
-select into maxKey max(_Cache_key) + 1 from MRK_Location_Cache;
+maxKey := max(_Cache_key) + 1 from MRK_Location_Cache;
 
 OPEN marker_cursor FOR
 select m.chromosome, m.cytogeneticOffset, m._Marker_Type_key, m._Organism_key,
@@ -62,7 +64,7 @@ and cc._Collection_key = cl._Collection_key
 and cc._Units_key = u._Term_key
 and cc._Object_key = gc._Chromosome_key
 
-union
+UNION
 select m.chromosome, m.cytogeneticOffset, m._Marker_Type_key, m._Organism_key, 
 o.cmoffset, ch.sequenceNum,
 c.startCoordinate, c.endCoordinate, c.strand, c.mapUnits, cl.abbreviation, c.version, c.chromosome as genomicChromosome
@@ -80,7 +82,7 @@ and mc._Sequence_key = c._Sequence_key
 and c._Map_key = cc._Map_key
 and cc._Collection_key = cl._Collection_key
 
-union
+UNION
 select m.chromosome, m.cytogeneticOffset, m._Marker_Type_key, m._Organism_key,
 o.cmoffset, c.sequenceNum,NULL,NULL,NULL,NULL,NULL,NULL,NULL
 from MRK_Marker m, MRK_Offset o, MRK_Chromosome c
@@ -97,7 +99,7 @@ and not exists (select 1 from MAP_Coord_Feature f
 where m._Marker_key = f._Object_key
 and f._MGIType_key = 2)
 
-union
+UNION
 select m.chromosome, m.cytogeneticOffset, m._Marker_Type_key, m._Organism_key,
 o.cmoffset, c.sequenceNum,NULL,NULL,NULL,NULL,NULL,NULL,NULL
 from MRK_Marker m, MRK_Offset o, MRK_Chromosome c
@@ -137,7 +139,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MRK_reloadLocation(int) TO public;
 
-
-COMMENT ON FUNCTION MRK_reloadLocation(int) IS '';
+COMMENT ON FUNCTION MRK_reloadLocation(int) IS 'update mrk_location_cache for given marker';
 
 EOSQL
