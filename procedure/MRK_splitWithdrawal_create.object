@@ -92,7 +92,8 @@ LOOP
 		EXIT;
 	END IF;
 
-	v_idx := charindex(",", v_newSymbols);
+	--v_idx := charindex(",", v_newSymbols);
+	v_idx := (select max(array_length(regexp_split_to_array(v_newSymbols, E','),1)));
 
 	IF v_idx > 0
 	THEN
