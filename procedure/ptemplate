@@ -29,6 +29,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION ACCRef_insert(int,int) TO public;
 
-COMMENT ON FUNCTION mgd.ACCRef_insert(int, int) IS 'creates a new acc_accessionreference row';
+COMMENT ON FUNCTION mgd.ACCRef_insert(int,int) IS 'creates a new acc_accessionreference row';
 
 EOSQL

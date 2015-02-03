@@ -24,13 +24,13 @@ DROP FUNCTION MGI_checkUserRole(varchar,varchar);
 
 CREATE OR REPLACE FUNCTION MGI_checkUserRole (
 	eiModule varchar(50),
-	userLogin varchar(30)
+	userLogin mgi_user.login%TYPE
 )
 RETURNS INTEGER AS
 \$\$
 
 DECLARE
-	isVerified INTEGER := 1;
+isVerified int := 1;
 
 BEGIN
 
