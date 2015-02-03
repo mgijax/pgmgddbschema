@@ -118,7 +118,7 @@ END IF;
 --DELETE FROM ALL_Allele WHERE _Marker_key = v_newKey;
 
 -- Create Offset for new marker
-INSERT INTO MRK_Offset values(v_newKey, 0, -999.0, current_date, current_date);
+INSERT INTO MRK_Offset VALUES (v_newKey, 0, -999.0, current_date, current_date);
 
 IF NOT FOUND
 THEN

@@ -59,6 +59,7 @@ BEGIN
 v_modifiedByKey := _User_key from MGI_User where login = current_user;
 v_curationStateKey := _Term_key from VOC_Term where _Vocab_key = 15 and term = 'Internal';
 v_withdrawnName := 'withdrawn, = ' || substring(v_newSymbols, 1, char_length(v_newSymbols) - 1);
+v_newKey := max(_Marker_key) + 1 from MRK_Marker;
 
 v_oldName := (
 	SELECT name
@@ -85,8 +86,12 @@ END IF;
 --	d.  insert the assignment history line for the new marker
 --
 
-while (v_newSymbols IS NOT NULL)
-begin
+LOOP
+	IF v_newSymbols IS NULL
+	THEN
+		EXIT;
+	END IF;
+
 	v_idx := charindex(",", v_newSymbols);
 
 	IF v_idx > 0
@@ -101,12 +106,10 @@ begin
 
 	IF v_newSymbol IS NOT NULL
 	THEN
-		v_newKey := max(_Marker_key) + 1 from MRK_Marker;
-
 		-- during a split, each new marker is created and gets a new MGI accession number
 		-- the original MGI accession number stays associated with the split marker
 
-		INSERR INTO MRK_Marker 
+		INSERT INTO MRK_Marker 
 		(_Marker_key, _Organism_key, _Marker_Type_key, _Marker_Status_key, _CurationState_key, 
 			symbol, name, chromosome, _CreatedBy_key, _ModifiedBy_key)
 		SELECT v_newKey, _Organism_key, _Marker_Type_key, _Marker_Status_key, v_curationStateKey, 
@@ -202,8 +205,8 @@ begin
 			RAISE EXCEPTION E'MRK_splitWithdrawal: Could not insert history';
 			RETURN;
 		END IF;
-	end
-end
+	END IF;
+END LOOP;
 
 -- Now make the final necessary modifications to the old symbol
 
