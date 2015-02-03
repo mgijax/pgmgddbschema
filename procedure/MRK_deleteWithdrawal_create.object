@@ -16,7 +16,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 DROP FUNCTION MRK_deleteWithdrawal(int,int,int);
 
-CREATE OR REPLACE FUNCTION MGI_insertReferenceAssoc (
+CREATE OR REPLACE FUNCTION MRK_deleteWithdrawal (
 v_oldKey int,
 v_refKey int,
 v_eventReasonKey int
@@ -40,7 +40,8 @@ BEGIN
 
 v_modifiedByKey := _User_key from MGI_User where login = current_user;
 
-SELECT symbol as v_oldSymbol,
+CREATE TEMP TABLE mrk_tmp ON COMMIT DROP
+AS SELECT symbol as v_oldSymbol,
        name as v_oldName
 FROM MRK_Marker 
 WHERE _Marker_key = v_oldKey 
@@ -48,15 +49,15 @@ WHERE _Marker_key = v_oldKey
      AND _Marker_Status_key in (1,3)
 ;
 
-if v_oldSymbol is null
+IF v_oldSymbol IS NULL
 THEN
-	RAISE EXCEPTION E'Invalid Old Symbol Key %1!", v_oldKey
+	RAISE EXCEPTION E'Invalid Old Symbol Key %', v_oldKey;
 	RETURN;
 END IF;
 
 -- Update MGD offset of old symbol
 
-UPDATE MRK_Offset SET offset = -999.0 WHERE _Marker_key = v_oldKey and source = 0;
+UPDATE MRK_Offset SET cmoffset = -999.0 WHERE _Marker_key = v_oldKey and source = 0;
 
 IF NOT FOUND
 THEN
@@ -69,6 +70,7 @@ END IF;
 UPDATE MRK_Marker 
 SET name = 'withdrawn', _Marker_Status_key = 2 , _ModifiedBy_key = v_modifiedByKey, modification_date = current_date 
 WHERE _Marker_key = v_oldKey
+;
 
 IF NOT FOUND
 THEN
@@ -91,6 +93,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MRK_deleteWithdrawal(int,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.MRK_deleteWithdrawal(int,int,int) IS 'creates a new acc_accessionreference row';
+COMMENT ON FUNCTION mgd.MRK_deleteWithdrawal(int,int,int) IS 'process a marker deletion';
 
 EOSQL
