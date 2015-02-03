@@ -88,24 +88,29 @@ END IF;
 
 v_modifiedByKey := _User_key from MGI_User where login = current_user;
 
-select v_oldSymbol = symbol,
-       v_oldName = name
-from MRK_Marker where _Marker_key = v_oldKey
-     and _Organism_key = 1
-     and _Marker_Status_key in (1,3)
+CREATE TEMP TABLE mrk_tmp ON COMMIT DROP
+AS SELECT symbol as v_oldSymbol,
+       name as v_oldName
+FROM MRK_Marker 
+WHERE _Marker_key = v_oldKey
+     AND _Organism_key = 1
+     AND _Marker_Status_key in (1,3)
+;
 
-IF v_oldSymbol is null
+IF v_oldSymbol IS NULL
 THEN
 	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Invalid Old Symbol Key %', v_oldKey;
 	RETURN;
 END IF;
 
-select v_newSymbol = symbol
-from MRK_Marker where _Marker_key = v_newKey
-     and _Organism_key = 1
-     and _Marker_Status_key in (1,3)
+SELECT symbol as v_newSymbol
+FROM MRK_Marker 
+WHERE _Marker_key = v_newKey
+     AND _Organism_key = 1
+     AND _Marker_Status_key in (1,3)
+;
 
-IF v_newSymbol is null
+IF v_newSymbol IS NULL
 THEN
 	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Invalid New Symbol Key %', v_newKey;
 	RETURN;
