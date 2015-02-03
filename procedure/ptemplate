@@ -23,6 +23,12 @@ v_userKey int;
 
 BEGIN
 
+IF NOT FOUND
+THEN
+	RAISE EXCEPTION E'';
+	RETURN;
+END IF;
+
 END;
 \$\$
 LANGUAGE plpgsql;
