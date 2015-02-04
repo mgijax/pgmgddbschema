@@ -160,10 +160,10 @@ THEN
 	RETURN;
 END IF;
 
--- If no wild type allele exists for new symbol, create it
+-- If marker type = 'gene' (1) and no wild type allele exists for new symbol, create it
 
 IF (SELECT _Marker_Type_key FROM MRK_Marker WHERE _Marker_key = v_newKey) = 1
-AND not exists (SELECT 1 FROM ALL_Allele WHERE _Marker_key = v_oldKey AND isWildType = 1)
+	AND NOT EXISTS (SELECT 1 FROM ALL_Allele WHERE _Marker_key = v_oldKey AND isWildType = 1)
 THEN
 	PERFORM ALL_createWildType (v_oldKey, v_newSymbol);
 
