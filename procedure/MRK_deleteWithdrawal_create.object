@@ -76,6 +76,8 @@ THEN
 	RETURN;
 END IF;
 
+RETURN;
+
 END;
 \$\$
 LANGUAGE plpgsql;
