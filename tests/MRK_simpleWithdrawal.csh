@@ -85,9 +85,10 @@ FROM PRB_Strain_NeedsReview_View
 WHERE _Object_key = 27576
 ;
 
+
 -- run the sp
--- SELECT MRK_simpleWithdrawal (27576,22864,-1,'Zic3-rename-1','zinc finger protein of the cerebellum 3',1)
---;
+SELECT MRK_simpleWithdrawal (27576,22864,-1,'Zic3-rename-1','zinc finger protein of the cerebellum 3',1)
+;
 
 -- Current
 
