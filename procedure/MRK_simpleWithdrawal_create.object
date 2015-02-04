@@ -48,9 +48,6 @@ RETURNS VOID AS
 DECLARE
 v_modifiedByKey int;
 v_newKey int;
-v_assigningRefKey int;
-v_oldSymbol mrk_marker.symbol%TYPE;
-v_oldName mrk_marker.name%TYPE;
 v_withdrawnName mrk_marker.name%TYPE;
 
 BEGIN
@@ -74,7 +71,7 @@ v_withdrawnName := 'withdrawn, = ' || v_newSymbol;
 v_newKey := max(_Marker_key) + 1 from MRK_Marker;
 
 CREATE TEMP TABLE mrk_tmp ON COMMIT DROP
-AS SELECT m.symbol as v_oldSymbol, m.name as v_oldName, h._Refs_key as v_assigningRefKey
+AS SELECT m.symbol as oldSymbol, m.name as oldName, h._Refs_key as assigningRefKey
 FROM MRK_Marker m, MRK_History h
 WHERE m._Organism_key = 1
      AND m._Marker_Status_key in (1,3)
@@ -143,7 +140,8 @@ WHERE _Marker_key = v_oldKey
 AND _History_key = v_oldKey;
 
 -- Add History line for withdrawal
-PERFORM MRK_insertHistory (v_oldKey, v_newKey, v_refKey, 2, v_eventReasonKey, v_oldName);
+PERFORM MRK_insertHistory (v_oldKey, v_newKey, v_refKey, 2, v_eventReasonKey, 
+	(select oldName from mrk_tmp));
 
 IF NOT FOUND
 THEN
@@ -179,7 +177,9 @@ END IF;
 
 IF v_addAsSynonym = 1
 THEN
-	PERFORM MGI_insertSynonym (v_oldKey, 2, 1004, v_oldSymbol, v_assigningRefKey);
+	PERFORM MGI_insertSynonym (v_oldKey, 2, 1004, 
+		(select oldSymbol from mrk_tmp), 
+		(select assigningRefKey from mrk_tmp));
 
 	IF NOT FOUND
 	THEN

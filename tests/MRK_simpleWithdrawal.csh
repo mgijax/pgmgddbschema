@@ -49,8 +49,8 @@ date | tee -a $TESTLOG
 #exit 0
 
 #
-# Zic3
-# 27576
+# Zic3 27576
+# Xpl 14863
 #
 
 psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} -e <<EOSQL |& tee -a $TESTLOG
@@ -62,7 +62,7 @@ FROM MRK_Marker m, MRK_Current_View mu
 WHERE m._Organism_key = 1
 AND m.chromosome = 'X'
 AND m._Marker_Type_key = 1
-AND mu._Current_key = 27576
+AND mu._Current_key = 14863
 AND m._Marker_key = mu._Marker_key
 ;
 
@@ -70,24 +70,30 @@ AND m._Marker_key = mu._Marker_key
 
 SELECT count(*)
 FROM MRK_History_View
-WHERE _Marker_key = 27576
+WHERE _Marker_key = 14863
 ;
 
 -- Synonym
 SELECT count(*)
 FROM MGI_Synonym_MusMarker_View
-WHERE _Object_key = 27576
+WHERE _Object_key = 14863
+;
+
+-- Strain
+SELECT count(mp.*)
+FROM PRB_Strain_Marker mp
+WHERE mp._Marker_key = 14863
 ;
 
 -- Strain/Needs Review
-SELECT count(* )
-FROM PRB_Strain_NeedsReview_View 
-WHERE _Object_key = 27576
+SELECT count(mp.*)
+FROM PRB_Strain_Marker mp, PRB_Strain_NeedsReview_View p
+WHERE mp._Marker_key = 14863
+and mp._Strain_key = p._Object_key
 ;
 
-
 -- run the sp
-SELECT MRK_simpleWithdrawal (27576,22864,-1,'Zic3-rename-1','zinc finger protein of the cerebellum 3',1)
+SELECT MRK_simpleWithdrawal (14863,22864,-1,'Xpl-rename-1','X-linked polydactyly',1)
 ;
 
 -- Current
@@ -97,7 +103,7 @@ FROM MRK_Marker m, MRK_Current_View mu
 WHERE m._Organism_key = 1
 AND m.chromosome = 'X'
 AND m._Marker_Type_key = 1
-AND mu._Current_key = 27576
+AND mu._Current_key = 14863
 AND m._Marker_key = mu._Marker_key
 ;
 
@@ -105,19 +111,25 @@ AND m._Marker_key = mu._Marker_key
 
 SELECT count(*)
 FROM MRK_History_View
-WHERE _Marker_key = 27576
+WHERE _Marker_key = 14863
 ;
 
 -- Synonym
 SELECT count(*)
 FROM MGI_Synonym_MusMarker_View
-WHERE _Object_key = 27576
+WHERE _Object_key = 14863
 ;
 
--- Strain/Needs Review
-SELECT count(* )
-FROM PRB_Strain_NeedsReview_View
-WHERE _Object_key = 27576
+-- Strain
+SELECT count(mp.*)
+FROM PRB_Strain_Marker mp
+WHERE mp._Marker_key = 14863
+;
+
+SELECT count(mp.*)
+FROM PRB_Strain_Marker mp, PRB_Strain_NeedsReview_View p
+WHERE mp._Marker_key = 14863
+and mp._Strain_key = p._Object_key
 ;
 
 EOSQL
