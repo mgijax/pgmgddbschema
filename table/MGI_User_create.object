@@ -16,7 +16,7 @@ create table mgd.MGI_User (
  	_User_key                  int             not null,
  	_UserType_key              int             not null,
  	_UserStatus_key            int             not null,
-	login                      varchar(30)     not null,
+	login                      varchar(50)     not null,
 	name                       text    not null,
 	_CreatedBy_key                 int DEFAULT 1001             not null,
 	_ModifiedBy_key                int DEFAULT 1001             not null,

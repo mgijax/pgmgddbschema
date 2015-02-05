@@ -96,7 +96,7 @@ WHERE _Marker_key = v_oldKey
      AND _Marker_Status_key in (1,3)
 ;
 
-IF NOT EXISTS (SELECT v_oldSymbol FROM mrk_tmp)
+IF (SELECT count(*) FROM mrk_tmp) == 0
 THEN
 	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Invalid Old Symbol Key %', v_oldKey;
 	RETURN;
@@ -131,9 +131,11 @@ v_org_categoryname := (
 	AND r._Object_key_1 = v_oldKey
 	);
 
+--
 -- Prevent the merge if the merge will result in a conflict in homology
 -- That is, if both the old and new symbol exist in distinct Orthology classes 
 -- then the merge of the two symbols will result in a conflict
+--
 
 IF EXISTS (SELECT 1 FROM HMD_Homology_Marker WHERE _Marker_key = v_oldKey) AND
    EXISTS (SELECT 1 FROM HMD_Homology_Marker WHERE _Marker_key = v_newKey)
