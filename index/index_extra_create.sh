@@ -22,7 +22,7 @@ create index mgi_synonymtype_0 on mgd.mgi_synonymtype (lower(synonymType));
 
 create index mrk_label_0 on mgd.mrk_label (lower(label));
 
-create index mrk_lcoation_cache_0 on mgd.mrk_lcoation_cache (lower(chromosome));
+create index mrk_location_cache_0 on mgd.mrk_location_cache (lower(chromosome));
 
 create index voc_annottype_0 on mgd.voc_annottype (lower(name));
 
