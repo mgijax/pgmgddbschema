@@ -1,7 +1,14 @@
 #!/bin/sh
 
 #
-# see 'exporter/bin/extraIndexes.py'
+# extra indexes for performance when using "like lower()" searches
+#
+# should match list of indexes in 'exporter/bin/extraIndexes.py'
+#
+# these are in their own wrapper so that we can still use the automated
+# 'sybase/editcreateindex.sh' in this product
+#
+# the 'sybase/runexporter.sh' calls this wrapper after it calls 'index_create.sh'
 #
 
 cd `dirname $0` && . ./Configuration

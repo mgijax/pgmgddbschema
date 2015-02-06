@@ -131,19 +131,6 @@ v_org_categoryname := (
 	AND r._Object_key_1 = v_oldKey
 	);
 
---
--- Prevent the merge if the merge will result in a conflict in homology
--- That is, if both the old and new symbol exist in distinct Orthology classes 
--- then the merge of the two symbols will result in a conflict
---
-
-IF EXISTS (SELECT 1 FROM HMD_Homology_Marker WHERE _Marker_key = v_oldKey) AND
-   EXISTS (SELECT 1 FROM HMD_Homology_Marker WHERE _Marker_key = v_newKey)
-THEN
-	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Cannot Merge:  both Symbols contain Orthology associations.';
-	RETURN;
-END IF;
-
 -- Prevent the merge if the a Marker Detail Clip exists for both symbols
 
 IF EXISTS (SELECT 1 FROM MRK_Notes WHERE _Marker_key = v_oldKey) AND
