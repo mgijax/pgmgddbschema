@@ -179,6 +179,8 @@ echo 'run create key for all tables...' | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/key/key_create.sh | tee -a ${LOG}
 echo 'run create index for all tables...' | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/index/index_create.sh | tee -a ${LOG}
+echo 'run create extra index for all tables...' | tee -a ${LOG}
+${PG_MGD_DBSCHEMADIR}/index/index_extra_create.sh | tee -a ${LOG}
 echo 'run create trigger for all tables...' | tee -a ${LOG}
 ${PG_MGD_DBSCHEMADIR}/trigger/trigger_create.sh | tee -a ${LOG}
 echo 'run create view for all tables...' | tee -a ${LOG}
