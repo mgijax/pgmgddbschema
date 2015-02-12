@@ -47,6 +47,7 @@ SELECT symbol AS v_oldSymbol, name AS v_oldName
 FROM MRK_Marker WHERE _Marker_key = v_oldKey
      AND _Organism_key = 1
      AND _Marker_Status_key in (1,3)
+;
 
 IF v_oldSymbol IS NULL
 THEN
@@ -58,6 +59,7 @@ SELECT symbol AS v_newSymbol
 FROM MRK_Marker WHERE _Marker_key = v_newKey
      AND _Organism_key = 1
      AND _Marker_Status_key in (1,3)
+;
 
 IF v_newSymbol IS NULL
 THEN

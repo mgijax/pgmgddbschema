@@ -62,7 +62,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION ALL_createWildType(int,varchar) TO public;
 
-
 COMMENT ON FUNCTION ALL_createWildType(int,varchar) IS 'create wild type allele';
 
 EOSQL
