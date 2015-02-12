@@ -1,0 +1,135 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/09/2015    lec
+#       - TR11896/implement new rules for MGI_Relationship merge
+#
+# wiki: sw:Fearload -> sw:Feature_Relationships_Representation_in_text_file#Uniqueness
+#
+# unique relattionships between marker/marker or allele/marker
+#
+# _Object_key_1
+# _Object_key_2
+# _Category_key
+# _RelationshipTerm_key
+# _Qualifier_key
+# _Evidence_key
+# _Refs_key
+#
+# during merge of Marker B -> Marker A
+#
+# - if Marker B Relationship already exists for Marker A, then delete Marker B Relationship
+# - if Marker B Relationship does not exist for Marker A, then move Marker B Relationship to Marker A
+# - else, nothing happens
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION MGI_mergeRelationship(int,int);
+
+CREATE OR REPLACE FUNCTION MGI_mergeRelationship (
+oldKey int,
+newKey int
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_userKey int;
+
+BEGIN
+
+--
+-- Participant relationship (any category)
+--
+-- _Objec_key_1 anything else
+-- _Objec_key_2 is Marker (_MGIType_key = 2)
+--
+
+-- if old marker *does* contain same relationship as new marker, then delete old marker relationship
+-- that is, we do not want a duplicate marker relationship after the merge
+
+delete from MGI_Relationship
+using MGI_Relationship, MGI_Relationship r_new
+where MGI_Relationship._Object_key_2 = @oldKey
+and r_new._Object_key_2 = @newKey
+and MGI_Relationship._Category_key = r_new._Category_key
+and MGI_Relationship._Object_key_1 = r_new._Object_key_1
+and MGI_Relationship._RelationshipTerm_key = r_new._RelationshipTerm_key
+and MGI_Relationship._Qualifier_key = r_new._Qualifier_key
+and MGI_Relationship._Evidence_key = r_new._Evidence_key
+and MGI_Relationship._Refs_key = r_new._Refs_key
+;
+
+-- if old marker does *not* contain same relationship with new marker, then move old marker relationship to new marker
+
+update MGI_Relationship
+set _Object_key_2 = @newKey
+where MGI_Relationship._Object_key_2 = @oldKey
+and not exists (select 1 from MGI_Relationship r_new
+	where r_new._Object_key_2 = @newKey
+	and MGI_Relationship._Category_key = r_new._Category_key
+	and MGI_Relationship._Object_key_1 = r_new._Object_key_1
+	and MGI_Relationship._RelationshipTerm_key = r_new._RelationshipTerm_key
+	and MGI_Relationship._Qualifier_key = r_new._Qualifier_key
+	and MGI_Relationship._Evidence_key = r_new._Evidence_key
+	and MGI_Relationship._Refs_key = r_new._Refs_key
+	)
+;
+
+--
+-- Organizer relationship only (1001:'interacts_with', 1002:'clsuter_has_member')
+--
+-- checking where:
+--
+-- _Objec_key_1 is Marker (_MGIType_key = 2)
+-- _Objec_key_2 is Marker (_MGIType_key = 2)
+--
+
+-- if old marker *does* contain same relationship as new marker, then delete old marker relationship
+-- that is, we do not want a duplicate marker relationship after the merge
+
+delete from MGI_Relationship
+using MGI_Relationship, MGI_Relationship r_new
+where MGI_Relationship._Object_key_1 = @oldKey
+and MGI_Relationship._Category_key in (1001, 1002)
+and r_new._Object_key_1 = @newKey
+and MGI_Relationship._Category_key = r_new._Category_key
+and MGI_Relationship._Object_key_2 = r_new._Object_key_2
+and MGI_Relationship._RelationshipTerm_key = r_new._RelationshipTerm_key
+and MGI_Relationship._Qualifier_key = r_new._Qualifier_key
+and MGI_Relationship._Evidence_key = r_new._Evidence_key
+and MGI_Relationship._Refs_key = r_new._Refs_key
+;
+
+-- if old marker does *not* contain same relationship with new marker, then move old marker relationship to new marker
+
+update MGI_Relationship
+set MGI_Relationship._Object_key_1 = @newKey
+where MGI_Relationship._Object_key_1 = @oldKey
+and MGI_Relationship._Category_key in (1001, 1002)
+and not exists (select 1 from MGI_Relationship r_new
+	where r_new._Object_key_1 = @newKey
+        and r_new._Category_key in (1001, 1002)
+	and MGI_Relationship._Category_key = r_new._Category_key
+	and MGI_Relationship._Object_key_2 = r_new._Object_key_2
+	and MGI_Relationship._RelationshipTerm_key = r_new._RelationshipTerm_key
+	and MGI_Relationship._Qualifier_key = r_new._Qualifier_key
+	and MGI_Relationship._Evidence_key = r_new._Evidence_key
+	and MGI_Relationship._Refs_key = r_new._Refs_key
+	)
+;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MGI_mergeRelationship(int,int) TO public;
+
+COMMENT ON FUNCTION mgd.MGI_mergeRelationship(int,int) IS 'merge 2 mgi_relationship markers';
+
+EOSQL
