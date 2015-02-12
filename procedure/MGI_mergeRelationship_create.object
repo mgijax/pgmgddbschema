@@ -32,14 +32,11 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 DROP FUNCTION MGI_mergeRelationship(int,int);
 
 CREATE OR REPLACE FUNCTION MGI_mergeRelationship (
-oldKey int,
-newKey int
+v_oldKey int,
+v_newKey int
 )
 RETURNS VOID AS
 \$\$
-
-DECLARE
-v_userKey int;
 
 BEGIN
 
@@ -53,10 +50,11 @@ BEGIN
 -- if old marker *does* contain same relationship as new marker, then delete old marker relationship
 -- that is, we do not want a duplicate marker relationship after the merge
 
-delete from MGI_Relationship
+delete 
+from MGI_Relationship
 using MGI_Relationship, MGI_Relationship r_new
-where MGI_Relationship._Object_key_2 = @oldKey
-and r_new._Object_key_2 = @newKey
+where MGI_Relationship._Object_key_2 = v_oldKey
+and r_new._Object_key_2 = v_newKey
 and MGI_Relationship._Category_key = r_new._Category_key
 and MGI_Relationship._Object_key_1 = r_new._Object_key_1
 and MGI_Relationship._RelationshipTerm_key = r_new._RelationshipTerm_key
@@ -68,10 +66,10 @@ and MGI_Relationship._Refs_key = r_new._Refs_key
 -- if old marker does *not* contain same relationship with new marker, then move old marker relationship to new marker
 
 update MGI_Relationship
-set _Object_key_2 = @newKey
-where MGI_Relationship._Object_key_2 = @oldKey
+set _Object_key_2 = v_newKey
+where MGI_Relationship._Object_key_2 = v_oldKey
 and not exists (select 1 from MGI_Relationship r_new
-	where r_new._Object_key_2 = @newKey
+	where r_new._Object_key_2 = v_newKey
 	and MGI_Relationship._Category_key = r_new._Category_key
 	and MGI_Relationship._Object_key_1 = r_new._Object_key_1
 	and MGI_Relationship._RelationshipTerm_key = r_new._RelationshipTerm_key
@@ -93,11 +91,12 @@ and not exists (select 1 from MGI_Relationship r_new
 -- if old marker *does* contain same relationship as new marker, then delete old marker relationship
 -- that is, we do not want a duplicate marker relationship after the merge
 
-delete from MGI_Relationship
+delete 
+from MGI_Relationship
 using MGI_Relationship, MGI_Relationship r_new
-where MGI_Relationship._Object_key_1 = @oldKey
+where MGI_Relationship._Object_key_1 = v_oldKey
 and MGI_Relationship._Category_key in (1001, 1002)
-and r_new._Object_key_1 = @newKey
+and r_new._Object_key_1 = v_newKey
 and MGI_Relationship._Category_key = r_new._Category_key
 and MGI_Relationship._Object_key_2 = r_new._Object_key_2
 and MGI_Relationship._RelationshipTerm_key = r_new._RelationshipTerm_key
@@ -109,11 +108,11 @@ and MGI_Relationship._Refs_key = r_new._Refs_key
 -- if old marker does *not* contain same relationship with new marker, then move old marker relationship to new marker
 
 update MGI_Relationship
-set MGI_Relationship._Object_key_1 = @newKey
-where MGI_Relationship._Object_key_1 = @oldKey
+set MGI_Relationship._Object_key_1 = v_newKey
+where MGI_Relationship._Object_key_1 = v_oldKey
 and MGI_Relationship._Category_key in (1001, 1002)
 and not exists (select 1 from MGI_Relationship r_new
-	where r_new._Object_key_1 = @newKey
+	where r_new._Object_key_1 = v_newKey
         and r_new._Category_key in (1001, 1002)
 	and MGI_Relationship._Category_key = r_new._Category_key
 	and MGI_Relationship._Object_key_2 = r_new._Object_key_2
