@@ -1,0 +1,66 @@
+#!/bin/sh
+
+#
+# History
+# 10/23/2008 - jsb - added check for null marker keys
+# 06/30/2004	lec
+#	- TR 5998
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/ALL_mergeWildTypes_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION ALL_mergeWildTypes (
+v_oldKey int,
+v_newKey int,
+v_oldSymbol mrk_marker.symbol%TYPE,
+v_newSymbol mrk_marker.symbol%TYPE
+)
+RETURNS VOID AS
+\$\$
+
+--
+-- do NOT call this procedure with one or both of the marker keys being null,
+-- or it will fail and will roll back your transaction
+--
+
+DECLARE
+
+v_oldAlleleKey int;
+v_newAlleleKey int;
+
+BEGIN
+
+IF (v_oldKey IS NULL) OR (v_newKey IS NULL)
+THEN
+	RAISE EXCEPTION E'ALL_mergeWildTypes : Cannot merge wild types when at least one marker key is null';
+	RETURN;
+END IF;
+
+v_oldAlleleKey := _Allele_key from ALL_Allele where _Marker_key = v_oldKey and isWildType = 1;
+v_newAlleleKey := _Allele_key from ALL_Allele where _Marker_key = v_newKey and isWildType = 1;
+
+IF v_oldAlleleKey IS NOT NULL
+THEN
+	PERFORM ALL_mergeAllele (v_oldAlleleKey, v_newAlleleKey);
+END IF;
+
+IF NOT FOUND
+THEN
+	RAISE EXCEPTION E'';
+	RETURN;
+END IF;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ALL_mergeWildTypes(int,int,varchar,varchar) TO public;
+
+COMMENT ON FUNCTION mgd.ALL_mergeWildTypes(int,int,varchar,varchar) IS '';
+
+EOSQL
+
