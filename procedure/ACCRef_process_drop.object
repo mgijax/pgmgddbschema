@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#
+# HISTORY
+#
+# lec   08/27/2014
+#       - TR11654/remove obsolete TR1270/IMAGE sp
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION ACCRef_process(int,int,varchar,int,varchar,int,int);
+
+EOSQL

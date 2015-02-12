@@ -1,0 +1,15 @@
+#!/bin/sh
+#
+# History
+#
+# lec 01/24/2008
+#	- TR8216, fix selection of "toAdd" table
+#
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION VOC_processAnnotHeaderAll(int);
+
+EOSQL

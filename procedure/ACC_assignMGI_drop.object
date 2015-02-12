@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#
+# History
+#
+# lec	01/18/2006
+#	- TR 7182; increased prefixPart to 30
+#
+# lec 03/18/2003
+#	- SAO
+#
+# lec 09/26/2001
+#	- TR 2541; add "v_private" parameter
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION ACC_assignMGI(int,varchar,varchar,int);
+
+EOSQL
+

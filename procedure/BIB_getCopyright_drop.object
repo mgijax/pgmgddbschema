@@ -1,0 +1,28 @@
+#!/bin/sh
+
+#
+# History
+#
+# 08/25/2014    lec
+#       - TR11654/stored procedures for postgres
+# 03/29/2012	lec
+#	- TR 11025/default...copyright equals note
+#
+# 05/15/2008	lec
+#	- TR 8962; add J Biol Chem, J Lipid Res
+#
+# 02/09/2007	lec
+#	- TR 8147; added PNAS
+#	- moved substitution logic out of EI into here
+#
+# 02/01/2007	lec
+#	- TR 8138
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION BIB_getCopyright(int);
+
+EOSQL

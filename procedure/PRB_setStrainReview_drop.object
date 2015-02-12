@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#
+# History
+#
+# 06/19/2012	lec
+#	- TR 1110/"Needs Review - nomen" moved to "Needs Review - symbol"
+#
+# 04/17/2008 - jsb - new addition for TR8511
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION PRB_setStrainReview(int,int);
+
+EOSQL

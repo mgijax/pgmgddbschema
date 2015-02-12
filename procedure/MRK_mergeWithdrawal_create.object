@@ -271,6 +271,16 @@ THEN
 	END IF;
 END IF;
 
+-- Merge Marker Feature Relationships (MGI_Relationship)
+
+PERFORM MGI_mergeRelationship (v_oldKey, v_newKey);
+
+IF NOT FOUND
+THEN
+	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Could not merge Marker Feature Relationships';
+	RETURN;
+END IF;
+
 -- Update current symbols
 
 UPDATE MRK_Current 

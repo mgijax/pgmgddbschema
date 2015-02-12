@@ -1,0 +1,25 @@
+#!/bin/sh
+
+#
+# History
+#
+# lec	08/27/2014
+#	- TR11654/remove obsolete TR1270/IMAGE sp
+#
+# lec	07/10/2008
+#	- TR9125; gene model check
+#
+# 10/17/2005	lec
+#	- TR 7170; allow DoTS/TC/NIA deletions
+#
+# 02/15/2005	lec
+#	- permissions
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION ACC_DELETE_byAccKey(int,int);
+
+EOSQL

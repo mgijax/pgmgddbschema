@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# lec	10/04/2005
+#	- TR 5188; GO Qualifier
+#
+# lec	02/01/2002
+#	- TR 2867; merge old Term into new Term
+#
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION VOC_mergeTerms(int,int);
+
+EOSQL

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 03/16/2006	lec
+#	- TR 7530; removed MLD_Marker
+#
+# 01/18/2002	lec
+#	- TR 2867; added GXD_AllelePair
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION MGI_resetSequenceNum(varchar,int);
+
+EOSQL

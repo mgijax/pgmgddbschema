@@ -1,0 +1,30 @@
+#!/bin/sh
+
+#
+# History
+#
+# 08/18/2014    lec
+#
+# lec	04/26/2011
+#	- TR 10686/fix root/red deletion
+#
+# lec	10/04/2005
+#	- TR 5188; GO Qualifier
+#
+# lec	12/15/2003
+#	- TR 5425; delete Annotations to Unknown terms if Annotations
+#	  to non-Unknown terms exist (in same DAG of course).
+#
+# lec	01/31/2002
+#	- TR 2867; merge Annotations of old object to new object
+#	  eliminate duplicate Evidence entries
+#
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION VOC_mergeAnnotations(int,int,int);
+
+EOSQL

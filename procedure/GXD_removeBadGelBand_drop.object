@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#
+# History
+#
+# 08/18/2014	lec
+#
+# 05/10/2004	lec
+#	- remove bad gel lanes
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION GXD_removeBadGelBand(int);
+
+EOSQL

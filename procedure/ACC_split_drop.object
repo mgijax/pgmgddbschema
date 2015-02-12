@@ -1,0 +1,26 @@
+#!/bin/sh
+
+#
+# History
+#
+# lec	11/26/2014
+#	- converted from Sybase-to-Postgres
+#
+# lec	03/01/2012
+#	- TR10859; change (> 10) to (>= 10)
+#
+# lec   09/22/2011
+#       - TR 10859; ACC_split; added logicaldb; skip DOI (65)
+#
+# lec	01/18/2006
+#	- TR 7182; increased prefixPart to 30
+#
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION ACC_split(varchar);
+
+EOSQL

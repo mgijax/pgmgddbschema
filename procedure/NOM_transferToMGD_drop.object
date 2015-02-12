@@ -1,0 +1,64 @@
+#!/bin/sh
+
+#
+# History
+#
+# 04/14/2014
+#	- TR11656/remove hard-coded permissions
+#
+# 04/11/2014
+#	- removed dbradt
+#
+# 07/08/2010
+#	- TR 9316; fix offset;
+#	  if chromosome = "UN" then offset = -999.00
+#	  else offset = -1.0
+#
+# 06/29/2010
+#	- TR 9316; fix offset;
+#	  if chromosome = "UN" then offset = -999.00
+#	  else offset = -1.0
+#
+# 11/17/2009	lec
+#	- TR 9956; select v_offset = -999.0  ==> needs to be changed to "-1.0"
+#
+# 01/23/2009 - jsb - added hdt; TR9166
+#
+# 12/11/2008	lec
+#	- TR 9416; remove default chromosome
+#
+# 03/18/2009	lec
+#	- TR 7493; added records for allele/marker association
+#
+# 10/21/2005	lec
+#	- TR 7185; added mberry as Tier 3
+#
+# 12/09/2004	lec
+#	- TR 5686; MRK_Other replaced by MGI_Synonym
+#
+# 06/30/2004	lec
+#	- TR 5998
+#
+# 08/26/2003	lec
+#	- TR 4708
+#
+# 11/22/2002	lec
+#	- add @transferOtherNames
+#
+# 05/29/2002	lec
+#	- TR 1463; SAO
+#
+# 04/18/2002	lec
+#	- TR 3590; added ln as Tier 3
+#
+# 03/19/2002	lec
+#	- TR 3447; added cms as Tier 3
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION NOM_transferToMGD(int,int);
+
+EOSQL

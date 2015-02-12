@@ -1,0 +1,26 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/16/2010	lec
+#	- TR9239; rawbiotype, _BiotypeConflict_key
+#	  add _Marker_Type_key
+#
+# 10/12/2005	lec
+#	- added primary sequence accession ID to SEQ_Marker_Cache
+#
+# 06/28/2005	lec
+#	- added provider and type to SEQ_Marker_Cache
+#
+# 01/12/2004
+#	- JSAM
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION SEQ_loadMarkerCache(int);
+
+EOSQL
