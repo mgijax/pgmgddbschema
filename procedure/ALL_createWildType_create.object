@@ -12,9 +12,9 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+${PG_MGD_DBSCHEMADIR}/procedure/ALL_createWildType_drop.object
 
-DROP FUNCTION ALL_createWildType(int,varchar);
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION ALL_createWildType (
 v_markerKey int,

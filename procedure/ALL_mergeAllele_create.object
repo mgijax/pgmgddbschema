@@ -11,9 +11,9 @@ cd `dirname $0` && . ./Configuration
 
 exit 0
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+${PG_MGD_DBSCHEMADIR}/procedure/ALL_mergeAllele_drop.object
 
-DROP FUNCTION ALL_mergeAllele();
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION ALL_mergeAllele (
   oldAlleleKey int,

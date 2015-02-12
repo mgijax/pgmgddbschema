@@ -24,9 +24,9 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+${PG_MGD_DBSCHEMADIR}/procedure/ACC_update_drop.object
 
-DROP FUNCTION ACC_update(int,varchar,int,int);
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION ACC_update (
 v_accKey int,

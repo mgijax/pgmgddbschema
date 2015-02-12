@@ -12,9 +12,9 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+${PG_MGD_DBSCHEMADIR}/procedure/ACC_insertNoChecks_drop.object
 
-DROP FUNCTION ACC_insertNoChecks(int,varchar,int,varchar,int,int,int);
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION ACC_insertNoChecks (
 v_objectKey int,

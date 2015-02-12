@@ -6,9 +6,9 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+${PG_MGD_DBSCHEMADIR}/procedure/ACC_assignJ_drop.object
 
-DROP FUNCTION ACC_assignJ(int,int);
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION ACC_assignJ (
 objectKey int,

@@ -18,11 +18,11 @@
 
 cd `dirname $0` && . ./Configuration
 
+${PG_MGD_DBSCHEMADIR}/procedure/ACC_delete_byAccKey_drop.object
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION ACC_DELETE_byAccKey(int,int);
-
-CREATE OR REPLACE FUNCTION ACC_DELETE_byAccKey (
+CREATE OR REPLACE FUNCTION ACC_delete_byAccKey (
 v_accKey int,
 v_refsKey int DEFAULT -1
 )
@@ -142,8 +142,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ACC_DELETE_byAccKey(int,int) TO public;
+GRANT EXECUTE ON FUNCTION ACC_delete_byAccKey(int,int) TO public;
 
-COMMENT ON FUNCTION mgd.ACCRef_insert(int, int) IS 'creates a new acc_accessionreference row';
+COMMENT ON FUNCTION mgd.ACC_delete_ByAccKey(int,int) IS 'delete acc_accession by _accession_key';
 
 EOSQL

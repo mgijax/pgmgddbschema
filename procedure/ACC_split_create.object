@@ -19,9 +19,9 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+${PG_MGD_DBSCHEMADIR}/procedure/ACC_split_drop.object
 
-DROP FUNCTION ACC_split(varchar);
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION ACC_split (
 v_accID acc_accession.accid%TYPE,
