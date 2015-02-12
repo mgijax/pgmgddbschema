@@ -14,6 +14,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION MRK_splitWithdrawal(int,int,int,text);
+DROP FUNCTION IF EXISTS MRK_splitWithdrawal(int,int,int,text);
 
 EOSQL

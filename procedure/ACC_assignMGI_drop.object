@@ -17,7 +17,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION ACC_assignMGI(int,varchar,varchar,int);
+DROP FUNCTION IF EXISTS ACC_assignMGI(int,varchar,varchar,int);
 
 EOSQL
 

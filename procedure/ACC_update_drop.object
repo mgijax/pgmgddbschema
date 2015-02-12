@@ -26,6 +26,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION ACC_update(int,varchar,int,int);
+DROP FUNCTION IF EXISTS ACC_update(int,varchar,int,int);
 
 EOSQL

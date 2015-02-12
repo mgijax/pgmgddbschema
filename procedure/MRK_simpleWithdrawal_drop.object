@@ -32,6 +32,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION MRK_simpleWithdrawal(int,int,int,varchar,text,int);
+DROP FUNCTION IF EXISTS MRK_simpleWithdrawal(int,int,int,varchar,text,int);
 
 EOSQL

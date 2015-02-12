@@ -11,6 +11,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION MGI_resetAgeMinMax(varchar,int);
+DROP FUNCTION IF EXISTS MGI_resetAgeMinMax(varchar,int);
 
 EOSQL

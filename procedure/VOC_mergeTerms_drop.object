@@ -15,6 +15,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION VOC_mergeTerms(int,int);
+DROP FUNCTION IF EXISTS VOC_mergeTerms(int,int);
 
 EOSQL

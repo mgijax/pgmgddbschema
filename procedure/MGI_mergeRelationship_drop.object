@@ -29,6 +29,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION MGI_mergeRelationship(int,int);
+DROP FUNCTION IF EXISTS MGI_mergeRelationship(int,int);
 
 EOSQL
