@@ -50,7 +50,7 @@ END IF;
 
 IF NOT FOUND
 THEN
-	RAISE EXCEPTION E'';
+	RAISE EXCEPTION E'ALL_mergeWildTypes : Cannot execute ALL_mergeAllele()';
 	RETURN;
 END IF;
 
