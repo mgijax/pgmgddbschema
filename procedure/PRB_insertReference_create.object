@@ -9,9 +9,9 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+${PG_MGD_DBSCHEMADIR}/procedure/PRB_insertReference_drop.object
 
-DROP FUNCTION PRB_insertReference(int,int);
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION PRB_insertReference (
 refKey int,

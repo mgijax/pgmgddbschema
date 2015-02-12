@@ -8,9 +8,9 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+${PG_MGD_DBSCHEMADIR}/procedure/MRK_insertHistory_drop.object
 
-DROP FUNCTION MRK_insertHistory(int,int,int,int,int,varchar,timestamp,int,int,timestamp,timestamp);
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION MRK_insertHistory (
 markerKey int,

@@ -12,9 +12,9 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+${PG_MGD_DBSCHEMADIR}/procedure/MRK_splitWithdrawal_drop.object
 
-DROP FUNCTION MRK_splitWithdrawal(int,int,int,text);
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0 
 
 CREATE OR REPLACE FUNCTION MRK_splitWithdrawal (
 v_oldKey int,

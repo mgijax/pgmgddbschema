@@ -19,9 +19,9 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+${PG_MGD_DBSCHEMADIR}/procedure/SEQ_loadMarkerCache_drop.object
 
-DROP FUNCTION SEQ_loadMarkerCache(int);
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION SEQ_loadMarkerCache (
 sequenceKey int

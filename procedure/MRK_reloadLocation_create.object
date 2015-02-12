@@ -12,9 +12,9 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+${PG_MGD_DBSCHEMADIR}/procedure/MRK_reloadLocation_drop.object
 
-DROP FUNCTION MRK_reloadLocation(int);
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION MRK_reloadLocation (
 v_markerKey int

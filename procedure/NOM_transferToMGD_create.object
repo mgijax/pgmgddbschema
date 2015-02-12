@@ -57,9 +57,9 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+${PG_MGD_DBSCHEMADIR}/procedure/NOM_transferToMGD_drop.object
 
-DROP FUNCTION NOM_transferToMGD(int,int);
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION NOM_transferToMGD (
 v_nomenKey int,

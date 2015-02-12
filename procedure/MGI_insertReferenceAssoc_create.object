@@ -81,8 +81,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MGI_insertReferenceAssoc(int,int,int,varchar) TO public;
+GRANT EXECUTE ON FUNCTION MGI_insertReferenceAssoc(int,int,int,text) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_insertReferenceAssoc(int,int,int,varchar) IS '';
+COMMENT ON FUNCTION mgd.MGI_insertReferenceAssoc(int,int,int,text) IS '';
 
 EOSQL

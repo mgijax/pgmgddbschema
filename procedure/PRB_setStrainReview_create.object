@@ -11,9 +11,9 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+${PG_MGD_DBSCHEMADIR}/procedure/PRB_setStrainReview_drop.object
 
-DROP FUNCTION PRB_setStrainReview(int,int);
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION PRB_setStrainReview(
 v_markerKey int DEFAULT null,

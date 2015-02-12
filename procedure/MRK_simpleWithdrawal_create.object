@@ -30,9 +30,9 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+${PG_MGD_DBSCHEMADIR}/procedure/MRK_simpleWithdrawal_drop.object
 
-DROP FUNCTION MRK_simpleWithdrawal(int,int,int,varchar,text,int);
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION MRK_simpleWithdrawal (
 v_oldKey int,

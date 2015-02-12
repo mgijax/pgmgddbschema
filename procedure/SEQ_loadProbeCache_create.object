@@ -9,9 +9,9 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+${PG_MGD_DBSCHEMADIR}/procedure/SEQ_loadProbeCache_drop.object
 
-DROP FUNCTION SEQ_loadProbeCache(int);
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION SEQ_loadProbeCache (
 sequenceKey int

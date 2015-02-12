@@ -13,9 +13,9 @@
 
 cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+${PG_MGD_DBSCHEMADIR}/procedure/VOC_mergeTerms_drop.object
 
-DROP FUNCTION VOC_mergeTerms(int,int);
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION VOC_mergeTerms (
 oldKey int,
