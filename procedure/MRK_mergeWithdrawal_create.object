@@ -59,8 +59,6 @@ v_newSymbol mrk_marker.symbol%TYPE;
 v_newChr mrk_marker.chromosome%TYPE;
 v_withdrawnName mrk_marker.name%TYPE;
 v_alleleSymbol all_allele.symbol%TYPE;
-v_part_categoryname mgi_relationship_category.name%TYPE;
-v_org_categoryname mgi_relationship_category.name%TYPE;
 
 BEGIN
 
@@ -96,7 +94,7 @@ WHERE _Marker_key = v_oldKey
      AND _Marker_Status_key in (1,3)
 ;
 
-IF (SELECT count(*) FROM mrk_tmp) == 0
+IF (SELECT count(*) FROM mrk_tmp) = 0
 THEN
 	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Invalid Old Symbol Key %', v_oldKey;
 	RETURN;
@@ -116,21 +114,6 @@ THEN
 	RETURN;
 END IF;
 
-v_part_categoryname := (
-	SELECT DISTINCT c.name
-	FROM MGI_Relationship r, MGI_Relationship_Category c
-	WHERE r._Category_key = c._Category_key
-	AND r._Object_key_2 = v_oldKey
-	);
-
-v_org_categoryname := (
-	SELECT DISTINCT c.name
-	FROM MGI_Relationship r, MGI_Relationship_Category c
-	WHERE r._Category_key in (1001, 1002)
-	AND r._Category_key = c._Category_key
-	AND r._Object_key_1 = v_oldKey
-	);
-
 -- Prevent the merge if the a Marker Detail Clip exists for both symbols
 
 IF EXISTS (SELECT 1 FROM MRK_Notes WHERE _Marker_key = v_oldKey) AND
@@ -140,27 +123,14 @@ THEN
         RETURN;
 END IF;
 
--- Prevent the merge if a Participant MGI_Relationship exists for the old  symbol
-IF EXISTS (SELECT 1 FROM MGI_Relationship WHERE _Object_key_2 = v_oldKey)
-THEN
-        RAISE EXCEPTION E'\nMRK_mergeWithdrawal: \n\nCannot Merge: Old Symbol is a Participant in a MGI_Relationship:\n\n%n', v_part_categoryname;
-        RETURN;
-END IF;
-
--- Prevent the merge if a Organizer MGI_Relationship exists for the old symbol
-IF EXISTS (SELECT 1 FROM MGI_Relationship WHERE _Object_key_1 = v_oldKey and _Category_key in (1001, 1002))
-THEN
-        RAISE EXCEPTION E'\nMRK_mergeWithdrawal: \n\nCannot Merge: Old Symbol is an Organizer in a MGI_Relationship:\n\n%', v_org_categoryname;
-        RETURN;
-END IF;
-
+-- Else, continue....
 
 if v_eventKey = 4
 THEN
-	v_withdrawnName := 'withdrawn, allele of ' + v_newSymbol;
+	v_withdrawnName := 'withdrawn, allele of ' || v_newSymbol;
 	v_alleleOf := 1;
 ELSE
-	v_withdrawnName := 'withdrawn, = ' + v_newSymbol;
+	v_withdrawnName := 'withdrawn, = ' || v_newSymbol;
 	v_alleleOf := 0;
 END IF;
 
