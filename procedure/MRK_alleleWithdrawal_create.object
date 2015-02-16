@@ -43,8 +43,23 @@ BEGIN
 --	d) the event reason key
 --
 
-SELECT symbol AS v_oldSymbol, name AS v_oldName
-FROM MRK_Marker WHERE _Marker_key = v_oldKey
+v_oldSymbol := symbol
+FROM MRK_Marker 
+WHERE _Marker_key = v_oldKey
+     AND _Organism_key = 1
+     AND _Marker_Status_key in (1,3)
+;
+
+v_oldName := name
+FROM MRK_Marker 
+WHERE _Marker_key = v_oldKey
+     AND _Organism_key = 1
+     AND _Marker_Status_key in (1,3)
+;
+
+v_newSymbol := symbol
+FROM MRK_Marker 
+WHERE _Marker_key = v_newKey
      AND _Organism_key = 1
      AND _Marker_Status_key in (1,3)
 ;
@@ -54,12 +69,6 @@ THEN
         RAISE EXCEPTION E'\nMRK_alleleWithdrawal : Invalid Old Symbol Key %', v_oldKey;
         RETURN;
 END IF;
-
-SELECT symbol AS v_newSymbol
-FROM MRK_Marker WHERE _Marker_key = v_newKey
-     AND _Organism_key = 1
-     AND _Marker_Status_key in (1,3)
-;
 
 IF v_newSymbol IS NULL
 THEN
@@ -71,7 +80,7 @@ PERFORM MRK_mergeWithdrawal (v_oldKey, v_newKey, v_refKey, 4, v_eventReasonKey, 
 
 IF NOT FOUND
 THEN
-        RAISE EXCEPTION E'\nMRK_alleleWithdrawal : Could not execute allele withdrawal call to merge withdrawal';
+        RAISE EXCEPTION E'\nMRK_alleleWithdrawal : Could not execute allele withdrawal';
         RETURN;
 END IF;
 
