@@ -46,12 +46,11 @@ v_newAlleleKey := _Allele_key from ALL_Allele where _Marker_key = v_newKey and i
 IF v_oldAlleleKey IS NOT NULL
 THEN
 	PERFORM ALL_mergeAllele (v_oldAlleleKey, v_newAlleleKey);
-END IF;
-
-IF NOT FOUND
-THEN
-	RAISE EXCEPTION E'ALL_mergeWildTypes : Cannot execute ALL_mergeAllele()';
-	RETURN;
+	IF NOT FOUND
+	THEN
+		RAISE EXCEPTION E'ALL_mergeWildTypes : Cannot execute ALL_mergeAllele()';
+		RETURN;
+	END IF;
 END IF;
 
 END;

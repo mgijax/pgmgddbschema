@@ -1,21 +1,5 @@
 #!/bin/sh
 
-#
-# History
-#
-# 02/23/2011	lec
-#	- TR10584/add all EI modules to this list
-#
-# 02/17/2011	lec
-#	- TR 10584/fix MPVocAnnot permissions
-#
-# 06/17/2005 lec
-#	- TR 3557/Images
-#
-# 02/14/2005 lec
-#	- check if User has appropriate Role based on the EI module
-#
-
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0

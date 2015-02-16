@@ -1,15 +1,5 @@
 #!/bin/sh
 
-#
-# History
-#
-# 06/30/2004	lec
-#	- TR 5998
-#
-# 06/27/2003	lec
-#	TR 4929
-#
-
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0

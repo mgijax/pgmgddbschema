@@ -1,21 +1,6 @@
 #!/bin/sh
-#
-# History
-#
-# 12/12/2013	lec
-#	- TR11515/high throughput part 2/allele stuff
-#
-# 08/19/2010	lec
-#	- TR10317; remove allele/cellline edits
-#
-# 03/18/2009	lec
-#	- TR7493; add call to insert alelel/marker associations
-#
-#    10/23/2008 - jsb - added check for null marker keys
-#
 
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 

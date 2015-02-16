@@ -1,15 +1,5 @@
 #!/bin/sh
 
-#
-# History
-#
-# lec	08/20/2014
-#
-# lec	01/18/2006
-#	- TR 7182; increased prefixPart to 30
-#
-#
-
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0

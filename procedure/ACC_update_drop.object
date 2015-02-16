@@ -1,27 +1,5 @@
 #!/bin/sh
 
-#
-# History
-#
-# lec	08/27/2014
-#	- TR11654/remove obsolete TR1270/IMAGE sp
-#
-# lec	07/10/2008
-#	- TR9125; gene model check
-#
-# 04/16/2007 jsb - added dbradt
-#
-# lec	01/22/2007
-#	- add djr, ljm, ksf, tbreddy, yz permissions
-#
-# lec	01/18/2006
-#	- TR 7182; increased prefixPart to 30
-#
-# lec 02/15/2005
-#	- permissions
-#
-#
-
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0

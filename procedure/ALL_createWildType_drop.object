@@ -1,15 +1,5 @@
 #!/bin/sh
 
-#
-# History
-#
-# 01/23/2003 lec
-#	- TR 4463; set J: (reference) to Null (was J:23000)
-#
-# 07/18/2002 lec
-#	- TR 3588
-#
-
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0

@@ -1,15 +1,5 @@
 #!/bin/sh
 
-#
-# History
-#
-# 09/01/2011	lec
-#	- TR 10805/_Organism_key
-#
-# 06/02/2005 lec
-#	- OMIM release
-#
-
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0

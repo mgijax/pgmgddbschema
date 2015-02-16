@@ -1,26 +1,5 @@
 #!/bin/sh
 
-#
-# History
-#
-# 12/4/2014	lec
-#	- TR11750/postgres
-#	  v_age values that are obsolete/no longer used
-#
-#ELSIF v_age = 'perinatal'
-#THEN
-#	v_ageMin := 17.0;
-#	v_ageMax := 22.0;
-#
-#ELSIF v_age = 'postnatal immature'
-#THEN
-#	v_ageMin := 25.01;
-#	v_ageMax := 42.0;
-#
-# 07/22/2003	lec
-#	- TR 3404/JSAM
-#
-
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0

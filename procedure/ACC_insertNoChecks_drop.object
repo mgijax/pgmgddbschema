@@ -1,15 +1,5 @@
 #!/bin/sh
 
-#
-# History
-#
-# lec   07/09/2008
-#       - TR 9057; new
-#
-# example:
-#    select ACC_insertNoChecks(1, 'test-A1B1C123', 1, 'Marker', -1, 0)
-#
-
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0

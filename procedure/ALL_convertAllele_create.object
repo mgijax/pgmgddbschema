@@ -1,0 +1,128 @@
+#!/bin/sh
+
+#
+# History
+# 10/23/2008 - jsb - added check for null marker keys
+# 06/30/2004	lec
+#	- TR 5998
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/ALL_convertAllele_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION ALL_convertAllele (
+v_markerKey int,
+v_oldSymbol mrk_marker.symbol%TYPE,
+v_newSymbol mrk_marker.symbol%TYPE,
+v_alleleOf int DEFAULT 0
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_userKey int;
+v_alleleKey int;
+allele_cursor refcursor;
+
+BEGIN
+
+--
+-- Convert allele symbols of v_markerKey using v_oldSymbol and v_newSymbol values;
+-- do NOT call this with a null value of v_markerKey, or it will fail and roll
+-- back your transaction.
+--
+-- If the marker key is null, then this procedure will not work.  Bail out
+-- now before anything gets mixed up.
+--
+--
+
+IF v_markerKey IS NULL
+THEN
+	RAISE EXCEPTION E'ALL_convertAllele : Cannot update symbols for allele which have no marker.';
+	RETURN;
+END IF;
+
+v_userKey := _User_key from MGI_User where login = current_name;
+
+--
+-- If old Symbol is NOT allele of new Symbol... 
+-- Convert new alleles:  
+--	oldallele<+> --> newsymbol<+> 
+--	oldallele<allele> --> newsymbol<allele> 
+--      oldallele         --> newsymbol         
+
+IF v_alleleOf = 0
+THEN
+	--	oldallele<+> --> newsymbol<+> 
+	--	oldallele<allele> --> newsymbol<allele> 
+
+	update ALL_Allele
+	set symbol = v_newSymbol || '<' ||
+		substring(symbol, charindex('<', symbol) + 1, char_length(symbol)),
+		_ModifiedBy_key = v_userKey, modification_date = current_date
+	where _Marker_key = v_markerKey and symbol like '%<%'
+	;
+
+	--      oldallele         --> newsymbol         
+
+	update ALL_Allele set symbol = v_newSymbol, 
+		_ModifiedBy_key = v_userKey, modification_date = current_date
+	where _Marker_key = v_markerKey and symbol = v_oldSymbol
+	;
+ELSE
+	-- If old Symbol is an Allele of new Symbol... 
+	-- Convert new alleles:  
+	--	oldallele<+> --> newsymbol<+> 
+	--	oldallele<allele> --> newsymbol<oldallele-allele> 
+	--      oldallele         --> newsymbol<oldallele>        
+
+	-- Non Wild Type 
+	--	oldallele<allele> --> newsymbol<oldallele-allele> 
+
+	update ALL_Allele
+	set symbol = v_newSymbol || '<' || substring(symbol, 1, charindex('<', symbol) - 1) + '-' + 
+	     	substring(symbol, charindex('<', symbol) + 1, char_length(symbol)),
+		_ModifiedBy_key = v_userKey, modification_date = current_date
+	where _Marker_key = v_markerKey and symbol like '%<%' and isWildType = 0
+	;
+
+	--      oldallele         --> newsymbol<oldallele>        
+
+	update ALL_Allele
+	set symbol = v_newSymbol || '<' || symbol || '>', 
+		_ModifiedBy_key = v_userKey, modification_date = current_date
+	where _Marker_key = v_markerKey and symbol not like '%<%' and isWildType = 0
+	;
+
+	-- Wild Type Allele 
+	--	oldsymbol<+>	  --> newsymbol<+>        
+
+	update ALL_Allele
+	set symbol = v_newSymbol || '<+>',
+		_ModifiedBy_key = v_userKey, modification_date = current_date
+	where _Marker_key = v_markerKey and isWildType = 1 and symbol like '%<+>'
+	;
+END IF;
+
+OPEN allele_cursor FOR
+SELECT _Allele_key from ALL_Allele where _Marker_key = v_markerKey
+;
+LOOP
+        FETCH allele_cursor INTO v_alleleKey;
+        EXIT WHEN NOT FOUND;
+	PERFORM ALL_reloadLabel (v_alleleKey);
+END LOOP;
+CLOSE allele_cursor;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ALL_convertAllele(int,varchar,varchar,int) TO public;
+
+COMMENT ON FUNCTION mgd.ALL_convertAllele(int,varchar,varchar,int) IS '';
+
+EOSQL
+

@@ -1,33 +1,5 @@
 #!/bin/sh
 
-#
-# History
-#
-# 01/08/2015    lec
-#       - TR11750/removed call to NOM_updateReserved() (obsolete)
-#
-# 04/30/2014	lec
-#	- TR 11641/always use synonym type 'exact'
-#
-# 12/09/2004	lec
-#	- TR 5686
-#
-# 08/20/2004	lec
-#	- create wild type allele for new gene
-#
-# 06/30/2004	lec
-#	- TR 5998
-#
-# 06/30/2004	lec
-#	- TR 5998
-#
-# lec	08/26/2003
-#	- TR 4708
-#
-# 10/04/2002 lec
-#	- TR 3588 - delete created wild type allele from new marker
-#
-
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0

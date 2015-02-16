@@ -1,0 +1,82 @@
+#!/bin/csh -f
+
+#
+# History
+#
+# 03/04/2005 lec
+#	- TR 4289, MPR
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create procedure ALL_reloadLabel
+	@alleleKey integer
+as
+
+/* Delete all ALL_Label records for a Allele and regenerate */
+
+delete from ALL_Label where _Allele_key = @alleleKey
+
+declare allele_cursor cursor for
+select distinct _Label_Status_key = 1, priority = 1, 
+a.symbol, labelType = "AS", labelTypeName = "allele symbol" 
+from ALL_Allele a
+where a._Allele_key = @alleleKey
+and a.isWildType = 0
+union 
+select distinct _Label_Status_key = 1, priority = 2, 
+a.name, labelType = "AN", labelTypeName = "allele name" 
+from ALL_Allele a
+where a._Allele_key = @alleleKey
+and a.isWildType = 0
+union
+select _Label_Status_key = 1, priority = 3,
+s.synonym, labelType = "AY", labelTypeName = "synonym" 
+from MGI_Synonym_Allele_View s
+where s._Object_key = @alleleKey
+
+for read only
+
+open allele_cursor
+
+declare @labelstatusKey integer
+declare @priority integer
+declare @label varchar(255)
+declare @labelType char(5)
+declare @labelTypeName char(255)
+
+fetch allele_cursor into @labelstatusKey, @priority, @label, @labelType, @labelTypeName
+
+while (@@sqlstatus = 0)
+begin
+	insert into ALL_Label 
+	(_Allele_key, _Label_Status_key, priority, label, labelType, labelTypeName)
+	values (@alleleKey, @labelstatusKey, @priority, @label, @labelType, @labelTypeName)
+
+	if @@error != 0
+	begin
+		rollback transaction
+		raiserror 99999 "Could Not Re-load Allele Label"
+		return
+	end
+
+	fetch allele_cursor into @labelstatusKey, @priority, @label, @labelType, @labelTypeName
+end
+
+close allele_cursor
+deallocate cursor allele_cursor
+
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

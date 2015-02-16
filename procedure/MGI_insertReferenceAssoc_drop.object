@@ -1,21 +1,5 @@
 #!/bin/sh
 
-#
-# History
-#
-# 08/25/2014    lec
-#       - TR11654/stored procedures for postgres
-#
-# 05/25/2010 lec
-#	- TR 10226/add different logic for antibody's
-#
-# 05/13/2010 lec
-#	- TR 10216/add refsTypeKey to duplicate check
-#
-# 09/18/2003 lec
-#	- TR 4724
-#
-
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0

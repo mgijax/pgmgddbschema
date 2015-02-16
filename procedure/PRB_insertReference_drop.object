@@ -1,12 +1,5 @@
 #!/bin/sh
 
-#
-# History
-#
-# 08/25/2014	lec
-#	- TR11654/stored procedures for postgres
-#
-
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0

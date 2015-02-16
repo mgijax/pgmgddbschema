@@ -1,36 +1,5 @@
 #!/bin/sh
 
-#
-#
-# History
-#
-# 10/14/2014 	sc
-#	- TR11674 - HDP-2 project
-#	- prevent merge if marker cross referenced in MGI_Relationship
-#
-# 12/12/2013	lec
-#	- TR11515/high throughput part 2/allele stuff
-#	- change call to ALL_insertAllele for recent schema changes
-#
-# 08/19/2010    lec
-#       - TR10317; remove allele/cellline edits
-#
-# 12/09/2004	lec
-#	- TR 5686
-#
-# 06/30/2004	lec
-#	- TR 5998
-#
-# lec	08/26/2003
-#	- TR 4708
-#
-# lec	05/09/2003
-#	- TR 4587; move Marker Detail Clip over during merge
-#
-# lec	04/08/2002
-#	- TR 3550; MRK_mergeWithdrawal; change call to ALL_insertAllele
-#
-
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
