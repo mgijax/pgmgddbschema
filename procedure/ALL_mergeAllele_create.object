@@ -9,8 +9,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-exit 0
-
 ${PG_MGD_DBSCHEMADIR}/procedure/ALL_mergeAllele_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
@@ -21,9 +19,6 @@ CREATE OR REPLACE FUNCTION ALL_mergeAllele (
 )
 RETURNS VOID AS
 \$\$
-
-DECLARE
-
 
 BEGIN
 
@@ -51,6 +46,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION ALL_mergeAllele(int,int) TO public;
 
-COMMENT ON FUNCTION mgd.ALL_mergeAllele(int,int) IS '';
+COMMENT ON FUNCTION mgd.ALL_mergeAllele(int,int) IS 'update all_allele._allele_key from old-Allele to new-Allele';
 
 EOSQL

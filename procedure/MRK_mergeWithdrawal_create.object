@@ -173,19 +173,13 @@ AND source = 0
 
 IF NOT FOUND
 THEN
-	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Could not update offset of old symbol';
+	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Could not update offset of old symbol : %', v_oldKey;
 	RETURN;
 END IF;
 
 -- Delete remaining offsets of old symbol
 
 DELETE FROM MRK_Offset WHERE _Marker_key = v_oldKey AND source > 0;
-
-IF NOT FOUND
-THEN
-	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Could not delete offsets of old symbol';
-	RETURN;
-END IF;
 
 -- Update name/cytogenetic offset of old symbol
 
@@ -197,7 +191,7 @@ WHERE _Marker_key = v_oldKey
 
 IF NOT FOUND
 THEN
-	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Could not update name of old symbol';
+	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Could not update name of old symbol : %', v_oldKey;
 	RETURN;
 END IF;
 
