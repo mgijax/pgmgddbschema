@@ -26,7 +26,7 @@ v_labelstatusKey int;
 v_priority int;
 v_label all_label.label%TYPE;
 v_labelType all_label.labelType%TYPE;
-v_labelTypeName char(255);
+v_labelTypeName all_label.labelTypeName%TYPE;
 
 BEGIN
 
