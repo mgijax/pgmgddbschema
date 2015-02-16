@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 #
 # History
@@ -7,76 +7,70 @@
 #	- TR 4289, MPR
 #
 
-cd `dirname $0` && source ./Configuration
+cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+${PG_MGD_DBSCHEMADIR}/procedure/ALL_reloadLabel.object
 
-use ${DBNAME}
-go
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create procedure ALL_reloadLabel
-	@alleleKey integer
-as
+CREATE OR REPLACE FUNCTION ALL_reloadLabel (
+v_alleleKey int
+)
+RETURNS VOID AS
+\$\$
 
-/* Delete all ALL_Label records for a Allele and regenerate */
+DECLARE
+v_userKey int;
+allele_cursor refcursor;
+v_labelstatusKey int;
+v_priority int;
+v_label all_label.label%TYPE;
+v_labelType all_label.labelType%TYPE;
+v_labelTypeName char(255);
 
-delete from ALL_Label where _Allele_key = @alleleKey
+BEGIN
 
-declare allele_cursor cursor for
-select distinct _Label_Status_key = 1, priority = 1, 
-a.symbol, labelType = "AS", labelTypeName = "allele symbol" 
-from ALL_Allele a
-where a._Allele_key = @alleleKey
-and a.isWildType = 0
-union 
-select distinct _Label_Status_key = 1, priority = 2, 
-a.name, labelType = "AN", labelTypeName = "allele name" 
-from ALL_Allele a
-where a._Allele_key = @alleleKey
-and a.isWildType = 0
-union
-select _Label_Status_key = 1, priority = 3,
-s.synonym, labelType = "AY", labelTypeName = "synonym" 
-from MGI_Synonym_Allele_View s
-where s._Object_key = @alleleKey
+-- Delete all ALL_Label records for a Allele and regenerate
 
-for read only
+DELETE FROM ALL_Label WHERE _Allele_key = v_alleleKey;
 
-open allele_cursor
+OPEN allele_cursor FOR
+SELECT DISTINCT 1 as _Label_Status_key, 1 as priority, 
+a.symbol, labelType = 'AS', labelTypeName = 'allele symbol' 
+FROM ALL_Allele a
+WHERE a._Allele_key = v_alleleKey
+AND a.isWildType = 0
+UNION 
+SELECT distinct 1 as _Label_Status_key, 2 as priority,
+a.name, labelType = 'AN', labelTypeName = 'allele name' 
+FROM ALL_Allele a
+WHERE a._Allele_key = v_alleleKey
+AND a.isWildType = 0
+UNION
+SELECT 1 as _Label_Status_key, 3 as priority,
+s.synonym, labelType = 'AY', labelTypeName = 'synonym' 
+FROM MGI_Synonym_Allele_View s
+WHERE s._Object_key = v_alleleKey
+;
+LOOP
+        FETCH allele_cursor INTO v_labelstatusKey, v_priority, v_label, v_labelType, v_labelTypeName;
+        EXIT WHEN NOT FOUND;
 
-declare @labelstatusKey integer
-declare @priority integer
-declare @label varchar(255)
-declare @labelType char(5)
-declare @labelTypeName char(255)
+	INSERT INTO ALL_Label 
+	(_Allele_key, _Label_Status_key, priority, label, labelType, labelTypeName, creation_date, modification_date)
+	VALUES (v_alleleKey, v_labelstatusKey, v_priority, v_label, v_labelType, v_labelTypeName, current_date, current_date)
+	;
 
-fetch allele_cursor into @labelstatusKey, @priority, @label, @labelType, @labelTypeName
+END LOOP;
+CLOSE allele_cursor;
 
-while (@@sqlstatus = 0)
-begin
-	insert into ALL_Label 
-	(_Allele_key, _Label_Status_key, priority, label, labelType, labelTypeName)
-	values (@alleleKey, @labelstatusKey, @priority, @label, @labelType, @labelTypeName)
+END;
+\$\$
+LANGUAGE plpgsql;
 
-	if @@error != 0
-	begin
-		rollback transaction
-		raiserror 99999 "Could Not Re-load Allele Label"
-		return
-	end
+GRANT EXECUTE ON FUNCTION ALL_reloadLabel(int) TO public;
 
-	fetch allele_cursor into @labelstatusKey, @priority, @label, @labelType, @labelTypeName
-end
-
-close allele_cursor
-deallocate cursor allele_cursor
-
-
-go
-
-checkpoint
-go
-
-quit
+COMMENT ON FUNCTION mgd.ALL_reloadLabel(int) IS 'creates a new acc_accessionreference row';
 
 EOSQL
+
