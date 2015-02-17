@@ -44,7 +44,7 @@ THEN
 	RETURN;
 END IF;
 
-v_userKey := _User_key from MGI_User where login = current_name;
+v_userKey := _User_key from MGI_User where login = current_user;
 
 --
 -- If old Symbol is NOT allele of new Symbol... 
