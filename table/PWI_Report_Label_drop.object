@@ -1,0 +1,13 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop table mgd.PWI_Report_Label
+
+CASCADE
+;
+EOSQL
