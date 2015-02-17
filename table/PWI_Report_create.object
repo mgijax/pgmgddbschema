@@ -24,4 +24,7 @@ create table mgd.PWI_Report (
 	report_views		text			null,
 	type			text			null
 );
+CREATE SEQUENCE pwi_report_id_seq;
+ALTER TABLE PWI_Report ALTER id SET DEFAULT NEXTVAL('pwi_report_id_seq');
+
 EOSQL

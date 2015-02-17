@@ -10,4 +10,7 @@ drop table mgd.PWI_Report_Label
 
 CASCADE
 ;
+
+drop sequence pwi_report_label_id_seq;
+
 EOSQL

@@ -10,4 +10,6 @@ drop table mgd.PWI_Report
 
 CASCADE
 ;
+
+drop sequence pwi_report_id_seq;
 EOSQL
