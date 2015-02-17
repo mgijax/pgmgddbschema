@@ -1,0 +1,17 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create unique index PWI_Report_Label_idx_report_id on mgd.PWI_Report_Label (report_id);
+
+
+create unique index PWI_Report_Label_idx_label on mgd.PWI_Report_Label (label);
+
+
+
+CLUSTER mgd.PWI_Report_Label USING PWI_Report_Label_pkey;
+
+EOSQL
