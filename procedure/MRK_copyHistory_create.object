@@ -1,0 +1,62 @@
+#!/bin/sh
+
+#
+# History
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/MRK_copyHistory_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION MRK_copyHistory (
+v_oldKey int,
+v_newKey int
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_historyKey int;
+v_refKey int;
+v_eventKey int;
+v_eventReasonKey int;
+v_createdByKey int;
+v_modifiedByKey int;
+v_name mrk_history.name%TYPE;
+v_event_date mrk_history.event_date%TYPE;
+v_creation_date mrk_history.creation_date%TYPE;
+v_modification_date mrk_history.modification_date%TYPE;
+history_cursor refcursor;
+
+BEGIN
+
+-- Copy History of v_oldKey to v_newKey
+
+OPEN history_cursor FOR
+SELECT _History_key, _Refs_key, _Marker_Event_key, _Marker_EventReason_key, name, event_date,
+       _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date
+FROM MRK_History
+WHERE _Marker_key = v_oldKey
+ORDER BY sequenceNum
+;
+LOOP
+        FETCH history_cursor INTO v_newKey, v_historyKey, v_refKey, v_eventKey, 
+	    v_eventReasonKey, v_name, v_event_date;
+        EXIT WHEN NOT FOUND;
+	PERFORM MRK_insertHistory (v_newKey, v_historyKey, v_refKey, v_eventKey, 
+		v_eventReasonKey, v_name, v_event_date);
+END LOOP;
+CLOSE history_cursor;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MRK_copyHistory(int,int) TO public;
+
+COMMENT ON FUNCTION mgd.MRK_copyHistory(int,int) IS 'copy mrk_history from old marker to new marker';
+
+EOSQL
+

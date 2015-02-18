@@ -32,16 +32,12 @@ v_synKey int;
 
 BEGIN
 
-/* Insert new MGI_Synonym record */
 v_userKey := _User_key FROM MGI_User where login = current_user;
-
 v_synKey := max(_Synonym_key + 1) FROM MGI_Synonym;
 
 IF v_synKey IS NULL
 THEN
 	v_synKey := 1000;
-
-/* Don't add duplicate entries */
 END IF;
 
 IF NOT EXISTS (SELECT 1 FROM MGI_Synonym
