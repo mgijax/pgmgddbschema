@@ -26,8 +26,6 @@ v_createdByKey int;
 v_modifiedByKey int;
 v_name mrk_history.name%TYPE;
 v_event_date mrk_history.event_date%TYPE;
-v_creation_date mrk_history.creation_date%TYPE;
-v_modification_date mrk_history.modification_date%TYPE;
 history_cursor refcursor;
 
 BEGIN
@@ -35,15 +33,13 @@ BEGIN
 -- Copy History of v_oldKey to v_newKey
 
 OPEN history_cursor FOR
-SELECT _History_key, _Refs_key, _Marker_Event_key, _Marker_EventReason_key, name, event_date,
-       _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date
+SELECT _History_key, _Refs_key, _Marker_Event_key, _Marker_EventReason_key, name, event_date
 FROM MRK_History
 WHERE _Marker_key = v_oldKey
 ORDER BY sequenceNum
 ;
 LOOP
-        FETCH history_cursor INTO v_newKey, v_historyKey, v_refKey, v_eventKey, 
-	    v_eventReasonKey, v_name, v_event_date;
+        FETCH history_cursor INTO v_historyKey, v_refKey, v_eventKey, v_eventReasonKey, v_name, v_event_date;
         EXIT WHEN NOT FOUND;
 	PERFORM MRK_insertHistory (v_newKey, v_historyKey, v_refKey, v_eventKey, 
 		v_eventReasonKey, v_name, v_event_date);

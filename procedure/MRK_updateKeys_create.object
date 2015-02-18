@@ -226,13 +226,12 @@ PERFORM VOC_mergeAnnotations (1003, v_oldKey, v_newKey);
 
 update MGI_Reference_Assoc
 set _Object_key = v_newKey
-from MGI_Reference_Assoc r1
-where _MGIType_key = 2
-and _Object_key = v_oldKey
+where MGI_Reference_Assoc._MGIType_key = 2
+and MGI_Reference_Assoc._Object_key = v_oldKey
 and not exists (select 1 from MGI_Reference_Assoc r2
 where r2._MGIType_key = 2
 and r2._Object_key = v_newKey
-and r2._Refs_key = r1._Refs_key)
+and r2._Refs_key = MGI_Reference_Assoc._Refs_key)
 ;
 
 -- Delete remaining References from old Symbol 
