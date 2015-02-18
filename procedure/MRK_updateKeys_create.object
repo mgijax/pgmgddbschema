@@ -201,21 +201,6 @@ p2._Marker_key = v_newKey
 update PRB_Marker set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
 update PRB_RFLV set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
 
--- Update MLC cross references to oldKey 
-
-update MLC_Marker set _Marker_key_2 = v_newKey where _Marker_key_2 = v_oldKey ;
-
--- Update MLC entry iff New Symbol entry doesn't exist in MLC 
--- Nomenclature updates are propagated to the non-edit tables immediately 
-
-IF not exists (select * from MLC_Marker where _Marker_key = v_newKey)
-   and not exists (select * from MLC_Text where _Marker_key = v_newKey)
-THEN
-  update MLC_Marker set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-  update MLC_Reference set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-  update MLC_Text set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-END IF;
-
 -- Update Annotations - 01/23/2002 - TR 2867 - MGI 2.8 - GO/Marker 
 PERFORM VOC_mergeAnnotations (1000, v_oldKey, v_newKey);
 
