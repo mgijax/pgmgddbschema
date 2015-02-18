@@ -37,30 +37,33 @@ RETURNS VOID AS
 
 BEGIN
 
-/* Executed from MRK_updateKeys during merge process */
-/* A unique VOC_Annotation record is defined by: */
-/*	_AnnotType_key	*/
-/*	_Object_key	*/
-/*	_Term_key	*/
-/*	_Qualifier_key	*/
-/* A unique VOC_Evidence record is defined by: */
-/*	_Annot_key		*/
-/*	_EvidenceTerm_key	*/
-/*	_Refs_key		*/
-/* Compare Annotations to oldKey to Annotations to newKey */
-/* old set = annotations to oldKey                        */
-/* new set = annotations to newKey                        */
-/*                                                        */
-/* If:                                                    */
-/*    1) for records in old set but not in new set -> add to new set */
-/*    2) for records not in old set and in new set -> do nothing     */
-/*    3) for records in old set and in new set     -> merge          */
-/*                                                                   */
-/* So, what we're interested in doing is to move old set annotations */
-/* into the new set and old set evidences into the new set           */
-/* without duplications. */
-/* for annotations of the old set which are not present in the new set */
-/* move the annotations to the newKey */
+--
+-- Executed from MRK_updateKeys during merge process 
+--
+-- A unique VOC_Annotation record is defined by: 
+--	_AnnotType_key	
+--	_Object_key	
+--	_Term_key	
+--	_Qualifier_key	
+-- A unique VOC_Evidence record is defined by: 
+--	_Annot_key		
+--	_EvidenceTerm_key	
+--	_Refs_key		
+-- Compare Annotations to oldKey to Annotations to newKey 
+-- old set = annotations to oldKey                        
+-- new set = annotations to newKey                        
+--                                                        
+-- If:                                                    
+--    1) for records in old set but not in new set -> add to new set 
+--    2) for records not in old set and in new set -> do nothing     
+--    3) for records in old set and in new set     -> merge          
+--                                                                   
+-- So, what we're interested in doing is to move old set annotations 
+-- into the new set and old set evidences into the new set           
+-- without duplications. 
+-- for annotations of the old set which are not present in the new set 
+-- move the annotations to the newKey 
+--
 
 UPDATE VOC_Annot
 SET _Object_key = newKey
@@ -73,9 +76,9 @@ AND NOT EXISTS (SELECT 1 FROM VOC_Annot a2
 	AND VOC_Annot._Qualifier_key = a2._Qualifier_key)
 ;
 
-/* for annotations of the old set which are present in the new set */
-/* and for evidences of the old set which are not present in the new set */
-/* move the evidences to the new set annotation key */
+-- for annotations of the old set which are present in the new set 
+-- and for evidences of the old set which are not present in the new set 
+-- move the evidences to the new set annotation key 
 
 UPDATE VOC_Evidence
 SET _Annot_key = a2._Annot_key
@@ -93,16 +96,16 @@ AND not exists (SELECT 1 FROM VOC_Evidence e2
 	AND VOC_Evidence._Refs_key = e2._Refs_key)
 ;
 
-/* now delete all annotations to the old key that we haven't moved to the new key */
+-- now delete all annotations to the old key that we haven't moved to the new key 
 
 DELETE FROM VOC_Annot WHERE _AnnotType_key = annotTypeKey AND _Object_key = oldKey
 ;
 
-/* TR 5425 */
-/* TR 10686: (122, 1114, 6115) changed to (120, 1098, 6113) */
-/* now delete all annotations to unknown terms */
-/* where there exists a non-IEA annotation to a known term */
-/* in the same DAG */
+-- TR 5425 
+-- TR 10686: (122, 1114, 6115) changed to (120, 1098, 6113) 
+-- now delete all annotations to unknown terms 
+-- where there exists a non-IEA annotation to a known term 
+-- in the same DAG 
 
 DELETE
 FROM VOC_Annot
@@ -135,6 +138,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION VOC_mergeAnnotations(int,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.VOC_mergeAnnotations(int,int,int) IS '';
+COMMENT ON FUNCTION mgd.VOC_mergeAnnotations(int,int,int) IS 'update VOC-annotations; see: MRK_updateKeys';
 
 EOSQL

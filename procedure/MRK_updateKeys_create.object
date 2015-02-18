@@ -185,7 +185,7 @@ update MLD_RIData set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
 update MLD_Statistics set _Marker_key_1 = v_newKey where _Marker_key_1 = v_oldKey ;
 update MLD_Statistics set _Marker_key_2 = v_newKey where _Marker_key_2 = v_oldKey ;
 
---PERFORM PRB_setStrainreview (v_oldKey);
+PERFORM PRB_setStrainReview (v_oldKey);
  
 update PRB_Strain_Marker set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
 
@@ -217,10 +217,10 @@ THEN
 END IF;
 
 -- Update Annotations - 01/23/2002 - TR 2867 - MGI 2.8 - GO/Marker 
---PERFORM VOC_mergeAnnotations (1000, v_oldKey, v_newKey);
+PERFORM VOC_mergeAnnotations (1000, v_oldKey, v_newKey);
 
 -- Update Annotations - 06/17/2003 - TR 4902 - InterPro/Marker 
---PERFORM VOC_mergeAnnotations (1003, v_oldKey, v_newKey);
+PERFORM VOC_mergeAnnotations (1003, v_oldKey, v_newKey);
 
 -- Move non-duplicate Marker References to the new symbol 
 
@@ -241,8 +241,8 @@ delete from MGI_Reference_Assoc where _MGIType_key = 2 and _Object_key = v_oldKe
 
 -- Reload cache tables for both old and new symbols 
 
---PERFORM MRK_reloadLocation (v_oldKey);
---PERFORM MRK_reloadLocation (v_newKey);
+PERFORM MRK_reloadLocation (v_oldKey);
+PERFORM MRK_reloadLocation (v_newKey);
 
 END;
 \$\$
@@ -250,6 +250,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MRK_updateKeys(int,int) TO public;
 
-COMMENT ON FUNCTION mgd.MRK_updateKeys(int,int) IS '';
+COMMENT ON FUNCTION mgd.MRK_updateKeys(int,int) IS 'updating Marker keys from old to new; see: MRK_mergeWithdrawal';
 
 EOSQL
