@@ -36,19 +36,19 @@ DELETE FROM ALL_Label WHERE _Allele_key = v_alleleKey;
 
 OPEN allele_cursor FOR
 SELECT DISTINCT 1 as _Label_Status_key, 1 as priority, 
-a.symbol, labelType = 'AS', labelTypeName = 'allele symbol' 
+a.symbol, 'AS' as labelType, 'allele symbol' as labelTypeName
 FROM ALL_Allele a
 WHERE a._Allele_key = v_alleleKey
 AND a.isWildType = 0
 UNION 
 SELECT distinct 1 as _Label_Status_key, 2 as priority,
-a.name, labelType = 'AN', labelTypeName = 'allele name' 
+a.name, 'AN' as labelType, 'allele name' as labelTypeName
 FROM ALL_Allele a
 WHERE a._Allele_key = v_alleleKey
 AND a.isWildType = 0
 UNION
 SELECT 1 as _Label_Status_key, 3 as priority,
-s.synonym, labelType = 'AY', labelTypeName = 'synonym' 
+s.synonym, 'AY' as labelType, 'synonym' as labelTypeName
 FROM MGI_Synonym_Allele_View s
 WHERE s._Object_key = v_alleleKey
 ;

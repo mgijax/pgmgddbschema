@@ -210,11 +210,11 @@ END IF;
 
 PERFORM ALL_convertAllele (v_oldKey, v_oldSymbol, v_newSymbol, v_alleleOf);
 
-IF NOT FOUND
-THEN
-	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Could not convert alleles';
-	RETURN;
-END IF;
+--IF NOT FOUND
+--THEN
+--	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Could not convert alleles';
+--	RETURN;
+--END IF;
 
 IF v_alleleOf = 1
 THEN

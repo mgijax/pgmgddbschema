@@ -60,7 +60,7 @@ THEN
 
 	update ALL_Allele
 	set symbol = v_newSymbol || '<' ||
-		substring(symbol, charindex('<', symbol) + 1, char_length(symbol)),
+		substring(symbol,  position('<' in symbol) + 1, char_length(symbol)),
 		_ModifiedBy_key = v_userKey, modification_date = current_date
 	where _Marker_key = v_markerKey and symbol like '%<%'
 	;
@@ -82,8 +82,9 @@ ELSE
 	--	oldallele<allele> --> newsymbol<oldallele-allele> 
 
 	update ALL_Allele
-	set symbol = v_newSymbol || '<' || substring(symbol, 1, charindex('<', symbol) - 1) + '-' + 
-	     	substring(symbol, charindex('<', symbol) + 1, char_length(symbol)),
+	set symbol = v_newSymbol || '<' || 
+		substring(symbol,  position('<' in symbol) - 1, char_length(symbol)) || '-' ||
+		substring(symbol,  position('<' in symbol) + 1, char_length(symbol)),
 		_ModifiedBy_key = v_userKey, modification_date = current_date
 	where _Marker_key = v_markerKey and symbol like '%<%' and isWildType = 0
 	;

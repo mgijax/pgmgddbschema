@@ -52,7 +52,7 @@ BEGIN
 
 delete 
 from MGI_Relationship
-using MGI_Relationship, MGI_Relationship r_new
+using MGI_Relationship r_new
 where MGI_Relationship._Object_key_2 = v_oldKey
 and r_new._Object_key_2 = v_newKey
 and MGI_Relationship._Category_key = r_new._Category_key
@@ -67,7 +67,7 @@ and MGI_Relationship._Refs_key = r_new._Refs_key
 
 update MGI_Relationship
 set _Object_key_2 = v_newKey
-where MGI_Relationship._Object_key_2 = v_oldKey
+where _Object_key_2 = v_oldKey
 and not exists (select 1 from MGI_Relationship r_new
 	where r_new._Object_key_2 = v_newKey
 	and MGI_Relationship._Category_key = r_new._Category_key
@@ -93,7 +93,7 @@ and not exists (select 1 from MGI_Relationship r_new
 
 delete 
 from MGI_Relationship
-using MGI_Relationship, MGI_Relationship r_new
+using MGI_Relationship r_new
 where MGI_Relationship._Object_key_1 = v_oldKey
 and MGI_Relationship._Category_key in (1001, 1002)
 and r_new._Object_key_1 = v_newKey
@@ -108,9 +108,9 @@ and MGI_Relationship._Refs_key = r_new._Refs_key
 -- if old marker does *not* contain same relationship with new marker, then move old marker relationship to new marker
 
 update MGI_Relationship
-set MGI_Relationship._Object_key_1 = v_newKey
-where MGI_Relationship._Object_key_1 = v_oldKey
-and MGI_Relationship._Category_key in (1001, 1002)
+set _Object_key_1 = v_newKey
+where _Object_key_1 = v_oldKey
+and _Category_key in (1001, 1002)
 and not exists (select 1 from MGI_Relationship r_new
 	where r_new._Object_key_1 = v_newKey
         and r_new._Category_key in (1001, 1002)
