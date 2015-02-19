@@ -77,129 +77,130 @@ END IF;
 -- that is, remove duplicates before updating keys
 --
 
-delete 
-from ACC_Accession
-using ACC_Accession new
-where ACC_Accession._MGIType_key = 2
-and ACC_Accession._Object_key = v_oldKey
-and ACC_Accession.accID = new.accID
-and ACC_Accession._LogicalDB_key = new._LogicalDB_key
-and new._Object_key = v_newKey
-and new._MGIType_key = 2
+DELETE 
+FROM ACC_Accession
+USING ACC_Accession new
+WHERE ACC_Accession._MGIType_key = 2
+AND ACC_Accession._Object_key = v_oldKey
+AND ACC_Accession.accID = new.accID
+AND ACC_Accession._LogicalDB_key = new._LogicalDB_key
+AND new._Object_key = v_newKey
+AND new._MGIType_key = 2
 ;
 
-update ACC_Accession 
-set _Object_key = v_newKey
-where _MGIType_key = 2 and _Object_key = v_oldKey
+UPDATE ACC_Accession 
+SET _Object_key = v_newKey
+WHERE _MGIType_key = 2 AND _Object_key = v_oldKey
 ;
 
 -- Associate aliases, classes, other names, references w/ new symbol 
 
 -- Remove reflexive Alias records, if they exist 
 
-delete from MRK_Alias where _Marker_key = v_oldKey and _Alias_key = v_newKey ;
-delete from MRK_Alias where _Alias_key = v_oldKey and _Marker_key = v_newKey ;
+DELETE FROM MRK_Alias WHERE _Marker_key = v_oldKey AND _Alias_key = v_newKey ;
+DELETE FROM MRK_Alias WHERE _Alias_key = v_oldKey AND _Marker_key = v_newKey ;
 
-update MRK_Alias set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-update MRK_Alias set _Alias_key = v_newKey where _Alias_key = v_oldKey ;
-update ALL_Marker_Assoc set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-update ALL_Allele set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-update ALL_Knockout_Cache set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-update MRK_Anchors set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-update MGI_Synonym set _Object_key = v_newKey where _MGIType_key = 2 and _Object_key = v_oldKey ;
-update MRK_Notes set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
+UPDATE MRK_Alias SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+UPDATE MRK_Alias SET _Alias_key = v_newKey WHERE _Alias_key = v_oldKey ;
+UPDATE ALL_Marker_Assoc SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+UPDATE ALL_Allele SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+UPDATE ALL_Knockout_Cache SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+UPDATE MRK_Anchors SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+UPDATE MGI_Synonym SET _Object_key = v_newKey WHERE _MGIType_key = 2 AND _Object_key = v_oldKey ;
+UPDATE MRK_Notes SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 
 -- MRK_Classes may contain potential duplicates 
 
-insert into MRK_Classes
-select v_newKey, m._Class_key, m.creation_date, m.modification_date
-from MRK_Classes m
-where m._Marker_key = v_oldKey
-and not exists (select m2.* from MRK_Classes m2
-where m2._Marker_key = v_newKey
-and m2._Class_key = m._Class_key)
+INSERT INTO MRK_Classes
+SELECT v_newKey, m._Class_key, m.creation_date, m.modification_date
+FROM MRK_Classes m
+WHERE m._Marker_key = v_oldKey
+AND not exists (select m2.* FROM MRK_Classes m2
+WHERE m2._Marker_key = v_newKey
+AND m2._Class_key = m._Class_key)
 ;
 
-delete from MRK_Classes where _Marker_key = v_oldKey ;
+DELETE FROM MRK_Classes WHERE _Marker_key = v_oldKey ;
 
 -- Update all auxiliary references to old symbol w/ new symbol 
 
-update CRS_Matrix set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-update CRS_References set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-update HMD_Homology_Marker set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-update GXD_AllelePair set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-update GXD_AlleleGenotype set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-update GXD_Assay set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-update GXD_Expression set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-update WKS_Rosetta set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
+UPDATE CRS_Matrix SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+UPDATE CRS_References SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+UPDATE HMD_Homology_Marker SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+UPDATE GXD_AllelePair SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+UPDATE GXD_AlleleGenotype SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+UPDATE GXD_Assay SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+UPDATE GXD_Expression SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+UPDATE WKS_Rosetta SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 
 -- GXD_AntibodyMarker may contain potential duplicates 
 
-delete 
-from GXD_AntibodyMarker
-using GXD_AntibodyMarker p2
-where GXD_AntibodyMarker._Marker_key = v_oldKey 
-and GXD_AntibodyMarker._Antibody_key = p2._Antibody_key and p2._Marker_key = v_newKey
+DELETE 
+FROM GXD_AntibodyMarker
+USING GXD_AntibodyMarker p2
+WHERE GXD_AntibodyMarker._Marker_key = v_oldKey 
+AND GXD_AntibodyMarker._Antibody_key = p2._Antibody_key 
+AND p2._Marker_key = v_newKey
 ;
 
-update GXD_AntibodyMarker set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
+UPDATE GXD_AntibodyMarker SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 
 -- GXD_Index may contain potential duplicates 
 
-IF EXISTS (select 1 from GXD_Index where _Marker_key = v_newKey)
+IF EXISTS (select 1 FROM GXD_Index WHERE _Marker_key = v_newKey)
 THEN
     -- merge duplicate index stage data 
 
-    update GXD_Index_Stages
-    set _Index_key = n._Index_key
-    from GXD_Index n, GXD_Index o
-    where n._Marker_key = v_newKey
-    and n._Refs_key = o._Refs_key
-    and o._Marker_key = v_oldKey
-    and o._Index_key = GXD_Index_Stages._Index_key
-    and not exists (select 1 from GXD_Index_Stages ns
-    where n._Index_key = ns._Index_key
-    and ns._IndexAssay_key = GXD_Index_Stages._IndexAssay_key
-    and ns._StageID_key = GXD_Index_Stages._StageID_key)
+    UPDATE GXD_Index_Stages
+    SET _Index_key = n._Index_key
+    FROM GXD_Index n, GXD_Index o
+    WHERE n._Marker_key = v_newKey
+    AND n._Refs_key = o._Refs_key
+    AND o._Marker_key = v_oldKey
+    AND o._Index_key = GXD_Index_Stages._Index_key
+    AND not exists (select 1 FROM GXD_Index_Stages ns
+    WHERE n._Index_key = ns._Index_key
+    AND ns._IndexAssay_key = GXD_Index_Stages._IndexAssay_key
+    AND ns._StageID_key = GXD_Index_Stages._StageID_key)
     ;
     
-    delete 
-    from GXD_Index
-    where exists (select 1 from GXD_Index n
-    where n._Marker_key = v_newKey
-    and n._Refs_key = GXD_Index._Refs_key
-    and GXD_Index._Marker_key = v_oldKey)
+    DELETE 
+    FROM GXD_Index
+    WHERE exists (select 1 FROM GXD_Index n
+    WHERE n._Marker_key = v_newKey
+    AND n._Refs_key = GXD_Index._Refs_key
+    AND GXD_Index._Marker_key = v_oldKey)
     ;
 END IF;
 
 -- this handles non-duplicate updates 
 
-update GXD_Index set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-update MLD_Expt_Marker set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-update MLD_Concordance set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-update MLD_MC2point set _Marker_key_1 = v_newKey where _Marker_key_1 = v_oldKey ;
-update MLD_MC2point set _Marker_key_2 = v_newKey where _Marker_key_2 = v_oldKey ;
-update MLD_RI2Point set _Marker_key_1 = v_newKey where _Marker_key_1 = v_oldKey ;
-update MLD_RI2Point set _Marker_key_2 = v_newKey where _Marker_key_2 = v_oldKey ;
-update MLD_RIData set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-update MLD_Statistics set _Marker_key_1 = v_newKey where _Marker_key_1 = v_oldKey ;
-update MLD_Statistics set _Marker_key_2 = v_newKey where _Marker_key_2 = v_oldKey ;
+UPDATE GXD_Index SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+UPDATE MLD_Expt_Marker SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+UPDATE MLD_Concordance SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+UPDATE MLD_MC2point SET _Marker_key_1 = v_newKey WHERE _Marker_key_1 = v_oldKey ;
+UPDATE MLD_MC2point SET _Marker_key_2 = v_newKey WHERE _Marker_key_2 = v_oldKey ;
+UPDATE MLD_RI2Point SET _Marker_key_1 = v_newKey WHERE _Marker_key_1 = v_oldKey ;
+UPDATE MLD_RI2Point SET _Marker_key_2 = v_newKey WHERE _Marker_key_2 = v_oldKey ;
+UPDATE MLD_RIData SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+UPDATE MLD_Statistics SET _Marker_key_1 = v_newKey WHERE _Marker_key_1 = v_oldKey ;
+UPDATE MLD_Statistics SET _Marker_key_2 = v_newKey WHERE _Marker_key_2 = v_oldKey ;
 
 PERFORM PRB_setStrainReview (v_oldKey);
  
-update PRB_Strain_Marker set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
+UPDATE PRB_Strain_Marker SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 
 -- PRB_Marker may contain potential duplicates 
-delete 
-from PRB_Marker
-using PRB_Marker p2
-where PRB_Marker._Marker_key = v_oldKey and
-PRB_Marker._Probe_key = p2._Probe_key and
-p2._Marker_key = v_newKey
+DELETE 
+FROM PRB_Marker
+USING PRB_Marker p2
+WHERE PRB_Marker._Marker_key = v_oldKey 
+AND PRB_Marker._Probe_key = p2._Probe_key 
+AND p2._Marker_key = v_newKey
 ;
 
-update PRB_Marker set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
-update PRB_RFLV set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
+UPDATE PRB_Marker SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+UPDATE PRB_RFLV SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 
 -- Update Annotations - 01/23/2002 - TR 2867 - MGI 2.8 - GO/Marker 
 PERFORM VOC_mergeAnnotations (1000, v_oldKey, v_newKey);
@@ -209,19 +210,19 @@ PERFORM VOC_mergeAnnotations (1003, v_oldKey, v_newKey);
 
 -- Move non-duplicate Marker References to the new symbol 
 
-update MGI_Reference_Assoc
-set _Object_key = v_newKey
-where MGI_Reference_Assoc._MGIType_key = 2
-and MGI_Reference_Assoc._Object_key = v_oldKey
-and not exists (select 1 from MGI_Reference_Assoc r2
-where r2._MGIType_key = 2
-and r2._Object_key = v_newKey
-and r2._Refs_key = MGI_Reference_Assoc._Refs_key)
+UPDATE MGI_Reference_Assoc
+SET _Object_key = v_newKey
+WHERE MGI_Reference_Assoc._MGIType_key = 2
+AND MGI_Reference_Assoc._Object_key = v_oldKey
+AND not exists (select 1 FROM MGI_Reference_Assoc r2
+WHERE r2._MGIType_key = 2
+AND r2._Object_key = v_newKey
+AND r2._Refs_key = MGI_Reference_Assoc._Refs_key)
 ;
 
 -- Delete remaining References from old Symbol 
 
-delete from MGI_Reference_Assoc where _MGIType_key = 2 and _Object_key = v_oldKey ;
+DELETE FROM MGI_Reference_Assoc WHERE _MGIType_key = 2 AND _Object_key = v_oldKey ;
 
 -- Reload cache tables for both old and new symbols 
 
