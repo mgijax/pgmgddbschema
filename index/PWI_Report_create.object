@@ -5,10 +5,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create unique index PWI_Report_idx_requested_by on mgd.PWI_Report (requested_by);
+create index PWI_Report_idx_requested_by on mgd.PWI_Report (requested_by);
 
 
-create unique index PWI_Report_idx_report_author on mgd.PWI_Report (report_author);
+create index PWI_Report_idx_report_author on mgd.PWI_Report (report_author);
 
 
 
