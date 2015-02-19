@@ -152,15 +152,15 @@ THEN
 
     update GXD_Index_Stages
     set _Index_key = n._Index_key
-    from GXD_Index n, GXD_Index o, GXD_Index_Stages os
+    from GXD_Index n, GXD_Index o
     where n._Marker_key = v_newKey
     and n._Refs_key = o._Refs_key
     and o._Marker_key = v_oldKey
-    and o._Index_key = os._Index_key
+    and o._Index_key = GXD_Index_Stages._Index_key
     and not exists (select 1 from GXD_Index_Stages ns
     where n._Index_key = ns._Index_key
-    and ns._IndexAssay_key = os._IndexAssay_key
-    and ns._StageID_key = os._StageID_key)
+    and ns._IndexAssay_key = GXD_Index_Stages._IndexAssay_key
+    and ns._StageID_key = GXD_Index_Stages._StageID_key)
     ;
     
     delete 
