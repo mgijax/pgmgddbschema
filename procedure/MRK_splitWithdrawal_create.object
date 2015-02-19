@@ -41,8 +41,6 @@ RETURNS VOID AS
 -- remains with the split marker and must be manually moved to one of the
 -- new markers.
 --
--- MLC changes must also be done manually.
---
 
 DECLARE
 v_userKey int;
