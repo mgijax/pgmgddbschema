@@ -301,6 +301,8 @@ THEN
 		WHERE _Marker_key = v_newKey
 		AND history = v_oldSymbol
 		AND _Marker_Event_key = 1
+		ORDER BY _Refs_key
+		LIMIT 1
 		);
 
 	-- If oldSymbol is a Riken symbol (ends with 'Rik'), 
