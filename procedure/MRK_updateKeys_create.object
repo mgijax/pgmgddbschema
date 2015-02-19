@@ -102,8 +102,8 @@ delete from MRK_Alias where _Alias_key = v_oldKey and _Marker_key = v_newKey ;
 
 update MRK_Alias set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
 update MRK_Alias set _Alias_key = v_newKey where _Alias_key = v_oldKey ;
-update ALL_Allele set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
 update ALL_Marker_Assoc set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
+update ALL_Allele set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
 update ALL_Knockout_Cache set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
 update MRK_Anchors set _Marker_key = v_newKey where _Marker_key = v_oldKey ;
 update MGI_Synonym set _Object_key = v_newKey where _MGIType_key = 2 and _Object_key = v_oldKey ;
