@@ -38,6 +38,16 @@ DROP FUNCTION VOC_Evidence_delete();
 CREATE OR REPLACE FUNCTION VOC_Evidence_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
+-- If there are no more Evidence records for this Annotation, then delete
+-- the Annotation record as well
+
+IF NOT EXISTS (SELECT 1 FROM VOC_Evidence where OLD._Annot_key = VOC_Evidence._Annot_key)
+THEN
+        DELETE FROM VOC_Annot a
+	WHERE a._Annot_key = OLD._Annot_key
+	;
+END IF;
+
 DELETE FROM MAP_Coord_Feature a
 WHERE a._Object_key = OLD._AnnotEvidence_key
 AND a._MGIType_key = 25
