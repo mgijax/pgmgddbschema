@@ -109,17 +109,17 @@ DELETE FROM VOC_Annot WHERE _AnnotType_key = annotTypeKey AND _Object_key = oldK
 
 DELETE
 FROM VOC_Annot
-USING VOC_Annot a1, VOC_AnnotType ap1, VOC_VocabDAG v1, DAG_Node n1
-WHERE a1._Object_key = newKey
-AND a1._Term_key in (120, 1098, 6113)
-AND a1._AnnotType_key = annotTypeKey
-AND a1._AnnotType_key = ap1._AnnotType_key
+USING VOC_AnnotType ap1, VOC_VocabDAG v1, DAG_Node n1
+WHERE VOC_Annot._Object_key = newKey
+AND VOC_Annot._Term_key in (120, 1098, 6113)
+AND VOC_Annot._AnnotType_key = annotTypeKey
+AND VOC_Annot._AnnotType_key = ap1._AnnotType_key
 AND ap1._Vocab_key = v1._Vocab_key
 AND v1._DAG_key = n1._DAG_key
-AND a1._Term_key = n1._Object_key
+AND VOC_Annot._Term_key = n1._Object_key
 AND EXISTS (SELECT 1 FROM VOC_Annot a2, VOC_Evidence e2, VOC_AnnotType ap2, VOC_VocabDAG v2, DAG_Node n2
-	WHERE a1._Object_key = a2._Object_key
-	AND a1._AnnotType_key = a2._AnnotType_key
+	WHERE VOC_Annot._Object_key = a2._Object_key
+	AND VOC_Annot._AnnotType_key = a2._AnnotType_key
 	AND a2._Term_key not in (120, 1098, 6113)
 	AND a2._Annot_key = e2._Annot_key
 	AND e2._EvidenceTerm_key != 115
