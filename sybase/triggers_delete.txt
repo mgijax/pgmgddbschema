@@ -6,8 +6,6 @@ GXD_Antigen:_Antigen_key:7
 GXD_Assay:_Assay_key:8
 GXD_Genotype:_Genotype_key:12
 GXD_Structure:_Structure_key:38
-IMG_Image:_Image_key:9
-IMG_ImagePane:_ImagePane_key:35
 MGI_Organism:_Organism_key:20
 MGI_Statistic:_Statistic_key:34
 MLD_Expts:_Expt_key:4

@@ -7,8 +7,6 @@ GXD_Antigen:_Antigen_key:Antigen
 GXD_Assay:_Assay_key:Assay
 GXD_Genotype:_Genotype_key:Genotype
 GXD_Structure:_Structure_key:GXD Structures
-IMG_Image:_Image_key:Image
-IMG_ImagePane:_ImagePane_key:Image Pane
 MGI_Organism:_Organism_key:Organism
 MGI_Statistic:_Statistic_key:Statistic
 MLD_Expts:_Expt_key:Experiment
