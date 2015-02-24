@@ -5,7 +5,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
--- NAME: IMG_Image_delete()
+-- NAME: IMG_ImagePane_Assoc_delete()
 --
 -- DESCRIPTOIN:
 --	
@@ -32,75 +32,51 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER IMG_Image_delete_trigger ON IMG_Image;
-DROP FUNCTION IMG_Image_delete();
+DROP TRIGGER IMG_ImagePane_Assoc_delete_trigger ON IMG_ImagePane_Assoc;
+DROP FUNCTION IMG_ImagePane_Assoc_delete();
 
-CREATE OR REPLACE FUNCTION IMG_Image_delete() RETURNS TRIGGER AS \$\$
+CREATE OR REPLACE FUNCTION IMG_ImagePane_Assoc_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
 DELETE FROM MAP_Coord_Feature a
 WHERE a._Object_key = OLD._Image_key
-AND a._MGIType_key = 9
+AND a._MGIType_key = 29
 ;
 
 DELETE FROM MAP_Coordinate a
 WHERE a._Object_key = OLD._Image_key
-AND a._MGIType_key = 9
+AND a._MGIType_key = 29
 ;
 
 DELETE FROM MGI_Note a
 WHERE a._Object_key = OLD._Image_key
-AND a._MGIType_key = 9
+AND a._MGIType_key = 29
 ;
 
 DELETE FROM MGI_Reference_Assoc a
 WHERE a._Object_key = OLD._Image_key
-AND a._MGIType_key = 9
+AND a._MGIType_key = 29
 ;
 
 DELETE FROM MGI_Synonym a
 WHERE a._Object_key = OLD._Image_key
-AND a._MGIType_key = 9
+AND a._MGIType_key = 29
 ;
 
 DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._Image_key
-AND a._MGIType_key = 9
+AND a._MGIType_key = 29
 ;
 
 DELETE FROM IMG_Cache a
 WHERE a._Object_key = OLD._Image_key
-AND a._MGIType_key = 9
+AND a._MGIType_key = 29
 ;
 
 DELETE FROM ACC_Accession a
 WHERE a._Object_key = OLD._Image_key
-AND a._MGIType_key = 9
+AND a._MGIType_key = 29
 ;
-
--- if this is a Full Size Image, then delete its Thumbnail as well
-
-IF (OLD._ImageType_key = 1072158)
-THEN
-    DELETE FROM IMG_Image a
-    where a._ThumbnailImage_key = OLD._Image_key
-    ;
-
-    DELETE FROM MGI_Note a
-    WHERE a._MGIType_key = 9
-    AND a._Object_key = OLD._ThumbnailImage_key
-    ;
-
-    DELETE FROM IMG_ImagePane a
-    WHERE a._Image_key = OLD._ThumbnailImage_key
-    ;
- 
-    DELETE FROM ACC_Accession a
-    WHERE a._Object_key = OLD._ThumbnailImage_key
-    AND a._MGIType_key = 9
-    ;
-
-END IF;
 
 RETURN NEW;
 
@@ -108,13 +84,13 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION IMG_Image_delete() TO public;
+GRANT EXECUTE ON FUNCTION IMG_ImagePane_Assoc_delete() TO public;
 
-CREATE TRIGGER IMG_Image_delete_trigger
-AFTER DELETE on IMG_Image
+CREATE TRIGGER IMG_ImagePane_Assoc_delete_trigger
+AFTER DELETE on IMG_ImagePane_Assoc
 FOR EACH ROW
-EXECUTE PROCEDURE IMG_Image_delete();
+EXECUTE PROCEDURE IMG_ImagePane_Assoc_delete();
 
-COMMENT ON FUNCTION mgd.IMG_Image_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
+COMMENT ON FUNCTION mgd.IMG_ImagePane_Assoc_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
 
 EOSQL
