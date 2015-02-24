@@ -32,7 +32,9 @@ create index GXD_Expression_idx_Structure_key on mgd.GXD_Expression (_Structure_
 
 create index GXD_Expression_idx_emaps_key on mgd.GXD_Expression (_emaps_key);
 
+create index GXD_Expression_idx_specimen_key on mgd.GXD_Expression (_specimen_key);
 
+create index GXD_Expression_idx_gellane_key on mgd.GXD_Expression (_gellane_key);
 
 CLUSTER mgd.GXD_Expression USING GXD_Expression_pkey;
 

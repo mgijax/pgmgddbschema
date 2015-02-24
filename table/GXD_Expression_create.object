@@ -27,6 +27,8 @@ create table mgd.GXD_Expression (
 	_Marker_key                    int             not null,
 	_Structure_key                 int             not null,
 	_emaps_key		       int             null,
+	_specimen_key		       int             null,
+	_gellane_key		       int             null,
 	expressed                      smallint             not null,
 	age                            varchar(50)     not null,
 	ageMin                         numeric           null,
