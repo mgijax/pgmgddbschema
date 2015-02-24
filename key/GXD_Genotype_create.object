@@ -24,13 +24,13 @@ ALTER TABLE mgd.GXD_Specimen ADD FOREIGN KEY (_Genotype_key) REFERENCES mgd.GXD_
 ALTER TABLE mgd.GXD_Expression ADD FOREIGN KEY (_Genotype_key) REFERENCES mgd.GXD_Genotype;
 
 
-ALTER TABLE mgd.GXD_AlleleGenotype ADD FOREIGN KEY (_Genotype_key) REFERENCES mgd.GXD_Genotype;
+ALTER TABLE mgd.GXD_AlleleGenotype ADD FOREIGN KEY (_Genotype_key) REFERENCES mgd.GXD_Genotype ON CASCADE DELETE;
 
 
-ALTER TABLE mgd.GXD_AllelePair ADD FOREIGN KEY (_Genotype_key) REFERENCES mgd.GXD_Genotype;
+ALTER TABLE mgd.GXD_AllelePair ADD FOREIGN KEY (_Genotype_key) REFERENCES mgd.GXD_Genotype ON CASCADE DELETE;
 
 
-ALTER TABLE mgd.MRK_OMIM_Cache ADD FOREIGN KEY (_Genotype_key) REFERENCES mgd.GXD_Genotype;
+ALTER TABLE mgd.MRK_OMIM_Cache ADD FOREIGN KEY (_Genotype_key) REFERENCES mgd.GXD_Genotype ON CASCADE DELETE;
 
 
 ALTER TABLE mgd.PRB_Strain_Genotype ADD FOREIGN KEY (_Genotype_key) REFERENCES mgd.GXD_Genotype;
