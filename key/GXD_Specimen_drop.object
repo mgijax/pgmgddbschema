@@ -6,6 +6,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.GXD_InSituResult DROP CONSTRAINT GXD_InSituResult__Specimen_key_fkey CASCADE;
+ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__Specimen_key_fkey CASCADE;
 ALTER TABLE mgd.GXD_Specimen DROP CONSTRAINT GXD_Specimen_pkey CASCADE;
 
 EOSQL

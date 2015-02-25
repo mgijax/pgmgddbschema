@@ -5,6 +5,7 @@
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__GelLane_key_fkey CASCADE;
 ALTER TABLE mgd.GXD_GelBand DROP CONSTRAINT GXD_GelBand__GelLane_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_GelLaneStructure DROP CONSTRAINT GXD_GelLaneStructure__GelLane_key_fkey CASCADE;

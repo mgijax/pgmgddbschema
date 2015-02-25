@@ -14,5 +14,6 @@ ALTER TABLE mgd.GXD_Specimen ADD PRIMARY KEY (_Specimen_key);
 
 ALTER TABLE mgd.GXD_InSituResult ADD FOREIGN KEY (_Specimen_key) REFERENCES mgd.GXD_Specimen ON DELETE CASCADE;
 
+ALTER TABLE mgd.GXD_Expression ADD FOREIGN KEY (_Specimen_key) REFERENCES mgd.GXD_Specimen ON DELETE CASCADE;
 
 EOSQL
