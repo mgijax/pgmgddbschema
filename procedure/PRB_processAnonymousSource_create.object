@@ -1,0 +1,235 @@
+#!/bin/sh
+#
+# History
+#
+# 07/22/2003	lec
+#	- TR 3404/JSAM
+#
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION PRB_processAnonymousSource(int,int,int,int,int,int,int,int,varchar,varchar,int,int);
+
+CREATE OR REPLACE FUNCTION PRB_processAnonymousSource (
+msoKey int,
+segmentTypeKey int,
+vectorTypeKey int,
+organismKey int,
+strainKey int,
+tissueKey int,
+genderKey int,
+cellLineKey int,
+age varchar(50),
+tissueTreatment varchar(255),
+modifiedByKey int,
+verifyOrganismEdit int = 1,
+out newMSOKey int
+)
+AS
+\$\$
+
+DECLARE
+isCuratorEdited bit;
+ageMin float;
+ageMax float;
+
+
+BEGIN
+
+/* process (modify) an Anonymous Molecular Source                           */
+/*                                                                          */
+/* assumes:                                                                 */
+/* 	that all edits to MS attributes are allowed.                        */
+/*                                                                          */
+/*      if this SP is called from the Molecular Source Processor            */
+/*      then the MSP has already checked MGI_Attribute_History and          */
+/*      has determined which attributes can be updated.                     */
+/*                                                                          */
+/* does:                                                                    */
+/*                                                                          */
+/*      create a new or update an existing MSO (PRB_Source)                 */
+/*                                                                          */
+/* implements:                                                              */
+/*     collapsing; that is, if a MSO has not been curator-edited            */
+/*     then it can be shared by multiple Probe or Sequence objects.         */
+/*                                                                          */
+/* output:                                                                  */
+/*                                                                          */
+/*     the new MSO key (@newMSOKey).                                        */
+/*                                                                          */
+/*     OR an error if the MSO being processed exists in the database        */
+/*     and is not Anonymous.                                                */
+/*                                                                          */
+/* if the MSO key exists in the database and is not Anonymous, then error & done. */
+if exists (select 1 from PRB_Source where _Source_key = msoKey)
+and (select name from PRB_Source where _Source_key = msoKey) != null
+then
+	return;
+/* set isCuratorEdited bit by checking if the 'modified by' user is a curator (or not) */
+end if;
+
+if exists (select 1 from MGI_User u, VOC_Term t
+where u._User_key = modifiedByKey
+and u._UserType_key = t._Term_key
+and t.term in ('Curator', 'BA', 'PI'))
+then
+	select into isCuratorEdited 1
+	;
+
+else
+	select into isCuratorEdited 0
+	;
+
+end if;
+/* if the MSO being processed is not curator-edited...    */
+/* then we can potentially collapse it (share it).        */
+
+if isCuratorEdited = 0
+then
+	/* if an MSO exists which matches the input parameters     */
+	/* and the existing MSO is not curator-edited              */
+	/* then return the existing MSO key; share it (collapse).  */
+	select into newMSOKey _Source_key from PRB_Source
+	where _SegmentType_key = segmentTypeKey
+	and _Vector_key = vectorTypeKey
+	and _Organism_key = organismKey
+	and _Strain_key = strainKey
+	and _Tissue_key = tissueKey
+	and _Gender_key = genderKey
+	and _CellLine_key = cellLineKey
+	and age = age
+	and isCuratorEdited = 0
+	;
+
+	if newMSOKey is not null
+	then
+		return;
+	end if;
+
+/* calculate the ageMin and ageMax values for age */
+end if;
+
+select * into ageMin, ageMax from PRB_ageMinMax(age);
+
+if error != 0
+then
+	return;
+end if;
+/* if the MSO key exists and if any MSO attribute has changed... */
+
+if exists (select 1 from PRB_Source where _Source_key = msoKey)
+then
+	select into newMSOKey msoKey
+	;
+
+	if (select verifyOrganismEdit) = 1 and
+	(select _Organism_key from PRB_Source where _Source_key = msoKey) != organismKey and
+	not exists (select 1 from MGI_UserTask_View
+	where usertask = 'molecular source:organism'
+	and login = user_name())
+	then
+		return;
+	end if;
+
+	if (select _SegmentType_key from PRB_Source where _Source_key = msoKey) != segmentTypeKey or
+	(select _Vector_key from PRB_Source where _Source_key = msoKey) != vectorTypeKey or
+	(select _Organism_key from PRB_Source where _Source_key = msoKey) != organismKey or
+	(select _Strain_key from PRB_Source where _Source_key = msoKey) != strainKey or
+	(select _Tissue_key from PRB_Source where _Source_key = msoKey) != tissueKey or
+	(select _Gender_key from PRB_Source where _Source_key = msoKey) != genderKey or
+	(select _CellLine_key from PRB_Source where _Source_key = msoKey) != cellLineKey or
+	(select age from PRB_Source where _Source_key = msoKey) != age or
+	(select description from PRB_Source where _Source_key = msoKey) != tissueTreatment or
+	((select description from PRB_Source where _Source_key = msoKey) is null and (tissueTreatment is not null)) or
+	((select description from PRB_Source where _Source_key = msoKey) is not null and (tissueTreatment is null))
+	then
+		/* if the MSO is collapsed, then uncollapse it (create a new MSO) */
+		if (select count(*) from PRB_Probe where _Source_key = msoKey) > 1 or
+		(select count(*) from SEQ_Source_Assoc where _Source_key = msoKey) > 1
+		then
+			/* insert a new MSO record using the existing collapsed MSO object */
+			select into newMSOKey max(_Source_key) + 1 from PRB_Source
+			;
+
+			insert into PRB_Source
+			select newMSOKey, _SegmentType_key, _Vector_key, _Organism_key,
+			_Strain_key, _Tissue_key, _Gender_key, _CellLine_key, _Refs_key,
+			name, description, age, ageMin, ageMax,
+			isCuratorEdited, _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date
+			from PRB_Source
+			where _Source_key = msoKey
+			;
+
+			/* update the new MSO using the input parameters */
+			update PRB_Source
+			set _SegmentType_key = segmentTypeKey,
+			_Vector_key = vectorTypeKey,
+			_Organism_key = organismKey,
+			_Strain_key = strainKey,
+			_Tissue_key = tissueKey,
+			_Gender_key = genderKey,
+			_CellLine_key = cellLineKey,
+			age = age,
+			ageMin = ageMin,
+			ageMax = ageMax,
+			description = tissueTreatment,
+			isCuratorEdited = isCuratorEdited,
+			_ModifiedBy_key = modifiedByKey,
+			modification_date = current_date
+			where _Source_key = newMSOKey
+			;
+
+			return;
+		/* else, just update it */
+		else
+			update PRB_Source
+			set _SegmentType_key = segmentTypeKey,
+			_Vector_key = vectorTypeKey,
+			_Organism_key = organismKey,
+			_Strain_key = strainKey,
+			_Tissue_key = tissueKey,
+			_Gender_key = genderKey,
+			_CellLine_key = cellLineKey,
+			age = age,
+			ageMin = ageMin,
+			ageMax = ageMax,
+			description = tissueTreatment,
+			isCuratorEdited = isCuratorEdited,
+			_ModifiedBy_key = modifiedByKey,
+			modification_date = current_date
+			where _Source_key = msoKey
+			;
+
+			return;
+		end if;
+
+	end if;
+
+/* else create a new MSO object */
+else
+	select into newMSOKey max(_Source_key) + 1 from PRB_Source
+	;
+
+	insert into PRB_Source
+	values (newMSOKey, segmentTypeKey, vectorTypeKey, organismKey,
+	strainKey, tissueKey, genderKey, cellLineKey, NULL, NULL, tissueTreatment, age,
+	ageMin, ageMax, isCuratorEdited, modifiedBykey, modifiedBykey,
+	current_date, current_date)
+	;
+
+	return;
+end if;
+
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION PRB_processAnonymousSource(int,int,int,int,int,int,int,int,varchar,varchar,int,int) TO public;
+
+
+COMMENT ON FUNCTION PRB_processAnonymousSource(int,int,int,int,int,int,int,int,varchar,varchar,int,int) IS '';
+
+EOSQL
