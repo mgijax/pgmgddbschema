@@ -53,6 +53,8 @@ fi
 #
 if [ ${runBCP} -eq '1' ]
 then
+echo 'removing old bcp...'
+rm -rf ${EXPORTDATA}/*
 echo $$ > ${EXPORTLOGS}/$0.pid
 cd ${MGD_DBSCHEMADIR}/table
 for i in ${findObject}
