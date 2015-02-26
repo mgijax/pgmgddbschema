@@ -48,6 +48,9 @@ fi
 #
 # bcp out the sybase data
 #
+# if you want to run this in threads, add "&" at end of bcpout.csh command
+# turned off threading because it doesn't always work well
+#
 if [ ${runBCP} -eq '1' ]
 then
 echo $$ > ${EXPORTLOGS}/$0.pid
@@ -60,10 +63,13 @@ echo $i | tee -a ${LOG}
 ${MGI_DBUTILS}/bin/bcpout.csh ${MGD_DBSERVER} ${MGD_DBNAME} $i ${EXPORTDATA} $i.bcp | tee -a ${LOG}.${i}.bcp
 done
 fi
+
 # wait until all jobs invoked above have terminated
+# turned off; turn this on if you are using threads
 #wait
-#echo 'done: bcp out the files from sybase...' | tee -a ${LOG}
-#date | tee -a ${LOG}
+
+echo 'done: bcp out the files from sybase...' | tee -a ${LOG}
+date | tee -a ${LOG}
 #
 # end: bcp out the sybase data
 #
