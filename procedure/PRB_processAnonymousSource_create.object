@@ -21,7 +21,7 @@ strainKey int,
 tissueKey int,
 genderKey int,
 cellLineKey int,
-age varchar(50),
+v_age varchar(50),
 tissueTreatment varchar(255),
 modifiedByKey int,
 verifyOrganismEdit int = 1,
@@ -31,9 +31,9 @@ AS
 \$\$
 
 DECLARE
-isCuratorEdited bit;
-ageMin float;
-ageMax float;
+v_isCuratorEdited smallint;
+v_ageMin float;
+v_ageMax float;
 
 
 BEGIN
@@ -75,18 +75,18 @@ where u._User_key = modifiedByKey
 and u._UserType_key = t._Term_key
 and t.term in ('Curator', 'BA', 'PI'))
 then
-	select into isCuratorEdited 1
+	select into v_isCuratorEdited 1
 	;
 
 else
-	select into isCuratorEdited 0
+	select into v_isCuratorEdited 0
 	;
 
 end if;
 /* if the MSO being processed is not curator-edited...    */
 /* then we can potentially collapse it (share it).        */
 
-if isCuratorEdited = 0
+if v_isCuratorEdited = 0
 then
 	/* if an MSO exists which matches the input parameters     */
 	/* and the existing MSO is not curator-edited              */
@@ -99,7 +99,7 @@ then
 	and _Tissue_key = tissueKey
 	and _Gender_key = genderKey
 	and _CellLine_key = cellLineKey
-	and age = age
+	and age = v_age
 	and isCuratorEdited = 0
 	;
 
@@ -111,7 +111,7 @@ then
 /* calculate the ageMin and ageMax values for age */
 end if;
 
-select * into ageMin, ageMax from PRB_ageMinMax(age);
+select * into v_ageMin, v_ageMax from PRB_ageMinMax(age);
 
 if error != 0
 then
@@ -140,7 +140,7 @@ then
 	(select _Tissue_key from PRB_Source where _Source_key = msoKey) != tissueKey or
 	(select _Gender_key from PRB_Source where _Source_key = msoKey) != genderKey or
 	(select _CellLine_key from PRB_Source where _Source_key = msoKey) != cellLineKey or
-	(select age from PRB_Source where _Source_key = msoKey) != age or
+	(select age from PRB_Source where _Source_key = msoKey) != v_age or
 	(select description from PRB_Source where _Source_key = msoKey) != tissueTreatment or
 	((select description from PRB_Source where _Source_key = msoKey) is null and (tissueTreatment is not null)) or
 	((select description from PRB_Source where _Source_key = msoKey) is not null and (tissueTreatment is null))
@@ -171,11 +171,11 @@ then
 			_Tissue_key = tissueKey,
 			_Gender_key = genderKey,
 			_CellLine_key = cellLineKey,
-			age = age,
-			ageMin = ageMin,
-			ageMax = ageMax,
+			age = v_age,
+			ageMin = v_ageMin,
+			ageMax = v_ageMax,
 			description = tissueTreatment,
-			isCuratorEdited = isCuratorEdited,
+			isCuratorEdited = v_isCuratorEdited,
 			_ModifiedBy_key = modifiedByKey,
 			modification_date = current_date
 			where _Source_key = newMSOKey
@@ -192,11 +192,11 @@ then
 			_Tissue_key = tissueKey,
 			_Gender_key = genderKey,
 			_CellLine_key = cellLineKey,
-			age = age,
-			ageMin = ageMin,
+			age = v_age,
+			ageMin = v_ageMin,
 			ageMax = ageMax,
 			description = tissueTreatment,
-			isCuratorEdited = isCuratorEdited,
+			isCuratorEdited = v_isCuratorEdited,
 			_ModifiedBy_key = modifiedByKey,
 			modification_date = current_date
 			where _Source_key = msoKey
@@ -214,8 +214,8 @@ else
 
 	insert into PRB_Source
 	values (newMSOKey, segmentTypeKey, vectorTypeKey, organismKey,
-	strainKey, tissueKey, genderKey, cellLineKey, NULL, NULL, tissueTreatment, age,
-	ageMin, ageMax, isCuratorEdited, modifiedBykey, modifiedBykey,
+	strainKey, tissueKey, genderKey, cellLineKey, NULL, NULL, tissueTreatment, v_age,
+	v_ageMin, v_ageMax, v_isCuratorEdited, modifiedBykey, modifiedBykey,
 	current_date, current_date)
 	;
 

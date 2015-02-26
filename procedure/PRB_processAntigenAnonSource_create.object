@@ -1,0 +1,80 @@
+#!/bin/sh
+#
+# History
+#
+# 07/22/2003	lec
+#	- TR 3404/JSAM
+#
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP FUNCTION PRB_processAntigenAnonSource(int,int,int,int,int,int,int,varchar,varchar,int);
+
+CREATE OR REPLACE FUNCTION PRB_processAntigenAnonSource (
+objectKey int,
+msoKey int,
+organismKey int,
+strainKey int,
+tissueKey int,
+genderKey int,
+cellLineKey int,
+age varchar(50),
+tissueTreatment varchar(255),
+modifiedByKey int
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+segmentTypeKey int;
+vectorTypeKey int;
+newMSOKey int;
+
+
+BEGIN
+
+/*                                                                          */
+/* process (modify) a Antigen's Anonymous Molecular Source                  */
+/*                                                                          */
+select into segmentTypeKey _Term_key from VOC_Term where _Vocab_key = 10 and term = 'Not Specified'
+;
+
+select into vectorTypeKey _Term_key from VOC_Term where _Vocab_key = 24 and term = 'Not Specified'
+;
+
+select * into newMSOKey from PRB_processAnonymousSource(msoKey, segmentTypeKey, vectorTypeKey, organismKey, strainKey,
+    tissueKey, genderKey, cellLineKey, age, tissueTreatment, modifiedByKey, 0);
+
+
+/* associate the Antigen with the MSO */
+/* _ModifiedBy_key = modifiedByKey, */
+
+update GXD_Antigen
+set _Source_key = newMSOKey,
+modification_date = current_date
+where _Antigen_key = objectKey
+;
+
+/* delete the input @msoKey if it's now an orphan */
+if not exists (select 1 from SEQ_Source_Assoc where _Source_key = msoKey) and
+not exists (select 1 from PRB_Probe where _Source_key = msoKey) and
+not exists (select 1 from GXD_Antigen where _Source_key = msoKey)
+then
+	delete from PRB_Source where _Source_key = msoKey
+	;
+
+end if;
+
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION PRB_processAntigenAnonSource(int,int,int,int,int,int,int,varchar,varchar,int) TO public;
+
+
+COMMENT ON FUNCTION PRB_processAntigenAnonSource(int,int,int,int,int,int,int,varchar,varchar,int) IS '';
+
+EOSQL
