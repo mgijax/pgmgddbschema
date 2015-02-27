@@ -111,12 +111,8 @@ then
 /* calculate the ageMin and ageMax values for age */
 end if;
 
-select * into v_ageMin, v_ageMax from PRB_ageMinMax(age);
+select * into v_ageMin, v_ageMax from PRB_ageMinMax(v_age);
 
-if error != 0
-then
-	return;
-end if;
 /* if the MSO key exists and if any MSO attribute has changed... */
 
 if exists (select 1 from PRB_Source where _Source_key = msoKey)
@@ -128,7 +124,7 @@ then
 	(select _Organism_key from PRB_Source where _Source_key = msoKey) != organismKey and
 	not exists (select 1 from MGI_UserTask_View
 	where usertask = 'molecular source:organism'
-	and login = user_name())
+	and login = current_user)
 	then
 		return;
 	end if;
