@@ -68,11 +68,6 @@ WHERE a._Object_key = OLD._Genotype_key
 AND a._MGIType_key = 12
 ;
 
-DELETE FROM IMG_Cache a
-WHERE a._Object_key = OLD._Genotype_key
-AND a._MGIType_key = 12
-;
-
 DELETE FROM ACC_Accession a
 WHERE a._Object_key = OLD._Genotype_key
 AND a._MGIType_key = 12

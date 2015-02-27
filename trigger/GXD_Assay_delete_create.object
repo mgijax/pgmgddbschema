@@ -68,11 +68,6 @@ WHERE a._Object_key = OLD._Assay_key
 AND a._MGIType_key = 8
 ;
 
-DELETE FROM IMG_Cache a
-WHERE a._Object_key = OLD._Assay_key
-AND a._MGIType_key = 8
-;
-
 DELETE FROM ACC_Accession a
 WHERE a._Object_key = OLD._Assay_key
 AND a._MGIType_key = 8

@@ -68,11 +68,6 @@ WHERE a._Object_key = OLD._Sequence_key
 AND a._MGIType_key = 19
 ;
 
-DELETE FROM IMG_Cache a
-WHERE a._Object_key = OLD._Sequence_key
-AND a._MGIType_key = 19
-;
-
 DELETE FROM ACC_Accession a
 WHERE a._Object_key = OLD._Sequence_key
 AND a._MGIType_key = 19

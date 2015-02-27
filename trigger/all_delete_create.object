@@ -68,11 +68,6 @@ WHERE a._Object_key = OLD.PG-KEY
 AND a._MGIType_key = mgiTypeKey
 ;
 
-DELETE FROM IMG_Cache a
-WHERE a._Object_key = OLD.PG-KEY
-AND a._MGIType_key = mgiTypeKey
-;
-
 DELETE FROM ACC_AccessionReference ar
 USING ACC_Accession a
 WHERE a._Object_key = OLD.PG-KEY
