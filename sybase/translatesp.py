@@ -30,6 +30,7 @@ RETURN = "return"
 COMMIT = "commit"
 GO = "go"
 PRINT = "print"
+EXEC = "exec"
 
 class Translator(object):
 
@@ -189,6 +190,10 @@ class Translator(object):
 
 		elif blockType == PRINT:
 			translated = self.translatePrintBlock(lines)
+			statements.extend(translated)
+
+		elif blockType == EXEC:
+			translated = self.translateExecBlock(lines)
 			statements.extend(translated)
 
 		# Add theses blocks untranslated
@@ -430,6 +435,23 @@ class Translator(object):
 			r = r.replace('@','')
 			r = r.replace('print','raise notice')
 			translated.append(r + ';')
+		return translated
+
+	def translateExecBlock(self,lines):
+		translated = []
+		first = 1
+		for r in lines:
+			r = r.replace('@','')
+			if first:
+				pieces = r.split(' ',2)
+				if len(pieces) > 2:
+					procName = pieces[1]
+					args = pieces[2]
+					r = "%s(%s" % (procName, args)
+				first = 0
+			translated.append(r)
+
+		translated.append(');')
 		return translated
 
 	def translateIfBlock(self,lines):
@@ -770,6 +792,8 @@ class Translator(object):
 			return GO
 		elif line.find('print') == 0:
 			return PRINT
+		elif line.find('exec') == 0:
+			return EXEC
 		return None
 
 	# Read input from the sybase procedure file
