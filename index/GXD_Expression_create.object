@@ -1,11 +1,16 @@
 #!/bin/sh
 
 # HISTORY
-#	9/5/2014	lec
+#
+# 01/26/2015
+#	- added _Genotype_key without isForGXD
+#
+# 9/5/2014	lec
 #	- TR11654/TR11756/added _emaps_key
 #
-#	5/1/08 - jsb - TR8747, removed redundant index, added additional
+# 5/1/08 - jsb - TR8747, removed redundant index, added additional
 #		fields to other indexes, including isForGXD
+#
 
 cd `dirname $0` && . ./Configuration
 
@@ -24,7 +29,10 @@ create index GXD_Expression_idx_Refs_key on mgd.GXD_Expression (_Refs_key, _Stru
 create index GXD_Expression_idx_AssayType_key on mgd.GXD_Expression (_AssayType_key);
 
 
-create index GXD_Expression_idx_Genotype_key on mgd.GXD_Expression (_Genotype_key, isForGXD);
+create index GXD_Expression_idx_Genotype_key on mgd.GXD_Expression (_Genotype_key);
+
+
+create index GXD_Expression_idx_GenotypeGXD_key on mgd.GXD_Expression (_Genotype_key, isForGXD);
 
 
 create index GXD_Expression_idx_Structure_key on mgd.GXD_Expression (_Structure_key, _Expression_key, isForGXD);
@@ -32,9 +40,13 @@ create index GXD_Expression_idx_Structure_key on mgd.GXD_Expression (_Structure_
 
 create index GXD_Expression_idx_emaps_key on mgd.GXD_Expression (_emaps_key);
 
-create index GXD_Expression_idx_specimen_key on mgd.GXD_Expression (_specimen_key);
 
-create index GXD_Expression_idx_gellane_key on mgd.GXD_Expression (_gellane_key);
+create index GXD_Expression_idx_Specimen_key on mgd.GXD_Expression (_Specimen_key);
+
+
+create index GXD_Expression_idx_GelLane_key on mgd.GXD_Expression (_GelLane_key);
+
+
 
 CLUSTER mgd.GXD_Expression USING GXD_Expression_pkey;
 

@@ -3,6 +3,10 @@
 #
 # HISTORY:
 #
+# 02/24/2015	kstone
+#	added _specimen_key and _gellane_key
+#		as links back to original data
+#
 # 08/28/2014	lec
 #	- TR11654
 #	added _emaps_key : _Object_key that belongs to this _Structure_key
@@ -27,8 +31,8 @@ create table mgd.GXD_Expression (
 	_Marker_key                    int             not null,
 	_Structure_key                 int             not null,
 	_emaps_key		       int             null,
-	_specimen_key		       int             null,
-	_gellane_key		       int             null,
+	_Specimen_key			int		null,
+	_GelLane_key			int		null,
 	expressed                      smallint             not null,
 	age                            varchar(50)     not null,
 	ageMin                         numeric           null,
