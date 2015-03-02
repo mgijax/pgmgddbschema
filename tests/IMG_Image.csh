@@ -95,9 +95,11 @@ SELECT * FROM img WHERE _Image_key IN (SELECT _Image_key FROM img)
 DELETE FROM IMG_Image WHERE _Image_key IN (SELECT _Image_key FROM img)
 ;
 
+-- should return (0)
 SELECT * FROM img WHERE _Image_key IN (SELECT _Image_key FROM img)
 ;
 
+-- should return (0)
 SELECT * FROM img WHERE _Image_key IN (SELECT _Image_key FROM img)
 AND EXISTS (SELECT 1 FROM IMG_Image ii, IMG_Image ib 
 	WHERE img._Image_key = ii._Image_key
@@ -134,6 +136,7 @@ AND _MGIType_key = 9
 AND prefixPart = 'PIX:'
 ;
 
+-- should return (0)
 SELECT a.accID, v.* 
 FROM img v, ACC_Accession a 
 WHERE v._Image_key IN (SELECT _Image_key FROM img)
@@ -142,6 +145,7 @@ AND a._MGIType_key = 9
 AND a.prefixPart = 'PIX:'
 ;
 
+-- should return null in xDim, yDim
 SELECT i._Image_key, i.xDim, i.yDim
 FROM img v, IMG_Image i
 where v._Image_key = i._Image_key
