@@ -27,19 +27,21 @@ BEGIN
 IF OLD._LogicalDB_key = 19
 THEN
         UPDATE IMG_Image
-        SET IMG_Image.xDim = null, 
-            IMG_Image.yDim = null
+        SET xDim = null, 
+            yDim = null
         WHERE OLD._Object_key = IMG_Image._Image_key
 	;
 
         UPDATE IMG_ImagePane
-        SET IMG_ImagePane.x = null, 
-            IMG_ImagePane.y = null,
-            IMG_ImagePane.width = null,
-            IMG_ImagePane.height = null
+        SET x = null, 
+            y = null,
+            width = null,
+            height = null
         WHERE OLD._Object_key = IMG_ImagePane._Image_key
 	;
 END IF;
+
+RETURN NEW;
 
 END;
 \$\$
