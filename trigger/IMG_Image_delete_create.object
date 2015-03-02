@@ -81,7 +81,7 @@ AND a._MGIType_key = 9
 IF (OLD._ImageType_key = 1072158)
 THEN
     DELETE FROM IMG_Image a
-    where a._ThumbnailImage_key = OLD._Image_key
+    where OLD._ThumbnailImage_key = a._Image_key
     ;
 
     DELETE FROM MGI_Note a
