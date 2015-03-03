@@ -118,9 +118,9 @@ THEN
 
 	v_note := s1 || v_pubmedID || '|JBC' || s2;
 
-	copyright := v_note;
+	--copyright := v_note;
 
-	RETURN;
+	--RETURN;
 END IF;
 
 idx := position('JLipidRes(' in v_note);
@@ -133,10 +133,9 @@ THEN
 
 	v_note := s1 || v_pubmedID || '|JLR' || s2;
 
-	copyright := v_note
-	;
+	--copyright := v_note;
 
-	RETURN;
+	--RETURN;
 END IF;
 
 idx := position('*' in v_note);
