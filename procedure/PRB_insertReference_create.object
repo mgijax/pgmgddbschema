@@ -26,7 +26,8 @@ userKey int;
 
 BEGIN
 
-/* Insert record into PRB_Reference if _Refs_key/_Probe_key pair does not already exist */
+-- Insert record into PRB_Reference if _Refs_key/_Probe_key pair does not already exist
+
 IF (SELECT count(*) FROM PRB_Reference WHERE _Refs_key = refKey AND _Probe_key = probeKey) > 0
 THEN
 	RETURN;
@@ -47,6 +48,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION PRB_insertReference(int,int) TO public;
 
-COMMENT ON FUNCTION mgd.PRB_insertReference(int,int) IS '';
+COMMENT ON FUNCTION mgd.PRB_insertReference(int,int) IS 'create new prb_reference';
 
 EOSQL
