@@ -22,14 +22,15 @@ RETURNS VOID AS
 
 DECLARE
 v_pkey int; 	/* primary key of records to UPDATE */
-v_age varchar(50);
+v_age prb_source.age%TYPE;
 v_ageMin numeric;
 v_ageMax numeric;
 age_cursor refcursor;
 
 BEGIN
 
-/* Update the Age Min, Age Max values */
+-- Update the Age Min, Age Max values
+
 IF (v_table = 'GXD_Expression')
 THEN
 	OPEN age_cursor FOR
@@ -103,6 +104,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MGI_resetAgeMinMax(varchar,int) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_resetAgeMinMax(varchar,int) IS '';
+COMMENT ON FUNCTION mgd.MGI_resetAgeMinMax(varchar,int) IS 'update the agemin/agemax values for table/object';
 
 EOSQL

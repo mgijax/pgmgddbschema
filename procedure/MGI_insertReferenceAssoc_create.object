@@ -42,13 +42,14 @@ v_refsTypeKey := _RefAssocType_key FROM MGI_RefAssocType WHERE _MGIType_key = v_
 v_assocKey := max(_Assoc_key) + 1 FROM MGI_Reference_Assoc;
 v_userKey := _User_key FROM MGI_User where login = current_user;
 
-/* Insert record into MGI_Reference_Assoc */
-/* if the reference does not already exist */
+-- Insert record into MGI_Reference_Assoc 
+-- if the reference does not already exist
 
-IF v_mgiTypeKey = 6 /* antibody */
+-- antibody
+IF v_mgiTypeKey = 6 
 THEN
-	/* for antibody, do not include the reference type */
-	/* as part of the check for duplicate references */
+	-- for antibody, do not include the reference type 
+	-- as part of the check for duplicate references
 	IF exists (SELECT 1 FROM MGI_Reference_Assoc
 		WHERE _Refs_key = v_refsKey
 		AND _Object_key = v_objectKey
@@ -58,8 +59,8 @@ THEN
 	END IF;
 
 ELSE
-	/* for all other mgi types, include the reference type */
-	/* as part of the check for duplicate references */
+	-- for all other mgi types, include the reference type
+	-- as part of the check for duplicate references
 	IF EXISTS (SELECT 1 FROM MGI_Reference_Assoc
 		WHERE _Refs_key = v_refsKey
 		AND _Object_key = v_objectKey
@@ -83,6 +84,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MGI_insertReferenceAssoc(int,int,int,text) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_insertReferenceAssoc(int,int,int,text) IS '';
+COMMENT ON FUNCTION mgd.MGI_insertReferenceAssoc(int,int,int,text) IS 'create a new mgi_reference_assoc';
 
 EOSQL

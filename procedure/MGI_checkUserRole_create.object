@@ -104,7 +104,7 @@ THEN
 
 	END IF;
 
-/* default is to give permissions if none have been given */
+-- default is to give permissions if none have been given
 ELSE
 	isVerified := 1;
 
@@ -118,6 +118,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MGI_checkUserRole(varchar,varchar) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_checkUserRole(varchar,varchar) IS '';
+COMMENT ON FUNCTION mgd.MGI_checkUserRole(varchar,varchar) IS 'check if User has appropriate Role based on the EI module';
 
 EOSQL

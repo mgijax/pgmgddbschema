@@ -33,7 +33,8 @@ maxSeq int;
 
 BEGIN
 
-/* Insert new History record into MRK_History */
+-- Insert new History record into MRK_History
+
 maxSeq := max(sequenceNum) from MRK_History where _Marker_key = markerKey;
 
 IF maxSeq IS NULL
@@ -79,6 +80,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MRK_insertHistory(int,int,int,int,int,varchar,timestamp,int,int,timestamp,timestamp) TO public;
 
-COMMENT ON FUNCTION mgd.MRK_insertHistory(int,int,int,int,int,varchar,timestamp,int,int,timestamp,timestamp) IS '';
+COMMENT ON FUNCTION mgd.MRK_insertHistory(int,int,int,int,int,varchar,timestamp,int,int,timestamp,timestamp) IS 'insert new history record into mrk_history';
 
 EOSQL
