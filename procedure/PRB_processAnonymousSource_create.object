@@ -233,8 +233,7 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION PRB_processAnonymousSource(int,int,int,int,int,int,int,int,varchar,text,int,int) to public;
 
-COMMENT ON FUNCTION mgd.PRB_processAnonymousSource(int,int,int,int,int,int,int,int,varchar,text,int,int) IS '';
-
+COMMENT ON FUNCTION mgd.PRB_processAnonymousSource(int,int,int,int,int,int,int,int,varchar,text,int,int) IS 'process (modify) an Anonymous Molecular Source';
 
 EOSQL
 
