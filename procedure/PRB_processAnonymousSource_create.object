@@ -28,7 +28,7 @@ v_modifiedByKey int,
 v_verifyOrganismEdit int DEFAULT 1,
 out v_newMSOKey int
 )
-RETURNS VOID AS
+AS
 \$\$
 
 /* process (modify) an Anonymous Molecular Source                           */
@@ -106,10 +106,10 @@ THEN
 	    and isCuratorEdited = 0
 	    ;
 
-    if v_newMSOKey is not null
-    begin
-        return
-    end
+    IF v_newMSOKey is not null
+    THEN
+        RETURN;
+    END IF;
 END IF;
 
 /* calculate the ageMin and ageMax values for age */
@@ -129,7 +129,7 @@ THEN
                   where usertask = "molecular source:organism"
                   and login = user_name())
    THEN
-	RAISE EXCEPTION E'You do not have permission to modify this Source's Organism.';
+	RAISE EXCEPTION E'You do not have permission to modify this Source''s Organism.';
 	RETURN;
    END IF;
 
@@ -162,6 +162,7 @@ THEN
 	       isCuratorEdited, _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date
 	   FROM PRB_Source 
 	   WHERE _Source_key = v_msoKey
+	   ;
 	
 	   /* update the new MSO using the input parameters */
 
@@ -180,7 +181,8 @@ THEN
 	   isCuratorEdited = v_isCuratorEdited,
 	   _ModifiedBy_key = v_modifiedByKey,
 	   modification_date = current_date
-	   where _Source_key = v_newMSOKey
+	   WHERE _Source_key = v_newMSOKey
+	   ;
 
 	   RETURN;
 
@@ -201,7 +203,8 @@ THEN
 	   isCuratorEdited = v_isCuratorEdited,
 	   _ModifiedBy_key = v_modifiedByKey,
 	   modification_date = current_date
-	   where _Source_key = v_msoKey
+	   WHERE _Source_key = v_msoKey
+	   ;
 
 	   RETURN;
        END IF;
@@ -217,6 +220,7 @@ ELSE
 	    v_strainKey, v_tissueKey, v_genderKey, v_cellLineKey, NULL, NULL, v_tissueTreatment, v_age,
 	    v_ageMin, v_ageMax, v_isCuratorEdited, v_modifiedBykey, v_modifiedBykey,
 	    current_date, current_date)
+	;
 
 	RETURN;
 END IF;
@@ -227,9 +231,9 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION PRB_processAnonymousSource(int,int,int,int,int,int,int,int,varchar,text,int,int,int) to public;
+GRANT EXECUTE ON FUNCTION PRB_processAnonymousSource(int,int,int,int,int,int,int,int,varchar,text,int,int) to public;
 
-COMMENT ON FUNCTION mgd.PRB_processAnonymousSource(int,int,int,int,int,int,int,int,varchar,text,int,int,int) IS '';
+COMMENT ON FUNCTION mgd.PRB_processAnonymousSource(int,int,int,int,int,int,int,int,varchar,text,int,int) IS '';
 
 
 EOSQL
