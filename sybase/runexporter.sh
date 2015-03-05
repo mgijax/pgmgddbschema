@@ -51,19 +51,27 @@ fi
 # if you want to run this in threads, add "&" at end of bcpout.csh command
 # turned off threading because it doesn't always work well
 #
+
 if [ ${runBCP} -eq '1' ]
 then
+
 echo 'removing old bcp...'
 rm -rf ${EXPORTDATA}/*
-echo $$ > ${EXPORTLOGS}/$0.pid
+
+##echo 'setting pid...'
+##echo $$ > ${EXPORTLOGS}/$0.pid
+
+echo 'in for loop...'
 cd ${MGD_DBSCHEMADIR}/table
+
 for i in ${findObject}
 do
 i=`basename $i _create.object`
 echo 'bcp out the files from sybase...', ${i} | tee -a ${LOG}
 echo $i | tee -a ${LOG}
-${MGI_DBUTILS}/bin/bcpout.csh ${MGD_DBSERVER} ${MGD_DBNAME} $i ${EXPORTDATA} $i.bcp | tee -a ${LOG}.${i}.bcp
+${MGI_DBUTILS}/bin/bcpout.csh ${MGD_DBSERVER} ${MGD_DBNAME} $i ${EXPORTDATA} $i.bcp | tee -a ${LOG}
 done
+
 fi
 
 # wait until all jobs invoked above have terminated

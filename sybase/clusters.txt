@@ -18,7 +18,6 @@ CLUSTER idx_clustered ON GXD_GelRow;
 CLUSTER idx_clustered ON GXD_Index;
 CLUSTER idx_clustered ON GXD_Specimen;
 CLUSTER idx_clustered ON HMD_Homology;
-CLUSTER idx_clustered ON IMG_Cache;
 CLUSTER idx_clustered ON MGI_Note;
 CLUSTER idx_clustered ON MGI_Reference_Assoc;
 CLUSTER idx_clustered ON MGI_Set;
