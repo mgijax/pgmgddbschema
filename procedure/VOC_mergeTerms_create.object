@@ -26,13 +26,13 @@ RETURNS VOID AS
 
 BEGIN
 
-/* To merge a term: */
-/**/
-/* a.  make the accID of the old term a secondary accID of the new term  */
-/* b.  move annotations of the old term to the new term (avoid duplicates) */
-/* c.  delete the old term                                                */
-/**/
-/* a.  make the accID of the old term a secondary accID of the new term  */
+-- To merge a term:
+--
+-- a.  make the accID of the old term a secondary accID of the new term 
+-- b.  move annotations of the old term to the new term (avoid duplicates)
+-- c.  delete the old term                                               
+--
+-- a.  make the accID of the old term a secondary accID of the new term 
 
 UPDATE ACC_Accession
 SET _Object_key = newKey, preferred = 0
@@ -40,7 +40,7 @@ WHERE _Object_key = oldKey
 AND _MGIType_key = 13
 ;
 
-/* b.  move annotations of the old term to the new term (avoid duplicates) */
+-- b.  move annotations of the old term to the new term (avoid duplicates)
 
 UPDATE VOC_Annot
 SET _Term_key = newKey
@@ -53,12 +53,12 @@ AND NOT EXISTS (SELECT 1 FROM VOC_Annot a2
 	AND a._Qualifier_key = a2._Qualifier_key)
 ;
 
-/* move any evidences of the old term to the new term */
-/* for annotations of the old set which are present in the new set */
-/* and for evidences of the old set which are not present in the new set */
-/* move the evidences to the new set annotation key */
-/* this moves the VOC_Evidence record to the new _Annot_key which essentially */
-/* moves the Evidence record to the new term */
+-- move any evidences of the old term to the new term
+-- for annotations of the old set which are present in the new set 
+-- and for evidences of the old set which are not present in the new set 
+-- move the evidences to the new set annotation key 
+-- this moves the VOC_Evidence record to the new _Annot_key which essentially 
+-- moves the Evidence record to the new term 
 
 UPDATE VOC_Evidence
 SET _Annot_key = a2._Annot_key
@@ -74,12 +74,12 @@ AND NOT EXISTS (SELECT 1 FROM VOC_Evidence e2
 	AND e._Refs_key = e2._Refs_key)
 ;
 
-/* now delete all annotations to the old key that we haven't moved to the new key */
+-- now delete all annotations to the old key that we haven't moved to the new key 
 DELETE FROM VOC_Annot WHERE _Term_key = oldKey;
 
 DELETE FROM VOC_GO_Cache WHERE _Term_key = oldKey;
 
-/* c.  delete the old term (this will delete the DAG_Node as well)        */
+-- c.  delete the old term (this will delete the DAG_Node as well)        
 DELETE FROM VOC_Term WHERE _Term_key = oldKey;
 
 
@@ -89,6 +89,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION VOC_mergeTerms(int,int) TO public;
 
-COMMENT ON FUNCTION mgd.VOC_mergeTerms(int,int) IS '';
+COMMENT ON FUNCTION mgd.VOC_mergeTerms(int,int) IS 'merge voc_term/voc_annot/voc_evidence';
 
 EOSQL
