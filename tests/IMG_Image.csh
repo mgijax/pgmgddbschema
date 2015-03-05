@@ -115,7 +115,7 @@ EOSQL
 
 psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} -e <<EOSQL |& tee -a $TESTLOG
 
-SELECT v._Image_key, v.xDim, v.yDim
+SELECT v._Image_key, v.mgiID, v.xDim, v.yDim
 INTO TEMPORARY img
 FROM IMG_Image_View v
 WHERE xDim IS NOT NULL
