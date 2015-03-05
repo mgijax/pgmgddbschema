@@ -35,10 +35,10 @@ nextCacheKey int;
 nsqualityKey int;
 nabiotypeKey int;
 
-
 BEGIN
 
-/* begin transaction */
+-- begin transaction
+
 userKey := _User_key FROM MGI_User WHERE login = current_user;
 
 nextCacheKey := max(_Cache_key) + 1 FROM SEQ_Marker_Cache;
@@ -67,7 +67,7 @@ AND ac._MGIType_key = 19
 AND ac.preferred = 1
 ;
 
-/* commit transaction */
+--commit transaction
 
 END;
 \$\$
@@ -75,6 +75,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION SEQ_loadMarkerCache(int) TO public;
 
-COMMENT ON FUNCTION mgd.SEQ_loadMarkerCache(int) IS '';
+COMMENT ON FUNCTION mgd.SEQ_loadMarkerCache(int) IS 'create new seq_marker_cache row';
 
 EOSQL

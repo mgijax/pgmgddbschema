@@ -22,7 +22,6 @@ RETURNS VOID AS
 DECLARE
 userKey int;
 
-
 BEGIN
 
 userKey := _User_key FROM MGI_User WHERE login = current_user;
@@ -50,6 +49,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION SEQ_loadProbeCache(int) TO public;
 
-COMMENT ON FUNCTION mgd.SEQ_loadProbeCache(int) IS '';
+COMMENT ON FUNCTION mgd.SEQ_loadProbeCache(int) IS 'createnew seq_probe_cache row';
 
 EOSQL
