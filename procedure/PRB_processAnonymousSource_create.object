@@ -31,30 +31,30 @@ out v_newMSOKey int
 AS
 \$\$
 
-/* process (modify) an Anonymous Molecular Source                           */
-/*                                                                          */
-/* assumes:                                                                 */
-/* 	that all edits to MS attributes are allowed.                        */
-/*                                                                          */
-/*      if this SP is called from the Molecular Source Processor            */
-/*      then the MSP has already checked MGI_Attribute_History and          */
-/*      has determined which attributes can be updated.                     */
-/*                                                                          */
-/* does:                                                                    */
-/*                                                                          */
-/*      create a new or update an existing MSO (PRB_Source)                 */
-/*                                                                          */
-/* implements:                                                              */
-/*     collapsing; that is, if a MSO has not been curator-edited            */
-/*     then it can be shared by multiple Probe or Sequence objects.         */
-/*                                                                          */
-/* output:                                                                  */
-/*                                                                          */
-/*     the new MSO key (v_newMSOKey).                                        */
-/*                                                                          */
-/*     OR an error if the MSO being processed exists in the database        */
-/*     and is not Anonymous.                                                */
-/*                                                                          */
+-- process (modify) an Anonymous Molecular Source                         
+--                                                                       
+-- assumes:                                                             
+-- 	that all edits to MS attributes are allowed.                   
+--                                                                    
+--      if this SP is called from the Molecular Source Processor     
+--      then the MSP has already checked MGI_Attribute_History and  
+--      has determined which attributes can be updated.            
+--                                                                
+-- does:                                                         
+--                                                              
+--      create a new or update an existing MSO (PRB_Source)    
+--                                                            
+-- implements:                                                
+--     collapsing; that is, if a MSO has not been curator-edited
+--     then it can be shared by multiple Probe or Sequence objects. 
+--                                                                 
+-- output:                                                        
+--                                                               
+--     the new MSO key (v_newMSOKey).                           
+--                                                             
+--     OR an error if the MSO being processed exists in the database 
+--     and is not Anonymous.                                      
+--                                                               
 
 DECLARE
 v_isCuratorEdited int;
@@ -63,7 +63,7 @@ v_ageMax numeric;
 
 BEGIN
 
-/* if the MSO key exists in the database and is not Anonymous, then error & done. */
+-- if the MSO key exists in the database and is not Anonymous, then error & done.
 
 IF EXISTS (select 1 from PRB_Source where _Source_key = v_msoKey)
    AND (select name from PRB_Source where _Source_key = v_msoKey) != null
@@ -72,7 +72,7 @@ THEN
 	RETURN;
 END IF;
 
-/* set isCuratorEdited bit by checking if the "modified by" user is a curator (or not) */
+-- set isCuratorEdited bit by checking if the "modified by" user is a curator (or not)
 
 IF EXISTS (select 1 from MGI_User u, VOC_Term t
     where u._User_key = v_modifiedByKey
@@ -84,8 +84,8 @@ ELSE
 	v_isCuratorEdited := 0;
 END IF;
 
-/* if the MSO being processed is not curator-edited...    */
-/* then we can potentially collapse it (share it).        */
+-- if the MSO being processed is not curator-edited...    
+-- then we can potentially collapse it (share it).       
 
 IF v_isCuratorEdited = 0
 THEN
@@ -95,28 +95,28 @@ THEN
     /* then return the existing MSO key; share it (collapse).  */
 
     v_newMSOKey := _Source_key from PRB_Source 
-	    where _SegmentType_key = v_segmentTypeKey
-	    and _Vector_key = v_vectorTypeKey
-	    and _Organism_key = v_organismKey
-	    and _Strain_key = v_strainKey
-	    and _Tissue_key = v_tissueKey
-	    and _Gender_key = v_genderKey
-	    and _CellLine_key = v_cellLineKey
-	    and age = v_age
-	    and isCuratorEdited = 0
+	    WHERE _SegmentType_key = v_segmentTypeKey
+	    AND _Vector_key = v_vectorTypeKey
+	    AND _Organism_key = v_organismKey
+	    AND _Strain_key = v_strainKey
+	    AND _Tissue_key = v_tissueKey
+	    AND _Gender_key = v_genderKey
+	    AND _CellLine_key = v_cellLineKey
+	    AND age = v_age
+	    AND isCuratorEdited = 0
 	    ;
 
-    IF v_newMSOKey is not null
+    IF v_newMSOKey IS NOT NULL
     THEN
         RETURN;
     END IF;
 END IF;
 
-/* calculate the ageMin and ageMax values for age */
+-- calculate the ageMin and ageMax values for age
 
 SELECT * FROM PRB_ageMinMax(v_age) into v_ageMin, v_ageMax;
 
-/* if the MSO key exists and if any MSO attribute has changed... */
+-- if the MSO key exists and if any MSO attribute has changed...
 
 IF EXISTS (select 1 from PRB_Source where _Source_key = v_msoKey)
 THEN
@@ -146,12 +146,12 @@ THEN
       ((select description from PRB_Source where _Source_key = v_msoKey) is not null and (v_tissueTreatment is null))
    THEN
 
-       /* if the MSO is collapsed, then uncollapse it (create a new MSO) */
+       -- if the MSO is collapsed, then uncollapse it (create a new MSO)
 
        IF (select count(*) from PRB_Probe where _Source_key = v_msoKey) > 1 or
           (select count(*) from SEQ_Source_Assoc where _Source_key = v_msoKey) > 1
        THEN
-	   /* insert a new MSO record using the existing collapsed MSO object */
+	   -- insert a new MSO record using the existing collapsed MSO object
 
            v_newMSOKey := max(_Source_key) + 1 from PRB_Source;
 
@@ -164,7 +164,7 @@ THEN
 	   WHERE _Source_key = v_msoKey
 	   ;
 	
-	   /* update the new MSO using the input parameters */
+	   -- update the new MSO using the input parameters
 
 	   UPDATE PRB_Source
 	   SET _SegmentType_key = v_segmentTypeKey,
@@ -186,7 +186,7 @@ THEN
 
 	   RETURN;
 
-       /* else, just update it */
+       -- else, just update it
        ELSE
 	   UPDATE PRB_Source
 	   SET _SegmentType_key = v_segmentTypeKey,
@@ -210,7 +210,7 @@ THEN
        END IF;
    END IF;
 
-/* else create a new MSO object */
+-- else create a new MSO object
 
 ELSE
         v_newMSOKey := max(_Source_key) + 1 from PRB_Source;

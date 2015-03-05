@@ -3,6 +3,13 @@
 #
 # History
 #
+# 02/26/2015    lec
+#       Delete roll-up annotations (_AnnotType_key = 1015, 1016)
+#       Delete MRK_ClusterMember
+#
+# 02/24/2015    lec
+#       - remove MLC
+#
 # 01/30/2014	lec
 #	- TR 10841; remove obsolete mld_distance/mld_physmap
 #
@@ -207,6 +214,17 @@ PERFORM VOC_mergeAnnotations (1000, v_oldKey, v_newKey);
 
 -- Update Annotations - 06/17/2003 - TR 4902 - InterPro/Marker 
 PERFORM VOC_mergeAnnotations (1003, v_oldKey, v_newKey);
+
+-- Delete roll-up annotations
+-- 1015 : Mammalian Phenotype/Marker (Derived)
+-- 1016 : OMIM/Marker (Derived)
+--
+
+DELETE VOC_Annot WHERE _AnnotType_key = 1015 AND _Object_key = v_oldKey;
+DELETE VOC_Annot WHERE _AnnotType_key = 1016 AND _Object_key = v_oldKey;
+
+-- Delete MRK_ClusterMember from old Symbol
+DELETE MRK_ClusterMember where _Marker_key = @oldKey
 
 -- Move non-duplicate Marker References to the new symbol 
 
