@@ -41,8 +41,9 @@ v_segmentTypeKey :=  _Term_key from VOC_Term where _Vocab_key = 10 and term = 'N
 
 v_vectorTypeKey := _Term_key from VOC_Term where _Vocab_key = 24 and term = 'Not Specified' ;
 
-PERFORM PRB_processAnonymousSource(v_msoKey, v_segmentTypeKey, v_vectorTypeKey, v_organismKey, v_strainKey,
-    v_tissueKey, v_genderKey, v_cellLineKey, v_age, v_tissueTreatment, v_modifiedByKey, 0);
+SELECT * INTO v_newMSOKey 
+FROM PRB_processAnonymousSource(v_msoKey, v_segmentTypeKey, v_vectorTypeKey, v_organismKey, v_strainKey,
+    		v_tissueKey, v_genderKey, v_cellLineKey, v_age, v_tissueTreatment, v_modifiedByKey, 0);
 
 IF NOT FOUND
 THEN

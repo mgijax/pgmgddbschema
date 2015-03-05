@@ -77,7 +77,7 @@ END IF;
 IF EXISTS (select 1 from MGI_User u, VOC_Term t
     where u._User_key = v_modifiedByKey
     and u._UserType_key = t._Term_key
-    and t.term in ("Curator", "BA", "PI"))
+    and t.term in ('Curator', 'BA', 'PI'))
 THEN
         v_isCuratorEdited := 1;
 ELSE
@@ -126,8 +126,8 @@ THEN
    IF (select v_verifyOrganismEdit) = 1 and
       (select _Organism_key from PRB_Source where _Source_key = v_msoKey) != v_organismKey and
       not exists (select 1 from MGI_UserTask_View
-                  where usertask = "molecular source:organism"
-                  and login = user_name())
+                  where usertask = 'molecular source:organism'
+                  and login = current_user)
    THEN
 	RAISE EXCEPTION E'You do not have permission to modify this Source''s Organism.';
 	RETURN;
