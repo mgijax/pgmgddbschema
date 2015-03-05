@@ -123,7 +123,7 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION ALL_convertAllele(int,varchar,varchar,int) TO public;
 
-COMMENT ON FUNCTION mgd.ALL_convertAllele(int,varchar,varchar,int) IS '';
+COMMENT ON FUNCTION mgd.ALL_convertAllele(int,varchar,varchar,int) IS 'convert allele symbols of using old symbol/new symbol';
 
 EOSQL
 

@@ -5,6 +5,7 @@
 #
 # 08/25/2014    lec
 #       - TR11654/stored procedures for postgres
+#
 # 03/29/2012	lec
 #	- TR 11025/default...copyright equals note
 #
@@ -33,20 +34,21 @@ AS
 \$\$
 
 DECLARE
-v_note varchar(255);
+v_note mgi_notechunk.note%TYPE;
 v_short_citation varchar(255);
-v_journal varchar(255);
-v_jnumID varchar(30);
-v_pubmedID varchar(30);
+v_journal bib_refs.journal%TYPE;
+v_jnumID acc_accession.accID%TYPE;
+v_pubmedID acc_accession.accID%TYPE;
 v_year char(4);
-s1 varchar(255);
-s2 varchar(255);
-s  varchar(255);
+s1 mgi_notechunk.note%TYPE;
+s2 mgi_notechunk.note%TYPE;
+s  mgi_notechunk.note%TYPE;
 idx int;
 
 BEGIN
 
-/* Returns copyright for journal */
+-- Returns copyright for journal
+
 SELECT
 c.note,
 r.short_citation,
@@ -71,7 +73,8 @@ AND n._NoteType_key = 1026
 AND n._Note_key = c._Note_key
 ;
 
-/* default...copyright equals note */
+-- default...copyright equals note
+
 copyright := v_note;
 
 IF (v_journal = 'Proc Natl Acad Sci U S A')
@@ -160,6 +163,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION BIB_getCopyright(int) TO public;
 
-COMMENT ON FUNCTION mgd.BIB_getCopyright(int) IS '';
+COMMENT ON FUNCTION mgd.BIB_getCopyright(int) IS 'returns copyright for journal';
 
 EOSQL

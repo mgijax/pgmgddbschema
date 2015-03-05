@@ -2,7 +2,9 @@
 
 #
 # History
+#
 # 10/23/2008 - jsb - added check for null marker keys
+#
 # 06/30/2004	lec
 #	- TR 5998
 #
@@ -59,7 +61,7 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION ALL_mergeWildTypes(int,int,varchar,varchar) TO public;
 
-COMMENT ON FUNCTION mgd.ALL_mergeWildTypes(int,int,varchar,varchar) IS '';
+COMMENT ON FUNCTION mgd.ALL_mergeWildTypes(int,int,varchar,varchar) IS 'merge wildtype alleles of old/new symbols';
 
 EOSQL
 
