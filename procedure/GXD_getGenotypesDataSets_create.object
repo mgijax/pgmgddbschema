@@ -1,77 +1,80 @@
-#!/bin/csh -f
+#!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
+cd `dirname $0` && . ./Configuration
 
-cd `dirname $0` && source ./Configuration
+${PG_MGD_DBSCHEMADIR}/procedure/GXD_getGenotypesDataSets_drop.object
 
-cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-use ${DBNAME}
-go
+CREATE OR REPLACE FUNCTION GXD_getGenotypesDataSets (
+v_genotypeKey int,
+v_countOnly int DEFAULT 0
+)
+RETURNS VOID AS
+\$\$
 
-create procedure GXD_getGenotypesDataSets
-  @genotypeKey int,
-  @countOnly int = 0
-as
+DECLARE
 
-/* Select all Data Sets for given Genotype */
+BEGIN
+
+-- Select all Data Sets for given Genotype 
  
-select distinct s._Refs_key, label = 'Reference', dataSet = 'GXD Assay'
-into #objects
-from GXD_Expression s
-where s._Genotype_key = @genotypeKey
-union
-select distinct e._Refs_key, label = 'Reference', dataSet = 'PhenoSlim Annotation'
-from VOC_Evidence e, VOC_Annot a, VOC_AnnotType t
-where t.name = "PhenoSlim/Genotype"
-and t._AnnotType_key = a._AnnotType_key
-and a._Object_key = @genotypeKey
-and a._Annot_key = e._Annot_key
-union
-select distinct e._Refs_key, label = 'Reference', dataSet = 'Mammalian Phenotype Annotation'
-from VOC_Evidence e, VOC_Annot a, VOC_AnnotType t
-where t.name = "Mammalian Phenotype/Genotype"
-and t._AnnotType_key = a._AnnotType_key
-and a._Object_key = @genotypeKey
-and a._Annot_key = e._Annot_key
-union
-select distinct e._Refs_key, label = 'Reference', dataSet = 'OMIM Annotation'
-from VOC_Evidence e, VOC_Annot a, VOC_AnnotType t
-where t.name = "OMIM/Genotype"
-and t._AnnotType_key = a._AnnotType_key
-and a._Object_key = @genotypeKey
-and a._Annot_key = e._Annot_key
-union
-select distinct null, s.strain, dataSet = 'Strain'
-from PRB_Strain_Genotype ps, PRB_Strain s
-where ps._Genotype_key = @genotypeKey
-and ps._Strain_key = s._Strain_key
+CREATE TEMP TABLE objects ON COMMIT DROP
+AS SELECT DISTINCT s._Refs_key, 'Reference' as label, 'GXD Assay' as dataSet
+FROM GXD_Expression s
+WHERE s._Genotype_key = v_genotypeKey
+UNION
+SELECT DISTINCT e._Refs_key, 'Reference' as label, 'PhenoSlim Annotation' as dataSet
+FROM VOC_Evidence e, VOC_Annot a, VOC_AnnotType t
+WHERE t.name = 'PhenoSlim/Genotype'
+AND t._AnnotType_key = a._AnnotType_key
+AND a._Object_key = v_genotypeKey
+AND a._Annot_key = e._Annot_key
+UNION
+SELECT DISTINCT e._Refs_key, 'Reference' as label, 'Mammalian Phenotype Annotation' as dataSet
+FROM VOC_Evidence e, VOC_Annot a, VOC_AnnotType t
+WHERE t.name = 'Mammalian Phenotype/Genotype'
+AND t._AnnotType_key = a._AnnotType_key
+AND a._Object_key = v_genotypeKey
+AND a._Annot_key = e._Annot_key
+UNION
+SELECT DISTINCT e._Refs_key, 'Reference' as label, 'OMIM Annotation' as dataSet
+FROM VOC_Evidence e, VOC_Annot a, VOC_AnnotType t
+where t.name = 'OMIM/Genotype'
+AND t._AnnotType_key = a._AnnotType_key
+AND a._Object_key = v_genotypeKey
+AND a._Annot_key = e._Annot_key
+UNION
+SELECT DISTINCT null, s.strain, 'Strain' as dataSet
+FROM PRB_Strain_Genotype ps, PRB_Strain s
+WHERE ps._Genotype_key = v_genotypeKey
+AND ps._Strain_key = s._Strain_key
+;
 
-create index idx1 on #objects(_Refs_key)
+CREATE INDEX idx1 ON objects(_Refs_key);
 
-if @countOnly = 1
-begin
-	select count(*) from #objects
-end
-else
-begin
-	select b.jnum, b.short_citation, o.dataSet
-	from #objects o, BIB_View b
-	where o._Refs_key = b._Refs_key
-	union
-	select null, o.label, o.dataSet
-	from #objects o
-	where o._Refs_key is null
-	order by b.jnum
-end
+IF v_countOnly = 1
+THEN
+	SELECT count(*) FROM objects;
+ELSE
+	SELECT b.jnum, b.short_citation, o.dataSet
+	FROM objects o, BIB_View b
+	WHERE o._Refs_key = b._Refs_key
+	UNION
+	SELECT null, o.label, o.dataSet
+	FROM objects o
+	WHERE o._Refs_key IS NULL
+	ORDER BY b.jnum
+	;
+END IF;
 
-go
+END;
+\$\$
+LANGUAGE plpgsql;
 
-checkpoint
-go
+GRANT EXECUTE ON FUNCTION GXD_getGenotypesDataSets(int,int) TO public;
 
-quit
+COMMENT ON FUNCTION mgd.GXD_getGenotypesDataSets(int,int) IS 'select all data sets for genotype';
 
 EOSQL
+
