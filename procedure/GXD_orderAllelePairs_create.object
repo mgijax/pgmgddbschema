@@ -1,8 +1,4 @@
-#!/bin/csh -f
-
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
+#!/bin/sh
 
 #
 # HISTORY
@@ -11,66 +7,68 @@
 #	- TR 2867; added
 #
 
-cd `dirname $0` && source ./Configuration
+cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+${PG_MGD_DBSCHEMADIR}/procedure/GXD_orderAllelePairs_drop.object
 
-use ${DBNAME}
-go
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create procedure GXD_orderAllelePairs
-  @genotypeKey int			/* Genotype key of Allele Pair */
-as
+CREATE OR REPLACE FUNCTION GXD_orderAllelePairs (
+v_genotypeKey int			-- Genotype key of Allele Pair
+)
+RETURNS VOID AS
+\$\$
 
-/* Re-order the Allele Pairs of the given Genotype */
-/* alphabetically by Marker Symbol */
+DECLARE
+v_pkey int;	-- primary key of records to update
+v_oldSeq int;	-- current sequence number
+v_newSeq int := 1;	-- new sequence number
+seq_cursor refcursor;
 
-declare @pkey int	/* primary key of records to update */
-declare @oldSeq int	/* current sequence number */
-declare @newSeq int	/* new sequence number */
-select @newSeq = 1
- 
-/* if the Genotype contains an Allele whose Compound value != Not Applicable */
-/* then do not reorder */
+BEGIN
 
-if exists (select 1 from GXD_AllelePair ap, VOC_Term t
-	where ap._Genotype_key = @genotypeKey
-	and ap._Compound_key = t._Term_key
-	and t.term != 'Not Applicable')
-begin
-    return
-end
+-- Re-order the Allele Pairs of the given Genotype
+-- alphabetically by Marker Symbol
+--
+-- if the Genotype contains an Allele whose Compound value != Not Applicable
+-- then do not reorder
 
-declare seq_cursor cursor for
-select _AllelePair_key, sequenceNum
-from GXD_AllelePair_View
-where _Genotype_key = @genotypeKey 
-order by symbol
-for read only
+IF EXISTS (SELECT 1 FROM GXD_AllelePair ap, VOC_Term t
+	WHERE ap._Genotype_key = v_genotypeKey
+	AND ap._Compound_key = t._Term_key
+	AND t.term != 'Not Applicable')
+THEN
+    RETURN;
+END IF;
 
-open seq_cursor
-fetch seq_cursor into @pkey, @oldSeq
- 
-while (@@sqlstatus = 0)
-begin
+OPEN seq_cursor FOR
+SELECT _AllelePair_key, sequenceNum
+FROM GXD_AllelePair_View
+WHERE _Genotype_key = v_genotypeKey 
+ORDER BY symbol
+;
 
-  update GXD_AllelePair set sequenceNum = @newSeq
-    where _AllelePair_key = @pkey
+LOOP
+        FETCH seq_cursor INTO v_pkey, v_oldSeq;
+        EXIT WHEN NOT FOUND;
 
-  select @newSeq = @newSeq + 1
+  	UPDATE GXD_AllelePair 
+	SET sequenceNum = v_newSeq
+    	WHERE _AllelePair_key = v_pkey
+	;
 
-  fetch seq_cursor into @pkey, @oldSeq
-end
- 
-close seq_cursor
-deallocate cursor seq_cursor
- 
+  	v_newSeq := v_newSeq + 1;
+END LOOP;
+CLOSE seq_cursor;
 
-go
+RETURN;
 
-checkpoint
-go
+END;
+\$\$
+LANGUAGE plpgsql;
 
-quit
+GRANT EXECUTE ON FUNCTION GXD_orderAllelePairs(int) TO public;
+
+COMMENT ON FUNCTION mgd.GXD_orderAllelePairs(int) IS '';
 
 EOSQL
