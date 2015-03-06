@@ -1,0 +1,208 @@
+#!/bin/csh -f
+
+#
+# History
+#
+# 08/14/2014	lec
+#	- during ei_linux testing, this sp needs to check for genotypes
+#	that do not contains allele pairs
+#
+# 10/08/2012	lec
+#	- TR10273/add mutant cell lines
+#
+# 08/29/2006	lec
+#	- TR 7841; add _PairState_key to check for duplicate genotype
+#
+# 07/13/2006	lec
+#	- TR 7806; add isConditional to check for duplicate genotype
+#
+# 12/20/2001	lec
+#	- TR 2239
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create procedure GXD_checkDuplicateGenotype
+	@genotypeKey integer
+as
+
+/* Check if the given genotype record is a duplicate. */
+/* If it is a duplicate, the transaction is rolled back. */
+
+/* select the set of all genotypes with the same */
+/* 	strain                                   */
+/* 	conditional flag                         */
+/* 	allele 1                                 */
+/* 	pair state                               */
+/* as the given genotype                         */
+/*                                               */
+/* allele 2, mcl 1, mcl 2 can all be null        */
+/* so need to check this in the for-each loop    */
+/* (exclude the given genotype from this set)    */
+
+declare genotype_cursor cursor for
+select distinct g1._Genotype_key
+from GXD_Genotype g1, GXD_AllelePair ap1, GXD_Genotype g2, GXD_AllelePair ap2
+where g2._Genotype_key = @genotypeKey
+and g1._Strain_key = g2._Strain_key
+and g1.isConditional = g2.isConditional
+and g1._Genotype_key != @genotypeKey
+and g1._Genotype_key = ap1._Genotype_key
+and g2._Genotype_key = ap2._Genotype_key
+and ap1._Marker_key = ap2._Marker_key
+and ap1._Allele_key_1 = ap2._Allele_key_1
+and ap1._PairState_key = ap2._PairState_key
+union
+select distinct g1._Genotype_key
+from GXD_Genotype g1, GXD_Genotype g2
+where g2._Genotype_key = @genotypeKey
+and g1._Strain_key = g2._Strain_key
+and g1.isConditional = g2.isConditional
+and g1._Genotype_key != @genotypeKey
+and not exists (select 1 from GXD_AllelePair ap1 where g1._Genotype_key = ap1._Genotype_key)
+and not exists (select 1 from GXD_AllelePair ap2 where g2._Genotype_key = ap2._Genotype_key)
+for read only
+ 
+/*                                                         */
+/* for each genotype that may be a duplicate...            */
+/*                                                         */
+/*	compare the set of Allele Pairs                    */
+/*		of the given genotype                      */
+/* 	to the set of Allele Pairs of the other genotype   */
+/*                                                         */
+/* 	if the sets are exactly equal,                     */
+/*             then the given genotype is a duplicate      */
+/*                                                         */
+
+declare @dupgenotypeKey integer
+declare @isDuplicate integer
+
+open genotype_cursor
+ 
+fetch genotype_cursor into @dupgenotypeKey
+ 
+while (@@sqlstatus = 0)
+begin
+	/* if the # of Allele Pairs is different, then it's not a duplicate */
+
+	if (select count(*) from GXD_AllelePair where _Genotype_key = @genotypeKey) != 
+	   (select count(*) from GXD_AllelePair where _Genotype_key = @dupgenotypeKey)
+		select @isDuplicate = 0
+
+	else if exists (select 1 from GXD_AllelePair g1
+		where g1._Genotype_key = @genotypeKey
+		and g1._Allele_key_2 is not null
+		and g1._MutantCellLine_key_1 is not null
+		and g1._MutantCellLine_key_2 is not null
+		and not exists (select 1 from GXD_AllelePair g2
+			where g2._Genotype_key = @dupgenotypeKey
+			and g1._Allele_key_1 = g2._Allele_key_1
+			and g1._Allele_key_2 = g2._Allele_key_2
+			and g1._MutantCellLine_key_1 = g2._MutantCellLine_key_1
+			and g1._MutantCellLine_key_2 = g2._MutantCellLine_key_2
+			and g1._PairState_key = g2._PairState_key))
+		select @isDuplicate = 0
+	
+	else if exists (select 1 from GXD_AllelePair g1
+		where g1._Genotype_key = @genotypeKey
+		and g1._Allele_key_2 is not null
+		and g1._MutantCellLine_key_1 is null
+		and g1._MutantCellLine_key_2 is not null
+		and not exists (select 1 from GXD_AllelePair g2
+			where g2._Genotype_key = @dupgenotypeKey
+			and g1._Allele_key_1 = g2._Allele_key_1
+			and g1._Allele_key_2 = g2._Allele_key_2
+			and g2._MutantCellLine_key_1 is null
+			and g1._MutantCellLine_key_2 = g2._MutantCellLine_key_2
+			and g1._PairState_key = g2._PairState_key))
+		select @isDuplicate = 0
+	
+	else if exists (select 1 from GXD_AllelePair g1
+		where g1._Genotype_key = @genotypeKey
+		and g1._Allele_key_2 is not null
+		and g1._MutantCellLine_key_1 is not null
+		and g1._MutantCellLine_key_2 is null
+		and not exists (select 1 from GXD_AllelePair g2
+			where g2._Genotype_key = @dupgenotypeKey
+			and g1._Allele_key_1 = g2._Allele_key_1
+			and g1._Allele_key_2 = g2._Allele_key_2
+			and g1._MutantCellLine_key_1 = g2._MutantCellLine_key_1
+			and g2._MutantCellLine_key_2 is null
+			and g1._PairState_key = g2._PairState_key))
+		select @isDuplicate = 0
+	
+	else if exists (select 1 from GXD_AllelePair g1
+		where g1._Genotype_key = @genotypeKey
+		and g1._Allele_key_2 is not null
+		and g1._MutantCellLine_key_1 is null
+		and g1._MutantCellLine_key_2 is null
+		and not exists (select 1 from GXD_AllelePair g2
+			where g2._Genotype_key = @dupgenotypeKey
+			and g1._Allele_key_1 = g2._Allele_key_1
+			and g1._Allele_key_2 = g2._Allele_key_2
+			and g2._MutantCellLine_key_1 is null
+			and g2._MutantCellLine_key_2 is null
+			and g1._PairState_key = g2._PairState_key))
+		select @isDuplicate = 0
+	
+	else if exists (select 1 from GXD_AllelePair g1
+		where g1._Genotype_key = @genotypeKey
+		and g1._Allele_key_2 is null
+		and g1._MutantCellLine_key_1 is not null
+		and g1._MutantCellLine_key_2 is null
+		and not exists (select 1 from GXD_AllelePair g2
+			where g2._Genotype_key = @dupgenotypeKey
+			and g1._Allele_key_1 = g2._Allele_key_1
+			and g2._Allele_key_2 is null
+			and g1._MutantCellLine_key_1 = g2._MutantCellLine_key_1
+			and g2._MutantCellLine_key_2 is null
+			and g1._PairState_key = g2._PairState_key))
+		select @isDuplicate = 0
+	
+	else if exists (select 1 from GXD_AllelePair g1
+		where g1._Genotype_key = @genotypeKey
+		and g1._Allele_key_2 is null
+		and g1._MutantCellLine_key_1 is null
+		and g1._MutantCellLine_key_2 is null
+		and not exists (select 1 from GXD_AllelePair g2
+			where g2._Genotype_key = @dupgenotypeKey
+			and g1._Allele_key_1 = g2._Allele_key_1
+			and g2._Allele_key_2 is null
+			and g2._MutantCellLine_key_1 is null
+			and g2._MutantCellLine_key_2 is null
+			and g1._PairState_key = g2._PairState_key))
+		select @isDuplicate = 0
+	
+	else
+	begin
+		select @isDuplicate = 1
+		break
+	end
+
+	fetch genotype_cursor into @dupgenotypeKey
+end
+ 
+close genotype_cursor
+ 
+deallocate cursor genotype_cursor
+ 
+if @isDuplicate = 1
+begin
+	raiserror 99999 "Duplicate Genotype Detected."
+	rollback transaction
+	return
+end
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

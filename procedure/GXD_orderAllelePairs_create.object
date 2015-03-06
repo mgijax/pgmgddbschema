@@ -1,0 +1,76 @@
+#!/bin/csh -f
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+#
+# HISTORY
+#
+# lec	01/22/2002
+#	- TR 2867; added
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create procedure GXD_orderAllelePairs
+  @genotypeKey int			/* Genotype key of Allele Pair */
+as
+
+/* Re-order the Allele Pairs of the given Genotype */
+/* alphabetically by Marker Symbol */
+
+declare @pkey int	/* primary key of records to update */
+declare @oldSeq int	/* current sequence number */
+declare @newSeq int	/* new sequence number */
+select @newSeq = 1
+ 
+/* if the Genotype contains an Allele whose Compound value != Not Applicable */
+/* then do not reorder */
+
+if exists (select 1 from GXD_AllelePair ap, VOC_Term t
+	where ap._Genotype_key = @genotypeKey
+	and ap._Compound_key = t._Term_key
+	and t.term != 'Not Applicable')
+begin
+    return
+end
+
+declare seq_cursor cursor for
+select _AllelePair_key, sequenceNum
+from GXD_AllelePair_View
+where _Genotype_key = @genotypeKey 
+order by symbol
+for read only
+
+open seq_cursor
+fetch seq_cursor into @pkey, @oldSeq
+ 
+while (@@sqlstatus = 0)
+begin
+
+  update GXD_AllelePair set sequenceNum = @newSeq
+    where _AllelePair_key = @pkey
+
+  select @newSeq = @newSeq + 1
+
+  fetch seq_cursor into @pkey, @oldSeq
+end
+ 
+close seq_cursor
+deallocate cursor seq_cursor
+ 
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

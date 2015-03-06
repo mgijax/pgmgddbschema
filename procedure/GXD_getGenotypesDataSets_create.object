@@ -1,0 +1,77 @@
+#!/bin/csh -f
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create procedure GXD_getGenotypesDataSets
+  @genotypeKey int,
+  @countOnly int = 0
+as
+
+/* Select all Data Sets for given Genotype */
+ 
+select distinct s._Refs_key, label = 'Reference', dataSet = 'GXD Assay'
+into #objects
+from GXD_Expression s
+where s._Genotype_key = @genotypeKey
+union
+select distinct e._Refs_key, label = 'Reference', dataSet = 'PhenoSlim Annotation'
+from VOC_Evidence e, VOC_Annot a, VOC_AnnotType t
+where t.name = "PhenoSlim/Genotype"
+and t._AnnotType_key = a._AnnotType_key
+and a._Object_key = @genotypeKey
+and a._Annot_key = e._Annot_key
+union
+select distinct e._Refs_key, label = 'Reference', dataSet = 'Mammalian Phenotype Annotation'
+from VOC_Evidence e, VOC_Annot a, VOC_AnnotType t
+where t.name = "Mammalian Phenotype/Genotype"
+and t._AnnotType_key = a._AnnotType_key
+and a._Object_key = @genotypeKey
+and a._Annot_key = e._Annot_key
+union
+select distinct e._Refs_key, label = 'Reference', dataSet = 'OMIM Annotation'
+from VOC_Evidence e, VOC_Annot a, VOC_AnnotType t
+where t.name = "OMIM/Genotype"
+and t._AnnotType_key = a._AnnotType_key
+and a._Object_key = @genotypeKey
+and a._Annot_key = e._Annot_key
+union
+select distinct null, s.strain, dataSet = 'Strain'
+from PRB_Strain_Genotype ps, PRB_Strain s
+where ps._Genotype_key = @genotypeKey
+and ps._Strain_key = s._Strain_key
+
+create index idx1 on #objects(_Refs_key)
+
+if @countOnly = 1
+begin
+	select count(*) from #objects
+end
+else
+begin
+	select b.jnum, b.short_citation, o.dataSet
+	from #objects o, BIB_View b
+	where o._Refs_key = b._Refs_key
+	union
+	select null, o.label, o.dataSet
+	from #objects o
+	where o._Refs_key is null
+	order by b.jnum
+end
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL

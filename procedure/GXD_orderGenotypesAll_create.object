@@ -1,0 +1,61 @@
+#!/bin/csh -f
+
+#
+# History
+#
+# 01/17/2011	lec
+#	- TR 10273/Europhenome; add default 'created by' key
+#
+# 12/16/2009	lec
+#	- TR9871/refresh all genotypes
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create procedure GXD_orderGenotypesAll
+  @genotypeKey int
+as
+
+/*
+ * Refrest the GXD_AlleleGenotype (cache) table for all Genotypes
+ */
+
+delete from GXD_AlleleGenotype where _Genotype_key = @genotypeKey
+
+declare @alleleKey int
+
+declare allele_cursor cursor for
+select distinct _Allele_key_1 from GXD_AllelePair
+where _Genotype_key = @genotypeKey
+union
+select distinct _Allele_key_2 from GXD_AllelePair
+where _Genotype_key = @genotypeKey
+and _Allele_key_2 is not null
+for read only
+ 
+open allele_cursor
+fetch allele_cursor into @alleleKey
+
+while (@@sqlstatus = 0)
+begin
+  exec GXD_orderGenotypes @alleleKey, 1001
+  fetch allele_cursor into @alleleKey
+end
+
+close allele_cursor
+deallocate cursor allele_cursor
+
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL
