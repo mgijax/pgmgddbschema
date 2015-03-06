@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 #
 # History
@@ -10,52 +10,52 @@
 #	- TR9871/refresh all genotypes
 #
 
-cd `dirname $0` && source ./Configuration
+cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+${PG_MGD_DBSCHEMADIR}/procedure/GXD_orderGenotypesAll_drop.object
 
-use ${DBNAME}
-go
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create procedure GXD_orderGenotypesAll
-  @genotypeKey int
-as
+CREATE OR REPLACE FUNCTION GXD_orderGenotypesAll (
+v_genotypeKey int
+)
+RETURNS VOID AS
+\$\$
 
-/*
- * Refrest the GXD_AlleleGenotype (cache) table for all Genotypes
- */
+DECLARE
+v_alleleKey int;
+allele_cursor refcursor;
 
-delete from GXD_AlleleGenotype where _Genotype_key = @genotypeKey
+BEGIN
 
-declare @alleleKey int
+-- Refrest the GXD_AlleleGenotype (cache) table for all Genotypes
 
-declare allele_cursor cursor for
-select distinct _Allele_key_1 from GXD_AllelePair
-where _Genotype_key = @genotypeKey
-union
-select distinct _Allele_key_2 from GXD_AllelePair
-where _Genotype_key = @genotypeKey
-and _Allele_key_2 is not null
-for read only
+DELETE FROM GXD_AlleleGenotype WHERE _Genotype_key = v_genotypeKey;
+
+OPEN allele_cursor FOR
+SELECT DISTINCT _Allele_key_1 
+FROM GXD_AllelePair
+WHERE _Genotype_key = v_genotypeKey
+UNION
+SELECT DISTINCT _Allele_key_2 
+FROM GXD_AllelePair
+WHERE _Genotype_key = v_genotypeKey
+AND _Allele_key_2 is not null
+;
+LOOP
+        FETCH allele_cursor INTO v_alleleKey
+        EXIT WHEN NOT FOUND;
+  	PERFORM GXD_orderGenotypes (v_alleleKey, 1001);
+END LOOP;
+CLOSE allele_cursor;
  
-open allele_cursor
-fetch allele_cursor into @alleleKey
+END;
+\$\$
+LANGUAGE plpgsql;
 
-while (@@sqlstatus = 0)
-begin
-  exec GXD_orderGenotypes @alleleKey, 1001
-  fetch allele_cursor into @alleleKey
-end
+GRANT EXECUTE ON FUNCTION GXD_orderGenotypesAll(int,int) TO public;
 
-close allele_cursor
-deallocate cursor allele_cursor
-
-
-go
-
-checkpoint
-go
-
-quit
+COMMENT ON FUNCTION mgd.GXD_orderGenotypesAll(int,int) IS '';
 
 EOSQL
+

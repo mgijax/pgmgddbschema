@@ -1,0 +1,241 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/17/2011 lec
+#	- TR 10273/Europhenome
+#	  add userKey; set default to mgd_dbo
+#
+# 03/10/2005 lec
+#	- TR 4289, MPR
+#
+# select _Genotype_key, _Allele_key_1 from GxD_AllelePair group by _Genotype_key having count(*) > 1
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/GXD_orderGenotypes_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION GXD_orderGenotypes (
+v_alleleKey int,
+v_userKey int = 1001
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+seq_cursor refcursor;
+
+BEGIN
+
+--
+-- Load the GXD_AlleleGenotype (cache) table for the given Allele.
+-- Executed after any modification to GXD_AllelePair.
+-- test: 263, 8734
+--
+
+-- Delete any pre-existing cache results for given Allele
+
+DELETE FROM GXD_AlleleGenotype WHERE _Allele_key = v_alleleKey;
+
+select distinct ap._Genotype_key
+into #genotypes
+from GXD_AllelePair ap, GXD_Genotype g, PRB_Strain s
+where (ap._Allele_key_1 = v_alleleKey or ap._Allele_key_2 = v_alleleKey)
+and ap._Genotype_key = g._Genotype_key
+and g._Strain_key = s._Strain_key
+order by ap._Allele_key_1, s.strain
+
+select distinct g._Genotype_key
+into #simple
+from #genotypes g, GXD_AllelePair ap
+where g._Genotype_key = ap._Genotype_key
+group by g._Genotype_key having count(*) = 1
+
+select distinct g._Genotype_key
+into #complex
+from #genotypes g, GXD_AllelePair ap
+where g._Genotype_key = ap._Genotype_key
+group by g._Genotype_key having count(*) > 1
+
+/* simple */
+
+insert into GXD_AlleleGenotype 
+(_Genotype_key, _Marker_key, _Allele_key, sequenceNum, _CreatedBy_key, _ModifiedBy_key)
+select distinct ap._Genotype_key, ap._Marker_key, ap._Allele_key_1, -1, v_userKey, v_userKey
+from #simple s, GXD_AllelePair ap
+where s._Genotype_key = ap._Genotype_key
+and ap._Allele_key_1 = v_alleleKey
+union
+select distinct ap._Genotype_key, ap._Marker_key, ap._Allele_key_2, -1, v_userKey, v_userKey
+from #simple s, GXD_AllelePair ap
+where s._Genotype_key = ap._Genotype_key
+and ap._Allele_key_2 = v_alleleKey
+
+/* Apply ordering rules */
+
+update GXD_AlleleGenotype
+set sequenceNum = 1
+from #simple s, GXD_AlleleGenotype ag, GXD_AllelePair ap, VOC_Term t
+where s._Genotype_key = ag._Genotype_key
+and ag._Allele_key = v_alleleKey
+and s._Genotype_key = ap._Genotype_key
+and ag._Allele_key = ap._Allele_key_1
+and ap._PairState_key = t._Term_key
+and t.term = 'Homozygous'
+
+update GXD_AlleleGenotype
+set sequenceNum = 3
+from #simple s, GXD_AlleleGenotype ag, GXD_AllelePair ap, VOC_Term t
+where s._Genotype_key = ag._Genotype_key
+and ag._Allele_key = v_alleleKey
+and s._Genotype_key = ap._Genotype_key
+and ap._PairState_key = t._Term_key
+and t.term = 'Heterozygous'
+and exists (select 1 from ALL_Allele a where ap._Allele_key_1 = a._Allele_key and a.isWildType = 0)
+
+update GXD_AlleleGenotype
+set sequenceNum = 3
+from #simple s, GXD_AlleleGenotype ag, GXD_AllelePair ap, VOC_Term t
+where s._Genotype_key = ag._Genotype_key
+and ag._Allele_key = v_alleleKey
+and s._Genotype_key = ap._Genotype_key
+and ap._PairState_key = t._Term_key
+and t.term = 'Heterozygous'
+and exists (select 1 from ALL_Allele a where ap._Allele_key_2 = a._Allele_key and a.isWildType = 0)
+
+update GXD_AlleleGenotype
+set sequenceNum = 2
+from #simple s, GXD_AlleleGenotype ag, GXD_AllelePair ap, VOC_Term t
+where s._Genotype_key = ag._Genotype_key
+and ag._Allele_key = v_alleleKey
+and s._Genotype_key = ap._Genotype_key
+and ap._PairState_key = t._Term_key
+and t.term = 'Heterozygous'
+and exists (select 1 from ALL_Allele a where ap._Allele_key_1 = a._Allele_key and a.isWildType = 1)
+
+update GXD_AlleleGenotype
+set sequenceNum = 2
+from #simple s, GXD_AlleleGenotype ag, GXD_AllelePair ap, VOC_Term t
+where s._Genotype_key = ag._Genotype_key
+and ag._Allele_key = v_alleleKey
+and s._Genotype_key = ap._Genotype_key
+and ap._PairState_key = t._Term_key
+and t.term = 'Heterozygous'
+and exists (select 1 from ALL_Allele a where ap._Allele_key_2 = a._Allele_key and a.isWildType = 1)
+
+update GXD_AlleleGenotype
+set sequenceNum = 4
+from #simple s, GXD_AlleleGenotype ag, GXD_AllelePair ap, VOC_Term t
+where s._Genotype_key = ag._Genotype_key
+and ag._Allele_key = v_alleleKey
+and s._Genotype_key = ap._Genotype_key
+and ag._Allele_key = ap._Allele_key_1
+and ap._PairState_key = t._Term_key
+and t.term = 'Hemizygous X-linked'
+
+update GXD_AlleleGenotype
+set sequenceNum = 5
+from #simple s, GXD_AlleleGenotype ag, GXD_AllelePair ap, VOC_Term t
+where s._Genotype_key = ag._Genotype_key
+and ag._Allele_key = v_alleleKey
+and s._Genotype_key = ap._Genotype_key
+and ag._Allele_key = ap._Allele_key_1
+and ap._PairState_key = t._Term_key
+and t.term = 'Hemizygous Y-linked'
+
+update GXD_AlleleGenotype
+set sequenceNum = 6
+from #simple s, GXD_AlleleGenotype ag, GXD_AllelePair ap, VOC_Term t
+where s._Genotype_key = ag._Genotype_key
+and ag._Allele_key = v_alleleKey
+and s._Genotype_key = ap._Genotype_key
+and ag._Allele_key = ap._Allele_key_1
+and ap._PairState_key = t._Term_key
+and t.term = 'Hemizygous Insertion'
+
+update GXD_AlleleGenotype
+set sequenceNum = 7
+from #simple s, GXD_AlleleGenotype ag, GXD_AllelePair ap, VOC_Term t
+where s._Genotype_key = ag._Genotype_key
+and ag._Allele_key = v_alleleKey
+and s._Genotype_key = ap._Genotype_key
+and ag._Allele_key = ap._Allele_key_1
+and ap._PairState_key = t._Term_key
+and t.term = 'Indeterminate'
+
+/* complex */
+
+insert into GXD_AlleleGenotype 
+(_Genotype_key, _Marker_key, _Allele_key, sequenceNum, _CreatedBy_key, _ModifiedBy_key)
+select distinct ap._Genotype_key, ap._Marker_key, ap._Allele_key_1, 8, v_userKey, v_userKey
+from #complex x, GXD_AllelePair ap
+where x._Genotype_key = ap._Genotype_key
+and ap._Allele_key_1 = v_alleleKey
+union
+select distinct ap._Genotype_key, ap._Marker_key, ap._Allele_key_2, 8, v_userKey, v_userKey
+from #complex x, GXD_AllelePair ap
+where x._Genotype_key = ap._Genotype_key
+and ap._Allele_key_2 = v_alleleKey
+
+/* re-sequence to get rid of duplicate sequence numbers/gaps */
+
+declare v_pkey int	/* primary key of records to update */
+declare v_oldSeq int	/* current sequence number */
+declare v_newSeq int	/* new sequence number */
+select v_newSeq = 1
+ 
+OPEN seq_cursor FOR
+SELECT DISTINCT a.accID, a._LogicalDB_key, a.preferred, 0 as private
+FROM ACC_Accession a
+WHERE a._Object_key = v_nomenKey
+AND a._MGIType_key = 21
+AND a._LogicalDB_key = 1
+UNION
+SELECT DISTINCT a.accID, a._LogicalDB_key, a.preferred, 0 as private
+FROM ACC_Accession a
+WHERE a._Object_key = v_nomenKey
+AND a._MGIType_key = 21
+AND a._LogicalDB_key != 1
+AND not exists (select 1 from ACC_AccessionReference r WHERE a._Accession_key = r._Accession_key)
+;
+LOOP
+        FETCH seq_cursor INTO v_accID, v_logicalDB, v_preferred, v_private;
+        EXIT WHEN NOT FOUND;
+	PERFORM ACC_insertNoChecks (v_markerKey, v_accID, v_logicalDB, 'Marker', -1, v_preferred, v_private);
+END LOOP;
+CLOSE seq_cursor;
+
+select ap._Genotype_key, ap.sequenceNum
+from GXD_AlleleGenotype ap, GXD_Genotype g, PRB_Strain s
+where ap._Allele_key = v_alleleKey
+and ap._Genotype_key = g._Genotype_key
+and g._Strain_key = s._Strain_key
+order by ap.sequenceNum, s.strain
+for read only
+
+open seq_cursor
+fetch seq_cursor into v_pkey, v_oldSeq
+ 
+while (v_v_sqlstatus = 0)
+begin
+    update GXD_AlleleGenotype set sequenceNum = v_newSeq where _Genotype_key = v_pkey and _Allele_key = v_alleleKey
+    select v_newSeq = v_newSeq + 1
+    fetch seq_cursor into v_pkey, v_oldSeq
+end
+ 
+close seq_cursor
+deallocate cursor seq_cursor
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION GXD_orderGenotypes(int,int) TO public;
+
+COMMENT ON FUNCTION mgd.GXD_orderGenotypes(int,int) IS '';
+
+EOSQL

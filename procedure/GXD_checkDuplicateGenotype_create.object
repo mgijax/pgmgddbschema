@@ -90,6 +90,7 @@ AND NOT exists (SELECT 1 FROM GXD_AllelePair ap2 WHERE g2._Genotype_key = ap2._G
 
 LOOP
         FETCH genotype_cursor INTO v_dupgenotypeKey;
+	EXIT WHEN NOT FOUND;
 
 	-- if the # of Allele Pairs is different, then it's not a duplicate
 
