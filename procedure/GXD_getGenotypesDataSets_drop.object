@@ -4,6 +4,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION IF EXISTS GXD_getGenotypesDataSets(int,int);
+DROP FUNCTION IF EXISTS GXD_getGenotypesDataSets(int);
+
+DROP FUNCTION IF EXISTS GXD_getGenotypesDataSetsCounts(int);
 
 EOSQL
