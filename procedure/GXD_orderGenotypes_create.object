@@ -45,7 +45,7 @@ BEGIN
 DELETE FROM GXD_AlleleGenotype WHERE _Allele_key = v_alleleKey;
 
 CREATE TEMP TABLE genotypes_tmp ON COMMIT DROP
-AS SELECT DISTINCT ap._Genotype_key
+AS SELECT DISTINCT ap._Genotype_key, ap._Allele_key_1, s.strain
 FROM GXD_AllelePair ap, GXD_Genotype g, PRB_Strain s
 WHERE (ap._Allele_key_1 = v_alleleKey or ap._Allele_key_2 = v_alleleKey)
 AND ap._Genotype_key = g._Genotype_key
