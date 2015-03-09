@@ -40,10 +40,10 @@ UNION
 SELECT DISTINCT _Allele_key_2 
 FROM GXD_AllelePair
 WHERE _Genotype_key = v_genotypeKey
-AND _Allele_key_2 is not null
+AND _Allele_key_2 IS NOT NULL
 ;
 LOOP
-        FETCH allele_cursor INTO v_alleleKey
+        FETCH allele_cursor INTO v_alleleKey;
         EXIT WHEN NOT FOUND;
   	PERFORM GXD_orderGenotypes (v_alleleKey, 1001);
 END LOOP;
@@ -53,9 +53,9 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION GXD_orderGenotypesAll(int,int) TO public;
+GRANT EXECUTE ON FUNCTION GXD_orderGenotypesAll(int) TO public;
 
-COMMENT ON FUNCTION mgd.GXD_orderGenotypesAll(int,int) IS '';
+COMMENT ON FUNCTION mgd.GXD_orderGenotypesAll(int) IS '';
 
 EOSQL
 
