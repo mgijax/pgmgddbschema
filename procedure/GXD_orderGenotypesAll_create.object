@@ -49,6 +49,8 @@ LOOP
 END LOOP;
 CLOSE allele_cursor;
  
+RETURN;
+
 END;
 \$\$
 LANGUAGE plpgsql;

@@ -27,9 +27,9 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-v_pkey int;	/* primary key of records to UPDATE */
-v_oldSeq int;	/* current sequence number */
-v_newSeq int;	/* new sequence number */
+v_pkey int;	-- primary key of records to UPDATE 
+v_oldSeq int;	-- current sequence number
+v_newSeq int;	-- new sequence number
 seq_cursor refcursor;
 
 BEGIN
@@ -53,12 +53,16 @@ AND g._Strain_key = s._Strain_key
 ORDER BY ap._Allele_key_1, s.strain
 ;
 
+CREATE INDEX idx_genotypes_tmp ON genotypes_tmp(_Genotype_key);
+
 CREATE TEMP TABLE simple_tmp ON COMMIT DROP
 AS SELECT DISTINCT g._Genotype_key
 FROM genotypes_tmp g, GXD_AllelePair ap
 WHERE g._Genotype_key = ap._Genotype_key
 GROUP by g._Genotype_key having count(*) = 1
 ;
+
+CREATE INDEX idx_simple_tmp ON simple_tmp(_Genotype_key);
 
 CREATE TEMP TABLE complex_tmp ON COMMIT DROP
 AS SELECT DISTINCT g._Genotype_key
@@ -67,7 +71,11 @@ WHERE g._Genotype_key = ap._Genotype_key
 GROUP by g._Genotype_key having count(*) > 1
 ;
 
+CREATE INDEX idx_complex_tmp ON complex_tmp(_Genotype_key);
+
 -- simple
+
+RAISE NOTICE 'insert simple';
 
 INSERT INTO GXD_AlleleGenotype 
 (_Genotype_key, _Marker_key, _Allele_key, sequenceNum, _CreatedBy_key, _ModifiedBy_key)
@@ -84,106 +92,126 @@ AND ap._Allele_key_2 = v_alleleKey
 
 -- Apply ordering rules
 
+RAISE NOTICE 'update 1';
+
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 1
-FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap, VOC_Term t
+FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap
 WHERE s._Genotype_key = ag._Genotype_key
 AND ag._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
 AND ag._Allele_key = ap._Allele_key_1
-AND ap._PairState_key = t._Term_key
-AND t.term = 'Homozygous'
+AND ap._PairState_key = 847138
+--AND t.term = 'Homozygous'
 ;
+
+RAISE NOTICE 'update 2';
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 3
-FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap, VOC_Term t
+FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap
 WHERE s._Genotype_key = ag._Genotype_key
 AND ag._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
-AND ap._PairState_key = t._Term_key
-AND t.term = 'Heterozygous'
+AND ap._PairState_key = 847137
+--AND t.term = 'Heterozygous'
 AND exists (SELECT 1 FROM ALL_Allele a WHERE ap._Allele_key_1 = a._Allele_key and a.isWildType = 0)
 ;
 
+RAISE NOTICE 'update 3';
+
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 3
-FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap, VOC_Term t
+FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap
 WHERE s._Genotype_key = ag._Genotype_key
 AND ag._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
-AND ap._PairState_key = t._Term_key
-AND t.term = 'Heterozygous'
+AND ap._PairState_key = 847137
+--AND t.term = 'Heterozygous'
 AND exists (SELECT 1 FROM ALL_Allele a WHERE ap._Allele_key_2 = a._Allele_key and a.isWildType = 0)
 ;
 
+RAISE NOTICE 'update 4';
+
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 2
-FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap, VOC_Term t
+FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap
 WHERE s._Genotype_key = ag._Genotype_key
 AND ag._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
-AND ap._PairState_key = t._Term_key
-AND t.term = 'Heterozygous'
+AND ap._PairState_key = 847137
+--AND t.term = 'Heterozygous'
 AND exists (SELECT 1 FROM ALL_Allele a WHERE ap._Allele_key_1 = a._Allele_key and a.isWildType = 1)
 ;
 
+RAISE NOTICE 'update 5';
+
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 2
-FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap, VOC_Term t
+FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap
 WHERE s._Genotype_key = ag._Genotype_key
 AND ag._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
-AND ap._PairState_key = t._Term_key
-AND t.term = 'Heterozygous'
+AND ap._PairState_key = 847137
+--AND t.term = 'Heterozygous'
 AND exists (SELECT 1 FROM ALL_Allele a WHERE ap._Allele_key_2 = a._Allele_key and a.isWildType = 1)
 ;
 
+RAISE NOTICE 'update 6';
+
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 4
-FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap, VOC_Term t
+FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap
 WHERE s._Genotype_key = ag._Genotype_key
 AND ag._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
 AND ag._Allele_key = ap._Allele_key_1
-AND ap._PairState_key = t._Term_key
-AND t.term = 'Hemizygous X-linked'
+AND ap._PairState_key = 847133
+--AND t.term = 'Hemizygous X-linked'
 ;
+
+RAISE NOTICE 'update 7';
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 5
-FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap, VOC_Term t
+FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap
 WHERE s._Genotype_key = ag._Genotype_key
 AND ag._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
 AND ag._Allele_key = ap._Allele_key_1
-AND ap._PairState_key = t._Term_key
-AND t.term = 'Hemizygous Y-linked'
+AND ap._PairState_key = 847134
+--AND t.term = 'Hemizygous Y-linked'
 ;
+
+RAISE NOTICE 'update 8';
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 6
-FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap, VOC_Term t
+FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap
 WHERE s._Genotype_key = ag._Genotype_key
 AND ag._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
 AND ag._Allele_key = ap._Allele_key_1
-AND ap._PairState_key = t._Term_key
-AND t.term = 'Hemizygous Insertion'
+AND ap._PairState_key = 847135
+--AND t.term = 'Hemizygous Insertion'
 ;
+
+RAISE NOTICE 'update 9';
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 7
-FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap, VOC_Term t
+FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap
 WHERE s._Genotype_key = ag._Genotype_key
 AND ag._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
 AND ag._Allele_key = ap._Allele_key_1
-AND ap._PairState_key = t._Term_key
-AND t.term = 'Indeterminate'
+AND ap._PairState_key = 847139
+--AND t.term = 'Indeterminate'
 ;
 
-/* complex */
+-- complex 
+
+RAISE NOTICE 'insert complex';
 
 INSERT INTO GXD_AlleleGenotype 
 (_Genotype_key, _Marker_key, _Allele_key, sequenceNum, _CreatedBy_key, _ModifiedBy_key)
@@ -198,12 +226,12 @@ WHERE x._Genotype_key = ap._Genotype_key
 AND ap._Allele_key_2 = v_alleleKey
 ;
 
-/* re-sequence to get rid of duplicate sequence numbers/gaps */
+-- re-sequence to get rid of duplicate sequence numbers/gaps
 
 v_newSeq := 1;
 
 OPEN seq_cursor FOR
-SELECT ap._Genotype_key, ap.sequenceNum
+SELECT ap._Genotype_key, ap.sequenceNum, s.strain
 FROM GXD_AlleleGenotype ap, GXD_Genotype g, PRB_Strain s
 WHERE ap._Allele_key = v_alleleKey
 AND ap._Genotype_key = g._Genotype_key
@@ -213,6 +241,8 @@ ORDER BY ap.sequenceNum, s.strain
 LOOP
 	FETCH seq_cursor INTO v_pkey, v_oldSeq;
         EXIT WHEN NOT FOUND;
+
+	RAISE NOTICE 're-sequence %:%', v_pkey, v_newSeq;
 
 	UPDATE GXD_AlleleGenotype 
 	SET sequenceNum = v_newSeq 
@@ -224,6 +254,13 @@ LOOP
 END LOOP;
 CLOSE seq_cursor;
  
+-- Drop temp tables
+DROP TABLE IF EXISTS genotypes_tmp;
+DROP TABLE IF EXISTS simple_tmp;
+DROP TABLE IF EXISTS complex_tmp;
+
+RETURN;
+
 END;
 \$\$
 LANGUAGE plpgsql;
