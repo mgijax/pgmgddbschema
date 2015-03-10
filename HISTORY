@@ -5,6 +5,13 @@ CHANGES:
 this becomes obsolete when the production WI is replaced by the PWI:
 IMG_Cache
 
+TAG: pgmgddbschema-5-2-1-10
+DATE: 03/10/2015
+STAFF: lec
+CHANGES:
+1) IMSR/obsolete
+2) view/MGI_Synonym_Strain_View fix
+
 TAG: pgmgddbschema-5-2-1-9
 DATE: 03/10/2015
 STAFF: lec
