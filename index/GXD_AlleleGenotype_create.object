@@ -18,6 +18,9 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+create index GXD_AlleleGenotype_idx_Genotype_key on mgd.GXD_AlleleGenotype (_Genotype_key);
+
+
 create index GXD_AlleleGenotype_idx_Marker_key on mgd.GXD_AlleleGenotype (_Marker_key);
 
 
