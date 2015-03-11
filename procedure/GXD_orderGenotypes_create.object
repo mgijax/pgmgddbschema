@@ -44,13 +44,18 @@ BEGIN
 
 DELETE FROM GXD_AlleleGenotype WHERE _Allele_key = v_alleleKey;
 
-CREATE TEMP TABLE genotypes_tmp ON COMMIT DROP
+CREATE TEMP TABLE genotypes_tmp1 ON COMMIT DROP
 AS SELECT DISTINCT ap._Genotype_key, ap._Allele_key_1, s.strain
 FROM GXD_AllelePair ap, GXD_Genotype g, PRB_Strain s
 WHERE (ap._Allele_key_1 = v_alleleKey or ap._Allele_key_2 = v_alleleKey)
 AND ap._Genotype_key = g._Genotype_key
 AND g._Strain_key = s._Strain_key
 ORDER BY ap._Allele_key_1, s.strain
+;
+
+CREATE TEMP TABLE genotypes_tmp ON COMMIT DROP
+AS SELECT DISTINCT _Genotype_key
+FROM genotypes_tmp1
 ;
 
 CREATE INDEX idx_genotypes_tmp ON genotypes_tmp(_Genotype_key);
@@ -242,7 +247,7 @@ LOOP
 	FETCH seq_cursor INTO v_pkey, v_oldSeq;
         EXIT WHEN NOT FOUND;
 
-	RAISE NOTICE 're-sequence %:%', v_pkey, v_newSeq;
+	RAISE NOTICE 're-sequence %:%:%', v_alleleKey, v_pkey, v_newSeq;
 
 	UPDATE GXD_AlleleGenotype 
 	SET sequenceNum = v_newSeq 
