@@ -80,7 +80,7 @@ CREATE INDEX idx_complex_tmp ON complex_tmp(_Genotype_key);
 
 -- simple
 
-RAISE NOTICE 'insert simple';
+--RAISE NOTICE 'insert simple';
 
 INSERT INTO GXD_AlleleGenotype 
 (_Genotype_key, _Marker_key, _Allele_key, sequenceNum, _CreatedBy_key, _ModifiedBy_key)
@@ -97,7 +97,7 @@ AND ap._Allele_key_2 = v_alleleKey
 
 -- Apply ordering rules
 
-RAISE NOTICE 'update 1';
+--RAISE NOTICE 'update 1';
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 1
@@ -110,7 +110,7 @@ AND ap._PairState_key = 847138
 --AND t.term = 'Homozygous'
 ;
 
-RAISE NOTICE 'update 2';
+--RAISE NOTICE 'update 2';
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 3
@@ -123,7 +123,7 @@ AND ap._PairState_key = 847137
 AND exists (SELECT 1 FROM ALL_Allele a WHERE ap._Allele_key_1 = a._Allele_key and a.isWildType = 0)
 ;
 
-RAISE NOTICE 'update 3';
+--RAISE NOTICE 'update 3';
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 3
@@ -136,7 +136,7 @@ AND ap._PairState_key = 847137
 AND exists (SELECT 1 FROM ALL_Allele a WHERE ap._Allele_key_2 = a._Allele_key and a.isWildType = 0)
 ;
 
-RAISE NOTICE 'update 4';
+--RAISE NOTICE 'update 4';
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 2
@@ -149,7 +149,7 @@ AND ap._PairState_key = 847137
 AND exists (SELECT 1 FROM ALL_Allele a WHERE ap._Allele_key_1 = a._Allele_key and a.isWildType = 1)
 ;
 
-RAISE NOTICE 'update 5';
+--RAISE NOTICE 'update 5';
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 2
@@ -162,7 +162,7 @@ AND ap._PairState_key = 847137
 AND exists (SELECT 1 FROM ALL_Allele a WHERE ap._Allele_key_2 = a._Allele_key and a.isWildType = 1)
 ;
 
-RAISE NOTICE 'update 6';
+--RAISE NOTICE 'update 6';
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 4
@@ -175,7 +175,7 @@ AND ap._PairState_key = 847133
 --AND t.term = 'Hemizygous X-linked'
 ;
 
-RAISE NOTICE 'update 7';
+--RAISE NOTICE 'update 7';
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 5
@@ -188,7 +188,7 @@ AND ap._PairState_key = 847134
 --AND t.term = 'Hemizygous Y-linked'
 ;
 
-RAISE NOTICE 'update 8';
+--RAISE NOTICE 'update 8';
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 6
@@ -201,7 +201,7 @@ AND ap._PairState_key = 847135
 --AND t.term = 'Hemizygous Insertion'
 ;
 
-RAISE NOTICE 'update 9';
+--RAISE NOTICE 'update 9';
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 7
@@ -216,7 +216,7 @@ AND ap._PairState_key = 847139
 
 -- complex 
 
-RAISE NOTICE 'insert complex';
+--RAISE NOTICE 'insert complex';
 
 INSERT INTO GXD_AlleleGenotype 
 (_Genotype_key, _Marker_key, _Allele_key, sequenceNum, _CreatedBy_key, _ModifiedBy_key)
