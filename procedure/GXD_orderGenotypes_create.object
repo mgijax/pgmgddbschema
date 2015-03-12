@@ -96,7 +96,7 @@ AND ap._Allele_key_2 = v_alleleKey
 ;
 
 -- Apply ordering rules
-
+--AND t.term = 'Homozygous'
 --RAISE NOTICE 'update 1';
 
 UPDATE GXD_AlleleGenotype
@@ -107,9 +107,9 @@ AND ag._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
 AND ag._Allele_key = ap._Allele_key_1
 AND ap._PairState_key = 847138
---AND t.term = 'Homozygous'
 ;
 
+--AND t.term = 'Heterozygous'
 --RAISE NOTICE 'update 2';
 
 UPDATE GXD_AlleleGenotype
@@ -119,11 +119,11 @@ WHERE s._Genotype_key = ag._Genotype_key
 AND ag._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
 AND ap._PairState_key = 847137
---AND t.term = 'Heterozygous'
 AND exists (SELECT 1 FROM ALL_Allele a WHERE ap._Allele_key_1 = a._Allele_key and a.isWildType = 0)
 ;
 
 --RAISE NOTICE 'update 3';
+--AND t.term = 'Heterozygous'
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 3
@@ -132,11 +132,11 @@ WHERE s._Genotype_key = ag._Genotype_key
 AND ag._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
 AND ap._PairState_key = 847137
---AND t.term = 'Heterozygous'
 AND exists (SELECT 1 FROM ALL_Allele a WHERE ap._Allele_key_2 = a._Allele_key and a.isWildType = 0)
 ;
 
 --RAISE NOTICE 'update 4';
+--AND t.term = 'Heterozygous'
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 2
@@ -145,11 +145,11 @@ WHERE s._Genotype_key = ag._Genotype_key
 AND ag._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
 AND ap._PairState_key = 847137
---AND t.term = 'Heterozygous'
 AND exists (SELECT 1 FROM ALL_Allele a WHERE ap._Allele_key_1 = a._Allele_key and a.isWildType = 1)
 ;
 
 --RAISE NOTICE 'update 5';
+--AND t.term = 'Heterozygous'
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 2
@@ -158,11 +158,11 @@ WHERE s._Genotype_key = ag._Genotype_key
 AND ag._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
 AND ap._PairState_key = 847137
---AND t.term = 'Heterozygous'
 AND exists (SELECT 1 FROM ALL_Allele a WHERE ap._Allele_key_2 = a._Allele_key and a.isWildType = 1)
 ;
 
 --RAISE NOTICE 'update 6';
+--AND t.term = 'Hemizygous X-linked'
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 4
@@ -172,10 +172,10 @@ AND ag._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
 AND ag._Allele_key = ap._Allele_key_1
 AND ap._PairState_key = 847133
---AND t.term = 'Hemizygous X-linked'
 ;
 
 --RAISE NOTICE 'update 7';
+--AND t.term = 'Hemizygous Y-linked'
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 5
@@ -185,10 +185,10 @@ AND ag._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
 AND ag._Allele_key = ap._Allele_key_1
 AND ap._PairState_key = 847134
---AND t.term = 'Hemizygous Y-linked'
 ;
 
 --RAISE NOTICE 'update 8';
+--AND t.term = 'Hemizygous Insertion'
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 6
@@ -198,10 +198,10 @@ AND ag._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
 AND ag._Allele_key = ap._Allele_key_1
 AND ap._PairState_key = 847135
---AND t.term = 'Hemizygous Insertion'
 ;
 
 --RAISE NOTICE 'update 9';
+--AND t.term = 'Indeterminate'
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 7
@@ -211,7 +211,6 @@ AND ag._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
 AND ag._Allele_key = ap._Allele_key_1
 AND ap._PairState_key = 847139
---AND t.term = 'Indeterminate'
 ;
 
 -- complex 
@@ -247,7 +246,7 @@ LOOP
 	FETCH seq_cursor INTO v_pkey, v_oldSeq;
         EXIT WHEN NOT FOUND;
 
-	RAISE NOTICE 're-sequence %:%:%', v_alleleKey, v_pkey, v_newSeq;
+	--RAISE NOTICE 're-sequence %:%:%', v_alleleKey, v_pkey, v_newSeq;
 
 	UPDATE GXD_AlleleGenotype 
 	SET sequenceNum = v_newSeq 
@@ -260,6 +259,7 @@ END LOOP;
 CLOSE seq_cursor;
  
 -- Drop temp tables
+DROP TABLE IF EXISTS genotypes_tmp1;
 DROP TABLE IF EXISTS genotypes_tmp;
 DROP TABLE IF EXISTS simple_tmp;
 DROP TABLE IF EXISTS complex_tmp;
