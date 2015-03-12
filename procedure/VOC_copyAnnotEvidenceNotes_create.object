@@ -1,0 +1,52 @@
+#!/bin/csh -f
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create procedure VOC_copyAnnotEvidenceNotes
+  @fromAnnotEvidenceKey integer,
+  @toAnnotEvidenceKey integer
+as
+
+/* create note records for toAnnotEvidenceKey using note records of fromAnnotEvidenceKey */
+
+declare @userKey integer
+select @userKey = _User_key from MGI_User where login = user_name()
+
+declare @noteKey integer
+select @noteKey = max(_Note_key) from MGI_Note
+
+select i = identity(10), _Note_key, _NoteType_key
+into #toAdd 
+from MGI_Note
+where _MGIType_key = 25
+and _Object_key = @fromAnnotEvidenceKey
+
+create index idx1 on #toAdd(_Note_key)
+
+insert into MGI_Note
+select @noteKey + i, @toAnnotEvidenceKey, 25, _NoteType_key, @userKey, @userKey, getdate(), getdate()
+from #toAdd
+
+insert into MGI_NoteChunk
+select @noteKey + i, c.sequenceNum, c.note, @userKey, @userKey, getdate(), getdate()
+from #toAdd t, MGI_NoteChunk c
+where t._Note_key = c._Note_key
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL
+
