@@ -14,7 +14,10 @@ create index VOC_Annot_idx_clustered on mgd.VOC_Annot (_Object_key, _Term_key, _
 create index VOC_Annot_idx_AnnotType_key on mgd.VOC_Annot (_AnnotType_key);
 
 
-create index VOC_Annot_idx_Term_key on mgd.VOC_Annot (_Term_key, _AnnotType_key, _Qualifier_key, _Object_key);
+create index VOC_Annot_idx_Term_key on mgd.VOC_Annot (_Term_key);
+
+
+create index VOC_Annot_idx_Term_etc_key on mgd.VOC_Annot (_Term_key, _AnnotType_key, _Qualifier_key, _Object_key);
 
 
 create index VOC_Annot_idx_Qualifier_key on mgd.VOC_Annot (_Qualifier_key);
