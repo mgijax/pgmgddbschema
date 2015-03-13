@@ -1,52 +1,53 @@
-#!/bin/csh -f
+#!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
+cd `dirname $0` && . ./Configuration
 
-cd `dirname $0` && source ./Configuration
+${PG_MGD_DBSCHEMADIR}/procedure/VOC_copyAnnotEvidenceNotes_drop.object
 
-cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-use ${DBNAME}
-go
+CREATE OR REPLACE FUNCTION VOC_copyAnnotEvidenceNotes (
+v_fromAnnotEvidenceKey int,
+v_toAnnotEvidenceKey int
+)
+RETURNS VOID AS
+\$\$
 
-create procedure VOC_copyAnnotEvidenceNotes
-  @fromAnnotEvidenceKey integer,
-  @toAnnotEvidenceKey integer
-as
+DECLARE
+v_userKey int;
+v_noteKey int;
 
-/* create note records for toAnnotEvidenceKey using note records of fromAnnotEvidenceKey */
+BEGIN
 
-declare @userKey integer
-select @userKey = _User_key from MGI_User where login = user_name()
+v_userKey := _User_key from MGI_User where login = current_name;
+v_noteKey = max(_Note_key) from MGI_Note;
 
-declare @noteKey integer
-select @noteKey = max(_Note_key) from MGI_Note
+CREATE TEMP TABLE toAdd ON COMMIT DROP
+AS SELECT i as SERIAL, _Note_key, _NoteType_key
+FROM MGI_Note
+WHERE _MGIType_key = 25
+AND _Object_key = v_fromAnnotEvidenceKey
+;
 
-select i = identity(10), _Note_key, _NoteType_key
-into #toAdd 
-from MGI_Note
-where _MGIType_key = 25
-and _Object_key = @fromAnnotEvidenceKey
+CREATE INDEX idx1 ON toAdd(_Note_key);
 
-create index idx1 on #toAdd(_Note_key)
+INSERT INTO MGI_Note
+SELECT v_noteKey + i, v_toAnnotEvidenceKey, 25, _NoteType_key, v_userKey, v_userKey, current_date, current_date
+FROM toAdd
+;
 
-insert into MGI_Note
-select @noteKey + i, @toAnnotEvidenceKey, 25, _NoteType_key, @userKey, @userKey, getdate(), getdate()
-from #toAdd
+INSERT INTO MGI_NoteChunk
+SELECT v_noteKey + i, c.sequenceNum, c.note, v_userKey, v_userKey, current_date, current_date
+FROM toAdd t, MGI_NoteChunk c
+WHERE t._Note_key = c._Note_key
+;
 
-insert into MGI_NoteChunk
-select @noteKey + i, c.sequenceNum, c.note, @userKey, @userKey, getdate(), getdate()
-from #toAdd t, MGI_NoteChunk c
-where t._Note_key = c._Note_key
+END;
+\$\$
+LANGUAGE plpgsql;
 
-go
+GRANT EXECUTE ON FUNCTION VOC_copyAnnotEvidenceNotes(int,int) TO public;
 
-checkpoint
-go
-
-quit
+COMMENT ON FUNCTION mgd.VOC_copyAnnotEvidenceNotes(int,int) IS 'create note records for toAnnotEvidenceKey using note records of fromAnnotEvidenceKey';
 
 EOSQL
-
