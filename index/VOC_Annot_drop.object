@@ -20,6 +20,9 @@ drop index if exists mgd.VOC_Annot_idx_clustered
 drop index if exists mgd.VOC_Annot_idx_AnnotType_key
 ;
 
+drop index if exists mgd.VOC_Annot_idx_Object_key
+;
+
 drop index if exists mgd.VOC_Annot_idx_Term_key
 ;
 
