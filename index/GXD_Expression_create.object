@@ -23,7 +23,10 @@ create index GXD_Expression_idx_clustered on mgd.GXD_Expression (_Marker_key, _S
 create index GXD_Expression_idx_Assay_key on mgd.GXD_Expression (_Assay_key);
 
 
-create index GXD_Expression_idx_Refs_key on mgd.GXD_Expression (_Refs_key, _Structure_key, isForGXD);
+create index GXD_Expression_idx_Refs_key on mgd.GXD_Expression (_Refs_key);
+
+
+create index GXD_Expression_idx_Refs_etc_key on mgd.GXD_Expression (_Refs_key, _Structure_key, isForGXD);
 
 
 create index GXD_Expression_idx_AssayType_key on mgd.GXD_Expression (_AssayType_key);

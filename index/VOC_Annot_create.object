@@ -1,7 +1,13 @@
 #!/bin/sh
 
+#
 # HISTORY
+#
+# 03/12/2015	lec
+#	- re-added solo index on mgd._Term_key
+#
 # 04/29/2008 - jsb - removed solo index on mgd._Object_key, revised VOC_Annot_idx_Term_key
+#
 
 cd `dirname $0` && . ./Configuration
 

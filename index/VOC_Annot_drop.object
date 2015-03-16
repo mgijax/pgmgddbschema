@@ -1,7 +1,13 @@
 #!/bin/sh
 
+#
 # HISTORY
+#
+# 03/12/2015    lec
+#       - re-added solo index on _Term_key
+#
 # 04/29/2008 - jsb - removed solo index on _Object_key, revised idx_Term_key
+#
 
 cd `dirname $0` && . ./Configuration
 
