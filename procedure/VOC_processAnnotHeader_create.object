@@ -1,201 +1,202 @@
-#!/bin/csh -f
+#!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
+cd `dirname $0` && . ./Configuration
 
-cd `dirname $0` && source ./Configuration
+${PG_MGD_DBSCHEMADIR}/procedure/VOC_processAnnotHeader_drop.object
 
-cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-use ${DBNAME}
-go
+CREATE OR REPLACE FUNCTION VOC_processAnnotHeader (
+v_annotTypeKey int,
+v_objectKey int,
+v_reorder smallint DEFAULT 1
+)
+RETURNS VOID AS
+\$\$
 
-create procedure VOC_processAnnotHeader
-  @annotTypeKey integer,
-  @objectKey integer,
-  @reorder bit = 1
-as
+-- generate set of Header Terms based on Annotations of object/mgi type
+-- test data: 1002, 11216
 
-/* generate set of Header Terms based on Annotations of object/mgi type */
-/* test data: 1002, 11216 */
+DECLARE
+v_userKey int;
+v_headerLabel int;
+v_headerKey int;
+v_maxSeq int;
+v_pkey int;	-- primary key of records to update
+v_oldSeq int;	-- current sequence number
+v_newSeq int;	-- new sequence number
+seq_cursor refcursor;
 
-declare @userKey integer
-select @userKey = _User_key from MGI_User where login = user_name()
+BEGIN
 
-declare @headerLabel integer
-select @headerLabel = _Label_key from DAG_Label where label = 'Header'
+v_userKey = _User_key FROM MGI_User WHERE login = current_name;
+v_headerLabel := _Label_key FROM DAG_Label WHERE label = 'Header';
+v_headerKey := max(_AnnotHeader_key) FROM VOC_AnnotHeader;
+v_maxSeq := 0;
 
-declare @headerKey integer
-select @headerKey = max(_AnnotHeader_key) from VOC_AnnotHeader
-if @headerKey = null
-begin
-    select @headerKey = 1000
-end
+-- set of "new" headers based on most recent annotation update 
+-- need to check if any ancestors are header terms 
+-- and if the annotated term is itself a header term 
 
-/* set of "new" headers based on most recent annotation update */
-/* need to check if any ancestors are header terms */
-/* and if the annotated term is itself a header term */
+CREATE TEMP TABLE set0 ON COMMIT DROP
+AS SELECT DISTINCT h._Term_key, h.sequenceNum, a._Qualifier_key, 0 as isNormal
+FROM VOC_Annot a, VOC_Term t, VOC_VocabDAG vd, DAG_Node d, DAG_Closure dc, DAG_Node dh, VOC_Term h
+WHERE a._AnnotType_key = v_annotTypeKey
+AND a._Object_key = v_objectKey
+AND a._Term_key = t._Term_key
+AND t._Vocab_key = vd._Vocab_key
+AND vd._DAG_key = d._DAG_key
+AND t._Term_key = d._Object_key
+AND d._Node_key = dc._Descendent_key
+AND dc._Ancestor_key = dh._Node_key
+AND dh._Label_key = v_headerLabel
+AND dh._Object_key = h._Term_key
+UNION
+SELECT DISTINCT h._Term_key, h.sequenceNum, a._Qualifier_key, isNormal = 0
+FROM VOC_Annot a, VOC_Term t, VOC_VocabDAG vd, DAG_Node d, DAG_Closure dc, DAG_Node dh, VOC_Term h
+WHERE a._AnnotType_key = v_annotTypeKey
+AND a._Object_key = v_objectKey
+AND a._Term_key = t._Term_key
+AND t._Vocab_key = vd._Vocab_key
+AND vd._DAG_key = d._DAG_key
+AND t._Term_key = d._Object_key
+AND d._Node_key = dc._Descendent_key
+AND dc._Descendent_key = dh._Node_key
+AND dh._Label_key = v_headerLabel
+AND dh._Object_key = h._Term_key
+ORDER BY h.sequenceNum
+;
 
-select distinct h._Term_key, h.sequenceNum, a._Qualifier_key, isNormal = 0
-into #set0
-from VOC_Annot a, VOC_Term t, VOC_VocabDAG vd, DAG_Node d, DAG_Closure dc, DAG_Node dh, VOC_Term h
-where a._AnnotType_key = @annotTypeKey
-and a._Object_key = @objectKey
-and a._Term_key = t._Term_key
-and t._Vocab_key = vd._Vocab_key
-and vd._DAG_key = d._DAG_key
-and t._Term_key = d._Object_key
-and d._Node_key = dc._Descendent_key
-and dc._Ancestor_key = dh._Node_key
-and dh._Label_key = @headerLabel
-and dh._Object_key = h._Term_key
-union
-select distinct h._Term_key, h.sequenceNum, a._Qualifier_key, isNormal = 0
-from VOC_Annot a, VOC_Term t, VOC_VocabDAG vd, DAG_Node d, DAG_Closure dc, DAG_Node dh, VOC_Term h
-where a._AnnotType_key = @annotTypeKey
-and a._Object_key = @objectKey
-and a._Term_key = t._Term_key
-and t._Vocab_key = vd._Vocab_key
-and vd._DAG_key = d._DAG_key
-and t._Term_key = d._Object_key
-and d._Node_key = dc._Descendent_key
-and dc._Descendent_key = dh._Node_key
-and dh._Label_key = @headerLabel
-and dh._Object_key = h._Term_key
-order by h.sequenceNum
+-- set isNormal
+-- isNormal = 1 if all of the qualifiers for a given header term = 2181424
+-- else isNormal = 0
 
-/* set isNormal */
-/* isNormal = 1 if all of the qualifiers for a given header term = 2181424 */
-/* else isNormal = 0 */
+CREATE TEMP TABLE normal ON COMMIT DROP
+AS SELECT DISTINCT _Term_key
+FROM set0 s1
+WHERE s1._Qualifier_key = 2181424
+AND NOT EXISTS (SELECT 1 FROM set0 s2 WHERE s1._Term_key = s2._Term_key AND s2._Qualifier_key != 2181424)
+;
 
-select distinct _Term_key
-into #normal
-from #set0 s1
-where s1._Qualifier_key = 2181424
-and not exists (select 1 from #set0 s2 where s1._Term_key = s2._Term_key and s2._Qualifier_key != 2181424)
+UPDATE set0
+SET isNormal = 1
+FROM normal n, set0 s
+WHERE n._Term_key = s._Term_key
+;
 
-update #set0
-set isNormal = 1
-from #normal n, #set0 s
-where n._Term_key = s._Term_key
+-- now SELECT the DISTINCT headers
 
-/* now select the distinct headers */
+CREATE TEMP TABLE set1 ON COMMIT DROP
+AS SELECT DISTINCT _Term_key, sequenceNum, isNormal
+FROM set0
+;
 
-select distinct _Term_key, sequenceNum, isNormal
-into #set1
-from #set0
+-- set of headers that are currently cached
 
-/* set of headers that are currently cached */
+CREATE TEMP TABLE set2 ON COMMIT DROP
+AS SELECT _AnnotHeader_key, _Term_key
+FROM VOC_AnnotHeader 
+WHERE _AnnotType_key = v_annotTypeKey AND _Object_key = v_objectKey
+ORDER BY sequenceNum
+;
 
-select _AnnotHeader_key, _Term_key
-into #set2 
-from VOC_AnnotHeader 
-where _AnnotType_key = @annotTypeKey and _Object_key = @objectKey
-order by sequenceNum
+-- any headers in set2 that is not in set1 are deleted
 
-/* any headers in set2 that is not in set1 are deleted */
+CREATE TEMP TABLE toDelete ON COMMIT DROP
+AS SELECT s2.* 
+FROM set2 s2 
+WHERE NOT EXISTS (SELECT 1 FROM set1 s1 WHERE s2._Term_key = s1._Term_key)
+;
 
-select s2.* into #toDelete from #set2 s2 
-where not exists (select 1 from #set1 s1 where s2._Term_key = s1._Term_key)
+DELETE 
+FROM VOC_AnnotHeader
+USING toDelete d
+WHERE d._AnnotHeader_key = VOC_AnnotHeader._AnnotHeader_key
+;
 
-delete VOC_AnnotHeader
-from #toDelete d, VOC_AnnotHeader a
-where d._AnnotHeader_key = a._AnnotHeader_key
+-- set of headers that are currently cached after deletion
 
-/* set of headers that are currently cached after deletion */
+CREATE TEMP TABLE set3 ON COMMIT DROP
+AS SELECT _Term_key, sequenceNum
+FROM VOC_AnnotHeader 
+WHERE _AnnotType_key = v_annotTypeKey AND _Object_key = v_objectKey
+ORDER BY sequenceNum
+;
 
-select _Term_key, sequenceNum
-into #set3
-from VOC_AnnotHeader 
-where _AnnotType_key = @annotTypeKey and _Object_key = @objectKey
-order by sequenceNum
+-- any headers in set1 that are not in set3 are added
 
-/* any headers in set1 that are not in set3 are added */
+CREATE TEMP TABLE toAdd ON COMMIT DROP
+AS SELECT i AS SERIAL, _Term_key, sequenceNum, isNormal
+FROM set1 s1 
+WHERE not exists (SELECT 1 FROM set3 s3 WHERE s1._Term_key = s3._Term_key)
+ORDER BY s1.sequenceNum
+;
 
-select i = identity(10), _Term_key, sequenceNum, isNormal
-into #toAdd 
-from #set1 s1 
-where not exists (select 1 from #set3 s3 where s1._Term_key = s3._Term_key)
-order by s1.sequenceNum
-
-/* update the isNormal bit for any headers in #set1 that are in #set3 (existing headers) */
+-- update the isNormal for any headers in set1 that are in set3 (existing headers)
 update VOC_AnnotHeader
-set isNormal = s1.isNormal
-from VOC_AnnotHeader h, #set1 s1, #set3 s3
-where h._AnnotType_key = @annotTypeKey 
-and h._Object_key = @objectKey
-and h._Term_key = s1._Term_key
-and s1._Term_key = s3._Term_key
+SET isNormal = s1.isNormal
+FROM VOC_AnnotHeader h, set1 s1, set3 s3
+WHERE h._AnnotType_key = v_annotTypeKey 
+AND h._Object_key = v_objectKey
+AND h._Term_key = s1._Term_key
+AND s1._Term_key = s3._Term_key
+;
 
-declare @maxSeq integer
-select @maxSeq = max(sequenceNum) from #set3
-if @maxSeq is null
-begin
-    select @maxSeq = 0
-end
+INSERT INTO VOC_AnnotHeader 
+SELECT v_headerKey + i, v_annotTypeKey, v_objectKey, _Term_key, v_maxSeq + i, isNormal,
+	v_userKey, v_userKey, NULL, NULL, current_date, current_date
+FROM toAdd
+;
 
-insert into VOC_AnnotHeader 
-select @headerKey + i, @annotTypeKey, @objectKey, _Term_key, @maxSeq + i, isNormal,
-	@userKey, @userKey, NULL, NULL, getdate(), getdate()
-from #toAdd
+-- if there is only one Annotation header in the cache, the automatically approve it
 
-/* if there is only one Annotation header in the cache, the automatically approve it */
+IF (SELECT count(*) FROM VOC_AnnotHeader WHERE _AnnotType_key = v_annotTypeKey AND _Object_key = v_objectKey) = 1
+THEN
+    UPDATE VOC_AnnotHeader
+    SET _ApprovedBy_key = v_userKey, approval_date = current_date
+    WHERE _AnnotType_key = v_annotTypeKey AND _Object_key = v_objectKey
+    ;
 
-if (select count(*) from VOC_AnnotHeader where _AnnotType_key = @annotTypeKey and _Object_key = @objectKey) = 1
-begin
-    update VOC_AnnotHeader
-    set _ApprovedBy_key = @userKey, approval_date = getdate()
-    where _AnnotType_key = @annotTypeKey and _Object_key = @objectKey
-end
+-- else if there is at least one new header added to the cache, then set all headers to non-approved
 
-/* else if there is at least one new header added to the cache, then set all headers to non-approved */
+ELSIF (SELECT count(*) FROM toAdd) >= 1
+THEN
+    UPDATE VOC_AnnotHeader
+    SET _ApprovedBy_key = null, approval_date = null
+    WHERE _AnnotType_key = v_annotTypeKey AND _Object_key = v_objectKey
+    ;
+END IF;
 
-else if (select count(*) from #toAdd) >= 1
-begin
-    update VOC_AnnotHeader
-    set _ApprovedBy_key = null, approval_date = null
-    where _AnnotType_key = @annotTypeKey and _Object_key = @objectKey
-end
+-- if we're updating the cache for a single object, then re-set the sequence numbers so there are no gaps
 
-/* if we're updating the cache for a single object, then re-set the sequence numbers so there are no gaps */
+IF (v_reorder = 1)
+THEN
 
-if (@reorder = 1)
-begin
-
-    declare @pkey int	/* primary key of records to update */
-    declare @oldSeq int	/* current sequence number */
-    declare @newSeq int	/* new sequence number */
-    select @newSeq = 1
+    v_newSeq := 1;
  
-    declare seq_cursor cursor for
-    select _AnnotHeader_key, sequenceNum
-    from VOC_AnnotHeader
-    where _AnnotType_key = @annotTypeKey and _Object_key = @objectKey
-    order by sequenceNum
-    for read only
+    OPEN seq_cursor FOR
+    SELECT _AnnotHeader_key, sequenceNum
+    FROM VOC_AnnotHeader
+    WHERE _AnnotType_key = v_annotTypeKey 
+    AND _Object_key = v_objectKey
+    ORDER BY sequenceNum
+    ;
 
-    open seq_cursor
-    fetch seq_cursor into @pkey, @oldSeq
- 
-    while (@@sqlstatus = 0)
-    begin
-      update VOC_AnnotHeader set sequenceNum = @newSeq where _AnnotHeader_key = @pkey
-      select @newSeq = @newSeq + 1
-      fetch seq_cursor into @pkey, @oldSeq
-    end
- 
-    close seq_cursor
-    deallocate cursor seq_cursor
+    LOOP
+        FETCH seq_cursor INTO v_pkey, v_oldSeq;
+        EXIT WHEN NOT FOUND;
+        UPDATE VOC_AnnotHeader SET sequenceNum = v_newSeq WHERE _AnnotHeader_key = v_pkey;
+        v_newSeq := v_newSeq + 1;
+    END LOOP;
+    CLOSE seq_cursor;
+END IF;
 
-end
+END;
+\$\$
+LANGUAGE plpgsql;
 
-go
+GRANT EXECUTE ON FUNCTION VOC_processAnnotHeader(int,int,smallint) TO public;
 
-checkpoint
-go
-
-quit
+COMMENT ON FUNCTION mgd.VOC_processAnnotHeader(int,int,smallint) IS 'generate set of Header Terms based on Annotations of object/mgi type';
 
 EOSQL
-

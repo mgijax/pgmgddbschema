@@ -23,7 +23,7 @@ v_userKey := _User_key from MGI_User where login = current_name;
 v_noteKey = max(_Note_key) from MGI_Note;
 
 CREATE TEMP TABLE toAdd ON COMMIT DROP
-AS SELECT i as SERIAL, _Note_key, _NoteType_key
+AS SELECT i AS SERIAL, _Note_key, _NoteType_key
 FROM MGI_Note
 WHERE _MGIType_key = 25
 AND _Object_key = v_fromAnnotEvidenceKey
