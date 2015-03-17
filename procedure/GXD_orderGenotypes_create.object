@@ -80,7 +80,7 @@ CREATE INDEX idx_complex_tmp ON complex_tmp(_Genotype_key);
 
 -- simple
 
---RAISE NOTICE 'insert simple';
+RAISE NOTICE 'insert simple';
 
 INSERT INTO GXD_AlleleGenotype 
 (_Genotype_key, _Marker_key, _Allele_key, sequenceNum, _CreatedBy_key, _ModifiedBy_key)
@@ -97,125 +97,125 @@ AND ap._Allele_key_2 = v_alleleKey
 
 -- Apply ordering rules
 --AND t.term = 'Homozygous'
---RAISE NOTICE 'update 1';
+RAISE NOTICE 'update 1';
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 1
-FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap
-WHERE s._Genotype_key = ag._Genotype_key
-AND ag._Allele_key = v_alleleKey
+FROM simple_tmp s, GXD_AllelePair ap
+WHERE s._Genotype_key = GXD_AlleleGenotype._Genotype_key
+AND GXD_AlleleGenotype._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
-AND ag._Allele_key = ap._Allele_key_1
+AND GXD_AlleleGenotype._Allele_key = ap._Allele_key_1
 AND ap._PairState_key = 847138
 ;
 
 --AND t.term = 'Heterozygous'
---RAISE NOTICE 'update 2';
+RAISE NOTICE 'update 2';
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 3
-FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap
-WHERE s._Genotype_key = ag._Genotype_key
-AND ag._Allele_key = v_alleleKey
+FROM simple_tmp s, GXD_AllelePair ap
+WHERE s._Genotype_key = GXD_AlleleGenotype._Genotype_key
+AND GXD_AlleleGenotype._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
 AND ap._PairState_key = 847137
 AND exists (SELECT 1 FROM ALL_Allele a WHERE ap._Allele_key_1 = a._Allele_key and a.isWildType = 0)
 ;
 
---RAISE NOTICE 'update 3';
+RAISE NOTICE 'update 3';
 --AND t.term = 'Heterozygous'
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 3
-FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap
-WHERE s._Genotype_key = ag._Genotype_key
-AND ag._Allele_key = v_alleleKey
+FROM simple_tmp s, GXD_AllelePair ap
+WHERE s._Genotype_key = GXD_AlleleGenotype._Genotype_key
+AND GXD_AlleleGenotype._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
 AND ap._PairState_key = 847137
 AND exists (SELECT 1 FROM ALL_Allele a WHERE ap._Allele_key_2 = a._Allele_key and a.isWildType = 0)
 ;
 
---RAISE NOTICE 'update 4';
+RAISE NOTICE 'update 4';
 --AND t.term = 'Heterozygous'
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 2
-FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap
-WHERE s._Genotype_key = ag._Genotype_key
-AND ag._Allele_key = v_alleleKey
+FROM simple_tmp s, GXD_AllelePair ap
+WHERE s._Genotype_key = GXD_AlleleGenotype._Genotype_key
+AND GXD_AlleleGenotype._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
 AND ap._PairState_key = 847137
 AND exists (SELECT 1 FROM ALL_Allele a WHERE ap._Allele_key_1 = a._Allele_key and a.isWildType = 1)
 ;
 
---RAISE NOTICE 'update 5';
+RAISE NOTICE 'update 5';
 --AND t.term = 'Heterozygous'
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 2
-FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap
-WHERE s._Genotype_key = ag._Genotype_key
-AND ag._Allele_key = v_alleleKey
+FROM simple_tmp s, GXD_AllelePair ap
+WHERE s._Genotype_key = GXD_AlleleGenotype._Genotype_key
+AND GXD_AlleleGenotype._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
 AND ap._PairState_key = 847137
 AND exists (SELECT 1 FROM ALL_Allele a WHERE ap._Allele_key_2 = a._Allele_key and a.isWildType = 1)
 ;
 
---RAISE NOTICE 'update 6';
+RAISE NOTICE 'update 6';
 --AND t.term = 'Hemizygous X-linked'
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 4
-FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap
-WHERE s._Genotype_key = ag._Genotype_key
-AND ag._Allele_key = v_alleleKey
+FROM simple_tmp s, GXD_AllelePair ap
+WHERE s._Genotype_key = GXD_AlleleGenotype._Genotype_key
+AND GXD_AlleleGenotype._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
-AND ag._Allele_key = ap._Allele_key_1
+AND GXD_AlleleGenotype._Allele_key = ap._Allele_key_1
 AND ap._PairState_key = 847133
 ;
 
---RAISE NOTICE 'update 7';
+RAISE NOTICE 'update 7';
 --AND t.term = 'Hemizygous Y-linked'
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 5
-FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap
-WHERE s._Genotype_key = ag._Genotype_key
-AND ag._Allele_key = v_alleleKey
+FROM simple_tmp s, GXD_AllelePair ap
+WHERE s._Genotype_key = GXD_AlleleGenotype._Genotype_key
+AND GXD_AlleleGenotype._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
-AND ag._Allele_key = ap._Allele_key_1
+AND GXD_AlleleGenotype._Allele_key = ap._Allele_key_1
 AND ap._PairState_key = 847134
 ;
 
---RAISE NOTICE 'update 8';
+RAISE NOTICE 'update 8';
 --AND t.term = 'Hemizygous Insertion'
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 6
-FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap
-WHERE s._Genotype_key = ag._Genotype_key
-AND ag._Allele_key = v_alleleKey
+FROM simple_tmp s, GXD_AllelePair ap
+WHERE s._Genotype_key = GXD_AlleleGenotype._Genotype_key
+AND GXD_AlleleGenotype._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
-AND ag._Allele_key = ap._Allele_key_1
+AND GXD_AlleleGenotype._Allele_key = ap._Allele_key_1
 AND ap._PairState_key = 847135
 ;
 
---RAISE NOTICE 'update 9';
+RAISE NOTICE 'update 9';
 --AND t.term = 'Indeterminate'
 
 UPDATE GXD_AlleleGenotype
 SET sequenceNum = 7
-FROM simple_tmp s, GXD_AlleleGenotype ag, GXD_AllelePair ap
-WHERE s._Genotype_key = ag._Genotype_key
-AND ag._Allele_key = v_alleleKey
+FROM simple_tmp s, GXD_AllelePair ap
+WHERE s._Genotype_key = GXD_AlleleGenotype._Genotype_key
+AND GXD_AlleleGenotype._Allele_key = v_alleleKey
 AND s._Genotype_key = ap._Genotype_key
-AND ag._Allele_key = ap._Allele_key_1
+AND GXD_AlleleGenotype._Allele_key = ap._Allele_key_1
 AND ap._PairState_key = 847139
 ;
 
 -- complex 
 
---RAISE NOTICE 'insert complex';
+RAISE NOTICE 'insert complex';
 
 INSERT INTO GXD_AlleleGenotype 
 (_Genotype_key, _Marker_key, _Allele_key, sequenceNum, _CreatedBy_key, _ModifiedBy_key)
@@ -246,7 +246,7 @@ LOOP
 	FETCH seq_cursor INTO v_pkey, v_oldSeq;
         EXIT WHEN NOT FOUND;
 
-	--RAISE NOTICE 're-sequence %:%:%', v_alleleKey, v_pkey, v_newSeq;
+	RAISE NOTICE 're-sequence %:%:%', v_alleleKey, v_pkey, v_newSeq;
 
 	UPDATE GXD_AlleleGenotype 
 	SET sequenceNum = v_newSeq 
