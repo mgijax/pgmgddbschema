@@ -20,7 +20,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER VOC_Evidence_insert_trigger ON VOC_Evidence;
+DROP TRIGGER IF EXISTS VOC_Evidence_insert_trigger ON VOC_Evidence;
 DROP FUNCTION VOC_Evidence_insert();
 
 CREATE OR REPLACE FUNCTION VOC_Evidence_insert() RETURNS TRIGGER AS \$\$

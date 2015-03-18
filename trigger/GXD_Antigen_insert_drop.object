@@ -8,7 +8,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP TRIGGER GXD_Antigen_insert_trigger ON GXD_Antigen;
+DROP TRIGGER IF EXISTS GXD_Antigen_insert_trigger ON GXD_Antigen;
 
 DROP FUNCTION GXD_Antigen_insert();
 

@@ -8,7 +8,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP TRIGGER SEQ_Sequence_delete_trigger ON SEQ_Sequence;
+DROP TRIGGER IF EXISTS SEQ_Sequence_delete_trigger ON SEQ_Sequence;
 
 DROP FUNCTION SEQ_Sequence_delete();
 

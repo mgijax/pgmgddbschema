@@ -8,7 +8,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP TRIGGER VOC_Annot_update_trigger ON VOC_Annot;
+DROP TRIGGER IF EXISTS VOC_Annot_update_trigger ON VOC_Annot;
 
 DROP FUNCTION VOC_Annot_update();
 

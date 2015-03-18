@@ -8,7 +8,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP TRIGGER NOM_Marker_insert_trigger ON NOM_Marker;
+DROP TRIGGER IF EXISTS NOM_Marker_insert_trigger ON NOM_Marker;
 
 DROP FUNCTION NOM_Marker_insert();
 

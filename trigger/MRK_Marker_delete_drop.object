@@ -8,7 +8,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP TRIGGER MRK_Marker_delete_trigger ON MRK_Marker;
+DROP TRIGGER IF EXISTS MRK_Marker_delete_trigger ON MRK_Marker;
 
 DROP FUNCTION MRK_Marker_delete();
 

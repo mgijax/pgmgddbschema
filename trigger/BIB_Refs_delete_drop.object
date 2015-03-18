@@ -8,7 +8,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP TRIGGER BIB_Refs_delete_trigger ON BIB_Refs;
+DROP TRIGGER IF EXISTS BIB_Refs_delete_trigger ON BIB_Refs;
 
 DROP FUNCTION BIB_Refs_delete();
 
