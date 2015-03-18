@@ -29,7 +29,7 @@ seq_cursor refcursor;
 
 BEGIN
 
-v_userKey = _User_key FROM MGI_User WHERE login = current_name;
+v_userKey := _User_key FROM MGI_User WHERE login = current_user;
 v_headerLabel := _Label_key FROM DAG_Label WHERE label = 'Header';
 v_headerKey := max(_AnnotHeader_key) FROM VOC_AnnotHeader;
 v_maxSeq := 0;
@@ -39,7 +39,7 @@ v_maxSeq := 0;
 -- and if the annotated term is itself a header term 
 
 CREATE TEMP TABLE set0 ON COMMIT DROP
-AS SELECT DISTINCT h._Term_key, h.sequenceNum, a._Qualifier_key, 0 as isNormal
+AS (SELECT DISTINCT h._Term_key, h.sequenceNum, a._Qualifier_key, 0 as isNormal
 FROM VOC_Annot a, VOC_Term t, VOC_VocabDAG vd, DAG_Node d, DAG_Closure dc, DAG_Node dh, VOC_Term h
 WHERE a._AnnotType_key = v_annotTypeKey
 AND a._Object_key = v_objectKey
@@ -52,7 +52,7 @@ AND dc._Ancestor_key = dh._Node_key
 AND dh._Label_key = v_headerLabel
 AND dh._Object_key = h._Term_key
 UNION
-SELECT DISTINCT h._Term_key, h.sequenceNum, a._Qualifier_key, isNormal = 0
+SELECT DISTINCT h._Term_key, h.sequenceNum, a._Qualifier_key, 0 as isNormal
 FROM VOC_Annot a, VOC_Term t, VOC_VocabDAG vd, DAG_Node d, DAG_Closure dc, DAG_Node dh, VOC_Term h
 WHERE a._AnnotType_key = v_annotTypeKey
 AND a._Object_key = v_objectKey
@@ -64,7 +64,8 @@ AND d._Node_key = dc._Descendent_key
 AND dc._Descendent_key = dh._Node_key
 AND dh._Label_key = v_headerLabel
 AND dh._Object_key = h._Term_key
-ORDER BY h.sequenceNum
+)
+ORDER BY sequenceNum
 ;
 
 -- set isNormal
@@ -80,8 +81,8 @@ AND NOT EXISTS (SELECT 1 FROM set0 s2 WHERE s1._Term_key = s2._Term_key AND s2._
 
 UPDATE set0
 SET isNormal = 1
-FROM normal n, set0 s
-WHERE n._Term_key = s._Term_key
+FROM normal n
+WHERE n._Term_key = set0._Term_key
 ;
 
 -- now SELECT the DISTINCT headers
@@ -94,7 +95,7 @@ FROM set0
 -- set of headers that are currently cached
 
 CREATE TEMP TABLE set2 ON COMMIT DROP
-AS SELECT _AnnotHeader_key, _Term_key
+AS SELECT _AnnotHeader_key, _Term_key, sequenceNum
 FROM VOC_AnnotHeader 
 WHERE _AnnotType_key = v_annotTypeKey AND _Object_key = v_objectKey
 ORDER BY sequenceNum
@@ -126,24 +127,24 @@ ORDER BY sequenceNum
 -- any headers in set1 that are not in set3 are added
 
 CREATE TEMP TABLE toAdd ON COMMIT DROP
-AS SELECT i AS SERIAL, _Term_key, sequenceNum, isNormal
+AS SELECT row_number() over (order by s1.sequenceNum) as id, _Term_key, sequenceNum, isNormal
 FROM set1 s1 
 WHERE not exists (SELECT 1 FROM set3 s3 WHERE s1._Term_key = s3._Term_key)
 ORDER BY s1.sequenceNum
 ;
 
 -- update the isNormal for any headers in set1 that are in set3 (existing headers)
-update VOC_AnnotHeader
+UPDATE VOC_AnnotHeader
 SET isNormal = s1.isNormal
-FROM VOC_AnnotHeader h, set1 s1, set3 s3
-WHERE h._AnnotType_key = v_annotTypeKey 
-AND h._Object_key = v_objectKey
-AND h._Term_key = s1._Term_key
+FROM set1 s1, set3 s3
+WHERE VOC_AnnotHeader._AnnotType_key = v_annotTypeKey 
+AND VOC_AnnotHeader._Object_key = v_objectKey
+AND VOC_AnnotHeader._Term_key = s1._Term_key
 AND s1._Term_key = s3._Term_key
 ;
 
 INSERT INTO VOC_AnnotHeader 
-SELECT v_headerKey + i, v_annotTypeKey, v_objectKey, _Term_key, v_maxSeq + i, isNormal,
+SELECT v_headerKey + id, v_annotTypeKey, v_objectKey, _Term_key, v_maxSeq + id, isNormal,
 	v_userKey, v_userKey, NULL, NULL, current_date, current_date
 FROM toAdd
 ;
