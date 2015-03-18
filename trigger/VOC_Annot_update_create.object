@@ -1,0 +1,57 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: VOC_Annot_update()
+--
+-- DESCRIPTOIN:
+--
+-- TR5721/propagate modification date and modified by to all evidence records
+-- 	when the annotation term is modified.
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IF EXISTS VOC_Annot_update_trigger ON VOC_Annot;
+DROP FUNCTION VOC_Annot_update();
+
+CREATE OR REPLACE FUNCTION VOC_Annot_update() RETURNS TRIGGER AS \$\$
+
+DECLARE
+v_userKey int;
+
+BEGIN
+
+IF (OLD._Term_key != NEW._Term_key)
+THEN
+	v_userKey := _User_key from MGI_User where login = current_user;
+
+        UPDATE VOC_Evidence
+        SET modification_date = current_date, _ModifiedBy_key = v_userKey
+        WHERE NEW._Annot_key = VOC_Evidence._Annot_key
+	;
+END IF;
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION VOC_Annot_update() TO public;
+
+CREATE TRIGGER VOC_Annot_update_trigger
+AFTER INSERT on VOC_Annot
+FOR EACH ROW
+EXECUTE PROCEDURE VOC_Annot_update();
+
+COMMENT ON FUNCTION mgd.VOC_Annot_update() IS 'creates an update trigger to call voc_annot';
+
+EOSQL
