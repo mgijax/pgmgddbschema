@@ -241,7 +241,7 @@ psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*
 
 psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from pg_stat_user_indexes where schemaname = 'mgd'" | tee -a ${LOG}
 
-psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from information_schema.views where table_schema = 'mgd'" | tee -a ${LOG}
+psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "\df" | tee -a ${LOG}
 
 grep "psql:" ${PG_MGD_DBSCHEMADIR}/logs/*/*create.object.log | tee -a ${LOG}
 
