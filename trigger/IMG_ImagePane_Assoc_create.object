@@ -33,7 +33,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --
 
 DROP TRIGGER IF EXISTS IMG_ImagePane_Assoc_delete_trigger ON IMG_ImagePane_Assoc;
-DROP FUNCTION IMG_ImagePane_Assoc_delete();
+DROP FUNCTION IF EXISTS IMG_ImagePane_Assoc_delete();
 
 CREATE OR REPLACE FUNCTION IMG_ImagePane_Assoc_delete() RETURNS TRIGGER AS \$\$
 BEGIN

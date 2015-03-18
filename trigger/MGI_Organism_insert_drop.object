@@ -10,6 +10,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 DROP TRIGGER IF EXISTS MGI_Organism_insert_trigger ON MGI_Organism;
 
-DROP FUNCTION MGI_Organism_insert();
+DROP FUNCTION IF EXISTS MGI_Organism_insert();
 
 EOSQL

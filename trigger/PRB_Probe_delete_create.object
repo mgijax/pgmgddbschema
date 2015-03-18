@@ -33,7 +33,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --
 
 DROP TRIGGER IF EXISTS PRB_Probe_delete_trigger ON PRB_Probe;
-DROP FUNCTION PRB_Probe_delete();
+DROP FUNCTION IF EXISTS PRB_Probe_delete();
 
 CREATE OR REPLACE FUNCTION PRB_Probe_delete() RETURNS TRIGGER AS \$\$
 BEGIN

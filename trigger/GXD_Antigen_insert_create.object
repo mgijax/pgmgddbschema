@@ -21,7 +21,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --
 
 DROP TRIGGER IF EXISTS GXD_Antigen_insert_trigger ON GXD_Antigen;
-DROP FUNCTION GXD_Antigen_insert();
+DROP FUNCTION IF EXISTS GXD_Antigen_insert();
 
 CREATE OR REPLACE FUNCTION GXD_Antigen_insert() RETURNS TRIGGER AS \$\$
 BEGIN

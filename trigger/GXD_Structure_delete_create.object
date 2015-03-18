@@ -33,7 +33,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --
 
 DROP TRIGGER IF EXISTS GXD_Structure_delete_trigger ON GXD_Structure;
-DROP FUNCTION GXD_Structure_delete();
+DROP FUNCTION IF EXISTS GXD_Structure_delete();
 
 CREATE OR REPLACE FUNCTION GXD_Structure_delete() RETURNS TRIGGER AS \$\$
 BEGIN
