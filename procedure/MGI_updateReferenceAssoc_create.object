@@ -1,0 +1,113 @@
+#!/bin/sh
+
+#
+#
+# History
+#
+# 12/21/2011 lec
+#	- TR 10936; add "Treatment" to exclude list
+#
+# 05/04/2011 lec
+#	- TR 10698; add "Sequence" to exclude list
+#
+# 08/14/2009 lec
+#	- QA#2400/exclude "Transmission" and "Mixed" reference types
+#
+# 10/31/2006 lec
+#	- must iterate thru each allele of the genotype
+#
+# 09/18/2003 lec
+#	- TR 4724
+#
+# This procedure will update the Allele/Reference associations when a
+# MP/Genotype (_MGIType_key = 12) annotation is added.
+#    .  called from trigger/VOC_Evidence
+#       exec MGI_updateReferenceAssoc 12, v_objectKey, v_refsKey, 'Used-FC'
+#    .  when a MP annotation is added to the system, an Allele Reference
+#	Used-FC association is automatically added as well.
+#    .  we search for all Allele/Reference associations that currently exist
+#       (excluding Original, Molecular, Transmission, Mixed, Sequence, Treatment)
+#    .  we move the existing Allele/Reference association to 'Used-FC'
+#    .  we do not add duplicates
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/MGI_updateReferenceAssoc_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION MGI_updateReferenceAssoc (
+v_mgiTypeKey int,
+v_objectKey int,
+v_refsKey int,
+v_refsType mgi_refassoctype.assocType%TYPE
+)
+RETURNS VOID AS
+\$\$
+ 
+DECLARE
+v_userKey int;
+v_refsTypeKey int;
+v_allelekey int;
+allele_cursor refcursor;
+
+BEGIN
+
+-- for genotypes
+
+IF v_mgiTypeKey = 12
+THEN
+	v_refsTypeKey := _RefAssocType_key FROM MGI_RefAssocType 
+		WHERE _MGIType_key = 11 AND assocType = v_refsType;
+
+	OPEN allele_cursor FOR
+	SELECT _Allele_key FROM GXD_AlleleGenotype WHERE _Genotype_key = v_objectKey
+	;
+	LOOP
+        	FETCH allele_cursor INTO v_allelekey;
+        	EXIT WHEN NOT FOUND;
+
+		-- Update non-assocType (see query below)
+		-- Reference to new Reference Type 
+		-- If no such record exists, then create a new Allele Reference record
+		-- for each Allele of the Gentoype
+
+		IF EXISTS (SELECT 1 FROM MGI_Reference_Assoc r, MGI_RefAssocType rt
+        		WHERE r._Object_key = v_allelekey
+			AND r._MGIType_key = 11
+        		AND r._Refs_key = v_refsKey
+			AND r._RefAssocType_key = rt._RefAssocType_key
+        		AND rt.assocType not in ('Original', 
+				'Molecular', 'Transmission', 
+				'Mixed', 'Sequence', 'Treatment'))
+		THEN
+    			UPDATE MGI_Reference_Assoc
+    			SET _RefAssocType_key = v_refsTypeKey
+    			FROM MGI_RefAssocType rt
+    			WHERE MGI_Reference_Assoc._Object_key = v_allelekey
+			AND MGI_Reference_Assoc._MGIType_key = 11
+        		AND MGI_Reference_Assoc._Refs_key = v_refsKey
+			AND MGI_Reference_Assoc._RefAssocType_key = rt._RefAssocType_key
+        		AND rt.assocType not in ('Original', 
+				'Molecular', 'Transmission', 
+				'Mixed', 'Sequence', 'Treatment')
+			;
+		ELSE
+  			PERFORM MGI_insertReferenceAssoc (11, v_allelekey, v_refsKey, v_refsType);
+		END IF;
+	END LOOP;
+	CLOSE allele_cursor;
+END IF;
+
+RETURN;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MGI_updateReferenceAssoc(int,int,int,text) TO public;
+
+COMMENT ON FUNCTION mgd.MGI_updateReferenceAssoc(int,int,int,text) IS '';
+
+EOSQL
