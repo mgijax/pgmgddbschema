@@ -1,0 +1,48 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: GXD_Index_update()
+--
+-- DESCRIPTOIN:
+--
+--	update priority and conditional mutant
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IF EXISTS GXD_Index_update_trigger ON GXD_Index;
+DROP FUNCTION IF EXISTS GXD_Index_update();
+
+CREATE OR REPLACE FUNCTION GXD_Index_update() RETURNS TRIGGER AS \$\$
+BEGIN
+
+UPDATE GXD_Index
+SET _Priority_key = NEW._Priority_key, _ConditionalMutants_key = NEW._ConditionalMutants_key
+FROM GXD_Index g
+WHERE NEW._Refs_key = g._Refs_key
+;
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION GXD_Index_update() TO public;
+
+CREATE TRIGGER GXD_Index_update_trigger
+AFTER UPDATE on GXD_Index
+FOR EACH ROW
+EXECUTE PROCEDURE GXD_Index_update();
+
+COMMENT ON FUNCTION mgd.GXD_Index_update() IS 'creates an update trigger to call acc_assignmgi()/default values';
+
+EOSQL
