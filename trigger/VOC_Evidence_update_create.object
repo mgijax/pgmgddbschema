@@ -28,18 +28,18 @@ CREATE OR REPLACE FUNCTION VOC_Evidence_update() RETURNS TRIGGER AS \$\$
 BEGIN
 
 IF EXISTS (SELECT 1 FROM VOC_Annot a, GXD_AlleleGenotype g, MGI_Reference_Assoc r, MGI_RefAssocType rt
-       WHERE OLD._Annot_key = a._Annot_key
+       WHERE NEW._Annot_key = a._Annot_key
        AND a._AnnotType_key = 1002
        AND a._Object_key = g._Genotype_key
        AND g._Allele_key = r._Object_key
-       AND i._Refs_key = r._Refs_key
+       AND NEW._Refs_key = r._Refs_key
        AND r._MGIType_key = 11
        AND r._RefAssocType_key = rt._RefAssocType_key
        AND rt.assocType != 'Used-FC')
 THEN
 	PERFORM MGI_updateReferenceAssoc (12, 
-		(SELECT a._Object_key FROM VOC_Annot a WHERE OLD._Annot_key = a._Annot_key), 
-		OLD._Refs_key,
+		(SELECT a._Object_key FROM VOC_Annot a WHERE NEW._Annot_key = a._Annot_key), 
+		NEW._Refs_key,
 		'Used-FC');
 END IF;
 

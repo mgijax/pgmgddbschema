@@ -29,15 +29,12 @@ v_userKey int;
 
 BEGIN
 
-IF (OLD._Term_key != NEW._Term_key)
-THEN
-	v_userKey := _User_key from MGI_User where login = current_user;
+v_userKey := _User_key from MGI_User where login = current_user;
 
-        UPDATE VOC_Evidence
-        SET modification_date = current_date, _ModifiedBy_key = v_userKey
-        WHERE NEW._Annot_key = VOC_Evidence._Annot_key
-	;
-END IF;
+UPDATE VOC_Evidence
+SET modification_date = current_date, _ModifiedBy_key = v_userKey
+WHERE NEW._Annot_key = VOC_Evidence._Annot_key
+;
 
 RETURN NEW;
 
