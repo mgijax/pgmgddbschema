@@ -27,6 +27,7 @@ cp ../../mgddbschema/table/${findObject} .
 # convert each mgd-format table script to a postgres script
 #
 #g/bit/s//boolean/g
+#g/float/s//double precision/g
 
 for i in ${findObject}
 do
