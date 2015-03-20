@@ -8,7 +8,7 @@
 
 cd `dirname $0`
 
-for i in PRB*_delete_drop.object PRB*_insert_drop.object
+for i in PRB*_delete_drop.object PRB*_insert_drop.object PRB*_update_drop.object
 do
 $i $*
 done
