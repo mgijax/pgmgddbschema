@@ -51,7 +51,7 @@ IF EXISTS (SELECT * FROM PRB_Probe p, PRB_Source s
         and s._Organism_key != 1
         and (NEW.relationship != 'H' or NEW.relationship IS NULL))
 THEN
-        RAISE EXCEPTION E'PRB_Marker_update: Relationship Must be \'H\'';
+        RAISE EXCEPTION E'PRB_Marker_update: Relationship must be \'H\'';
 END IF;
 
 -- Allow update of 'P' to other relationship
