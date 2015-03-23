@@ -38,6 +38,15 @@ DROP FUNCTION IF EXISTS MLD_Expts_delete();
 CREATE OR REPLACE FUNCTION MLD_Expts_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
+-- Re-order the tag numbers for experiments if one is deleted
+
+UPDATE MLD_Expts
+SET MLD_Expts.tag = MLD_Expts.tag - 1
+WHERE MLD_Expts._Refs_key = OLD._Refs_key
+AND MLD_Expts.exptType = OLD.exptType
+AND MLD_Expts.tag > OLD.tag
+;
+
 DELETE FROM MAP_Coord_Feature a
 WHERE a._Object_key = OLD._Expt_key
 AND a._MGIType_key = 4
