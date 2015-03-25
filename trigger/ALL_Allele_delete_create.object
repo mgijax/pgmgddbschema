@@ -25,6 +25,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --
 -- An example of a table that only needs ACC_Accession : MGI_Organism
 --
+-- Must check:
+--	
+-- MGI_Relationship/MGI_Relationship_Category
+--
 -- INPUT:
 --	none
 --
@@ -37,6 +41,24 @@ DROP FUNCTION IF EXISTS ALL_Allele_delete();
 
 CREATE OR REPLACE FUNCTION ALL_Allele_delete() RETURNS TRIGGER AS \$\$
 BEGIN
+
+-- Disallow deletion if Allele is currently referenced elsewhere
+IF EXISTS (SELECT * FROM MGI_Relationship r, MGI_Relationship_Category c
+          WHERE OLD._Allele_key = r._Object_key_1
+          AND r._Category_key  = c._Category_key
+          AND c._MGIType_key_1 = 11)
+THEN
+	RAISE EXCEPTION E'Allele Symbol is referenced in MGI Relationship(s)';
+END IF;
+
+-- Disallow deletion if Allele is currently referenced elsewhere
+IF EXISTS (SELECT * FROM MGI_Relationship r, MGI_Relationship_Category c
+          WHERE OLD._Allele_key = r._Object_key_2
+          AND r._Category_key  = c._Category_key
+          AND c._MGIType_key_2 = 11)
+THEN
+	RAISE EXCEPTION E'Allele Symbol is referenced in MGI Relationship(s)';
+END IF;
 
 DELETE FROM MAP_Coord_Feature a
 WHERE a._Object_key = OLD._Allele_key
@@ -66,6 +88,11 @@ AND a._MGIType_key = 11
 DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._Allele_key
 AND a._MGIType_key = 11
+;
+
+DELETE FROM VOC_Annot a
+WHERE a._Object_key = OLD._Allele_key
+AND a._AnnotType_key = 1014
 ;
 
 DELETE FROM ACC_Accession a
