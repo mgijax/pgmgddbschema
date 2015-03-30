@@ -14,7 +14,8 @@ ${PG_MGD_DBSCHEMADIR}/procedure/PRB_insertReference_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION PRB_insertReference (
-refKey int,
+userKey int,
+refsKey int,
 probeKey int
 )
 RETURNS VOID AS
@@ -28,26 +29,24 @@ BEGIN
 
 -- Insert record into PRB_Reference if _Refs_key/_Probe_key pair does not already exist
 
-IF (SELECT count(*) FROM PRB_Reference WHERE _Refs_key = refKey AND _Probe_key = probeKey) > 0
+IF (SELECT count(*) FROM PRB_Reference WHERE _Refs_key = refsKey AND _Probe_key = probeKey) > 0
 THEN
 	RETURN;
 END IF;
 
 maxReferenceKey := max(_Reference_key) + 1 FROM PRB_Reference;
 
-userKey := _User_key FROM MGI_User WHERE login = current_user;
-
 INSERT INTO PRB_Reference
 (_Reference_key, _Probe_key, _Refs_key, hasRmap, hasSequence, _CreatedBy_key, _ModifiedBy_key)
-VALUES (maxReferenceKey, probeKey, refKey, 0, 0, userKey, userKey)
+VALUES (maxReferenceKey, probeKey, refsKey, 0, 0, userKey, userKey)
 ;
 
 END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION PRB_insertReference(int,int) TO public;
+GRANT EXECUTE ON FUNCTION PRB_insertReference(int,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.PRB_insertReference(int,int) IS 'create new prb_reference';
+COMMENT ON FUNCTION mgd.PRB_insertReference(int,int,int) IS 'create new prb_reference';
 
 EOSQL

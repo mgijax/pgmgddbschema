@@ -7,6 +7,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/VOC_copyAnnotEvidenceNotes_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION VOC_copyAnnotEvidenceNotes (
+v_userKey int,
 v_fromAnnotEvidenceKey int,
 v_toAnnotEvidenceKey int
 )
@@ -14,12 +15,10 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-v_userKey int;
 v_noteKey int;
 
 BEGIN
 
-v_userKey := _User_key from MGI_User where login = current_user;
 v_noteKey = max(_Note_key) from MGI_Note;
 
 CREATE TEMP TABLE toAdd ON COMMIT DROP
@@ -48,8 +47,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION VOC_copyAnnotEvidenceNotes(int,int) TO public;
+GRANT EXECUTE ON FUNCTION VOC_copyAnnotEvidenceNotes(int,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.VOC_copyAnnotEvidenceNotes(int,int) IS 'create note records for toAnnotEvidenceKey using note records of fromAnnotEvidenceKey';
+COMMENT ON FUNCTION mgd.VOC_copyAnnotEvidenceNotes(int,int,int) IS 'create note records for toAnnotEvidenceKey using note records of fromAnnotEvidenceKey';
 
 EOSQL
