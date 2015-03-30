@@ -41,7 +41,7 @@ CREATE OR REPLACE FUNCTION MRK_mergeWithdrawal (
 v_userKey int,
 v_oldKey int,
 v_newKey int,
-v_refKey int,
+v_refsKey int,
 v_eventKey int,
 v_eventReasonKey int,
 v_addAsSynonym int DEFAULT 1
@@ -225,7 +225,7 @@ THEN
 	THEN
 		v_alleleSymbol := v_newSymbol || '<' || v_oldSymbol + '>';
 
-		PERFORM ALL_insertAllele (v_newKey, v_refKey, v_alleleSymbol, 0, v_oldName, null, null, null, null,
+		PERFORM ALL_insertAllele (v_userKey, v_newKey, v_refsKey, v_alleleSymbol, 0, v_oldName, null, null, null, null,
 			-1, 'Not Specified', 'Not Specified', 'Approved', v_oldSymbol);
 
 		IF NOT FOUND
@@ -271,7 +271,7 @@ END IF;
 
 -- Insert history record for withdrawal
 
-PERFORM MRK_insertHistory (v_newKey, v_oldKey, v_refKey, v_eventKey, v_eventReasonKey, v_oldName);
+PERFORM MRK_insertHistory (v_newKey, v_oldKey, v_refsKey, v_eventKey, v_eventReasonKey, v_oldName);
 
 IF NOT FOUND
 THEN

@@ -19,7 +19,7 @@ RETURNS VOID AS
 
 DECLARE
 v_historyKey int;
-v_refKey int;
+v_refsKey int;
 v_eventKey int;
 v_eventReasonKey int;
 v_createdByKey int;
@@ -39,9 +39,9 @@ WHERE _Marker_key = v_oldKey
 ORDER BY sequenceNum
 ;
 LOOP
-        FETCH history_cursor INTO v_historyKey, v_refKey, v_eventKey, v_eventReasonKey, v_name, v_event_date;
+        FETCH history_cursor INTO v_historyKey, v_refsKey, v_eventKey, v_eventReasonKey, v_name, v_event_date;
         EXIT WHEN NOT FOUND;
-	PERFORM MRK_insertHistory (v_newKey, v_historyKey, v_refKey, v_eventKey, 
+	PERFORM MRK_insertHistory (v_newKey, v_historyKey, v_refsKey, v_eventKey, 
 		v_eventReasonKey, v_name, v_event_date);
 END LOOP;
 CLOSE history_cursor;

@@ -19,7 +19,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 CREATE OR REPLACE FUNCTION MRK_splitWithdrawal (
 v_userKey int,
 v_oldKey int,
-v_refKey int,
+v_refsKey int,
 v_eventReasonKey int,
 v_newSymbols text -- list of new symbols separated by commas
 )
@@ -186,7 +186,7 @@ LOOP
 			RETURN;
 		END IF;
 
-		PERFORM MRK_insertHistory (v_newKey, v_oldKey, v_refKey, 5, v_eventReasonKey, v_oldName);
+		PERFORM MRK_insertHistory (v_newKey, v_oldKey, v_refsKey, 5, v_eventReasonKey, v_oldName);
 
 		IF NOT FOUND
 		THEN
@@ -195,7 +195,7 @@ LOOP
 		END IF;
 
 		-- Add History line for assignment
-		PERFORM MRK_insertHistory (v_newKey, v_newKey, v_refKey, 1, v_eventReasonKey, v_oldName);
+		PERFORM MRK_insertHistory (v_newKey, v_newKey, v_refsKey, 1, v_eventReasonKey, v_oldName);
 
 		IF NOT FOUND
 		THEN

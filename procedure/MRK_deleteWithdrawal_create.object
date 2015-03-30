@@ -19,7 +19,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 CREATE OR REPLACE FUNCTION MRK_deleteWithdrawal (
 v_userKey int,
 v_oldKey int,
-v_refKey int,
+v_refsKey int,
 v_eventReasonKey int
 )
 RETURNS VOID AS
@@ -67,7 +67,7 @@ THEN
 END IF;
 
 -- Add History line for withdrawal
-PERFORM MRK_insertHistory (v_oldKey, v_oldKey, v_refKey, 6, v_eventReasonKey, v_oldName);
+PERFORM MRK_insertHistory (v_oldKey, v_oldKey, v_refsKey, 6, v_eventReasonKey, v_oldName);
 
 IF NOT FOUND
 THEN
