@@ -6,6 +6,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 DROP FUNCTION IF EXISTS GXD_getGenotypesDataSets(int);
 
-DROP FUNCTION IF EXISTS GXD_getGenotypesDataSetsCounts(int);
+DROP FUNCTION IF EXISTS GXD_getGenotypesDataSetsCount(int);
 
 EOSQL

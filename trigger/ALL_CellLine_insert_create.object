@@ -26,7 +26,7 @@ DROP FUNCTION IF EXISTS ALL_CellLine_insert();
 CREATE OR REPLACE FUNCTION ALL_CellLine_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-PERFORM ACC_assignMGI(NEW._CellLine_key, 'ES Cell Line');
+PERFORM ACC_assignMGI(1001, NEW._CellLine_key, 'ES Cell Line');
 
 RETURN NEW;
 

@@ -38,8 +38,7 @@ IF eiModule = 'AlleleModule'
 THEN
 	IF userLogin IN
 	(SELECT login FROM MGI_UserRole_View
-		WHERE userrole IN ('Pheno:Tier 3 (jr curator)',
-			'Pheno:Tier 4 (curator)',
+		WHERE userrole IN ('Pheno:Tier 4 (curator)',
 			'Pheno:Tier 5 (guru)'))
 	THEN
 		isVerified := 1;

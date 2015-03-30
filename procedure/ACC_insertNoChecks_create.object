@@ -17,6 +17,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ACC_insertNoChecks_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION ACC_insertNoChecks (
+v_userKey int,
 v_objectKey int,
 v_accID acc_accession.accid%TYPE,
 v_logicalDB int,
@@ -33,7 +34,6 @@ v_nextACC int;
 v_mgiTypeKey int;
 v_prefixPart varchar(30);
 v_numericPart varchar(30);
-v_userKey int;
 
 BEGIN
 
@@ -48,8 +48,6 @@ END IF;
 v_nextACC := max(_Accession_key) + 1 FROM ACC_Accession;
 
 v_mgiTypeKey := _MGIType_key FROM ACC_MGIType WHERE name = v_mgiType;
-
-v_userKey := _User_key FROM MGI_User WHERE login = current_user;
 
 /* split accession id INTO prefixPart/numericPart */
 SELECT * FROM ACC_split(v_accID) INTO v_prefixPart, v_numericPart;
@@ -71,7 +69,7 @@ END IF;
 
 IF v_refsKey != -1
 THEN
-	PERFORM ACCRef_insert(v_nextAcc, v_refsKey);
+	PERFORM ACCRef_insert(v_userKey, v_nextAcc, v_refsKey);
 END IF;
 
 RETURN;
@@ -80,8 +78,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ACC_insertNoChecks(int,varchar,int,varchar,int,int,int) TO public;
+GRANT EXECUTE ON FUNCTION ACC_insertNoChecks(int,int,varchar,int,varchar,int,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.ACC_insertNoChecks(int,varchar,int,varchar,int,int,int) IS 'update acc_accession/acc_accessionreference';
+COMMENT ON FUNCTION mgd.ACC_insertNoChecks(int,int,varchar,int,varchar,int,int,int) IS 'update acc_accession/acc_accessionreference';
 
 EOSQL

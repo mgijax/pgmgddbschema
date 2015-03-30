@@ -26,7 +26,7 @@ DROP FUNCTION IF EXISTS GXD_Assay_insert();
 CREATE OR REPLACE FUNCTION GXD_Assay_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-PERFORM ACC_assignMGI(NEW._Assay_key, 'Assay');
+PERFORM ACC_assignMGI(1001, NEW._Assay_key, 'Assay');
 
 RETURN NEW;
 

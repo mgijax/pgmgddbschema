@@ -23,6 +23,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ACC_delete_byAccKey_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION ACC_delete_byAccKey (
+v_userKey int,
 v_accKey int,
 v_refsKey int DEFAULT -1
 )
@@ -32,7 +33,7 @@ RETURNS VOID AS
 BEGIN
 
 IF NOT EXISTS (SELECT 1 FROM MGI_UserTask_View 
-	WHERE usertask = 'accession: alter load ids' and login = current_user )
+	WHERE usertask = 'accession: alter load ids' and _User_key = v_userKe )
 THEN
         /* TR 7170: ok to DELETE TIGR (35), DoTS (36), NIA Mouse Gene Index (53) */
 
@@ -109,12 +110,12 @@ END IF;
 /* for gene models */
 
 IF NOT EXISTS (SELECT 1 FROM MGI_UserTask_View
-    	WHERE usertask = 'accession: alter gene model ids' and login = current_user )
+    	WHERE usertask = 'accession: alter gene model ids' and _User_key = v_userKe )
 THEN
         /* Disallow edits to: */
         /* NCBI Gene Model (59), Ensembl Gene Model (60), VEGA Gene Model (85) */
 
-        IF (SELECT _LogicalDB_key FROM ACC_Accession WHERE _Accession_key = V_accKey)
+        IF (SELECT _LogicalDB_key FROM ACC_Accession WHERE _Accession_key = v_accKey)
                 in (59, 60, 85)
         THEN
             RAISE EXCEPTION E'You cannot DELETE an Accession id for a gene model (NCBI, Ensembl, VEGA).';
@@ -142,8 +143,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ACC_delete_byAccKey(int,int) TO public;
+GRANT EXECUTE ON FUNCTION ACC_delete_byAccKey(int,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.ACC_delete_ByAccKey(int,int) IS 'delete acc_accession by _accession_key';
+COMMENT ON FUNCTION mgd.ACC_delete_ByAccKey(int,int,int) IS 'delete acc_accession by _accession_key';
 
 EOSQL

@@ -26,7 +26,7 @@ DROP FUNCTION IF EXISTS ALL_CellLine_Derivat_insert();
 CREATE OR REPLACE FUNCTION ALL_CellLine_Derivat_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-PERFORM ACC_assignMGI(NEW._Derivation_key, 'Cell Line Derivation');
+PERFORM ACC_assignMGI(1001, NEW._Derivation_key, 'Cell Line Derivation');
 
 RETURN NEW;
 

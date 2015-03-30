@@ -26,7 +26,7 @@ DROP FUNCTION IF EXISTS MGI_Statistic_insert();
 CREATE OR REPLACE FUNCTION MGI_Statistic_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-PERFORM ACC_assignMGI(NEW._Statistic_key, 'Statistic');
+PERFORM ACC_assignMGI(1001, NEW._Statistic_key, 'Statistic');
 
 RETURN NEW;
 

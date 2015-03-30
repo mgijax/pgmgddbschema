@@ -14,6 +14,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ACCRef_process_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION ACCRef_process (
+v_userKey int,
 v_objectKey int,
 v_refsKey int,
 v_accID acc_accession.accid%TYPE,
@@ -45,9 +46,9 @@ AND a._LogicalDB_key = v_logicalDB
 
 IF v_accKey IS NOT NULL
 THEN
-	PERFORM ACCRef_insert (v_accKey, v_refsKey);
+	PERFORM ACCRef_insert (v_userKey, v_accKey, v_refsKey);
 ELSE
-	PERFORM ACC_insertNoChecks (v_objectKey, v_accID, v_logicalDB, v_mgiType, v_refsKey, v_preferred, v_private);
+	PERFORM ACC_insertNoChecks (v_userKey, v_objectKey, v_accID, v_logicalDB, v_mgiType, v_refsKey, v_preferred, v_private);
 END IF;
 
 RETURN;
@@ -56,8 +57,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ACCRef_process(int,int,varchar,int,varchar,int,int) TO public;
+GRANT EXECUTE ON FUNCTION ACCRef_process(int,int,int,varchar,int,varchar,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.ACCRef_process(int,int,varchar,int,varchar,int,int) IS 'creates a new acc_accessionreference row using a new or existing acc_accession row';
+COMMENT ON FUNCTION mgd.ACCRef_process(int,int,int,varchar,int,varchar,int,int) IS 'creates a new acc_accessionreference row using a new or existing acc_accession row';
 
 EOSQL

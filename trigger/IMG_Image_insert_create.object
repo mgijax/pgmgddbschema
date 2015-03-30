@@ -26,7 +26,7 @@ DROP FUNCTION IF EXISTS IMG_Image_insert();
 CREATE OR REPLACE FUNCTION IMG_Image_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-PERFORM ACC_assignMGI(NEW._Image_key, 'Image');
+PERFORM ACC_assignMGI(1001, NEW._Image_key, 'Image');
 
 RETURN NEW;
 

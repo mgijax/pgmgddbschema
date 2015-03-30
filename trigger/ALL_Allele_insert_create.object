@@ -42,7 +42,7 @@ v_autoloadStatus := 3983021;
 
 -- Cannot use the Autoload status
 
-IF (SELECT _Allele_Status_key from OLD.v_autoloadStatus)
+IF (SELECT OLD._Allele_Status_key = v_autoloadStatus)
 THEN
         RAISE EXCEPTION E'You do not have permission to add an \'Autoload\' Allele.';
 END IF;
@@ -59,7 +59,7 @@ THEN
         RAISE EXCEPTION E'Approved Allele Symbol must have an Approved Marker';
 END IF;
 
-PERFORM ACC_assignMGI(NEW._Allele_key, 'Allele');
+PERFORM ACC_assignMGI(1001, NEW._Allele_key, 'Allele');
 
 RETURN NEW;
 

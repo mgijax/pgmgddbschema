@@ -26,7 +26,7 @@ DROP FUNCTION IF EXISTS GXD_Genotype_insert();
 CREATE OR REPLACE FUNCTION GXD_Genotype_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-PERFORM ACC_assignMGI(NEW._Genotype_key, 'Genotype');
+PERFORM ACC_assignMGI(1001, NEW._Genotype_key, 'Genotype');
 
 RETURN NEW;
 

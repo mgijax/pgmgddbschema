@@ -4,6 +4,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION IF EXISTS ACCRef_process(int,int,varchar,int,varchar,int,int);
+DROP FUNCTION IF EXISTS ACCRef_process(int,int,int,varchar,int,varchar,int,int);
 
 EOSQL

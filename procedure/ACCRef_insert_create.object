@@ -14,19 +14,16 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ACCRef_insert_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION ACCRef_insert (
+v_userKey int,
 v_accKey int,
 v_refsKey int
 )
 RETURNS VOID AS
 \$\$
 
-DECLARE
-v_userKey int;
-
 BEGIN
 
 /* Insert record into ACC_AccessionReference table */
-v_userKey := _User_key FROM MGI_User WHERE login = current_user;
 
 INSERT INTO ACC_AccessionReference
 (_Accession_key, _Refs_key, _CreatedBy_key, _ModifiedBy_key)
@@ -37,8 +34,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ACCRef_insert(int,int) TO public;
+GRANT EXECUTE ON FUNCTION ACCRef_insert(int,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.ACCRef_insert(int, int) IS 'creates a new acc_accessionreference row';
+COMMENT ON FUNCTION mgd.ACCRef_insert(int,int,int) IS 'creates a new acc_accessionreference row';
 
 EOSQL

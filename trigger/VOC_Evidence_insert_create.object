@@ -26,7 +26,7 @@ DROP FUNCTION IF EXISTS VOC_Evidence_insert();
 CREATE OR REPLACE FUNCTION VOC_Evidence_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-PERFORM ACC_assignMGI(NEW._AnnotEvidence_key, 'Annotation Evidence');
+PERFORM ACC_assignMGI(1001, NEW._AnnotEvidence_key, 'Annotation Evidence');
 
 RETURN NEW;
 

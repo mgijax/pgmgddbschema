@@ -26,7 +26,7 @@ DROP FUNCTION IF EXISTS GXD_Antibody_insert();
 CREATE OR REPLACE FUNCTION GXD_Antibody_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-PERFORM ACC_assignMGI(NEW._Antibody_key, 'Antibody');
+PERFORM ACC_assignMGI(1001, NEW._Antibody_key, 'Antibody');
 
 RETURN NEW;
 

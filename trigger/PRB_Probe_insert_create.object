@@ -26,7 +26,7 @@ DROP FUNCTION IF EXISTS PRB_Probe_insert();
 CREATE OR REPLACE FUNCTION PRB_Probe_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-PERFORM ACC_assignMGI(NEW._Probe_key, 'Segment');
+PERFORM ACC_assignMGI(1001, NEW._Probe_key, 'Segment');
 
 RETURN NEW;
 

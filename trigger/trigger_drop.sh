@@ -8,7 +8,7 @@
 
 cd `dirname $0` && . ./Configuration
 
-for i in *_delete_drop.object *insert_drop.object *_update_create.object
+for i in *_delete_drop.object *insert_drop.object *_update_drop.object
 do
 echo $i
 $i

@@ -20,6 +20,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ACC_assignMGI_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION ACC_assignMGI (
+  v_userKey int,
   v_objectKey int,
   v_mgiType acc_mgitype.name%TYPE,
   v_prefixPart varchar(30) DEFAULT 'MGI:',
@@ -36,7 +37,6 @@ RETURNS VOID AS
 DECLARE
 v_nextACC int;
 v_mgiTypeKey int;
-v_userKey int;
 v_accID acc_accession.accid%TYPE;
 v_preferred int = 1;
 v_private int = 0;
@@ -45,7 +45,6 @@ BEGIN
 
 v_nextACC := max(_Accession_key) + 1 FROM ACC_Accession;
 v_mgiTypeKey := _MGIType_key FROM ACC_MGIType WHERE name = v_mgiType;
-v_userKey := _User_key FROM MGI_User WHERE login = current_user;
 
 IF v_nextMGI = -1
 THEN
@@ -80,9 +79,9 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ACC_assignMGI(int,varchar,varchar,int) TO public;
+GRANT EXECUTE ON FUNCTION ACC_assignMGI(int,int,varchar,varchar,int) TO public;
 
-COMMENT ON FUNCTION mgd.ACC_assignMGI(int,varchar,varchar,int) IS 'creates a new MGI id in the acc_accession table';
+COMMENT ON FUNCTION mgd.ACC_assignMGI(int,int,varchar,varchar,int) IS 'creates a new MGI id in the acc_accession table';
 
 EOSQL
 

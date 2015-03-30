@@ -26,7 +26,7 @@ DROP FUNCTION IF EXISTS IMG_ImagePane_insert();
 CREATE OR REPLACE FUNCTION IMG_ImagePane_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-PERFORM ACC_assignMGI(NEW._ImagePane_key, 'Image Pane');
+PERFORM ACC_assignMGI(1001, NEW._ImagePane_key, 'Image Pane');
 
 RETURN NEW;
 

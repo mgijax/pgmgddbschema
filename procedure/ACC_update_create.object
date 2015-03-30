@@ -29,6 +29,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ACC_update_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION ACC_update (
+v_userKey int,
 v_accKey int,
 v_accID acc_accession.accid%TYPE,
 v_origRefsKey int DEFAULT -1,
@@ -40,14 +41,11 @@ RETURNS VOID AS
 DECLARE
 v_prefixPart varchar(30);
 v_numericPart varchar(30);
-v_userKey int;
 
 BEGIN
 
-v_userKey := _User_key FROM MGI_User WHERE login = current_user;
-
 IF NOT EXISTS (SELECT 1 FROM MGI_UserTask_View 
-	WHERE usertask = 'accession: alter load ids' and login = current_user )
+	WHERE usertask = 'accession: alter load ids' and _User_key = v_userKey )
 THEN
         /* TR 7170: ok to UPDATE TIGR (35), DoTS (36), NIA Mouse Gene Index (53) */
 
@@ -124,12 +122,12 @@ END IF;
 /* for gene models */
 
 IF NOT EXISTS (SELECT 1 FROM MGI_UserTask_View
-    	WHERE usertask = 'accession: alter gene model ids' and login = current_user )
+    	WHERE usertask = 'accession: alter gene model ids' and _User_key = v_userKey )
 THEN
         /* Disallow edits to: */
         /* NCBI Gene Model (59), Ensembl Gene Model (60), VEGA Gene Model (85) */
 
-        IF (SELECT _LogicalDB_key FROM ACC_Accession WHERE _Accession_key = V_accKey)
+        IF (SELECT _LogicalDB_key FROM ACC_Accession WHERE _Accession_key = v_accKey)
                 in (59, 60, 85)
         THEN
             RAISE EXCEPTION E'You cannot UPDATE an Accession id for a gene model (NCBI, Ensembl, VEGA).';
@@ -192,8 +190,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ACC_update(int,varchar,int,int) TO public;
+GRANT EXECUTE ON FUNCTION ACC_update(int,int,varchar,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.ACC_update(int,varchar,int,int) IS 'update acc_accession row';
+COMMENT ON FUNCTION mgd.ACC_update(int,int,varchar,int,int) IS 'update acc_accession row';
 
 EOSQL
