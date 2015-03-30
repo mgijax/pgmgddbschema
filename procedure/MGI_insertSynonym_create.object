@@ -17,6 +17,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/MGI_insertSynonym_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION MGI_insertSynonym (
+v_userKey int,
 v_objectKey int,
 v_mgiTypeKey int,
 v_synTypeKey int,
@@ -27,12 +28,10 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-v_userKey int;
 v_synKey int;
 
 BEGIN
 
-v_userKey := _User_key FROM MGI_User where login = current_user;
 v_synKey := max(_Synonym_key + 1) FROM MGI_Synonym;
 
 IF v_synKey IS NULL
@@ -59,8 +58,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MGI_insertSynonym(int,int,int,text,int) TO public;
+GRANT EXECUTE ON FUNCTION MGI_insertSynonym(int,int,int,int,text,int) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_insertSynonym(int,int,int,text,int) IS 'create a new synonym in the mgi_synonym table';
+COMMENT ON FUNCTION mgd.MGI_insertSynonym(int,int,int,int,text,int) IS 'create a new synonym in the mgi_synonym table';
 
 EOSQL

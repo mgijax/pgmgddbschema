@@ -220,11 +220,11 @@ PERFORM VOC_mergeAnnotations (1003, v_oldKey, v_newKey);
 -- 1016 : OMIM/Marker (Derived)
 --
 
-DELETE VOC_Annot WHERE _AnnotType_key = 1015 AND _Object_key = v_oldKey;
-DELETE VOC_Annot WHERE _AnnotType_key = 1016 AND _Object_key = v_oldKey;
+DELETE FROM VOC_Annot WHERE _AnnotType_key = 1015 AND _Object_key = v_oldKey;
+DELETE FROM VOC_Annot WHERE _AnnotType_key = 1016 AND _Object_key = v_oldKey;
 
 -- Delete MRK_ClusterMember from old Symbol
-DELETE MRK_ClusterMember where _Marker_key = @oldKey
+DELETE FROM MRK_ClusterMember where _Marker_key = v_oldKey;
 
 -- Move non-duplicate Marker References to the new symbol 
 

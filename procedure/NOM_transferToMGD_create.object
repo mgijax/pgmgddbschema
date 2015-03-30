@@ -206,7 +206,7 @@ AND _SynonymType_key = 1008
 LOOP
         FETCH syn_cursor INTO v_synName, v_synRefKey;
         EXIT WHEN NOT FOUND;
-	PERFORM MGI_insertSynonym (v_markerKey, 2, 1004, v_synName, v_synRefKey);
+	PERFORM MGI_insertSynonym (v_userKey, v_markerKey, 2, 1004, v_synName, v_synRefKey);
 END LOOP;
 CLOSE syn_cursor;
 
