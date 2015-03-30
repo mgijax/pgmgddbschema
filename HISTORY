@@ -5,6 +5,13 @@ CHANGES:
 this becomes obsolete when the production WI is replaced by the PWI:
 IMG_Cache
 
+TAG: pgmgddbschema-5-2-1-12
+DATE: 03/30/2015
+STAFF: lec
+CHANGES:
+1) see mgidbmigration/TR11750/tr11750.csh
+2) using new ACC procedures with userKey
+
 TAG: pgmgddbschema-5-2-1-11
 DATE: 03/18/2015
 STAFF: lec

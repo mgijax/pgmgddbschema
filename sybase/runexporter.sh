@@ -243,7 +243,7 @@ psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*
 
 psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "\df" | tee -a ${LOG}
 
-grep "psql:" ${PG_MGD_DBSCHEMADIR}/logs/*/*create.object.log | tee -a ${LOG}
+#grep "psql:" ${PG_MGD_DBSCHEMADIR}/logs/*/*create.object.log | tee -a ${LOG}
 
 date | tee -a ${LOG}
 
