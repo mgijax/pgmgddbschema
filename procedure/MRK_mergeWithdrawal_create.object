@@ -225,7 +225,8 @@ THEN
 	THEN
 		v_alleleSymbol := v_newSymbol || '<' || v_oldSymbol + '>';
 
-		PERFORM ALL_insertAllele (v_userKey, v_newKey, v_refsKey, v_alleleSymbol, 0, v_oldName, null, null, null, null,
+		PERFORM ALL_insertAllele (v_userKey, v_newKey, v_alleleSymbol, v_oldName, 
+			v_refsKey, 0, null, null, null, null,
 			-1, 'Not Specified', 'Not Specified', 'Approved', v_oldSymbol);
 
 		IF NOT FOUND
