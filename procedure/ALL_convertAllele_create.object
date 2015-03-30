@@ -13,6 +13,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ALL_convertAllele_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION ALL_convertAllele (
+v_userKey int,
 v_markerKey int,
 v_oldSymbol mrk_marker.symbol%TYPE,
 v_newSymbol mrk_marker.symbol%TYPE,
@@ -22,7 +23,6 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-v_userKey int;
 v_alleleKey int;
 allele_cursor refcursor;
 
@@ -43,8 +43,6 @@ THEN
 	RAISE EXCEPTION E'ALL_convertAllele : Cannot update symbols for allele which have no marker.';
 	RETURN;
 END IF;
-
-v_userKey := _User_key from MGI_User where login = current_user;
 
 --
 -- If old Symbol is NOT allele of new Symbol... 
@@ -121,9 +119,9 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ALL_convertAllele(int,varchar,varchar,int) TO public;
+GRANT EXECUTE ON FUNCTION ALL_convertAllele(int,int,varchar,varchar,int) TO public;
 
-COMMENT ON FUNCTION mgd.ALL_convertAllele(int,varchar,varchar,int) IS 'convert allele symbols of using old symbol/new symbol';
+COMMENT ON FUNCTION mgd.ALL_convertAllele(int,int,varchar,varchar,int) IS 'convert allele symbols of using old symbol/new symbol';
 
 EOSQL
 

@@ -209,7 +209,7 @@ END IF;
 
 -- Convert Remaining Alleles
 
-PERFORM ALL_convertAllele (v_oldKey, v_oldSymbol, v_newSymbol, v_alleleOf);
+PERFORM ALL_convertAllele (v_userKey, v_oldKey, v_oldSymbol, v_newSymbol, v_alleleOf);
 
 --IF NOT FOUND
 --THEN
