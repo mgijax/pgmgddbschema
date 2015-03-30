@@ -126,7 +126,7 @@ VALUES(v_assocKey, v_alleleKey, v_markerKey, v_qualifierKey, v_refsKey, v_mrksta
 
 IF v_refsKey IS NOT NULL
 THEN
-        PERFORM MGI_insertReferenceAssoc (11, v_alleleKey, v_refsKey, 'Original');
+        PERFORM MGI_insertReferenceAssoc (v_userKey, 11, v_alleleKey, v_refsKey, 'Original');
 END IF;
 
 IF (v_oldSymbol IS NOT NULL) AND (v_markerKey IS NOT NULL)

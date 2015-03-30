@@ -121,7 +121,7 @@ LOOP
 			RETURN;
 		END IF;
 
-		PERFORM ACC_assignMGI (v_newKey, 'Marker');
+		PERFORM ACC_assignMGI (v_userKey, v_newKey, 'Marker');
 
 		IF NOT FOUND
 		THEN
