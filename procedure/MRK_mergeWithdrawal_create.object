@@ -38,6 +38,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/MRK_mergeWithdrawal_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION MRK_mergeWithdrawal (
+v_userKey int,
 v_oldKey int,
 v_newKey int,
 v_refKey int,
@@ -49,7 +50,6 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-v_modifiedByKey int;
 v_alleleOf int;
 v_assigningRefKey int;
 v_synTypeKey int;
@@ -82,8 +82,6 @@ THEN
 	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Cannot Merge a Symbol into itself: %, %', v_oldKey, v_newKey;
 	RETURN;
 END IF;
-
-v_modifiedByKey := _User_key from MGI_User where login = current_user;
 
 v_oldSymbol := symbol
 	FROM MRK_Marker 
@@ -145,7 +143,7 @@ THEN
 	v_newChr := (SELECT chromosome FROM MRK_Marker WHERE _Marker_key = v_oldKey);
 
 	UPDATE MRK_Marker 
-	SET chromosome = v_newChr, _ModifiedBy_key = v_modifiedByKey, modification_date = current_date
+	SET chromosome = v_newChr, _ModifiedBy_key = v_userKey, modification_date = current_date
 	WHERE _Marker_key = v_newKey
 	;
 
@@ -188,7 +186,7 @@ DELETE FROM MRK_Offset WHERE _Marker_key = v_oldKey AND source > 0;
 
 UPDATE MRK_Marker 
 SET name = v_withdrawnName, cytogeneticOffset = null, _Marker_Status_key = 2, 
-	_ModifiedBy_key = v_modifiedByKey, modification_date = current_date
+	_ModifiedBy_key = v_userKey, modification_date = current_date
 WHERE _Marker_key = v_oldKey
 ;
 
@@ -344,8 +342,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MRK_mergeWithdrawal(int,int,int,int,int,int) TO public;
+GRANT EXECUTE ON FUNCTION MRK_mergeWithdrawal(int,int,int,int,int,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.MRK_mergeWithdrawal(int, int,int,int,int,int) IS 'process a merge withdrawal';
+COMMENT ON FUNCTION mgd.MRK_mergeWithdrawal(int,int, int,int,int,int,int) IS 'process a merge withdrawal';
 
 EOSQL

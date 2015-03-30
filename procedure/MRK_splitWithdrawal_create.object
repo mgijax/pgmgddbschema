@@ -17,6 +17,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/MRK_splitWithdrawal_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0 
 
 CREATE OR REPLACE FUNCTION MRK_splitWithdrawal (
+v_userKey int,
 v_oldKey int,
 v_refKey int,
 v_eventReasonKey int,
@@ -43,8 +44,6 @@ RETURNS VOID AS
 --
 
 DECLARE
-v_userKey int;
-v_modifiedByKey int;
 v_curationStateKey int;
 v_newKey int;
 v_idx int;
@@ -54,7 +53,6 @@ v_withdrawnName text;
 
 BEGIN
 
-v_modifiedByKey := _User_key from MGI_User where login = current_user;
 v_curationStateKey := _Term_key from VOC_Term where _Vocab_key = 15 and term = 'Internal';
 v_withdrawnName := 'withdrawn, = ' || substring(v_newSymbols, 1, char_length(v_newSymbols) - 1);
 v_newKey := max(_Marker_key) + 1 from MRK_Marker;
@@ -112,7 +110,7 @@ LOOP
 		(_Marker_key, _Organism_key, _Marker_Type_key, _Marker_Status_key, _CurationState_key, 
 			symbol, name, chromosome, _CreatedBy_key, _ModifiedBy_key)
 		SELECT v_newKey, _Organism_key, _Marker_Type_key, _Marker_Status_key, v_curationStateKey, 
-			v_newSymbol, name, chromosome, v_modifiedByKey, v_modifiedByKey
+			v_newSymbol, name, chromosome, v_userKey, v_userKey
 		FROM MRK_Marker
 		WHERE _Marker_key = v_oldKey
 		;
@@ -233,7 +231,7 @@ UPDATE MRK_Marker
 SET name = v_withdrawnName, 
 	cytogeneticOffset = null, 
 	_Marker_Status_key = 2, 
-	_ModifiedBy_key = v_modifiedByKey, 
+	_ModifiedBy_key = v_userKey,
 	modification_date = current_date
 WHERE _Marker_key = v_oldKey
 ;
@@ -258,9 +256,9 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MRK_splitWithdrawal(int,int,int,text) TO public;
+GRANT EXECUTE ON FUNCTION MRK_splitWithdrawal(int,int,int,int,text) TO public;
 
-COMMENT ON FUNCTION mgd.MRK_splitWithdrawal(int,int,int,text) IS 'process a split withdrawal';
+COMMENT ON FUNCTION mgd.MRK_splitWithdrawal(int,int,int,int,text) IS 'process a split withdrawal';
 
 EOSQL
 

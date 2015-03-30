@@ -21,6 +21,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ALL_insertAllele_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION ALL_insertAllele (
+v_userKey int,
 v_markerKey int,
 v_symbol all_allele.symbol%TYPE,
 v_name all_allele.name%TYPE,
@@ -44,7 +45,6 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-v_userKey int;
 v_alleleKey int;
 
 v_createdByKey int;
@@ -65,7 +65,6 @@ v_isMixed all_allele.ismixed%TYPE;
 
 BEGIN
 
-v_userKey := _User_key from MGI_User where login = current_user;
 v_alleleKey := max(_Allele_key) + 1 from ALL_Allele;
 
 IF v_createdBy IS NULL
@@ -141,8 +140,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ALL_insertAllele(int,varchar,text,int,int,int,int,int,timestamp,int,text,text,text,varchar,text,text,text,text) TO public;
+GRANT EXECUTE ON FUNCTION ALL_insertAllele(int,int,varchar,text,int,int,int,int,int,timestamp,int,text,text,text,varchar,text,text,text,text) TO public;
 
-COMMENT ON FUNCTION mgd.ALL_insertAllele(int,varchar,text,int,int,int,int,int,timestamp,int,text,text,text,varchar,text,text,text,text) IS 'insert all_allele row';
+COMMENT ON FUNCTION mgd.ALL_insertAllele(int,int,varchar,text,int,int,int,int,int,timestamp,int,text,text,text,varchar,text,text,text,text) IS 'insert all_allele row';
 
 EOSQL

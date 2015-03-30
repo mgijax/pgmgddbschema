@@ -4,6 +4,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION IF EXISTS ALL_insertAllele(int,varchar,text,int,int,int,int,int,timestamp,int,text,text,text,varchar,text,text,text,text);
+DROP FUNCTION IF EXISTS ALL_insertAllele(int,int,varchar,text,int,int,int,int,int,timestamp,int,text,text,text,varchar,text,text,text,text);
 
 EOSQL
