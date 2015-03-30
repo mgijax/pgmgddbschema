@@ -62,6 +62,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/NOM_transferToMGD_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION NOM_transferToMGD (
+v_userKey int,
 v_nomenKey int,
 v_transferSynonyms int DEFAULT 1
 )
@@ -69,7 +70,6 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-v_userKey int;
 v_markerKey int;
 v_offset float;
 
@@ -106,7 +106,6 @@ BEGIN
 -- Create Allele-Wild Type : will be handled by MRK_Marker_insert() trigger
 --
 
-v_userKey := _User_key from MGI_User where login = current_user;
 v_markerKey := max(_Marker_key) + 1 from MRK_Marker;
 v_qualifierKey := _Term_key from VOC_Term where _Vocab_key = 70 and term = 'Not Specified';
 v_mrkstatusKey := _Term_key from VOC_Term where _Vocab_key = 73 and term = 'Curated';
@@ -336,9 +335,9 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION NOM_transferToMGD(int,int) TO public;
+GRANT EXECUTE ON FUNCTION NOM_transferToMGD(int,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.NOM_transferToMGD(int,int) IS 'create/transfer Marker from NOM_Marker to MRK_Marker';
+COMMENT ON FUNCTION mgd.NOM_transferToMGD(int,int,int) IS 'create/transfer Marker from NOM_Marker to MRK_Marker';
 
 EOSQL
 

@@ -35,6 +35,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/MRK_simpleWithdrawal_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION MRK_simpleWithdrawal (
+v_userKey int,
 v_oldKey int,
 v_refKey int,
 v_eventReasonKey int,
@@ -46,7 +47,6 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-v_modifiedByKey int;
 v_newKey int;
 v_withdrawnName mrk_marker.name%TYPE;
 
@@ -66,7 +66,6 @@ BEGIN
 --  responsible for making sure the new symbol is unique and correct.
 -- 
 
-v_modifiedByKey := _User_key from MGI_User where login = current_user;
 v_withdrawnName := 'withdrawn, = ' || v_newSymbol;
 v_newKey := max(_Marker_key) + 1 from MRK_Marker;
 
@@ -97,7 +96,7 @@ END IF;
 
 INSERT INTO MRK_Marker 
 (_Marker_key, _Organism_key, _Marker_Type_key, _Marker_Status_key, _CurationState_key, symbol, name, chromosome, _CreatedBy_key, _ModifiedBy_key)
-SELECT v_newKey, _Organism_key, _Marker_Type_key, 2, 166894, symbol, v_withdrawnName, chromosome, v_modifiedByKey, v_modifiedByKey
+SELECT v_newKey, _Organism_key, _Marker_Type_key, 2, 166894, symbol, v_withdrawnName, chromosome, v_userKey, v_userKey
 FROM MRK_Marker
 WHERE _Marker_key = v_oldKey
 ;
@@ -130,7 +129,7 @@ WHERE _Marker_key = v_newKey;
 
 -- Update old marker record with new symbol and name values
 UPDATE MRK_Marker 
-SET symbol = v_newSymbol, name = v_newName, _ModifiedBy_key = v_modifiedByKey, modification_date = current_date
+SET symbol = v_newSymbol, name = v_newName, _ModifiedBy_key = v_userKey, modification_date = current_date
 WHERE _Marker_key = v_oldKey;
 
 -- Update history lines
@@ -203,8 +202,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MRK_simpleWithdrawal(int,int,int,varchar,text,int) TO public;
+GRANT EXECUTE ON FUNCTION MRK_simpleWithdrawal(int,int,int,int,varchar,text,int) TO public;
 
-COMMENT ON FUNCTION mgd.MRK_simpleWithdrawal(int,int,int,varchar,text,int) IS 'process a simple marker withdrawal';
+COMMENT ON FUNCTION mgd.MRK_simpleWithdrawal(int,int,int,int,varchar,text,int) IS 'process a simple marker withdrawal';
 
 EOSQL
