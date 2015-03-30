@@ -262,7 +262,7 @@ END IF;
 
 -- Copy History records from old symbol to new symbol
 
-PERFORM MRK_copyHistory (v_oldKey, v_newKey);
+PERFORM MRK_copyHistory (v_userKey, v_oldKey, v_newKey);
 
 IF NOT FOUND
 THEN
@@ -272,7 +272,7 @@ END IF;
 
 -- Insert history record for withdrawal
 
-PERFORM MRK_insertHistory (v_newKey, v_oldKey, v_refsKey, v_eventKey, v_eventReasonKey, v_oldName);
+PERFORM MRK_insertHistory (v_userKey, v_newKey, v_oldKey, v_refsKey, v_eventKey, v_eventReasonKey, v_oldName);
 
 IF NOT FOUND
 THEN

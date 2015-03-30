@@ -178,7 +178,7 @@ LOOP
 			END IF;
 		END IF;
 
-		PERFORM MRK_copyHistory (v_oldKey, v_newKey);
+		PERFORM MRK_copyHistory (v_userKey, v_oldKey, v_newKey);
 
 		IF NOT FOUND
 		THEN
@@ -186,7 +186,7 @@ LOOP
 			RETURN;
 		END IF;
 
-		PERFORM MRK_insertHistory (v_newKey, v_oldKey, v_refsKey, 5, v_eventReasonKey, v_oldName);
+		PERFORM MRK_insertHistory (v_userKey, v_newKey, v_oldKey, v_refsKey, 5, v_eventReasonKey, v_oldName);
 
 		IF NOT FOUND
 		THEN
@@ -195,7 +195,7 @@ LOOP
 		END IF;
 
 		-- Add History line for assignment
-		PERFORM MRK_insertHistory (v_newKey, v_newKey, v_refsKey, 1, v_eventReasonKey, v_oldName);
+		PERFORM MRK_insertHistory (v_userKey, v_newKey, v_newKey, v_refsKey, 1, v_eventReasonKey, v_oldName);
 
 		IF NOT FOUND
 		THEN

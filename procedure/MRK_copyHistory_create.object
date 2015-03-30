@@ -11,6 +11,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/MRK_copyHistory_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION MRK_copyHistory (
+v_userKey int,
 v_oldKey int,
 v_newKey int
 )
@@ -41,7 +42,7 @@ ORDER BY sequenceNum
 LOOP
         FETCH history_cursor INTO v_historyKey, v_refsKey, v_eventKey, v_eventReasonKey, v_name, v_event_date;
         EXIT WHEN NOT FOUND;
-	PERFORM MRK_insertHistory (v_newKey, v_historyKey, v_refsKey, v_eventKey, 
+	PERFORM MRK_insertHistory (v_userKey, v_newKey, v_historyKey, v_refsKey, v_eventKey, 
 		v_eventReasonKey, v_name, v_event_date);
 END LOOP;
 CLOSE history_cursor;
@@ -50,9 +51,9 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MRK_copyHistory(int,int) TO public;
+GRANT EXECUTE ON FUNCTION MRK_copyHistory(int,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.MRK_copyHistory(int,int) IS 'copy mrk_history from old marker to new marker';
+COMMENT ON FUNCTION mgd.MRK_copyHistory(int,int,int) IS 'copy mrk_history from old marker to new marker';
 
 EOSQL
 

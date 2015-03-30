@@ -182,7 +182,7 @@ THEN
 END IF;
 
 -- Create History line for new marker
-PERFORM MRK_insertHistory (v_markerKey, v_markerKey, 
+PERFORM MRK_insertHistory (v_userKey, v_markerKey, v_markerKey, 
 	(SELECT _Refs_key FROM nom_transfer), 
         (SELECT _Marker_Event_key FROM nom_transfer),
         (SELECT _Marker_EventReason_key FROM nom_transfer),

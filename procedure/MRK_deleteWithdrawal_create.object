@@ -67,7 +67,7 @@ THEN
 END IF;
 
 -- Add History line for withdrawal
-PERFORM MRK_insertHistory (v_oldKey, v_oldKey, v_refsKey, 6, v_eventReasonKey, v_oldName);
+PERFORM MRK_insertHistory (v_userKey, v_oldKey, v_oldKey, v_refsKey, 6, v_eventReasonKey, v_oldName);
 
 IF NOT FOUND
 THEN

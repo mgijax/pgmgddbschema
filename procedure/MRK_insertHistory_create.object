@@ -13,6 +13,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/MRK_insertHistory_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION MRK_insertHistory (
+userKey int,
 markerKey int,
 historyKey int,
 refKey int,
@@ -49,12 +50,12 @@ END IF;
 
 IF createdByKey IS NULL
 THEN
-	createdByKey := _User_key from MGI_User where login = current_user;
+	createdByKey := userKey;
 END IF;
 
 IF modifiedByKey IS NULL
 THEN
-	modifiedByKey := _User_key from MGI_User where login = current_user;
+	modifiedByKey := userKey;
 END IF;
 
 IF creation_date IS NULL
@@ -78,8 +79,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MRK_insertHistory(int,int,int,int,int,varchar,timestamp,int,int,timestamp,timestamp) TO public;
+GRANT EXECUTE ON FUNCTION MRK_insertHistory(int,int,int,int,int,int,varchar,timestamp,int,int,timestamp,timestamp) TO public;
 
-COMMENT ON FUNCTION mgd.MRK_insertHistory(int,int,int,int,int,varchar,timestamp,int,int,timestamp,timestamp) IS 'insert new history record into mrk_history';
+COMMENT ON FUNCTION mgd.MRK_insertHistory(int,int,int,int,int,int,varchar,timestamp,int,int,timestamp,timestamp) IS 'insert new history record into mrk_history';
 
 EOSQL
