@@ -171,6 +171,16 @@ THEN
 	END IF;
 END IF;
 
+-- Convert Alleles, if necessary
+
+PERFORM ALL_convertAllele (v_userKey, v_oldKey, (select oldSymbol from mrk_tmp), v_newSymbol);
+
+IF NOT FOUND
+THEN
+	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not call ALL_convertAllele';
+	RETURN;
+END IF;
+
 -- Insert withdrawn symbol into Synonym table
 -- Use assigning reference
 
