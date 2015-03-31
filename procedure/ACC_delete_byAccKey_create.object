@@ -32,106 +32,14 @@ RETURNS VOID AS
 
 BEGIN
 
-IF NOT EXISTS (SELECT 1 FROM MGI_UserTask_View 
-	WHERE usertask = 'accession: alter load ids' and _User_key = v_userKe )
-THEN
-        /* TR 7170: ok to DELETE TIGR (35), DoTS (36), NIA Mouse Gene Index (53) */
-
-        /* Disallow edits to SwissProt (13), TrEMBL (41), InterPro (28) */
-        /* Ensembl (33), UniGene (23) */
-
-        IF (SELECT _LogicalDB_key FROM ACC_Accession WHERE _Accession_key = v_accKey) 
-                in (13, 41, 28, 33, 23)
-        THEN
-	    RAISE EXCEPTION E'You cannot DELETE an Accession id that is associated via a load program.';
-            RETURN;
-        END IF;
-
-        /* EntrezGene */
-
-        IF (SELECT _LogicalDB_key FROM ACC_Accession WHERE _Accession_key = v_accKey) = 55
-           and 
-           (SELECT m._Organism_key FROM ACC_Accession a, MRK_Marker m 
-                WHERE a._Accession_key = v_accKey
-                and a._MGIType_key = 2
-                and a._Object_key = m._Marker_key) = 1
-        THEN
-            RAISE EXCEPTION E'You cannot DELETE an Entrez Gene Accession id.';
-            RETURN;
-        END IF;
-
-        /* Disallow edits to J:53158 (SP load), J:63103 (Entrez Gene load), J:90500 (Orthology load) */
-        /* These loads may pick up GenBank ids that we can't check for with just the _LogicalDB_key */
-
-        IF (SELECT _Refs_key FROM ACC_AccessionReference WHERE _Accession_key = v_accKey) 
-                in (53672, 64047, 91485)
-        THEN
-            RAISE EXCEPTION E'You cannot DELETE an Accession id that is associated with J:53158, J:63103, 
-J:90500.';
-            RETURN;
-        END IF;
-
-        /* for mouse, anything other than XM_, XR_, NM_, NR_ RefSeq (27) is invalid */
-        /* note that we've already checked the reference above, so if an NM_ or NR_ gets */
-        /* to this point, THEN it's okay to DELETE it because it's MGI-curated */
-
-        ELSE IF (SELECT _LogicalDB_key FROM ACC_Accession WHERE _Accession_key = v_accKey) = 27 
-           and
-           (SELECT m._Organism_key FROM ACC_Accession a, MRK_Marker m 
-                WHERE a._Accession_key = v_accKey
-                and a._MGIType_key = 2
-                and a._Object_key = m._Marker_key) = 1
-           and
-           (SELECT prefixPart FROM ACC_Accession WHERE _Accession_key = v_accKey) 
-                not in ('XM_','NM_','XR_','NR_')
-        THEN
-            RAISE EXCEPTION E'You can only DELETE XM_/XR_ RefSeqs.';
-            RETURN;
-        END IF;
-
-        /* for other than mouse, anything other than XM_, XP_ RefSeq (27) is invalid */
-        /* note that we've already checked the reference above */
-
-        IF (SELECT _LogicalDB_key FROM ACC_Accession WHERE _Accession_key = v_accKey) = 27 
-           and
-           (SELECT m._Organism_key FROM ACC_Accession a, MRK_Marker m 
-                WHERE a._Accession_key = v_accKey
-                and a._Object_key = m._Marker_key) != 1
-           and
-           (SELECT prefixPart FROM ACC_Accession WHERE _Accession_key = v_accKey) 
-		not in ('XM_','XP_')
-        THEN
-            RAISE EXCEPTION E'You can only DELETE XM_/XP_ RefSeqs.';
-            RETURN;
-        END IF;
-
-END IF;
-
-/* for gene models */
-
-IF NOT EXISTS (SELECT 1 FROM MGI_UserTask_View
-    	WHERE usertask = 'accession: alter gene model ids' and _User_key = v_userKe )
-THEN
-        /* Disallow edits to: */
-        /* NCBI Gene Model (59), Ensembl Gene Model (60), VEGA Gene Model (85) */
-
-        IF (SELECT _LogicalDB_key FROM ACC_Accession WHERE _Accession_key = v_accKey)
-                in (59, 60, 85)
-        THEN
-            RAISE EXCEPTION E'You cannot DELETE an Accession id for a gene model (NCBI, Ensembl, VEGA).';
-            RETURN;
-        END IF;
-END IF;
-
 IF v_refsKey = -1
 THEN
         DELETE FROM ACC_Accession WHERE _Accession_key = v_accKey;
 ELSE
         DELETE FROM ACC_AccessionReference WHERE _Accession_key = v_accKey and _Refs_key = v_refsKey;
 
-        /* If the deletion of the detail would leave the master all alone...
-           THEN DELETE the master too.
-        */
+        -- If the deletion of the detail would leave the master all alone...
+        -- then delete the master too.
 
         IF NOT EXISTS (SELECT * FROM ACC_AccessionReference WHERE _Accession_key = v_accKey)
         THEN
