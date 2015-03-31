@@ -65,7 +65,7 @@ IF NEW._Marker_Type_key = 1
       AND NEW.name not like '%ecotropic viral integration site%'
       AND NEW.name not like '%viral polymerase%'
 THEN
-        PERFORM ALL_createWildType (NEW._Marker_key, NEW.symbol);
+        PERFORM ALL_createWildType (1001, NEW._Marker_key, NEW.symbol);
 
         IF NOT FOUND
         THEN
