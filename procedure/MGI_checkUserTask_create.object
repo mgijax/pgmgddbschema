@@ -1,0 +1,60 @@
+#!/bin/sh
+
+#
+# History
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/MGI_checkUserTask_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION MGI_checkUserTask (
+	v_taskType voc_term.term%TYPE,
+	v_userLogin mgi_user.login%TYPE
+)
+RETURNS VARCHAR AS
+\$\$
+
+DECLARE
+v_userKey int;
+v_returnText voc_term.term%TYPE;
+
+BEGIN
+
+v_userKey := _User_key from MGI_User where login = v_userLogin;
+
+IF v_taskType = 'delete'
+THEN
+        IF (v_userKey) NOT IN (SELECT _User_key FROM MGI_UserTask_View WHERE usertask = 'pheno:use Delete button')
+        THEN
+                v_returnText := 'You do not have permission to delete this Allele record.';
+        ELSE
+        	v_returnText := 'pass';
+        END IF;
+
+ELSIF v_taskType = 'update'
+THEN
+        IF (v_userKey) NOT IN (SELECT _User_key FROM MGI_UserTask_View WHERE usertask = 'pheno:edit nomen data deleted')
+        THEN
+                v_returnText := 'You do not have permission to update nomenclature for this Allele record.';
+        ELSE
+        	v_returnText := 'pass';
+        END IF;
+
+ELSE
+        v_returnText := 'pass';
+END IF;
+
+RETURN v_returnText;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MGI_checkUserTask(text,varchar) TO public;
+
+COMMENT ON FUNCTION mgd.MGI_checkUserTask(text,varchar) IS 'check if User has permissions';
+
+EOSQL
