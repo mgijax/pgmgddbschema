@@ -164,6 +164,54 @@ THEN
 	RETURN;
 END IF;
 
+INSERT INTO MRK_Current VALUES(v_markerKey, v_markerKey, current_date, current_date)
+;
+
+IF NOT FOUND
+THEN
+        RAISE EXCEPTION E'NOM_transferToMGD: Could not add to MRK_Current.';
+        RETURN;
+END IF;
+
+-- For Genes only...
+
+IF (SELECT _Marker_Type_key FROM NOM_Marker WHERE _Nomen_key = @v_nomenKey) = 1
+THEN
+        INSERT INTO GO_Tracking VALUES(v_markerKey, 0, null, v_userKey, v_userKey, null, current_date, current_date)
+	;
+END IF;
+
+IF NOT FOUND
+THEN
+        RAISE EXCEPTION E'NOM_transferToMGD: Could not add to GO_Tracking.';
+        RETURN;
+END IF;
+
+-- create allele-wild-type
+-- and other restrictions - see TR 3588
+-- restrictions revised - see TR 11223
+
+IF (SELECT _Marker_Type_key from NOM_Marker where _Nomen_key = v_nomenKey) = 1
+            and (select symbol from NOM_Marker where _Nomen_key = v_nomenKey) not like 'mt-%'
+            and (select name from NOM_Marker where _Nomen_key = v_nomenKey) not like 'withdrawn, =%'
+            and (select name from NOM_Marker where _Nomen_key = v_nomenKey) not like '%dna segment%'
+            and (select name from NOM_Marker where _Nomen_key = v_nomenKey) not like 'EST %'
+            and (select name from NOM_Marker where _Nomen_key = v_nomenKey) not like '%expressed sequence%'
+            and (select name from NOM_Marker where _Nomen_key = v_nomenKey) not like '%cDNA sequence%'
+            and (select name from NOM_Marker where _Nomen_key = v_nomenKey) not like '%gene model%'
+            and (select name from NOM_Marker where _Nomen_key = v_nomenKey) not like '%hypothetical protein%'
+            and (select name from NOM_Marker where _Nomen_key = v_nomenKey) not like '%ecotropic viral integration site%'
+            and (select name from NOM_Marker where _Nomen_key = v_nomenKey) not like '%viral polymerase%'
+THEN
+        PERFORM ALL_createWildType (v_userKey,v_markerKey,v_symbol);
+
+        IF NOT FOUND
+        THEN
+                RAISE EXCEPTION E'NOM_transferToMGD: Could not add allele-wild-type.';
+                RETURN;
+        END IF;
+END IF;
+
 -- Create Offset for new marker
 
 IF (SELECT chromosome FROM nom_transfer) = 'UN'
