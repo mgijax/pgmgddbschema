@@ -7,6 +7,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/VOC_processAnnotHeader_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION VOC_processAnnotHeader (
+v_userKey int,
 v_annotTypeKey int,
 v_objectKey int,
 v_reorder smallint DEFAULT 1
@@ -18,7 +19,6 @@ RETURNS VOID AS
 -- test data: 1002, 11216
 
 DECLARE
-v_userKey int;
 v_headerLabel int;
 v_headerKey int;
 v_maxSeq int;
@@ -29,7 +29,6 @@ seq_cursor refcursor;
 
 BEGIN
 
-v_userKey := _User_key FROM MGI_User WHERE login = current_user;
 v_headerLabel := _Label_key FROM DAG_Label WHERE label = 'Header';
 v_headerKey := max(_AnnotHeader_key) FROM VOC_AnnotHeader;
 v_maxSeq := 0;
@@ -196,8 +195,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION VOC_processAnnotHeader(int,int,smallint) TO public;
+GRANT EXECUTE ON FUNCTION VOC_processAnnotHeader(int,int,int,smallint) TO public;
 
-COMMENT ON FUNCTION mgd.VOC_processAnnotHeader(int,int,smallint) IS 'generate set of Header Terms based on Annotations of object/mgi type';
+COMMENT ON FUNCTION mgd.VOC_processAnnotHeader(int,int,int,smallint) IS 'generate set of Header Terms based on Annotations of object/mgi type';
 
 EOSQL

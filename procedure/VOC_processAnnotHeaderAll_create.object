@@ -20,7 +20,6 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-v_userKey int;
 v_headerLabel int;
 v_headerKey int;
 v_pkey int;
@@ -34,7 +33,6 @@ BEGIN
 
 -- incrementally update VOC_AnnotHeader by annotation type
 
-v_userKey := _User_key FROM MGI_User WHERE login = current_user;
 v_headerLabel := _Label_key FROM DAG_Label WHERE label = 'Header';
 v_headerKey := max(_AnnotHeader_key) FROM VOC_AnnotHeader;
 
@@ -183,7 +181,7 @@ CREATE INDEX idx1 on maxSequence(_Object_key)
 
 INSERT INTO VOC_AnnotHeader
 SELECT v_headerKey + i, v_annotTypeKey, t._Object_key, t._Term_key, m.maxSeq + i, isNormal,
-v_userKey, v_userKey, NULL, NULL, current_date, current_date
+1001, 1001, NULL, NULL, current_date, current_date
 FROM toAdd t, maxSequence m
 WHERE t._Object_key = m._Object_key
 ;
@@ -200,7 +198,7 @@ group by _Object_key having count(*) = 1
 CREATE INDEX toApprove_idx1 ON toApprove(_AnnotHeader_key);
 
 UPDATE VOC_AnnotHeader
-SET _ApprovedBy_key = v_userKey, approval_date = current_date
+SET _ApprovedBy_key = 1001, approval_date = current_date
 FROM toApprove t
 WHERE t._AnnotHeader_key = VOC_AnnotHeader._AnnotHeader_key
 ;
