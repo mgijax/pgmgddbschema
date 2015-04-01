@@ -1,0 +1,73 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: ALL_Allele_update()
+--
+-- DESCRIPTOIN:
+--
+-- 	1) GO check: approved/autoload may exist in VOC_Evidence/inferredFrom
+--
+-- RULES:
+--
+-- 1) You do not have permission to add an 'Autoload' Allele.
+-- 2) Approved Allele Symbol must have an Approved Marker
+-- 3) You do not have permission to add a 'Deleted' Allele.
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IF EXISTS ALL_Allele_update_trigger ON ALL_Allele;
+DROP FUNCTION IF EXISTS ALL_Allele_update();
+
+CREATE OR REPLACE FUNCTION ALL_Allele_update() RETURNS TRIGGER AS \$\$
+
+BEGIN
+
+--
+-- in progress =  847111
+-- reserved = 847113
+-- approved = 847114
+-- autoload = 3983021
+-- deleted =  847112
+--
+-- GO check: approved/autoload
+
+IF OLD._Allele_Status_key in (847114,3983021)
+   AND
+   NEW._Allele_Status_key in (847111,847112,847113)
+   AND
+   EXISTS (SELECT 1 FROM VOC_Annot a, VOC_Evidence e, ACC_Accession aa
+        WHERE a._AnnotType_key = 1000
+        AND a._Object_key = OLD._Marker_key
+        AND a._Annot_key = e._Annot_key
+        AND e.inferredFrom = aa.accID
+        AND aa._MGIType_key = 11
+        AND aa._Object_key = OLD._Allele_key)
+THEN
+        RAISE EXCEPTION E'You cannot change the Allele status from\nApproved/Autoload to Deleted, Reserved or Pending.\n\nThis Allele is cross-referenced to a GO annotation.';
+END IF;
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ALL_Allele_update() TO public;
+
+CREATE TRIGGER ALL_Allele_update_trigger
+AFTER INSERT on ALL_Allele
+FOR EACH ROW
+EXECUTE PROCEDURE ALL_Allele_update();
+
+COMMENT ON FUNCTION mgd.ALL_Allele_update() IS 'creates an update trigger to check some permissions';
+
+EOSQL
