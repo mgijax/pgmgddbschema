@@ -24,15 +24,10 @@ DROP FUNCTION IF EXISTS VOC_Annot_update();
 
 CREATE OR REPLACE FUNCTION VOC_Annot_update() RETURNS TRIGGER AS \$\$
 
-DECLARE
-v_userKey int;
-
 BEGIN
 
-v_userKey := _User_key from MGI_User where login = current_user;
-
 UPDATE VOC_Evidence
-SET modification_date = current_date, _ModifiedBy_key = v_userKey
+SET modification_date = current_date, _ModifiedBy_key = VOC_Evidence._ModifiedBy_key
 WHERE NEW._Annot_key = VOC_Evidence._Annot_key
 ;
 
