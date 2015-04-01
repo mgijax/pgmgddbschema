@@ -31,33 +31,7 @@ DROP FUNCTION IF EXISTS ALL_Allele_insert();
 
 CREATE OR REPLACE FUNCTION ALL_Allele_insert() RETURNS TRIGGER AS \$\$
 
-DECLARE
-v_approvedStatus int;
-v_autoloadStatus int;
-
 BEGIN
-
-v_approvedStatus := 847114;
-v_autoloadStatus := 3983021;
-
--- Cannot use the Autoload status
-
-IF (SELECT OLD._Allele_Status_key = v_autoloadStatus)
-THEN
-        RAISE EXCEPTION E'You do not have permission to add an \'Autoload\' Allele.';
-END IF;
-
--- Approved Alleles must have a valid MGD Marker, unless they are
--- gene trap alleles (which can have no marker)
-
-IF (SELECT OLD._Allele_Status_key = v_approvedStatus)
-   AND
-   ((SELECT OLD._Marker_key IS NULL) OR (SELECT OLD._Marker_key = -1))
-   AND
-   (SELECT OLD._Allele_Type_key != 847121)
-THEN
-        RAISE EXCEPTION E'Approved Allele Symbol must have an Approved Marker';
-END IF;
 
 PERFORM ACC_assignMGI(1001, NEW._Allele_key, 'Allele');
 
