@@ -23,7 +23,6 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ACC_delete_byAccKey_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION ACC_delete_byAccKey (
-v_userKey int,
 v_accKey int,
 v_refsKey int DEFAULT -1
 )
@@ -51,8 +50,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ACC_delete_byAccKey(int,int,int) TO public;
+GRANT EXECUTE ON FUNCTION ACC_delete_byAccKey(int,int) TO public;
 
-COMMENT ON FUNCTION mgd.ACC_delete_ByAccKey(int,int,int) IS 'delete acc_accession by _accession_key';
+COMMENT ON FUNCTION mgd.ACC_delete_ByAccKey(int,int) IS 'delete acc_accession by _accession_key';
 
 EOSQL
