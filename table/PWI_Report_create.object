@@ -11,7 +11,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.PWI_Report (
-	id			numeric			identity,
+	id			numeric			not null,
 	name			varchar(60)		not null,
 	description		text			null,
 	sql_text		text			not null,

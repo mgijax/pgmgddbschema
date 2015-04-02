@@ -6,6 +6,9 @@
 #
 # History
 #
+# 04/02/2015
+#	- cmOffset, startCoordinate, endCoordinate : double precision
+#
 # 08/02/2012	jsb
 #	- TR 7106/add genomicChromosome field
 #
@@ -30,10 +33,10 @@ create table mgd.MRK_Location_Cache (
         chromosome                 varchar(8)      not null,
 	sequenceNum                int             not null,
 	cytogeneticOffset          varchar(20)     null,
-	cmOffset                     numeric           null,
+	cmOffset                     double precision           null,
         genomicChromosome          varchar(8)      null,
-        startCoordinate            numeric           null,
-        endCoordinate              numeric           null,
+        startCoordinate            double precision           null,
+        endCoordinate              double precision           null,
         strand                     char(1)         null,
         mapUnits                   varchar(50)     null,
         provider                   text    null,
