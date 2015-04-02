@@ -74,18 +74,68 @@ THEN
         END IF;
 END IF;
 
-/* if this is a GO annotation, then remove the NOGO designation for the reference */
+-- If the new Object is already annotated to an unknown term in the same DAG
+-- then delete the Annotation to the unknown term.
 
-if (select a._AnnotType_key from inserted i, VOC_Annot a
-       where i._Annot_key = a._Annot_key) = 1000
-begin
-        update BIB_DataSet_Assoc
-        set isNeverUsed = 0 , modification_date = getdate(), _ModifiedBy_key = 1001
-        where _Refs_key = @refsKey
-        and _DataSet_key = 1005
-end
+IF v_term_key not in (120, 1098, 6113)
+THEN
+        -- determine if the same Object contains an Annotation to an unknown Term
+        -- within the same DAG 
 
-PERFORM ACC_assignMGI(1001, NEW._AnnotEvidence_key, 'Annotation Evidence');
+        IF EXISTS (SELECT 1
+                FROM VOC_Annot a, VOC_AnnotType ap, VOC_VocabDAG v, DAG_Node n
+                WHERE NEW._Annot_key = a._Annot_key
+                AND a._Object_key = v_objectKey
+                AND a._Term_key in (120, 1098, 6113)
+                AND a._Term_key != v_termKey
+                AND a._AnnotType_key = ap._AnnotType_key
+                AND ap._Vocab_key = v._Vocab_key
+                AND v._DAG_key = v_dagKey
+                AND v._DAG_key = n._DAG_key
+                AND a._Term_key = n._Object_key)
+        THEN
+                DELETE FROM VOC_Evidence 
+		USING VOC_Annot a, VOC_AnnotType ap, VOC_VocabDAG v, DAG_Node n
+                WHERE VOC_Evidence._Annot_key = a._Annot_key
+                AND a._Object_key = v_objectKey
+                AND a._Term_key != v_termKey
+                AND a._Term_key in (120, 1098, 6113)
+                AND a._AnnotType_key = ap._AnnotType_key
+                AND ap._Vocab_key = v._Vocab_key
+                AND v._DAG_key = v_dagKey
+                AND v._DAG_key = n._DAG_key
+                AND a._Term_key = n._Object_key
+		;
+        END IF;
+END IF;
+
+-- if this is a GO annotation, then remove the NOGO designation for the reference */
+
+IF (SELECT a._AnnotType_key FROM VOC_Annot a where NEW._Annot_key = a._Annot_key) = 1000
+THEN
+        UPDATE BIB_DataSet_Assoc
+        SET isNeverUsed = 0 , modification_date = current_date, _ModifiedBy_key = 1001
+        WHERE _Refs_key = NEW._Refs_key
+        AND _DataSet_key = 1005
+	;
+END IF;
+
+-- if this an MP annotation                       
+-- and the Reference is associated with an Allele 
+-- then change the Allele Reference to "Used-FC" 
+
+IF (SELECT a._AnnotType_key from VOC_Annot a where NEW._Annot_key = a._Annot_key) = 1002
+   AND EXISTS (SELECT 1 FROM VOC_Annot a, GXD_AlleleGenotype g, MGI_Reference_Assoc r, MGI_RefAssocType rt
+       WHERE NEW._Annot_key = a._Annot_key
+       AND a._Object_key = g._Genotype_key
+       AND g._Allele_key = r._Object_key
+       AND NEW._Refs_key = r._Refs_key
+       AND r._MGIType_key = 11
+       AND r._RefAssocType_key = rt._RefAssocType_key
+       AND rt.assocType != 'Used-FC')
+THEN
+    PERFORM MGI_updateReferenceAssoc (12, v_objectKey, NEW._Refs_key, 'Used-FC');
+END IF;
 
 RETURN NEW;
 

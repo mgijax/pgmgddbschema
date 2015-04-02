@@ -20,13 +20,11 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER IF EXISTS ALL_CellLine_Derivat_insert_trigger ON ALL_CellLine_Derivat;
+DROP TRIGGER IF EXISTS ALL_CellLine_Derivat_update_trigger ON ALL_CellLine_Derivat;
 DROP FUNCTION IF EXISTS ALL_CellLine_Derivat_insert();
 
 CREATE OR REPLACE FUNCTION ALL_CellLine_Derivat_insert() RETURNS TRIGGER AS \$\$
 BEGIN
-
-PERFORM ACC_assignMGI(1001, NEW._Derivation_key, 'Cell Line Derivation');
 
 RETURN NEW;
 
@@ -36,8 +34,8 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION ALL_CellLine_Derivat_insert() TO public;
 
-CREATE TRIGGER ALL_CellLine_Derivat_insert_trigger
-AFTER INSERT ON ALL_CellLine_Derivat
+CREATE TRIGGER ALL_CellLine_Derivat_update_trigger
+AFTER UPDATE OF _ParentCellLine_key ON ALL_CellLine_Derivat
 FOR EACH ROW
 EXECUTE PROCEDURE ALL_CellLine_Derivat_insert();
 
