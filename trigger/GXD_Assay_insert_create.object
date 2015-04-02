@@ -26,6 +26,17 @@ DROP FUNCTION IF EXISTS GXD_Assay_insert();
 CREATE OR REPLACE FUNCTION GXD_Assay_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
+--if not exists (select 1 from inserted i, BIB_DataSet_Assoc b
+        --where i._Refs_key = b._Refs_key
+        --and b._DataSet_key = 1004)
+   --and (select i._AssayType_key from inserted i) in (1,2,3,4,5,6,8,9)
+--begin
+    --declare @assocKey integer
+    --select @assocKey = max(_Assoc_key) + 1 from BIB_DataSet_Assoc
+    --insert into BIB_DataSet_Assoc
+        --select @assocKey, i._Refs_key, 1004, 0, i._CreatedBy_key, i._ModifiedBy_key, getdate(), getdate() from inserted i
+--end
+
 PERFORM ACC_assignMGI(1001, NEW._Assay_key, 'Assay');
 
 RETURN NEW;
