@@ -84,7 +84,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION PRB_Marker_update() TO public;
 
 CREATE TRIGGER PRB_Marker_update_trigger
-BEFORE UPDATE on PRB_Marker
+BEFORE UPDATE ON PRB_Marker
 FOR EACH ROW
 EXECUTE PROCEDURE PRB_Marker_update();
 

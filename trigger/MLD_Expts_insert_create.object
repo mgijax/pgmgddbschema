@@ -37,7 +37,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION MLD_Expts_insert() TO public;
 
 CREATE TRIGGER MLD_Expts_insert_trigger
-AFTER INSERT on MLD_Expts
+AFTER INSERT ON MLD_Expts
 FOR EACH ROW
 EXECUTE PROCEDURE MLD_Expts_insert();
 

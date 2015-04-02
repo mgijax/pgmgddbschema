@@ -37,7 +37,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION IMG_Image_insert() TO public;
 
 CREATE TRIGGER IMG_Image_insert_trigger
-AFTER INSERT on IMG_Image
+AFTER INSERT ON IMG_Image
 FOR EACH ROW
 EXECUTE PROCEDURE IMG_Image_insert();
 

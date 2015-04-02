@@ -40,7 +40,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION VOC_Annot_update() TO public;
 
 CREATE TRIGGER VOC_Annot_update_trigger
-AFTER UPDATE on VOC_Annot
+AFTER UPDATE ON VOC_Annot
 FOR EACH ROW
 EXECUTE PROCEDURE VOC_Annot_update();
 

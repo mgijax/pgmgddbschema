@@ -44,7 +44,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION ALL_Allele_insert() TO public;
 
 CREATE TRIGGER ALL_Allele_insert_trigger
-AFTER INSERT on ALL_Allele
+AFTER INSERT ON ALL_Allele
 FOR EACH ROW
 EXECUTE PROCEDURE ALL_Allele_insert();
 

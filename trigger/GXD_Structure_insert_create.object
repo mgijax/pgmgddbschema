@@ -37,7 +37,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION GXD_Structure_insert() TO public;
 
 CREATE TRIGGER GXD_Structure_insert_trigger
-AFTER INSERT on GXD_Structure
+AFTER INSERT ON GXD_Structure
 FOR EACH ROW
 EXECUTE PROCEDURE GXD_Structure_insert();
 

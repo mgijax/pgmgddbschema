@@ -37,7 +37,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION SEQ_Sequence_insert() TO public;
 
 CREATE TRIGGER SEQ_Sequence_insert_trigger
-AFTER INSERT on SEQ_Sequence
+AFTER INSERT ON SEQ_Sequence
 FOR EACH ROW
 EXECUTE PROCEDURE SEQ_Sequence_insert();
 

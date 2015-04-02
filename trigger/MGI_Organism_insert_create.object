@@ -37,7 +37,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION MGI_Organism_insert() TO public;
 
 CREATE TRIGGER MGI_Organism_insert_trigger
-AFTER INSERT on MGI_Organism
+AFTER INSERT ON MGI_Organism
 FOR EACH ROW
 EXECUTE PROCEDURE MGI_Organism_insert();
 

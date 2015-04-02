@@ -37,7 +37,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION ALL_CellLine_Derivat_insert() TO public;
 
 CREATE TRIGGER ALL_CellLine_Derivat_insert_trigger
-AFTER INSERT on ALL_CellLine_Derivat
+AFTER INSERT ON ALL_CellLine_Derivat
 FOR EACH ROW
 EXECUTE PROCEDURE ALL_CellLine_Derivat_insert();
 

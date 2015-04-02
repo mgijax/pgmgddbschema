@@ -37,7 +37,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION MGI_Statistic_insert() TO public;
 
 CREATE TRIGGER MGI_Statistic_insert_trigger
-AFTER INSERT on MGI_Statistic
+AFTER INSERT ON MGI_Statistic
 FOR EACH ROW
 EXECUTE PROCEDURE MGI_Statistic_insert();
 

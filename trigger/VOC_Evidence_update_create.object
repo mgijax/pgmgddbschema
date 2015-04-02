@@ -52,7 +52,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION VOC_Evidence_update() TO public;
 
 CREATE TRIGGER VOC_Evidence_update_trigger
-AFTER UPDATE on VOC_Evidence
+AFTER UPDATE ON VOC_Evidence
 FOR EACH ROW
 EXECUTE PROCEDURE VOC_Evidence_update();
 

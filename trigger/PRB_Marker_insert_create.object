@@ -67,7 +67,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION PRB_Marker_insert() TO public;
 
 CREATE TRIGGER PRB_Marker_insert_trigger
-AFTER INSERT on PRB_Marker
+AFTER INSERT ON PRB_Marker
 FOR EACH ROW
 EXECUTE PROCEDURE PRB_Marker_insert();
 

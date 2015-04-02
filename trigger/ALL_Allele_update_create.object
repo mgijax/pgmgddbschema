@@ -82,7 +82,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION ALL_Allele_update() TO public;
 
 CREATE TRIGGER ALL_Allele_update_trigger
-AFTER UPDATE on ALL_Allele
+AFTER UPDATE ON ALL_Allele
 FOR EACH ROW
 EXECUTE PROCEDURE ALL_Allele_update();
 

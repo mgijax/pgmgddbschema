@@ -37,7 +37,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION NOM_Marker_insert() TO public;
 
 CREATE TRIGGER NOM_Marker_insert_trigger
-AFTER INSERT on NOM_Marker
+AFTER INSERT ON NOM_Marker
 FOR EACH ROW
 EXECUTE PROCEDURE NOM_Marker_insert();
 

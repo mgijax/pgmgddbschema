@@ -84,7 +84,7 @@ GRANT EXECUTE ON FUNCTION MLD_Expt_Marker_update() TO public;
 DROP TRIGGER IF EXISTS MLD_Expt_Marker_update_trigger ON MLD_Expt_Marker;
 
 CREATE TRIGGER MLD_Expt_Marker_update_trigger
-AFTER UPDATE on MLD_Expt_Marker
+AFTER UPDATE ON MLD_Expt_Marker
 FOR EACH ROW
 EXECUTE PROCEDURE MLD_Expt_Marker_update();
 

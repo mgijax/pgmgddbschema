@@ -37,7 +37,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION GXD_Antigen_insert() TO public;
 
 CREATE TRIGGER GXD_Antigen_insert_trigger
-AFTER INSERT on GXD_Antigen
+AFTER INSERT ON GXD_Antigen
 FOR EACH ROW
 EXECUTE PROCEDURE GXD_Antigen_insert();
 

@@ -37,7 +37,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION IMG_ImagePane_insert() TO public;
 
 CREATE TRIGGER IMG_ImagePane_insert_trigger
-AFTER INSERT on IMG_ImagePane
+AFTER INSERT ON IMG_ImagePane
 FOR EACH ROW
 EXECUTE PROCEDURE IMG_ImagePane_insert();
 

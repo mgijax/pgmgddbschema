@@ -37,7 +37,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION PRB_Probe_insert() TO public;
 
 CREATE TRIGGER PRB_Probe_insert_trigger
-AFTER INSERT on PRB_Probe
+AFTER INSERT ON PRB_Probe
 FOR EACH ROW
 EXECUTE PROCEDURE PRB_Probe_insert();
 

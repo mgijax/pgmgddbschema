@@ -24,7 +24,66 @@ DROP TRIGGER IF EXISTS VOC_Evidence_insert_trigger ON VOC_Evidence;
 DROP FUNCTION IF EXISTS VOC_Evidence_insert();
 
 CREATE OR REPLACE FUNCTION VOC_Evidence_insert() RETURNS TRIGGER AS \$\$
+
+DECLARE
+v_termKey int;
+v_objectKey int;
+v_dagKey int;
+
 BEGIN
+
+v_termKey := _Term_key FROM VOC_Annot a WHERE a._Annot_key = NEW._Annot_key;
+
+v_objectKey := _Object_key FROM VOC_Annot a WHERE a._Annot_key = NEW._Annot_key;
+
+v_dagKey := _DAG_key FROM VOC_Annot_View a, DAG_Node_View d
+        WHERE NEW._Annot_key = a._Annot_key
+        AND a._Vocab_key = d._Vocab_key
+        AND a._Term_key = d._Object_key;
+
+--
+-- TR 7865: Disallow Annotation if adding an Annotation to an "unknown" term (120, 1098, 6113)
+-- and an Annotation to a known Term in the same DAG already exists
+-- If the Annotation to a known Term is to
+-- J:72247 (InterPro)
+-- J:60000 (Swiss-Prot)
+-- J:72245 (Swiss-Prot)
+-- J:80000 (RIKEN)
+-- J:56000
+-- then it's okay 
+--
+
+IF v_term_key in (120, 1098, 6113)
+THEN
+        -- determine if the same Object contains an Annotation to a different Term
+        -- within the same DAG
+
+        IF EXISTS (SELECT 1 FROM VOC_Evidence e, VOC_Annot a, VOC_AnnotType ap, VOC_VocabDAG v, DAG_Node n
+                WHERE e._Refs_key not in (73199, 61933, 80961, 59154, 73197)
+                AND e._Annot_key = a._Annot_key
+                AND a._Object_key = v_objectKey
+                AND a._Term_key != v_termKey
+                AND a._AnnotType_key = ap._AnnotType_key
+                AND ap._Vocab_key = v._Vocab_key
+                AND v._DAG_key = v_dagKey
+                AND v._DAG_key = n._DAG_key
+                AND a._Term_key = n._Object_key)
+        THEN
+                RAISE EXCEPTION E'This Object has already been annotated to this DAG.\\nTherefore, you cannot annotate it
+ to an unknown term.';
+        END IF;
+END IF;
+
+/* if this is a GO annotation, then remove the NOGO designation for the reference */
+
+if (select a._AnnotType_key from inserted i, VOC_Annot a
+       where i._Annot_key = a._Annot_key) = 1000
+begin
+        update BIB_DataSet_Assoc
+        set isNeverUsed = 0 , modification_date = getdate(), _ModifiedBy_key = 1001
+        where _Refs_key = @refsKey
+        and _DataSet_key = 1005
+end
 
 PERFORM ACC_assignMGI(1001, NEW._AnnotEvidence_key, 'Annotation Evidence');
 
@@ -37,7 +96,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION VOC_Evidence_insert() TO public;
 
 CREATE TRIGGER VOC_Evidence_insert_trigger
-AFTER INSERT on VOC_Evidence
+AFTER INSERT OR UPDATE ON VOC_Evidence
 FOR EACH ROW
 EXECUTE PROCEDURE VOC_Evidence_insert();
 
