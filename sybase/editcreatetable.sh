@@ -45,6 +45,7 @@ g/float/s//numeric/g
 g/numericValue/s//floatValue/g
 g/offset/s//cmOffset/g
 g/varchar(255)/s//text/g
+g/identity/s//not null/
 g/^)/s//);/
 /cat
 d
