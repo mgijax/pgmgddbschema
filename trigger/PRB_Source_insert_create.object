@@ -9,10 +9,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --
 -- DESCRIPTOIN:
 --
---	this insert trigger will call ACC_assignMGI
---	in order to add a distinct MGI accession id
---	to the NEW object
---
 -- INPUT:
 --	none
 --
@@ -25,8 +21,6 @@ DROP FUNCTION IF EXISTS PRB_Source_insert();
 
 CREATE OR REPLACE FUNCTION PRB_Source_insert() RETURNS TRIGGER AS \$\$
 BEGIN
-
-PERFORM ACC_assignMGI(1001, NEW._Source_key, 'Source');
 
 RETURN NEW;
 

@@ -86,6 +86,6 @@ AFTER DELETE ON PG-TABLE
 FOR EACH ROW
 EXECUTE PROCEDURE PG-TABLE_delete();
 
-COMMENT ON FUNCTION mgd.PG-TABLE_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
+COMMENT ON FUNCTION mgd.PG-TABLE_delete() IS 'delete trigger for this _Object_key/_MGIType_key table';
 
 EOSQL

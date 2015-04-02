@@ -44,6 +44,6 @@ AFTER INSERT ON PG-TABLE
 FOR EACH ROW
 EXECUTE PROCEDURE PG-TABLE_insert();
 
-COMMENT ON FUNCTION mgd.PG-TABLE_insert() IS 'creates an insert trigger to call acc_assignmgi()/set private value';
+COMMENT ON FUNCTION mgd.PG-TABLE_insert() IS 'insert trigger to call acc_assignmgi()/set private value';
 
 EOSQL
