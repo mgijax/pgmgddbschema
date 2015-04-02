@@ -27,6 +27,9 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 DROP TRIGGER IF EXISTS ALL_Allele_update_trigger ON ALL_Allele;
 DROP FUNCTION IF EXISTS ALL_Allele_update();
 
+DROP TRIGGER IF EXISTS ALL_Allele_update2_trigger ON ALL_Allele;
+DROP FUNCTION IF EXISTS ALL_Allele_update2();
+
 CREATE OR REPLACE FUNCTION ALL_Allele_update() RETURNS TRIGGER AS \$\$
 
 BEGIN
@@ -73,10 +76,37 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION ALL_Allele_update() TO public;
 
 CREATE TRIGGER ALL_Allele_update_trigger
-AFTER INSERT on ALL_Allele
+AFTER UPDATE on ALL_Allele
 FOR EACH ROW
 EXECUTE PROCEDURE ALL_Allele_update();
 
 COMMENT ON FUNCTION mgd.ALL_Allele_update() IS 'creates an update trigger to check some permissions';
 
+-------------------------
+
+CREATE OR REPLACE FUNCTION ALL_Allele_update2() RETURNS TRIGGER AS \$\$
+
+BEGIN
+
+-- If updating symbol, set needsReview flag for Strain
+
+PERFORM PRB_setStrainReview (NEW._Marker_key, NEW._Allele_key);
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ALL_Allele_update2() TO public;
+
+CREATE TRIGGER ALL_Allele_update2_trigger
+AFTER UPDATE OF symbol ON ALL_Allele
+FOR EACH ROW
+EXECUTE PROCEDURE ALL_Allele_update2();
+
+COMMENT ON FUNCTION mgd.ALL_Allele_update2() IS 'creates an update trigger when specific field is updated';
+
 EOSQL
+
+
