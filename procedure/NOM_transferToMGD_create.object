@@ -269,7 +269,7 @@ AND assocType = 'Related'
 LOOP
         FETCH ref_cursor INTO v_relatedRefsKey;
         EXIT WHEN NOT FOUND;
-	PERFORM MGI_insertReferenceAssoc (2, v_markerKey, v_relatedRefsKey, 'General');
+	PERFORM MGI_insertReferenceAssoc (v_userKey, 2, v_markerKey, v_relatedRefsKey, 'General');
 END LOOP;
 CLOSE ref_cursor;
 
