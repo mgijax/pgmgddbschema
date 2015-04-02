@@ -10,6 +10,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- DESCRIPTOIN:
 --
 -- 	1) GO check: approved/autoload may exist in VOC_Evidence/inferredFrom
+--	2) if setting Allele Status = Deleted, then check cross-references
 --
 -- RULES:
 --
@@ -42,6 +43,7 @@ BEGIN
 -- deleted =  847112
 --
 -- GO check: approved/autoload
+--
 
 IF OLD._Allele_Status_key in (847114,3983021)
    AND
@@ -58,11 +60,15 @@ THEN
         RAISE EXCEPTION E'You cannot change the Allele status from\nApproved/Autoload to Deleted, Reserved or Pending.\n\nThis Allele is cross-referenced to a GO annotation.';
 END IF;
 
-IF OLD._Allele_Status_key = 847112
+--
+-- if setting Allele Status = Deleted, then check cross-references
+--
+
+IF NEW._Allele_Status_key = 847112
    AND
    EXISTS (SELECT 1 FROM MGI_Relationship r
         WHERE r._Category_key in (1003, 1004)
-        and r._Object_key_1 = OLD._Allele_key)
+        and r._Object_key_1 = NEW._Allele_key)
 THEN
         RAISE EXCEPTION E'You cannot change the Allele status to\nDeleted.\n\nThis Allele is cross-referenced to a Organizer in a MGI_Relationship record.';
 END IF;
