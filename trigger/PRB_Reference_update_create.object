@@ -1,0 +1,54 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: PRB_Reference_update()
+--
+-- DESCRIPTOIN:
+--
+--	a) Relationship rules : see below for details
+--	b) propagate Reference changes to PRB_RFLV
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IF EXISTS PRB_Reference_update_trigger ON PRB_Reference;
+DROP FUNCTION IF EXISTS PRB_Reference_update();
+
+CREATE OR REPLACE FUNCTION PRB_Reference_update() RETURNS TRIGGER AS \$\$
+BEGIN
+
+-- update the accession reference that is attache to this J:
+
+UPDATE ACC_AccessionReference
+SET _Refs_key = i._Refs_key
+FROM ACC_Accession a
+WHERE a._Object_key = NEW._Probe_key
+and a._MGIType_key = 3
+and a._Accession_key = NEW._Accession_key
+and NEW._Refs_key = OLD._Refs_key
+;
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION PRB_Reference_update() TO public;
+
+CREATE TRIGGER PRB_Reference_update_trigger
+AFTER UPDATE ON PRB_Reference
+FOR EACH ROW
+EXECUTE PROCEDURE PRB_Reference_update();
+
+COMMENT ON FUNCTION mgd.PRB_Reference_update() IS 'update trigger';
+
+EOSQL
