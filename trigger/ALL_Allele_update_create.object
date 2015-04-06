@@ -73,6 +73,28 @@ THEN
         RAISE EXCEPTION E'You cannot change the Allele status to\nDeleted.\n\nThis Allele is cross-referenced to a Organizer in a MGI_Relationship record.';
 END IF;
 
+-- Non-Approved Alleles cannot have Genotypes or Strain associations
+
+IF NEW._Allele_Status_key NOT IN (847114,3983021)
+THEN
+    IF EXISTS (SELECT * FROM GXD_AlleleGenotype WHERE GXD_AlleleGenotype._Allele_key = NEW._Allele_key)
+    THEN
+            RAISE EXCEPTION E'Allele Symbol is referenced in GXD Allele Pair Record(s); Approved/Autoload Status cannot be changed.';
+    END IF;
+
+    IF EXISTS (SELECT * FROM MLD_Expt_Marker
+            WHERE MLD_Expt_Marker._Allele_key = NEW._Allele_key)
+    THEN
+            RAISE EXCEPTION E'Allele Symbol is referenced in Mapping Experiment Marker Record(s); Approved/Autoload Status cannot be changed.';
+    END IF;
+
+    IF EXISTS (SELECT * FROM PRB_Strain_Marker
+            WHERE PRB_Strain_Marker._Allele_key = NEW._Allele_key)
+    THEN
+            RAISE EXCEPTION E'Allele Symbol is referenced in Strain/Allele Record(s); Approved/Autoload Status cannot be changed.';
+    END IF;
+END IF;
+
 RETURN NEW;
 
 END;
