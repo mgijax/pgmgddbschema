@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/13/2015    sc
+#       - TR 11771; Misc project Hybrid/HGNC human/mouse homology
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop table mgd.MGI_Property
+
+CASCADE
+;
+EOSQL
