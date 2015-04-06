@@ -46,6 +46,10 @@ ALTER TABLE mgd.MGI_Reference_Assoc DROP CONSTRAINT MGI_Reference_Assoc__MGIType
 
 ALTER TABLE mgd.MGI_RefAssocType DROP CONSTRAINT MGI_RefAssocType__MGIType_key_fkey CASCADE;
 
+ALTER TABLE mgd.MGI_Property_MGIType DROP CONSTRAINT MGI_PropertyType_MGIType__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_PropertyType_MGIType DROP CONSTRAINT MGI_PropertyType_MGIType__MGIType_key_fkey CASCADE;
+
 ALTER TABLE mgd.MGI_Organism_MGIType DROP CONSTRAINT MGI_Organism_MGIType__MGIType_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_NoteType DROP CONSTRAINT MGI_NoteType__MGIType_key_fkey CASCADE;

@@ -37,14 +37,6 @@
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.MGI_Relationship_Property DROP CONSTRAINT MGI_Relationship_Property__PropertyName_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__Evidence_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__Qualifier_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__RelationshipTerm_key_fkey CASCADE;
-
 ALTER TABLE mgd.VOC_Term_EMAPS DROP CONSTRAINT VOC_Term_EMAPS__EMAPA_Term_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_Term_EMAPS DROP CONSTRAINT VOC_Term_EMAPS__DefaultParent_key_fkey CASCADE;
@@ -57,11 +49,11 @@ ALTER TABLE mgd.VOC_Term_EMAPA DROP CONSTRAINT VOC_Term_EMAPA__Term_key_fkey CAS
 
 ALTER TABLE mgd.VOC_Text DROP CONSTRAINT VOC_Text__Term_key_fkey CASCADE;
 
+ALTER TABLE mgd.VOC_GO_Cache DROP CONSTRAINT VOC_GO_Cache__Term_key_fkey CASCADE;
+
 ALTER TABLE mgd.VOC_Evidence_Property DROP CONSTRAINT VOC_Evidence_Property__PropertyTerm_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_Evidence DROP CONSTRAINT VOC_Evidence__EvidenceTerm_key_fkey CASCADE;
-
-ALTER TABLE mgd.VOC_GO_Cache DROP CONSTRAINT VOC_GO_Cache__Term_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_AnnotHeader DROP CONSTRAINT VOC_AnnotHeader__Term_key_fkey CASCADE;
 
@@ -136,6 +128,18 @@ ALTER TABLE mgd.MGI_UserRole DROP CONSTRAINT MGI_UserRole__Role_key_fkey CASCADE
 ALTER TABLE mgd.MGI_RoleTask DROP CONSTRAINT MGI_RoleTask__Task_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_RoleTask DROP CONSTRAINT MGI_RoleTask__Role_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship_Property DROP CONSTRAINT MGI_Relationship_Property__PropertyName_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__Evidence_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__Qualifier_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__RelationshipTerm_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Property DROP CONSTRAINT MGI_Property__PropertyType_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Property DROP CONSTRAINT MGI_Property__PropertyTerm_key_fkey CASCADE;
 
 ALTER TABLE mgd.MAP_Coordinate DROP CONSTRAINT MAP_Coordinate__Units_key_fkey CASCADE;
 

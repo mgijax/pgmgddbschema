@@ -3,6 +3,9 @@
 #
 # History
 #
+# 02/13/2015    sc
+#       - TR 11771; Misc project Hybrid/HGNC human/mouse homology
+#
 # 02/25/2014    sc
 #       - TR11560 - added MGI_Relationship FKs
 #
@@ -54,6 +57,10 @@ ALTER TABLE mgd.VOC_Term ADD PRIMARY KEY (_Term_key);
 
 
 ALTER TABLE mgd.VOC_Text ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE;
+
+
+ALTER TABLE mgd.VOC_GO_Cache ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE;
+
 
 ALTER TABLE mgd.ALL_Allele ADD FOREIGN KEY (_Mode_key) REFERENCES mgd.VOC_Term;
 
@@ -137,6 +144,24 @@ ALTER TABLE mgd.MAP_Coordinate ADD FOREIGN KEY (_MapType_key) REFERENCES mgd.VOC
 
 
 ALTER TABLE mgd.MAP_Coordinate ADD FOREIGN KEY (_Units_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.MGI_Property ADD FOREIGN KEY (_PropertyTerm_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.MGI_Property ADD FOREIGN KEY (_PropertyType_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.MGI_Relationship ADD FOREIGN KEY (_RelationshipTerm_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.MGI_Relationship ADD FOREIGN KEY (_Qualifier_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.MGI_Relationship ADD FOREIGN KEY (_Evidence_key) REFERENCES mgd.VOC_Term;
+
+
+ALTER TABLE mgd.MGI_Relationship_Property ADD FOREIGN KEY (_PropertyName_key) REFERENCES mgd.VOC_Term;
 
 
 ALTER TABLE mgd.MGI_RoleTask ADD FOREIGN KEY (_Role_key) REFERENCES mgd.VOC_Term;
@@ -250,40 +275,25 @@ ALTER TABLE mgd.VOC_Marker_Cache ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_
 ALTER TABLE mgd.VOC_AnnotHeader ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term;
 
 
-ALTER TABLE mgd.VOC_GO_Cache ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE;
-
-
 ALTER TABLE mgd.VOC_Evidence ADD FOREIGN KEY (_EvidenceTerm_key) REFERENCES mgd.VOC_Term;
 
 
 ALTER TABLE mgd.VOC_Evidence_Property ADD FOREIGN KEY (_PropertyTerm_key) REFERENCES mgd.VOC_Term;
 
 
-ALTER TABLE mgd.VOC_Term_EMAPA ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE;
+ALTER TABLE mgd.VOC_Term_EMAPA ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term;
 
 
 ALTER TABLE mgd.VOC_Term_EMAPA ADD FOREIGN KEY (_DefaultParent_key) REFERENCES mgd.VOC_Term;
 
 
-ALTER TABLE mgd.VOC_Term_EMAPS ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE;
+ALTER TABLE mgd.VOC_Term_EMAPS ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term;
 
 
 ALTER TABLE mgd.VOC_Term_EMAPS ADD FOREIGN KEY (_DefaultParent_key) REFERENCES mgd.VOC_Term;
 
 
 ALTER TABLE mgd.VOC_Term_EMAPS ADD FOREIGN KEY (_EMAPA_Term_key) REFERENCES mgd.VOC_Term;
-
-
-ALTER TABLE mgd.MGI_Relationship ADD FOREIGN KEY (_RelationshipTerm_key) REFERENCES mgd.VOC_Term;
-
-
-ALTER TABLE mgd.MGI_Relationship ADD FOREIGN KEY (_Qualifier_key) REFERENCES mgd.VOC_Term;
-
-
-ALTER TABLE mgd.MGI_Relationship ADD FOREIGN KEY (_Evidence_key) REFERENCES mgd.VOC_Term;
-
-
-ALTER TABLE mgd.MGI_Relationship_Property ADD FOREIGN KEY (_PropertyName_key) REFERENCES mgd.VOC_Term;
 
 
 EOSQL
