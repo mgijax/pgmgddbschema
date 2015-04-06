@@ -17,7 +17,7 @@
 cd `dirname $0` && . ./Configuration
 
 TABLE=${1}
-SCHEMA=mgd
+SCHEMA=${2}
 
 psql -h${PG_DBSERVER} -d${PG_DBNAME} -U${PG_DBUSER} --command "ALTER TABLE ${SCHEMA}.${TABLE} DISABLE TRIGGER USER;"
 

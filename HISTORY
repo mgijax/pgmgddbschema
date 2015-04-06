@@ -5,6 +5,12 @@ CHANGES:
 this becomes obsolete when the production WI is replaced by the PWI:
 IMG_Cache
 
+TAG: pgmgddbschema-5-2-1-19
+DATE: 04/06/2015
+STAFF: lec
+CHANGES:
+1) must pass SCHEMA in with this call; see pgdbutilities/bcpin.csh
+
 TAG: pgmgddbschema-5-2-1-18
 DATE: 04/06/2015
 STAFF: lec
