@@ -3,12 +3,12 @@
 #
 # Logical Group Script
 #
-# Executes all MRK*_drop.object scripts
+# Executes all MRK_*_drop.object
 #
 
 cd `dirname $0`
 
-for i in MRK*_delete_drop.object MRK*_insert_drop.object
+for i in MRK_*_drop.object
 do
 $i $*
 done

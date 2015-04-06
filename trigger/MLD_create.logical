@@ -8,7 +8,7 @@
 
 cd `dirname $0`
 
-for i in MLD*_delete_create.object MLD*_insert_create.object
+for i in MLD_*_create.object
 do
 $i $*
 done

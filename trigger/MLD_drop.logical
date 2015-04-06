@@ -3,12 +3,12 @@
 #
 # Logical Group Script
 #
-# Executes all MLD*_drop.object scripts
+# Executes all MLD_*_drop.object
 #
 
 cd `dirname $0`
 
-for i in MLD*_delete_drop.object MLD*_insert_drop.object
+for i in MLD_*_drop.object
 do
 $i $*
 done

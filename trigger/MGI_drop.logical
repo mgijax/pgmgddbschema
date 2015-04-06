@@ -3,12 +3,12 @@
 #
 # Logical Group Script
 #
-# Executes all MGI*_drop.object scripts
+# Executes all MGI_*_drop.object
 #
 
 cd `dirname $0`
 
-for i in MGI*_delete_drop.object MGI*_insert_drop.object
+for i in MGI_*_drop.object
 do
 $i $*
 done

@@ -3,12 +3,12 @@
 #
 # Logical Group Script
 #
-# Executes all NOM*_drop.object scripts
+# Executes all NOM_*_drop.object
 #
 
 cd `dirname $0`
 
-for i in NOM*_delete_drop.object NOM*_insert_drodrop.object
+for i in NOM_*_drop.object
 do
 $i $*
 done

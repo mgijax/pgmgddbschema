@@ -8,7 +8,7 @@
 
 cd `dirname $0`
 
-for i in ALL*_delete_drop.object ALL*_insert_drop.object
+for i in ALL_*_drop.object
 do
 $i $*
 done

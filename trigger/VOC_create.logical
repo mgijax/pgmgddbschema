@@ -8,7 +8,7 @@
 
 cd `dirname $0`
 
-for i in VOC*_delete_create.object VOC*_insert_create.object
+for i in VOC_*_create.object
 do
 $i $*
 done

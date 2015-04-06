@@ -3,12 +3,12 @@
 #
 # Logical Group Script
 #
-# Executes all IMG*_drop.object scripts
+# Executes all IMG_*_drop.object
 #
 
 cd `dirname $0`
 
-for i in IMG*_delete_drop.object IMG*_insert_drop.object
+for i in IMG_*_drop.object
 do
 $i $*
 done
