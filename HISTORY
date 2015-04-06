@@ -5,6 +5,13 @@ CHANGES:
 this becomes obsolete when the production WI is replaced by the PWI:
 IMG_Cache
 
+TAG: pgmgddbschema-5-2-1-18
+DATE: 04/06/2015
+STAFF: lec
+CHANGES:
+1) see mgidbmigration/TR11750/tr11750.csh
+2) match up with mgddbschema/MGI_Property*
+
 TAG: pgmgddbschema-5-2-1-17
 TAG: pgmgddbschema-5-2-1-16
 TAG: pgmgddbschema-5-2-1-15
