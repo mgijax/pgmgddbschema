@@ -22,7 +22,6 @@
 # This procedure will update the Allele/Reference associations when a
 # MP/Genotype (_MGIType_key = 12) annotation is added.
 #    .  called from trigger/VOC_Evidence
-#       exec MGI_updateReferenceAssoc 12, v_objectKey, v_refsKey, 'Used-FC'
 #    .  when a MP annotation is added to the system, an Allele Reference
 #	Used-FC association is automatically added as well.
 #    .  we search for all Allele/Reference associations that currently exist
