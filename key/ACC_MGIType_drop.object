@@ -26,10 +26,6 @@
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__MGIType_key_2_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__MGIType_key_1_fkey CASCADE;
-
 ALTER TABLE mgd.VOC_AnnotType DROP CONSTRAINT VOC_AnnotType__MGIType_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_Annot_Count_Cache DROP CONSTRAINT VOC_Annot_Count_Cache__MGIType_key_fkey CASCADE;
@@ -42,13 +38,17 @@ ALTER TABLE mgd.MGI_Synonym DROP CONSTRAINT MGI_Synonym__MGIType_key_fkey CASCAD
 
 ALTER TABLE mgd.MGI_Set DROP CONSTRAINT MGI_Set__MGIType_key_fkey CASCADE;
 
+ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__MGIType_key_2_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__MGIType_key_1_fkey CASCADE;
+
 ALTER TABLE mgd.MGI_Reference_Assoc DROP CONSTRAINT MGI_Reference_Assoc__MGIType_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_RefAssocType DROP CONSTRAINT MGI_RefAssocType__MGIType_key_fkey CASCADE;
 
-ALTER TABLE mgd.MGI_Property_MGIType DROP CONSTRAINT MGI_PropertyType_MGIType__MGIType_key_fkey CASCADE;
+ALTER TABLE mgd.MGI_PropertyType DROP CONSTRAINT MGI_PropertyType__MGIType_key_fkey CASCADE;
 
-ALTER TABLE mgd.MGI_PropertyType_MGIType DROP CONSTRAINT MGI_PropertyType_MGIType__MGIType_key_fkey CASCADE;
+ALTER TABLE mgd.MGI_Property DROP CONSTRAINT MGI_Property__MGIType_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_Organism_MGIType DROP CONSTRAINT MGI_Organism_MGIType__MGIType_key_fkey CASCADE;
 
@@ -73,6 +73,10 @@ ALTER TABLE mgd.DAG_DAG DROP CONSTRAINT DAG_DAG__MGIType_key_fkey CASCADE;
 ALTER TABLE mgd.DAG_Closure DROP CONSTRAINT DAG_Closure__MGIType_key_fkey CASCADE;
 
 ALTER TABLE mgd.ACC_Accession DROP CONSTRAINT ACC_Accession__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Property DROP CONSTRAINT MGI_Property__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_PropertyType DROP CONSTRAINT MGI_PropertyType__MGIType_key_fkey CASCADE;
 ALTER TABLE mgd.ACC_MGIType DROP CONSTRAINT ACC_MGIType_pkey CASCADE;
 
 EOSQL

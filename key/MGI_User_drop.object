@@ -34,18 +34,6 @@
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.MGI_Relationship_Property DROP CONSTRAINT MGI_Relationship_Property__ModifiedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_Relationship_Property DROP CONSTRAINT MGI_Relationship_Property__CreatedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__ModifiedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__CreatedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__ModifiedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__CreatedBy_key_fkey CASCADE;
-
 ALTER TABLE mgd.VOC_Term_EMAPS DROP CONSTRAINT VOC_Term_EMAPS__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_Term_EMAPS DROP CONSTRAINT VOC_Term_EMAPS__CreatedBy_key_fkey CASCADE;
@@ -230,6 +218,18 @@ ALTER TABLE mgd.MGI_RoleTask DROP CONSTRAINT MGI_RoleTask__ModifiedBy_key_fkey C
 
 ALTER TABLE mgd.MGI_RoleTask DROP CONSTRAINT MGI_RoleTask__CreatedBy_key_fkey CASCADE;
 
+ALTER TABLE mgd.MGI_Relationship_Property DROP CONSTRAINT MGI_Relationship_Property__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship_Property DROP CONSTRAINT MGI_Relationship_Property__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__CreatedBy_key_fkey CASCADE;
+
 ALTER TABLE mgd.MGI_Reference_Assoc DROP CONSTRAINT MGI_Reference_Assoc__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_Reference_Assoc DROP CONSTRAINT MGI_Reference_Assoc__CreatedBy_key_fkey CASCADE;
@@ -237,6 +237,14 @@ ALTER TABLE mgd.MGI_Reference_Assoc DROP CONSTRAINT MGI_Reference_Assoc__Created
 ALTER TABLE mgd.MGI_RefAssocType DROP CONSTRAINT MGI_RefAssocType__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_RefAssocType DROP CONSTRAINT MGI_RefAssocType__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Property DROP CONSTRAINT MGI_Property__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Property DROP CONSTRAINT MGI_Property__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_PropertyType DROP CONSTRAINT MGI_PropertyType__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_PropertyType DROP CONSTRAINT MGI_PropertyType__CreatedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_Organism_MGIType DROP CONSTRAINT MGI_Organism_MGIType__ModifiedBy_key_fkey CASCADE;
 

@@ -11,12 +11,6 @@
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__EvidenceVocab_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__QualifierVocab_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__RelationshipVocab_key_fkey CASCADE;
-
 ALTER TABLE mgd.VOC_AnnotType DROP CONSTRAINT VOC_AnnotType__QualifierVocab_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_AnnotType DROP CONSTRAINT VOC_AnnotType__EvidenceVocab_key_fkey CASCADE;
@@ -28,6 +22,14 @@ ALTER TABLE mgd.VOC_VocabDAG DROP CONSTRAINT VOC_VocabDAG__Vocab_key_fkey CASCAD
 ALTER TABLE mgd.VOC_Term DROP CONSTRAINT VOC_Term__Vocab_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_TranslationType DROP CONSTRAINT MGI_TranslationType__Vocab_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__EvidenceVocab_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__QualifierVocab_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__RelationshipVocab_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_PropertyType DROP CONSTRAINT MGI_PropertyType__Vocab_key_fkey CASCADE;
 ALTER TABLE mgd.VOC_Vocab DROP CONSTRAINT VOC_Vocab_pkey CASCADE;
 
 EOSQL

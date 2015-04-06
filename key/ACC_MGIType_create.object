@@ -3,6 +3,9 @@
 #
 # History
 #
+# 02/13/2015    sc
+#       - TR 11771; Misc project Hybrid/HGNC human/mouse homology
+#
 # 02/25/2014    sc
 #       - TR11560 - added MGI_Relationship_Category FKs
 #
@@ -31,6 +34,12 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.ACC_MGIType ADD PRIMARY KEY (_MGIType_key);
+
+
+ALTER TABLE mgd.MGI_PropertyType ADD FOREIGN KEY (_MGIType_key) REFERENCES mgd.ACC_MGIType;
+
+
+ALTER TABLE mgd.MGI_Property ADD FOREIGN KEY (_MGIType_key) REFERENCES mgd.ACC_MGIType;
 
 
 ALTER TABLE mgd.ACC_Accession ADD FOREIGN KEY (_MGIType_key) REFERENCES mgd.ACC_MGIType;
@@ -81,6 +90,12 @@ ALTER TABLE mgd.MGI_RefAssocType ADD FOREIGN KEY (_MGIType_key) REFERENCES mgd.A
 ALTER TABLE mgd.MGI_Reference_Assoc ADD FOREIGN KEY (_MGIType_key) REFERENCES mgd.ACC_MGIType;
 
 
+ALTER TABLE mgd.MGI_Relationship_Category ADD FOREIGN KEY (_MGIType_key_1) REFERENCES mgd.ACC_MGIType;
+
+
+ALTER TABLE mgd.MGI_Relationship_Category ADD FOREIGN KEY (_MGIType_key_2) REFERENCES mgd.ACC_MGIType;
+
+
 ALTER TABLE mgd.MGI_Set ADD FOREIGN KEY (_MGIType_key) REFERENCES mgd.ACC_MGIType;
 
 
@@ -97,12 +112,6 @@ ALTER TABLE mgd.VOC_Annot_Count_Cache ADD FOREIGN KEY (_MGIType_key) REFERENCES 
 
 
 ALTER TABLE mgd.VOC_AnnotType ADD FOREIGN KEY (_MGIType_key) REFERENCES mgd.ACC_MGIType;
-
-
-ALTER TABLE mgd.MGI_Relationship_Category ADD FOREIGN KEY (_MGIType_key_1) REFERENCES mgd.ACC_MGIType;
-
-
-ALTER TABLE mgd.MGI_Relationship_Category ADD FOREIGN KEY (_MGIType_key_2) REFERENCES mgd.ACC_MGIType;
 
 
 EOSQL
