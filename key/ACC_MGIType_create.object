@@ -36,12 +36,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.ACC_MGIType ADD PRIMARY KEY (_MGIType_key);
 
 
-ALTER TABLE mgd.MGI_PropertyType ADD FOREIGN KEY (_MGIType_key) REFERENCES mgd.ACC_MGIType;
-
-
-ALTER TABLE mgd.MGI_Property ADD FOREIGN KEY (_MGIType_key) REFERENCES mgd.ACC_MGIType;
-
-
 ALTER TABLE mgd.ACC_Accession ADD FOREIGN KEY (_MGIType_key) REFERENCES mgd.ACC_MGIType;
 
 
