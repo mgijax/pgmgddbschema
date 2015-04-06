@@ -47,6 +47,11 @@ AND exptType = OLD.exptType
 AND tag > OLD.tag
 ;
 
+DELETE FROM IMG_ImagePane_Assoc a
+WHERE a._Object_key = OLD._Expt_key
+AND a._MGIType_key = 4
+;
+
 DELETE FROM MAP_Coord_Feature a
 WHERE a._Object_key = OLD._Expt_key
 AND a._MGIType_key = 4
@@ -62,17 +67,17 @@ WHERE a._Object_key = OLD._Expt_key
 AND a._MGIType_key = 4
 ;
 
+DELETE FROM MGI_Property a
+WHERE a._Object_key = OLD._Expt_key
+AND a._MGIType_key = 4
+;
+
 DELETE FROM MGI_Reference_Assoc a
 WHERE a._Object_key = OLD._Expt_key
 AND a._MGIType_key = 4
 ;
 
 DELETE FROM MGI_Synonym a
-WHERE a._Object_key = OLD._Expt_key
-AND a._MGIType_key = 4
-;
-
-DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._Expt_key
 AND a._MGIType_key = 4
 ;

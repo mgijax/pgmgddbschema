@@ -38,6 +38,11 @@ DROP FUNCTION IF EXISTS BIB_Refs_delete();
 CREATE OR REPLACE FUNCTION BIB_Refs_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
+DELETE FROM IMG_ImagePane_Assoc a
+WHERE a._Object_key = OLD._Refs_key
+AND a._MGIType_key = 1
+;
+
 DELETE FROM MAP_Coord_Feature a
 WHERE a._Object_key = OLD._Refs_key
 AND a._MGIType_key = 1
@@ -53,17 +58,17 @@ WHERE a._Object_key = OLD._Refs_key
 AND a._MGIType_key = 1
 ;
 
+DELETE FROM MGI_Property a
+WHERE a._Object_key = OLD._Refs_key
+AND a._MGIType_key = 1
+;
+
 DELETE FROM MGI_Reference_Assoc a
 WHERE a._Object_key = OLD._Refs_key
 AND a._MGIType_key = 1
 ;
 
 DELETE FROM MGI_Synonym a
-WHERE a._Object_key = OLD._Refs_key
-AND a._MGIType_key = 1
-;
-
-DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._Refs_key
 AND a._MGIType_key = 1
 ;

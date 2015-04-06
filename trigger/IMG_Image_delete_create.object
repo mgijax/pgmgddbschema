@@ -41,6 +41,11 @@ DROP FUNCTION IF EXISTS IMG_Image_delete();
 CREATE OR REPLACE FUNCTION IMG_Image_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
+DELETE FROM IMG_ImagePane_Assoc a
+WHERE a._Object_key = OLD._Image_key
+AND a._MGIType_key = 9
+;
+
 DELETE FROM MAP_Coord_Feature a
 WHERE a._Object_key = OLD._Image_key
 AND a._MGIType_key = 9
@@ -56,17 +61,17 @@ WHERE a._Object_key = OLD._Image_key
 AND a._MGIType_key = 9
 ;
 
+DELETE FROM MGI_Property a
+WHERE a._Object_key = OLD._Image_key
+AND a._MGIType_key = 9
+;
+
 DELETE FROM MGI_Reference_Assoc a
 WHERE a._Object_key = OLD._Image_key
 AND a._MGIType_key = 9
 ;
 
 DELETE FROM MGI_Synonym a
-WHERE a._Object_key = OLD._Image_key
-AND a._MGIType_key = 9
-;
-
-DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._Image_key
 AND a._MGIType_key = 9
 ;

@@ -38,6 +38,11 @@ DROP FUNCTION IF EXISTS GXD_Assay_delete();
 CREATE OR REPLACE FUNCTION GXD_Assay_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
+DELETE FROM IMG_ImagePane_Assoc a
+WHERE a._Object_key = OLD._Assay_key
+AND a._MGIType_key = 8
+;
+
 DELETE FROM MAP_Coord_Feature a
 WHERE a._Object_key = OLD._Assay_key
 AND a._MGIType_key = 8
@@ -53,17 +58,17 @@ WHERE a._Object_key = OLD._Assay_key
 AND a._MGIType_key = 8
 ;
 
+DELETE FROM MGI_Property a
+WHERE a._Object_key = OLD._Assay_key
+AND a._MGIType_key = 8
+;
+
 DELETE FROM MGI_Reference_Assoc a
 WHERE a._Object_key = OLD._Assay_key
 AND a._MGIType_key = 8
 ;
 
 DELETE FROM MGI_Synonym a
-WHERE a._Object_key = OLD._Assay_key
-AND a._MGIType_key = 8
-;
-
-DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._Assay_key
 AND a._MGIType_key = 8
 ;

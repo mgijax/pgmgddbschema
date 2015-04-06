@@ -1,0 +1,21 @@
+will become obsolete once PWI is installed:
+IMG_Cache_create.object:        _Object_key                int             not null,
+
+table that contain _Object_key/_MGIType_key: template_delete_create.object
+ACC_Accession_create.object:    _Object_key                    int             not null,
+IMG_ImagePane_Assoc_create.object:      _Object_key                    int             not null,
+MAP_Coord_Feature_create.object:        _Object_key                int             not null,
+MAP_Coordinate_create.object:   _Object_key                int             null,
+MGI_Note_create.object:         _Object_key                    int             not null,
+MGI_Property_create.object:     _Object_key                 int             not null,
+MGI_Reference_Assoc_create.object:      _Object_key                    int             not null,
+MGI_Synonym_create.object:      _Object_key                    int             not null,
+
+table that contain _Object_key/_MGIType_key not in the same table:
+DAG_Node_create.object: _Object_key                int             not null,
+MGI_Relationship_create.object: _Object_key_1           int             not null,
+MGI_Relationship_create.object:        _Object_key_2            int             not null,
+MGI_SetMember_create.object:    _Object_key                int             not null,
+MGI_Translation_create.object:  _Object_key                    int             not null,
+VOC_Annot_create.object:        _Object_key    
+VOC_AnnotHeader_create.object:  _Object_key                int             not null,

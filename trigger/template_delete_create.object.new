@@ -38,6 +38,11 @@ DROP FUNCTION IF EXISTS PG-TABLE_delete();
 CREATE OR REPLACE FUNCTION PG-TABLE_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
+DELETE FROM IMG_ImagePane_Assoc a
+WHERE a._Object_key = OLD.PG-KEY
+AND a._MGIType_key = PG-TYPE
+;
+
 DELETE FROM MAP_Coord_Feature a
 WHERE a._Object_key = OLD.PG-KEY
 AND a._MGIType_key = PG-TYPE
@@ -53,17 +58,17 @@ WHERE a._Object_key = OLD.PG-KEY
 AND a._MGIType_key = PG-TYPE
 ;
 
+DELETE FROM MGI_Property a
+WHERE a._Object_key = OLD.PG-KEY
+AND a._MGIType_key = PG-TYPE
+;
+
 DELETE FROM MGI_Reference_Assoc a
 WHERE a._Object_key = OLD.PG-KEY
 AND a._MGIType_key = PG-TYPE
 ;
 
 DELETE FROM MGI_Synonym a
-WHERE a._Object_key = OLD.PG-KEY
-AND a._MGIType_key = PG-TYPE
-;
-
-DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD.PG-KEY
 AND a._MGIType_key = PG-TYPE
 ;
