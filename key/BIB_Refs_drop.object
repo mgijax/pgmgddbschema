@@ -21,8 +21,6 @@
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__Refs_key_fkey CASCADE;
-
 ALTER TABLE mgd.VOC_Evidence DROP CONSTRAINT VOC_Evidence__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_Vocab DROP CONSTRAINT VOC_Vocab__Refs_key_fkey CASCADE;
@@ -56,6 +54,8 @@ ALTER TABLE mgd.MLD_Expts DROP CONSTRAINT MLD_Expts__Refs_key_fkey CASCADE;
 ALTER TABLE mgd.MLC_Reference DROP CONSTRAINT MLC_Reference__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_Synonym DROP CONSTRAINT MGI_Synonym__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_Reference_Assoc DROP CONSTRAINT MGI_Reference_Assoc__Refs_key_fkey CASCADE;
 

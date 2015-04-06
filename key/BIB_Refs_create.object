@@ -99,6 +99,9 @@ ALTER TABLE mgd.IMG_Image ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs;
 ALTER TABLE mgd.MGI_Reference_Assoc ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs;
 
 
+ALTER TABLE mgd.MGI_Relationship ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs;
+
+
 ALTER TABLE mgd.MGI_Synonym ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs;
 
 
@@ -133,9 +136,6 @@ ALTER TABLE mgd.VOC_Vocab ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs;
 
 
 ALTER TABLE mgd.VOC_Evidence ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs;
-
-
-ALTER TABLE mgd.MGI_Relationship ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs;
 
 
 EOSQL
