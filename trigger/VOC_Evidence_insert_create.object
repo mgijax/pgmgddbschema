@@ -130,7 +130,7 @@ IF (SELECT a._AnnotType_key from VOC_Annot a where NEW._Annot_key = a._Annot_key
        AND r._RefAssocType_key = rt._RefAssocType_key
        AND rt.assocType != 'Used-FC')
 THEN
-    PERFORM MGI_updateReferenceAssoc (12, v_objectKey, NEW._Refs_key, 'Used-FC');
+    PERFORM MGI_updateReferenceAssoc (1001, 12, v_objectKey, NEW._Refs_key, 'Used-FC');
 END IF;
 
 RETURN NEW;
