@@ -1,0 +1,53 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: ALL_CellLine_Derivation_update()
+--
+-- DESCRIPTOIN:
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IF EXISTS ALL_CellLine_Derivation_update_trigger ON ALL_CellLine_Derivation;
+DROP FUNCTION IF EXISTS ALL_CellLine_Derivation_update();
+
+CREATE OR REPLACE FUNCTION ALL_CellLine_Derivation_update() RETURNS TRIGGER AS \$\$
+BEGIN
+
+--
+-- if we update the derivation's parent cell line, then we need to propagate
+-- the new parent's strain down to all of the mutant cell lines using citing
+-- this derivation.
+--
+
+UPDATE ALL_CellLine
+SET _Strain_key = p._Strain_key
+FROM ALL_CellLine m, ALL_CellLine p
+where NEW._Derivation_key = m._Derivation_key
+and NEW._ParentCellLine_key = p._CellLine_key
+;
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ALL_CellLine_Derivation_update() TO public;
+
+CREATE TRIGGER ALL_CellLine_Derivation_update_trigger
+AFTER UPDATE OF _ParentCellLine_key ON ALL_CellLine_Derivation
+FOR EACH ROW
+EXECUTE PROCEDURE ALL_CellLine_Derivation_update();
+
+COMMENT ON FUNCTION mgd.ALL_CellLine_Derivation_update() IS 'update trigger : if specific field is updated';
+
+EOSQL
