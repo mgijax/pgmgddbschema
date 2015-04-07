@@ -10,28 +10,25 @@ echo "Object Type     Count"
 echo "==============  ============"
 
 cd ${TOP}/table
-echo "Tables          `ls *_create.object | wc -l` scripts"
+echo "\nTables          `ls *_create.object | wc -l` scripts"
 psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from pg_catalog.pg_tables where schemaname = 'mgd'"
 
 cd ${TOP}/index
-echo "Indexes         `ls *_create.object | wc -l` scripts  (`grep -i '^create .*index ' *_create.object | wc -l` indexes)"
+echo "\nIndexes         `ls *_create.object | wc -l` scripts  (`grep -i '^create .*index ' *_create.object | wc -l` indexes)"
 psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from pg_stat_user_indexes where schemaname = 'mgd' and indexrelname like '%_idx%'" 
 
-
-cd ${TOP}/key
-echo "Keys            `ls *_create.object | wc -l` scripts  (`grep -i 'ADD PRIMARY' *_create.object | wc -l` primary keys)"
+cd ${TOP}/procedure
+echo "\nProcedures      `ls *_create.object | wc -l` scripts (`grep -i '^CREATE OR REPLACE' *_create.object | wc -l` functios)"
+psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} -E --command "\df" | grep normal | wc -l
 
 cd ${TOP}/trigger
-echo "Triggers        `ls *_create.object | wc -l` scripts  (`grep -i '^create trigger ' *_create.object | wc -l` triggers)"
+echo "\nTriggers        `ls *_create.object | wc -l` scripts  (`grep -i '^create trigger ' *_create.object | wc -l` triggers)"
 psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from pg_catalog.pg_trigger where tgname like '%_trigger'" 
 
-cd ${TOP}/procedure
-echo "Procedures      `ls *_create.object | wc -l` scripts"
-
 cd ${TOP}/view
-echo "Views           `ls *_create.object | wc -l` scripts"
+echo "\nViews           `ls *_create.object | wc -l` scripts"
 psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from pg_catalog.pg_views where schemaname = 'mgd'" 
 
-
-#psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "\df" | wc -l`trigger`
+cd ${TOP}/key
+echo "\nKeys            `ls *_create.object | wc -l` scripts  (`grep -i 'ADD PRIMARY' *_create.object | wc -l` primary keys)"
 
