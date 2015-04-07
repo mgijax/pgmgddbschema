@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 #
 # History
@@ -7,48 +7,48 @@
 #	- a convenience routine to run regularly to add missing VOC_AnnotHeader records
 #
 
-cd `dirname $0` && source ./Configuration
+cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+${PG_MGD_DBSCHEMADIR}/procedure/VOC_AnnotHeaderMissing_drop.object
 
-use ${DBNAME}
-go
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create procedure VOC_processAnnotHeaderMissing
-  @annotTypeKey integer
-as
+CREATE OR REPLACE FUNCTION VOC_AnnotHeaderMissing (
+v_annotTypeKey int
+)
+RETURNS VOID AS
+\$\$
 
-/* add missing VOC_AnnotHeader records by annotation type */
+DECLARE
+v_objectKey int;
+annot_cursor refcursor;
 
-declare @objectKey int
- 
-declare annot_cursor cursor for
-select v._Object_key
-from VOC_Annot v 
-where v._AnnotType_key = @annotTypeKey
-and not exists (select 1 from VOC_AnnotHeader h
-where v._AnnotType_key = h._AnnotType_key 
-and v._Object_key = h._Object_key)
-for read only
+BEGIN
 
-open annot_cursor
-fetch annot_cursor into @objectKey
- 
-while (@@sqlstatus = 0)
-begin
-      exec VOC_processAnnotHeader 1001,@annotTypeKey, @objectKey
-      fetch annot_cursor into @objectKey
-end
- 
-close annot_cursor
-deallocate cursor annot_cursor
+-- add missing VOC_AnnotHeader records by annotation type
 
-go
+OPEN annot_cursor FOR
+SELECT v._Object_key
+FROM VOC_Annot v 
+WHERE v._AnnotType_key = v_annotTypeKey
+AND NOT EXISTS (select 1 FROM VOC_AnnotHeader h
+	WHERE v._AnnotType_key = h._AnnotType_key 
+	AND v._Object_key = h._Object_key)
+;
+LOOP
+        FETCH annot_cursor INTO v_objectKey;
+        EXIT WHEN NOT FOUND;
+	PERFORM VOC_processAnnotHeader (1001, v_annotTypeKey, v_objectKey);
+END LOOP;
+CLOSE annot_cursor;
 
-checkpoint
-go
+END;
+\$\$
+LANGUAGE plpgsql;
 
-quit
+GRANT EXECUTE ON FUNCTION VOC_AnnotHeaderMissing(int) TO public;
+
+COMMENT ON FUNCTION mgd.VOC_AnnotHeaderMissing(int) IS '';
 
 EOSQL
 

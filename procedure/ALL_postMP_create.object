@@ -36,7 +36,7 @@ BEGIN
 v_modifiedByKey := _User_key from MGI_User where login like v_modifiedBy;
 
 -- add header terms
---PERFORM VOC_processAnnotHeaderMissing (v_annotTypeKey);
+PERFORM VOC_processAnnotHeaderMissing (v_annotTypeKey);
 
 -- update transmission status
 OPEN all_cursor1 FOR
@@ -89,7 +89,7 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION ALL_postMP(int,int,varchar) TO public;
 
-COMMENT ON FUNCTION mgd.ALL_postMP(int,int,varchar) IS '';
+COMMENT ON FUNCTION mgd.ALL_postMP(int,int,varchar) IS 'perform post-Allele-MP updates';
 
 EOSQL
 
