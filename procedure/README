@@ -36,10 +36,6 @@ PRB_processSequenceSource_create.object
 alomrkload:
 ALL_cacheMarker_create.object
 
-annotload:
-ALL_postMP_create.object : IN PROGRESS 4/7/2015
-VOC_processAnnotHeaderMissing_create.object : IN PROGRESS 4/7/2015
-
 mgidbutilities/bin/runRestrictedObjects.csh:
 MGI_createRestrictedMolSegSet_create.object
 MGI_createRestrictedSeqSet_create.object

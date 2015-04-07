@@ -48,7 +48,7 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION VOC_AnnotHeaderMissing(int) TO public;
 
-COMMENT ON FUNCTION mgd.VOC_AnnotHeaderMissing(int) IS '';
+COMMENT ON FUNCTION mgd.VOC_AnnotHeaderMissing(int) IS 'add missing VOC_AnnotHeader records';
 
 EOSQL
 
