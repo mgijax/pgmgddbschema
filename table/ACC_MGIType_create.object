@@ -14,7 +14,7 @@ create table mgd.ACC_MGIType (
 	name                           varchar(80)     not null,
 	tableName                      varchar(80)     not null,
 	primaryKeyName                 varchar(80)     not null,
-	not nullColumnName             varchar(80)     null,
+	identityColumnName             varchar(80)     null,
 	dbView                         varchar(80)     null,
 	_CreatedBy_key                 int DEFAULT 1001             not null,
 	_ModifiedBy_key                int DEFAULT 1001             not null,

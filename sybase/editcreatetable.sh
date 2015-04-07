@@ -28,6 +28,7 @@ cp ../../mgddbschema/table/${findObject} .
 #
 #g/bit/s//boolean/g
 #g/float/s//double precision/g
+#g/identity/s//not null/
 
 for i in ${findObject}
 do
@@ -45,7 +46,6 @@ g/float/s//numeric/g
 g/numericValue/s//floatValue/g
 g/offset/s//cmOffset/g
 g/varchar(255)/s//text/g
-g/identity/s//not null/
 g/^)/s//);/
 /cat
 d
