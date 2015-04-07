@@ -48,6 +48,11 @@ THEN
 	;
 END IF;
 
+DELETE FROM IMG_ImagePane_Assoc a
+WHERE a._Object_key = OLD._AnnotEvidence_key
+AND a._MGIType_key = 25
+;
+
 DELETE FROM MAP_Coord_Feature a
 WHERE a._Object_key = OLD._AnnotEvidence_key
 AND a._MGIType_key = 25
@@ -63,17 +68,17 @@ WHERE a._Object_key = OLD._AnnotEvidence_key
 AND a._MGIType_key = 25
 ;
 
+DELETE FROM MGI_Property a
+WHERE a._Object_key = OLD._AnnotEvidence_key
+AND a._MGIType_key = 25
+;
+
 DELETE FROM MGI_Reference_Assoc a
 WHERE a._Object_key = OLD._AnnotEvidence_key
 AND a._MGIType_key = 25
 ;
 
 DELETE FROM MGI_Synonym a
-WHERE a._Object_key = OLD._AnnotEvidence_key
-AND a._MGIType_key = 25
-;
-
-DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._AnnotEvidence_key
 AND a._MGIType_key = 25
 ;
