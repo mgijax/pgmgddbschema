@@ -23,8 +23,8 @@ ${PG_MGD_DBSCHEMADIR}/procedure/MGI_checkUserRole_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION MGI_checkUserRole (
-	eiModule varchar(50),
-	userLogin mgi_user.login%TYPE
+v_eiModule varchar(50),
+v_userLogin mgi_user.login%TYPE
 )
 RETURNS INTEGER AS
 \$\$
@@ -34,9 +34,9 @@ isVerified int := 1;
 
 BEGIN
 
-IF eiModule = 'AlleleModule'
+IF v_eiModule = 'AlleleModule'
 THEN
-	IF userLogin IN
+	IF v_userLogin IN
 	(SELECT login FROM MGI_UserRole_View
 		WHERE userrole IN ('Pheno:Tier 4 (curator)',
 			'Pheno:Tier 5 (guru)'))
@@ -48,9 +48,9 @@ THEN
 
 	END IF;
 
-ELSIF eiModule = 'ImageModule'
+ELSIF v_eiModule = 'ImageModule'
 THEN
-	IF userLogin IN
+	IF v_userLogin IN
 	(SELECT login FROM MGI_UserRole_View
 		WHERE userrole IN ('GXD ImageModule',
 			'Pheno:Tier 4 (curator)',
@@ -63,7 +63,7 @@ THEN
 
 	END IF;
 
-ELSIF eiModule IN ('AlleleDerivationModule',
+ELSIF v_eiModule IN ('AlleleDerivationModule',
 		'AntibodyModule',
 		'AntigenModule',
 		'AssayModule',
@@ -93,8 +93,8 @@ ELSIF eiModule IN ('AlleleDerivationModule',
 		'TranslationModule',
 		'UserRoleModule')
 THEN
-	IF userLogin IN
-		(SELECT login FROM MGI_UserRole_View WHERE userrole in (eiModule))
+	IF v_userLogin IN
+		(SELECT login FROM MGI_UserRole_View WHERE userrole in (v_eiModule))
 	THEN
 		isVerified := 1;
 

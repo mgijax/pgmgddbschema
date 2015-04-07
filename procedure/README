@@ -1,0 +1,58 @@
+04/03/2015
+
+Sybase Procedures      83 scripts
+PG Procedures      51 scripts
+Left to do:  31
+used in EI:  39
+in ei/csrc directory
+grep "exec " *.c | sort | uniq | wc -l
+
+obsolete/not used in sybase:
+ACC_reserveMGIBlock_create.object
+VOC_getGOInferredFrom_create.object
+VOC_reorderTerms_create.object
+
+to do:
+
+GXD_ComputePrintNamesFrom_create.object
+GXD_SetStructDescPrintName_create.object
+GXD_duplicateAssay_create.object
+GXD_orderGenotypesByUser_create.object
+GXD_orderGenotypesMissing_create.object
+
+IMG_setPDO_create.object
+
+MGI_Table_Column_Cleanup_create.object
+MGI_createReferenceSet_create.object
+
+PRB_getStrainByReference_create.object
+PRB_getStrainDataSets_create.object
+PRB_getStrainReferences_create.object
+PRB_mergeStrain_create.object
+PRB_processProbeSource_create.object
+PRB_processSeqLoaderSource_create.object
+PRB_processSequenceSource_create.object
+
+alomrkload:
+ALL_cacheMarker_create.object
+
+annotload:
+ALL_postMP_create.object
+VOC_deleteGOGAFRed_create.object
+VOC_processAnnotHeaderMissing_create.object
+
+mgidbutilities/bin/runRestrictedObjects.csh:
+MGI_createRestrictedMolSegSet_create.object
+MGI_createRestrictedSeqSet_create.object
+
+lib_py_misc/lib_py_postgres:
+MGI_recordMeasurement_create.object
+
+lib_java_dla:
+MAP_deleteByCollection_create.object
+SEQ_deleteByCreatedBy_create.object
+SEQ_deleteDummy_create.object
+SEQ_deleteObsoleteDummy_create.object
+SEQ_merge_create.object
+SEQ_split_create.object
+

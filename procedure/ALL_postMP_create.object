@@ -1,0 +1,102 @@
+#!/bin/sh
+
+#
+# HISTORY:
+#
+# 11/28/2012	lec
+#	- TR10273/new/update transmission and add a transmission/reference
+#	- add header terms
+#	- update transmission 'Chimeric' (3982952) or 'Cell Line' (3982953)
+#	- add Used-FC references
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/ALL_postMP_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION ALL_postMP (
+v_annotTypeKey int,
+v_refKey int,
+v_modifiedBy mgi_user.login%TYPE
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_alleleKey int;
+v_modifiedByKey int;
+
+BEGIN
+
+-- login check expects a "%" was added to the v_modifedBy by the annotation loader
+v_modifiedByKey := _User_key from MGI_User where login like v_modifiedBy;
+
+-- add header terms
+--exec VOC_processAnnotHeaderMissing v_annotTypeKey
+
+-- update transmission status
+declare all_cursor1 cursor for
+select distinct aa._Allele_key
+from GXD_AlleleGenotype g, VOC_Annot a, VOC_Evidence e, ALL_Allele aa
+where g._Genotype_key = a._Object_key
+and a._AnnotType_key = v_annotTypeKey
+and g._Allele_key = aa._Allele_key
+and aa.isWildType = 0
+and aa._Transmission_key in (3982952, 3982953)
+and a._Annot_key = e._Annot_key
+and e._Refs_key = v_refKey
+for read only
+
+open all_cursor1
+fetch all_cursor1 into v_alleleKey
+
+while (v_v_sqlstatus = 0)
+begin
+    update ALL_Allele 
+	set _Transmission_key = 3982951, 
+	_ModifiedBy_key = v_modifiedByKey,
+	modification_date = getdate() 
+	where _Allele_key = v_alleleKey
+    exec MGI_insertReferenceAssoc 1001, 11, v_alleleKey, v_refKey, "Transmission"
+    fetch all_cursor1 into v_alleleKey
+end
+
+close all_cursor1
+deallocate cursor all_cursor1
+
+-- add used-FC references
+declare all_cursor2 cursor for
+select distinct aa._Allele_key
+from GXD_AlleleGenotype g, VOC_Annot a, VOC_Evidence e, ALL_Allele aa
+where g._Genotype_key = a._Object_key
+and a._AnnotType_key = v_annotTypeKey
+and g._Allele_key = aa._Allele_key
+and aa.isWildType = 0
+and a._Annot_key = e._Annot_key
+and e._Refs_key = v_refKey
+for read only
+
+open all_cursor2
+fetch all_cursor2 into v_alleleKey
+
+while (v_v_sqlstatus = 0)
+begin
+    exec MGI_insertReferenceAssoc 1001, 11, v_alleleKey, v_refKey, "Used-FC"
+    fetch all_cursor2 into v_alleleKey
+end
+
+close all_cursor2
+deallocate cursor all_cursor2
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ALL_postMP(int,int,varchar) TO public;
+
+COMMENT ON FUNCTION mgd.ALL_postMP(int,int,varchar) IS '';
+
+EOSQL
+
