@@ -38,7 +38,6 @@ ALL_cacheMarker_create.object
 
 annotload:
 ALL_postMP_create.object
-VOC_deleteGOGAFRed_create.object
 VOC_processAnnotHeaderMissing_create.object
 
 mgidbutilities/bin/runRestrictedObjects.csh:
