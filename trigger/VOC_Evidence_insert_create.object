@@ -49,7 +49,7 @@ v_dagKey := _DAG_key FROM VOC_Annot_View a, DAG_Node_View d
 -- then it's okay 
 --
 
-IF v_term_key in (120, 1098, 6113)
+IF v_termKey in (120, 1098, 6113)
 THEN
         -- determine if the same Object contains an Annotation to a different Term
         -- within the same DAG
@@ -73,7 +73,7 @@ END IF;
 -- If the new Object is already annotated to an unknown term in the same DAG
 -- then delete the Annotation to the unknown term.
 
-IF v_term_key not in (120, 1098, 6113)
+IF v_termKey not in (120, 1098, 6113)
 THEN
         -- determine if the same Object contains an Annotation to an unknown Term
         -- within the same DAG 

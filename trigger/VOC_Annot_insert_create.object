@@ -23,7 +23,7 @@ CREATE OR REPLACE FUNCTION VOC_Annot_insert() RETURNS TRIGGER AS \$\$
 
 BEGIN
 
-IF NEW.isObsolete = 1
+IF (SELECT t.isObsolete FROM VOC_Term t WHERE t._Term_key = NEW._Term_key) = 1
 THEN
 	RAISE EXCEPTION E'Cannot Annotate to an Obsolete Term.';
 END IF;
