@@ -11,6 +11,8 @@ MGI_Property_create.object:     _Object_key                 int             not 
 MGI_Reference_Assoc_create.object:      _Object_key                    int             not null,
 MGI_Synonym_create.object:      _Object_key                    int             not null,
 
+04/06/2015 : add these to delete triggers
+needs another FROM clause to determine _MGIType_key
 table that contain _Object_key/_MGIType_key not in the same table:
 DAG_Node_create.object: _Object_key                int             not null,
 MGI_Relationship_create.object: _Object_key_1           int             not null,
@@ -19,3 +21,21 @@ MGI_SetMember_create.object:    _Object_key                int             not n
 MGI_Translation_create.object:  _Object_key                    int             not null,
 VOC_Annot_create.object:        _Object_key    
 VOC_AnnotHeader_create.object:  _Object_key                int             not null,
+
+Require insert with ACC_assignMGI:
+ALL_Allele
+BIB_Refs
+GXD_Antibody
+GXD_Antigen
+GXD_Assay
+GXD_Genotype
+GXD_Structure
+IMG_Image
+MGI_Organism
+MLD_Expts
+NOM_Marker
+PRB_Probe
+PRB_Strain
+PRB_Strain
+VOC_Term
+
