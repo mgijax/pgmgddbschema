@@ -1,0 +1,67 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: MGI_Reference_Assoc_delete()
+--
+-- DESCRIPTOIN:
+--	
+-- the template creates a trigger for all tables that use:
+--	_Object_key
+--	_MGIType_key
+--
+-- because these tables cannot use referencial integrity due
+-- to the fact that their primary key is not necessarily the
+-- member of the _Object_key/_MGIType_key table
+--
+-- . remove the statements that are not active for your table
+-- . add the statements that are being active for your table
+--
+-- or you may keep all statements in the trigger even if your table
+-- does not currently utilize them.
+--
+-- An example of a table that only needs ACC_Accession : MGI_Organism
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IF EXISTS MGI_Reference_Assoc_delete_trigger ON MGI_Reference_Assoc;
+DROP FUNCTION IF EXISTS MGI_Reference_Assoc_delete();
+
+CREATE OR REPLACE FUNCTION MGI_Reference_Assoc_delete() RETURNS TRIGGER AS \$\$
+BEGIN
+
+-- Antibody objects ....
+
+IF EXISTS (SELECT 1 FROM GXD_AntibodyPrep p, GXD_Assay a
+           WHERE OLD._MGIType_key = 6 
+           AND OLD._Object_key = p._Antibody_key
+           AND p._AntibodyPrep_key = a._AntibodyPrep_key
+           AND OLD._Refs_key = a._Refs_key)
+THEN
+        RAISE EXCEPTION E'You cannot delete an Antibody Reference that is cross-referenced to an Assay.';
+END IF;
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MGI_Reference_Assoc_delete() TO public;
+
+CREATE TRIGGER MGI_Reference_Assoc_delete_trigger
+AFTER DELETE ON MGI_Reference_Assoc
+FOR EACH ROW
+EXECUTE PROCEDURE MGI_Reference_Assoc_delete();
+
+COMMENT ON FUNCTION mgd.MGI_Reference_Assoc_delete() IS 'delete trigger for this _Object_key/_MGIType_key table';
+
+EOSQL
