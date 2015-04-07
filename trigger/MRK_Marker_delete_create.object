@@ -38,6 +38,24 @@ DROP FUNCTION IF EXISTS MRK_Marker_delete();
 CREATE OR REPLACE FUNCTION MRK_Marker_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
+-- Disallow deletion if Marker is currently referenced elsewhere
+IF EXISTS (SELECT * FROM MGI_Relationship r, MGI_Relationship_Category c
+          WHERE OLD._Marker_key = r._Object_key_1
+          AND r._Category_key  = c._Category_key
+          AND c._MGIType_key_1 = 2)
+THEN
+        RAISE EXCEPTION E'Marker Symbol is referenced in MGI Relationship(s)';
+END IF;
+
+-- Disallow deletion if Marker is currently referenced elsewhere
+IF EXISTS (SELECT * FROM MGI_Relationship r, MGI_Relationship_Category c
+          WHERE OLD._Marker_key = r._Object_key_2
+          AND r._Category_key  = c._Category_key
+          AND c._MGIType_key_2 = 2)
+THEN
+        RAISE EXCEPTION E'Marker Symbol is referenced in MGI Relationship(s)';
+END IF;
+
 DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._Marker_key
 AND a._MGIType_key = 2
