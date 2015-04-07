@@ -1,0 +1,54 @@
+#!/bin/csh -f
+
+#
+# History
+#
+# 02/03/2006 lec
+#	- a convenience routine to run regularly to add missing VOC_AnnotHeader records
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create procedure VOC_processAnnotHeaderMissing
+  @annotTypeKey integer
+as
+
+/* add missing VOC_AnnotHeader records by annotation type */
+
+declare @objectKey int
+ 
+declare annot_cursor cursor for
+select v._Object_key
+from VOC_Annot v 
+where v._AnnotType_key = @annotTypeKey
+and not exists (select 1 from VOC_AnnotHeader h
+where v._AnnotType_key = h._AnnotType_key 
+and v._Object_key = h._Object_key)
+for read only
+
+open annot_cursor
+fetch annot_cursor into @objectKey
+ 
+while (@@sqlstatus = 0)
+begin
+      exec VOC_processAnnotHeader 1001,@annotTypeKey, @objectKey
+      fetch annot_cursor into @objectKey
+end
+ 
+close annot_cursor
+deallocate cursor annot_cursor
+
+go
+
+checkpoint
+go
+
+quit
+
+EOSQL
+
