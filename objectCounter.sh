@@ -19,7 +19,7 @@ psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*
 
 cd ${TOP}/procedure
 echo "\nProcedures      `ls *_create.object | wc -l` scripts (`grep -i '^CREATE OR REPLACE' *_create.object | wc -l` functios)"
-psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} -E --command "\df" | grep normal | wc -l
+psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "\df" | grep -i 'normal' | wc -l
 
 cd ${TOP}/trigger
 echo "\nTriggers        `ls *_create.object | wc -l` scripts  (`grep -i '^create trigger ' *_create.object | wc -l` triggers)"
