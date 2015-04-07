@@ -14,13 +14,13 @@ MGI_Synonym_create.object:      _Object_key                    int             n
 04/06/2015 : add these to delete triggers
 needs another FROM clause to determine _MGIType_key
 table that contain _Object_key/_MGIType_key not in the same table:
-DAG_Node_create.object: _Object_key                int             not null,
+*DAG_Node_create.object: _Object_key                int             not null,
 MGI_Relationship_create.object: _Object_key_1           int             not null,
 MGI_Relationship_create.object:        _Object_key_2            int             not null,
-MGI_SetMember_create.object:    _Object_key                int             not null,
-MGI_Translation_create.object:  _Object_key                    int             not null,
-VOC_Annot_create.object:        _Object_key    
-VOC_AnnotHeader_create.object:  _Object_key                int             not null,
+*MGI_SetMember_create.object:    _Object_key                int             not null,
+*MGI_Translation_create.object:  _Object_key                    int             not null,
+*VOC_Annot_create.object:        _Object_key    
+*VOC_AnnotHeader_create.object:  _Object_key                int             not null,
 
 Require insert with ACC_assignMGI:
 ALL_Allele
