@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 #
 # History
@@ -7,45 +7,40 @@
 #	- JSAM
 #
 
-cd `dirname $0` && source ./Configuration
+cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+${PG_MGD_DBSCHEMADIR}/procedure/SEQ_deleteDummy_drop.object
 
-use ${DBNAME}
-go
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create procedure SEQ_deleteDummy
-  @seqKey integer
-as
+CREATE OR REPLACE FUNCTION SEQ_deleteDummy (
+v_seqKey int
+)
+RETURNS VOID AS
+\$\$
 
-begin transaction
+BEGIN
 
-if (select v.term
-	from SEQ_Sequence_Acc_View a, SEQ_Sequence s, VOC_Term v
-	where a._Object_key = @seqKey
-	and a._Object_key = s._Sequence_key
-	and s._SequenceStatus_key = v._Term_key
-	and v._Vocab_key = 20) != "Not Loaded"
-begin
-	raiserror 99999 "Cannot delete a non-Dummy Sequence"
-	rollback transaction
-	return
-end
+IF (SELECT v.term
+	FROM SEQ_Sequence_Acc_View a, SEQ_Sequence s, VOC_Term v
+	WHERE a._Object_key = v_seqKey
+	AND a._Object_key = s._Sequence_key
+	AND s._SequenceStatus_key = v._Term_key
+	AND v._Vocab_key = 20) != 'Not Loaded'
+THEN
+	RAISE EXCEPTION E'SEQ_deleteDummy: Cannot delete a non-Dummy Sequence';
+	RETURN;
+END IF;
 
-delete from SEQ_Sequence_Raw where _Sequence_key = @seqKey
-delete from SEQ_Sequence where _Sequence_key = @seqKey
+DELETE FROM SEQ_Sequence_Raw WHERE _Sequence_key = v_seqKey;
+DELETE FROM SEQ_Sequence WHERE _Sequence_key = v_seqKey;
 
-if @@error != 0
-begin
-	raiserror 99999 "Could not delete Sequence in SEQ_deleteDummy"
-	rollback transaction
-	return
-end
+END;
+\$\$
+LANGUAGE plpgsql;
 
-commit transaction
+GRANT EXECUTE ON FUNCTION SEQ_deleteDummy(int) TO public;
 
-go
-
-quit
+COMMENT ON FUNCTION mgd.SEQ_deleteDummy(int) IS 'delete dummy sequences';
 
 EOSQL
