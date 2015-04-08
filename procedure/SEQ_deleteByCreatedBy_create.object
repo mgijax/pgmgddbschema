@@ -1,4 +1,4 @@
-#!/bin/csh -f
+!/bin/sh
 
 #
 # History
@@ -13,101 +13,126 @@
 # 03/24/2004
 #	- JSAM
 #
+#
 
-cd `dirname $0` && source ./Configuration
+cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+${PG_MGD_DBSCHEMADIR}/procedure/SEQ_deleteByCreatedBy_drop.object
 
-use ${DBNAME}
-go
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create procedure SEQ_deleteByCreatedBy
-  @createdBy varchar(50)
-as
+CREATE OR REPLACE FUNCTION SEQ_deleteByCreatedBy (
+v_createdBy mgi_user.login%TYPE
+)
+RETURNS VOID AS
+\$\$
 
-/*
- * Delete Sequence objects by Created By
-*/
+--
+-- Delete Sequence objects by Created By
+--
 
-declare @userKey integer
-select @userKey = _User_key from MGI_User where login = @createdBy
+DECLARE
+v_userKey int;
 
-select _Object_key, accID, _LogicalDB_key
-into #toDelete
-from ACC_Accession
-where _MGIType_key = 19
-and _CreatedBy_key = @userKey
+BEGIN
 
-create clustered index idx_primary on #toDelete(_Object_key)
+v_userKey := _User_key FROM MGI_User WHERE login = v_createdBy;
 
-/* Delete Marker associations to these Sequence objects by Created By */
+CREATE TEMP TABLE toDelete ON COMMIT DROP
+AS SELECT _Object_key, accID, _LogicalDB_key
+FROM ACC_Accession
+WHERE _MGIType_key = 19
+AND _CreatedBy_key = v_userKey
+;
 
-select a._Accession_key
-into #assocToDelete
-from #toDelete d, ACC_Accession a
-where d.accID = a.accID
-and d._LogicalDB_key = a._LogicalDB_key
-and a._MGIType_key = 2
-and a._CreatedBy_key = @userKey
+CREATE INDEX idx_toDelete ON toDelete(_Object_key);
 
-create clustered index idx_primary on #assocToDelete(_Accession_key)
+-- Delete Marker associations to these Sequence objects by Created By
 
-/* let's delete in steps, it'll be faster */
+CREATE TEMP TABLE assocToDelete ON COMMIT DROP
+AS SELECT a._Accession_key
+FROM toDelete d, ACC_Accession a
+WHERE d.accID = a.accID
+AND d._LogicalDB_key = a._LogicalDB_key
+AND a._MGIType_key = 2
+AND a._CreatedBy_key = v_userKey
+;
 
-delete MAP_Coord_Feature
-from #toDelete d, MAP_Coord_Feature s
-where d._Object_key = s._Object_key
-and s._MGIType_key = 19
+CREATE INDEX idx_assocToDelete ON assocToDelete(_Accession_key);
 
-delete SEQ_Coord_Cache 
-from #toDelete d, SEQ_Coord_Cache s
-where d._Object_key = s._Sequence_key
+-- let's DELETE FROM in steps, it'll be faster
 
-delete SEQ_Description_Cache 
-from #toDelete d, SEQ_Description_Cache s
-where d._Object_key = s._Sequence_key
+DELETE FROM MAP_Coord_Feature s
+USING toDelete d
+WHERE d._Object_key = s._Object_key
+AND s._MGIType_key = 19
+;
 
-delete SEQ_Marker_Cache 
-from #toDelete d, SEQ_Marker_Cache s
-where d._Object_key = s._Sequence_key
+DELETE FROM SEQ_Coord_Cache s
+USING toDelete d
+WHERE d._Object_key = s._Sequence_key
+;
 
-delete SEQ_Probe_Cache 
-from #toDelete d, SEQ_Probe_Cache s
-where d._Object_key = s._Sequence_key
+DELETE FROM SEQ_Description_Cache  s
+USING toDelete d
+WHERE d._Object_key = s._Sequence_key
+;
 
-delete SEQ_Source_Assoc
-from #toDelete d, SEQ_Source_Assoc s
-where d._Object_key = s._Sequence_key
+DELETE FROM SEQ_Marker_Cache s
+USING toDelete d
+WHERE d._Object_key = s._Sequence_key
+;
 
-delete MGI_Reference_Assoc
-from #toDelete d, MGI_Reference_Assoc s
-where d._Object_key = s._Object_key
-and s._MGIType_key = 19
+DELETE FROM SEQ_Probe_Cache  s
+USING toDelete d
+WHERE d._Object_key = s._Sequence_key
+;
 
-delete MGI_Note 
-from #toDelete d, MGI_Note s
-where d._Object_key = s._Object_key
-and s._MGIType_key = 19
+DELETE FROM SEQ_Source_Assoc s
+USING toDelete d
+WHERE d._Object_key = s._Sequence_key
+;
 
-delete ACC_Accession
-from #toDelete d, ACC_Accession s
-where d._Object_key = s._Object_key
-and s._MGIType_key = 19
+DELETE FROM MGI_Reference_Assoc s
+USING toDelete d
+WHERE d._Object_key = s._Object_key
+AND s._MGIType_key = 19
+;
 
-delete SEQ_Sequence_Raw
-from #toDelete d, SEQ_Sequence_Raw s
-where d._Object_key = s._Sequence_key
+DELETE FROM MGI_Note s
+USING toDelete d
+WHERE d._Object_key = s._Object_key
+AND s._MGIType_key = 19
+;
 
-delete SEQ_Sequence
-from #toDelete d, SEQ_Sequence s
-where d._Object_key = s._Sequence_key
+DELETE FROM ACC_Accession s
+USING toDelete d
+WHERE d._Object_key = s._Object_key
+AND s._MGIType_key = 19
+;
 
-delete ACC_Accession
-from #assocToDelete d, ACC_Accession s
-where d._Accession_key = s._Accession_key
+DELETE FROM SEQ_Sequence_Raw s
+USING toDelete d
+WHERE d._Object_key = s._Sequence_key
+;
 
-go
+DELETE FROM SEQ_Sequence s
+USING toDelete d
+WHERE d._Object_key = s._Sequence_key
+;
 
-quit
+DELETE FROM ACC_Accession s
+USING assocToDelete d
+WHERE d._Accession_key = s._Accession_key
+;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION SEQ_deleteByCreatedBy(varchar) TO public;
+
+COMMENT ON FUNCTION mgd.SEQ_deleteByCreatedBy(varchar) IS 'delete FROM sequence objects by created by';
 
 EOSQL
+
