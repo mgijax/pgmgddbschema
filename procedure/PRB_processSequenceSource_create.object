@@ -1,0 +1,131 @@
+#!/bin/sh
+
+#
+# History
+#
+# 07/22/2003	lec
+#	- TR 3404/JSAM
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/PRB_processSequenceSource_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION PRB_processSequenceSource (
+v_isAnon int,
+v_assocKey int,
+v_objectKey int,
+v_msoKey int,
+v_organismKey int,
+v_strainKey int,
+v_tissueKey int,
+v_genderKey int,
+v_cellLineKey int,
+v_age prb_source.age%TYPE,
+v_modifiedByKey int
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_newMSOKey int;
+v_newAssocKey int;
+v_segmentTypeKey int;
+v_vectorTypeKey int;
+
+BEGIN
+
+--
+-- process (modify) a Sequence's Molecular Source  
+-- 
+-- if changing old Named -> new Named, then v_msoKey = _Source_key of new Named source 
+-- if changing old Anon -> new Named, then v_msoKey = _Source_key of new Named source 
+--
+-- if changing old Named -> Anonymous, then v_msoKey = _Source_key of old Named source
+-- if changing old Anon -> new Anon, then v_msoKey = _Source_key of old Anon source
+--
+
+-- process a Named Source
+
+IF v_isAnon = 0
+THEN
+    -- just change the Association
+    UPDATE SEQ_Source_Assoc
+    SET _Source_key = v_msoKey,
+    	_ModifiedBy_key = v_modifiedByKey,
+    	modification_date = current_date
+    WHERE _Assoc_key = v_assocKey
+    ;
+ELSE
+
+-- process an Anonymous Source */
+
+    v_segmentTypeKey := _Term_key from VOC_Term where _Vocab_key = 10 and term = 'Not Applicable';
+    v_vectorTypeKey := _Term_key from VOC_Term where _Vocab_key = 24 and term = 'Not Applicable';
+
+    IF (SELECT name FROM PRB_Source WHERE _Source_key = v_msoKey) != null
+    THEN
+        -- if changing from a Named source to an Anonymous source ...
+
+        SELECT * INTO v_newMSOKey 
+        FROM PRB_processAnonymousSource(NULL, v_segmentTypeKey, v_vectorTypeKey, v_organismKey, v_strainKey,
+                        v_tissueKey, v_genderKey, v_cellLineKey, v_age, NULL, v_modifiedByKey, 1);
+
+        IF NOT FOUND
+	THEN
+	        RAISE EXCEPTION 'PRB_processSequenceSource: Could not execute PRB_processAnonymousSource';
+		RETURN;
+        END IF;
+
+    ELSE
+	-- modifying an existing Anonymous source
+
+        SELECT * INTO v_newMSOKey 
+        FROM PRB_processAnonymousSource(v_msoKey, v_segmentTypeKey, v_vectorTypeKey, v_organismKey, v_strainKey,
+                        v_tissueKey, v_genderKey, v_cellLineKey, v_age, NULL, v_modifiedByKey, 1);
+
+        IF NOT FOUND
+	THEN
+	        RAISE EXCEPTION 'PRB_processSequenceSource: Could not execute PRB_processAnonymousSource';
+		RETURN;
+        END IF;
+    END IF;
+
+    -- associate the Sequence with the MSO
+
+    IF EXISTS (SELECT 1 FROM SEQ_Source_Assoc WHERE _Sequence_key = v_objectKey AND _Source_key = v_msoKey)
+    THEN
+        UPDATE SEQ_Source_Assoc
+        SET _Source_key = v_newMSOKey,
+	    _ModifiedBy_key = v_modifiedByKey,
+	    modification_date = current_date
+        WHERE _Assoc_key = v_assocKey
+	;
+    ELSE
+        v_newAssocKey := max(_Assoc_key) + 1 from SEQ_Source_Assoc;
+        INSERT INTO SEQ_Source_Assoc 
+        VALUES (v_newAssocKey, v_objectKey, v_newMSOKey, v_modifiedByKey, v_modifiedByKey, current_date, current_date)
+	;
+    END IF;
+    
+    -- delete the input v_msoKey if it's now an orphan
+    
+    IF NOT EXISTS (select 1 from SEQ_Source_Assoc where _Source_key = v_msoKey) and
+       NOT EXISTS (select 1 from PRB_Probe where _Source_key = v_msoKey) and
+       NOT EXISTS (select 1 from GXD_Antigen where _Source_key = v_msoKey)
+    THEN
+        DELETE FROM PRB_Source WHERE _Source_key = v_msoKey;
+    END IF;
+END IF;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION PRB_processSequenceSource(int,int,int,int,int,int,int,int,int,varchar,int) TO public;
+
+COMMENT ON FUNCTION mgd.PRB_processSequenceSource(int,int,int,int,int,int,int,int,int,varchar,int) IS 'process (modify) a Sequence Molecular Source';
+
+EOSQL
