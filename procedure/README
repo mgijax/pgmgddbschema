@@ -12,6 +12,11 @@ ACC_reserveMGIBlock_create.object
 VOC_getGOInferredFrom_create.object
 VOC_reorderTerms_create.object
 
+obsolete : mgidbutilities/bin/runRestrictedObjects.csh:
+MGI_createReferenceSet_create.object
+MGI_createRestrictedMolSegSet_create.object
+MGI_createRestrictedSeqSet_create.object
+
 to do:
 
 GXD_ComputePrintNamesFrom_create.object
@@ -23,20 +28,14 @@ GXD_orderGenotypesMissing_create.object
 IMG_setPDO_create.object
 
 MGI_Table_Column_Cleanup_create.object
-MGI_createReferenceSet_create.object
 
 PRB_getStrainByReference_create.object
 PRB_getStrainDataSets_create.object
 PRB_getStrainReferences_create.object
 PRB_mergeStrain_create.object
-PRB_processSeqLoaderSource_create.object
 
 alomrkload:
 ALL_cacheMarker_create.object
-
-mgidbutilities/bin/runRestrictedObjects.csh:
-MGI_createRestrictedMolSegSet_create.object
-MGI_createRestrictedSeqSet_create.object
 
 lib_py_misc/lib_py_postgres:
 MGI_recordMeasurement_create.object
