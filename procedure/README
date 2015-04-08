@@ -30,7 +30,6 @@ PRB_getStrainDataSets_create.object
 PRB_getStrainReferences_create.object
 PRB_mergeStrain_create.object
 PRB_processSeqLoaderSource_create.object
-PRB_processSequenceSource_create.object
 
 alomrkload:
 ALL_cacheMarker_create.object
