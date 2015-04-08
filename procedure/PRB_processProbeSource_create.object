@@ -1,0 +1,106 @@
+#!/bin/sh
+
+#
+# History
+#
+# 07/22/2003	lec
+#	- TR 3404/JSAM
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/PRB_processProbeSource_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION PRB_processProbeSource (
+v_objectKey int,
+v_msoKey int,
+v_isAnon int,
+v_organismKey int,
+v_strainKey int,
+v_tissueKey int,
+v_genderKey int,
+v_cellLineKey int,
+v_age prb_source.age%TYPE,
+v_tissueTreatment prb_source.description%TYPE,
+v_modifiedByKey int
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_newMSOKey int;
+v_segmentTypeKey int;
+v_vectorTypeKey int;
+
+BEGIN
+
+-- 
+-- process (modify) a Probes's Molecular Source
+-- 
+
+IF v_isAnon = 1
+THEN
+
+    v_segmentTypeKey := _Term_key FROM VOC_Term WHERE _Vocab_key = 10 AND term = 'Not Specified';
+    v_vectorTypeKey := _Term_key FROM VOC_Term WHERE _Vocab_key = 24 AND term = 'Not Specified';
+
+    IF (SELECT name FROM PRB_Source WHERE _Source_key = v_msoKey) != NULL
+    THEN
+        -- if changing from a Named source to an Anonymous source ...
+
+	SELECT * INTO v_newMSOKey 
+	FROM PRB_processAnonymousSource(NULL, v_segmentTypeKey, v_vectorTypeKey, v_organismKey, v_strainKey,
+                	v_tissueKey, v_genderKey, v_cellLineKey, v_age, v_tissueTreatment, v_modifiedByKey, 0);
+
+	IF NOT FOUND
+	THEN
+        	RAISE EXCEPTION E'PRB_processProbeSource : perform PRB_processAnonymousSource failed.';
+        	RETURN;
+	END IF;
+
+    ELSE
+	SELECT * INTO v_newMSOKey 
+	FROM PRB_processAnonymousSource(v_msoKey, v_segmentTypeKey, v_vectorTypeKey, v_organismKey, v_strainKey,
+                	v_tissueKey, v_genderKey, v_cellLineKey, v_age, v_tissueTreatment, v_modifiedByKey, 0);
+
+	IF NOT FOUND
+	THEN
+        	RAISE EXCEPTION E'PRB_processProbeSource : perform PRB_processAnonymousSource failed.';
+        	RETURN;
+	END IF;
+
+    END IF;
+ELSE
+   v_newMSOKey := v_msoKey;
+END IF;
+
+-- associate the Probe with the MSO
+
+UPDATE PRB_Probe
+SET _Source_key = v_newMSOKey,
+    _ModifiedBy_key = v_modifiedByKey,
+    modification_date = current_date
+WHERE _Probe_key = v_objectKey
+;
+
+-- delete the input v_msoKey if it's now an orphan
+
+IF NOT EXISTS (SELECT 1 FROM SEQ_Source_Assoc WHERE _Source_key = v_msoKey) AND
+   NOT EXISTS (SELECT 1 FROM PRB_Probe WHERE _Source_key = v_msoKey) AND
+   NOT EXISTS (SELECT 1 FROM GXD_Antigen WHERE _Source_key = v_msoKey)
+THEN
+    DELETE FROM PRB_Source WHERE _Source_key = v_msoKey;
+END IF;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION PRB_processProbeSource(int,int,int,int,int,int,int,int,varchar,text,int) TO public;
+
+COMMENT ON FUNCTION mgd.PRB_processProbeSource(int,int,int,int,int,int,int,int,varchar,text,int) IS 'process (modify) a Probe Molecular Source';
+
+EOSQL
+
