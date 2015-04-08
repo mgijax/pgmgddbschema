@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 #
 # History
@@ -7,111 +7,86 @@
 #	- JSAM
 #
 
-cd `dirname $0` && source ./Configuration
+cd `dirname $0` && . ./Configuration
 
-cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+${PG_MGD_DBSCHEMADIR}/procedure/SEQ_merge_drop.object
 
-use ${DBNAME}
-go
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create procedure SEQ_merge
-  @fromSeqID varchar(30),
-  @toSeqID varchar(30)
-as
+CREATE OR REPLACE FUNCTION SEQ_merge (
+v_fromSeqID acc_accession.accID%TYPE,
+v_toSeqID acc_accession.accID%TYPE
+)
+RETURNS VOID AS
+\$\$
 
-/*
- * Merge @fromSeqID to @toSeqID
- *
- * 1) Move non-duplicate Seq ID/Reference associations (MGI_Reference)
- * 2) Make non-duplicate "from" Seq IDs secondary to the "to" Sequence object
- * 3) Delete the "from" Sequence object
- *
-*/
+DECLARE
+v_fromSeqKey int;
+v_toSeqKey int;
 
-begin transaction
+BEGIN
 
-declare @fromSeqKey integer
-declare @toSeqKey integer
+--
+-- Merge v_fromSeqID to v_toSeqID
+--
+-- 1) Move non-duplicate Seq ID/Reference associations (MGI_Reference)
+-- 2) Make non-duplicate "from" Seq IDs secondary to the "to" Sequence object
+-- 3) Delete the "from" Sequence object
+--
+--
 
-select @fromSeqKey = _Object_key 
-from SEQ_Sequence_Acc_View 
-where accID = @fromSeqID
-and preferred = 1
+v_fromSeqKey := _Object_key from SEQ_Sequence_Acc_View where accID = v_fromSeqID and preferred = 1;
+v_toSeqKey := _Object_key from SEQ_Sequence_Acc_View where accID = v_toSeqID and preferred = 1;
 
-select @toSeqKey = _Object_key 
-from SEQ_Sequence_Acc_View 
-where accID = @toSeqID
-and preferred = 1
+IF v_fromSeqKey IS NULL
+THEN
+	RAISE EXCEPTION E'SEQ_merge: Could not resolve %.', v_fromSeqID;
+	RETURN;
+END IF;
 
-if @fromSeqKey is null
-begin
-	raiserror 99999 "Could not resolve %1! in SEQ_merge", @fromSeqID
-	rollback transaction
-	return
-end
+IF v_toSeqKey IS NULL
+THEN
+	RAISE EXCEPTION E'SEQ_merge: Could not resolve %.', v_toSeqID;
+	RETURN;
+END IF;
 
-if @toSeqKey is null
-begin
-	raiserror 99999 "Could not resolve %1! in SEQ_merge", @toSeqID
-	rollback transaction
-	return
-end
+-- References
 
-/* References */
+UPDATE MGI_Reference_Assoc s1
+SET _Object_key = v_toSeqKey
+WHERE s1._MGIType_key = 19
+AND s1._Object_key = v_fromSeqKey
+AND NOT EXISTS (SELECT 1 FROM MGI_Reference_Assoc s2
+	WHERE s2._MGIType_key = 19
+	AND s2._Object_key = v_toSeqKey
+	AND s2._Refs_key = s1._Refs_key)
+;
 
-update MGI_Reference_Assoc
-set _Object_key = @toSeqKey
-from MGI_Reference_Assoc s1
-where s1._MGIType_key = 19
-and s1._Object_key = @fromSeqKey
-and not exists (select 1 from MGI_Reference_Assoc s2
-where s2._MGIType_key = 19
-and s2._Object_key = @toSeqKey
-and s2._Refs_key = s1._Refs_key)
+-- Accession IDs
 
-if @@error != 0
-begin
-	raiserror 99999 "Could not update References in SEQ_merge"
-	rollback transaction
-	return
-end
+UPDATE ACC_Accession a1
+SET _Object_key = v_toSeqKey, preferred = 0
+WHERE a1._MGIType_key = 19
+AND a1._Object_key = v_fromSeqKey
+AND NOT EXISTS (SELECT 1 FROM ACC_Accession a2
+	WHERE a2._MGIType_key = 19
+	AND a2._Object_key = v_toSeqKey
+	AND a2.accID = a1.accID)
+;
 
-/* Accession IDs */
+-- Delete merged Sequence object
+-- This will delete any remaining References, Accession IDs, Source, Notes, Cache
 
-update ACC_Accession
-set _Object_key = @toSeqKey, preferred = 0
-from ACC_Accession a1
-where a1._MGIType_key = 19
-and a1._Object_key = @fromSeqKey
-and not exists (select 1 from ACC_Accession a2
-where a2._MGIType_key = 19
-and a2._Object_key = @toSeqKey
-and a2.accID = a1.accID)
+DELETE FROM SEQ_Sequence_Raw WHERE _Sequence_key = v_fromSeqKey;
+DELETE FROM SEQ_Sequence WHERE _Sequence_key = v_fromSeqKey;
 
-if @@error != 0
-begin
-	raiserror 99999 "Could not update Accession IDs in SEQ_merge"
-	rollback transaction
-	return
-end
+END;
+\$\$
+LANGUAGE plpgsql;
 
-/* Delete merged Sequence object */
-/* This will delete any remaining References, Accession IDs, Source, Notes, Cache */
+GRANT EXECUTE ON FUNCTION SEQ_merge(varchar,varchar) TO public;
 
-delete SEQ_Sequence_Raw where _Sequence_key = @fromSeqKey
-delete SEQ_Sequence where _Sequence_key = @fromSeqKey
-
-if @@error != 0
-begin
-	raiserror 99999 "Could not delete Sequence in SEQ_merge"
-	rollback transaction
-	return
-end
-
-commit transaction
-
-go
-
-quit
+COMMENT ON FUNCTION mgd.SEQ_merge(varchar,varchar) IS 'merge sequences';
 
 EOSQL
+
