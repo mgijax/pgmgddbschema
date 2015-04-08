@@ -45,9 +45,4 @@ MGI_recordMeasurement_create.object
 
 lib_java_dla:
 MAP_deleteByCollection_create.object
-SEQ_deleteByCreatedBy_create.object
-SEQ_deleteDummy_create.object
-SEQ_deleteObsoleteDummy_create.object
-SEQ_merge_create.object
-SEQ_split_create.object
 
