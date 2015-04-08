@@ -1,0 +1,72 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/21/2003	lec
+#	- TR 3404/JSAM
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/PRB_processSeqLoaderSource_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION PRB_processSeqLoaderSource (
+v_assocKey int,
+v_objectKey int,
+v_msoKey int,
+v_organismKey int,
+v_strainKey int,
+v_tissueKey int,
+v_genderKey int,
+v_cellLineKey int,
+v_modifiedByKey int
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_isAnon int;
+v_newMSOKey int;
+
+BEGIN
+
+--
+-- process (modify) a Sequence's Molecular Source       
+-- from the Sequence Loader                             
+--
+-- if changing old Named -> new Named, then v_msoKey = _Source_key of new Named source 
+-- if changing old Anon -> new Named, then v_msoKey = _Source_key of new Named source 
+--
+-- if changing old Named -> Anonymous, then v_msoKey = _Source_key of old Named source 
+-- if changing old Anon -> new Anon, then v_msoKey = _Source_key of old Anon source 
+
+v_isAnon := 1;
+
+IF (SELECT name from PRB_Source WHERE _Source_key = v_msoKey) IS NOT NULL
+THEN
+	v_isAnon := 0;
+END IF;
+
+SELECT * INTO v_newMSOKey
+FROM PRB_processSequenceSource (v_isAnon, v_assocKey, v_objectKey, v_msoKey, v_organismKey, v_strainKey,
+        v_tissueKey, v_genderKey, v_cellLineKey, 'Not Resolved', v_modifiedByKey);
+
+IF NOT FOUND
+THEN
+	RAISE EXCEPTION E'PRB_processSeqLoaderSource : perform PRB_processSequenceSource failed.';
+	RETURN;
+END IF;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION PRB_processSeqLoaderSource(int,int,int,int,int,int,int,int,int) TO public;
+
+COMMENT ON FUNCTION mgd.PRB_processSeqLoaderSource(int,int,int,int,int,int,int,int,int) IS '';
+
+EOSQL
+
