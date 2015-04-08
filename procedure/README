@@ -27,8 +27,6 @@ GXD_orderGenotypesMissing_create.object
 
 IMG_setPDO_create.object
 
-MGI_Table_Column_Cleanup_create.object
-
 PRB_getStrainByReference_create.object
 PRB_getStrainDataSets_create.object
 PRB_getStrainReferences_create.object
