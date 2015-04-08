@@ -23,7 +23,6 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-v_userKey int;
 v_nomenReviewKey int;
 v_annotTypeKey int;
 v_qualifierKey int;
@@ -38,7 +37,6 @@ BEGIN
 -- This is needed for the nomen update process.
 --
 
-v_userKey := _User_key from MGI_User where login = current_user;
 v_nomenReviewKey := 8581446;
 v_annotTypeKey := 1008;
 v_qualifierKey := 1614158;
