@@ -1,0 +1,117 @@
+#!/bin/csh -f
+
+#
+# History
+#
+# 01/12/2004
+#	- JSAM
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create procedure SEQ_merge
+  @fromSeqID varchar(30),
+  @toSeqID varchar(30)
+as
+
+/*
+ * Merge @fromSeqID to @toSeqID
+ *
+ * 1) Move non-duplicate Seq ID/Reference associations (MGI_Reference)
+ * 2) Make non-duplicate "from" Seq IDs secondary to the "to" Sequence object
+ * 3) Delete the "from" Sequence object
+ *
+*/
+
+begin transaction
+
+declare @fromSeqKey integer
+declare @toSeqKey integer
+
+select @fromSeqKey = _Object_key 
+from SEQ_Sequence_Acc_View 
+where accID = @fromSeqID
+and preferred = 1
+
+select @toSeqKey = _Object_key 
+from SEQ_Sequence_Acc_View 
+where accID = @toSeqID
+and preferred = 1
+
+if @fromSeqKey is null
+begin
+	raiserror 99999 "Could not resolve %1! in SEQ_merge", @fromSeqID
+	rollback transaction
+	return
+end
+
+if @toSeqKey is null
+begin
+	raiserror 99999 "Could not resolve %1! in SEQ_merge", @toSeqID
+	rollback transaction
+	return
+end
+
+/* References */
+
+update MGI_Reference_Assoc
+set _Object_key = @toSeqKey
+from MGI_Reference_Assoc s1
+where s1._MGIType_key = 19
+and s1._Object_key = @fromSeqKey
+and not exists (select 1 from MGI_Reference_Assoc s2
+where s2._MGIType_key = 19
+and s2._Object_key = @toSeqKey
+and s2._Refs_key = s1._Refs_key)
+
+if @@error != 0
+begin
+	raiserror 99999 "Could not update References in SEQ_merge"
+	rollback transaction
+	return
+end
+
+/* Accession IDs */
+
+update ACC_Accession
+set _Object_key = @toSeqKey, preferred = 0
+from ACC_Accession a1
+where a1._MGIType_key = 19
+and a1._Object_key = @fromSeqKey
+and not exists (select 1 from ACC_Accession a2
+where a2._MGIType_key = 19
+and a2._Object_key = @toSeqKey
+and a2.accID = a1.accID)
+
+if @@error != 0
+begin
+	raiserror 99999 "Could not update Accession IDs in SEQ_merge"
+	rollback transaction
+	return
+end
+
+/* Delete merged Sequence object */
+/* This will delete any remaining References, Accession IDs, Source, Notes, Cache */
+
+delete SEQ_Sequence_Raw where _Sequence_key = @fromSeqKey
+delete SEQ_Sequence where _Sequence_key = @fromSeqKey
+
+if @@error != 0
+begin
+	raiserror 99999 "Could not delete Sequence in SEQ_merge"
+	rollback transaction
+	return
+end
+
+commit transaction
+
+go
+
+quit
+
+EOSQL

@@ -1,0 +1,150 @@
+#!/bin/csh -f
+
+#
+# History
+#
+# 03/05/2015	lec
+#	- remove calls to obsolete procedures (seq_loadmarkercache, seq_loadprobecache)
+#
+# 01/12/2004
+#	- JSAM
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create procedure SEQ_split
+  @fromSeqID varchar(30),
+  @toSeqIDs varchar(255)
+as
+
+/*
+ * Split @fromSeqID to @toSeqIDs
+ * where @toSeqIDs is a comma-separated list of Seq IDs to split the @fromSeqID into
+ *
+ * 1) Copy non-duplicate "from" Accession IDs to each "to" Sequence object and make them Secondary IDs
+ * 2) Status the "from" Sequence object as "Split"
+ *
+*/
+
+/* begin transaction */
+
+declare @fromSeqKey integer
+select @fromSeqKey = _Object_key 
+from SEQ_Sequence_Acc_View 
+where accID = @fromSeqID
+and preferred = 1
+
+declare @splitStatusKey integer
+select @splitStatusKey = _Term_key from VOC_Term where _Vocab_key = 20 and term = 'SPLIT'
+
+if @fromSeqKey is null
+begin
+	raiserror 99999 "Could not resolve %1! in SEQ_split", @fromSeqID
+	rollback transaction
+	return
+end
+
+/* delete cache entries from old sequence */
+
+delete from SEQ_Marker_Cache where _Sequence_key = @fromSeqKey
+delete from SEQ_Probe_Cache where _Sequence_key = @fromSeqKey
+delete from SEQ_Description_Cache where _Sequence_key = @fromSeqKey
+
+/* For each new Sequence:
+ *
+ *      1. copy non-duplicate "from" Accession IDs to each "to" Sequence object and make them Secondary IDs
+ *      2. re-load SEQ_Marker_Cache
+ *      3. re-load SEQ_Probe_Cache
+*/
+
+declare @toSeqKey integer
+declare @toAccID varchar(30)
+declare @idx integer
+
+while (@toSeqIDs != null)
+begin
+	select @idx = charindex(",", @toSeqIDs)
+
+	if @idx > 0
+	begin
+		select @toAccID = substring(@toSeqIDs, 1, @idx - 1)
+		select @toSeqIDs = substring(@toSeqIDs, @idx + 1, char_length(@toSeqIDs))
+	end
+	else
+	begin
+		/* at end of list of @toSeqIDs */
+		select @toAccID = @toSeqIDs
+		select @toSeqIDs = null
+	end
+
+	if @toAccID != null
+	begin
+		select @toSeqKey = _Object_key from SEQ_Sequence_Acc_View where accID = @toAccID and preferred = 1
+
+		if @toSeqKey is null
+		begin
+			raiserror 99999 "Could not resolve %1! in SEQ_split", @toAccID
+			rollback transaction
+			return
+		end
+
+                /* delete cache entries from new sequence */
+
+                delete from SEQ_Marker_Cache where _Sequence_key = @toSeqKey
+                delete from SEQ_Probe_Cache where _Sequence_key = @toSeqKey
+                delete from SEQ_Description_Cache where _Sequence_key = @toSeqKey
+
+		/* copy all Accession IDs of @fromSeqKey to @toSeqKey - make them all secondary */
+		declare acc_cursor cursor for
+		select a1.accID, a1._LogicalDB_key
+		from ACC_Accession a1
+		where a1._MGIType_key = 19
+		and a1._Object_key = @fromSeqKey
+		and not exists (select 1 from ACC_Accession a2
+		where a2._MGIType_key = 19
+		and a2._Object_key = @toSeqKey
+		and a2.accID = a1.accID)
+		for read only
+
+		declare @accID varchar(30)
+		declare @logicalDB integer
+		
+		open acc_cursor
+		fetch acc_cursor into @accID, @logicalDB
+ 
+		while (@@sqlstatus = 0)
+		begin
+			exec ACC_insertNoChecks 1001, @toSeqKey, @accID, @logicalDB, 'Sequence', @preferred = 0
+			fetch acc_cursor into @accID, @logicalDB
+		end
+
+		close acc_cursor
+		deallocate cursor acc_cursor
+	end
+end
+
+/* Now make the final necessary modifications to the old Sequence object */
+
+update SEQ_Sequence
+set _SequenceStatus_key = @splitStatusKey, _ModifiedBy_key = 1001, modification_date = getdate()
+where _Sequence_key = @fromSeqKey
+
+if @@error != 0
+begin
+	raiserror 99999 "Could not update original Sequence %1! in SEQ_split", @fromSeqID
+	rollback transaction
+	return
+end
+
+/* commit transaction */
+
+go
+
+quit
+
+EOSQL

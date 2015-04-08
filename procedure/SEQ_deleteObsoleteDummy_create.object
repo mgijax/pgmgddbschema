@@ -1,0 +1,93 @@
+#!/bin/csh -f
+
+#
+# History
+#
+# 01/14/2004
+#	- JSAM
+#
+
+cd `dirname $0` && source ./Configuration
+
+cat - <<EOSQL | ${MGI_DBUTILS}/bin/doisql.csh ${DBSERVER} ${DBNAME} $0
+
+use ${DBNAME}
+go
+
+create procedure SEQ_deleteObsoleteDummy
+as
+
+/* delete obsolete dummies...those dummy Sequence records */
+/* which are no longer associated with a Marker or Molecular Segment. */
+
+/* for mouse, if it's not in either cache table, then it's potential obsolete */
+/* for non-mouse, we have to look directly into the accession table */
+
+/* select all sequences that have a status of 'Not Loaded' or 'DELETED' */
+/* and a rawType of 'Not Loaded' */
+
+select s._Sequence_key
+into #toDelete
+from SEQ_Sequence s, SEQ_Sequence_Raw r
+where s._SequenceStatus_key in (316343, 316345)
+and s._Sequence_key = r._Sequence_key
+and r.rawType = 'Not Loaded'
+and not exists (select 1 from SEQ_Marker_Cache sc where s._Sequence_key = sc._Sequence_key)
+and not exists (select 1 from SEQ_Probe_Cache sc where s._Sequence_key = sc._Sequence_key)
+
+create clustered index idx_key on #toDelete(_Sequence_key)
+
+/* remove items from the deletion list if they are annotated to non-mouse Markers */
+
+delete #toDelete
+from #toDelete t, ACC_Accession a1, ACC_Accession a2, MRK_Marker m
+where t._Sequence_key = a1._Object_key
+and a1._MGIType_key = 19
+and a1.accID = a2.accID
+and a1._LogicalDB_key = a2._LogicalDB_Key
+and a2._MGIType_key = 2
+and a2._Object_key = m._Marker_key
+and m._Organism_key != 1
+
+/* remove items from the deletion list if they are annotated to mouse Molecular Segments that are not cached */
+/* those MolSegs with "The source of the material used to create this cDNA probe" note */
+
+delete #toDelete
+from #toDelete t, ACC_Accession a1, ACC_Accession a2, PRB_Probe p, PRB_Source s
+where t._Sequence_key = a1._Object_key
+and a1._MGIType_key = 19
+and a1.accID = a2.accID
+and a1._LogicalDB_key = a2._LogicalDB_Key
+and a2._MGIType_key = 3
+and a2._Object_key = p._Probe_key
+and p._Source_key = s._Source_key
+and s._Organism_key = 1
+
+/* remove items from the deletion list if they are annotated to non-mouse Molecular Segments */
+
+delete #toDelete
+from #toDelete t, ACC_Accession a1, ACC_Accession a2, PRB_Probe p, PRB_Source s
+where t._Sequence_key = a1._Object_key
+and a1._MGIType_key = 19
+and a1.accID = a2.accID
+and a1._LogicalDB_key = a2._LogicalDB_Key
+and a2._MGIType_key = 3
+and a2._Object_key = p._Probe_key
+and p._Source_key = s._Source_key
+and s._Organism_key != 1
+
+/* delete items left in the deletion list */
+
+delete SEQ_Sequence_Raw
+from #todelete d, SEQ_Sequence_Raw s
+where d._Sequence_key = s._Sequence_key
+
+delete SEQ_Sequence
+from #todelete d, SEQ_Sequence s
+where d._Sequence_key = s._Sequence_key
+
+go
+
+quit
+
+EOSQL
