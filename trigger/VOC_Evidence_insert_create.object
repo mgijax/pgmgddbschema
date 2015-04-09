@@ -33,7 +33,7 @@ v_termKey := _Term_key FROM VOC_Annot a WHERE a._Annot_key = NEW._Annot_key;
 v_objectKey := _Object_key FROM VOC_Annot a WHERE a._Annot_key = NEW._Annot_key;
 
 v_dagKey := _DAG_key FROM VOC_Annot_View a, DAG_Node_View d
-        WHERE NEW._Annot_key = a._Annot_key
+        WHERE a._Annot_key = NEW._Annot_key
         AND a._Vocab_key = d._Vocab_key
         AND a._Term_key = d._Object_key;
 
@@ -79,8 +79,8 @@ THEN
         -- within the same DAG 
 
         IF EXISTS (SELECT 1
-                FROM VOC_Annot a, VOC_AnnotType ap, VOC_VocabDAG v, DAG_Node n
-                WHERE NEW._Annot_key = a._Annot_key
+                FROM VOC_Evidence e, VOC_Annot a, VOC_AnnotType ap, VOC_VocabDAG v, DAG_Node n
+		WHERE e._Annot_key = a._Annot_key
                 AND a._Object_key = v_objectKey
                 AND a._Term_key in (120, 1098, 6113)
                 AND a._Term_key != v_termKey
@@ -92,7 +92,7 @@ THEN
         THEN
                 DELETE FROM VOC_Evidence 
 		USING VOC_Annot a, VOC_AnnotType ap, VOC_VocabDAG v, DAG_Node n
-                WHERE VOC_Evidence._Annot_key = a._Annot_key
+		WHERE VOC_Evidence._Annot_key = a._Annot_key
                 AND a._Object_key = v_objectKey
                 AND a._Term_key != v_termKey
                 AND a._Term_key in (120, 1098, 6113)
@@ -105,7 +105,7 @@ THEN
         END IF;
 END IF;
 
--- if this is a GO annotation, then remove the NOGO designation for the reference */
+-- if this is a GO annotation, then remove the NOGO designation for the reference
 
 IF (SELECT a._AnnotType_key FROM VOC_Annot a where NEW._Annot_key = a._Annot_key) = 1000
 THEN
