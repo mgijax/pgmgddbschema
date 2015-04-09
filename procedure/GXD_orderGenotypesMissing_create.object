@@ -1,0 +1,64 @@
+#!/bin/sh
+
+#
+# History
+#
+# 12/16/2009	lec
+#	- TR9871/refresh all genotypes
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/GXD_orderGenotypesMissing_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION GXD_orderGenotypesMissing (
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_alleleKey int;
+allele_cursor refcursor;
+
+BEGIN
+
+--
+-- Refresh the GXD_AlleleGenotype (cache) table for all Genotypes
+-- which are missing
+--
+
+OPEN allele_cursor FOR
+SELECT DISTINCT _Allele_key_1 
+FROM GXD_AllelePair a
+WHERE not exists 
+(SELECT 1 FROM GXD_AlleleGenotype g 
+WHERE a._Genotype_key = g._Genotype_key
+AND a._Allele_key_1 = g._Allele_key)
+UNION
+SELECT DISTINCT _Allele_key_2 
+FROM GXD_AllelePair a
+WHERE a._Allele_key_2 IS NOT NULL
+AND NOT EXISTS 
+(SELECT 1 FROM GXD_AlleleGenotype g 
+WHERE a._Genotype_key = g._Genotype_key
+AND a._Allele_key_2 = g._Allele_key)
+;
+LOOP
+        FETCH allele_cursor INTO v_alleleKey;
+        EXIT WHEN NOT FOUND;
+ 	PERFORM GXD_orderGenotypes (v_alleleKey);
+END LOOP;
+CLOSE allele_cursor;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION GXD_orderGenotypesMissing() TO public;
+
+COMMENT ON FUNCTION mgd.GXD_orderGenotypesMissing() IS '';
+
+EOSQL
+
