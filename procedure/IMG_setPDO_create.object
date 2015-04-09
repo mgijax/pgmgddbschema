@@ -1,0 +1,118 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/11/2015	kstone
+#	-- Removed call to GXD expression cache load (now done in python)
+#
+# 06/11/2008    lec
+#       - TR9047/call GXD expression cache load
+#
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/IMG_setPDO_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION IMG_setPDO (
+v_pixID int,
+v_xDim int, 
+v_yDim int, 
+v_image_key int
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_accID acc_accession.accID%TYPE;
+v_prefix varchar(4);
+v_imageLDB int;
+v_imageType int;
+
+BEGIN
+
+-- If image_key is valid and a PIX foreign accession number
+-- doesnot already exist for the _Image_key and the PIX: accession
+-- ID doesnot already exist, the new ID is added to ACC_Accession
+-- and the x,y dim update the image record.
+-- ASSUMES:
+-- - _LogicalDB_key for "MGI Image Archive" is 19,
+-- - _MGIType_key for mgi Image objects is 9
+-- REQUIRES:
+-- - four integer inputs
+-- - _Image_key exists
+-- - _Image_key is not referenced by an existing PIX:#
+-- - PIX:# does not exist (referencing another _Image_key)
+
+v_prefix := 'PIX:'; 
+v_imageLDB := 19;
+v_imageType := 9;
+
+IF v_pixID IS NULL OR v_image_key IS NULL OR v_xDim IS NULL OR v_yDim IS NULL
+THEN
+	RAISE EXCEPTION E'IMG_setPDO: All four arguments must be non-NULL.';
+	RETURN;
+ELSE
+	v_accID := v_prefix + v_pixID::char(10);
+END IF;
+
+-- ck for missing image rec
+IF NOT EXISTS (SELECT 1 FROM IMG_Image WHERE _Image_key = v_image_key)
+THEN
+	RAISE EXCEPTION E'IMG_setPDO: % _Image_key does not exist.', v_image_key;
+	RETURN;
+END IF;
+
+-- check that this PIX:# does not already exist
+IF EXISTS (SELECT 1 FROM ACC_Accession 
+   WHERE accID = v_accID AND _MGIType_key = v_imageType
+   AND _LogicalDB_key = v_imageLDB 
+   )
+THEN
+	RAISE EXCEPTION E'IMG_setPDO: % accession already exists.', v_accID;
+	RETURN;
+END IF;
+
+-- check that image record is not referenced by another PIX:#
+IF EXISTS (SELECT 1 FROM ACC_Accession
+   WHERE _Object_key = v_image_key AND prefixPart = v_prefix
+   AND _LogicalDB_key = v_imageLDB AND _MGIType_key = v_imageType
+   )
+THEN
+	RAISE EXCEPTION E'IMG_setPDO: A PIX: accession already exists for _Image_key %.', v_image_key;
+	RETURN;
+END IF;
+
+-- insert the new PIX: accession record 
+PERFORM ACC_insertNoChecks (1001, v_image_key, v_accID, v_imageLDB, 'Image', -1, 1, 1);
+
+IF NOT FOUND
+THEN
+	RAISE EXCEPTION E'IMG_setPDO: ACC_insert failed.';
+	RETURN;
+END IF;
+
+-- set the image dimensions 
+UPDATE IMG_Image 
+SET xDim = v_xDim, yDim = v_yDim
+WHERE _Image_key = v_image_key
+;
+
+IF NOT FOUND
+THEN
+        RAISE EXCEPTION E'IMG_setPDO: Update x,y Dimensions failed.';
+        RETURN;
+END IF;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION IMG_setPDO(int,int,int,int) TO public;
+
+COMMENT ON FUNCTION mgd.IMG_setPDO(int,int,int,int) IS '';
+
+EOSQL
