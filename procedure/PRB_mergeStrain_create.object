@@ -33,6 +33,10 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
+v_alleleKey int;
+v_probe text;
+v_jnum text;
+allele_cursor refcursor;
 
 BEGIN
 
@@ -46,101 +50,88 @@ THEN
 	RETURN;
 END IF;
 
--- Check for valid merge conditions */
--- disallowed: */
---	private -> public */
---      public -> private */
---      Standard -> Non Standard */
+-- Check for valid merge conditions
+-- disallowed:
+--	private -> public
+--      public -> private
+--      Standard -> Non Standard 
 
-if (select private from PRB_Strain where _Strain_key = v_oldStrainKey) = 1
-   and
-   (select private from PRB_Strain where _Strain_key = v_newStrainKey) = 0
-begin
-	rollback transaction
-	raiserror 99999 "Cannot merge Private Strain into Public Strain"
-	return
-end
+IF (SELECT private FROM PRB_Strain WHERE _Strain_key = v_oldStrainKey) = 1
+   AND
+   (SELECT private FROM PRB_Strain WHERE _Strain_key = v_newStrainKey) = 0
+THEN
+	RAISE EXCEPTION E'PRB_mergeStrain: Cannot merge Private Strain into Public Strain.';
+	RETURN;
+END IF;
 
-if (select private from PRB_Strain where _Strain_key = v_oldStrainKey) = 0
-   and
-   (select private from PRB_Strain where _Strain_key = v_newStrainKey) = 1
-begin
-	rollback transaction
-	raiserror 99999 "Cannot merge Public Strain into Private Strain"
-	return
-end
+IF (SELECT private FROM PRB_Strain WHERE _Strain_key = v_oldStrainKey) = 0
+   AND
+   (SELECT private FROM PRB_Strain WHERE _Strain_key = v_newStrainKey) = 1
+THEN
+	RAISE EXCEPTION E'PRB_mergeStrain: Cannot merge Public Strain into Private Strain';
+	RETURN;
+END IF;
 
-if (select standard from PRB_Strain where _Strain_key = v_oldStrainKey) = 1
-   and
-   (select standard from PRB_Strain where _Strain_key = v_newStrainKey) = 0
-begin
-	rollback transaction
-	raiserror 99999 "Cannot merge Standard Strain into Non-Standard Strain"
-	return
-end
+IF (SELECT standard FROM PRB_Strain WHERE _Strain_key = v_oldStrainKey) = 1
+   AND
+   (SELECT standard FROM PRB_Strain WHERE _Strain_key = v_newStrainKey) = 0
+THEN
+	RAISE EXCEPTION E'PRB_mergeStrain: Cannot merge Standard Strain into Non-Standard Strain';
+	RETURN;
+END IF;
 
-/* Check for potential duplicate Probe RFLV Entries */
+-- Check for potential duplicate Probe RFLV Entries
 
-declare v_alleleKey integer
-declare v_probe varchar(255)
-declare v_jnum varchar(100)
+OPEN allele_cursor FOR
+SELECT DISTINCT _Allele_key
+FROM PRB_Allele_Strain
+WHERE _Strain_key in (v_oldStrainKey, v_newStrainkey)
+GROUP by _Allele_key having count(*) > 1
+;
+LOOP
+        FETCH allele_cursor INTO v_alleleKey;
+        EXIT WHEN NOT FOUND;
 
-declare allele_cursor cursor for
-select distinct _Allele_key
-from PRB_Allele_Strain
-where _Strain_key in (v_oldStrainKey, v_newStrainkey)
-group by _Allele_key having count(*) > 1
-for read only
- 
-open allele_cursor
- 
-fetch allele_cursor into v_alleleKey
- 
-while (v_v_sqlstatus = 0)
-begin
-	select v_probe = p.name, v_jnum = b.accID
-	from PRB_Allele a, PRB_RFLV v, PRB_Reference  r, PRB_Probe p, BIB_Acc_View b
-	where a._Allele_key = v_alleleKey and
+	SELECT p.name as v_probe, b.accID as v_jnum
+	FROM PRB_Allele a, PRB_RFLV v, PRB_Reference  r, PRB_Probe p, BIB_Acc_View b
+	WHERE a._Allele_key = v_alleleKey and
 	      a._RFLV_key = v._RFLV_key and
 	      v._Reference_key = r._Reference_key and
 	      r._Probe_key = p._Probe_key and
 	      r._Refs_key = b._Object_key and
 	      b.prefixPart = 'J:' and
 	      b._LogicalDB_key = 1
+        ;
 
-	rollback transaction
-	raiserror 99999 "This merge would create a duplicate entry for Probe '%1!', %2!", v_probe, v_jnum
-	return
-end
- 
-close allele_cursor
-deallocate cursor allele_cursor
+	RAISE EXCEPTION E'PRB_mergeStrain: This merge would create a duplicate entry for Probe '%, %.', v_probe, v_jnum;
+	RETURN;
+END LOOP;
+CLOSE allele_cursor;
 
-/* all Strains must have same symbols */
+-- all Strains must have same symbols
 
-if exists (select m1.* from PRB_Strain_Marker m1
+IF exists (select m1.* from PRB_Strain_Marker m1
            where m1._Strain_key = v_newStrainKey
 	   and not exists
 	   (select m2.* from PRB_Strain_Marker m2
 	    where m2._Strain_key = v_oldStrainKey and
 	    m2._Marker_key = m1._Marker_key))
-begin
+THEN
 	rollback transaction
 	raiserror 99999 "Old and New Strains must have the same Marker Symbols"
 	return
-end
+END IF;
 
-if exists (select m1.* from PRB_Strain_Marker m1
-           where m1._Strain_key = v_oldStrainKey
-	   and not exists
-	   (select m2.* from PRB_Strain_Marker m2
-	    where m2._Strain_key = v_newStrainKey and
+IF EXISTS (SELECT m1.* FROM PRB_Strain_Marker m1
+           WHERE m1._Strain_key = v_oldStrainKey
+	   AND NOT EXISTS
+	   (SELECT m2.* FROM PRB_Strain_Marker m2
+	    WHERE m2._Strain_key = v_newStrainKey and
 	    m2._Marker_key = m1._Marker_key))
-begin
-	rollback transaction
-	raiserror 99999 "Old and New Strains must have the same Marker Symbols"
-	return
-end
+THEN
+	RAISE EXCEPTION E'PRB_mergeStrain: Old and New Strains must have the same Marker Symbols.';
+	RETURN;
+END IF;
 
 /* both Strains must have the same Strain Attributes */
 

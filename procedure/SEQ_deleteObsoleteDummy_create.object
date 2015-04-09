@@ -41,8 +41,8 @@ FROM SEQ_Sequence s, SEQ_Sequence_Raw r
 WHERE s._SequenceStatus_key in (316343, 316345)
 AND s._Sequence_key = r._Sequence_key
 AND r.rawType = 'Not Loaded'
-AND not exists (select 1 from SEQ_Marker_Cache sc where s._Sequence_key = sc._Sequence_key)
-AND not exists (select 1 from SEQ_Probe_Cache sc where s._Sequence_key = sc._Sequence_key)
+AND NOT EXISTS (SELECT 1 FROM SEQ_Marker_Cache sc WHERE s._Sequence_key = sc._Sequence_key)
+AND NOT EXISTS (SELECT 1 FROM SEQ_Probe_Cache sc WHERE s._Sequence_key = sc._Sequence_key)
 ;
 
 CREATE INDEX idx_key ON toDelete(_Sequence_key);
