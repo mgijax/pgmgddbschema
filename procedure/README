@@ -9,6 +9,8 @@ grep "exec " *.c | sort | uniq | wc -l
 
 obsolete/not used in sybase:
 ACC_reserveMGIBlock_create.object
+GXD_ComputePrintNamesFrom_create.object
+GXD_SetStructDescPrintName_create.object
 GXD_orderGenotypesByUser_create.object
 VOC_getGOInferredFrom_create.object
 VOC_reorderTerms_create.object
@@ -20,7 +22,5 @@ MGI_createRestrictedSeqSet_create.object
 
 to do:
 
-GXD_ComputePrintNamesFrom_create.object
-GXD_SetStructDescPrintName_create.object
 GXD_duplicateAssay_create.object
 

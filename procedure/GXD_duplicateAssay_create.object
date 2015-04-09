@@ -1,0 +1,247 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/11/2015	kstone
+#	-- Removing call to gxd expression cache GXD_duplicateAssay
+#
+# 01/20/2010	lec
+#	- TR9560; remove _Coverage_key
+#
+# 11/26/2008
+#	- TR 9351; change _ImagePane_key to NULL
+#
+# 04/10/2008
+#	- TR 8951; add preps only
+#
+# 06/03/2003	lec
+#	- TR 4603
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/GXD_duplicateAssay_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION GXD_duplicateAssay (
+v_userKey int,
+v_assayKey int,
+v_duplicateDetails int
+)
+RETURNS INT AS
+\$\$
+
+DECLARE
+v_antibodyPrepKey int;
+v_probePrepKey int;
+v_newAssayKey int;
+v_specimenKey int;
+v_gelLaneKey int;
+v_resultKey int;
+v_gelRowKey int;
+v_gelBandKey int;
+
+BEGIN
+
+--
+-- Duplicate the given Assay (assayKey)
+-- if duplicateDetails = 1, then also duplicate Assay details
+--
+
+-- Duplicate the Antibody Prep
+
+v_antibodyPrepKey := max(_AntibodyPrep_key) + 1 FROM GXD_AntibodyPrep;
+
+INSERT INTO GXD_AntibodyPrep
+SELECT v_antibodyPrepKey, p._Antibody_key, p._Secondary_key, p._Label_key, current_date, current_date
+FROM GXD_AntibodyPrep p, GXD_Assay a
+WHERE a._Assay_key = v_assayKey
+AND a._AntibodyPrep_key = p._AntibodyPrep_key
+;
+
+-- Duplicate the Probe Prep
+
+v_probePrepKey := max(_ProbePrep_key) + 1 FROM GXD_ProbePrep;
+
+INSERT INTO GXD_ProbePrep
+SELECT v_probePrepKey, p._Probe_key, p._Sense_key, p._Label_key,
+	p._Visualization_key, p.type, current_date, current_date
+FROM GXD_ProbePrep p, GXD_Assay a
+WHERE a._Assay_key = v_assayKey
+AND a._ProbePrep_key = p._ProbePrep_key
+;
+
+IF (SELECT _AntibodyPrep_key FROM GXD_Assay WHERE _Assay_key = v_assayKey) is NULL
+THEN
+	v_antibodyPrepKey := NULL;
+END IF;
+
+IF (SELECT _ProbePrep_key FROM GXD_Assay WHERE _Assay_key = v_assayKey) is NULL
+THEN
+	v_probePrepKey := NULL;
+END IF;
+
+-- Duplicate the Assay
+
+v_newAssayKey := max(_Assay_key) + 1 FROM GXD_Assay;
+
+INSERT INTO GXD_Assay
+SELECT v_newAssayKey, _AssayType_key, _Refs_key, _Marker_key, v_probePrepkey, v_antibodyPrepKey,
+	NULL, _ReporterGene_key, v_userKey, v_userKey, current_date, current_date
+FROM GXD_Assay
+WHERE _Assay_key = v_assayKey
+;
+
+-- Duplicate the Assay Note
+
+INSERT INTO GXD_AssayNote
+SELECT v_newAssayKey, sequenceNum, assayNote, current_date, current_date
+FROM GXD_AssayNote
+WHERE _Assay_key = v_assayKey
+;
+
+-- If desired, duplicate the Specimens/Gels
+
+IF (v_duplicateDetails = 2 or v_duplicateDetails = 1)
+THEN
+
+-- Duplicate the Specimens
+
+v_specimenKey := max(_Specimen_key) + 1 FROM GXD_Specimen;
+
+CREATE TEMP TABLE specimen_tmp ON COMMIT DROP
+AS SELECT row_number() over (ORDER BY _Specimen_key) as seq, 
+	s._Specimen_key, s._Embedding_key, s._Fixation_key, s._Genotype_key,
+	s.sequenceNum, s.specimenLabel, s.sex, s.age, s.ageMin, s.ageMax, s.ageNote,
+	s.hybridization, s.specimenNote
+FROM GXD_Specimen s
+WHERE s._Assay_key = v_assayKey
+ORDER BY s.sequenceNum
+;
+
+INSERT INTO GXD_Specimen
+SELECT v_specimenKey + seq, v_newAssayKey, s._Embedding_key, s._Fixation_key, s._Genotype_key,
+	s.sequenceNum, s.specimenLabel, s.sex, s.age, s.ageMin, s.ageMax, s.ageNote,
+	s.hybridization, s.specimenNote, current_date, current_date
+FROM specimen_tmp s
+;
+
+-- Duplicate the Gel Lanes
+
+v_gelLaneKey := max(_GelLane_key) + 1 FROM GXD_GelLane;
+
+CREATE TEMP TABLE gellane_tmp ON COMMIT DROP
+AS SELECT row_number() over (ORDER BY _GelLane_key) as seq, 
+	s._GelLane_key, s._Genotype_key, s._GelRNAType_key, s._GelControl_key,
+	s.sequenceNum, s.laneLabel, s.sampleAmount, s.sex, s.age, s.ageMin, s.ageMax, s.ageNote, s.laneNote
+FROM GXD_GelLane s
+WHERE s._Assay_key = v_assayKey
+ORDER BY s.sequenceNum
+;
+
+INSERT INTO GXD_GelLane
+SELECT v_gelLaneKey + seq, v_newAssayKey, s._Genotype_key, s._GelRNAType_key, s._GelControl_key,
+	s.sequenceNum, s.laneLabel, s.sampleAmount, s.sex, s.age, s.ageMin, s.ageMax, s.ageNote, s.laneNote,
+	current_date, current_date
+FROM gellane_tmp s
+;
+
+INSERT INTO GXD_GelLaneStructure
+SELECT v_gelLaneKey + seq, g._Structure_key, current_date, current_date
+FROM gellane_tmp s, GXD_GelLaneStructure g
+WHERE s._GelLane_key = g._GelLane_key
+;
+
+END IF;
+
+-- If desired, duplicate the Specimen Results
+
+IF (v_duplicateDetails = 1)
+THEN
+
+-- InSitu Results
+
+v_resultKey := max(_Result_key) + 1 FROM GXD_InSituResult;
+
+CREATE TEMP TABLE isresult_tmp ON COMMIT DROP
+AS SELECT row_number() over (ORDER BY _Result_key) as seq, 
+	r._Result_key, _Specimen_key = v_specimenKey + n.seq,
+	r._Strength_key, r._Pattern_key, r.sequenceNum, r.resultNote
+FROM GXD_Specimen s, GXD_InSituResult r, specimen_tmp n
+WHERE s._Assay_key = v_assayKey
+AND s._Specimen_key = r._Specimen_key
+AND s._Specimen_key = n._Specimen_key
+ORDER BY r._Result_key, r.sequenceNum
+;
+
+INSERT INTO GXD_InSituResult
+SELECT v_resultKey + seq, _Specimen_key, _Strength_key, _Pattern_key, sequenceNum, resultnote,
+current_date, current_date
+FROM isresult_tmp
+;
+
+INSERT INTO GXD_InSituResultImage
+SELECT v_resultKey + seq, i._ImagePane_key, current_date, current_date
+FROM isresult_tmp s, GXD_InSituResultImage i
+WHERE s._Result_key = i._Result_key
+;
+
+INSERT INTO GXD_ISResultStructure
+SELECT v_resultKey + seq, i._Structure_key, current_date, current_date
+FROM isresult_tmp s, GXD_ISResultStructure i
+WHERE s._Result_key = i._Result_key
+;
+
+-- Gel Rows/Bands
+
+v_gelRowKey := max(_GelRow_key) + 1 FROM GXD_GelRow;
+
+CREATE TEMP TABLE gelrow_tmp ON COMMIT DROP
+AS SELECT row_number() over (ORDER BY _GelRow_key) as seq, 
+	g._GelRow_key, g._GelUnits_key, g.sequenceNum, g.size, g.rowNote
+FROM GXD_GelRow g
+WHERE g._Assay_key = v_assayKey
+ORDER BY g.sequenceNum
+;
+
+INSERT INTO GXD_GelRow
+SELECT v_gelRowKey + seq, v_newAssayKey, _GelUnits_key, sequenceNum, size, rowNote,
+current_date, current_date
+FROM gelrow_tmp
+;
+
+v_gelBandKey := max(_GelBand_key) + 1 FROM GXD_GelBand;
+
+CREATE TEMP TABLE gelband_tmp ON COMMIT DROP
+AS SELECT row_number() over (ORDER BY _GelBand_key) as seq, 
+	gb._GelBand_key, 
+	_GelLane_key = v_gellaneKey + gl.seq,
+	_GelRow_key = v_gelrowKey + gr.seq,
+	gb._Strength_key, gb.bandNote
+FROM GXD_GelBand gb, gellane_tmp gl, gelrow_tmp gr
+WHERE gl._GelLane_key = gb._GelLane_key
+AND gr._GelRow_key = gb._GelRow_key
+;
+
+INSERT INTO GXD_GelBand
+SELECT v_gelBandKey + seq, _GelLane_key, _GelRow_key, _Strength_key, bandNote,
+	current_date, current_date
+FROM gelband_tmp
+;
+
+END IF;
+
+SELECT v_newAssayKey
+;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION GXD_duplicateAssay(int,int,int) TO public;
+
+COMMENT ON FUNCTION mgd.GXD_duplicateAssay(int,int,int) IS 'duplicate an assay';
+
+EOSQL
