@@ -1,0 +1,485 @@
+#!/bin/sh
+
+#
+# History
+#
+# 06/02/2014
+#	- fix strainAttributesType : 'Strain Attributes' -> 'Strain/Attributes'
+#
+# 03/03/2006 lec
+#	- removed SNP tables, MGI_Set
+#
+# 02/10/2006 lec
+#	- added SNP tables, MGI_Set
+#
+# 05/30/2002 lec
+#	- revised update to ALL_Allele 
+#
+# 10/30/2001 lec
+#	- TR 2541; revised the Merge
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/PRB_mergeStrain_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION PRB_mergeStrain (
+v_oldStrainKey int,
+v_newStrainKey int
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+
+BEGIN
+
+-- Update old Strain key to new Strain key
+-- in all relevant tables which contain a Strain key.
+-- When finished, remove the Strain record for the old Strain key.
+
+IF v_oldStrainKey = v_newStrainKey
+THEN
+	RAISE EXCEPTION E'PRB_mergeStrain: Cannot merge a Strain into itself.';
+	RETURN;
+END IF;
+
+-- Check for valid merge conditions */
+-- disallowed: */
+--	private -> public */
+--      public -> private */
+--      Standard -> Non Standard */
+
+if (select private from PRB_Strain where _Strain_key = v_oldStrainKey) = 1
+   and
+   (select private from PRB_Strain where _Strain_key = v_newStrainKey) = 0
+begin
+	rollback transaction
+	raiserror 99999 "Cannot merge Private Strain into Public Strain"
+	return
+end
+
+if (select private from PRB_Strain where _Strain_key = v_oldStrainKey) = 0
+   and
+   (select private from PRB_Strain where _Strain_key = v_newStrainKey) = 1
+begin
+	rollback transaction
+	raiserror 99999 "Cannot merge Public Strain into Private Strain"
+	return
+end
+
+if (select standard from PRB_Strain where _Strain_key = v_oldStrainKey) = 1
+   and
+   (select standard from PRB_Strain where _Strain_key = v_newStrainKey) = 0
+begin
+	rollback transaction
+	raiserror 99999 "Cannot merge Standard Strain into Non-Standard Strain"
+	return
+end
+
+/* Check for potential duplicate Probe RFLV Entries */
+
+declare v_alleleKey integer
+declare v_probe varchar(255)
+declare v_jnum varchar(100)
+
+declare allele_cursor cursor for
+select distinct _Allele_key
+from PRB_Allele_Strain
+where _Strain_key in (v_oldStrainKey, v_newStrainkey)
+group by _Allele_key having count(*) > 1
+for read only
+ 
+open allele_cursor
+ 
+fetch allele_cursor into v_alleleKey
+ 
+while (v_v_sqlstatus = 0)
+begin
+	select v_probe = p.name, v_jnum = b.accID
+	from PRB_Allele a, PRB_RFLV v, PRB_Reference  r, PRB_Probe p, BIB_Acc_View b
+	where a._Allele_key = v_alleleKey and
+	      a._RFLV_key = v._RFLV_key and
+	      v._Reference_key = r._Reference_key and
+	      r._Probe_key = p._Probe_key and
+	      r._Refs_key = b._Object_key and
+	      b.prefixPart = 'J:' and
+	      b._LogicalDB_key = 1
+
+	rollback transaction
+	raiserror 99999 "This merge would create a duplicate entry for Probe '%1!', %2!", v_probe, v_jnum
+	return
+end
+ 
+close allele_cursor
+deallocate cursor allele_cursor
+
+/* all Strains must have same symbols */
+
+if exists (select m1.* from PRB_Strain_Marker m1
+           where m1._Strain_key = v_newStrainKey
+	   and not exists
+	   (select m2.* from PRB_Strain_Marker m2
+	    where m2._Strain_key = v_oldStrainKey and
+	    m2._Marker_key = m1._Marker_key))
+begin
+	rollback transaction
+	raiserror 99999 "Old and New Strains must have the same Marker Symbols"
+	return
+end
+
+if exists (select m1.* from PRB_Strain_Marker m1
+           where m1._Strain_key = v_oldStrainKey
+	   and not exists
+	   (select m2.* from PRB_Strain_Marker m2
+	    where m2._Strain_key = v_newStrainKey and
+	    m2._Marker_key = m1._Marker_key))
+begin
+	rollback transaction
+	raiserror 99999 "Old and New Strains must have the same Marker Symbols"
+	return
+end
+
+/* both Strains must have the same Strain Attributes */
+
+declare v_strainAttributesType integer
+select v_strainAttributesType = _AnnotType_key
+from VOC_AnnotType
+where name = "Strain/Attributes"
+
+if exists (select m1.* from VOC_Annot m1
+           where m1._Object_key = v_newStrainKey
+	   and m1._AnnotType_key = v_strainAttributesType
+	   and not exists
+	   (select m2.* from VOC_Annot m2
+	    where m2._Object_key = v_oldStrainKey
+	    and m2._AnnotType_key = v_strainAttributesType
+	    and m2._Term_key = m1._Term_key))
+begin
+	rollback transaction
+	raiserror 99999 "Old and New Strains must have the same Strain Attributes"
+	return
+end
+
+if exists (select m1.* from VOC_Annot m1
+           where m1._Object_key = v_oldStrainKey
+	   and m1._AnnotType_key = v_strainAttributesType
+	   and not exists
+	   (select m2.* from VOC_Annot m2
+	    where m2._Object_key = v_newStrainKey
+	    and m2._AnnotType_key = v_strainAttributesType
+	    and m2._Term_key = m1._Term_key))
+begin
+	rollback transaction
+	raiserror 99999 "Old and New Strains must have the same Strain Attributes"
+	return
+end
+
+/* both Strains must have the same Species value */
+
+if (select _Species_key from PRB_Strain where _Strain_key = v_newStrainKey) !=
+   (select _Species_key from PRB_Strain where _Strain_key = v_oldStrainKey)
+begin
+	rollback transaction
+	raiserror 99999 "Old and New Strains must have the same Species"
+	return
+end
+
+/* both Strains must have the same Needs Review values */
+
+declare v_oldNeedsReviewSum integer
+declare v_newNeedsReviewSum integer
+
+select v_oldNeedsReviewSum = sum(_Term_key)
+from PRB_Strain_NeedsReview_View
+where _Object_key = v_oldStrainKey
+
+select v_newNeedsReviewSum = sum(_Term_key)
+from PRB_Strain_NeedsReview_View
+where _Object_key = v_newStrainKey
+
+if (v_oldNeedsReviewSum != v_newNeedsReviewSum)
+begin
+	rollback transaction
+	raiserror 99999 "Old and New Strains must have the same Needs Review values"
+	return
+end
+
+/* JAX Registry - must be equal OR use the one that exists */
+
+declare v_jaxRegistryNew varchar(30)
+declare v_jaxRegistryOld varchar(30)
+declare v_strainmergeKey int
+
+select v_jaxRegistryNew = NULL
+select v_jaxRegistryOld = NULL
+
+if exists (select accID from ACC_Accession
+           where _Object_key = v_newStrainKey and _LogicalDB_Key = 22 and _MGIType_key = 10)
+begin
+	select v_jaxRegistryNew = accID from ACC_Accession
+	where _Object_key = v_newStrainKey and _LogicalDB_Key = 22 and _MGIType_key = 10
+end
+
+if exists (select _Accession_key from ACC_Accession
+           where _Object_key = v_oldStrainKey and _LogicalDB_Key = 22 and _MGIType_key = 10)
+begin
+	select v_jaxRegistryOld = accID from ACC_Accession
+	where _Object_key = v_oldStrainKey and _LogicalDB_Key = 22 and _MGIType_key = 10
+end
+
+if (v_jaxRegistryNew != NULL and v_jaxRegistryOld != NULL and
+    v_jaxRegistryNew != v_jaxRegistryOld)
+begin
+	rollback transaction
+	raiserror 99999 "Old and New Strains must have the same JAX Registry Number"
+	return
+end
+else if (v_jaxRegistryOld != NULL)
+begin
+    select v_jaxRegistryNew = v_jaxRegistryOld
+end
+
+select v_strainmergeKey = _User_key from MGI_User where login = "strainmerge"
+
+/*
+   Set the preferred bit to 0 for all MGI Acc# brought over from old strain.
+*/
+
+update ACC_Accession 
+set _Object_key = v_newStrainKey, preferred = 0
+where _LogicalDB_key = 1 and _MGIType_key = 10 and _Object_key = v_oldStrainKey
+
+/* remove any Accession records belonging to old strain */
+/* which already exist for new strain */
+/* that is, remove duplicates before updating keys */
+
+delete ACC_Accession
+from ACC_Accession old, ACC_Accession new
+where old._MGIType_key = 10
+and old._Object_key = v_oldStrainKey
+and old.accID = new.accID
+and old._LogicalDB_key = new._LogicalDB_key
+and new._Object_key = v_newStrainKey
+and new._MGIType_key = 10
+
+update ACC_Accession 
+set _Object_key = v_newStrainKey
+where _MGIType_key = 10 and _Object_key = v_oldStrainKey
+
+update ALL_Allele
+set _Strain_key = v_newStrainKey, _ModifiedBy_key = v_strainmergeKey, modification_date = getdate()
+where _Strain_key = v_oldStrainKey
+
+update ALL_CellLine
+set _Strain_key = v_newStrainKey
+where _Strain_key = v_oldStrainKey
+
+update PRB_Source
+set _Strain_key = v_newStrainKey, _ModifiedBy_key = v_strainmergeKey, modification_date = getdate()
+where _Strain_key = v_oldStrainKey
+
+update PRB_Allele_Strain
+set _Strain_key = v_newStrainKey, _ModifiedBy_key = v_strainmergeKey, modification_date = getdate()
+where _Strain_key = v_oldStrainKey
+
+update MLD_FISH
+set _Strain_key = v_newStrainKey
+where _Strain_key = v_oldStrainKey
+
+update MLD_InSitu
+set _Strain_key = v_newStrainKey
+where _Strain_key = v_oldStrainKey
+
+update CRS_Cross
+set _femaleStrain_key = v_newStrainKey
+where _femaleStrain_key = v_oldStrainKey
+
+update CRS_Cross
+set _maleStrain_key = v_newStrainKey
+where _maleStrain_key = v_oldStrainKey
+
+update CRS_Cross
+set _StrainHO_key = v_newStrainKey
+where _StrainHO_key = v_oldStrainKey
+
+update CRS_Cross
+set _StrainHT_key = v_newStrainKey
+where _StrainHT_key = v_oldStrainKey
+
+update GXD_Genotype
+set _Strain_key = v_newStrainKey, _ModifiedBy_key = v_strainmergeKey, modification_date = getdate()
+where _Strain_key = v_oldStrainKey
+
+update RI_RISet
+set _Strain_key_1 = v_newStrainKey
+where _Strain_key_1 = v_oldStrainKey
+
+update RI_RISet
+set _Strain_key_2 = v_newStrainKey
+where _Strain_key_2 = v_oldStrainKey
+
+/* NOTES */
+
+declare note_cursor cursor for
+select _NoteType_key
+from MGI_NoteType_Strain_View
+for read only
+ 
+declare v_noteKey integer
+declare v_noteTypeKey integer
+declare v_maxSeq integer
+
+open note_cursor
+fetch note_cursor into v_noteTypeKey
+ 
+while (v_v_sqlstatus = 0)
+begin
+    /* if both old and new strains have notes, concatenate old notes onto new notes */
+
+    if exists (select 1 from MGI_Note where _MGIType_key = 10 and _NoteType_key = v_noteTypeKey and _Object_key = v_newStrainKey)
+       and
+       exists (select 1 from MGI_Note where _MGIType_key = 10 and _NoteType_key = v_noteTypeKey and _Object_key = v_oldStrainKey)
+    begin
+
+        select v_noteKey = _Note_key 
+	    from MGI_Note 
+	    where _MGIType_key = 10 and _NoteType_key = v_noteTypeKey and _Object_key = v_newStrainKey
+
+        select v_maxSeq = max(c.sequenceNum) from MGI_NoteChunk c, MGI_Note n
+	  where n._MGIType_key = 10 and 
+		n._NoteType_key = v_noteTypeKey  and
+	        n._Object_key = v_newStrainKey and
+	        n._Note_key = c._Note_key
+
+	update MGI_NoteChunk
+	set _Note_key = v_noteKey, sequenceNum = v_maxSeq + c.sequenceNum
+	from MGI_Note n, MGI_NoteChunk c
+	where n._MGIType_key = 10 and 
+	      n._NoteType_key = v_noteTypeKey and 
+	      n._Object_key = v_oldStrainKey and
+	      n._Note_key = c._Note_key
+
+	delete from MGI_Note where _MGIType_key = 10 and _NoteType_key = v_noteTypeKey and _Object_key = v_oldStrainKey
+
+    end
+
+    /* else if only old strain has notes, move old notes to new notes */
+
+    else if not exists (select 1 from MGI_Note where _MGIType_key = 10 and _NoteType_key = v_noteTypeKey and _Object_key = v_newStrainKey)
+       and
+       exists (select 1 from MGI_Note where _MGIType_key = 10 and _NoteType_key = v_noteTypeKey and _Object_key = v_oldStrainKey)
+    begin
+        update MGI_Note 
+        set _Object_key = v_newStrainKey 
+        where _MGIType_key = 10 and _NoteType_key = v_noteTypeKey and _Object_key = v_oldStrainKey
+    end
+
+    /* else if only new strain has notes, do nothing */
+
+    fetch note_cursor into v_noteTypeKey
+end
+ 
+close note_cursor
+deallocate cursor note_cursor
+
+/* END NOTES */
+
+/* STRAIN/MARKER/ALLELES */
+
+/* remove duplicates */
+delete PRB_Strain_Marker
+from PRB_Strain_Marker p1, PRB_Strain_Marker p2
+where p1._Strain_key = v_oldStrainKey
+and p1._Marker_key = p2._Marker_key
+and p1._Allele_key = p2._Allele_key
+and p2._Strain_key = v_newStrainKey
+
+update PRB_Strain_Marker
+set _Strain_key = v_newStrainKey
+where _Strain_key = v_oldStrainKey
+
+/* TRANSLATIONS */
+
+/* remove duplicates */
+delete MGI_Translation
+from MGI_TranslationType tt, MGI_Translation t1, MGI_Translation t2
+where tt._MGIType_key = 10
+and tt._TranslationType_key = t1._TranslationType_key
+and t1._Object_key = v_oldStrainKey
+and tt._TranslationType_key = t2._TranslationType_key
+and t2._Object_key = v_newStrainKey
+and t1.badName = t2.badName
+
+update MGI_Translation
+set t1._Object_key = v_newStrainKey
+from MGI_TranslationType tt, MGI_Translation t1
+where tt._MGIType_key = 10
+and tt._TranslationType_key = t1._TranslationType_key
+and t1._Object_key = v_oldStrainKey
+
+/* SETS */
+
+/* remove duplicates */
+delete MGI_SetMember
+from MGI_Set s, MGI_SetMember s1, MGI_SetMember s2
+where s._MGIType_key = 10
+and s._Set_key = s1._Set_key
+and s1._Object_key = v_oldStrainKey
+and s._Set_key = s2._Set_key
+and s2._Object_key = v_newStrainKey
+
+update MGI_SetMember
+set s1._Object_key = v_newStrainKey
+from MGI_Set s, MGI_SetMember s1
+where s._MGIType_key = 10
+and s._Set_key = s1._Set_key
+and s1._Object_key = v_oldStrainKey
+
+/* SYNONYMS */
+
+update MGI_Synonym
+set _Object_key = v_newStrainKey
+where _Object_key = v_oldStrainKey
+and _MGIType_key = 10
+
+/* if the strain names are not equal */
+/*   a.  make old strain name a synonym of the new strain */
+/*   b.  make old strain name a translation of the new strain */
+
+if (select strain from PRB_Strain where _Strain_key = v_oldStrainKey) !=
+   (select strain from PRB_Strain where _Strain_key = v_newStrainKey)
+begin
+	declare v_nextKey integer
+	select v_nextKey = max(_Synonym_key) + 1 from MGI_Synonym
+	if v_nextKey is null select v_nextKey = 1000
+	declare v_synTypeKey integer
+	select v_synTypeKey = _SynonymType_key from MGI_SynonymType_Strain_View  where synonymType = 'nomenclature history'
+	insert into MGI_Synonym(_Synonym_key, _MGIType_key, _Object_key, _SynonymType_key, _Refs_key, synonym)
+	select v_nextKey, 10, v_newStrainKey, v_synTypeKey, null, strain
+	from PRB_Strain where _Strain_key = v_oldStrainKey
+
+	declare v_nextSeqKey integer
+	select v_nextKey = max(_Translation_key) + 1 from MGI_Translation
+	select v_nextSeqKey = max(sequenceNum) + 1 from MGI_Translation where _TranslationType_key = 1007
+	insert into MGI_Translation (_Translation_key, _TranslationType_key, _Object_key, badName, sequenceNum,
+		_CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
+	select v_nextKey, 1007, v_newStrainKey, strain, v_nextSeqKey, v_strainmergeKey, v_strainmergeKey,
+		getdate(), getdate()
+	from PRB_Strain where _Strain_key = v_oldStrainKey
+end
+
+delete from PRB_Strain
+where _Strain_key = v_oldStrainKey
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION PRB_mergeStrain(int,int) TO public;
+
+COMMENT ON FUNCTION mgd.PRB_mergeStrain(int,int) IS 'strain merge';
+
+EOSQL
