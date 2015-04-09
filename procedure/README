@@ -32,6 +32,3 @@ PRB_getStrainDataSets_create.object
 PRB_getStrainReferences_create.object
 PRB_mergeStrain_create.object
 
-lib_py_misc/lib_py_postgres:
-MGI_recordMeasurement_create.object
-
