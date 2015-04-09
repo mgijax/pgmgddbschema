@@ -14,13 +14,7 @@ GXD_SetStructDescPrintName_create.object
 GXD_orderGenotypesByUser_create.object
 VOC_getGOInferredFrom_create.object
 VOC_reorderTerms_create.object
-
-obsolete : mgidbutilities/bin/runRestrictedObjects.csh:
 MGI_createReferenceSet_create.object
 MGI_createRestrictedMolSegSet_create.object
 MGI_createRestrictedSeqSet_create.object
-
-to do:
-
-GXD_duplicateAssay_create.object
 
