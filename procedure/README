@@ -35,6 +35,3 @@ PRB_mergeStrain_create.object
 lib_py_misc/lib_py_postgres:
 MGI_recordMeasurement_create.object
 
-lib_java_dla/.../loads/Coord/CoordinateInputProcessor.java:
-MAP_deleteByCollection_create.object
-

@@ -3,6 +3,8 @@
 #
 # History
 #
+# see:  lib_java_dla/.../loads/Coord/CoordinateInputProcessor.java
+#
 # 08/16/2014	lec
 #	- repalce sp with hard-coded delete statement
 #	lib_java_dla/...../CoordinateInputProcessor.java/deleteCoordinates()
