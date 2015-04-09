@@ -1,0 +1,115 @@
+#!/bin/sh
+
+#
+# History:
+#
+#	10/23/07 - jsb - added for Home Page release (MGI 4.0), TR 8087
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/MGI_recordMeasurement_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION MGI_recordMeasurement (
+v_abbrev varchar(30),
+v_intVal int DEFAULT NULL,
+v_floatVal int DEFAULT NULL
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+-- text of error message if one is found
+v_error varchar(255);
+v_statKey int;
+v_expectsInt int;
+
+BEGIN
+
+-- log a measurement with the given value (only one of v_intVal and v_floatVal
+-- can be non-null) for the statistic with the abbreviation matching the 
+-- given v_abbrev
+
+v_error := NULL;
+
+-- check for errant parameters
+
+IF v_abbrev IS NULL
+THEN
+	v_error := 'v_abbrev cannot be null';
+
+ELSIF (v_intVal IS NULL) AND (v_floatVal IS NULL)
+THEN
+	v_error := 'v_intVal and v_floatVal cannot both be null';
+
+ELSIF (v_intVal IS NOT NULL) AND (v_floatVal IS NOT NULL)
+THEN
+	v_error := 'v_intVal and v_floatVal cannot both be non-null';
+END IF;
+
+-- look up the _Statistic_key for the given abbreviation
+
+IF v_error IS NULL
+THEN
+	v_statKey := _Statistic_key FROM MGI_Statistic WHERE abbreviation = v_abbrev;
+
+	IF v_statKey IS NULL
+	THEN
+		v_error := 'unknown value for v_abbrev : ' + v_abbrev;
+	END IF;
+ELSE
+	v_statKey := null;
+END IF;
+
+-- determine if we should be expecting a float or an integer, then check
+-- for a mismatch
+
+IF v_statKey IS NOT NULL
+THEN
+	v_expectsInt := hasIntValue FROM MGI_Statistic WHERE _Statistic_key = v_statKey;
+
+	IF (v_expectsInt = 1) AND (v_intVal IS NULL)
+	THEN
+		v_error := 'Statistic ' + v_abbrev + ' expects an integer';
+	ELSIF (v_expectsInt = 0) and (v_floatVal IS NULL)
+	THEN
+		v_error := 'Statistic ' + v_abbrev + ' expects a float';
+	END IF;
+END IF;
+
+-- report errors found
+
+IF v_error IS NOT NULL
+THEN
+	RAISE EXCEPTION E'MGI_recordMeasurement failed: %', v_error;
+	RETURN;
+END IF;
+
+-- At this point, we have finished checking for errors and we can go ahead
+-- with the addition to our data table.  Step one is to mark the prior
+-- 'latest' one as no longer being the latest; step two is the insertion.
+-- We wrap these steps in a transaction so they will be an atomic operation.
+--
+
+UPDATE MGI_Measurement
+SET isLatest = 0
+WHERE _Statistic_key = v_statKey
+AND isLatest = 1
+;
+
+INSERT INTO MGI_Measurement (_Statistic_key, timeRecorded, intValue, floatValue, isLatest)
+VALUES (v_statKey, current_name, v_intVal, v_floatVal, 1)
+;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MGI_recordMeasurement(varchar,int,int) TO public;
+
+COMMENT ON FUNCTION mgd.MGI_recordMeasurement(varchar,int,int) IS '';
+
+EOSQL
+
