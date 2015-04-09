@@ -1,0 +1,110 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/PRB_getStrainDataSets_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION PRB_getStrainDataSets (
+v_strainKey int
+)
+RETURNS TABLE (
+	accID text,
+	dataSet text
+) AS
+\$\$
+
+BEGIN
+
+-- Select all Probes AND Data Sets for given Strain
+ 
+CREATE TEMP TABLE source_tmp ON COMMIT DROP
+AS SELECT _Source_key, _Strain_key
+FROM PRB_Source
+WHERE _Strain_key = v_strainKey
+ORDER BY _Source_key
+;
+
+CREATE UNIQUE index idx_Source_key ON source_tmp(_Source_key);
+CREATE INDEX index_Strain_key ON source_tmp(_Strain_key);
+
+IF (SELECT COUNT(*) FROM source_tmp s, PRB_Probe p WHERE s._Source_key = p._Source_key) > 10000
+THEN
+	RAISE EXCEPTION 'More than 10000 objects_tmp are associated with this Strain.';
+	RETURN;
+END IF;
+
+CREATE TEMP TABLE objects_tmp ON COMMIT DROP
+AS SELECT p._Probe_key as _Object_key, 'Molecular Segment' as dataSet
+FROM source_tmp s, PRB_Probe p
+WHERE s._Source_key = p._Source_key
+UNION
+SELECT DISTINCT a._Antigen_key, 'Antigen' as dataSet
+FROM source_tmp s, GXD_Antigen a 
+WHERE s._Source_key = a._Source_key
+UNION
+SELECT DISTINCT a._Allele_key, 'Allele' as dataSet
+FROM ALL_Allele a
+WHERE a._Strain_key = v_strainKey
+UNION
+SELECT DISTINCT a._Genotype_key, 'Genotype' as dataSet
+FROM GXD_Genotype a
+WHERE a._Strain_key = v_strainKey
+UNION
+SELECT DISTINCT a._RISet_key, 'RI Set' as dataSet
+FROM RI_RISet a 
+WHERE a._Strain_key_1 = v_strainKey
+UNION
+SELECT DISTINCT a._RISet_key, 'RI Set' as dataSet
+FROM RI_RISet a 
+WHERE a._Strain_key_2 = v_strainKey
+;
+
+RETURN QUERY
+SELECT a.accID, p.dataSet
+FROM objects_tmp p, PRB_Acc_View a
+WHERE p.dataSet = 'Molecular Segment'
+AND p._Object_key = a._Object_key
+AND a.prefixPart = 'MGI:'
+AND a._LogicalDB_key = 1
+AND a.preferred = 1
+UNION
+SELECT a.accID, p.dataSet
+FROM objects_tmp p, GXD_Antigen_Acc_View a
+WHERE p.dataSet = 'Antigen'
+AND p._Object_key = a._Object_key
+AND a.prefixPart = 'MGI:'
+AND a._LogicalDB_key = 1
+AND a.preferred = 1
+UNION
+SELECT a.accID, p.dataset
+FROM objects_tmp p, ALL_Acc_View a
+WHERE p.dataSet = 'Allele'
+AND p._Object_key = a._Object_key
+AND a.prefixPart = 'MGI:'
+AND a._LogicalDB_key = 1
+AND a.preferred = 1
+UNION
+SELECT a.accID, p.dataset
+FROM objects_tmp p, GXD_Genotype_Acc_View a
+WHERE p.dataSet = 'Genotype'
+AND p._Object_key = a._Object_key
+AND a.prefixPart = 'MGI:'
+AND a._LogicalDB_key = 1
+AND a.preferred = 1
+UNION
+SELECT p._Object_key::char(30), p.dataset
+FROM objects_tmp p
+WHERE p.dataSet = 'RI Set'
+;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION PRB_getStrainDataSets(int) TO public;
+
+COMMENT ON FUNCTION mgd.PRB_getStrainDataSets(int) IS 'select all probes AND data sets for given strain';
+
+EOSQL
