@@ -9,7 +9,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 CREATE OR REPLACE FUNCTION PRB_getStrainByReference (
 v_refsKey int
 )
-RETURNS VOID AS
+RETURNS TABLE (
+	_Strain_key int,
+	strain text
+) AS
 \$\$
 
 BEGIN
@@ -68,6 +71,7 @@ AND r._Object_key = a._Allele_key
 AND r._MGIType_key = 11
 ;
  
+RETURN QUERY
 SELECT t._Strain_key, t.strain
 FROM strains s, PRB_Strain t
 WHERE s._Strain_key = t._Strain_key
