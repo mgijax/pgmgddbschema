@@ -1,0 +1,39 @@
+#!/bin/sh
+
+#
+# History
+#
+# 08/16/2014	lec
+#	- repalce sp with hard-coded delete statement
+#	lib_java_dla/...../CoordinateInputProcessor.java/deleteCoordinates()
+#	
+# 08/17/2004
+#	- Assembly
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/MAP_deleteByCollection_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION MAP_deleteByCollection (
+v_collection map_coord_collection.name%TYPE
+)
+RETURNS VOID AS
+\$\$
+
+BEGIN
+
+DELETE FROM MAP_Coord_Collection WHERE name = v_collection;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MAP_deleteByCollection(text) TO public;
+
+COMMENT ON FUNCTION mgd.MAP_deleteByCollection(text) IS 'delete MAP object by Collection';
+
+EOSQL
+
