@@ -10,7 +10,7 @@ CREATE OR REPLACE FUNCTION PRB_getStrainDataSets (
 v_strainKey int
 )
 RETURNS TABLE (
-	accID text,
+	accID varchar(30),
 	dataSet text
 ) AS
 \$\$

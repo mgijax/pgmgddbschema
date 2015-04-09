@@ -1,0 +1,89 @@
+!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/PRB_getStrainReferences_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION PRB_getStrainReferences (
+v_strainKey int
+)
+RETURNS TABLE (
+	jnum varchar(30),
+	dataSet text
+) AS
+\$\$
+
+BEGIN
+
+CREATE TEMP TABLE references_tmp ON COMMIT DROP
+AS select distinct e._Refs_key, dataSet = 'Mapping'
+from MLD_Expts e, MLD_InSitu m
+where e._Expt_key = m._Expt_key
+and m._Strain_key = v_strainKey
+union
+select distinct e._Refs_key, dataSet = 'Mapping'
+from MLD_Expts e, MLD_FISH m
+where e._Expt_key = m._Expt_key
+and m._Strain_key = v_strainKey
+union
+select distinct e._Refs_key, dataSet = 'Mapping'
+from MLD_Expts e, MLD_Matrix m, CRS_Cross c
+where e._Expt_key = m._Expt_key
+and m._Cross_key = c._Cross_key
+and c._femaleStrain_key = v_strainKey
+union
+select distinct e._Refs_key, dataSet = 'Mapping'
+from MLD_Expts e, MLD_Matrix m, CRS_Cross c
+where e._Expt_key = m._Expt_key
+and m._Cross_key = c._Cross_key
+and c._maleStrain_key = v_strainKey
+union
+select distinct e._Refs_key, dataSet = 'Mapping'
+from MLD_Expts e, MLD_Matrix m, CRS_Cross c
+where e._Expt_key = m._Expt_key
+and m._Cross_key = c._Cross_key
+and c._StrainHO_key = v_strainKey
+union
+select distinct e._Refs_key, dataSet = 'Mapping'
+from MLD_Expts e, MLD_Matrix m, CRS_Cross c
+where e._Expt_key = m._Expt_key
+and m._Cross_key = c._Cross_key
+and c._StrainHT_key = v_strainKey
+union
+select distinct x._Refs_key, dataSet = 'Expression'
+from GXD_Genotype s, GXD_Expression x
+where s._Strain_key = v_strainKey
+and s._Genotype_key = x._Genotype_key
+union
+select distinct r._Refs_key, dataSet = 'RFLP'
+from PRB_Reference r, PRB_RFLV v, PRB_Allele a, PRB_Allele_Strain s
+where r._Reference_key = v._Reference_key
+and v._RFLV_key = a._RFLV_key
+and a._Allele_key = s._Allele_key
+and s._Strain_key = v_strainKey
+union
+select distinct r._Refs_key, dataSet = 'Allele'
+from ALL_Allele a, MGI_Reference_Assoc r
+where a._Allele_key = r._Object_key
+and r._MGIType_key = 11
+and a._Strain_key = v_strainKey
+;
+ 
+RETURN QUERY
+select a.jnum, r.dataSet
+from references_tmp r, BIB_View a
+where r._Refs_key = a._Refs_key
+order by a.jnum
+;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION PRB_getStrainReferences(int) TO public;
+
+COMMENT ON FUNCTION mgd.PRB_getStrainReferences(int) IS 'select all references_tmp and data sets for given strain';
+
+EOSQL
