@@ -5,6 +5,51 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
+-- NAME: VOC_Annot_insert()
+--
+-- DESCRIPTOIN:
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IF EXISTS VOC_Annot_insert_trigger ON VOC_Annot;
+DROP FUNCTION IF EXISTS VOC_Annot_insert();
+
+CREATE OR REPLACE FUNCTION VOC_Annot_insert() RETURNS TRIGGER AS \$\$
+
+BEGIN
+
+IF (SELECT t.isObsolete FROM VOC_Term t WHERE t._Term_key = NEW._Term_key) = 1
+THEN
+	RAISE EXCEPTION E'Cannot Annotate to an Obsolete Term.';
+END IF;
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION VOC_Annot_insert() TO public;
+
+CREATE TRIGGER VOC_Annot_insert_trigger
+AFTER INSERT ON VOC_Annot
+FOR EACH ROW
+EXECUTE PROCEDURE VOC_Annot_insert();
+
+COMMENT ON FUNCTION mgd.VOC_Annot_insert() IS 'creates an update trigger to call voc_annot';
+
+EOSQL
+
+***********************
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
 -- NAME: VOC_Annot_update()
 --
 -- DESCRIPTOIN:

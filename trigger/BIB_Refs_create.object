@@ -94,3 +94,48 @@ EXECUTE PROCEDURE BIB_Refs_delete();
 COMMENT ON FUNCTION mgd.BIB_Refs_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
 
 EOSQL
+
+************************************
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: BIB_Refs_insert()
+--
+-- DESCRIPTOIN:
+--
+--	this insert trigger will call ACC_assignMGI
+--	in order to add a distinct MGI accession id
+--	to the NEW object
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IF EXISTS BIB_Refs_insert_trigger ON BIB_Refs;
+DROP FUNCTION IF EXISTS BIB_Refs_insert();
+
+CREATE OR REPLACE FUNCTION BIB_Refs_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
+PERFORM ACC_assignMGI(1001, NEW._Refs_key, 'Reference');
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION BIB_Refs_insert() TO public;
+
+CREATE TRIGGER BIB_Refs_insert_trigger
+AFTER INSERT ON BIB_Refs
+FOR EACH ROW
+EXECUTE PROCEDURE BIB_Refs_insert();
+
+COMMENT ON FUNCTION mgd.BIB_Refs_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+
+EOSQL

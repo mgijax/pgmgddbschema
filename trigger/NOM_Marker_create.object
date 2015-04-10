@@ -94,3 +94,48 @@ EXECUTE PROCEDURE NOM_Marker_delete();
 COMMENT ON FUNCTION mgd.NOM_Marker_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
 
 EOSQL
+
+********************************
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: NOM_Marker_insert()
+--
+-- DESCRIPTOIN:
+--
+--	this insert trigger will call ACC_assignMGI
+--	in order to add a distinct MGI accession id
+--	to the NEW object
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IF EXISTS NOM_Marker_insert_trigger ON NOM_Marker;
+DROP FUNCTION IF EXISTS NOM_Marker_insert();
+
+CREATE OR REPLACE FUNCTION NOM_Marker_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
+PERFORM ACC_assignMGI(1001, NEW._Nomen_key, 'Nomenclature');
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION NOM_Marker_insert() TO public;
+
+CREATE TRIGGER NOM_Marker_insert_trigger
+AFTER INSERT ON NOM_Marker
+FOR EACH ROW
+EXECUTE PROCEDURE NOM_Marker_insert();
+
+COMMENT ON FUNCTION mgd.NOM_Marker_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+
+EOSQL

@@ -12,4 +12,8 @@ DROP TRIGGER IF EXISTS VOC_Evidence_delete_trigger ON VOC_Evidence;
 
 DROP FUNCTION IF EXISTS VOC_Evidence_delete();
 
+DROP TRIGGER IF EXISTS VOC_Evidence_insert_trigger ON VOC_Evidence;
+
+DROP FUNCTION IF EXISTS VOC_Evidence_insert();
+
 EOSQL
