@@ -8,7 +8,7 @@
 
 cd `dirname $0`
 
-for i in IMG_*_create.object
+for i in IMG*_create.object
 do
 $i $*
 done

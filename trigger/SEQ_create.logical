@@ -8,7 +8,7 @@
 
 cd `dirname $0`
 
-for i in SEQ_*_create.object
+for i in SEQ*_create.object
 do
 $i $*
 done

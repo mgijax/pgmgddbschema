@@ -3,12 +3,12 @@
 #
 # Logical Group Script
 #
-# Executes all PRB_*_drop.object
+# Executes all PRB*_drop.object
 #
 
 cd `dirname $0`
 
-for i in PRB_*_drop.object
+for i in PRB*_drop.object
 do
 $i $*
 done

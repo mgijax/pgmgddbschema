@@ -3,12 +3,12 @@
 #
 # Logical Group Script
 #
-# Executes all GXD_*_drop.object
+# Executes all GXD*_drop.object
 #
 
 cd `dirname $0`
 
-for i in GXD_*_drop.object
+for i in GXD*_drop.object
 do
 $i $*
 done

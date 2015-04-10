@@ -8,7 +8,7 @@
 
 cd `dirname $0`
 
-for i in BIB_*_create.object
+for i in BIB*_create.object
 do
 $i $*
 done

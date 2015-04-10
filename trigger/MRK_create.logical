@@ -8,7 +8,7 @@
 
 cd `dirname $0`
 
-for i in MRK_*_create.object
+for i in MRK*_create.object
 do
 $i $*
 done

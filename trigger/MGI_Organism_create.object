@@ -94,3 +94,48 @@ EXECUTE PROCEDURE MGI_Organism_delete();
 COMMENT ON FUNCTION mgd.MGI_Organism_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
 
 EOSQL
+
+************************************
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: MGI_Organism_insert()
+--
+-- DESCRIPTOIN:
+--
+--	this insert trigger will call ACC_assignMGI
+--	in order to add a distinct MGI accession id
+--	to the NEW object
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IF EXISTS MGI_Organism_insert_trigger ON MGI_Organism;
+DROP FUNCTION IF EXISTS MGI_Organism_insert();
+
+CREATE OR REPLACE FUNCTION MGI_Organism_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
+PERFORM ACC_assignMGI(NEW._Organism_key, 'Organism');
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MGI_Organism_insert() TO public;
+
+CREATE TRIGGER MGI_Organism_insert_trigger
+AFTER INSERT ON MGI_Organism
+FOR EACH ROW
+EXECUTE PROCEDURE MGI_Organism_insert();
+
+COMMENT ON FUNCTION mgd.MGI_Organism_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+
+EOSQL

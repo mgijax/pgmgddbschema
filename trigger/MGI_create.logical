@@ -8,7 +8,7 @@
 
 cd `dirname $0`
 
-for i in MGI_*_create.object
+for i in MGI*_create.object
 do
 $i $*
 done

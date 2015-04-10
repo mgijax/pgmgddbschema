@@ -8,7 +8,7 @@
 
 cd `dirname $0`
 
-for i in NOM_*_create.object
+for i in NOM*_create.object
 do
 $i $*
 done

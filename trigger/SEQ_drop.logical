@@ -3,12 +3,12 @@
 #
 # Logical Group Script
 #
-# Executes all SEQ_*_drop.object
+# Executes all SEQ*_drop.object
 #
 
 cd `dirname $0`
 
-for i in SEQ_*_drop.object
+for i in SEQ*_drop.object
 do
 $i $*
 done
