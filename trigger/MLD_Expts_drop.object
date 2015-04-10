@@ -12,4 +12,8 @@ DROP TRIGGER IF EXISTS MLD_Expts_delete_trigger ON MLD_Expts;
 
 DROP FUNCTION IF EXISTS MLD_Expts_delete();
 
+DROP TRIGGER IF EXISTS MLD_Expts_insert_trigger ON MLD_Expts;
+
+DROP FUNCTION IF EXISTS MLD_Expts_insert();
+
 EOSQL
