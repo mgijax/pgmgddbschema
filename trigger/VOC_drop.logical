@@ -8,7 +8,7 @@
 
 cd `dirname $0`
 
-for i in VOC_*_drop.object
+for i in VOC_*drop.object
 do
 $i $*
 done
