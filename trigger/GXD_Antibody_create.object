@@ -94,3 +94,48 @@ EXECUTE PROCEDURE GXD_Antibody_delete();
 COMMENT ON FUNCTION mgd.GXD_Antibody_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
 
 EOSQL
+
+**************************************
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: GXD_Antibody_insert()
+--
+-- DESCRIPTOIN:
+--
+--	this insert trigger will call ACC_assignMGI
+--	in order to add a distinct MGI accession id
+--	to the NEW object
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IF EXISTS GXD_Antibody_insert_trigger ON GXD_Antibody;
+DROP FUNCTION IF EXISTS GXD_Antibody_insert();
+
+CREATE OR REPLACE FUNCTION GXD_Antibody_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
+PERFORM ACC_assignMGI(1001, NEW._Antibody_key, 'Antibody');
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION GXD_Antibody_insert() TO public;
+
+CREATE TRIGGER GXD_Antibody_insert_trigger
+AFTER INSERT ON GXD_Antibody
+FOR EACH ROW
+EXECUTE PROCEDURE GXD_Antibody_insert();
+
+COMMENT ON FUNCTION mgd.GXD_Antibody_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+
+EOSQL
