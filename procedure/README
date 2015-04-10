@@ -1,11 +1,8 @@
-04/03/2015
+04/10/2015
 
-Sybase Procedures      83 scripts
-PG Procedures      51 scripts
-Left to do:  31
-used in EI:  39
-in ei/csrc directory
-grep "exec " *.c | sort | uniq | wc -l
+Sybase 83
+Sybase 74 scripts (      75 functios)
+PG 75
 
 obsolete/not used in sybase:
 ACC_reserveMGIBlock_create.object
