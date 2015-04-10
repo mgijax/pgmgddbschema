@@ -97,6 +97,8 @@ EOSQL
 
 ***********************************************
 
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
 --
 -- NAME: PRB_Strain_insert()
 --

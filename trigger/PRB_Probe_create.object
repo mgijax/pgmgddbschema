@@ -94,3 +94,48 @@ EXECUTE PROCEDURE PRB_Probe_delete();
 COMMENT ON FUNCTION mgd.PRB_Probe_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
 
 EOSQL
+
+***************************************
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: PRB_Probe_insert()
+--
+-- DESCRIPTOIN:
+--
+--	this insert trigger will call ACC_assignMGI
+--	in order to add a distinct MGI accession id
+--	to the NEW object
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IF EXISTS PRB_Probe_insert_trigger ON PRB_Probe;
+DROP FUNCTION IF EXISTS PRB_Probe_insert();
+
+CREATE OR REPLACE FUNCTION PRB_Probe_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
+PERFORM ACC_assignMGI(1001, NEW._Probe_key, 'Segment');
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION PRB_Probe_insert() TO public;
+
+CREATE TRIGGER PRB_Probe_insert_trigger
+AFTER INSERT ON PRB_Probe
+FOR EACH ROW
+EXECUTE PROCEDURE PRB_Probe_insert();
+
+COMMENT ON FUNCTION mgd.PRB_Probe_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+
+EOSQL

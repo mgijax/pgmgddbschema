@@ -5,6 +5,53 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
+-- NAME: PRB_Reference_delete()
+--
+-- DESCRIPTOIN:
+--	
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IF EXISTS PRB_Reference_delete_trigger ON PRB_Reference;
+DROP FUNCTION IF EXISTS PRB_Reference_delete();
+
+CREATE OR REPLACE FUNCTION PRB_Reference_delete() RETURNS TRIGGER AS \$\$
+BEGIN
+
+DELETE FROM ACC_AccessionReference ar
+USING ACC_Accession a
+WHERE a._Object_key = OLD._Probe_key
+AND a._MGIType_key = 3
+and a._Accession_key = ar._Accession_key
+and ar._Refs_key = OLD._Refs_key
+;
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION PRB_Reference_delete() TO public;
+
+CREATE TRIGGER PRB_Reference_delete_trigger
+AFTER DELETE ON PRB_Reference
+FOR EACH ROW
+EXECUTE PROCEDURE PRB_Reference_delete();
+
+COMMENT ON FUNCTION mgd.PRB_Reference_delete() IS 'delete trigger for this _Object_key/_MGIType_key table';
+
+EOSQL
+
+***************************************
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
 -- NAME: PRB_Reference_update()
 --
 -- DESCRIPTOIN:

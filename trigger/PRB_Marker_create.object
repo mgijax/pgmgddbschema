@@ -5,6 +5,81 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
+-- NAME: PRB_Marker_insert()
+--
+-- DESCRIPTOIN:
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IF EXISTS PRB_Marker_insert_trigger ON PRB_Marker;
+DROP FUNCTION IF EXISTS PRB_Marker_insert();
+
+CREATE OR REPLACE FUNCTION PRB_Marker_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
+-- Cannot annotate using the Auto-E reference/J:85324 (86302)
+
+IF (SELECT current_user) NOT IN ('mgd_dbo', 'dbo')
+   AND
+   (NEW._Refs_key = 86302)
+THEN
+        RAISE EXCEPTION E'PRB_Marker_insert: Cannot use J:85324 (auto-E) reference.';
+END IF;
+
+-- Relationship cannot be null
+
+IF (NEW.relationship IS NULL)
+THEN
+        RAISE EXCEPTION E'PRB_Marker_insert: Relationship cannot be NULL.';
+END IF;
+
+-- Relationship must be 'H' for Probes of non-mouse source
+-- not a primer
+
+IF EXISTS (SELECT * FROM PRB_Probe p, PRB_Source s
+        WHERE NEW._Probe_key = p._Probe_key
+        and p._SegmentType_key != 63473
+        and p._Source_key = s._Source_key
+        and s._Organism_key != 1
+        and (NEW.relationship != 'H' or NEW.relationship IS NULL))
+THEN
+        RAISE EXCEPTION E'PRB_Marker_insert: Relationship Must be \'H\'';
+END IF;
+
+-- Relationship 'P' can only be used during an EST bulk load
+
+IF (NEW.relationship = 'P')
+THEN
+        RAISE EXCEPTION E'PRB_Marker_insert: Relationship \'P\' can only be used during EST load';
+END IF;
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION PRB_Marker_insert() TO public;
+
+CREATE TRIGGER PRB_Marker_insert_trigger
+AFTER INSERT ON PRB_Marker
+FOR EACH ROW
+EXECUTE PROCEDURE PRB_Marker_insert();
+
+COMMENT ON FUNCTION mgd.PRB_Marker_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+
+EOSQL
+
+***************************************
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
 -- NAME: PRB_Marker_update()
 --
 -- DESCRIPTOIN:

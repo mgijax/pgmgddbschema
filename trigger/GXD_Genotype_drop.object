@@ -12,4 +12,8 @@ DROP TRIGGER IF EXISTS GXD_Genotype_delete_trigger ON GXD_Genotype;
 
 DROP FUNCTION IF EXISTS GXD_Genotype_delete();
 
+DROP TRIGGER IF EXISTS GXD_Genotype_insert_trigger ON GXD_Genotype;
+
+DROP FUNCTION IF EXISTS GXD_Genotype_insert();
+
 EOSQL
