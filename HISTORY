@@ -5,6 +5,12 @@ CHANGES:
 this becomes obsolete when the production WI is replaced by the PWI:
 IMG_Cache
 
+TAG: pgmgddbschema-5-2-1-20
+DATE: 04/20/2015
+STAFF: lec
+CHANGES:
+1) match naming convention with mgddbschema product
+
 TAG: pgmgddbschema-5-2-1-19
 DATE: 04/06/2015
 STAFF: lec
