@@ -22,20 +22,13 @@ v_returnText voc_term.term%TYPE;
 
 BEGIN
 
+RAISE NOTICE '%', v_userKey;
+
 IF v_taskType = 'delete'
 THEN
         IF (v_userKey) NOT IN (SELECT _User_key FROM MGI_UserTask_View WHERE usertask = 'pheno:use Delete button')
         THEN
                 v_returnText := 'You do not have permission to delete this Allele record.';
-        ELSE
-        	v_returnText := 'pass';
-        END IF;
-
-ELSIF v_taskType = 'update'
-THEN
-        IF (v_userKey) NOT IN (SELECT _User_key FROM MGI_UserTask_View WHERE usertask = 'pheno:edit nomen data deleted')
-        THEN
-                v_returnText := 'You do not have permission to update nomenclature for this Allele record.';
         ELSE
         	v_returnText := 'pass';
         END IF;
