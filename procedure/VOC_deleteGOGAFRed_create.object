@@ -36,7 +36,7 @@ RETURNS VOID AS
 BEGIN
 
 -- if the user name is not in the list...return
--- this list should contain: GOA_%, RGD, GOC, RefGenome, UniProtKB
+-- this list should contain: GOA_%, RGD, GOC, GO_Central, UniProtKB
 
 IF (SELECT count(*) FROM MGI_User WHERE login like v_userName 
 	AND _User_key IN 
@@ -49,7 +49,7 @@ END IF;
 -- that are:              
 --   not red terms       
 --   non-IEAs           
---   assigned by GOA, RGD, GOC, RefGenome, UniProtKB
+--   assigned by GOA, RGD, GOC, GO_Central, UniProtKB
 
 CREATE TEMP TABLE goannot ON COMMIT DROP
 AS SELECT DISTINCT a._Object_key, n._DAG_key
