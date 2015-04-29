@@ -292,7 +292,7 @@ BEGIN
 
 -- If updating symbol, set needsReview flag for Strain
 
-PERFORM PRB_setStrainReview (NEW._Marker_key, NEW._Allele_key);
+PERFORM PRB_setStrainReview (NULL, NEW._Allele_key);
 
 RETURN NEW;
 
