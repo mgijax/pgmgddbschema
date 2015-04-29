@@ -400,8 +400,8 @@ WHERE _Strain_key = v_oldStrainKey
 -- TRANSLATIONS
 
 -- remove duplicates 
-DELETE FROM MGI_Translation tt
-USING MGI_Translation t1, MGI_Translation t2
+DELETE FROM MGI_Translation t1
+USING MGI_TranslationType tt, MGI_Translation t2
 WHERE tt._MGIType_key = 10
 and tt._TranslationType_key = t1._TranslationType_key
 and t1._Object_key = v_oldStrainKey
