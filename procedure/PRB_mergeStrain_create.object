@@ -410,12 +410,12 @@ and t2._Object_key = v_newStrainKey
 and t1.badName = t2.badName
 ;
 
-UPDATE MGI_Translation t1
-SET t1._Object_key = v_newStrainKey
+UPDATE MGI_Translation
+SET _Object_key = v_newStrainKey
 FROM MGI_TranslationType tt
 WHERE tt._MGIType_key = 10
-AND tt._TranslationType_key = t1._TranslationType_key
-AND t1._Object_key = v_oldStrainKey
+AND tt._TranslationType_key = MGI_Translation._TranslationType_key
+AND MGI_Translation._Object_key = v_oldStrainKey
 ;
 
 -- SETS 
@@ -430,12 +430,12 @@ AND s._Set_key = s2._Set_key
 AND s2._Object_key = v_newStrainKey
 ;
 
-UPDATE MGI_SetMember s1
-SET s1._Object_key = v_newStrainKey
+UPDATE MGI_SetMember
+SET _Object_key = v_newStrainKey
 FROM MGI_Set s
 WHERE s._MGIType_key = 10
-and s._Set_key = s1._Set_key
-and s1._Object_key = v_oldStrainKey
+and s._Set_key = MGI_SetMember._Set_key
+and MGI_SetMember._Object_key = v_oldStrainKey
 ;
 
 -- SYNONYMS 
