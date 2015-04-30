@@ -9,7 +9,8 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --
 -- DESCRIPTOIN:
 --	
--- 1) If Gel Row Size is entered, Gel Row Units must be specified.
+-- 1) If Strength is Absent, then Pattern must be Not Applicable.
+-- 2) If Pattern is Not Applicable, then Strength must be Absent.
 --
 -- INPUT:
 --	none
