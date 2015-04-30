@@ -1,0 +1,46 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: GXD_GelRow_insert()
+--
+-- DESCRIPTOIN:
+--	
+-- 1) If Gel Row Size is entered, Gel Row Units must be specified.
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IF EXISTS GXD_GelRow_insert_trigger ON GXD_Genotype;
+DROP FUNCTION IF EXISTS GXD_GelRow_insert();
+
+CREATE OR REPLACE FUNCTION GXD_GelRow_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
+IF NEW.size IS NOT NULL AND NEW._GelUnits_key < 0
+THEN
+  RAISE EXCEPTION 'If Gel Row Size is entered, Gel Row Units must be specified.';
+END IF;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION GXD_GelRow_insert() TO public;
+
+CREATE TRIGGER GXD_GelRow_insert_trigger
+AFTER INSERT OR UPDATE ON GXD_GelRow
+FOR EACH ROW
+EXECUTE PROCEDURE GXD_GelRow_insert();
+
+COMMENT ON FUNCTION mgd.GXD_GelRow_insert() IS 'creates a insert trigger for gxd_gelrow';
+
+EOSQL
+
