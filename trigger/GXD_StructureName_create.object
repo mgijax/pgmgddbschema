@@ -95,13 +95,13 @@ DROP FUNCTION IF EXISTS GXD_StructureName_update();
 CREATE OR REPLACE FUNCTION GXD_StructureName_update() RETURNS TRIGGER AS \$\$
 BEGIN
 
-IF (SELECT count(*) FROM GXD_StructureName sn
-    WHERE sn._Structure_key = NEW._Structure_key
-    AND sn.structure = NEW.structure) >
-   (SELECT count(*) from NEW)
-THEN
-    RAISE EXCEPTION E'GXD_StructureName: Inserted StructureName has duplicate structure attribute';
-END IF;
+--IF (SELECT count(*) FROM GXD_StructureName sn
+--    WHERE sn._Structure_key = NEW._Structure_key
+--    AND sn.structure = NEW.structure) >
+--   (SELECT count(*) from NEW)
+--THEN
+--    RAISE EXCEPTION E'GXD_StructureName: Inserted StructureName has duplicate structure attribute';
+--END IF;
 
 RETURN NEW;
 
