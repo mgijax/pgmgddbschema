@@ -3,6 +3,9 @@
 #
 # History
 #
+# 05/04/2015
+#       - changed "Old and New" to "Incorrect and Correct"
+#
 # 06/02/2014
 #	- fix strainAttributesType : 'Strain Attributes' -> 'Strain/Attributes'
 #
@@ -134,7 +137,7 @@ IF EXISTS (SELECT m1.* FROM PRB_Strain_Marker m1
 	    WHERE m2._Strain_key = v_oldStrainKey AND
 	    m2._Marker_key = m1._Marker_key))
 THEN
-	RAISE EXCEPTION E'PRB_mergeStrain: Old and New Strains must have the same Marker Symbols.';
+	RAISE EXCEPTION E'PRB_mergeStrain: Incorrect and Correct Strains must have the same Marker Symbols.';
 	RETURN;
 END IF;
 
@@ -145,7 +148,7 @@ IF EXISTS (SELECT m1.* FROM PRB_Strain_Marker m1
 	    WHERE m2._Strain_key = v_newStrainKey AND
 	    m2._Marker_key = m1._Marker_key))
 THEN
-	RAISE EXCEPTION E'PRB_mergeStrain: Old and New Strains must have the same Marker Symbols.';
+	RAISE EXCEPTION E'PRB_mergeStrain: Incorrect and Correct Strains must have the same Marker Symbols.';
 	RETURN;
 END IF;
 
@@ -165,7 +168,7 @@ IF EXISTS (SELECT m1.* FROM VOC_Annot m1
 	    AND m2._AnnotType_key = v_strainAttributesType
 	    AND m2._Term_key = m1._Term_key))
 THEN
-	RAISE EXCEPTION E'PRB_mergeStrain: Old and New Strains must have the same Strain Attributes.';
+	RAISE EXCEPTION E'PRB_mergeStrain: Incorrect and Correct Strains must have the same Strain Attributes.';
 	RETURN;
 END IF;
 
@@ -178,7 +181,7 @@ IF EXISTS (SELECT m1.* FROM VOC_Annot m1
 	    AND m2._AnnotType_key = v_strainAttributesType
 	    AND m2._Term_key = m1._Term_key))
 THEN
-	RAISE EXCEPTION E'PRB_mergeStrain: Old and New Strains must have the same Strain Attributes.';
+	RAISE EXCEPTION E'PRB_mergeStrain: Incorrect and Correct Strains must have the same Strain Attributes.';
 	RETURN;
 END IF;
 
@@ -187,7 +190,7 @@ END IF;
 IF (SELECT _Species_key FROM PRB_Strain WHERE _Strain_key = v_newStrainKey) !=
    (SELECT _Species_key FROM PRB_Strain WHERE _Strain_key = v_oldStrainKey)
 THEN
-	RAISE EXCEPTION E'PRB_mergeStrain: Old and New Strains must have the same Species.';
+	RAISE EXCEPTION E'PRB_mergeStrain: Incorrect and Correct Strains must have the same Species.';
 	RETURN;
 END IF;
 
@@ -198,7 +201,7 @@ v_newNeedsReviewSum := sum(_Term_key) from PRB_Strain_NeedsReview_View WHERE _Ob
 
 IF (v_oldNeedsReviewSum != v_newNeedsReviewSum)
 THEN
-	RAISE EXCEPTION E'PRB_mergeStrain: Old and New Strains must have the same Needs Review values.';
+	RAISE EXCEPTION E'PRB_mergeStrain: Incorrect and Correct Strains must have the same Needs Review values.';
 	RETURN;
 END IF;
 
@@ -223,7 +226,7 @@ END IF;
 
 IF (v_jaxRegistryNew != NULL AND v_jaxRegistryOld != NULL AND v_jaxRegistryNew != v_jaxRegistryOld)
 THEN
-	RAISE EXCEPTION E'PRB_mergeStrain: Old and New Strains must have the same JAX Registry Number.';
+	RAISE EXCEPTION E'PRB_mergeStrain: Incorrect and Correct Strains must have the same JAX Registry Number.';
 	RETURN;
 ELSIF (v_jaxRegistryOld != NULL)
 THEN

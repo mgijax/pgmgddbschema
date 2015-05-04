@@ -254,15 +254,18 @@ END IF; -- final
 IF stem = 'Not' AND v_ageMin >= 0
 THEN
     RAISE EXCEPTION E'Invalid Age Value: "%"\n', saveAge;
+    RETURN;
 END IF;
 
 IF stem = 'embryonic' AND timeUnit IS NULL AND timeRange IS NOT NULL
 THEN
     RAISE EXCEPTION E'Invalid Age Value: "%"\n', saveAge;
+    RETURN;
 END IF;
 
 IF v_ageMin IS NULL AND v_ageMax IS NULL THEN
     RAISE EXCEPTION E'Invalid Age Value: "%"\n', saveAge;
+    RETURN;
 END IF;
 
 RETURN;

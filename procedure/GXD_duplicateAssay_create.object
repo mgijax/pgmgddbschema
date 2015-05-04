@@ -167,7 +167,7 @@ v_resultKey := max(_Result_key) + 1 FROM GXD_InSituResult;
 
 CREATE TEMP TABLE isresult_tmp ON COMMIT DROP
 AS SELECT row_number() over (ORDER BY _Result_key) as seq, 
-	r._Result_key, _Specimen_key = v_specimenKey + n.seq,
+	r._Result_key, v_specimenKey + n.seq as _Specimen_key,
 	r._Strength_key, r._Pattern_key, r.sequenceNum, r.resultNote
 FROM GXD_Specimen s, GXD_InSituResult r, specimen_tmp n
 WHERE s._Assay_key = v_assayKey
@@ -217,8 +217,8 @@ v_gelBandKey := max(_GelBand_key) + 1 FROM GXD_GelBand;
 CREATE TEMP TABLE gelband_tmp ON COMMIT DROP
 AS SELECT row_number() over (ORDER BY _GelBand_key) as seq, 
 	gb._GelBand_key, 
-	_GelLane_key = v_gellaneKey + gl.seq,
-	_GelRow_key = v_gelrowKey + gr.seq,
+	v_gellaneKey + gl.seq as _GelLane_key,
+	v_gelrowKey + gr.seq as _GelRow_key,
 	gb._Strength_key, gb.bandNote
 FROM GXD_GelBand gb, gellane_tmp gl, gelrow_tmp gr
 WHERE gl._GelLane_key = gb._GelLane_key
@@ -233,7 +233,7 @@ FROM gelband_tmp
 
 END IF;
 
-SELECT v_newAssayKey
+RETURN (SELECT v_newAssayKey)
 ;
 
 END;

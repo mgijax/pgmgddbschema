@@ -71,7 +71,7 @@ LOOP
 	-- see PRB_ageMinMex for exceptions
 	SELECT * FROM PRB_ageMinMax(v_age) into v_ageMin, v_ageMax;
 
-	if (v_table = 'GXD_Expression')
+	IF (v_table = 'GXD_Expression')
 	THEN
 		UPDATE GXD_Expression 
 		SET ageMin = v_ageMin, ageMax = v_ageMax WHERE _Expression_key = v_pkey;
@@ -97,6 +97,8 @@ LOOP
 END LOOP;
 
 CLOSE age_cursor;
+
+RETURN;
 
 END;
 \$\$
