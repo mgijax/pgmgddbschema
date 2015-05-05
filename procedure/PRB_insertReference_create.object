@@ -14,22 +14,21 @@ ${PG_MGD_DBSCHEMADIR}/procedure/PRB_insertReference_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION PRB_insertReference (
-userKey int,
-refsKey int,
-probeKey int
+v_userKey int,
+v_refsKey int,
+v_probeKey int
 )
 RETURNS VOID AS
 \$\$
 
 DECLARE
 maxReferenceKey int;
-userKey int;
 
 BEGIN
 
 -- Insert record into PRB_Reference if _Refs_key/_Probe_key pair does not already exist
 
-IF (SELECT count(*) FROM PRB_Reference WHERE _Refs_key = refsKey AND _Probe_key = probeKey) > 0
+IF (SELECT count(*) FROM PRB_Reference WHERE _Refs_key = v_refsKey AND _Probe_key = v_probeKey) > 0
 THEN
 	RETURN;
 END IF;
@@ -38,7 +37,7 @@ maxReferenceKey := max(_Reference_key) + 1 FROM PRB_Reference;
 
 INSERT INTO PRB_Reference
 (_Reference_key, _Probe_key, _Refs_key, hasRmap, hasSequence, _CreatedBy_key, _ModifiedBy_key)
-VALUES (maxReferenceKey, probeKey, refsKey, 0, 0, userKey, userKey)
+VALUES (maxReferenceKey, v_probeKey, v_refsKey, 0, 0, v_userKey, v_userKey)
 ;
 
 END;
