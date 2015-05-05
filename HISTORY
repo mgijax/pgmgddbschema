@@ -5,6 +5,12 @@ CHANGES:
 this becomes obsolete when the production WI is replaced by the PWI:
 IMG_Cache
 
+TAG: pgmgddbschema-5-2-1-22
+DATE: 05/05/2015
+STAFF: lec
+CHANGES:
+1) updated during EI/PG testing
+
 TAG: pgmgddbschema-5-2-1-21
 TAG: pgmgddbschema-5-2-1-20
 DATE: 04/20/2015, 04/22/2015

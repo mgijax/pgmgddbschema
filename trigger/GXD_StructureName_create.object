@@ -26,13 +26,14 @@ DROP FUNCTION IF EXISTS GXD_StructureName_insert();
 CREATE OR REPLACE FUNCTION GXD_StructureName_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
+-- chicken/egg : GXD_Structure and GXD_StrucuteName cannot be co-foreigned keyed
 -- ensure that the structure specified exists
 
-IF NOT EXISTS (SELECT * FROM GXD_Structure s
-              WHERE s._Structure_key = NEW._Structure_key)
-THEN
-    RAISE EXCEPTION E'GXD_StructureName: Inserted StructureName specifies a non-existent Structure';
-END IF;
+--IF NOT EXISTS (SELECT * FROM GXD_Structure s
+              --WHERE s._Structure_key = NEW._Structure_key)
+--THEN
+    --RAISE EXCEPTION E'GXD_StructureName: Inserted StructureName specifies a non-existent Structure';
+--END IF;
 
 -- look for duplicate (structure key, structure) tuples
 

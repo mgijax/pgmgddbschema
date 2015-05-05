@@ -21,7 +21,7 @@ ALTER TABLE mgd.ALL_Cre_Cache ADD FOREIGN KEY (_Structure_key) REFERENCES mgd.GX
 ALTER TABLE mgd.GXD_Structure ADD FOREIGN KEY (_Parent_key) REFERENCES mgd.GXD_Structure;
 
 
-ALTER TABLE mgd.GXD_StructureName ADD FOREIGN KEY (_Structure_key) REFERENCES mgd.GXD_Structure ON DELETE CASCADE;
+--ALTER TABLE mgd.GXD_StructureName ADD FOREIGN KEY (_Structure_key) REFERENCES mgd.GXD_Structure ON DELETE CASCADE;
 
 
 ALTER TABLE mgd.GXD_StructureClosure ADD FOREIGN KEY (_Structure_key) REFERENCES mgd.GXD_Structure;
