@@ -21,7 +21,6 @@ HMD_create.logical \
 IMG_create.logical \
 MAP_create.logical \
 MGI_create.logical \
-MLC_create.logical \
 RI_create.logical \
 MLD_create.logical \
 DAG_create.logical \
