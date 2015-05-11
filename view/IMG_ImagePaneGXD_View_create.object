@@ -18,7 +18,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create view mgd.IMG_ImagePaneGXD_View
 as
 select r._Image_key, r._Refs_key, i._ImagePane_key, 
-r.figureLabel || i.paneLabel as paneLabel,
+concat(r.figureLabel,i.paneLabel) as paneLabel,
 c.jnumID, c.jnum, c.short_citation
 from IMG_Image r, IMG_ImagePane i, BIB_All_View c
 where r._MGIType_key = 8
