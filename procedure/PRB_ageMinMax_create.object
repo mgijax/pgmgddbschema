@@ -86,7 +86,7 @@ THEN
         RAISE NOTICE E'Invalid Age Value: "%"\n', saveAge;
 	RETURN;
 
--- parse the age INTO 3 parts:          
+-- parse the age into 3 parts:          
 --     stem (embryonic, postnatal),     
 --     time unit (day, week, month year) 
 --     time range (x   x,y,z   x-y)     
