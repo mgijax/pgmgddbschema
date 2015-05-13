@@ -155,7 +155,7 @@ END IF;
 -- both Strains must have the same Strain Attributes
 
 --v_strainAttributesType := _AnnotType_key from VOC_AnnotType WHERE name = 'Strain/Attributes';
---v_strainmergeKey := _User_key from MGI_User WHERE login = "strainmerge";
+--v_strainmergeKey := _User_key from MGI_User WHERE login = 'strainmerge';
 v_strainAttributesType := 1009;
 v_strainmergeKey := 1400;
 

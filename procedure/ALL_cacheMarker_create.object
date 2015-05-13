@@ -94,7 +94,7 @@ ELSE
 --   	key in ALL_Allele is not null
 --
 
-    --v_invalidated := _Term_key FROM VOC_Term WHERE term = "Curator Invalidated" AND _Vocab_key = 73;
+    --v_invalidated := _Term_key FROM VOC_Term WHERE term = 'Curator Invalidated' AND _Vocab_key = 73;
     v_invalidated := 4268546;
 
 -- case 1
