@@ -106,7 +106,7 @@ LOOP
 				a2._MGIType_key = 1
 				AND a1._Object_key = a2._Object_key
 				AND a2._LogicalDB_key = 1
-				AND a2.prefixPart = "J:"
+				AND a2.prefixPart = 'J:'
 				AND a2.preferred = 1)
 			LEFT OUTER JOIN ACC_Accession a3 on (
 				a1._Object_key = a3._Object_key
@@ -115,7 +115,7 @@ LOOP
 		WHERE a1._MGIType_key = 1
 		AND a1._Object_key = v_refKey
 		AND a1._LogicalDB_key = 1
-		AND a1.prefixPart = "MGI:"
+		AND a1.prefixPart = 'MGI:'
 		AND a1.preferred = 1
 		;
 
