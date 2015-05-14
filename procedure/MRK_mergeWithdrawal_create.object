@@ -223,7 +223,9 @@ THEN
 
 	IF NOT EXISTS (SELECT 1 FROM ALL_Allele WHERE _Marker_key = v_oldKey)
 	THEN
-		v_alleleSymbol := v_newSymbol || '<' || v_oldSymbol + '>';
+		RAISE NOTICE '\nHERE IS MY ERROR: %, %\n', v_newSymbol, v_oldSymbol;
+
+		v_alleleSymbol := v_newSymbol || '<' || v_oldSymbol || '>';
 
 		PERFORM ALL_insertAllele (v_userKey, v_newKey, v_alleleSymbol, v_oldName, 
 			v_refsKey, 0, null, null, null, null,
