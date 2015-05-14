@@ -102,19 +102,12 @@ FROM redannot r, goannot g, MRK_Marker m
 WHERE r._Object_key = g._Object_key
 AND r._DAG_key = g._DAG_key
 AND r._Object_key = m._Marker_key
-ORDER by m.symbol, r._DAG_key
 ;
 
 DELETE FROM VOC_Annot a
 USING toDelete d
 WHERE d._Annot_key = a._Annot_key
 ;
-
-IF NOT FOUND
-THEN
-        RAISE EXCEPTION E'VOC_deleteGOGAFRead: Could not delete annotations.';
-        RETURN;
-END IF;
 
 END;
 \$\$
