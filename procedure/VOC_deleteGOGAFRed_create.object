@@ -105,7 +105,7 @@ AND r._Object_key = m._Marker_key
 ORDER by m.symbol, r._DAG_key
 ;
 
-DELETE FROM VOC_Annot
+DELETE FROM VOC_Annot a
 USING toDelete d
 WHERE d._Annot_key = a._Annot_key
 ;
