@@ -14,30 +14,30 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ALL_mergeAllele_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION ALL_mergeAllele (
-  oldAlleleKey int,
-  newAlleleKey int
+v_oldAlleleKey int,
+v_newAlleleKey int
 )
 RETURNS VOID AS
 \$\$
 
 BEGIN
 
-UPDATE ALL_Knockout_Cache SET _Allele_key = newAlleleKey WHERE _Allele_key = oldAlleleKey
+UPDATE ALL_Knockout_Cache SET _Allele_key = v_newAlleleKey WHERE _Allele_key = v_oldAlleleKey
 ;
 
-UPDATE GXD_AlleleGenotype SET _Allele_key = newAlleleKey WHERE _Allele_key = oldAlleleKey
+UPDATE GXD_AlleleGenotype SET _Allele_key = v_newAlleleKey WHERE _Allele_key = v_oldAlleleKey
 ;
 
-UPDATE GXD_AllelePair SET _Allele_key_1 = newAlleleKey WHERE _Allele_key_1 = oldAlleleKey
+UPDATE GXD_AllelePair SET _Allele_key_1 = v_newAlleleKey WHERE _Allele_key_1 = v_oldAlleleKey
 ;
 
-UPDATE GXD_AllelePair SET _Allele_key_2 = newAlleleKey WHERE _Allele_key_2 = oldAlleleKey
+UPDATE GXD_AllelePair SET _Allele_key_2 = v_newAlleleKey WHERE _Allele_key_2 = v_oldAlleleKey
 ;
 
-UPDATE MLD_Expt_Marker SET _Allele_key = newAlleleKey WHERE _Allele_key = oldAlleleKey
+UPDATE MLD_Expt_Marker SET _Allele_key = v_newAlleleKey WHERE _Allele_key = v_oldAlleleKey
 ;
 
-DELETE FROM ALL_Allele WHERE _Allele_key = oldAlleleKey
+DELETE FROM ALL_Allele WHERE _Allele_key = v_oldAlleleKey
 ;
 
 END;

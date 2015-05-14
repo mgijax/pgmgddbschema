@@ -45,7 +45,7 @@ END IF;
 v_oldAlleleKey := _Allele_key from ALL_Allele where _Marker_key = v_oldKey and isWildType = 1;
 v_newAlleleKey := _Allele_key from ALL_Allele where _Marker_key = v_newKey and isWildType = 1;
 
-IF v_oldAlleleKey IS NOT NULL
+IF v_oldAlleleKey IS NOT NULL and v_newAlleleKey IS NOT NULL
 THEN
 	PERFORM ALL_mergeAllele (v_oldAlleleKey, v_newAlleleKey);
 	IF NOT FOUND
