@@ -17,7 +17,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 CREATE OR REPLACE FUNCTION MGI_recordMeasurement (
 v_abbrev varchar(30),
 v_intVal int DEFAULT NULL,
-v_floatVal int DEFAULT NULL
+v_floatVal numeric DEFAULT NULL
 )
 RETURNS VOID AS
 \$\$
@@ -102,16 +102,16 @@ AND isLatest = 1
 ;
 
 INSERT INTO MGI_Measurement (_Statistic_key, timeRecorded, intValue, floatValue, isLatest)
-VALUES (v_statKey, current_name, v_intVal, v_floatVal, 1)
+VALUES (v_statKey, current_date, v_intVal, v_floatVal, 1)
 ;
 
 END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MGI_recordMeasurement(varchar,int,int) TO public;
+GRANT EXECUTE ON FUNCTION MGI_recordMeasurement(varchar,int,numeric) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_recordMeasurement(varchar,int,int) IS '';
+COMMENT ON FUNCTION mgd.MGI_recordMeasurement(varchar,int,numeric) IS '';
 
 EOSQL
 
