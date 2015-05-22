@@ -1,10 +1,11 @@
-TAG: pgmgddbschema-5-2-2-?
+TAG: pgmgddbschema-5-2-2-2
 STAFF: lec
 DATE: 05/22/2015
 CHANGES:
 1) TR11652/HMD obsolete
 2) TR11651/MLC obsolete
 3) IMG_Cache obsolete
+4) SEQ_Description_Cache obsolete
 
 TAG: pgmgddbschema-5-2-2-1
 TAG: pgmgddbschema-5-2-1-26
