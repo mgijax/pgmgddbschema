@@ -1,6 +1,3 @@
-will become obsolete once PWI is installed:
-IMG_Cache_create.object:        _Object_key                int             not null,
-
 table that contain _Object_key/_MGIType_key: template_delete_create.object
 ACC_Accession_create.object:    _Object_key                    int             not null,
 IMG_ImagePane_Assoc_create.object:      _Object_key                    int             not null,

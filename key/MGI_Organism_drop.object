@@ -27,8 +27,6 @@ ALTER TABLE mgd.MRK_OMIM_Cache DROP CONSTRAINT MRK_OMIM_Cache__Organism_key_fkey
 
 ALTER TABLE mgd.MRK_Marker DROP CONSTRAINT MRK_Marker__Organism_key_fkey CASCADE;
 
-ALTER TABLE mgd.MRK_Homology_Cache DROP CONSTRAINT MRK_Homology_Cache__Organism_key_fkey CASCADE;
-
 ALTER TABLE mgd.MRK_Chromosome DROP CONSTRAINT MRK_Chromosome__Organism_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_SynonymType DROP CONSTRAINT MGI_SynonymType__Organism_key_fkey CASCADE;

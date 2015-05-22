@@ -33,9 +33,6 @@ ALTER TABLE mgd.MGI_SynonymType ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.M
 ALTER TABLE mgd.MRK_Chromosome ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism ON DELETE CASCADE;
 
 
-ALTER TABLE mgd.MRK_Homology_Cache ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism;
-
-
 ALTER TABLE mgd.MRK_Marker ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism;
 
 

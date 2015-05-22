@@ -53,8 +53,6 @@ ALTER TABLE mgd.MRK_Location_Cache DROP CONSTRAINT MRK_Location_Cache__Marker_ke
 
 ALTER TABLE mgd.MRK_Label DROP CONSTRAINT MRK_Label__Marker_key_fkey CASCADE;
 
-ALTER TABLE mgd.MRK_Homology_Cache DROP CONSTRAINT MRK_Homology_Cache__Marker_key_fkey CASCADE;
-
 ALTER TABLE mgd.MRK_History DROP CONSTRAINT MRK_History__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_History DROP CONSTRAINT MRK_History__History_key_fkey CASCADE;

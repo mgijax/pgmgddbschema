@@ -9,9 +9,6 @@ ALTER TABLE mgd.IMG_ImagePane DROP CONSTRAINT IMG_ImagePane__Image_key_fkey CASC
 
 ALTER TABLE mgd.IMG_Image DROP CONSTRAINT IMG_Image__ThumbnailImage_key_fkey CASCADE;
 
-ALTER TABLE mgd.IMG_Cache DROP CONSTRAINT IMG_Cache__Image_key_fkey CASCADE;
-
-ALTER TABLE mgd.IMG_Cache DROP CONSTRAINT IMG_Cache__ThumbnailImage_key_fkey CASCADE;
 ALTER TABLE mgd.IMG_Image DROP CONSTRAINT IMG_Image_pkey CASCADE;
 
 EOSQL

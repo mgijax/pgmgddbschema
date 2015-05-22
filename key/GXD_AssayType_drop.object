@@ -5,8 +5,6 @@
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.IMG_Cache DROP CONSTRAINT IMG_Cache__AssayType_key_fkey CASCADE;
-
 ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__AssayType_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Assay DROP CONSTRAINT GXD_Assay__AssayType_key_fkey CASCADE;
