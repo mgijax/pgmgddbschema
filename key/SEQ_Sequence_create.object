@@ -30,9 +30,6 @@ ALTER TABLE mgd.SEQ_Allele_Assoc ADD FOREIGN KEY (_Sequence_key) REFERENCES mgd.
 ALTER TABLE mgd.SEQ_Coord_Cache ADD FOREIGN KEY (_Sequence_key) REFERENCES mgd.SEQ_Sequence ON DELETE CASCADE;
 
 
-ALTER TABLE mgd.SEQ_Description_Cache ADD FOREIGN KEY (_Sequence_key) REFERENCES mgd.SEQ_Sequence ON DELETE CASCADE;
-
-
 ALTER TABLE mgd.SEQ_GeneModel ADD FOREIGN KEY (_Sequence_key) REFERENCES mgd.SEQ_Sequence ON DELETE CASCADE;
 
 

@@ -480,12 +480,6 @@ ALTER TABLE mgd.SEQ_Coord_Cache ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.
 ALTER TABLE mgd.SEQ_Coord_Cache ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User;
 
 
-ALTER TABLE mgd.SEQ_Description_Cache ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User;
-
-
-ALTER TABLE mgd.SEQ_Description_Cache ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User;
-
-
 ALTER TABLE mgd.SEQ_GeneModel ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User;
 
 

@@ -28,8 +28,6 @@ ALTER TABLE mgd.SEQ_Marker_Cache DROP CONSTRAINT SEQ_Marker_Cache__Sequence_key_
 
 ALTER TABLE mgd.SEQ_GeneModel DROP CONSTRAINT SEQ_GeneModel__Sequence_key_fkey CASCADE;
 
-ALTER TABLE mgd.SEQ_Description_Cache DROP CONSTRAINT SEQ_Description_Cache__Sequence_key_fkey CASCADE;
-
 ALTER TABLE mgd.SEQ_Coord_Cache DROP CONSTRAINT SEQ_Coord_Cache__Sequence_key_fkey CASCADE;
 
 ALTER TABLE mgd.SEQ_Allele_Assoc DROP CONSTRAINT SEQ_Allele_Assoc__Sequence_key_fkey CASCADE;

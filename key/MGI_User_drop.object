@@ -92,10 +92,6 @@ ALTER TABLE mgd.SEQ_GeneModel DROP CONSTRAINT SEQ_GeneModel__ModifiedBy_key_fkey
 
 ALTER TABLE mgd.SEQ_GeneModel DROP CONSTRAINT SEQ_GeneModel__CreatedBy_key_fkey CASCADE;
 
-ALTER TABLE mgd.SEQ_Description_Cache DROP CONSTRAINT SEQ_Description_Cache__ModifiedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.SEQ_Description_Cache DROP CONSTRAINT SEQ_Description_Cache__CreatedBy_key_fkey CASCADE;
-
 ALTER TABLE mgd.SEQ_Coord_Cache DROP CONSTRAINT SEQ_Coord_Cache__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.SEQ_Coord_Cache DROP CONSTRAINT SEQ_Coord_Cache__CreatedBy_key_fkey CASCADE;
