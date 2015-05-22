@@ -5,6 +5,13 @@ CHANGES:
 this becomes obsolete when the production WI is replaced by the PWI:
 IMG_Cache
 
+TAG: pgmgddbschema-5-2-2-?
+STAFF: lec
+DATE: 05/22/2015
+CHANGES:
+1) TR11652/HMD obsolete
+2) TR11651/MLC obsolete
+
 TAG: pgmgddbschema-5-2-2-1
 TAG: pgmgddbschema-5-2-1-26
 TAG: pgmgddbschema-5-2-1-25

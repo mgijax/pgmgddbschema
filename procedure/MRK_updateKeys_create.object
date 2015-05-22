@@ -133,7 +133,6 @@ DELETE FROM MRK_Classes WHERE _Marker_key = v_oldKey ;
 
 UPDATE CRS_Matrix SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 UPDATE CRS_References SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
-UPDATE HMD_Homology_Marker SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 UPDATE GXD_AllelePair SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 UPDATE GXD_AlleleGenotype SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 UPDATE GXD_Assay SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;

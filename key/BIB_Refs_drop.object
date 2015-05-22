@@ -51,8 +51,6 @@ ALTER TABLE mgd.MLD_Notes DROP CONSTRAINT MLD_Notes__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.MLD_Expts DROP CONSTRAINT MLD_Expts__Refs_key_fkey CASCADE;
 
-ALTER TABLE mgd.MLC_Reference DROP CONSTRAINT MLC_Reference__Refs_key_fkey CASCADE;
-
 ALTER TABLE mgd.MGI_Synonym DROP CONSTRAINT MGI_Synonym__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__Refs_key_fkey CASCADE;
@@ -62,8 +60,6 @@ ALTER TABLE mgd.MGI_Reference_Assoc DROP CONSTRAINT MGI_Reference_Assoc__Refs_ke
 ALTER TABLE mgd.IMG_Image DROP CONSTRAINT IMG_Image__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.IMG_Cache DROP CONSTRAINT IMG_Cache__Refs_key_fkey CASCADE;
-
-ALTER TABLE mgd.HMD_Homology DROP CONSTRAINT HMD_Homology__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__Refs_key_fkey CASCADE;
 

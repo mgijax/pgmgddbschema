@@ -90,9 +90,6 @@ ALTER TABLE mgd.GXD_Assay ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs;
 ALTER TABLE mgd.GXD_Index ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs;
 
 
-ALTER TABLE mgd.HMD_Homology ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs;
-
-
 ALTER TABLE mgd.IMG_Image ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs;
 
 
@@ -103,9 +100,6 @@ ALTER TABLE mgd.MGI_Relationship ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_
 
 
 ALTER TABLE mgd.MGI_Synonym ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs;
-
-
-ALTER TABLE mgd.MLC_Reference ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs;
 
 
 ALTER TABLE mgd.MLD_Expts ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs;

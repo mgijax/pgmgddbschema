@@ -123,21 +123,6 @@ ALTER TABLE mgd.GXD_Expression ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_
 ALTER TABLE mgd.GXD_Index ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker;
 
 
-ALTER TABLE mgd.HMD_Homology_Marker ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker;
-
-
-ALTER TABLE mgd.MLC_Marker ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker;
-
-
-ALTER TABLE mgd.MLC_Marker ADD FOREIGN KEY (_Marker_key_2) REFERENCES mgd.MRK_Marker;
-
-
-ALTER TABLE mgd.MLC_Reference ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker;
-
-
-ALTER TABLE mgd.MLC_Text ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker;
-
-
 ALTER TABLE mgd.MLD_Concordance ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker;
 
 
