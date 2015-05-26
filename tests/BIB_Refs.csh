@@ -25,8 +25,6 @@
 # BIB_DataSet_Assoc
 # BIB_Notes
 # GXD_Expression
-# IMG_Cache
-# MRK_Homology_Cache
 # MRK_OMIM_Cache
 # MRK_Reference
 # SEQ_Marker_Cache
