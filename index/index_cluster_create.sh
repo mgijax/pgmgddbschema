@@ -172,7 +172,6 @@ CLUSTER mgd.RI_Summary_Expt_Ref USING RI_Summary_Expt_Ref_pkey;
 CLUSTER mgd.RI_Summary USING RI_Summary_pkey;
 CLUSTER mgd.SEQ_Allele_Assoc USING SEQ_Allele_Assoc_pkey;
 CLUSTER mgd.SEQ_Coord_Cache USING SEQ_Coord_Cache_idx_clustered;
-CLUSTER mgd.SEQ_Description_Cache USING SEQ_Description_Cache_pkey;
 CLUSTER mgd.SEQ_GeneModel USING SEQ_GeneModel_pkey;
 CLUSTER mgd.SEQ_GeneTrap USING SEQ_GeneTrap_pkey;
 CLUSTER mgd.SEQ_Marker_Cache USING SEQ_Marker_Cache_idx_clustered;

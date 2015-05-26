@@ -182,7 +182,6 @@ drop index mgd.RI_Summary_idx_RISummary_key ;
 drop index mgd.RI_Summary_Expt_Ref_idx_Expt_RI_key ;
 drop index mgd.SEQ_Allele_Assoc_idx_Assoc_key ;
 drop index mgd.SEQ_Coord_Cache_idx_primary ;
-drop index mgd.SEQ_Description_Cache_idx_Sequence_key ;
 drop index mgd.SEQ_GeneModel_idx_Sequence_key ;
 drop index mgd.SEQ_GeneTrap_idx_Sequence_key ;
 drop index mgd.SEQ_Probe_Cache_idx_primary_key ;

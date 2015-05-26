@@ -75,11 +75,6 @@ USING toDelete d
 WHERE d._Object_key = s._Sequence_key
 ;
 
-DELETE FROM SEQ_Description_Cache  s
-USING toDelete d
-WHERE d._Object_key = s._Sequence_key
-;
-
 DELETE FROM SEQ_Marker_Cache s
 USING toDelete d
 WHERE d._Object_key = s._Sequence_key

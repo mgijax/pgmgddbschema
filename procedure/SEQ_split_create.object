@@ -59,7 +59,6 @@ END IF;
 
 DELETE FROM SEQ_Marker_Cache where _Sequence_key = v_fromSeqKey;
 DELETE FROM SEQ_Probe_Cache where _Sequence_key = v_fromSeqKey;
-DELETE FROM SEQ_Description_Cache where _Sequence_key = v_fromSeqKey;
 
 -- For each new Sequence:
 --
@@ -94,7 +93,6 @@ WHILE (v_toSeqIDs != NULL) LOOP
 
                 DELETE FROM SEQ_Marker_Cache where _Sequence_key = v_toSeqKey;
                 DELETE FROM SEQ_Probe_Cache where _Sequence_key = v_toSeqKey;
-                DELETE FROM SEQ_Description_Cache where _Sequence_key = v_toSeqKey;
 
 		-- copy all Accession IDs of v_fromSeqKey to v_toSeqKey - make them all secondary
 		OPEN acc_cursor FOR
