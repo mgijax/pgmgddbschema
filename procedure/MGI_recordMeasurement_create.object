@@ -95,6 +95,8 @@ END IF;
 -- We wrap these steps in a transaction so they will be an atomic operation.
 --
 
+RAISE NOTICE 'ready to update MGI_Measurement';
+
 UPDATE MGI_Measurement
 SET isLatest = 0
 WHERE _Statistic_key = v_statKey
