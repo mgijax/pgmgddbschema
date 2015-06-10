@@ -58,7 +58,7 @@ THEN
 	RAISE EXCEPTION E'IMG_setPDO: All four arguments must be non-NULL.';
 	RETURN;
 ELSE
-	v_accID := v_prefix + v_pixID::char(10);
+	v_accID := v_prefix || v_pixID;
 END IF;
 
 -- ck for missing image rec
