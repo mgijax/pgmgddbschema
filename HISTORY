@@ -1,3 +1,12 @@
+TAG: pgmgddbschema-5-2-2-6
+DATE: 06/18/2015
+STAFF: lec
+CHANGES:
+1) TR11750/procedure
+VOC_mergeTerms_create.object
+MGI_updateReferenceAssoc_create.object
+IMG_setPDO_create.object
+
 TAG: pgmgddbschema-5-2-2-5
 DATE: 06/05/2015
 STAFF: lec
