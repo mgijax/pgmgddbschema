@@ -42,9 +42,8 @@ AND _MGIType_key = 13
 
 -- b.  move annotations of the old term to the new term (avoid duplicates)
 
-UPDATE VOC_Annot
+UPDATE VOC_Annot a
 SET _Term_key = newKey
-FROM VOC_Annot a
 WHERE a._Term_key = oldKey
 AND NOT EXISTS (SELECT 1 FROM VOC_Annot a2
 	WHERE a2._Term_key = newKey
@@ -60,9 +59,9 @@ AND NOT EXISTS (SELECT 1 FROM VOC_Annot a2
 -- this moves the VOC_Evidence record to the new _Annot_key which essentially 
 -- moves the Evidence record to the new term 
 
-UPDATE VOC_Evidence
+UPDATE VOC_Evidence e
 SET _Annot_key = a2._Annot_key
-FROM VOC_Annot a, VOC_Evidence e, VOC_Annot a2
+FROM VOC_Annot a, VOC_Annot a2
 WHERE a._Term_key = oldKey
 AND a._Annot_key = e._Annot_key
 AND a2._Term_key = newKey
