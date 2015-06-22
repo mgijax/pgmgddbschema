@@ -86,7 +86,13 @@ DROP FUNCTION IF EXISTS VOC_Term_insert();
 CREATE OR REPLACE FUNCTION VOC_Term_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-PERFORM ACC_assignMGI(1001, NEW._Term_key, 'Vocabulary Term');
+IF (select v._LogicalDB_key from VOC_Vocab v
+	where v._Vocab_key = NEW._Vocab_key) = 1
+THEN
+
+    PERFORM ACC_assignMGI(1001, NEW._Term_key, 'Vocabulary Term');
+
+END IF;
 
 RETURN NEW;
 
