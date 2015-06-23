@@ -24,7 +24,8 @@ v_logicalDB int,
 v_mgiType acc_mgitype.name%TYPE,
 v_refsKey int DEFAULT -1,
 v_preferred int DEFAULT 1,
-v_private int DEFAULT 0
+v_private int DEFAULT 0,
+v_dosplit int DEFAULT 1
 )
 RETURNS VOID AS
 \$\$
@@ -48,9 +49,16 @@ END IF;
 v_nextACC := max(_Accession_key) + 1 FROM ACC_Accession;
 
 v_mgiTypeKey := _MGIType_key FROM ACC_MGIType WHERE name = v_mgiType;
+v_prefixPart := v_accID;
+v_numericPart := '';
 
-/* split accession id INTO prefixPart/numericPart */
-SELECT * FROM ACC_split(v_accID) INTO v_prefixPart, v_numericPart;
+/* skip the splitting...for example, the Reference/DOI ids are not split */
+
+IF v_dosplit
+THEN
+	/* split accession id INTO prefixPart/numericPart */
+	SELECT * FROM ACC_split(v_accID) INTO v_prefixPart, v_numericPart;
+END IF;
 
 IF v_numericPart = ''
 THEN
@@ -78,8 +86,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ACC_insertNoChecks(int,int,varchar,int,varchar,int,int,int) TO public;
+GRANT EXECUTE ON FUNCTION ACC_insertNoChecks(int,int,varchar,int,varchar,int,int,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.ACC_insertNoChecks(int,int,varchar,int,varchar,int,int,int) IS 'update acc_accession/acc_accessionreference';
+COMMENT ON FUNCTION mgd.ACC_insertNoChecks(int,int,varchar,int,varchar,int,int,int,int) IS 'update acc_accession/acc_accessionreference';
 
 EOSQL
