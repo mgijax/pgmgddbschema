@@ -12,7 +12,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.MGI_Tables ADD PRIMARY KEY (table_name);
 
 
-ALTER TABLE mgd.MGI_Columns ADD FOREIGN KEY (table_name) REFERENCES mgd.MGI_Tables;
+ALTER TABLE mgd.MGI_Columns ADD FOREIGN KEY (table_name) REFERENCES mgd.MGI_Tables DEFERRABLE;
 
 
 EOSQL

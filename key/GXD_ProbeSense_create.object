@@ -12,7 +12,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.GXD_ProbeSense ADD PRIMARY KEY (_Sense_key);
 
 
-ALTER TABLE mgd.GXD_ProbePrep ADD FOREIGN KEY (_Sense_key) REFERENCES mgd.GXD_ProbeSense;
+ALTER TABLE mgd.GXD_ProbePrep ADD FOREIGN KEY (_Sense_key) REFERENCES mgd.GXD_ProbeSense DEFERRABLE;
 
 
 EOSQL

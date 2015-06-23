@@ -12,16 +12,16 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.DAG_Label ADD PRIMARY KEY (_Label_key);
 
 
-ALTER TABLE mgd.DAG_Closure ADD FOREIGN KEY (_AncestorLabel_key) REFERENCES mgd.DAG_Label;
+ALTER TABLE mgd.DAG_Closure ADD FOREIGN KEY (_AncestorLabel_key) REFERENCES mgd.DAG_Label DEFERRABLE;
 
 
-ALTER TABLE mgd.DAG_Closure ADD FOREIGN KEY (_DescendentLabel_key) REFERENCES mgd.DAG_Label;
+ALTER TABLE mgd.DAG_Closure ADD FOREIGN KEY (_DescendentLabel_key) REFERENCES mgd.DAG_Label DEFERRABLE;
 
 
-ALTER TABLE mgd.DAG_Edge ADD FOREIGN KEY (_Label_key) REFERENCES mgd.DAG_Label;
+ALTER TABLE mgd.DAG_Edge ADD FOREIGN KEY (_Label_key) REFERENCES mgd.DAG_Label DEFERRABLE;
 
 
-ALTER TABLE mgd.DAG_Node ADD FOREIGN KEY (_Label_key) REFERENCES mgd.DAG_Label;
+ALTER TABLE mgd.DAG_Node ADD FOREIGN KEY (_Label_key) REFERENCES mgd.DAG_Label DEFERRABLE;
 
 
 EOSQL

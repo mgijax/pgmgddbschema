@@ -15,7 +15,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.MGI_Relationship ADD PRIMARY KEY (_Relationship_key);
 
 
-ALTER TABLE mgd.MGI_Relationship_Property ADD FOREIGN KEY (_Relationship_key) REFERENCES mgd.MGI_Relationship ON DELETE CASCADE;
+ALTER TABLE mgd.MGI_Relationship_Property ADD FOREIGN KEY (_Relationship_key) REFERENCES mgd.MGI_Relationship ON DELETE CASCADE DEFERRABLE;
 
 
 EOSQL

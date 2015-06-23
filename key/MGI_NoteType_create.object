@@ -15,7 +15,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.MGI_NoteType ADD PRIMARY KEY (_NoteType_key);
 
 
-ALTER TABLE mgd.MGI_Note ADD FOREIGN KEY (_NoteType_key) REFERENCES mgd.MGI_NoteType;
+ALTER TABLE mgd.MGI_Note ADD FOREIGN KEY (_NoteType_key) REFERENCES mgd.MGI_NoteType DEFERRABLE;
 
 
 EOSQL

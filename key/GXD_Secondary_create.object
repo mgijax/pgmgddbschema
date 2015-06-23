@@ -12,7 +12,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.GXD_Secondary ADD PRIMARY KEY (_Secondary_key);
 
 
-ALTER TABLE mgd.GXD_AntibodyPrep ADD FOREIGN KEY (_Secondary_key) REFERENCES mgd.GXD_Secondary;
+ALTER TABLE mgd.GXD_AntibodyPrep ADD FOREIGN KEY (_Secondary_key) REFERENCES mgd.GXD_Secondary DEFERRABLE;
 
 
 EOSQL

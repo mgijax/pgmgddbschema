@@ -12,7 +12,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.MLD_Assay_Types ADD PRIMARY KEY (_Assay_Type_key);
 
 
-ALTER TABLE mgd.MLD_Expt_Marker ADD FOREIGN KEY (_Assay_Type_key) REFERENCES mgd.MLD_Assay_Types;
+ALTER TABLE mgd.MLD_Expt_Marker ADD FOREIGN KEY (_Assay_Type_key) REFERENCES mgd.MLD_Assay_Types DEFERRABLE;
 
 
 EOSQL

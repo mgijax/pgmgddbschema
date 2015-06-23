@@ -12,7 +12,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.GXD_GelControl ADD PRIMARY KEY (_GelControl_key);
 
 
-ALTER TABLE mgd.GXD_GelLane ADD FOREIGN KEY (_GelControl_key) REFERENCES mgd.GXD_GelControl;
+ALTER TABLE mgd.GXD_GelLane ADD FOREIGN KEY (_GelControl_key) REFERENCES mgd.GXD_GelControl DEFERRABLE;
 
 
 EOSQL

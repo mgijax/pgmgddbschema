@@ -12,7 +12,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.RI_RISet ADD PRIMARY KEY (_RISet_key);
 
 
-ALTER TABLE mgd.RI_Summary ADD FOREIGN KEY (_RISet_key) REFERENCES mgd.RI_RISet;
+ALTER TABLE mgd.RI_Summary ADD FOREIGN KEY (_RISet_key) REFERENCES mgd.RI_RISet DEFERRABLE;
 
 
 EOSQL

@@ -12,7 +12,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.MRK_Class ADD PRIMARY KEY (_Class_key);
 
 
-ALTER TABLE mgd.MRK_Classes ADD FOREIGN KEY (_Class_key) REFERENCES mgd.MRK_Class;
+ALTER TABLE mgd.MRK_Classes ADD FOREIGN KEY (_Class_key) REFERENCES mgd.MRK_Class DEFERRABLE;
 
 
 EOSQL

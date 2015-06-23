@@ -12,7 +12,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.BIB_DataSet ADD PRIMARY KEY (_DataSet_key);
 
 
-ALTER TABLE mgd.BIB_DataSet_Assoc ADD FOREIGN KEY (_DataSet_key) REFERENCES mgd.BIB_DataSet;
+ALTER TABLE mgd.BIB_DataSet_Assoc ADD FOREIGN KEY (_DataSet_key) REFERENCES mgd.BIB_DataSet DEFERRABLE;
 
 
 EOSQL

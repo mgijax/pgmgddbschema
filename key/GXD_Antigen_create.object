@@ -12,7 +12,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.GXD_Antigen ADD PRIMARY KEY (_Antigen_key);
 
 
-ALTER TABLE mgd.GXD_Antibody ADD FOREIGN KEY (_Antigen_key) REFERENCES mgd.GXD_Antigen;
+ALTER TABLE mgd.GXD_Antibody ADD FOREIGN KEY (_Antigen_key) REFERENCES mgd.GXD_Antigen DEFERRABLE;
 
 
 EOSQL

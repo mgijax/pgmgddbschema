@@ -12,7 +12,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.BIB_ReviewStatus ADD PRIMARY KEY (_ReviewStatus_key);
 
 
-ALTER TABLE mgd.BIB_Refs ADD FOREIGN KEY (_ReviewStatus_key) REFERENCES mgd.BIB_ReviewStatus;
+ALTER TABLE mgd.BIB_Refs ADD FOREIGN KEY (_ReviewStatus_key) REFERENCES mgd.BIB_ReviewStatus DEFERRABLE;
 
 
 EOSQL

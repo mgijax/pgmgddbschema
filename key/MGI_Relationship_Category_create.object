@@ -15,7 +15,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.MGI_Relationship_Category ADD PRIMARY KEY (_Category_key);
 
 
-ALTER TABLE mgd.MGI_Relationship ADD FOREIGN KEY (_Category_key) REFERENCES mgd.MGI_Relationship_Category;
+ALTER TABLE mgd.MGI_Relationship ADD FOREIGN KEY (_Category_key) REFERENCES mgd.MGI_Relationship_Category DEFERRABLE;
 
 
 EOSQL

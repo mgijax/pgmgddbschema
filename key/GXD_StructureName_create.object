@@ -12,7 +12,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.GXD_StructureName ADD PRIMARY KEY (_StructureName_key);
 
 
-ALTER TABLE mgd.GXD_Structure ADD FOREIGN KEY (_StructureName_key) REFERENCES mgd.GXD_StructureName;
+ALTER TABLE mgd.GXD_Structure ADD FOREIGN KEY (_StructureName_key) REFERENCES mgd.GXD_StructureName DEFERRABLE;
 
 
 EOSQL

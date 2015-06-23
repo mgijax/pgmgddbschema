@@ -12,7 +12,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.GXD_FixationMethod ADD PRIMARY KEY (_Fixation_key);
 
 
-ALTER TABLE mgd.GXD_Specimen ADD FOREIGN KEY (_Fixation_key) REFERENCES mgd.GXD_FixationMethod;
+ALTER TABLE mgd.GXD_Specimen ADD FOREIGN KEY (_Fixation_key) REFERENCES mgd.GXD_FixationMethod DEFERRABLE;
 
 
 EOSQL
