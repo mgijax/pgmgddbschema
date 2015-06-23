@@ -43,7 +43,7 @@ v_private int = 0;
 
 BEGIN
 
-v_nextACC := max(_Accession_key) + 1 FROM ACC_Accession;
+v_nextACC := coalesce(max(_Accession_key),0) + 1 FROM ACC_Accession;
 v_mgiTypeKey := _MGIType_key FROM ACC_MGIType WHERE name = v_mgiType;
 
 IF v_nextMGI = -1
