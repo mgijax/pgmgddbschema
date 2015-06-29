@@ -24,13 +24,13 @@ v_tissueKey int,
 v_genderKey int,
 v_cellLineKey int,
 v_age prb_source.age%TYPE,
-v_modifiedByKey int
+v_modifiedByKey int,
+out v_newMSOKey int
 )
-RETURNS VOID AS
+AS
 \$\$
 
 DECLARE
-v_newMSOKey int;
 v_newAssocKey int;
 v_segmentTypeKey int;
 v_vectorTypeKey int;
@@ -69,9 +69,11 @@ ELSE
     THEN
         -- if changing from a Named source to an Anonymous source ...
 
-        SELECT * INTO v_newMSOKey 
-        FROM PRB_processAnonymousSource(NULL, v_segmentTypeKey, v_vectorTypeKey, v_organismKey, v_strainKey,
-                        v_tissueKey, v_genderKey, v_cellLineKey, v_age, NULL, v_modifiedByKey, 1);
+        SELECT * FROM PRB_processAnonymousSource(0, v_segmentTypeKey, v_vectorTypeKey, v_organismKey, v_strainKey,
+                        v_tissueKey, v_genderKey, v_cellLineKey, v_age, NULL, v_modifiedByKey, 1)
+	INTO v_newMSOKey
+	;
+
 
         IF NOT FOUND
 	THEN
@@ -82,9 +84,10 @@ ELSE
     ELSE
 	-- modifying an existing Anonymous source
 
-        SELECT * INTO v_newMSOKey 
-        FROM PRB_processAnonymousSource(v_msoKey, v_segmentTypeKey, v_vectorTypeKey, v_organismKey, v_strainKey,
-                        v_tissueKey, v_genderKey, v_cellLineKey, v_age, NULL, v_modifiedByKey, 1);
+        SELECT * FROM PRB_processAnonymousSource(v_msoKey, v_segmentTypeKey, v_vectorTypeKey, v_organismKey, v_strainKey,
+                        v_tissueKey, v_genderKey, v_cellLineKey, v_age, NULL, v_modifiedByKey, 1)
+	INTO v_newMSOKey 
+	;
 
         IF NOT FOUND
 	THEN

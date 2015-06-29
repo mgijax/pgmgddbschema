@@ -94,7 +94,8 @@ THEN
     /* and the existing MSO is not curator-edited              */
     /* then return the existing MSO key; share it (collapse).  */
 
-    v_newMSOKey := _Source_key from PRB_Source 
+    SELECT _Source_key 
+	FROM PRB_Source 
 	    WHERE _SegmentType_key = v_segmentTypeKey
 	    AND _Vector_key = v_vectorTypeKey
 	    AND _Organism_key = v_organismKey
@@ -104,11 +105,11 @@ THEN
 	    AND _CellLine_key = v_cellLineKey
 	    AND age = v_age
 	    AND isCuratorEdited = 0
+    INTO v_newMSOKey
 	    ;
-
     IF v_newMSOKey IS NOT NULL
     THEN
-        RETURN;
+    	RETURN;
     END IF;
 END IF;
 

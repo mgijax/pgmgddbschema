@@ -44,15 +44,18 @@ BEGIN
 -- if changing old Anon -> new Anon, then v_msoKey = _Source_key of old Anon source 
 
 v_isAnon := 1;
+v_newMSOKey := 0;
 
 IF (SELECT name from PRB_Source WHERE _Source_key = v_msoKey) IS NOT NULL
 THEN
 	v_isAnon := 0;
 END IF;
 
-SELECT * INTO v_newMSOKey
-FROM PRB_processSequenceSource (v_isAnon, v_assocKey, v_objectKey, v_msoKey, v_organismKey, v_strainKey,
-        v_tissueKey, v_genderKey, v_cellLineKey, 'Not Resolved', v_modifiedByKey);
+SELECT * FROM PRB_processSequenceSource (v_isAnon, v_assocKey, v_objectKey, v_msoKey, v_organismKey, v_strainKey,
+        v_tissueKey, v_genderKey, v_cellLineKey, 'Not Resolved', v_modifiedByKey)
+INTO v_newMSOKey;
+
+RAISE NOTICE '%', v_newMSOKey;
 
 IF NOT FOUND
 THEN

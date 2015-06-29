@@ -23,15 +23,15 @@ v_genderKey int,
 v_cellLineKey int,
 v_age prb_source.age%TYPE,
 v_tissueTreatment prb_source.description%TYPE,
-v_modifiedByKey int
+v_modifiedByKey int,
+out v_newMSOKey int
 )
-RETURNS VOID AS
+AS
 \$\$
 
 DECLARE
 v_segmentTypeKey int;
 v_vectorTypeKey int;
-v_newMSOKey int;
 
 BEGIN
 
@@ -41,9 +41,10 @@ v_segmentTypeKey :=  _Term_key from VOC_Term where _Vocab_key = 10 and term = 'N
 
 v_vectorTypeKey := _Term_key from VOC_Term where _Vocab_key = 24 and term = 'Not Specified' ;
 
-SELECT * INTO v_newMSOKey 
-FROM PRB_processAnonymousSource(v_msoKey, v_segmentTypeKey, v_vectorTypeKey, v_organismKey, v_strainKey,
-    		v_tissueKey, v_genderKey, v_cellLineKey, v_age, v_tissueTreatment, v_modifiedByKey, 0);
+SELECT * FROM PRB_processAnonymousSource(v_msoKey, v_segmentTypeKey, v_vectorTypeKey, v_organismKey, v_strainKey,
+    		v_tissueKey, v_genderKey, v_cellLineKey, v_age, v_tissueTreatment, v_modifiedByKey, 0)
+INTO v_newMSOKey
+;
 
 IF NOT FOUND
 THEN
