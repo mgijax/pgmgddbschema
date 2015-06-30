@@ -72,10 +72,10 @@ DROP FUNCTION IF EXISTS PRB_Reference_update();
 CREATE OR REPLACE FUNCTION PRB_Reference_update() RETURNS TRIGGER AS \$\$
 BEGIN
 
--- update the accession reference that is attache to this J:
+-- update the accession reference that is attached to this J:
 
 UPDATE ACC_AccessionReference
-SET _Refs_key = i._Refs_key
+SET _Refs_key = NEW._Refs_key
 FROM ACC_Accession a
 WHERE a._Object_key = NEW._Probe_key
 and a._MGIType_key = 3
