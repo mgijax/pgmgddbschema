@@ -26,7 +26,6 @@ RETURNS VOID AS
 
 DECLARE
 v_asymbol all_allele.symbol%TYPE;
-v_user mgi_user.login%TYPE;
 
 BEGIN
 
@@ -35,8 +34,6 @@ BEGIN
 /* Set all other attributes = Not Applicable */
 
 v_asymbol := v_symbol || '<+>';
-v_user = login from MGI_User where _User_key = v_userKey;
-
 
 PERFORM ALL_insertAllele (
 	v_userKey,
@@ -45,9 +42,9 @@ PERFORM ALL_insertAllele (
 	'wild type',
 	null,
 	1,
-	v_user,
-	v_user,
-	v_user,
+	v_userKey,
+	v_userKey,
+	v_userKey,
 	current_date,
 	-2,
 	'Not Applicable',
