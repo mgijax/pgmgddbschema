@@ -137,7 +137,7 @@ v_termKey := _Term_key FROM VOC_Annot a WHERE a._Annot_key = NEW._Annot_key;
 
 v_objectKey := _Object_key FROM VOC_Annot a WHERE a._Annot_key = NEW._Annot_key;
 
-v_dagKey := _DAG_key FROM VOC_Annot_View a, DAG_Node_View d
+v_dagKey := distinct _DAG_key FROM VOC_Annot_View a, DAG_Node_View d
         WHERE a._Annot_key = NEW._Annot_key
         AND a._Vocab_key = d._Vocab_key
         AND a._Term_key = d._Object_key;
