@@ -312,7 +312,7 @@ AND a._Accession_key = r._Accession_key
 LOOP
         FETCH acc_cursor INTO v_accID, v_logicalDB, v_refsKey, v_preferred, v_private;
         EXIT WHEN NOT FOUND;
-	PERFORM ACCRef_process (v_markerKey, v_refsKey, v_accID, v_logicalDB, 'Marker', v_preferred, v_private);
+	PERFORM ACCRef_process (v_userKey, v_markerKey, v_refsKey, v_accID, v_logicalDB, 'Marker', v_preferred, v_private);
 END LOOP;
 CLOSE acc_cursor;
 

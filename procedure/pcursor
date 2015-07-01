@@ -16,6 +16,6 @@ AND not exists (select 1 from ACC_AccessionReference r WHERE a._Accession_key = 
 LOOP
         FETCH acc_cursor INTO v_accID, v_logicalDB, v_preferred, v_private;
         EXIT WHEN NOT FOUND;
-	PERFORM ACC_insertNoChecks (v_markerKey, v_accID, v_logicalDB, 'Marker', -1, v_preferred, v_private);
+	PERFORM ACC_insertNoChecks (v_userKey, v_markerKey, v_accID, v_logicalDB, 'Marker', -1, v_preferred, v_private);
 END LOOP;
 CLOSE acc_cursor;
