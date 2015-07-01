@@ -203,7 +203,7 @@ IF (SELECT _Marker_Type_key from NOM_Marker where _Nomen_key = v_nomenKey) = 1
             and (select name from NOM_Marker where _Nomen_key = v_nomenKey) not like '%ecotropic viral integration site%'
             and (select name from NOM_Marker where _Nomen_key = v_nomenKey) not like '%viral polymerase%'
 THEN
-        PERFORM ALL_createWildType (v_userKey,v_markerKey,v_symbol);
+        PERFORM ALL_createWildType (v_userKey,v_markerKey,(select symbol from nom_transfer));
 
         IF NOT FOUND
         THEN
