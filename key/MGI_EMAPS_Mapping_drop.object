@@ -1,0 +1,11 @@
+#!/bin/sh
+#
+# HISTORY
+#       - TR 1560; SNP added foreign keys
+
+cd `dirname $0` && . ./Configuration
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.MGI_EMAPS_Mapping DROP CONSTRAINT MGI_EMAPS_Mapping_pkey CASCADE;
+
+EOSQL
