@@ -18,6 +18,11 @@ create index MGI_EMAPS_Mapping_idx_accID on mgd.MGI_EMAPS_Mapping (accID);
 create index MGI_EMAPS_Mapping_idx_emapsID on mgd.MGI_EMAPS_Mapping (emapsID);
 
 
+create index MGI_EMAPS_Mapping_idx_CreatedBy_key on mgd.MGI_EMAPS_Mapping (_CreatedBy_key);
+
+
+create index MGI_EMAPS_Mapping_idx_ModifiedBy_key on mgd.MGI_EMAPS_Mapping (_ModifiedBy_key);
+
 
 CLUSTER mgd.MGI_EMAPS_Mapping USING MGI_EMAPS_Mapping_pkey;
 

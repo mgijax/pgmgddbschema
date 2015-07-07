@@ -18,4 +18,10 @@ drop index if exists mgd.MGI_EMAPS_Mapping_idx_accID
 drop index if exists mgd.MGI_EMAPS_Mapping_idx_emapsID
 ;
 
+drop index if exists mgd.MGI_EMAPS_Mapping_idx_CreatedBy_key
+;
+
+drop index if exists mgd.MGI_EMAPS_Mapping_idx_ModifiedBy_key
+;
+
 EOSQL
