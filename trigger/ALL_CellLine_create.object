@@ -166,24 +166,6 @@ DROP FUNCTION IF EXISTS ALL_CellLine_update2();
 CREATE OR REPLACE FUNCTION ALL_CellLine_update1() RETURNS TRIGGER AS \$\$
 BEGIN
 
---
--- if the strain is updated, then...
---   1. if this is a mutant cell line, disallow it and rollback
---   2. if this is a parent cell line, propagate the new cell line to all
---      mutant cell lines derived from this parent
---
-
---
--- disallow strain changes for mutant cell lines (when done directly to
--- this table; when the change is done by a trigger on another table, the
--- nesting level will be > 1, indicating that the update is okay
---
-
-if NEW.isMutant = 1
-THEN
-        RAISE EXCEPTION E'Cannot change strain of mutant cell line.';
-END IF;
-
 -- update strains of mutant cell lines derived from this parent line
 
 UPDATE ALL_CellLine
