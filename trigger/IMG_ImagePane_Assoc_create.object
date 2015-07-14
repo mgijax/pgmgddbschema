@@ -39,37 +39,37 @@ CREATE OR REPLACE FUNCTION IMG_ImagePane_Assoc_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
 DELETE FROM MAP_Coord_Feature a
-WHERE a._Object_key = OLD._Image_key
+WHERE a._Object_key = OLD._ImagePane_key
 AND a._MGIType_key = 29
 ;
 
 DELETE FROM MAP_Coordinate a
-WHERE a._Object_key = OLD._Image_key
+WHERE a._Object_key = OLD._ImagePane_key
 AND a._MGIType_key = 29
 ;
 
 DELETE FROM MGI_Note a
-WHERE a._Object_key = OLD._Image_key
+WHERE a._Object_key = OLD._ImagePane_key
 AND a._MGIType_key = 29
 ;
 
 DELETE FROM MGI_Reference_Assoc a
-WHERE a._Object_key = OLD._Image_key
+WHERE a._Object_key = OLD._ImagePane_key
 AND a._MGIType_key = 29
 ;
 
 DELETE FROM MGI_Synonym a
-WHERE a._Object_key = OLD._Image_key
+WHERE a._Object_key = OLD._ImagePane_key
 AND a._MGIType_key = 29
 ;
 
 DELETE FROM IMG_ImagePane_Assoc a
-WHERE a._Object_key = OLD._Image_key
+WHERE a._Object_key = OLD._ImagePane_key
 AND a._MGIType_key = 29
 ;
 
 DELETE FROM ACC_Accession a
-WHERE a._Object_key = OLD._Image_key
+WHERE a._Object_key = OLD._ImagePane_key
 AND a._MGIType_key = 29
 ;
 
