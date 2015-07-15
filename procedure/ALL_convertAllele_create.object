@@ -81,7 +81,7 @@ ELSE
 
 	update ALL_Allele
 	set symbol = v_newSymbol || '<' || 
-		substring(symbol,  position('<' in symbol) - 1, char_length(symbol)) || '-' ||
+	        substring(symbol, 1, position('<' in symbol) - 1) || '-' ||
 		substring(symbol,  position('<' in symbol) + 1, char_length(symbol)),
 		_ModifiedBy_key = v_userKey, modification_date = current_date
 	where _Marker_key = v_markerKey and symbol like '%<%' and isWildType = 0
