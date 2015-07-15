@@ -24,29 +24,29 @@ CREATE TEMP TABLE objects ON COMMIT DROP
 AS SELECT DISTINCT s._Refs_key, 'Reference' as label, 'GXD Assay' as dataSet
 FROM GXD_Expression s
 WHERE s._Genotype_key = v_genotypeKey
-UNION
+UNION ALL
 SELECT DISTINCT e._Refs_key, 'Reference' as label, 'PhenoSlim Annotation' as dataSet
 FROM VOC_Evidence e, VOC_Annot a, VOC_AnnotType t
 WHERE t.name = 'PhenoSlim/Genotype'
 AND t._AnnotType_key = a._AnnotType_key
 AND a._Object_key = v_genotypeKey
 AND a._Annot_key = e._Annot_key
-UNION
+UNION ALL
 SELECT DISTINCT e._Refs_key, 'Reference' as label, 'Mammalian Phenotype Annotation' as dataSet
 FROM VOC_Evidence e, VOC_Annot a, VOC_AnnotType t
 WHERE t.name = 'Mammalian Phenotype/Genotype'
 AND t._AnnotType_key = a._AnnotType_key
 AND a._Object_key = v_genotypeKey
 AND a._Annot_key = e._Annot_key
-UNION
+UNION ALL
 SELECT DISTINCT e._Refs_key, 'Reference' as label, 'OMIM Annotation' as dataSet
 FROM VOC_Evidence e, VOC_Annot a, VOC_AnnotType t
 where t.name = 'OMIM/Genotype'
 AND t._AnnotType_key = a._AnnotType_key
 AND a._Object_key = v_genotypeKey
 AND a._Annot_key = e._Annot_key
-UNION
-SELECT DISTINCT 0, s.strain, 'Strain' as dataSet
+UNION ALL
+SELECT DISTINCT 0 as _Refs_key, s.strain as label, 'Strain' as dataSet
 FROM PRB_Strain_Genotype ps, PRB_Strain s
 WHERE ps._Genotype_key = v_genotypeKey
 AND ps._Strain_key = s._Strain_key
@@ -61,7 +61,7 @@ WHERE o._Refs_key = b._Refs_key
 UNION
 SELECT NULL, o.label, o.dataSet
 FROM objects o
-WHERE o._Refs_key IS NULL
+WHERE o._Refs_key = 0
 ORDER BY jnum
 ;
 
@@ -104,7 +104,7 @@ where a._AnnotType_key = 1005
 AND a._Object_key = v_genotypeKey
 AND a._Annot_key = e._Annot_key
 UNION
-SELECT DISTINCT 0, s.strain, 'Strain' as dataSet
+SELECT DISTINCT 0 as _Refs_key, s.strain as label, 'Strain' as dataSet
 FROM PRB_Strain_Genotype ps, PRB_Strain s
 WHERE ps._Genotype_key = v_genotypeKey
 AND ps._Strain_key = s._Strain_key
