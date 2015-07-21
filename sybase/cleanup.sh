@@ -22,9 +22,9 @@ where not exists (select 1 from GXD_GelLane g where b._GelLane_key = g._GelLane_
 go
 select * from #todelete1
 go
---delete GXD_GelBand from #todelete1 d
---where d._GelLane_key = GXD_GelBand._GelLane_key
---go
+delete GXD_GelBand from #todelete1 d
+where d._GelLane_key = GXD_GelBand._GelLane_key
+go
 
 /* GXD_Index_Stages contains _Index_key that does not exist in GXD_Index */
 select a.* into #todelete2 from GXD_Index_Stages a 
@@ -34,15 +34,6 @@ select * from #todelete2
 go
 --delete GXD_Index_Stages from #todelete2 d
 --where d._Index_key = GXD_Index_Stages._Index_key
---go
-
-select a.* into #todelete3 from HMD_Homology_Marker a 
-where not exists (select 1 from HMD_Homology b where a._Homology_key = b._Homology_key)
-go
-select * from #todelete3
-go
---delete HMD_Homology_Marker from #todelete3 d
---where d._Homology_key = HMD_Homology_Marker._Homology_key
 --go
 
 select a.* into #todelete4 from IMG_ImagePane a 
