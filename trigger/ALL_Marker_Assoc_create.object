@@ -53,6 +53,8 @@ where _Marker_key = OLD._Marker_key
     and _Allele_key = OLD._Allele_key
 ;
 
+RETURN NEW;
+
 END;
 \$\$
 LANGUAGE plpgsql;
@@ -96,32 +98,34 @@ BEGIN
 update ALL_Allele
 set _Marker_key = NEW._Marker_key, nomenSymbol = null
 where _Allele_key = NEW._Allele_key
-and NEW._Status_key = 4268546
+and NEW._Status_key != 4268546
 ;
 
 update GXD_AlleleGenotype
 set _Marker_key = NEW._Marker_key
 where _Allele_key = NEW._Allele_key
-and NEW._Status_key = 4268546
+and NEW._Status_key != 4268546
 ;
 
 update GXD_AllelePair
 set _Marker_key = NEW._Marker_key
 where (_Allele_key_1 = NEW._Allele_key or _Allele_key_2 = NEW._Allele_key)
-and NEW._Status_key = 4268546
+and NEW._Status_key != 4268546
 ;
 
 update MRK_OMIM_Cache
 set _Marker_key = NEW._Marker_key
 where _Allele_key = NEW._Allele_key
-and NEW._Status_key = 4268546
+and NEW._Status_key != 4268546
 ;
 
 update PRB_Strain_Marker 
 set _Marker_key = NEW._Marker_key
 where _Allele_key = NEW._Allele_key
-and NEW._Status_key = 4268546
+and NEW._Status_key != 4268546
 ;
+
+RETURN NEW;
 
 END;
 \$\$
@@ -169,50 +173,32 @@ BEGIN
 * for changes to the status key.
 */
 
-update ALL_Allele set _Marker_key = null
-where _Allele_key = NEW._Allele_key
-;
-
 update ALL_Allele set _Marker_key = NEW._Marker_key
 where _Allele_key = NEW._Allele_key
-and NEW._Status_key = 4268546
-;
-
-update GXD_AlleleGenotype set _Marker_key = null
-where _Allele_key = NEW._Allele_key
+and NEW._Status_key != 4268546
 ;
 
 update GXD_AlleleGenotype set _Marker_key = NEW._Marker_key
 where _Allele_key = NEW._Allele_key
-and NEW._Status_key = 4268546
-;
-
-update GXD_AllelePair set _Marker_key = null
-where (_Allele_key_1 = NEW._Allele_key or _Allele_key_2 = NEW._Allele_key)
+and NEW._Status_key != 4268546
 ;
 
 update GXD_AllelePair set _Marker_key = NEW._Marker_key
 where (_Allele_key_1 = NEW._Allele_key or _Allele_key_2 = NEW._Allele_key)
-and NEW._Status_key = 4268546
-;
-
-update MRK_OMIM_Cache set _Marker_key = null
-where _Allele_key = NEW._Allele_key
+and NEW._Status_key != 4268546
 ;
 
 update MRK_OMIM_Cache set _Marker_key = NEW._Marker_key
 where _Allele_key = NEW._Allele_key
-and NEW._Status_key = 4268546
-;
-
-update PRB_Strain_Marker set _Marker_key = null
-where _Allele_key = NEW._Allele_key
+and NEW._Status_key != 4268546
 ;
 
 update PRB_Strain_Marker set _Marker_key = NEW._Marker_key
 where _Allele_key = NEW._Allele_key
-and NEW._Status_key = 4268546
+and NEW._Status_key != 4268546
 ;
+
+RETURN NEW;
 
 END;
 \$\$
