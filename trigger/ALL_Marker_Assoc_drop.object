@@ -20,8 +20,4 @@ DROP TRIGGER IF EXISTS ALL_Marker_Assoc_update_trigger ON ALL_Marker_Assoc;
 
 DROP FUNCTION IF EXISTS ALL_Marker_Assoc_update();
 
-DROP TRIGGER IF EXISTS ALL_Marker_Assoc_update2_trigger ON ALL_Marker_Assoc;
-
-DROP FUNCTION IF EXISTS ALL_Marker_Assoc_update2();
-
 EOSQL
