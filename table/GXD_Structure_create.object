@@ -3,7 +3,7 @@
 #
 # History
 #
-# obsoelte:  printStop, topoSort (TR12005), inheritSystem
+# obsoelte:  printStop, topoSort (TR12005)
 #
 # 09/03/2009	lec
 #	- TR 9797/9164; add Cre system/inherit system
