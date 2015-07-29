@@ -39,8 +39,8 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-v_prefixPart varchar(30);
-v_numericPart varchar(30);
+v_prefixPart acc_accession.prefixPart%TYPE;
+v_numericPart acc_accession.numericPart%TYPE;
 
 BEGIN
 

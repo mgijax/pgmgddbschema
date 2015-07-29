@@ -23,7 +23,7 @@ CREATE OR REPLACE FUNCTION ACC_assignMGI (
   v_userKey int,
   v_objectKey int,
   v_mgiType acc_mgitype.name%TYPE,
-  v_prefixPart varchar(30) DEFAULT 'MGI:',
+  v_prefixPart acc_accession.prefixpart%TYPE DEFAULT 'MGI:',
   v_nextMGI int DEFAULT -1
 )
 RETURNS VOID AS
