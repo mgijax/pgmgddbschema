@@ -28,7 +28,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.VOC_AnnotType DROP CONSTRAINT VOC_AnnotType__MGIType_key_fkey CASCADE;
 
-ALTER TABLE mgd.VOC_Annot_Count_Cache DROP CONSTRAINT VOC_Annot_Count_Cache__MGIType_key_fkey CASCADE;
+--ALTER TABLE mgd.VOC_Annot_Count_Cache DROP CONSTRAINT VOC_Annot_Count_Cache__MGIType_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_TranslationType DROP CONSTRAINT MGI_TranslationType__MGIType_key_fkey CASCADE;
 
