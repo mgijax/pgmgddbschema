@@ -57,7 +57,7 @@ ALTER TABLE mgd.VOC_Evidence DROP CONSTRAINT VOC_Evidence__EvidenceTerm_key_fkey
 
 ALTER TABLE mgd.VOC_AnnotHeader DROP CONSTRAINT VOC_AnnotHeader__Term_key_fkey CASCADE;
 
-ALTER TABLE mgd.VOC_Marker_Cache DROP CONSTRAINT VOC_Marker_Cache__Term_key_fkey CASCADE;
+--ALTER TABLE mgd.VOC_Marker_Cache DROP CONSTRAINT VOC_Marker_Cache__Term_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_Annot DROP CONSTRAINT VOC_Annot__Term_key_fkey CASCADE;
 
