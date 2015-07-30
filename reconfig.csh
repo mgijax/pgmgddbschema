@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 #
 # Drop and re-create database triggers, stored procedures and views
@@ -7,25 +7,19 @@
 
 cd `dirname $0` && source ./Configuration
 
-rm ./logs/default/*.log
-./default/default_unbind.csh
-./default/default_bind.csh
-
 rm ./logs/key/*.log
-./key/key_drop.csh
-./key/key_create.csh
+./key/key_drop.sh
+./key/key_create.sh
 
 rm ./logs/view/*.log
-./view/view_drop.csh
-./view/view_create.csh
+./view/view_drop.sh
+./view/view_create.sh
 
 rm ./logs/procedure/*.log
-./procedure/procedure_drop.csh
-./procedure/procedure_create.csh
+./procedure/procedure_drop.sh
+./procedure/procedure_create.sh
 
 rm ./logs/trigger/*.log
-./trigger/trigger_drop.csh
-./trigger/trigger_create.csh
-
-./all_perms.csh
+./trigger/trigger_drop.sh
+./trigger/trigger_create.sh
 
