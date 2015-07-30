@@ -38,6 +38,16 @@ DROP FUNCTION IF EXISTS VOC_Term_delete();
 CREATE OR REPLACE FUNCTION VOC_Term_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
+DELETE FROM MGI_Note m
+WHERE m._Object_key = OLD._Term_key
+AND m._MGIType_key = 13
+;
+
+DELETE FROM MGI_Synonym
+WHERE m._Object_key = OLD._Term_key
+AND m._MGIType_key = 13
+;
+
 DELETE FROM ACC_Accession a
 WHERE a._Object_key = OLD._Term_key
 AND a._MGIType_key = 13
