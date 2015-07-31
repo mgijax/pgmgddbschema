@@ -3,6 +3,7 @@
 #
 # History
 #	02/16/2015 - kstone - P-WI Specific Table
+#       Manually edited. Please don't regenerate
 #
 
 cd `dirname $0` && . ./Configuration
@@ -11,16 +12,20 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.PWI_Report (
-	id			numeric			not null,
-	name			varchar(60)		not null,
+	id			integer			not null,
+	name			text			not null,
 	description		text			null,
 	sql_text		text			not null,
-	report_author		varchar(30)		not null,
-	requested_by		varchar(60)		not null,
+	report_author		text			not null,
+	requested_by		text			not null,
 	created			timestamp DEFAULT now()		not null,
 	last_run		timestamp DEFAULT now()		null,
-	last_run_duration	varchar(20)			null,
-	report_views		varchar(20)			null,
-	type			varchar(20)			null
+	last_run_duration	text			null,
+	report_views		text			null,
+	type			text			null
 );
+
+CREATE SEQUENCE pwi_report_id_seq;	 
+ALTER TABLE PWI_Report ALTER id SET DEFAULT NEXTVAL('pwi_report_id_seq');
+
 EOSQL
