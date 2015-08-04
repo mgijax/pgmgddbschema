@@ -69,17 +69,17 @@ do
 i=`basename $i _create.object`
 echo 'bcp out the files from sybase...', ${i} | tee -a ${LOG}
 echo $i | tee -a ${LOG}
-${MGI_DBUTILS}/bin/bcpout.csh ${MGD_DBSERVER} ${MGD_DBNAME} $i ${EXPORTDATA} $i.bcp | tee -a ${LOG}
+${MGI_DBUTILS}/bin/bcpout.csh ${MGD_DBSERVER} ${MGD_DBNAME} $i ${EXPORTDATA} $i.bcp | tee -a ${LOG} &
 done
 
 fi
 
 # wait until all jobs invoked above have terminated
 # turned off; turn this on if you are using threads
-#wait
-
+wait
 echo 'done: bcp out the files from sybase...' | tee -a ${LOG}
 date | tee -a ${LOG}
+
 #
 # end: bcp out the sybase data
 #
