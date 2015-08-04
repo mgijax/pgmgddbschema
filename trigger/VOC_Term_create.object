@@ -43,7 +43,7 @@ WHERE m._Object_key = OLD._Term_key
 AND m._MGIType_key = 13
 ;
 
-DELETE FROM MGI_Synonym
+DELETE FROM MGI_Synonym m
 WHERE m._Object_key = OLD._Term_key
 AND m._MGIType_key = 13
 ;
