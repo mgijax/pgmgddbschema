@@ -18,6 +18,9 @@ drop index if exists mgd.MGI_EMAPS_Mapping_idx_accID
 drop index if exists mgd.MGI_EMAPS_Mapping_idx_emapsID
 ;
 
+drop index if exists mgd.MGI_EMAPS_Mapping_idx_emapsID_upper
+;
+
 drop index if exists mgd.MGI_EMAPS_Mapping_idx_CreatedBy_key
 ;
 

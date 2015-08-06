@@ -18,6 +18,9 @@ create index MGI_EMAPS_Mapping_idx_accID on mgd.MGI_EMAPS_Mapping (accID);
 create index MGI_EMAPS_Mapping_idx_emapsID on mgd.MGI_EMAPS_Mapping (emapsID);
 
 
+create index MGI_EMAPS_Mapping_idx_emapsID_upper on mgd.MGI_EMAPS_Mapping (upper(emapsID));
+
+
 create index MGI_EMAPS_Mapping_idx_CreatedBy_key on mgd.MGI_EMAPS_Mapping (_CreatedBy_key);
 
 
