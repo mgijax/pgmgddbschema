@@ -1,8 +1,0 @@
-#!/usr/local/bin/python
-import psycopg2
-import unittest
-
-import TranslatorDatabaseTests
-
-if __name__ == "__main__":
-	unittest.TextTestRunner().run(TranslatorDatabaseTests.suite())
