@@ -44,6 +44,8 @@ v_numericPart acc_accession.numericPart%TYPE;
 
 BEGIN
 
+v_numericPart := 0;
+
 -- Update the Accession record for a given Accession key
 
 IF v_accID IS NULL
@@ -57,7 +59,7 @@ ELSE
 	IF (v_prefixPart = 'J:' or substring(v_prefixPart,1,4) = 'MGD-')
 	THEN
 		IF (select count(*) from ACC_Accession
-		    where numericPart = v_numericPart::integer
+		    where numericPart = v_numericPart
 			  and prefixPart = v_prefixPart) >= 1
 		THEN
                         RAISE EXCEPTION E'Duplicate MGI Accession Number';
@@ -66,7 +68,7 @@ ELSE
 
 	END IF;
 
-	IF v_numericPart = ''
+	IF v_numericPart = 0
 	THEN
 		update ACC_Accession
 	       	set accID = v_accID,
@@ -79,7 +81,7 @@ ELSE
 		update ACC_Accession
 	       	set accID = v_accID,
 		   	prefixPart = v_prefixPart,
-		   	numericPart = v_numericPart::integer,
+		   	numericPart = v_numericPart,
 		   	_ModifiedBy_key = v_userKey,
 		   	modification_date = current_date
 	       	where _Accession_key = v_accKey;
