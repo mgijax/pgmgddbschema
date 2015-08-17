@@ -34,7 +34,7 @@ DECLARE
 v_nextACC int;
 v_mgiTypeKey int;
 v_prefixPart acc_accession.prefixPart%TYPE;
-v_numericPart acc_accession.numericPart%Type;
+v_numericPart acc_accession.prefixPart%Type;
 
 BEGIN
 
@@ -50,7 +50,7 @@ v_nextACC := max(_Accession_key) + 1 FROM ACC_Accession;
 
 v_mgiTypeKey := _MGIType_key FROM ACC_MGIType WHERE name = v_mgiType;
 v_prefixPart := v_accID;
-v_numericPart := 0;
+v_numericPart := '';
 
 /* skip the splitting...for example, the Reference/DOI ids are not split */
 
@@ -60,7 +60,7 @@ THEN
 	SELECT * FROM ACC_split(v_accID) INTO v_prefixPart, v_numericPart;
 END IF;
 
-IF v_numericPart = 0
+IF v_numericPart = ''
 THEN
 	INSERT INTO ACC_Accession
 	(_Accession_key, accID, prefixPart, numericPart, _LogicalDB_key, _Object_key, 
@@ -71,7 +71,7 @@ ELSE
 	INSERT INTO ACC_Accession
 	(_Accession_key, accID, prefixPart, numericPart, _LogicalDB_key, _Object_key, 
  	 _MGIType_key, private, preferred, _CreatedBy_key, _ModifiedBy_key)
-	VALUES(v_nextACC, v_accID, v_prefixPart, v_numericPart, 
+	VALUES(v_nextACC, v_accID, v_prefixPart, v_numericPart::integer, 
                v_logicalDB, v_objectKey, v_mgiTypeKey, v_private, v_preferred, v_userKey, v_userKey);
 END IF;
 
