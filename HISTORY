@@ -1,3 +1,9 @@
+TAG: pgmgddbschema-6-0-0-13
+DATE: 08/18/2015
+STAFF: kstone
+CHANGES:
+1) Fixed bug in ALL_Annot_View
+
 TAG: pgmgddbschema-6-0-0-12
 DATE: 08/17/2015
 STAFF: lec 
