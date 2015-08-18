@@ -14,15 +14,16 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create view mgd.ALL_Annot_View
 as
 select agv._allele_key, va._annot_key, va._annottype_key, va._qualifier_key
-from all_genotype_view agv join
-	voc_annot va on (va._object_key=agv._genotype_key)
-union
+from all_genotype_view agv
+	join voc_annot va on (va._object_key=agv._genotype_key)
+	join voc_annottype vat on (vat._annottype_key = va._annottype_key)
+where vat._mgitype_key = 12
+union all
 select a._allele_key, va._annot_key, va._annottype_key, va._qualifier_key
-from all_allele a join 
-	voc_annot va on (va._object_key=a._allele_key)
-
-
-
+from all_allele a
+	join voc_annot va on (va._object_key=a._allele_key)
+	join voc_annottype vat on (vat._annottype_key = va._annottype_key)
+where vat._mgitype_key = 11
 ;
 
 EOSQL
