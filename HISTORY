@@ -1,3 +1,10 @@
+TAG: pgmgddbschema-6-0-0-14
+DATE: 08/19/2015
+STAFF: dbm
+CHANGES:
+1) trigger/enable_triggers.sh: use "-w" option to suppress password prompting
+2) trigger/disable_triggers.sh: use "-w" option to suppress password prompting
+
 TAG: pgmgddbschema-6-0-0-13
 DATE: 08/18/2015
 STAFF: kstone
