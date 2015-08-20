@@ -60,6 +60,28 @@ THEN
 	RAISE EXCEPTION E'Allele Symbol is referenced in MGI Relationship(s)';
 END IF;
 
+/* also remove the marker association in various other tables */
+
+update GXD_AlleleGenotype set _Marker_key = null
+where _Marker_key = OLD._Marker_key
+    and _Allele_key = OLD._Allele_key
+;
+
+update GXD_AllelePair set _Marker_key = null
+where _Marker_key = OLD._Marker_key
+    and (_Allele_key_1 = OLD._Allele_key or _Allele_key_2 = OLD._Allele_key)
+;
+
+update MRK_OMIM_Cache set _Marker_key = null
+where _Marker_key = OLD._Marker_key
+    and _Allele_key = OLD._Allele_key
+;
+
+update PRB_Strain_Marker set _Marker_key = null
+where _Marker_key = OLD._Marker_key
+    and _Allele_key = OLD._Allele_key
+;
+
 DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._Allele_key
 AND a._MGIType_key = 11
@@ -261,6 +283,32 @@ THEN
             RAISE EXCEPTION E'Allele Symbol is referenced in Strain/Allele Record(s); Approved/Autoload Status cannot be changed.';
     END IF;
 END IF;
+
+/* if we change the allele or marker keys, then we need to invalidate the
+* prior cached relationships and cache the new ones (as long as the new
+* ones were not invalidated by a curator).  similar process should work
+* for changes to the status key.
+*/
+
+update GXD_AlleleGenotype set _Marker_key = NEW._Marker_key
+where _Allele_key = NEW._Allele_key
+and NEW._Status_key != 4268546
+;
+
+update GXD_AllelePair set _Marker_key = NEW._Marker_key
+where (_Allele_key_1 = NEW._Allele_key or _Allele_key_2 = NEW._Allele_key)
+and NEW._Status_key != 4268546
+;
+
+update MRK_OMIM_Cache set _Marker_key = NEW._Marker_key
+where _Allele_key = NEW._Allele_key
+and NEW._Status_key != 4268546
+;
+
+update PRB_Strain_Marker set _Marker_key = NEW._Marker_key
+where _Allele_key = NEW._Allele_key
+and NEW._Status_key != 4268546
+;
 
 RETURN NEW;
 
