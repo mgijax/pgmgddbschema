@@ -109,7 +109,6 @@ DELETE FROM MRK_Alias WHERE _Alias_key = v_oldKey AND _Marker_key = v_newKey ;
 
 UPDATE MRK_Alias SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 UPDATE MRK_Alias SET _Alias_key = v_newKey WHERE _Alias_key = v_oldKey ;
-UPDATE ALL_Marker_Assoc SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 UPDATE ALL_Allele SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 UPDATE ALL_Knockout_Cache SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 UPDATE MRK_Anchors SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;

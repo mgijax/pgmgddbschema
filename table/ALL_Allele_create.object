@@ -23,6 +23,8 @@ create table mgd.ALL_Allele (
 	isWildType                     smallint             not null,
 	isExtinct		       smallint	       not null,
 	isMixed			       smallint	       not null,
+	_Refs_key                      int             null,
+	_MarkerAllele_Status_key       int             not null,
 	_CreatedBy_key                 int DEFAULT 1001             not null,
 	_ModifiedBy_key                int DEFAULT 1001             not null,
 	_ApprovedBy_key                int             null,

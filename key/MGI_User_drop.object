@@ -21,8 +21,6 @@
 #
 # 01/18/2010 - jsb - added SEQ_Sequence_Assoc
 #
-# 11/24/2008 - jsb - added ALL_Marker_Assoc, ALL_Allele_CellLine
-#
 # 10/08/2008 - jsb - renamed SEQ_AdditionalInfo to be SEQ_GeneTrap
 #
 # 11/15/2007 - jsb - added SEQ_Allele_Assoc, SEQ_AdditionalInfo, and
@@ -335,10 +333,6 @@ ALTER TABLE mgd.BIB_DataSet_Assoc DROP CONSTRAINT BIB_DataSet_Assoc__CreatedBy_k
 ALTER TABLE mgd.BIB_DataSet DROP CONSTRAINT BIB_DataSet__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.BIB_DataSet DROP CONSTRAINT BIB_DataSet__CreatedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.ALL_Marker_Assoc DROP CONSTRAINT ALL_Marker_Assoc__ModifiedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.ALL_Marker_Assoc DROP CONSTRAINT ALL_Marker_Assoc__CreatedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.ALL_Knockout_Cache DROP CONSTRAINT ALL_Knockout_Cache__ModifiedBy_key_fkey CASCADE;
 

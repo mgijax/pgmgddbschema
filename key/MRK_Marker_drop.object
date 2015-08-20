@@ -6,7 +6,6 @@
 # 06/09/2010    lec
 #       - TR 6839/added MRK_MCV_Cache
 #
-# 11/24/2008 - jsb - added ALL_Marker_Assoc
 # 09/16/2008 - jsb - added VOC_Marker_Cache
 # 10/19/2006	lec
 #	- TR 7533; added GO_Tracking
@@ -106,8 +105,6 @@ ALTER TABLE mgd.GO_Tracking DROP CONSTRAINT GO_Tracking__Marker_key_fkey CASCADE
 ALTER TABLE mgd.CRS_References DROP CONSTRAINT CRS_References__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.CRS_Matrix DROP CONSTRAINT CRS_Matrix__Marker_key_fkey CASCADE;
-
-ALTER TABLE mgd.ALL_Marker_Assoc DROP CONSTRAINT ALL_Marker_Assoc__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.ALL_Knockout_Cache DROP CONSTRAINT ALL_Knockout_Cache__Marker_key_fkey CASCADE;
 

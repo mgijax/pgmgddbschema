@@ -11,7 +11,6 @@
 #       - TR8156; remove GXD_Antibody, BIB_Refs
 #
 # 02/13/2009 - jsb removed ALL_Cache
-# 11/24/2008 - jsb - added ALL_Marker_Assoc
 # 11/15/2007 - jsb - added ALL_Cache, SEQ_Allele_Assoc, and
 # 	ALL_CellLine_Derivation
 #
@@ -63,10 +62,10 @@ ALTER TABLE mgd.SEQ_Marker_Cache ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_
 ALTER TABLE mgd.SEQ_Probe_Cache ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs ON DELETE CASCADE DEFERRABLE;
 
 
+ALTER TABLE mgd.ALL_Allele ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs DEFERRABLE;
+
+
 ALTER TABLE mgd.ALL_CellLine_Derivation ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs DEFERRABLE;
-
-
-ALTER TABLE mgd.ALL_Marker_Assoc ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs DEFERRABLE;
 
 
 ALTER TABLE mgd.CRS_References ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs DEFERRABLE;

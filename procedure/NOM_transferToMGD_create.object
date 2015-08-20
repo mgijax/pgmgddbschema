@@ -322,10 +322,7 @@ CLOSE acc_cursor;
 -- If the Marker was originally used in Alleles as a Nomenclature Marker, then 
 --    set the ALL_Allele._Marker_key = real marker key    
 --    set the ALL_Allele.nomenSymbol = null
---    add a record to ALL_Marker_Assoc
 --
-
-v_assocKey := max(_Assoc_key) + 1 from ALL_Marker_Assoc;
 
 OPEN allele_cursor FOR
 SELECT _Allele_key FROM ALL_Allele WHERE nomenSymbol = (SELECT symbol FROM nom_transfer);
@@ -336,11 +333,6 @@ LOOP
         UPDATE ALL_Allele
         SET _Marker_key = v_markerKey, nomenSymbol = null
         WHERE _Allele_key = v_alleleKey
-	;
-
-        INSERT INTO ALL_Marker_Assoc
-        VALUES (v_assocKey, v_alleleKey, v_markerKey, v_qualifierKey, null, v_mrkstatusKey,
-         v_userKey, v_userKey, current_date, current_date)
 	;
 
 	IF NOT FOUND

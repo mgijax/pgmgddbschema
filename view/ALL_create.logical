@@ -22,7 +22,6 @@ ALL_CellLine_Strain_View_create.object \
 ALL_CellLine_View_create.object \
 ALL_CellLine_Derivation_View_create.object \
 ALL_Derivation_Summary_View_create.object \
-ALL_Marker_Assoc_View_create.object \
 ALL_Summary_View_create.object \
 ALL_Genotype_View_create.object \
 ALL_Annot_View_create.object \

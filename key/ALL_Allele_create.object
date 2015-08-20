@@ -7,7 +7,6 @@
 #	- TR 9797; add ALL_Cre_Cache
 #
 # 2/13/2009 - jsb - removed ALL_Cache
-# 11/24/2008 - jsb - added ALL_Marker_Assoc, ALL_Allele_CellLine
 # 11/15/07 - jsb - added ALL_Cache and SEQ_Allele_Assoc
 #
 # 02/04/2003
@@ -29,9 +28,6 @@ ALTER TABLE mgd.ALL_Allele_CellLine ADD FOREIGN KEY (_Allele_key) REFERENCES mgd
 
 
 ALTER TABLE mgd.ALL_Allele_Mutation ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele ON DELETE CASCADE DEFERRABLE;
-
-
-ALTER TABLE mgd.ALL_Marker_Assoc ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele ON DELETE CASCADE DEFERRABLE;
 
 
 ALTER TABLE mgd.ALL_Cre_Cache ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele ON DELETE CASCADE DEFERRABLE;

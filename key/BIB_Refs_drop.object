@@ -8,7 +8,6 @@
 #	- TR8156; remove GXD_Antibody, BIB_Refs
 #
 # 02/13/2009 - jsb removed ALL_Cache
-# 11/24/2008 - jsb - added ALL_Marker_Assoc
 # 11/15/2007 - jsb - added ALL_Cache, SEQ_Allele_Assoc, and
 # 	ALL_CellLine_Derivation
 #
@@ -77,11 +76,12 @@ ALTER TABLE mgd.BIB_Books DROP CONSTRAINT BIB_Books__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.BIB_Citation_Cache DROP CONSTRAINT BIB_Citation_Cache__Refs_key_fkey CASCADE;
 
-ALTER TABLE mgd.ALL_Marker_Assoc DROP CONSTRAINT ALL_Marker_Assoc__Refs_key_fkey CASCADE;
-
 ALTER TABLE mgd.ALL_CellLine_Derivation DROP CONSTRAINT ALL_CellLine_Derivation__Refs_key_fkey CASCADE;
 
+ALTER TABLE mgd.ALL_Allele DROP CONSTRAINT ALL_Allele__Refs_key_fkey CASCADE;
+
 ALTER TABLE mgd.ACC_AccessionReference DROP CONSTRAINT ACC_AccessionReference__Refs_key_fkey CASCADE;
+
 ALTER TABLE mgd.BIB_Refs DROP CONSTRAINT BIB_Refs_pkey CASCADE;
 
 EOSQL

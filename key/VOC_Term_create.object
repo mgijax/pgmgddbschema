@@ -35,7 +35,6 @@
 #
 # 02/13/2009 - jsb - move _Transmission_key from ALL_Cache to ALL_Allele
 # 01/14/2009 - jsb - added ALL_CellLine_Derivation._Vector_key
-# 11/24/2008 - jsb - added ALL_Marker_Assoc
 # 10/08/2008 - jsb - renamed SEQ_AdditionalInfo to be SEQ_GeneTrap
 # 09/16/2008 - jsb - added VOC_Marker_Cache and VOC_Annot_Count_Cache
 # 11/15/2007 - jsb - added ALL_Cache, SEQ_Allele_Assoc, SEQ_AdditionalInfo,
@@ -71,6 +70,9 @@ ALTER TABLE mgd.ALL_Allele ADD FOREIGN KEY (_Allele_Type_key) REFERENCES mgd.VOC
 ALTER TABLE mgd.ALL_Allele ADD FOREIGN KEY (_Allele_Status_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
+ALTER TABLE mgd.ALL_Allele ADD FOREIGN KEY (_MarkerAllele_Status_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
 ALTER TABLE mgd.ALL_Allele_Mutation ADD FOREIGN KEY (_Mutation_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
@@ -99,12 +101,6 @@ ALTER TABLE mgd.ALL_Cre_Cache ADD FOREIGN KEY (_Allele_Type_key) REFERENCES mgd.
 
 
 ALTER TABLE mgd.ALL_Cre_Cache ADD FOREIGN KEY (_System_key) REFERENCES mgd.VOC_Term DEFERRABLE;
-
-
-ALTER TABLE mgd.ALL_Marker_Assoc ADD FOREIGN KEY (_Qualifier_key) REFERENCES mgd.VOC_Term DEFERRABLE;
-
-
-ALTER TABLE mgd.ALL_Marker_Assoc ADD FOREIGN KEY (_Status_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
 ALTER TABLE mgd.GXD_AllelePair ADD FOREIGN KEY (_Compound_key) REFERENCES mgd.VOC_Term DEFERRABLE;

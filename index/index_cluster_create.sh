@@ -22,7 +22,6 @@ CLUSTER mgd.ALL_CellLine USING ALL_CellLine_pkey;
 CLUSTER mgd.ALL_Cre_Cache USING ALL_Cre_Cache_idx_clustered;
 CLUSTER mgd.ALL_Knockout_Cache USING ALL_Knockout_Cache_idx_clustered;
 CLUSTER mgd.ALL_Label USING ALL_Label_pkey;
-CLUSTER mgd.ALL_Marker_Assoc USING ALL_Marker_Assoc_idx_clustered;
 CLUSTER mgd.BIB_Books USING BIB_Books_pkey;
 CLUSTER mgd.BIB_Citation_Cache USING BIB_Citation_Cache_pkey;
 CLUSTER mgd.BIB_DataSet_Assoc USING BIB_DataSet_Assoc_idx_clustered;

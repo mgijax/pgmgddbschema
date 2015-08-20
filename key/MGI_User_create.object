@@ -26,8 +26,6 @@
 #
 # 01/18/2010 - jsb - added SEQ_Sequence_Assoc
 #
-# 11/24/2008 - jsb - added ALL_Marker_Assoc, ALL_Allele_CellLine
-#
 # 10/08/2008 - jsb - renamed SEQ_AdditionalInfo to be SEQ_GeneTrap
 #
 # 11/15/2007 - jsb - added SEQ_Allele_Assoc, SEQ_AdditionalInfo, and
@@ -112,12 +110,6 @@ ALTER TABLE mgd.ALL_Knockout_Cache ADD FOREIGN KEY (_CreatedBy_key) REFERENCES m
 
 
 ALTER TABLE mgd.ALL_Knockout_Cache ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
-
-
-ALTER TABLE mgd.ALL_Marker_Assoc ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
-
-
-ALTER TABLE mgd.ALL_Marker_Assoc ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
 
 
 ALTER TABLE mgd.BIB_DataSet ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;

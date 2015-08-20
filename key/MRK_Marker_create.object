@@ -7,7 +7,6 @@
 # 06/09/2010	lec
 #	- TR 6839/added MRK_MCV_Cache
 #
-# 11/24/2008 - jsb - added ALL_Marker_Assoc
 # 09/16/2008 - jsb - added VOC_Marker_Cache
 # 10/19/2006	lec
 #	- TR 7533; added GO_Tracking
@@ -91,9 +90,6 @@ ALTER TABLE mgd.VOC_Marker_Cache ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MR
 
 
 ALTER TABLE mgd.ALL_Allele ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker DEFERRABLE;
-
-
-ALTER TABLE mgd.ALL_Marker_Assoc ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker DEFERRABLE;
 
 
 ALTER TABLE mgd.CRS_Matrix ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker DEFERRABLE;

@@ -241,7 +241,8 @@ END IF;
 
 -- Non-Approved Alleles cannot have Genotypes or Strain associations
 
-IF NEW._Allele_Status_key NOT IN (847114,3983021)
+IF OLD._Allele_Status_key != NEW._Allele_Status_key 
+	AND NEW._Allele_Status_key NOT IN (847114,3983021)
 THEN
     IF EXISTS (SELECT * FROM GXD_AlleleGenotype WHERE GXD_AlleleGenotype._Allele_key = NEW._Allele_key)
     THEN

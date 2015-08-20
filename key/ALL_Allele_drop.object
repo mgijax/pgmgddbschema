@@ -6,7 +6,6 @@
 #       - TR 9797; add ALL_Cre_Cache
 #
 # 2/13/2009 - jsb - removed ALL_Cache
-# 11/24/2008 - jsb - added ALL_Marker_Assoc, ALL_Allele_CellLine
 # 11/15/07 - jsb - added ALL_Cache and SEQ_Allele_Assoc
 #
 # 07/23/2002
@@ -28,8 +27,6 @@ ALTER TABLE mgd.GXD_AllelePair DROP CONSTRAINT GXD_AllelePair__Allele_key_2_fkey
 ALTER TABLE mgd.GXD_AllelePair DROP CONSTRAINT GXD_AllelePair__Allele_key_1_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_AlleleGenotype DROP CONSTRAINT GXD_AlleleGenotype__Allele_key_fkey CASCADE;
-
-ALTER TABLE mgd.ALL_Marker_Assoc DROP CONSTRAINT ALL_Marker_Assoc__Allele_key_fkey CASCADE;
 
 ALTER TABLE mgd.ALL_Label DROP CONSTRAINT ALL_Label__Allele_key_fkey CASCADE;
 
