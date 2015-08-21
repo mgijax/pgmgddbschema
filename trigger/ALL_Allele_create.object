@@ -288,22 +288,22 @@ END IF;
 
 UPDATE GXD_AlleleGenotype set _Marker_key = NEW._Marker_key
 WHERE _Allele_key = NEW._Allele_key
-AND NEW._Status_key != 4268546
+AND NEW._MarkerAllele_Status_key != 4268546
 ;
 
 UPDATE GXD_AllelePair set _Marker_key = NEW._Marker_key
 WHERE (_Allele_key_1 = NEW._Allele_key or _Allele_key_2 = NEW._Allele_key)
-AND NEW._Status_key != 4268546
+AND NEW._MarkerAllele_Status_key != 4268546
 ;
 
 UPDATE MRK_OMIM_Cache set _Marker_key = NEW._Marker_key
 WHERE _Allele_key = NEW._Allele_key
-AND NEW._Status_key != 4268546
+AND NEW._MarkerAllele_Status_key != 4268546
 ;
 
 UPDATE PRB_Strain_Marker set _Marker_key = NEW._Marker_key
 WHERE _Allele_key = NEW._Allele_key
-AND NEW._Status_key != 4268546
+AND NEW._MarkerAllele_Status_key != 4268546
 ;
 
 RETURN NEW;
