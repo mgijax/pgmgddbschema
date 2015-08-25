@@ -1,3 +1,10 @@
+TAG: pgmgddbschema-6-0-0-17
+DATE: 08/25/2015
+STAFF: lec
+CHANGES:
+1) TR112083/10592/authors/title
+table/BIB_Refs_create.csh: comments only
+
 TAG: pgmgddbschema-6-0-0-16
 TAG: pgmgddbschema-6-0-0-15
 DATE: 08/20/2015
