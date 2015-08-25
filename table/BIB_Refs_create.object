@@ -3,6 +3,12 @@
 #
 # This file was generated automatically by dbschemaScripts.py -- edit with care.
 #
+# 08/25/2015	lec
+#	- TR10592/TR10283 : authors2, title2 are obsolete
+#	- step 1 : merge and set authors2/title2 = null
+#	- step 2 : to-do : remove fields after other dependencies are removed
+#	
+#
 
 cd `dirname $0` && . ./Configuration
 
