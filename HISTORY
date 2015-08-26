@@ -1,3 +1,9 @@
+TAG: pgmgddbschema-6-0-0-18
+DATE: 08/26/2015
+STAFF: lec
+CHANGES:
+1) GXD_InSituResult_View fix
+
 TAG: pgmgddbschema-6-0-0-17
 DATE: 08/25/2015
 STAFF: lec
