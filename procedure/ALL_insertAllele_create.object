@@ -112,7 +112,7 @@ INSERT INTO ALL_Allele
         _CreatedBy_key, _ModifiedBy_key, _ApprovedBy_key, approval_date, creation_date, modification_date)
 VALUES(v_alleleKey, v_markerKey, v_strainKey, v_modeKey, v_typeKey, v_statusKey, v_transmissionKey,
         v_collectionKey, v_symbol, v_name, null, v_isWildType, v_isExtinct, v_isMixed,
-	v_refsKey, _v_mrkstatusKey,
+	v_refsKey, v_mrkstatusKey,
         v_createdByKey, v_modifiedByKey, v_approvedByKey, v_approval_date, current_date, current_date)
 ;
 
