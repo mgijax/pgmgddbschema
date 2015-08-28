@@ -1,3 +1,9 @@
+TAG: pgmgddbschema-6-0-0-20
+DATE: 08/28/2015
+STAFF: lec
+CHANGES:
+1) procedure/MRK_simpleWithdrawal_create.object : fix call to ALL_createWildType
+
 TAG: pgmgddbschema-6-0-0-19
 TAG: pgmgddbschema-6-0-0-18
 DATE: 08/26/2015
