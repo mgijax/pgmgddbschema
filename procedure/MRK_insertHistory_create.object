@@ -19,7 +19,7 @@ historyKey int,
 refKey int,
 eventKey int,
 eventReasonKey int,
-name varchar(255) DEFAULT null,
+name mrk_history.name%TYPE DEFAULT null,
 event_date timestamp DEFAULT null,
 createdByKey int DEFAULT null,
 modifiedByKey int DEFAULT null,
@@ -79,8 +79,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MRK_insertHistory(int,int,int,int,int,int,varchar,timestamp,int,int,timestamp,timestamp) TO public;
+GRANT EXECUTE ON FUNCTION MRK_insertHistory(int,int,int,int,int,int,text,timestamp,int,int,timestamp,timestamp) TO public;
 
-COMMENT ON FUNCTION mgd.MRK_insertHistory(int,int,int,int,int,int,varchar,timestamp,int,int,timestamp,timestamp) IS 'insert new history record into mrk_history';
+COMMENT ON FUNCTION mgd.MRK_insertHistory(int,int,int,int,int,int,text,timestamp,int,int,timestamp,timestamp) IS 'insert new history record into mrk_history';
 
 EOSQL

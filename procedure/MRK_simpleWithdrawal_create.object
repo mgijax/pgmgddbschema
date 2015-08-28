@@ -95,8 +95,8 @@ END IF;
 -- Create a new marker record using the old marker record as the template
 
 INSERT INTO MRK_Marker 
-(_Marker_key, _Organism_key, _Marker_Type_key, _Marker_Status_key, _CurationState_key, symbol, name, chromosome, _CreatedBy_key, _ModifiedBy_key)
-SELECT v_newKey, _Organism_key, _Marker_Type_key, 2, 166894, symbol, v_withdrawnName, chromosome, v_userKey, v_userKey
+(_Marker_key, _Organism_key, _Marker_Type_key, _Marker_Status_key, symbol, name, chromosome, _CreatedBy_key, _ModifiedBy_key)
+SELECT v_newKey, _Organism_key, _Marker_Type_key, 2, symbol, v_withdrawnName, chromosome, v_userKey, v_userKey
 FROM MRK_Marker
 WHERE _Marker_key = v_oldKey
 ;
@@ -162,7 +162,7 @@ END IF;
 IF (SELECT _Marker_Type_key FROM MRK_Marker WHERE _Marker_key = v_newKey) = 1
 	AND NOT EXISTS (SELECT 1 FROM ALL_Allele WHERE _Marker_key = v_oldKey AND isWildType = 1)
 THEN
-	PERFORM ALL_createWildType (v_oldKey, v_newSymbol);
+	PERFORM ALL_createWildType (v_userKey, v_oldKey, v_newSymbol);
 
 	IF NOT FOUND
 	THEN
