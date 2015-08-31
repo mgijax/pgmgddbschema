@@ -20,15 +20,13 @@ s.commonName || ' (' || s.latinName || ')' as organism,
 s.commonName, s.latinName,
 ms.status as status,
 mt.name as markerType,
-v.term as curationState,
 u1.login as createdBy,
 u2.login as modifiedBy
-from MRK_Marker m, MGI_Organism s, MRK_Status ms, MRK_Types mt, VOC_Term v,
+from MRK_Marker m, MGI_Organism s, MRK_Status ms, MRK_Types mt,
 MGI_User u1, MGI_User u2
 where m._Organism_key = s._Organism_key
 and m._Marker_Status_key = ms._Marker_Status_key
 and m._Marker_Type_key = mt._Marker_Type_key
-and m._CurationState_key = v._Term_key
 and m._CreatedBy_key = u1._User_key
 and m._ModifiedBy_key = u2._User_key
 

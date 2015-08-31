@@ -17,7 +17,6 @@ VOC_Evidence_View_create.object \
 VOC_EvidenceProperty_View_create.object \
 VOC_InterPro_Summary_View_create.object \
 VOC_Term_CellLine_View_create.object \
-VOC_Term_CurationState_View_create.object \
 VOC_Term_Gender_View_create.object \
 VOC_Term_MCV_View_create.object \
 VOC_Term_NomenStatus_View_create.object \

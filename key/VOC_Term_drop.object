@@ -108,11 +108,7 @@ ALTER TABLE mgd.PRB_Probe DROP CONSTRAINT PRB_Probe__SegmentType_key_fkey CASCAD
 
 ALTER TABLE mgd.NOM_Marker DROP CONSTRAINT NOM_Marker__NomenStatus_key_fkey CASCADE;
 
-ALTER TABLE mgd.NOM_Marker DROP CONSTRAINT NOM_Marker__CurationState_key_fkey CASCADE;
-
 ALTER TABLE mgd.MRK_OMIM_Cache DROP CONSTRAINT MRK_OMIM_Cache__Term_key_fkey CASCADE;
-
-ALTER TABLE mgd.MRK_Marker DROP CONSTRAINT MRK_Marker__CurationState_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Cluster DROP CONSTRAINT MRK_Cluster__ClusterSource_key_fkey CASCADE;
 

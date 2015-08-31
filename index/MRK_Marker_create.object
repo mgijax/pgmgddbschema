@@ -31,9 +31,6 @@ create index MRK_Marker_idx_Marker_Status_key on mgd.MRK_Marker (_Marker_Status_
 create index MRK_Marker_idx_Marker_Type_key on mgd.MRK_Marker (_Marker_Type_key, _Marker_key);
 
 
-create index MRK_Marker_idx_CurationState_key on mgd.MRK_Marker (_CurationState_key);
-
-
 create index MRK_Marker_idx_symbol on mgd.MRK_Marker (symbol);
 
 

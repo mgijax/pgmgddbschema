@@ -2,21 +2,13 @@
 
 #
 # 
-# obsolete : _CurationState_key
-#
 # History
-#
-# 11/25/2014	lec
-#	- add 'DEFAULT 166894 to _CurationState_key after postgres migration
 #
 # 09/26/2002    lec
 #	- added createdBy, modifiedBy
 #
 # 08/14/2002    lec
 #       - TR 1463; SAO; _Species_key renamed to _Organism_key
-#
-# 05/13/2002	lec
-#	- TR 1463; SAO; added _CurationState_key
 #
 
 cd `dirname $0` && . ./Configuration
@@ -29,7 +21,6 @@ create table mgd.MRK_Marker (
 	_Organism_key                  int             not null,
 	_Marker_Status_key             int             not null,
 	_Marker_Type_key               int             not null,
-	_CurationState_key             int             not null,
 	symbol                         varchar(50)     not null,
 	name                           text    not null,
 	chromosome                     varchar(8)      not null,

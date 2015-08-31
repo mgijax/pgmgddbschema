@@ -18,7 +18,6 @@ create table mgd.NOM_Marker (
 	_NomenStatus_key               int             not null,
 	_Marker_Event_key              int             not null, -- always 1 (assigned)
 	_Marker_EventReason_key        int             not null, -- always -1 (not specified)
-	_CurationState_key             int             not null, -- always 166894 (internal)
 	symbol                         varchar(50)     not null,
 	name                           text    not null,
 	chromosome                     varchar(8)      not null,

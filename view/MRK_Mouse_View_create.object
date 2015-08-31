@@ -23,9 +23,8 @@ s.commonName || ' (' || s.latinName || ')' as organism,
 s.commonName, s.latinName,
 ms.status as status,
 a.accID as mgiID, a.prefixPart, a.numericPart, a._Accession_key,
-t.name as markerType,
-v.term as curationState
-from MRK_Marker m, MRK_Offset o, MGI_Organism s, MRK_Status ms, ACC_Accession a, MRK_Types t, VOC_Term v
+t.name as markerType
+from MRK_Marker m, MRK_Offset o, MGI_Organism s, MRK_Status ms, ACC_Accession a, MRK_Types t
 where m._Organism_key = 1
 and m._Marker_key = o._Marker_key
 and o.source = 0
@@ -37,7 +36,6 @@ and a._LogicalDB_key = 1
 and a.prefixPart = 'MGI:'
 and a.preferred = 1
 and m._Marker_Type_key = t._Marker_Type_key
-and m._CurationState_key = v._Term_key
 
 
 
