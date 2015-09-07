@@ -284,12 +284,6 @@ END IF;
 
 DELETE FROM MRK_History WHERE _Marker_key = v_oldKey;
 
-IF NOT FOUND
-THEN
-	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Could not delete obsolete history records';
-	RETURN;
-END IF;
-
 -- Insert withdrawn symbol into Synonym table
 -- Use assigning reference
 IF v_addAsSynonym = 1
