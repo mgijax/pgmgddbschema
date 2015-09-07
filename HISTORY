@@ -1,3 +1,9 @@
+TAG: pgmgddbschema-6-0-0-23
+DATE: 09/07/2015
+STAFF: lec
+CHANGES:
+1) procedure/MRK_mergeWithdrawal_create.object
+
 TAG: pgmgddbschema-6-0-0-22
 TAG: pgmgddbschema-6-0-0-21
 DATE: 08/31/2015, 09/01/2015
