@@ -1,3 +1,10 @@
+TAG: pgmgddbschema-6-0-0-25
+DATE: 09/11/2015
+STAFF: lec
+CHANGES:
+1) trigger/GXD_Assay_create.object
+2) trigger/GXD_Index_create.object
+
 TAG: pgmgddbschema-6-0-0-24
 DATE: 09/08/2015
 STAFF: lec
