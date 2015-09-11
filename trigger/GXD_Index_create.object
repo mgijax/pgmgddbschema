@@ -35,7 +35,7 @@ THEN
     v_assocKey := max(_Assoc_key) + 1 from BIB_DataSet_Assoc;
 
     INSERT INTO BIB_DataSet_Assoc 
-	VALUES(v_assocKey, NEW._Refs_key, 1004, 0, NEW._CreatedBy_key, NEW._ModifiedBy_key, current_date, current_date)
+	VALUES(v_assocKey, NEW._Refs_key, 1004, 0, 0, NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
     ;
 END IF;
 
