@@ -1,3 +1,9 @@
+TAG: pgmgddbschema-6-0-0-26
+DATE: 09/15/2015
+STAFF: sc
+CHANGES: TR12108 MCV
+1) VOC_Term_MCV_View_create.object
+
 TAG: pgmgddbschema-6-0-0-25
 DATE: 09/11/2015
 STAFF: lec

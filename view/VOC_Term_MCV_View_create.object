@@ -3,6 +3,15 @@
 #
 # History
 #
+# 08/25/2015	sc
+#	-TR12058
+#	lncRNA gene
+#	antisense lncRNA gene
+#	intronic lncRNA gene
+#	CpG island
+#	ribozyme gene
+#	promoter
+#
 # 05/27/2014	sc
 #	- TR
 #	'mutation defined region' MCV:0000051
@@ -54,6 +63,8 @@ and a._LogicalDB_key = 146
 and a.preferred = 1
 and a.accID in (
   'MCV:0000002',
+  'MCV:0000003',
+  'MCV:0000006',
   'MCV:0000015',
   'MCV:0000014',
   'MCV:0000013',
@@ -89,7 +100,11 @@ and a.accID in (
   'MCV:0000048',
   'MCV:0000049',
   'MCV:0000050',
-  'MCV:0000051')
+  'MCV:0000051',
+  'MCV:0000052',
+  'MCV:0000053',
+  'MCV:0000054',
+  'MCV:0000055')
 
 
 
