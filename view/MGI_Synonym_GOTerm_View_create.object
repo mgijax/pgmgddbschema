@@ -1,0 +1,30 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/16/2015	lec
+#	- TR 12070/GO-Context
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MGI_Synonym_GOTerm_View
+as
+select s.*, t._Organism_key, t.synonymType, t.allowOnlyOne, 
+c.numericPart as jnum, c.short_citation, u1.login as modifiedBy
+from MGI_Synonym s
+	INNER JOIN MGI_SynonymType t on (s._SynonymType_key = t._SynonymType_key
+			and t._MGIType_key = 13
+			and t._SynonymType_key in (1034))
+	INNER JOIN MGI_User u1 on (s._ModifiedBy_key = u1._User_key)
+	LEFT OUTER JOIN BIB_Citation_Cache c on (s._Refs_key = c._Refs_key)
+
+
+
+;
+
+EOSQL
