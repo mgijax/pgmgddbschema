@@ -1,3 +1,9 @@
+TAG: pgmgddbschema-6-0-0-27
+DATE: 09/24/2015
+STAFF: lec
+CHANGES:
+1) TR11955/added GOA_CACAO/1551/VOC_deleteGOGAFRed_create.object
+
 TAG: pgmgddbschema-tr12070-BP
 DATE: 09/23/2015
 STAFF: lec
