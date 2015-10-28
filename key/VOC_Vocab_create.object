@@ -42,6 +42,9 @@ ALTER TABLE mgd.MGI_Relationship_Category ADD FOREIGN KEY (_EvidenceVocab_key) R
 ALTER TABLE mgd.MGI_TranslationType ADD FOREIGN KEY (_Vocab_key) REFERENCES mgd.VOC_Vocab DEFERRABLE;
 
 
+ALTER TABLE mgd.MRK_BiotypeMapping ADD FOREIGN KEY (_biotypevocab_key) REFERENCES mgd.VOC_Vocab DEFERRABLE;
+
+
 ALTER TABLE mgd.VOC_Term ADD FOREIGN KEY (_Vocab_key) REFERENCES mgd.VOC_Vocab DEFERRABLE;
 
 

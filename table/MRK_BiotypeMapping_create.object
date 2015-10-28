@@ -1,0 +1,31 @@
+#!/bin/sh
+
+#
+# History
+#
+# 10/16/2015	lec
+#	- TR12070/12116/10308/BioTypes
+#
+# _biotypevocab_key : fk to voc_vocab : 1 of 3 provider biotype vocabs (103,104,105)
+# _biotypeterm_key : fk to voc_term
+# _MCVTerm_key : fk to voc_term where _vocab_key = 79 (Marker Category aka MCV term)
+# _Marker_Type_key : fk to mrk_types
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.MRK_BiotypeMapping (
+	_biotypemapping_key            int             not null,
+ 	_biotypevocab_key              int             not null,
+ 	_biotypeterm_key               int             not null,
+	_MCVTerm_key		       int	       not null,
+ 	_Marker_Type_key               int             not null,
+	_CreatedBy_key                 int DEFAULT 1001             not null,
+	_ModifiedBy_key                int DEFAULT 1001             not null,
+	creation_date                  timestamp DEFAULT now()        not null,
+	modification_date              timestamp DEFAULT now()        not null 
+);
+EOSQL
