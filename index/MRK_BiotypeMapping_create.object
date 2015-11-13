@@ -12,24 +12,18 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MRK_BiotypeMapping_idx_biotypevocab_key on mgd.MRK_BiotypeMapping (_biotypevocab_key);
+CLUSTER mgd.MRK_BiotypeMapping USING MRK_BiotypeMapping_pkey;
 
+create index MRK_BiotypeMapping_idx_biotypevocab_key on mgd.MRK_BiotypeMapping (_biotypevocab_key);
 
 create index MRK_BiotypeMapping_idx_biotypeterm_key on mgd.MRK_BiotypeMapping (_biotypeterm_key);
 
-
 create index MRK_BiotypeMapping_idx_MCVTerm_key on mgd.MRK_BiotypeMapping (_MCVTerm_key);
-
 
 create index MRK_BiotypeMapping_idx_Marker_Type_key on mgd.MRK_BiotypeMapping (_Marker_Type_key);
 
-
 create index MRK_BiotypeMapping_idx_CreatedBy_key on mgd.MRK_BiotypeMapping (_CreatedBy_key);
 
-
 create index MRK_BiotypeMapping_idx_ModifiedBy_key on mgd.MRK_BiotypeMapping (_ModifiedBy_key);
-
-
-CLUSTER mgd.MRK_BiotypeMapping USING MRK_BiotypeMapping_pkey;
 
 EOSQL

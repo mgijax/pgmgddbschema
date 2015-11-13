@@ -9,10 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MLD_ContigProbe_idx_Probe_key on mgd.MLD_ContigProbe (_Probe_key);
-
-
-
 CLUSTER mgd.MLD_ContigProbe USING MLD_ContigProbe_pkey;
+
+create index MLD_ContigProbe_idx_Probe_key on mgd.MLD_ContigProbe (_Probe_key);
 
 EOSQL

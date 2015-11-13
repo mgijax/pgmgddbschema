@@ -9,11 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mgd.MRK_Anchors USING MRK_Anchors_pkey;
 
 create index MRK_Anchors_idx_Marker_key on mgd.MRK_Anchors (_Marker_key);
-
-
-
-CLUSTER mgd.MRK_Anchors USING MRK_Anchors_pkey;
 
 EOSQL

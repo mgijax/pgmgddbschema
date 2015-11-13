@@ -9,13 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mgd.RI_Summary_Expt_Ref USING RI_Summary_Expt_Ref_pkey;
+
 create index RI_Summary_Expt_Ref_idx_Expt_key on mgd.RI_Summary_Expt_Ref (_Expt_key);
 
-
 create index RI_Summary_Expt_Ref_idx_Refs_key on mgd.RI_Summary_Expt_Ref (_Refs_key);
-
-
-
-CLUSTER mgd.RI_Summary_Expt_Ref USING RI_Summary_Expt_Ref_pkey;
 
 EOSQL

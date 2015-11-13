@@ -9,10 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create unique index VOC_Annot_Count_Cache_idx_annotType on mgd.VOC_Annot_Count_Cache (annotType, _Term_key);
-
-
-
 CLUSTER mgd.VOC_Annot_Count_Cache USING VOC_Annot_Count_Cache_pkey;
+
+create unique index VOC_Annot_Count_Cache_idx_annotType on mgd.VOC_Annot_Count_Cache (annotType, _Term_key);
 
 EOSQL

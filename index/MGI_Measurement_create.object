@@ -17,10 +17,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MGI_Measurement_idx_isLatest on mgd.MGI_Measurement (isLatest, _Statistic_key);
-
-
-
 CLUSTER mgd.MGI_Measurement USING MGI_Measurement_pkey;
+
+create index MGI_Measurement_idx_isLatest on mgd.MGI_Measurement (isLatest, _Statistic_key);
 
 EOSQL

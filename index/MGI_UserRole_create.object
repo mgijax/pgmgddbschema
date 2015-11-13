@@ -12,19 +12,14 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MGI_UserRole_idx_Role_key on mgd.MGI_UserRole (_Role_key);
+CLUSTER mgd.MGI_UserRole USING MGI_UserRole_pkey;
 
+create index MGI_UserRole_idx_Role_key on mgd.MGI_UserRole (_Role_key);
 
 create index MGI_UserRole_idx_User_key on mgd.MGI_UserRole (_User_key);
 
-
 create index MGI_UserRole_idx_CreatedBy_key on mgd.MGI_UserRole (_CreatedBy_key);
 
-
 create index MGI_UserRole_idx_ModifiedBy_key on mgd.MGI_UserRole (_ModifiedBy_key);
-
-
-
-CLUSTER mgd.MGI_UserRole USING MGI_UserRole_pkey;
 
 EOSQL

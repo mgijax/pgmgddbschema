@@ -12,22 +12,16 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index IMG_ImagePane_Assoc_idx_ImagePane_key on mgd.IMG_ImagePane_Assoc (_ImagePane_key);
+CLUSTER mgd.IMG_ImagePane_Assoc USING IMG_ImagePane_Assoc_pkey;
 
+create index IMG_ImagePane_Assoc_idx_ImagePane_key on mgd.IMG_ImagePane_Assoc (_ImagePane_key);
 
 create index IMG_ImagePane_Assoc_idx_MGIType_key on mgd.IMG_ImagePane_Assoc (_MGIType_key);
 
-
 create index IMG_ImagePane_Assoc_idx_Object_key on mgd.IMG_ImagePane_Assoc (_Object_key);
-
 
 create index IMG_ImagePane_Assoc_idx_CreatedBy_key on mgd.IMG_ImagePane_Assoc (_CreatedBy_key);
 
-
 create index IMG_ImagePane_Assoc_idx_ModifiedBy_key on mgd.IMG_ImagePane_Assoc (_ModifiedBy_key);
-
-
-
-CLUSTER mgd.IMG_ImagePane_Assoc USING IMG_ImagePane_Assoc_pkey;
 
 EOSQL

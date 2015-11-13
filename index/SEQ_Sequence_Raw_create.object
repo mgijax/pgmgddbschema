@@ -12,13 +12,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mgd.SEQ_Sequence_Raw USING SEQ_Sequence_Raw_pkey;
+
 create index SEQ_Sequence_Raw_idx_CreatedBy_key on mgd.SEQ_Sequence_Raw (_CreatedBy_key);
 
-
 create index SEQ_Sequence_Raw_idx_ModifiedBy_key on mgd.SEQ_Sequence_Raw (_ModifiedBy_key);
-
-
-
-CLUSTER mgd.SEQ_Sequence_Raw USING SEQ_Sequence_Raw_pkey;
 
 EOSQL

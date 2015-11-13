@@ -9,13 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mgd.VOC_Allele_Cache USING VOC_Allele_Cache_pkey;
+
 create index VOC_Allele_Cache_idx_Allele_key on mgd.VOC_Allele_Cache (_Allele_key, _Term_key);
 
-
 create index VOC_Allele_Cache_idx_annotType on mgd.VOC_Allele_Cache (annotType, _Allele_key);
-
-
-
-CLUSTER mgd.VOC_Allele_Cache USING VOC_Allele_Cache_pkey;
 
 EOSQL

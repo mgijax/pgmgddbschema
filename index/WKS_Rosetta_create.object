@@ -12,10 +12,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mgd.WKS_Rosetta USING WKS_Rosetta_pkey;
+
 create index WKS_Rosetta_idx_clustered on mgd.WKS_Rosetta (_Marker_key);
 
 
-
-CLUSTER mgd.WKS_Rosetta USING WKS_Rosetta_pkey;
 
 EOSQL
