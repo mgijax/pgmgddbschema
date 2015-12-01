@@ -23,13 +23,14 @@ RETURNS VOID AS
 
 BEGIN
 
---select distinct _Assay_key into temporary table tmp_band from GXD_GelRow;
---select tmp_band, GXD_GelBand b, GXD_GelRow r, GXD_GelLane l
---WHERE b._GelLane_key = l._GelLane_key
---AND r._GelRow_key = b._GelRow_key
---AND r._Assay_key != l._Assay_key
---AND r._Assay_key = tmp_band._Assay_key
---;
+select distinct _Assay_key into temporary table tmp_band from GXD_GelRow;
+select tmp_band.*, b.*
+from tmp_band, GXD_GelBand b, GXD_GelRow r, GXD_GelLane l
+WHERE b._GelLane_key = l._GelLane_key
+AND r._GelRow_key = b._GelRow_key
+AND r._Assay_key != l._Assay_key
+AND r._Assay_key = tmp_band._Assay_key
+;
 
 DELETE FROM GXD_GelBand
 USING GXD_GelBand b, GXD_GelRow r, GXD_GelLane l
