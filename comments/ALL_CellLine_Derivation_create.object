@@ -1,0 +1,35 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.ALL_CellLine_Derivation IS 'A record in this table represents the Derivation of a Cell Line.  See ALL_CellLine.';
+
+COMMENT ON COLUMN ALL_CellLine_Derivation._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN ALL_CellLine_Derivation.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN ALL_CellLine_Derivation._Creator_key IS 'foreign key to VOC_Term where _Vocab_key = 62 (Cell Line Creator)';
+
+COMMENT ON COLUMN ALL_CellLine_Derivation._Derivation_key IS 'primary key';
+
+COMMENT ON COLUMN ALL_CellLine_Derivation._DerivationType_key IS 'foreign key to VOC_Term where _Vocab_key = 38 (Allele Type)';
+
+COMMENT ON COLUMN ALL_CellLine_Derivation.description IS 'longer name';
+
+COMMENT ON COLUMN ALL_CellLine_Derivation.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN ALL_CellLine_Derivation._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN ALL_CellLine_Derivation.name IS 'Cell Line Library Name';
+
+COMMENT ON COLUMN ALL_CellLine_Derivation._ParentCellLine_key IS 'foreign key to ALL_CellLine';
+
+COMMENT ON COLUMN ALL_CellLine_Derivation._Refs_key IS 'foreign key to BIB_Refs';
+
+COMMENT ON COLUMN ALL_CellLine_Derivation._Vector_key IS 'foreign key to VOC_Term where _Vocab_key = = 72 (Cell Line Vector Name)';
+
+COMMENT ON COLUMN ALL_CellLine_Derivation._VectorType_key IS 'foreign key to VOC_Term where _Vocab_key = 64 (Cell Line Vector Type)';
+
+EOSQL

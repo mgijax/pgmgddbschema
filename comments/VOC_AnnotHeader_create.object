@@ -1,0 +1,33 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.VOC_AnnotHeader IS 'A record in this table represents the unique use of a Header term for a specific annotated Object of a specific Annotation Type. A set of records grouped by Annot Type/Object represents the ordered list of Header terms for an annotated Object of a specific Annotation Type.';
+
+COMMENT ON COLUMN VOC_AnnotHeader._AnnotHeader_key IS 'primary key';
+
+COMMENT ON COLUMN VOC_AnnotHeader._AnnotType_key IS 'foreign key to VOC_AnnotType';
+
+COMMENT ON COLUMN VOC_AnnotHeader.approval_date IS 'date record was approved';
+
+COMMENT ON COLUMN VOC_AnnotHeader._ApprovedBy_key IS 'user who approved the record';
+
+COMMENT ON COLUMN VOC_AnnotHeader._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN VOC_AnnotHeader.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN VOC_AnnotHeader.isNormal IS 'If all of the qualifiers for a given header term = ''norm'' (see VOC_Annot._Qualifier_key) then isNormal = 1 (true), else 0 (false)';
+
+COMMENT ON COLUMN VOC_AnnotHeader.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN VOC_AnnotHeader._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN VOC_AnnotHeader._Object_key IS 'foreign key to any object defined in ACC_MGIType';
+
+COMMENT ON COLUMN VOC_AnnotHeader.sequenceNum IS 'order of the Header Term for a specific Object';
+
+COMMENT ON COLUMN VOC_AnnotHeader._Term_key IS 'Header Term for the annotation; foreign key to VOC_Term';
+
+EOSQL

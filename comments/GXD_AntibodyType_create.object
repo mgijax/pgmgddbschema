@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_AntibodyType IS 'Controlled vocabulary table of all Antibody Types.  Includes Not Applicable (-2) and Not Specified (-1).
+
+See GXD_Antibody.';
+
+COMMENT ON COLUMN GXD_AntibodyType.antibodyType IS 'antibody type description';
+
+COMMENT ON COLUMN GXD_AntibodyType._AntibodyType_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_AntibodyType.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_AntibodyType.modification_date IS 'date record was last modified';
+
+EOSQL

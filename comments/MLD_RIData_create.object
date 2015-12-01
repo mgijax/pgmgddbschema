@@ -1,0 +1,23 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MLD_RIData IS 'Defines Haplotype data for RI Experiments.  Haplotype data records strain distribution pattern for Experimental Markers for each animal in the RI set.
+
+Detail of MLD_RI.';
+
+COMMENT ON COLUMN MLD_RIData.alleleLine IS 'haplotypes for marker; must correspond with listing of animals typed (MLD_RI.RI_IDList)';
+
+COMMENT ON COLUMN MLD_RIData.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MLD_RIData._Expt_key IS 'foreign key to MLD_Expts';
+
+COMMENT ON COLUMN MLD_RIData._Marker_key IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN MLD_RIData.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MLD_RIData.sequenceNum IS 'sequence number for ordering records';
+
+EOSQL

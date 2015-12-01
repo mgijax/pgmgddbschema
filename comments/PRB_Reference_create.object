@@ -1,0 +1,29 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.PRB_Reference IS 'Defines relationship between a Probe and a Reference.  A Probe may have one or more References associated with it.   Accession numbers can be associated with Probes using the Reference object in conjunction with the ACC_AccessionReference table.
+
+See PRB_Probe.';
+
+COMMENT ON COLUMN PRB_Reference._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN PRB_Reference.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN PRB_Reference.hasRmap IS 'does reference have restriction map information?  yes (1), no (0)';
+
+COMMENT ON COLUMN PRB_Reference.hasSequence IS 'is sequence information presented in reference?  yes (1), no (0)';
+
+COMMENT ON COLUMN PRB_Reference.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN PRB_Reference._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN PRB_Reference._Probe_key IS 'foreign key to PRB_Probe';
+
+COMMENT ON COLUMN PRB_Reference._Reference_key IS 'primary key';
+
+COMMENT ON COLUMN PRB_Reference._Refs_key IS 'foreign key to BIB_Refs';
+
+EOSQL

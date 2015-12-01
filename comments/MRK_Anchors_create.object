@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MRK_Anchors IS 'Defines Anchor Markers for construction of Web Mini-Map on Marker detail form.
+
+See MRK_Marker.';
+
+COMMENT ON COLUMN MRK_Anchors.chromosome IS 'marker chromosome';
+
+COMMENT ON COLUMN MRK_Anchors.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MRK_Anchors._Marker_key IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN MRK_Anchors.modification_date IS 'date record was last modified';
+
+EOSQL

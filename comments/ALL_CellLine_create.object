@@ -1,0 +1,29 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.ALL_CellLine IS 'A record in this table represents a parental or a mutant ES Cell Line.';
+
+COMMENT ON COLUMN ALL_CellLine.cellLine IS 'ES cell line';
+
+COMMENT ON COLUMN ALL_CellLine._CellLine_key IS 'primary key';
+
+COMMENT ON COLUMN ALL_CellLine._CellLine_Type_key IS 'foreign key to VOC_Term where _Vocab_key = 63 (Cell Line Type)';
+
+COMMENT ON COLUMN ALL_CellLine._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN ALL_CellLine.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN ALL_CellLine._Derivation_key IS 'foreign key to ALL_CellLine_Derivation';
+
+COMMENT ON COLUMN ALL_CellLine.isMutant IS 'if 1, then this ES Cell line is a Mutant, else Parental';
+
+COMMENT ON COLUMN ALL_CellLine.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN ALL_CellLine._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN ALL_CellLine._Strain_key IS 'foreign key to PRB_Strain';
+
+EOSQL

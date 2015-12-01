@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MRK_Types IS 'Controlled vocabulary table for all Marker Types.
+
+See MRK_Marker.';
+
+COMMENT ON COLUMN MRK_Types.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MRK_Types._Marker_Type_key IS 'primary key';
+
+COMMENT ON COLUMN MRK_Types.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MRK_Types.name IS 'marker type description';
+
+EOSQL

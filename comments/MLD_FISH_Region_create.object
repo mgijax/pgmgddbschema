@@ -1,0 +1,25 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MLD_FISH_Region IS 'Defines number of single and double signal hits by chromosomal region for a specific FISH Experiment.
+
+Detail of MLD_FISH.';
+
+COMMENT ON COLUMN MLD_FISH_Region.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MLD_FISH_Region._Expt_key IS 'foreign key to MLD_Expts';
+
+COMMENT ON COLUMN MLD_FISH_Region.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MLD_FISH_Region.region IS 'chromosomal region';
+
+COMMENT ON COLUMN MLD_FISH_Region.sequenceNum IS 'sequence number for ordering records';
+
+COMMENT ON COLUMN MLD_FISH_Region.totalDouble IS 'number of double signals detected in region';
+
+COMMENT ON COLUMN MLD_FISH_Region.totalSingle IS 'number of single signals detected in region';
+
+EOSQL

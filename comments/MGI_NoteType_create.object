@@ -1,0 +1,25 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_NoteType IS 'A record in this table represents a Note Type.';
+
+COMMENT ON COLUMN MGI_NoteType._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN MGI_NoteType.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MGI_NoteType._MGIType_key IS 'foreign key to ACC_MGIType';
+
+COMMENT ON COLUMN MGI_NoteType.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MGI_NoteType._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN MGI_NoteType.noteType IS 'description of the note type';
+
+COMMENT ON COLUMN MGI_NoteType._NoteType_key IS 'primary key';
+
+COMMENT ON COLUMN MGI_NoteType.private IS 'are notes of this type private?';
+
+EOSQL

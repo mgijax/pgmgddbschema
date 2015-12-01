@@ -1,0 +1,31 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MRK_Cluster IS 'A record in this table defines a relationship between a set of markers. This table was designed to represent Homology clusters to allow multiple markers per organism to be in a cluster and has been generalized by including a cluster type, a source and an accession ID
+
+See MRK_Marker';
+
+COMMENT ON COLUMN MRK_Cluster.cluster_date IS 'None';
+
+COMMENT ON COLUMN MRK_Cluster.clusterID IS 'Cluster Accession ID';
+
+COMMENT ON COLUMN MRK_Cluster._Cluster_key IS 'Primary key';
+
+COMMENT ON COLUMN MRK_Cluster._ClusterSource_key IS 'The term for the source or ''provider'' of the cluster';
+
+COMMENT ON COLUMN MRK_Cluster._ClusterType_key IS 'The term for the type of cluster';
+
+COMMENT ON COLUMN MRK_Cluster._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN MRK_Cluster.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MRK_Cluster.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MRK_Cluster._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN MRK_Cluster.version IS 'Cluster version or release number';
+
+EOSQL

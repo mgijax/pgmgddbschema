@@ -1,0 +1,32 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MLD_Statistics IS 'Defines Statistics generated from Haplotype and 2 Point data.  Generated automatically based on Experiment Type (CROSS or RI) and Cross Type (if Experiment is a CROSS).
+
+See MLD_Expts.
+';
+
+COMMENT ON COLUMN MLD_Statistics.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MLD_Statistics._Expt_key IS 'foreign key to MLD_Expts';
+
+COMMENT ON COLUMN MLD_Statistics._Marker_key_1 IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN MLD_Statistics._Marker_key_2 IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN MLD_Statistics.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MLD_Statistics.pcntrecomb IS 'percentage of recombination per number of mice';
+
+COMMENT ON COLUMN MLD_Statistics.recomb IS 'number of mice which recombined for Marker pair';
+
+COMMENT ON COLUMN MLD_Statistics.sequenceNum IS 'sequence number for ordering records';
+
+COMMENT ON COLUMN MLD_Statistics.stderr IS 'standard error of the recombination percentage';
+
+COMMENT ON COLUMN MLD_Statistics.total IS 'total number of mice typed for Marker pair';
+
+EOSQL

@@ -1,0 +1,27 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.SEQ_GeneModel IS 'A record in this table represents additional information about Gene Model Sequences.';
+
+COMMENT ON COLUMN SEQ_GeneModel._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN SEQ_GeneModel.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN SEQ_GeneModel.exonCount IS 'currently not being used';
+
+COMMENT ON COLUMN SEQ_GeneModel._GMMarker_Type_key IS 'the _Marker_Type_key  (foreign key to MRK_Types) corresponding to the ''rawBiotype'' attribute.';
+
+COMMENT ON COLUMN SEQ_GeneModel.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN SEQ_GeneModel._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN SEQ_GeneModel.rawBiotype IS 'the raw biotype of this Gene Model as provided by the provider';
+
+COMMENT ON COLUMN SEQ_GeneModel._Sequence_key IS 'foreign key to SEQ_Sequence';
+
+COMMENT ON COLUMN SEQ_GeneModel.transcriptCount IS 'currently not being used.';
+
+EOSQL

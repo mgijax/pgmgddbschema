@@ -1,0 +1,25 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_dbinfo IS 'This table has one and only one record which contains information about the database such as the public version name, the product name, the last time the database was dumped.';
+
+COMMENT ON COLUMN MGI_dbinfo.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MGI_dbinfo.lastdump_date IS 'date of last database dump';
+
+COMMENT ON COLUMN MGI_dbinfo.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MGI_dbinfo.product_name IS 'product name';
+
+COMMENT ON COLUMN MGI_dbinfo.public_version IS 'public version';
+
+COMMENT ON COLUMN MGI_dbinfo.schema_version IS 'schema version';
+
+COMMENT ON COLUMN MGI_dbinfo.snp_data_version IS 'snp data version';
+
+COMMENT ON COLUMN MGI_dbinfo.snp_schema_version IS 'snp schema version';
+
+EOSQL

@@ -1,0 +1,49 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_Expression IS 'A cache table of redundant Assay results whose purpose is to make the most common kinds of queries more efficient.  Primarily used by the Web interface.  Loaded by a stored procedure which is executed from the GXD_Assay insert/update triggers.
+
+See GXD_Assay.';
+
+COMMENT ON COLUMN GXD_Expression.age IS 'age of Anatomical Structure';
+
+COMMENT ON COLUMN GXD_Expression.ageMax IS 'maximum age value determined by age field';
+
+COMMENT ON COLUMN GXD_Expression.ageMin IS 'minimum age value determined by age field';
+
+COMMENT ON COLUMN GXD_Expression._Assay_key IS 'foreign key to GXD_Assay';
+
+COMMENT ON COLUMN GXD_Expression._AssayType_key IS 'foreign key to GXD_AssayType';
+
+COMMENT ON COLUMN GXD_Expression.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_Expression._emaps_key IS 'None';
+
+COMMENT ON COLUMN GXD_Expression.expressed IS 'is Marker expressed in Structure?  yes (1), no (0)';
+
+COMMENT ON COLUMN GXD_Expression._Expression_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_Expression._GelLane_key IS 'None';
+
+COMMENT ON COLUMN GXD_Expression._Genotype_key IS 'foreign key to GXD_Genotype';
+
+COMMENT ON COLUMN GXD_Expression.hasImage IS 'if 1 (true), the this Assay contains an Image';
+
+COMMENT ON COLUMN GXD_Expression.isForGXD IS 'if 1 (true), then this Assay will appear in GXD counts and queries (in front-end)';
+
+COMMENT ON COLUMN GXD_Expression.isRecombinase IS 'if 1 (true), then this Assay has a Recombinase Reporter Gene (VOC_Term._Vocab_key = 14)';
+
+COMMENT ON COLUMN GXD_Expression._Marker_key IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN GXD_Expression.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN GXD_Expression._Refs_key IS 'foreign key to BIB_Refs';
+
+COMMENT ON COLUMN GXD_Expression._Specimen_key IS 'None';
+
+COMMENT ON COLUMN GXD_Expression._Structure_key IS 'foreign key to GXD_Structure';
+
+EOSQL

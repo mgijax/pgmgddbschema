@@ -1,0 +1,43 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_GelLane IS 'Defines a Gel Lane.  A Gel Assay is represented as a 2-D matrix with some number of columns (GXD_GelLane) and some number of rows (GXD_GelRow, GXD_GelBand).  Lanes have sequence numbers for ordering and labels to describe lane content.  The information associated with a Gel Lane corresponds to the way the gel was prepared in the lab.  Source material is derived from one or more tissues in an animal.  Tissues are described through reference to the anatomical dictionary.  Animals are described via their genotype, age and sex.  Minimal information is recorded for control lanes.
+
+See GXD_Assay, GXD_Genotype, GXD_GelLaneStructure, GXD_GelRNAType.';
+
+COMMENT ON COLUMN GXD_GelLane.age IS 'age of animal';
+
+COMMENT ON COLUMN GXD_GelLane.ageMax IS 'maximum age range determined by age field; system calculated';
+
+COMMENT ON COLUMN GXD_GelLane.ageMin IS 'minimum age range determined by age field; system calculated';
+
+COMMENT ON COLUMN GXD_GelLane.ageNote IS 'age notes';
+
+COMMENT ON COLUMN GXD_GelLane._Assay_key IS 'foreign key to GXD_Assay';
+
+COMMENT ON COLUMN GXD_GelLane.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_GelLane._GelControl_key IS 'foreign key to GXD_GelControl';
+
+COMMENT ON COLUMN GXD_GelLane._GelLane_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_GelLane._GelRNAType_key IS 'foreign key to GXD_GelRNAType';
+
+COMMENT ON COLUMN GXD_GelLane._Genotype_key IS 'foreign key to GXD_Genotype';
+
+COMMENT ON COLUMN GXD_GelLane.laneLabel IS 'lane label to describe lane contents';
+
+COMMENT ON COLUMN GXD_GelLane.laneNote IS 'notes for entire lane';
+
+COMMENT ON COLUMN GXD_GelLane.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN GXD_GelLane.sampleAmount IS 'amount of source material for RNA gels';
+
+COMMENT ON COLUMN GXD_GelLane.sequenceNum IS 'sequence number for ordering records';
+
+COMMENT ON COLUMN GXD_GelLane.sex IS 'sex of animal (Female, Male, Pooled)';
+
+EOSQL

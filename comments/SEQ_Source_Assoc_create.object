@@ -1,0 +1,23 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.SEQ_Source_Assoc IS 'A record in this table represents the relationship between a Sequence and a Molecular Source (PRB_Source).';
+
+COMMENT ON COLUMN SEQ_Source_Assoc._Assoc_key IS 'primary key';
+
+COMMENT ON COLUMN SEQ_Source_Assoc._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN SEQ_Source_Assoc.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN SEQ_Source_Assoc.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN SEQ_Source_Assoc._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN SEQ_Source_Assoc._Sequence_key IS 'foreign key to SEQ_Sequence';
+
+COMMENT ON COLUMN SEQ_Source_Assoc._Source_key IS 'foreign key to PRB_Source';
+
+EOSQL

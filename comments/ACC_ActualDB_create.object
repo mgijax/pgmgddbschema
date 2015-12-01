@@ -1,0 +1,33 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.ACC_ActualDB IS 'Defines physical location, by URL, of an external data resource.  Used to dynamically construct HTML links for the Web interface.
+
+Detail table of ACC_LogicalDB.';
+
+COMMENT ON COLUMN ACC_ActualDB.active IS 'should the link be constructed?  yes (1), no (0)';
+
+COMMENT ON COLUMN ACC_ActualDB._ActualDB_key IS 'primary key';
+
+COMMENT ON COLUMN ACC_ActualDB.allowsMultiple IS 'does the URL support a query using more than one accession number?  yes (1), no (0)';
+
+COMMENT ON COLUMN ACC_ActualDB._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN ACC_ActualDB.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN ACC_ActualDB.delimiter IS 'the delimiter which separates multiple accession numbers; used when construcuting the full URL.';
+
+COMMENT ON COLUMN ACC_ActualDB._LogicalDB_key IS 'foreign key to ACC_LogicalDB';
+
+COMMENT ON COLUMN ACC_ActualDB.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN ACC_ActualDB._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN ACC_ActualDB.name IS 'name of the actual database; the HTML label that appears in the WI';
+
+COMMENT ON COLUMN ACC_ActualDB.url IS 'template of the URL; includes place holder string of ''@@@@''.  during construction of the full URL, the ''@@@@'' will be replaced by the appropriate term (accession number, symbol, etc.)';
+
+EOSQL

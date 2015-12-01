@@ -1,0 +1,23 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_Organism IS 'A record in this table represents an Organism.';
+
+COMMENT ON COLUMN MGI_Organism.commonName IS 'common name of organism';
+
+COMMENT ON COLUMN MGI_Organism._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN MGI_Organism.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MGI_Organism.latinName IS 'latin name of organism';
+
+COMMENT ON COLUMN MGI_Organism.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MGI_Organism._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN MGI_Organism._Organism_key IS 'organism (foreign key to MGI_Organism)';
+
+EOSQL

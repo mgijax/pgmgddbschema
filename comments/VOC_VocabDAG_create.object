@@ -1,0 +1,17 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.VOC_VocabDAG IS 'A record in this table represents an ownership relationship of a Vocabulary over a DAG.  A Vocabulary can have many DAGS, but a DAG can belong to at most one Vocabulary.';
+
+COMMENT ON COLUMN VOC_VocabDAG.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN VOC_VocabDAG._DAG_key IS 'foreign key to DAG_DAG';
+
+COMMENT ON COLUMN VOC_VocabDAG.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN VOC_VocabDAG._Vocab_key IS 'foreign key to VOC_Vocab';
+
+EOSQL

@@ -1,0 +1,25 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.BIB_DataSet_Assoc IS 'A record in this table represents the association between a DataSet and a Reference.';
+
+COMMENT ON COLUMN BIB_DataSet_Assoc._Assoc_key IS 'primary key';
+
+COMMENT ON COLUMN BIB_DataSet_Assoc._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN BIB_DataSet_Assoc.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN BIB_DataSet_Assoc._DataSet_key IS 'foreign key to BIB_DataSet';
+
+COMMENT ON COLUMN BIB_DataSet_Assoc.isNeverUsed IS 'if 1, then Reference will never be annotated to this data set';
+
+COMMENT ON COLUMN BIB_DataSet_Assoc.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN BIB_DataSet_Assoc._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN BIB_DataSet_Assoc._Refs_key IS 'foreign key to BIB_Refs';
+
+EOSQL

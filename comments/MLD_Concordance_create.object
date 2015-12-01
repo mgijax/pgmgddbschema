@@ -1,0 +1,31 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MLD_Concordance IS 'Defines Concordance values for Hybrid Experiment.  The Concordance table contains results for either Markers or Chromosomes.  Concordance values are stored as integers which represent the number of Hybrid cells recording the presence/absence of a particular Marker/Chromosome in the Concordance table vs. the presence/absence of the Marker being tested for linkage: -/- (neither present), -/+ (linkage Marker present), +/- (Marker/Chromosome present), +/+ (both present).
+
+Detail of MLD_Hybrid.';
+
+COMMENT ON COLUMN MLD_Concordance.chromosome IS 'chromosome value; is NULL if _Marker_key is not NULL';
+
+COMMENT ON COLUMN MLD_Concordance.cnn IS '-/-; number of Hybrid cells where neither the Concordance Marker/Chromosome nor the linkage Marker is present';
+
+COMMENT ON COLUMN MLD_Concordance.cnp IS '-/+; number of Hybrid cells where the Concordance Marker/Chromosome is not present, but the linkage Marker is present';
+
+COMMENT ON COLUMN MLD_Concordance.cpn IS '+/-; number of Hybrid cells where the Concordance Marker/Chromosome is present, but the linkage Marker is not present';
+
+COMMENT ON COLUMN MLD_Concordance.cpp IS '+/+; number of Hybrid cells where both the Concordance Marker/Chromosome and the linkage Marker are present';
+
+COMMENT ON COLUMN MLD_Concordance.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MLD_Concordance._Expt_key IS 'foreign key to MLD_Expts';
+
+COMMENT ON COLUMN MLD_Concordance._Marker_key IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN MLD_Concordance.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MLD_Concordance.sequenceNum IS 'sequence number for ordering records';
+
+EOSQL

@@ -1,0 +1,22 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MRK_Offset IS 'Defines Marker centimorgan (cM) offsets from three different sources:  MGD (0), Chromosome Committee (1) and MIT (2).
+Offset value of -1.0 designates syntenic marker.  Offset value of -999.9 designates withdrawn or reserved marker.  All mouse symbols have an MGD offset.
+
+See MRK_Marker.';
+
+COMMENT ON COLUMN MRK_Offset.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MRK_Offset._Marker_key IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN MRK_Offset.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MRK_Offset.offset IS 'approximate centimorgan (cM) position on chromosome';
+
+COMMENT ON COLUMN MRK_Offset.source IS 'source of cM position (0 = MGD,1 = Chromosome Committee (CC), 2 = MIT)';
+
+EOSQL

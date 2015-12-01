@@ -1,0 +1,27 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_Antigen IS 'Defines an accessionable Antigen object.  An antigen is a protein or fragment of a protein derived from a specific source.';
+
+COMMENT ON COLUMN GXD_Antigen._Antigen_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_Antigen.antigenName IS 'antigen name';
+
+COMMENT ON COLUMN GXD_Antigen.antigenNote IS 'textual information';
+
+COMMENT ON COLUMN GXD_Antigen._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN GXD_Antigen.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_Antigen.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN GXD_Antigen._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN GXD_Antigen.regionCovered IS 'region covered by antigen';
+
+COMMENT ON COLUMN GXD_Antigen._Source_key IS 'foreign key to PRB_Source';
+
+EOSQL

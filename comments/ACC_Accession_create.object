@@ -1,0 +1,37 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.ACC_Accession IS 'Master Accession table; stores all internal (MGI) and external accession numbers for any accessionable object.  Each accession number has a prefix (non-numeric) part and a numeric part.  Accession numbers are assigned to a specific object (_Object_key) within a specific data set (_MGIType_key), to a specific logical database (_LogicalDB_key).  Accession numbers which are designated as private (1) are not dispalyed or searchable via the Web.  Preferred accession numbers are the *primary* accession numbers for a given object.
+
+See ACC_AccessionMax, ACC_AccessionReference.';
+
+COMMENT ON COLUMN ACC_Accession._Accession_key IS 'primary key';
+
+COMMENT ON COLUMN ACC_Accession.accID IS 'the full accession number string';
+
+COMMENT ON COLUMN ACC_Accession._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN ACC_Accession.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN ACC_Accession._LogicalDB_key IS 'foreign key to ACC_LogicalDB';
+
+COMMENT ON COLUMN ACC_Accession._MGIType_key IS 'foreign key to ACC_MGIType';
+
+COMMENT ON COLUMN ACC_Accession.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN ACC_Accession._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN ACC_Accession.numericPart IS 'the trailing numerical portion of accID';
+
+COMMENT ON COLUMN ACC_Accession._Object_key IS 'foreign key to any object defined in ACC_MGIType';
+
+COMMENT ON COLUMN ACC_Accession.preferred IS 'flags accession number as preferred/primary (1) or not preferred/secondary (0).  there can only be one preferred accession number for logical database MGI.  The default is 1.';
+
+COMMENT ON COLUMN ACC_Accession.prefixPart IS 'the leading non-numerical portion of accID';
+
+COMMENT ON COLUMN ACC_Accession.private IS 'is this accession number private? yes (1), no (0)';
+
+EOSQL

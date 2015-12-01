@@ -1,0 +1,15 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_StatisticSql IS 'Each statistic (see MGI_Statistic) can have an associated SQL statement that is used to compute a measurement.  That SQL statement may be split into multiple records in this table, with each record being one chunk of text to be concatenated together.';
+
+COMMENT ON COLUMN MGI_StatisticSql.sequenceNum IS 'integer value to use in ordering the various records (SQL chunks) for a statistic''s SQL';
+
+COMMENT ON COLUMN MGI_StatisticSql.sqlChunk IS 'portion of the SQL statement for computing a measurement of this statistic';
+
+COMMENT ON COLUMN MGI_StatisticSql._Statistic_key IS 'FK to MGI_Statistic, indicating the statistic for which we are defining the SQL';
+
+EOSQL

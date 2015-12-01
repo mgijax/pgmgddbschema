@@ -1,0 +1,21 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MRK_ClusterMember IS 'A record in this table defines an ordered set of members of a marker cluster.
+
+See MRK_Cluster
+
+';
+
+COMMENT ON COLUMN MRK_ClusterMember._Cluster_key IS 'Foreign key to MRK_Cluster';
+
+COMMENT ON COLUMN MRK_ClusterMember._ClusterMember_key IS 'Primary key';
+
+COMMENT ON COLUMN MRK_ClusterMember._Marker_key IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN MRK_ClusterMember.sequenceNum IS 'order of members within this cluster';
+
+EOSQL

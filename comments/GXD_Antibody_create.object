@@ -1,0 +1,31 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_Antibody IS 'Defines an accessionable Antibody object.  An antibody is a protein produced by cells of the immune system that binds to an antigen.';
+
+COMMENT ON COLUMN GXD_Antibody._AntibodyClass_key IS 'foreign key to GXD_AntibodyClass';
+
+COMMENT ON COLUMN GXD_Antibody._Antibody_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_Antibody.antibodyName IS 'name of Antibody';
+
+COMMENT ON COLUMN GXD_Antibody.antibodyNote IS 'note';
+
+COMMENT ON COLUMN GXD_Antibody._AntibodyType_key IS 'foreign key to GXD_AntibodyType';
+
+COMMENT ON COLUMN GXD_Antibody._Antigen_key IS 'foreign key to GXD_Antigen';
+
+COMMENT ON COLUMN GXD_Antibody._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN GXD_Antibody.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_Antibody.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN GXD_Antibody._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN GXD_Antibody._Organism_key IS 'organism (foreign key to MGI_Organism)';
+
+EOSQL

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.ACC_AccessionMax IS 'Stores the current maximum numeric part for the "J:" and "MGI:" prefixes.  Set maximum field to 0 when initializing a new record.  When a new ACC_Accession record is added, maxNumericPart is incremented and ACC_Accession.numericPart is assigned that value.
+
+See ACC_Accession.';
+
+COMMENT ON COLUMN ACC_AccessionMax.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN ACC_AccessionMax.maxNumericPart IS 'the current maximum numeric value for the accession number series designated by prefixPart';
+
+COMMENT ON COLUMN ACC_AccessionMax.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN ACC_AccessionMax.prefixPart IS 'primary key; the leading non-numerical portion of an MGI accID ("MGI:" or "J:")';
+
+EOSQL

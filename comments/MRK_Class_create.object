@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MRK_Class IS 'Controlled vocabulary table for all Marker Classes.  Includes Not Applicable (-2) and Not Specified (-1).
+
+See MRK_Classes.';
+
+COMMENT ON COLUMN MRK_Class._Class_key IS 'primary key';
+
+COMMENT ON COLUMN MRK_Class.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MRK_Class.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MRK_Class.name IS 'class description';
+
+EOSQL

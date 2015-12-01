@@ -1,0 +1,21 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MLD_Hybrid IS 'Defines HYBRID Experiment; stores the band assignment determined by the experiment.
+
+Master for MLD_Concordance.';
+
+COMMENT ON COLUMN MLD_Hybrid.band IS 'region on chromosome to which marker is assigned according to experimental results';
+
+COMMENT ON COLUMN MLD_Hybrid.chrsOrGenes IS 'does MLD_Concordance table contain Chromosome (0) or Marker (1) values?';
+
+COMMENT ON COLUMN MLD_Hybrid.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MLD_Hybrid._Expt_key IS 'foreign key to MLD_Expts';
+
+COMMENT ON COLUMN MLD_Hybrid.modification_date IS 'date record was last modified';
+
+EOSQL

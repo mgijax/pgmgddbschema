@@ -1,0 +1,27 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.IMG_ImagePane IS 'A record in this table represents an Image Pane.  An Image hast at least one Image Pane.';
+
+COMMENT ON COLUMN IMG_ImagePane.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN IMG_ImagePane.height IS 'None';
+
+COMMENT ON COLUMN IMG_ImagePane._Image_key IS 'foreign key to IMG_Image';
+
+COMMENT ON COLUMN IMG_ImagePane._ImagePane_key IS 'primary key';
+
+COMMENT ON COLUMN IMG_ImagePane.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN IMG_ImagePane.paneLabel IS 'pane label';
+
+COMMENT ON COLUMN IMG_ImagePane.width IS 'None';
+
+COMMENT ON COLUMN IMG_ImagePane.x IS 'None';
+
+COMMENT ON COLUMN IMG_ImagePane.y IS 'None';
+
+EOSQL

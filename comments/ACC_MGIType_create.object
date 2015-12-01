@@ -1,0 +1,31 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.ACC_MGIType IS 'Controlled vocabulary table of all accessionable object types in the system.  Accessionable objects will be assigned MGI accession numbers during inserts.
+
+See ACC_Accession.';
+
+COMMENT ON COLUMN ACC_MGIType._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN ACC_MGIType.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN ACC_MGIType.dbView IS 'table summary view';
+
+COMMENT ON COLUMN ACC_MGIType.identityColumnName IS 'name of the primary key column of tableName';
+
+COMMENT ON COLUMN ACC_MGIType._MGIType_key IS 'primary key';
+
+COMMENT ON COLUMN ACC_MGIType.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN ACC_MGIType._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN ACC_MGIType.name IS 'name of the accessionable object type';
+
+COMMENT ON COLUMN ACC_MGIType.primaryKeyName IS 'primary key name for the accessionable object type';
+
+COMMENT ON COLUMN ACC_MGIType.tableName IS 'master/primary table for the accessionable object type';
+
+EOSQL

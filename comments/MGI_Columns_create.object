@@ -1,0 +1,21 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_Columns IS 'A record in this table represents the comments for table columns.';
+
+COMMENT ON COLUMN MGI_Columns.column_name IS 'column name';
+
+COMMENT ON COLUMN MGI_Columns.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MGI_Columns.description IS 'description of column';
+
+COMMENT ON COLUMN MGI_Columns.example IS 'example value';
+
+COMMENT ON COLUMN MGI_Columns.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MGI_Columns.table_name IS 'table name';
+
+EOSQL

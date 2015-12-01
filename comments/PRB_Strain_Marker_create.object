@@ -1,0 +1,30 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.PRB_Strain_Marker IS 'A record in this table represents a Strain/Marker/Allele association. An associations is qualified using the _Qualifier_key. A Strain can have 0 or more Marker/Allele pairs associated with it.
+
+A Strain may be created as the result of a mutation (transgenic allele), in which case the transgenic allele is associated with the newly bred Strain using this table.  For example:  MGI:4847055/Tg(Foxi2-EGFP)HX217Gsat, strain of origin: FVB/NTac.  New Strain: MGI:5003868/STOCK Tg(Foxi2-EGFP)HX217Gsat/Mmucd associated with MGI:5003868/Tg(Foxi2-EGFP)HX217Gsat via PRB_Strain/PRB_Strain_Marker.
+';
+
+COMMENT ON COLUMN PRB_Strain_Marker._Allele_key IS 'foreign key to ALL_Allele';
+
+COMMENT ON COLUMN PRB_Strain_Marker._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN PRB_Strain_Marker.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN PRB_Strain_Marker._Marker_key IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN PRB_Strain_Marker.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN PRB_Strain_Marker._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN PRB_Strain_Marker._Qualifier_key IS 'foreign key to VOC_Term where _Vocab_key = 31 (Strain Allele Qualifier); ''nomenclature''';
+
+COMMENT ON COLUMN PRB_Strain_Marker._Strain_key IS 'foreign key to PRB_Strain';
+
+COMMENT ON COLUMN PRB_Strain_Marker._StrainMarker_key IS 'primary key';
+
+EOSQL

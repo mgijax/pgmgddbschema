@@ -1,0 +1,17 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.ALL_Allele_Mutation IS 'A record in this table represents the Molecular Mutation for a specific Allele.  An Allele can have 0 or more Molecular Mutations.';
+
+COMMENT ON COLUMN ALL_Allele_Mutation._Allele_key IS 'foreign key to ALL_Allele';
+
+COMMENT ON COLUMN ALL_Allele_Mutation.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN ALL_Allele_Mutation.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN ALL_Allele_Mutation._Mutation_key IS 'foreign key to ALL_Molecular_Mutation';
+
+EOSQL

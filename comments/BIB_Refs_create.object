@@ -1,0 +1,51 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.BIB_Refs IS 'A record in this table represents a journal article, book or personal communication.';
+
+COMMENT ON COLUMN BIB_Refs.abstract IS 'NLM (Medline) abstract';
+
+COMMENT ON COLUMN BIB_Refs.authors IS 'reference authors';
+
+COMMENT ON COLUMN BIB_Refs.authors2 IS 'reference authors overflow';
+
+COMMENT ON COLUMN BIB_Refs._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN BIB_Refs.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN BIB_Refs.date IS 'reference date';
+
+COMMENT ON COLUMN BIB_Refs.isReviewArticle IS 'is this a review article?';
+
+COMMENT ON COLUMN BIB_Refs.issue IS 'reference issue';
+
+COMMENT ON COLUMN BIB_Refs.journal IS 'reference journal';
+
+COMMENT ON COLUMN BIB_Refs.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN BIB_Refs._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN BIB_Refs.NLMstatus IS 'does journal exist in NLM?  yes (Y), no (NO), never will (X)';
+
+COMMENT ON COLUMN BIB_Refs.pgs IS 'page range of reference';
+
+COMMENT ON COLUMN BIB_Refs._primary IS 'primary author; extracted from authors field';
+
+COMMENT ON COLUMN BIB_Refs._Refs_key IS 'primary key';
+
+COMMENT ON COLUMN BIB_Refs.refType IS 'reference type (ART, BOOK)';
+
+COMMENT ON COLUMN BIB_Refs._ReviewStatus_key IS 'foreign key to BIB_ReviewStatus';
+
+COMMENT ON COLUMN BIB_Refs.title IS 'reference title';
+
+COMMENT ON COLUMN BIB_Refs.title2 IS 'reference title overflow';
+
+COMMENT ON COLUMN BIB_Refs.vol IS 'reference volume number';
+
+COMMENT ON COLUMN BIB_Refs.year IS 'year of publication';
+
+EOSQL

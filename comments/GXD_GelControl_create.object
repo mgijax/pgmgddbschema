@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_GelControl IS 'Controlled vocabulary table for all Gel Control designations.
+
+See GXD_GelLane.';
+
+COMMENT ON COLUMN GXD_GelControl.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_GelControl._GelControl_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_GelControl.gelLaneContent IS 'content description';
+
+COMMENT ON COLUMN GXD_GelControl.modification_date IS 'date record was last modified';
+
+EOSQL

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MRK_Event IS 'Controlled vocabulary of Marker Nomenclature events.';
+
+COMMENT ON COLUMN MRK_Event.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MRK_Event.event IS 'event';
+
+COMMENT ON COLUMN MRK_Event._Marker_Event_key IS 'primary key';
+
+COMMENT ON COLUMN MRK_Event.modification_date IS 'date record was last modified';
+
+EOSQL

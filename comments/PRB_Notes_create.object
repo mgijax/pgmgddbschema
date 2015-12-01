@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.PRB_Notes IS 'A record in this table represents a 255 chunk of note for a Molecular Segment.';
+
+COMMENT ON COLUMN PRB_Notes.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN PRB_Notes.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN PRB_Notes.note IS 'note';
+
+COMMENT ON COLUMN PRB_Notes._Probe_key IS 'foreign key to PRB_Probe';
+
+COMMENT ON COLUMN PRB_Notes.sequenceNum IS 'sequence number of note';
+
+EOSQL

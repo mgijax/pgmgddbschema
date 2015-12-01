@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MLD_Notes IS 'Mapping Notes for a specific Reference.';
+
+COMMENT ON COLUMN MLD_Notes.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MLD_Notes.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MLD_Notes.note IS 'note';
+
+COMMENT ON COLUMN MLD_Notes._Refs_key IS 'foreign key to BIB_Refs';
+
+COMMENT ON COLUMN MLD_Notes.sequenceNum IS 'sequence number of note';
+
+EOSQL

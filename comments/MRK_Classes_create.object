@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MRK_Classes IS 'Defines relationship between MLC Marker and MLC Class descriptions.  A Marker may have on or more MLC Classes associated with it.
+
+See MRK_Marker.';
+
+COMMENT ON COLUMN MRK_Classes._Class_key IS 'foreign key to MRK_Class';
+
+COMMENT ON COLUMN MRK_Classes.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MRK_Classes._Marker_key IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN MRK_Classes.modification_date IS 'date record was last modified';
+
+EOSQL

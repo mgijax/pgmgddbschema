@@ -1,0 +1,29 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.VOC_Evidence_Property IS 'A record in this table represents the association between an Annotation Evidence record and a Property.  This stores the contextual data of a particular Annotation row.  Each stanza that occurs in a given Annotation experiment (row) is stored as separate contextual data within the Annotation experiment.  Each individual stanza is treated as a distinct contextual set of data that is associated with the proper Annotation row.';
+
+COMMENT ON COLUMN VOC_Evidence_Property._AnnotEvidence_key IS 'foreign key to VOC_Evidence';
+
+COMMENT ON COLUMN VOC_Evidence_Property._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN VOC_Evidence_Property.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN VOC_Evidence_Property._EvidenceProperty_key IS 'primary key';
+
+COMMENT ON COLUMN VOC_Evidence_Property.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN VOC_Evidence_Property._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN VOC_Evidence_Property._PropertyTerm_key IS 'foreign key to VOC_Term; examples include: _Vocab_key = 82 (GO Property); ''evidence'', ''anatomy'', ''cell tyupe'', ''text'', etc.';
+
+COMMENT ON COLUMN VOC_Evidence_Property.sequenceNum IS 'sequnence number of the property within each stanza';
+
+COMMENT ON COLUMN VOC_Evidence_Property.stanza IS 'a stanza represents a group of proeprties within the same evidence; group by _AnnotEvidence_key/stranza/sequenceNumber to retreive the ordered set of stanza''s for a given annotation/evidence';
+
+COMMENT ON COLUMN VOC_Evidence_Property.value IS 'the value that is assigned (i.e. the text) to the property';
+
+EOSQL

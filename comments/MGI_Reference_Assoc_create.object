@@ -1,0 +1,27 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_Reference_Assoc IS 'A record in this table repesents an association between a Reference of a specific type (_RefAssocType_key, e.g. Original) and a specific database object (_Object_key, e.g. Sequence  A12345 ) of a specific object type (_MGIType_key, e.g., Sequence, Marker/Sequence Association).';
+
+COMMENT ON COLUMN MGI_Reference_Assoc._Assoc_key IS 'primary key';
+
+COMMENT ON COLUMN MGI_Reference_Assoc._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN MGI_Reference_Assoc.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MGI_Reference_Assoc._MGIType_key IS 'foreign key to ACC_MGIType';
+
+COMMENT ON COLUMN MGI_Reference_Assoc.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MGI_Reference_Assoc._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN MGI_Reference_Assoc._Object_key IS 'foreign key to any object defined in ACC_MGIType';
+
+COMMENT ON COLUMN MGI_Reference_Assoc._RefAssocType_key IS 'foreign key to MGI_RefAssocType';
+
+COMMENT ON COLUMN MGI_Reference_Assoc._Refs_key IS 'foreign key to BIB_Refs';
+
+EOSQL

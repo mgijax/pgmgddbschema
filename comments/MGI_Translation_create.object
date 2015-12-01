@@ -1,0 +1,27 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_Translation IS 'A record in this table represents the Translation between a "bad name" and the corresponding MGI object (the "good name") of a specific Translation Type.';
+
+COMMENT ON COLUMN MGI_Translation.badName IS 'bad name to translate';
+
+COMMENT ON COLUMN MGI_Translation._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN MGI_Translation.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MGI_Translation.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MGI_Translation._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN MGI_Translation._Object_key IS 'foreign key to any object defined in ACC_MGIType';
+
+COMMENT ON COLUMN MGI_Translation.sequenceNum IS 'order of the Translation member';
+
+COMMENT ON COLUMN MGI_Translation._Translation_key IS 'primary key';
+
+COMMENT ON COLUMN MGI_Translation._TranslationType_key IS 'foreign key to MGI_TranslationType';
+
+EOSQL

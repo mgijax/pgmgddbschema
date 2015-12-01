@@ -1,0 +1,29 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_SynonymType IS 'A record in this table represents a Synonym Type (e.g. Exact) for a specific Object Type. The Object may be of a specific Organism (for example, Marker, Mouse).';
+
+COMMENT ON COLUMN MGI_SynonymType.allowOnlyOne IS 'if 1, then there can be at most one Synonym of this type for a given object';
+
+COMMENT ON COLUMN MGI_SynonymType._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN MGI_SynonymType.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MGI_SynonymType.definition IS 'defintion of the synonym type';
+
+COMMENT ON COLUMN MGI_SynonymType._MGIType_key IS 'foreign key to ACC_MGIType';
+
+COMMENT ON COLUMN MGI_SynonymType.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MGI_SynonymType._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN MGI_SynonymType._Organism_key IS 'foreign key to MGI_Organism';
+
+COMMENT ON COLUMN MGI_SynonymType.synonymType IS 'synonym type';
+
+COMMENT ON COLUMN MGI_SynonymType._SynonymType_key IS 'primary key';
+
+EOSQL

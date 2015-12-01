@@ -1,0 +1,31 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MLD_Expt_Marker IS 'Defines relationship between an Experiment and a Marker reported for that Experiment.  An Experiment may have one or more Markers associated with it.
+
+See MLD_Expts.';
+
+COMMENT ON COLUMN MLD_Expt_Marker._Allele_key IS 'foreign key to ALL_Allele';
+
+COMMENT ON COLUMN MLD_Expt_Marker._Assay_Type_key IS 'foreign key to MLD_Assay_Types';
+
+COMMENT ON COLUMN MLD_Expt_Marker.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MLD_Expt_Marker.description IS 'description of probes used, etc.';
+
+COMMENT ON COLUMN MLD_Expt_Marker._Expt_key IS 'foreign key to MLD_Expts';
+
+COMMENT ON COLUMN MLD_Expt_Marker.gene IS 'original marker symbol; marker symbol used when record was inserted; OBSOLETE/REMOVE FROM SCHEMA';
+
+COMMENT ON COLUMN MLD_Expt_Marker._Marker_key IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN MLD_Expt_Marker.matrixData IS 'is Marker typed in haplotype data?  yes (1), no (0) (MLD_MCDataList)';
+
+COMMENT ON COLUMN MLD_Expt_Marker.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MLD_Expt_Marker.sequenceNum IS 'sequence number for ordering records';
+
+EOSQL

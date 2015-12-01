@@ -1,0 +1,23 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_AntibodyPrep IS 'Defines the Antibody preparation for an expression assay.  The Antibody preparation specifies the antibody and detection system used.  The detection is a combination of a Secondary Antibody and a labelling material.
+
+See GXD_Assay, GXD_Antibody, GXD_Secondary, GXD_Label.';
+
+COMMENT ON COLUMN GXD_AntibodyPrep._Antibody_key IS 'foreign key to GXD_Antibody';
+
+COMMENT ON COLUMN GXD_AntibodyPrep._AntibodyPrep_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_AntibodyPrep.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_AntibodyPrep._Label_key IS 'foreign key to GXD_Label';
+
+COMMENT ON COLUMN GXD_AntibodyPrep.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN GXD_AntibodyPrep._Secondary_key IS 'foreign key to GXD_Antibody';
+
+EOSQL

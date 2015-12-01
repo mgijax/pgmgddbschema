@@ -1,0 +1,21 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_Statistic IS 'A record in this table represents one type of statistic for which we would like to record numeric measurements. See MGI_Measurement.';
+
+COMMENT ON COLUMN MGI_Statistic.abbreviation IS 'a short abbreviation to uniquely identify this statistic (not for display)';
+
+COMMENT ON COLUMN MGI_Statistic.definition IS 'a longer description of this statistic (what is being measured?)';
+
+COMMENT ON COLUMN MGI_Statistic.hasIntValue IS 'flag to indicate whether measurements for this statistic will have integer values (1) or float values (0)';
+
+COMMENT ON COLUMN MGI_Statistic.isPrivate IS 'flag to indicate whether this statistic and its measurements are for public use (0) or only within MGI (1)';
+
+COMMENT ON COLUMN MGI_Statistic.name IS 'name of the statistic';
+
+COMMENT ON COLUMN MGI_Statistic._Statistic_key IS 'primary key';
+
+EOSQL

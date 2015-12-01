@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_Label IS 'Controlled vocabulary table for all Probe Prep and Antibody Prep Labels.  Includes Not Applicable (-2) and Not Specified (-1).
+
+See GXD_AntibodyPrep, GXD_ProbePrep.';
+
+COMMENT ON COLUMN GXD_Label.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_Label.label IS 'label description';
+
+COMMENT ON COLUMN GXD_Label._Label_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_Label.modification_date IS 'date record was last modified';
+
+EOSQL
