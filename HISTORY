@@ -1,3 +1,10 @@
+TAG: pgmgddbschema-6-0-2-1
+DATE: 12/28/2015
+STAFF: lec 
+CHANGES:
+1) TR12070/TR12116/MRK_BiotypeMapping
+2) added 'comments' directory/MGI_Tables/MGI_Columns obsolete
+
 TAG: pgmgddbschema-tr12070-1
 DATE: 12/28/2015
 STAFF: lec 
