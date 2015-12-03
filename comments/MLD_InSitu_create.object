@@ -1,0 +1,35 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MLD_InSitu IS 'Defines IN SITU Experiment.  In Situ Experiments use a DNA or RNA probe to detect the presence of the complementary DNA sequence in cloned bacterial or cultured eukaryotic cells.  This suggests the chromosome and band assignment of the marker to which the probe hybridizes.
+
+Master of MLD_ISRegion.';
+
+COMMENT ON COLUMN MLD_InSitu.band IS 'cytogenetic position on chromosome to which marker is assigned';
+
+COMMENT ON COLUMN MLD_InSitu.cellOrigin IS 'cell type from which analyzed metaphase spreads were derived';
+
+COMMENT ON COLUMN MLD_InSitu.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MLD_InSitu._Expt_key IS 'foreign key to MLD_Expts';
+
+COMMENT ON COLUMN MLD_InSitu.grainsOnChrom IS '# of grains hybridizing to correct chromosomal location';
+
+COMMENT ON COLUMN MLD_InSitu.grainsOtherChrom IS '# of grains hybridizing to other chromosomal locations';
+
+COMMENT ON COLUMN MLD_InSitu.karyotype IS 'method used to identify chromosome bands';
+
+COMMENT ON COLUMN MLD_InSitu.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MLD_InSitu.numMetaphase IS '# of metaphase spreads analyzed in experiment';
+
+COMMENT ON COLUMN MLD_InSitu.robertsonians IS 'chromosomal aberration used to identify marker assignment';
+
+COMMENT ON COLUMN MLD_InSitu._Strain_key IS 'foreign key to PRB_Strain';
+
+COMMENT ON COLUMN MLD_InSitu.totalGrains IS '# of grains observed in experiment';
+
+EOSQL

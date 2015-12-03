@@ -9,7 +9,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-
 CLUSTER mgd.GXD_GelRNAType USING GXD_GelRNAType_pkey;
 
 EOSQL

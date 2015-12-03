@@ -172,6 +172,12 @@ ALTER TABLE mgd.MRK_Cluster ADD FOREIGN KEY (_ClusterType_key) REFERENCES mgd.VO
 ALTER TABLE mgd.MRK_Cluster ADD FOREIGN KEY (_ClusterSource_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
+ALTER TABLE mgd.MRK_BiotypeMapping ADD FOREIGN KEY (_biotypeterm_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
+ALTER TABLE mgd.MRK_BiotypeMapping ADD FOREIGN KEY (_MCVTerm_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
 ALTER TABLE mgd.NOM_Marker ADD FOREIGN KEY (_NomenStatus_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 

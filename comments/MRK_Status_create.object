@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MRK_Status IS 'Controlled vocabulary table for all Marker Statuses (approved, withdrawn).
+
+See MRK_Marker.';
+
+COMMENT ON COLUMN MRK_Status.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MRK_Status._Marker_Status_key IS 'primary key';
+
+COMMENT ON COLUMN MRK_Status.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MRK_Status.status IS 'status';
+
+EOSQL

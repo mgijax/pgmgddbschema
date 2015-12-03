@@ -1,0 +1,25 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_Set IS 'A record in this table represents a Set.';
+
+COMMENT ON COLUMN MGI_Set._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN MGI_Set.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MGI_Set._MGIType_key IS 'foreign key to ACC_MGIType';
+
+COMMENT ON COLUMN MGI_Set.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MGI_Set._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN MGI_Set.name IS 'set name';
+
+COMMENT ON COLUMN MGI_Set.sequenceNum IS 'sequence number for ordering records';
+
+COMMENT ON COLUMN MGI_Set._Set_key IS 'primary key';
+
+EOSQL

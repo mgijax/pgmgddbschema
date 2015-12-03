@@ -11,19 +11,14 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MGI_Relationship_Property_idx_clustered on mgd.MGI_Relationship_Property (_Relationship_key, sequenceNum);
+CLUSTER mgd.MGI_Relationship_Property USING MGI_Relationship_Property_pkey;
 
+create index MGI_Relationship_Property_idx_clustered on mgd.MGI_Relationship_Property (_Relationship_key, sequenceNum);
 
 create index MGI_Relationship_Property_idx_PropertyName_key on mgd.MGI_Relationship_Property (_PropertyName_key);
 
-
 create index MGI_Relationship_Property_idx_CreatedBy_key on mgd.MGI_Relationship_Property (_CreatedBy_key);
 
-
 create index MGI_Relationship_Property_idx_ModifiedBy_key on mgd.MGI_Relationship_Property (_ModifiedBy_key);
-
-
-
-CLUSTER mgd.MGI_Relationship_Property USING MGI_Relationship_Property_pkey;
 
 EOSQL

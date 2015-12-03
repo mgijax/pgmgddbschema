@@ -10,10 +10,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create unique index MGI_Statistic_idx_Abbreviation on mgd.MGI_Statistic (abbreviation, _Statistic_key);
-
-
-
 CLUSTER mgd.MGI_Statistic USING MGI_Statistic_pkey;
+
+create unique index MGI_Statistic_idx_Abbreviation on mgd.MGI_Statistic (abbreviation, _Statistic_key);
 
 EOSQL

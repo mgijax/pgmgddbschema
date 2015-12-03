@@ -12,16 +12,12 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MAP_Coord_Collection_idx_name on mgd.MAP_Coord_Collection (name);
+CLUSTER mgd.MAP_Coord_Collection USING MAP_Coord_Collection_pkey;
 
+create index MAP_Coord_Collection_idx_name on mgd.MAP_Coord_Collection (name);
 
 create index MAP_Coord_Collection_idx_CreatedBy_key on mgd.MAP_Coord_Collection (_CreatedBy_key);
 
-
 create index MAP_Coord_Collection_idx_ModifiedBy_key on mgd.MAP_Coord_Collection (_ModifiedBy_key);
-
-
-
-CLUSTER mgd.MAP_Coord_Collection USING MAP_Coord_Collection_pkey;
 
 EOSQL

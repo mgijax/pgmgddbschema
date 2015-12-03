@@ -1,0 +1,23 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MLD_MCDataList IS 'Defines Haplotype data for Cross Experiments.  Haplotype data records haplotypes and number of offspring for Experimental Markers designated as having Haplotype data (MLD_Expt_Marker.matrixData = 1).
+
+Detail of MLD_Matrix.';
+
+COMMENT ON COLUMN MLD_MCDataList.alleleLine IS 'haplotypes for marker; order of alleles must correspond with order of Markers in Experiment Marker list (MLD_Expt_Marker)';
+
+COMMENT ON COLUMN MLD_MCDataList.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MLD_MCDataList._Expt_key IS 'foreign key to MLD_Expts';
+
+COMMENT ON COLUMN MLD_MCDataList.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MLD_MCDataList.offspringNmbr IS 'designates number of offspring detected with haplotype';
+
+COMMENT ON COLUMN MLD_MCDataList.sequenceNum IS 'sequence number for ordering records';
+
+EOSQL

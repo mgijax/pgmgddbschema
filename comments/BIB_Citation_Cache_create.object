@@ -1,0 +1,31 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.BIB_Citation_Cache IS 'A record in this table represents a unique Reference.  This table is a cache table of all References in MGI.  This table is loaded via the mgicacheload product. See mgicacheload/bibcitation.csh.';
+
+COMMENT ON COLUMN BIB_Citation_Cache.citation IS 'long citation format';
+
+COMMENT ON COLUMN BIB_Citation_Cache.isReviewArticle IS 'is this a review article?';
+
+COMMENT ON COLUMN BIB_Citation_Cache.isReviewArticleString IS 'string representation of isReviewArticle';
+
+COMMENT ON COLUMN BIB_Citation_Cache.jnumID IS 'J: accession id';
+
+COMMENT ON COLUMN BIB_Citation_Cache.journal IS 'reference journal';
+
+COMMENT ON COLUMN BIB_Citation_Cache.mgiID IS 'MGI accession id';
+
+COMMENT ON COLUMN BIB_Citation_Cache.numericPart IS 'the trailing numerical portion of accID';
+
+COMMENT ON COLUMN BIB_Citation_Cache.pubmedID IS 'pubmed accession ID';
+
+COMMENT ON COLUMN BIB_Citation_Cache._Refs_key IS 'foreign key to BIB_Refs';
+
+COMMENT ON COLUMN BIB_Citation_Cache.reviewStatus IS 'status description';
+
+COMMENT ON COLUMN BIB_Citation_Cache.short_citation IS 'short citation format';
+
+EOSQL

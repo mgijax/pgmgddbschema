@@ -9,25 +9,18 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index VOC_AnnotHeader_idx_clustered on mgd.VOC_AnnotHeader (_AnnotType_key, _Object_key, _Term_key);
+CLUSTER mgd.VOC_AnnotHeader USING VOC_AnnotHeader_pkey;
 
+create index VOC_AnnotHeader_idx_clustered on mgd.VOC_AnnotHeader (_AnnotType_key, _Object_key, _Term_key);
 
 create index VOC_AnnotHeader_idx_Object_key on mgd.VOC_AnnotHeader (_Object_key);
 
-
 create index VOC_AnnotHeader_idx_Term_key on mgd.VOC_AnnotHeader (_Term_key);
-
 
 create index VOC_AnnotHeader_idx_CreatedBy_key on mgd.VOC_AnnotHeader (_CreatedBy_key);
 
-
 create index VOC_AnnotHeader_idx_ModifiedBy_key on mgd.VOC_AnnotHeader (_ModifiedBy_key);
 
-
 create index VOC_AnnotHeader_idx_ApprovedBy_key on mgd.VOC_AnnotHeader (_ApprovedBy_key);
-
-
-
-CLUSTER mgd.VOC_AnnotHeader USING VOC_AnnotHeader_pkey;
 
 EOSQL

@@ -1,0 +1,28 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_InSituResult IS 'Defines an In Situ Specimen Result.  For each Specimen defined, one or more results can be recorded.  Each result contains the anatomical structure(s), signal strength, pattern of expression within the structure(s) and optional notes.  One or more
+Image Panes may also be associated with a result.
+
+See GXD_Specimen, GXD_Strength, GXD_Pattern, GXD_InSituResultImage, GXD_ISResultStructure.';
+
+COMMENT ON COLUMN GXD_InSituResult.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_InSituResult.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN GXD_InSituResult._Pattern_key IS 'foreign key to GXD_Pattern';
+
+COMMENT ON COLUMN GXD_InSituResult._Result_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_InSituResult.resultNote IS 'textual information';
+
+COMMENT ON COLUMN GXD_InSituResult.sequenceNum IS 'sequence number for ordering records';
+
+COMMENT ON COLUMN GXD_InSituResult._Specimen_key IS 'foreign key to GXD_Specimen';
+
+COMMENT ON COLUMN GXD_InSituResult._Strength_key IS 'foreign key to GXD_Strength';
+
+EOSQL

@@ -1,0 +1,27 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.PRB_RFLV IS 'Defines a relationship between a Marker and an Endonuclease for a specific Probe Reference.  Variations exist between individuals in DNA fragment sizes cut by specific restriction enzymes; polymorphic sequences that result in RFLPs are used as markers on both physical maps and genetic linkage maps. RFLPs are usually caused by mutation at a cutting site.
+
+Detail of PRB_Reference.';
+
+COMMENT ON COLUMN PRB_RFLV._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN PRB_RFLV.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN PRB_RFLV.endonuclease IS 'endonuclease (An enzyme that cleaves its nucleic acid substrate at internal sites in the nucleotide sequence)';
+
+COMMENT ON COLUMN PRB_RFLV._Marker_key IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN PRB_RFLV.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN PRB_RFLV._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN PRB_RFLV._Reference_key IS 'foreign key to PRB_Reference';
+
+COMMENT ON COLUMN PRB_RFLV._RFLV_key IS 'primary key';
+
+EOSQL

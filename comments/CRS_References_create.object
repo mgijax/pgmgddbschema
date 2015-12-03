@@ -1,0 +1,21 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.CRS_References IS 'Defines References used in Mapping Panel Cross.
+
+See CRS_Matrix, CRS_Progeny, CRS_Typings.';
+
+COMMENT ON COLUMN CRS_References.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN CRS_References._Cross_key IS 'foreign key to CRS_Cross';
+
+COMMENT ON COLUMN CRS_References._Marker_key IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN CRS_References.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN CRS_References._Refs_key IS 'foreign key to BIB_Refs';
+
+EOSQL

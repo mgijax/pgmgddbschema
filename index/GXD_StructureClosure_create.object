@@ -10,10 +10,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index GXD_StructureClosure_idx_Descendent_key on mgd.GXD_StructureClosure (_Descendent_key, _Structure_key);
-
-
-
 CLUSTER mgd.GXD_StructureClosure USING GXD_StructureClosure_pkey;
+
+create index GXD_StructureClosure_idx_Descendent_key on mgd.GXD_StructureClosure (_Descendent_key, _Structure_key);
 
 EOSQL

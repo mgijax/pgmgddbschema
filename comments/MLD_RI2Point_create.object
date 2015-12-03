@@ -1,0 +1,29 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MLD_RI2Point IS 'Defines 2 Point data for RI Experiments.  2 Point data records typing of animals for specified pairs of Markers and specified RI Sets.
+
+Detail of MLD_RI.';
+
+COMMENT ON COLUMN MLD_RI2Point.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MLD_RI2Point._Expt_key IS 'foreign key to MLD_Expts';
+
+COMMENT ON COLUMN MLD_RI2Point._Marker_key_1 IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN MLD_RI2Point._Marker_key_2 IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN MLD_RI2Point.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MLD_RI2Point.numRecombinants IS '# of animals exhibiting recombinant genotype';
+
+COMMENT ON COLUMN MLD_RI2Point.numTotal IS '# of animals typed';
+
+COMMENT ON COLUMN MLD_RI2Point.RI_Lines IS 'RI sets used in typing';
+
+COMMENT ON COLUMN MLD_RI2Point.sequenceNum IS 'sequence number for ordering records';
+
+EOSQL

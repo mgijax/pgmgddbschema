@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_AntibodyMarker IS 'Defines relationship between Antibodies and Markers.  Antibodies can recognize the product of one or more markers.
+
+See GXD_Antibody.';
+
+COMMENT ON COLUMN GXD_AntibodyMarker._Antibody_key IS 'foreign key to GXD_Antibody';
+
+COMMENT ON COLUMN GXD_AntibodyMarker.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_AntibodyMarker._Marker_key IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN GXD_AntibodyMarker.modification_date IS 'date record was last modified';
+
+EOSQL

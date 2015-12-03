@@ -1,0 +1,31 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_Property IS 'None';
+
+COMMENT ON COLUMN MGI_Property._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN MGI_Property.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MGI_Property._MGIType_key IS 'foreign key to ACC_MGIType';
+
+COMMENT ON COLUMN MGI_Property.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MGI_Property._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN MGI_Property._Object_key IS 'foreign key to any object defined in ACC_MGIType';
+
+COMMENT ON COLUMN MGI_Property._Property_key IS 'None';
+
+COMMENT ON COLUMN MGI_Property._PropertyTerm_key IS 'None';
+
+COMMENT ON COLUMN MGI_Property._PropertyType_key IS 'None';
+
+COMMENT ON COLUMN MGI_Property.sequenceNum IS 'None';
+
+COMMENT ON COLUMN MGI_Property.value IS 'None';
+
+EOSQL

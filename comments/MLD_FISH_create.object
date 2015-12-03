@@ -1,0 +1,35 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MLD_FISH IS 'Defines FISH (Fluorescence In Situ Hybridization) Experiment.  FISH Experiments use fluorescein tags to detect the hybridization of probes with metaphase chromosomes.  This suggests the chromosome and band assignment of the marker to which the probe hybrdizes.
+
+Master of MLD_FISH_Region.';
+
+COMMENT ON COLUMN MLD_FISH.band IS 'cytogenetic position on chromosome to which marker is assigned';
+
+COMMENT ON COLUMN MLD_FISH.cellOrigin IS 'cell type from which analyzed metaphase spreads were derived';
+
+COMMENT ON COLUMN MLD_FISH.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MLD_FISH._Expt_key IS 'foreign key to MLD_Expts';
+
+COMMENT ON COLUMN MLD_FISH.karyotype IS 'method used to identify chromosome bands';
+
+COMMENT ON COLUMN MLD_FISH.label IS 'type of fluorescence on probe';
+
+COMMENT ON COLUMN MLD_FISH.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MLD_FISH.numMetaphase IS '# of metaphase spreads analyzed in experiment';
+
+COMMENT ON COLUMN MLD_FISH.robertsonians IS 'chromosomal aberration used to identify marker assignment';
+
+COMMENT ON COLUMN MLD_FISH._Strain_key IS 'foreign key to PRB_Strain';
+
+COMMENT ON COLUMN MLD_FISH.totalDouble IS '# of double fluorescent signals indicating presence of marker';
+
+COMMENT ON COLUMN MLD_FISH.totalSingle IS '# of single flourescent signals indicating presence of marker';
+
+EOSQL

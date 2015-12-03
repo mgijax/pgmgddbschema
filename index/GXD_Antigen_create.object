@@ -9,10 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index GXD_Antigen_idx_Source_key on mgd.GXD_Antigen (_Source_key);
-
-
-
 CLUSTER mgd.GXD_Antigen USING GXD_Antigen_pkey;
+
+create index GXD_Antigen_idx_Source_key on mgd.GXD_Antigen (_Source_key);
 
 EOSQL

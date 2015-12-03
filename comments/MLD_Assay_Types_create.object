@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MLD_Assay_Types IS 'Controlled vocabulary table for all Mapping Assays.  Includes a blank (-1) Assay, which is used like a "Not Specified" vocabulary record.
+
+See MLD_Expt_Marker.';
+
+COMMENT ON COLUMN MLD_Assay_Types._Assay_Type_key IS 'primary key';
+
+COMMENT ON COLUMN MLD_Assay_Types.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MLD_Assay_Types.description IS 'assay description';
+
+COMMENT ON COLUMN MLD_Assay_Types.modification_date IS 'date record was last modified';
+
+EOSQL

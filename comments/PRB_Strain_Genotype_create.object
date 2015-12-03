@@ -1,0 +1,25 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.PRB_Strain_Genotype IS 'A record in this table represents a Strain/Genotype association. An association is qualified using the _Qualifier_key. A Strain can have 0 or more Genotypes associated with it.';
+
+COMMENT ON COLUMN PRB_Strain_Genotype._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN PRB_Strain_Genotype.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN PRB_Strain_Genotype._Genotype_key IS 'foreign key to GXD_Genotype';
+
+COMMENT ON COLUMN PRB_Strain_Genotype.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN PRB_Strain_Genotype._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN PRB_Strain_Genotype._Qualifier_key IS 'foreign key to VOC_Term where _Vocab_key = 32 (Strain/Genotype Qualifier)';
+
+COMMENT ON COLUMN PRB_Strain_Genotype._StrainGenotype_key IS 'primary key';
+
+COMMENT ON COLUMN PRB_Strain_Genotype._Strain_key IS 'foreign key to PRB_Strain';
+
+EOSQL

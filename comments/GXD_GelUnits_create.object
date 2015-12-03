@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_GelUnits IS 'Controlled vocabulary table for all Gel Row Size Units.  Includes Not Applicable (-2) and Not Specified (-1).
+
+See GXD_GelRow.';
+
+COMMENT ON COLUMN GXD_GelUnits.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_GelUnits._GelUnits_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_GelUnits.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN GXD_GelUnits.units IS 'unit description';
+
+EOSQL

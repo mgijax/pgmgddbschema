@@ -1,0 +1,29 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.SEQ_GeneTrap IS 'A row in this table represents additional information about Gene Trap sequences.';
+
+COMMENT ON COLUMN SEQ_GeneTrap._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN SEQ_GeneTrap.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN SEQ_GeneTrap.goodHitCount IS 'Number of good blat hits';
+
+COMMENT ON COLUMN SEQ_GeneTrap.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN SEQ_GeneTrap._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN SEQ_GeneTrap.pointCoordinate IS 'The single coordinate picked to indicate where the insertion actually happened';
+
+COMMENT ON COLUMN SEQ_GeneTrap._ReverseComp_key IS 'foreign key to VOC_Term (_Vocab_key = 68). Answers the question is this sequence reverse complemented?';
+
+COMMENT ON COLUMN SEQ_GeneTrap._Sequence_key IS 'foreign key to SEQ_Sequence';
+
+COMMENT ON COLUMN SEQ_GeneTrap._TagMethod_key IS 'foreign key to VOC_Term (_Vocab_key = 66) The name of the procedure used to produce a sequence tag from a gene trap insertion in a mutant cell line.';
+
+COMMENT ON COLUMN SEQ_GeneTrap._VectorEnd_key IS 'foreign key to VOC_Term (_Vocab_key = 67)';
+
+EOSQL

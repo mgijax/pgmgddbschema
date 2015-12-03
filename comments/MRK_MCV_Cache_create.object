@@ -1,0 +1,27 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MRK_MCV_Cache IS 'A record in this table represents the cached value of a Marker and its Feature Types.  See MRK_Marker. See mrkcacheload/mrkmcv.csh.';
+
+COMMENT ON COLUMN MRK_MCV_Cache._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN MRK_MCV_Cache.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MRK_MCV_Cache.directTerms IS 'None';
+
+COMMENT ON COLUMN MRK_MCV_Cache._Marker_key IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN MRK_MCV_Cache._MCVTerm_key IS 'foreign key to VOC_Term where _Vocab_key = 79 (Marker Category); ''gene'', ''protein coding gene'', ''non-coding RNA gene'', etc.';
+
+COMMENT ON COLUMN MRK_MCV_Cache.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MRK_MCV_Cache._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN MRK_MCV_Cache.qualifier IS '''D'' = direct, ''I'' = infered';
+
+COMMENT ON COLUMN MRK_MCV_Cache.term IS 'term description (VOC_Term.term)';
+
+EOSQL

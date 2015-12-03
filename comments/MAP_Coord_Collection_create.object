@@ -1,0 +1,23 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MAP_Coord_Collection IS 'A record in this table represents one Coordinate Map Collection; an ordered set of Coordinate Maps.  A Coordinate Map Colllection can contain Coordinate Maps of different Map Types.';
+
+COMMENT ON COLUMN MAP_Coord_Collection.abbreviation IS 'short version of name';
+
+COMMENT ON COLUMN MAP_Coord_Collection._Collection_key IS 'primary key';
+
+COMMENT ON COLUMN MAP_Coord_Collection._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN MAP_Coord_Collection.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MAP_Coord_Collection.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MAP_Coord_Collection._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN MAP_Coord_Collection.name IS 'the data provider of the collection';
+
+EOSQL

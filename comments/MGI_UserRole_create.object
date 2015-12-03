@@ -1,0 +1,23 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_UserRole IS 'A record in this table represents a Role/User association.';
+
+COMMENT ON COLUMN MGI_UserRole._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN MGI_UserRole.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MGI_UserRole.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MGI_UserRole._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN MGI_UserRole._Role_key IS 'foreign key to VOC_Term where _Vocab_key = 33 (User Role)';
+
+COMMENT ON COLUMN MGI_UserRole._User_key IS 'foreign key to MGI_User';
+
+COMMENT ON COLUMN MGI_UserRole._UserRole_key IS 'primary key';
+
+EOSQL

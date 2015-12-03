@@ -9,10 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index GXD_InSituResultImage_idx_ImagePane_key on mgd.GXD_InSituResultImage (_ImagePane_key);
-
-
-
 CLUSTER mgd.GXD_InSituResultImage USING GXD_InSituResultImage_pkey;
+
+create index GXD_InSituResultImage_idx_ImagePane_key on mgd.GXD_InSituResultImage (_ImagePane_key);
 
 EOSQL

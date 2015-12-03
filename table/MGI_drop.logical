@@ -12,8 +12,6 @@ cd `dirname $0`
 for i in \
 do
 MGI_AttributeHistory_drop.object \
-MGI_Columns_drop.object \
-MGI_Tables_drop.object \
 MGI_Measurement_drop.object \
 MGI_Note_drop.object \
 MGI_NoteChunk_drop.object \
@@ -29,7 +27,6 @@ MGI_Statistic_drop.object \
 MGI_StatisticSql_drop.object \
 MGI_Synonym_drop.object \
 MGI_SynonymType_drop.object \
-MGI_Tables_drop.object \
 MGI_Translation_drop.object \
 MGI_TranslationType_drop.object \
 MGI_UserRole_drop.object \

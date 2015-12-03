@@ -12,34 +12,24 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index NOM_Marker_idx_clustered on mgd.NOM_Marker (symbol);
+CLUSTER mgd.NOM_Marker USING NOM_Marker_pkey;
 
+create index NOM_Marker_idx_clustered on mgd.NOM_Marker (symbol);
 
 create index NOM_Marker_idx_Marker_Type_key on mgd.NOM_Marker (_Marker_Type_key);
 
-
 create index NOM_Marker_idx_NomenStatus_key on mgd.NOM_Marker (_NomenStatus_key);
-
 
 create index NOM_Marker_idx_Marker_Event_key on mgd.NOM_Marker (_Marker_Event_key);
 
-
 create index NOM_Marker_idx_Marker_EventReason_key on mgd.NOM_Marker (_Marker_EventReason_key);
-
 
 create index NOM_Marker_idx_BroadcastBy_key on mgd.NOM_Marker (_BroadcastBy_key);
 
-
 create index NOM_Marker_idx_broadcast_date on mgd.NOM_Marker (broadcast_date);
-
 
 create index NOM_Marker_idx_CreatedBy_key on mgd.NOM_Marker (_CreatedBy_key);
 
-
 create index NOM_Marker_idx_ModifiedBy_key on mgd.NOM_Marker (_ModifiedBy_key);
-
-
-
-CLUSTER mgd.NOM_Marker USING NOM_Marker_pkey;
 
 EOSQL

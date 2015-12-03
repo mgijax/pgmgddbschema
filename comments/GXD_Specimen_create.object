@@ -1,0 +1,43 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_Specimen IS 'Defines an In Situ Assay Specimen.  A Specimen is described in terms of its genotype, sex, age and the methods used to prepare the sample.  If multiple animals within one reference have identical genotypes and preparation procedures, then they can be collectively represented by a single Specimen object.
+
+See GXD_Assay, GXD_EmbeddingMethod, GXD_FixationMethod, GXD_Genotype.';
+
+COMMENT ON COLUMN GXD_Specimen.age IS 'age of embryo or animal';
+
+COMMENT ON COLUMN GXD_Specimen.ageMax IS 'maximum age range determined by age field; system calculated';
+
+COMMENT ON COLUMN GXD_Specimen.ageMin IS 'minimum age range determined by age field; system calculated';
+
+COMMENT ON COLUMN GXD_Specimen.ageNote IS 'age notes';
+
+COMMENT ON COLUMN GXD_Specimen._Assay_key IS 'foreign key to GXD_Assay';
+
+COMMENT ON COLUMN GXD_Specimen.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_Specimen._Embedding_key IS 'foreign key to GXD_EmbeddingMethod';
+
+COMMENT ON COLUMN GXD_Specimen._Fixation_key IS 'foreign key to GXD_FixationMethod';
+
+COMMENT ON COLUMN GXD_Specimen._Genotype_key IS 'foreign key to GXD_Genotype';
+
+COMMENT ON COLUMN GXD_Specimen.hybridization IS 'probe hybridized to?  (sections, whole mount, section from whole mount)';
+
+COMMENT ON COLUMN GXD_Specimen.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN GXD_Specimen.sequenceNum IS 'sequence number for ordering records';
+
+COMMENT ON COLUMN GXD_Specimen.sex IS 'sex of specimen (Female, Male, Pooled)';
+
+COMMENT ON COLUMN GXD_Specimen._Specimen_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_Specimen.specimenLabel IS 'specimen label';
+
+COMMENT ON COLUMN GXD_Specimen.specimenNote IS 'specimen note';
+
+EOSQL

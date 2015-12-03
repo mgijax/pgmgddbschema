@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_ProbeSense IS 'Controlled vocabulary table for all Probe Prep Hybridizations.  Includes Not Applicable (-2) and Not Specified (-1).
+
+See GXD_ProbePrep.';
+
+COMMENT ON COLUMN GXD_ProbeSense.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_ProbeSense.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN GXD_ProbeSense.sense IS 'sense description';
+
+COMMENT ON COLUMN GXD_ProbeSense._Sense_key IS 'primary key';
+
+EOSQL

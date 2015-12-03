@@ -1,0 +1,52 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.ALL_Allele IS 'A record in this table represents one Allele.  An Allele is any of the alternative forms of a gene occupying a given locus; any one of several mutational forms of a gene. In MGI, allelic variants are associated with phenotypes. See ALL_Marker_Assoc.
+
+A transgenic Allele will contain a Strain of Origin, and a new Strain can then be bred from this trangene.  This new Strain will be associated with the transgenic allele (see PRB_Strain, PRB_Strain_Marker).  For example, see TR11000/MMRRC/UC-Davis.  For example: MGI:4847055/Tg(Foxi2-EGFP)HX217Gsat, strain of origin: FVB/NTac.  New Strain: MGI:5003868/STOCK Tg(Foxi2-EGFP)HX217Gsat/Mmucd associated with MGI:5003868/Tg(Foxi2-EGFP)HX217Gsat via PRB_Strain/PRB_Strain_Marker.';
+
+COMMENT ON COLUMN ALL_Allele._Allele_key IS 'primary key';
+
+COMMENT ON COLUMN ALL_Allele._Allele_Status_key IS 'foreign key to VOC_Term where _Vocab_key = 37 (Allele Status); ''In Progress'', ''Deleted'', ''Reserved'', ''Approved'', ''Autoload''';
+
+COMMENT ON COLUMN ALL_Allele._Allele_Type_key IS 'foreign key to VOC_Term where _Vocab_key = 38 (Allele Type); ''Spontaneous'', ''Targeted'', ''Gene trapped''';
+
+COMMENT ON COLUMN ALL_Allele.approval_date IS 'date record was statused as "Approved"';
+
+COMMENT ON COLUMN ALL_Allele._ApprovedBy_key IS 'user who approved record (foreign key to MGI_User)';
+
+COMMENT ON COLUMN ALL_Allele._Collection_key IS 'foreign key to VOC_Term where _Vocab_key = 92 
+(Allele Collection); ''KOMP-CSD'', ''NorCOMM'', ''EUCOMM''';
+
+COMMENT ON COLUMN ALL_Allele._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN ALL_Allele.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN ALL_Allele.isExtinct IS 'if 1 (yes), then the Allele is extinct, else 0';
+
+COMMENT ON COLUMN ALL_Allele.isMixed IS 'if 1 (yes), then the Allele is mixed (from both male and female mice), else 0';
+
+COMMENT ON COLUMN ALL_Allele.isWildType IS 'if 1, Allele is a wild type allele, else 0';
+
+COMMENT ON COLUMN ALL_Allele._Marker_key IS 'foreign key to MRK_Marker; foreign key to ALL_Marker_Assoc';
+
+COMMENT ON COLUMN ALL_Allele._Mode_key IS 'foreign key to VOC_Term where _Vocab_key = 59 (Allele Mode); ''Strain of Origin'', ''Strain of Specimen''';
+
+COMMENT ON COLUMN ALL_Allele.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN ALL_Allele._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN ALL_Allele.name IS 'Allele Name';
+
+COMMENT ON COLUMN ALL_Allele.nomenSymbol IS 'Marker Symbol if the Marker is still "in progress" or "reserved" in NomenDB';
+
+COMMENT ON COLUMN ALL_Allele._Strain_key IS 'foreign key to PRB_Strain; the Strain Of Origin; for Transgenes this is the Strain fro which the mutation was made';
+
+COMMENT ON COLUMN ALL_Allele.symbol IS 'Allele Symbol; includes the Marker symbol';
+
+COMMENT ON COLUMN ALL_Allele._Transmission_key IS 'foreign key to VOC_Term where _Vocab_key = 61 (Allele Transmission); ''Germline'', ''Cell Line'', ''Chimeric''';
+
+EOSQL

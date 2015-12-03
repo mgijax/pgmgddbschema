@@ -1,0 +1,25 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MRK_Reference IS ' A record in this table represents a unique association between a Marker and a Reference.  This is a cache table that is rebuilt nightly by the mrkcacheload product.  It represents a union of unique Marker/Reference associations from all data sets in MGI (Expression, Mapping, Alleles, GO Annotations, etc.).';
+
+COMMENT ON COLUMN MRK_Reference.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MRK_Reference.jnum IS 'J: accession id of the reference without the prefix; integer (xxxx)';
+
+COMMENT ON COLUMN MRK_Reference.jnumID IS 'J: accession id of the reference (J:xxxx)';
+
+COMMENT ON COLUMN MRK_Reference._Marker_key IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN MRK_Reference.mgiID IS 'MGI accession id of the reference (MGI:xxxx)';
+
+COMMENT ON COLUMN MRK_Reference.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MRK_Reference.pubMedID IS 'pubmed accession id of the reference (xxxx)';
+
+COMMENT ON COLUMN MRK_Reference._Refs_key IS 'foreign key to BIB_Refs';
+
+EOSQL

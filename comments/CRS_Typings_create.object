@@ -1,0 +1,23 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.CRS_Typings IS 'Defines haplotype typings for Mapping Panel Cross.
+
+See CRS_Matrix, CRS_Progeny, CRS_References.';
+
+COMMENT ON COLUMN CRS_Typings.colNumber IS 'column number';
+
+COMMENT ON COLUMN CRS_Typings.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN CRS_Typings._Cross_key IS 'foreign key to CRS_Cross';
+
+COMMENT ON COLUMN CRS_Typings.data IS 'haplotype data';
+
+COMMENT ON COLUMN CRS_Typings.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN CRS_Typings.rowNumber IS 'row number';
+
+EOSQL

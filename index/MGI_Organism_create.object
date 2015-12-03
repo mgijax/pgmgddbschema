@@ -12,16 +12,12 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MGI_Organism_idx_CreatedBy_key on mgd.MGI_Organism (_CreatedBy_key);
+CLUSTER mgd.MGI_Organism USING MGI_Organism_pkey;
 
+create index MGI_Organism_idx_CreatedBy_key on mgd.MGI_Organism (_CreatedBy_key);
 
 create index MGI_Organism_idx_ModifiedBy_key on mgd.MGI_Organism (_ModifiedBy_key);
 
-
 create index MGI_Organism_idx_commonName on mgd.MGI_Organism (commonName);
-
-
-
-CLUSTER mgd.MGI_Organism USING MGI_Organism_pkey;
 
 EOSQL

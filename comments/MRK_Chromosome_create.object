@@ -1,0 +1,25 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MRK_Chromosome IS 'A record in this table represents an ordered Chromosome for the specified Organism (Species).  See MRK_Marker.';
+
+COMMENT ON COLUMN MRK_Chromosome.chromosome IS 'chromosome value';
+
+COMMENT ON COLUMN MRK_Chromosome._Chromosome_key IS 'primary key';
+
+COMMENT ON COLUMN MRK_Chromosome._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN MRK_Chromosome.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MRK_Chromosome.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MRK_Chromosome._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN MRK_Chromosome._Organism_key IS 'organism (foreign key to MGI_Organism)';
+
+COMMENT ON COLUMN MRK_Chromosome.sequenceNum IS 'sequence number for ordering records';
+
+EOSQL

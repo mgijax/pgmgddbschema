@@ -1,0 +1,27 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.IMG_ImagePane_Assoc IS 'A record in this table represents an association between an Image Pane and an MGI Object (allele, genotype).  At most one association for a given MGI object can be primary.';
+
+COMMENT ON COLUMN IMG_ImagePane_Assoc._Assoc_key IS 'primary key';
+
+COMMENT ON COLUMN IMG_ImagePane_Assoc._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN IMG_ImagePane_Assoc.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN IMG_ImagePane_Assoc._ImagePane_key IS 'foreign key to IMG_ImagePane; specifies the Image Pane';
+
+COMMENT ON COLUMN IMG_ImagePane_Assoc.isPrimary IS 'if = 1, then the association is primary, else secondary';
+
+COMMENT ON COLUMN IMG_ImagePane_Assoc._MGIType_key IS 'foreign key to ACC_MGIType';
+
+COMMENT ON COLUMN IMG_ImagePane_Assoc.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN IMG_ImagePane_Assoc._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN IMG_ImagePane_Assoc._Object_key IS 'foreign key to any object defined in ACC_MGIType';
+
+EOSQL

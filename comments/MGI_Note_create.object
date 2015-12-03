@@ -1,0 +1,25 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_Note IS 'A record in this table represents a Note of a specific type (_NoteType_key) for a specific object (_Object_key) of a specific  object type (_Object_key) with a specific privacy setting.';
+
+COMMENT ON COLUMN MGI_Note._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN MGI_Note.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MGI_Note._MGIType_key IS 'foreign key to ACC_MGIType';
+
+COMMENT ON COLUMN MGI_Note.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MGI_Note._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN MGI_Note._Note_key IS 'primary key';
+
+COMMENT ON COLUMN MGI_Note._NoteType_key IS 'foreign key to MGI_NoteType';
+
+COMMENT ON COLUMN MGI_Note._Object_key IS 'foreign key to any object defined in ACC_MGIType';
+
+EOSQL

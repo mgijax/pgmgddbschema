@@ -14,6 +14,9 @@ ALTER TABLE mgd.NOM_Marker DROP CONSTRAINT NOM_Marker__Marker_Type_key_fkey CASC
 ALTER TABLE mgd.MRK_OMIM_Cache DROP CONSTRAINT MRK_OMIM_Cache__Marker_Type_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Marker DROP CONSTRAINT MRK_Marker__Marker_Type_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_BiotypeMapping DROP CONSTRAINT MRK_BiotypeMapping__Marker_Type_key_fkey CASCADE;
+
 ALTER TABLE mgd.MRK_Types DROP CONSTRAINT MRK_Types_pkey CASCADE;
 
 EOSQL

@@ -1,0 +1,20 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.PRB_Tissue IS 'Controlled vocabulary table for all Tissues.  Includes Not Applicable (-2) and Not Specified (-1).
+';
+
+COMMENT ON COLUMN PRB_Tissue.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN PRB_Tissue.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN PRB_Tissue.standard IS 'is the tissue a standard, official tissue? yes (1), no (0)';
+
+COMMENT ON COLUMN PRB_Tissue.tissue IS 'tissue description';
+
+COMMENT ON COLUMN PRB_Tissue._Tissue_key IS 'primary key';
+
+EOSQL

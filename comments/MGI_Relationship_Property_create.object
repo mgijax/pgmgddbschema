@@ -1,0 +1,28 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_Relationship_Property IS 'A record in this table represents ordered properties, or name-value pairs, for a relationship
+See MGI_Relationship';
+
+COMMENT ON COLUMN MGI_Relationship_Property._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN MGI_Relationship_Property.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MGI_Relationship_Property.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MGI_Relationship_Property._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN MGI_Relationship_Property._PropertyName_key IS 'The name of the property';
+
+COMMENT ON COLUMN MGI_Relationship_Property._Relationship_key IS 'The relationship this property applies to';
+
+COMMENT ON COLUMN MGI_Relationship_Property._RelationshipProperty_key IS 'Primary key';
+
+COMMENT ON COLUMN MGI_Relationship_Property.sequenceNum IS 'Order of properties in this relationship';
+
+COMMENT ON COLUMN MGI_Relationship_Property.value IS 'value of the property';
+
+EOSQL

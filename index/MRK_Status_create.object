@@ -9,10 +9,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index MRK_Status_idx_status on mgd.MRK_Status (status);
-
-
-
 CLUSTER mgd.MRK_Status USING MRK_Status_pkey;
+
+create index MRK_Status_idx_status on mgd.MRK_Status (status);
 
 EOSQL

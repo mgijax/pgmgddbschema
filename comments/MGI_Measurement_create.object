@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_Measurement IS 'A record in this table represents the measurement for a particular type of statistic';
+
+COMMENT ON COLUMN MGI_Measurement.floatValue IS 'the measurement itself (if the value is a float), or null if it is an integer';
+
+COMMENT ON COLUMN MGI_Measurement.intValue IS 'the measurement itself (if the value is an integer), or null if it is a float';
+
+COMMENT ON COLUMN MGI_Measurement.isLatest IS 'flag to indicate whether this measurement is the most recent for this statistic (1) or not (0); is an int so it can be indexed';
+
+COMMENT ON COLUMN MGI_Measurement._Statistic_key IS 'FK to MGI_Statistic, indicating which statistic we are measuring';
+
+COMMENT ON COLUMN MGI_Measurement.timeRecorded IS 'date/time at which the measurement was taken';
+
+EOSQL

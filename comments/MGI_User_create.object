@@ -1,0 +1,27 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_User IS 'A record in this table represents a valid MGI user login.';
+
+COMMENT ON COLUMN MGI_User._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN MGI_User.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MGI_User.login IS 'database login';
+
+COMMENT ON COLUMN MGI_User.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MGI_User._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN MGI_User.name IS 'user name';
+
+COMMENT ON COLUMN MGI_User._User_key IS 'primary key';
+
+COMMENT ON COLUMN MGI_User._UserStatus_key IS 'foreign key to VOC_Term where _Vocab_key = 22 (User Status)';
+
+COMMENT ON COLUMN MGI_User._UserType_key IS 'foreign key to VOC_Term where _Vocab_key = 23 (User Type)';
+
+EOSQL

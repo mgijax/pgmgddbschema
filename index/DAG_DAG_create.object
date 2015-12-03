@@ -9,13 +9,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CLUSTER mgd.DAG_DAG USING DAG_DAG_pkey;
+
 create index DAG_DAG_idx_Refs_key on mgd.DAG_DAG (_Refs_key);
 
-
 create index DAG_DAG_idx_MGIType_key on mgd.DAG_DAG (_MGIType_key);
-
-
-
-CLUSTER mgd.DAG_DAG USING DAG_DAG_pkey;
 
 EOSQL

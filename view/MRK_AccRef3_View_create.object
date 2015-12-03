@@ -16,12 +16,10 @@
 #	107     AllenBrainAtlas        
 #	130     ArrayExpress        
 #	136     CCDS        
-#	35      DFCI
 #	8       EC
 #	124     FuncBase        
 #	81      HomoloGene
 #	83	miRBase
-#	53      NIAGeneIndex
 #	45	PDB
 #	135     ProteinOntology        
 #	25      RIKENCluster
@@ -49,7 +47,7 @@ and a._LogicalDB_key = l._LogicalDB_key
 and a._MGIType_key = m._MGIType_key
 and ar._Refs_key = b._Refs_key
 and a._ModifiedBy_key = u1._User_key
-and a._LogicalDB_key in (122,123,144,107,130,136,35,8,124,81,83,53,45,135,25,86,88,23)
+and a._LogicalDB_key in (122,123,144,107,130,136,8,124,81,83,45,135,25,86,88,23)
 
 
 

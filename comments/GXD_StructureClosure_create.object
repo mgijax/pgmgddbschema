@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_StructureClosure IS 'The closure table allows one to find all substructures or superstructures of a given node in one query.
+
+See GXD_Structure.';
+
+COMMENT ON COLUMN GXD_StructureClosure.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_StructureClosure._Descendent_key IS 'foreign key to GXD_Structure';
+
+COMMENT ON COLUMN GXD_StructureClosure.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN GXD_StructureClosure._Structure_key IS 'foreign key to GXD_Structure';
+
+EOSQL

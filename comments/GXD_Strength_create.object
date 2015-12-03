@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_Strength IS 'Controlled vocabulary table for all Gel Band and In Situ Result Strengths.  Includes Not Applicable (-2) and Not Specified (-1).
+
+See GXD_GelBand, GXD_InSituResults.';
+
+COMMENT ON COLUMN GXD_Strength.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_Strength.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN GXD_Strength.strength IS 'strength description';
+
+COMMENT ON COLUMN GXD_Strength._Strength_key IS 'primary key';
+
+EOSQL

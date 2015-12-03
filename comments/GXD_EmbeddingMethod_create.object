@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_EmbeddingMethod IS 'Controlled vocabulary table for all Embedding Methods.  Includes Not Applicable (-2) and Not Specified (-1).
+
+See GXD_Specimen.';
+
+COMMENT ON COLUMN GXD_EmbeddingMethod.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_EmbeddingMethod._Embedding_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_EmbeddingMethod.embeddingMethod IS 'embedding method description';
+
+COMMENT ON COLUMN GXD_EmbeddingMethod.modification_date IS 'date record was last modified';
+
+EOSQL

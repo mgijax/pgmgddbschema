@@ -1,0 +1,23 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MLD_Expts IS 'Defines a Mapping Experiment for a specific Reference.  A Reference may have one or more Experiments associated with it.  Each Experiment within a specific Reference is assigned an Experiment Type and and Experiment Tag value (CROSS-1).  The currently supported Experiment Types are:  CONTIG, CROSS, FISH, HYBRID, IN SITU, MAP, RI, TEXT.';
+
+COMMENT ON COLUMN MLD_Expts.chromosome IS 'chromosome value';
+
+COMMENT ON COLUMN MLD_Expts.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MLD_Expts._Expt_key IS 'primary key';
+
+COMMENT ON COLUMN MLD_Expts.exptType IS 'experiment type (ex. CROSS, RI, FISH, IN SITU, TEXT)';
+
+COMMENT ON COLUMN MLD_Expts.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MLD_Expts._Refs_key IS 'foreign key to BIB_Refs';
+
+COMMENT ON COLUMN MLD_Expts.tag IS 'unique integer value for each experiment type defined for a given reference (CROSS-1, CROSS-2, etc.)';
+
+EOSQL

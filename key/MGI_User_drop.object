@@ -176,6 +176,10 @@ ALTER TABLE mgd.MRK_Chromosome DROP CONSTRAINT MRK_Chromosome__ModifiedBy_key_fk
 
 ALTER TABLE mgd.MRK_Chromosome DROP CONSTRAINT MRK_Chromosome__CreatedBy_key_fkey CASCADE;
 
+ALTER TABLE mgd.MRK_BiotypeMapping DROP CONSTRAINT MRK_BiotypeMapping__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_BiotypeMapping DROP CONSTRAINT MRK_BiotypeMapping__CreatedBy_key_fkey CASCADE;
+
 ALTER TABLE mgd.MGI_UserRole DROP CONSTRAINT MGI_UserRole__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_UserRole DROP CONSTRAINT MGI_UserRole__CreatedBy_key_fkey CASCADE;

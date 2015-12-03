@@ -1,0 +1,27 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.RI_RISet IS 'A record in this table represents the definition of a Recombinant Inbred Strain.';
+
+COMMENT ON COLUMN RI_RISet.abbrev1 IS 'Strain 1 Abbreviation';
+
+COMMENT ON COLUMN RI_RISet.abbrev2 IS 'Strain 2 Abbreviation';
+
+COMMENT ON COLUMN RI_RISet.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN RI_RISet.designation IS 'identifying label for the RI Set (ex. AKXL)';
+
+COMMENT ON COLUMN RI_RISet.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN RI_RISet.RI_IdList IS 'labels which represent each member of the RI Set';
+
+COMMENT ON COLUMN RI_RISet._RISet_key IS 'primary key';
+
+COMMENT ON COLUMN RI_RISet._Strain_key_1 IS 'foreign key to PRB_Strain; 1st member of the cross';
+
+COMMENT ON COLUMN RI_RISet._Strain_key_2 IS 'foreign key to PRB_Strain; 2nd member of the cross';
+
+EOSQL

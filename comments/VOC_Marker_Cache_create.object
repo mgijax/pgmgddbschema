@@ -1,0 +1,15 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.VOC_Marker_Cache IS 'A record in this table represents a cached value of the association between a Marker, a Term and an Annotation Type.   The Annotation Types are GXD_Structure: ''AD'': VOC_AnnotType: 1000:GO/Marker, 1003:InterPro/Marker, 1002:Mammalian Phenotype/Genotype, 1005:OMIM/Genotype, 1006:OMIM/Human Marker, 1007:PIRSF/Marker.  The cache is loaded from mgicacheload/vocmarker.csh which refers to stored procedues in mgddbschema/procedure (VOC_Cache_Markers, VOC_Cache_Anatomy_Markers, VOC_Cache_MP_Markers, VOC_Cache_OMIM_Markers, VOC_Cache_Other_Markers).';
+
+COMMENT ON COLUMN VOC_Marker_Cache.annotType IS 'see table description for details';
+
+COMMENT ON COLUMN VOC_Marker_Cache._Marker_key IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN VOC_Marker_Cache._Term_key IS 'foreign key to VOC_Term';
+
+EOSQL
