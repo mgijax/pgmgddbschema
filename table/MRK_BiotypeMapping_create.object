@@ -6,10 +6,22 @@
 # 10/16/2015	lec
 #	- TR12070/12116/10308/BioTypes
 #
-# _biotypevocab_key : fk to voc_vocab : 1 of 3 provider biotype vocabs (103,104,105)
-# _biotypeterm_key : fk to voc_term
-# _MCVTerm_key : fk to voc_term where _vocab_key = 79 (Marker Category aka MCV term)
-# _Marker_Type_key : fk to mrk_types
+# add schema comments to '../comments/MRK_BioTypeMapping.create.object'
+#
+# to automate the use of feature type/MCV children when determining raw biotype conflicts:
+# . add field 6 to bitypemap.txt file (done)
+# . add new field 'useMCVchildren' : bit field 0 (no), 1 (yes)
+# . edit genemodelload/bin/biotypemapping.py : use 'useMCVchildren' field
+# . edit seqcacheload/seqmarker.py : use 'useMCVchildren' field
+# 
+# input:
+# /mgi/all/wts_projects/10300/10308/RawBioTypeEquivalence/biotypemap.txt
+#
+# to load input data into database table, see:
+# genemodelload/bin/biotypemapping.sh
+# 
+# to use database table to set biotype conflict, see:
+# seqcacheload/seqmarker.csh
 #
 
 cd `dirname $0` && . ./Configuration
