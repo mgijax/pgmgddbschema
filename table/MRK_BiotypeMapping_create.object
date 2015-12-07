@@ -9,9 +9,9 @@
 # add schema comments to '../comments/MRK_BioTypeMapping.create.object'
 #
 # to automate the use of feature type/MCV children when determining raw biotype conflicts:
-# . add field 6 to bitypemap.txt file (done)
+# . add field 6 to input biotypemap.txt file (done)
 # . add new field 'useMCVchildren' : bit field 0 (no), 1 (yes)
-# . edit genemodelload/bin/biotypemapping.py : use 'useMCVchildren' field
+# . edit genemodelload/bin/biotypemapping.py : use biotypemap.txt/field 6 to load correct 'useMCVchildren' field
 # . edit seqcacheload/seqmarker.py : use 'useMCVchildren' field
 # 
 # input:
@@ -21,7 +21,7 @@
 # genemodelload/bin/biotypemapping.sh
 # 
 # to use database table to set biotype conflict, see:
-# seqcacheload/seqmarker.csh
+# seqcacheload/seqmarker.csh/generateBiotypeLookups()
 #
 
 cd `dirname $0` && . ./Configuration
