@@ -35,6 +35,7 @@ create table mgd.MRK_BiotypeMapping (
  	_biotypeterm_key               int             not null,
 	_MCVTerm_key		       int	       not null,
  	_Marker_Type_key               int             not null,
+	useMCVchildren		       int DEFAULT 0   not null,
 	_CreatedBy_key                 int DEFAULT 1001             not null,
 	_ModifiedBy_key                int DEFAULT 1001             not null,
 	creation_date                  timestamp DEFAULT now()        not null,
