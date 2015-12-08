@@ -3,6 +3,9 @@
 #
 # HISTORY:
 #
+# 12/08/2015	lec
+#	- bug fixes for postgre conversion
+#
 # 11/28/2012	lec
 #	- TR10273/new/update transmission and add a transmission/reference
 #	- add header terms
@@ -65,7 +68,7 @@ END LOOP;
 CLOSE all_cursor1;
 
 -- add used-FC references
-OPEN all_cursor1 FOR
+OPEN all_cursor2 FOR
 SELECT DISTINCT aa._Allele_key
 FROM GXD_AlleleGenotype g, VOC_Annot a, VOC_Evidence e, ALL_Allele aa
 WHERE g._Genotype_key = a._Object_key
@@ -81,7 +84,7 @@ LOOP
         EXIT WHEN NOT FOUND;
     	PERFORM MGI_insertReferenceAssoc (1001, 11, v_alleleKey, v_refKey, 'Used-FC');
 END LOOP;
-CLOSE all_cursor1;
+CLOSE all_cursor2;
 
 END;
 \$\$

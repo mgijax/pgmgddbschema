@@ -1,5 +1,12 @@
 #!/bin/sh
 
+# 
+# HISTORY:
+#
+# 12/08/2015    lec 
+#       - add drop commands as comments only
+#
+
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/procedure/VOC_processAnnotHeader_drop.object
@@ -32,6 +39,14 @@ BEGIN
 v_headerLabel := _Label_key FROM DAG_Label WHERE label = 'Header';
 v_headerKey := max(_AnnotHeader_key) FROM VOC_AnnotHeader;
 v_maxSeq := 0;
+
+--DROP TABLE IF EXISTS set0;
+--DROP TABLE IF EXISTS set1;
+--DROP TABLE IF EXISTS set2;
+--DROP TABLE IF EXISTS set3;
+--DROP TABLE IF EXISTS normal;
+--DROP TABLE IF EXISTS toAdd;
+--DROP TABLE IF EXISTS toDelete;
 
 -- set of "new" headers based on most recent annotation update 
 -- need to check if any ancestors are header terms 
