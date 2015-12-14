@@ -1,8 +1,12 @@
-TAG: pgmgddbschema-6-0-2-5
+TAG: pgmgddbschema-6-0-2-6
+DATE: 12/14/2015
+STAFF: lec 
+CHANGES:
 1) TR12070/12011/htmpload
 procedure/VOC_processAnnotHeader_create.object
 procedure/VOC_processAnnotHeaderMissing_create.object
 
+TAG: pgmgddbschema-6-0-2-5
 TAG: pgmgddbschema-6-0-2-4
 TAG: pgmgddbschema-6-0-2-3
 DATE: 12/03/2015,12/07/2015
