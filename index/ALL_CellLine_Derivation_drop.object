@@ -16,6 +16,12 @@ drop index if exists mgd.ALL_CellLine_Derivation_idx_Creator_key
 drop index if exists mgd.ALL_CellLine_Derivation_idx_Refs_key
 ;
 
+drop index if exists mgd.ALL_CellLine_Derivation_idx_Vector_key
+;
+
+drop index if exists mgd.ALL_CellLine_Derivation_idx_VectorType_key
+;
+
 drop index if exists mgd.ALL_CellLine_Derivation_idx_name
 ;
 

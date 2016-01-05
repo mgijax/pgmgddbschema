@@ -16,6 +16,10 @@ create index ALL_CellLine_Derivation_idx_Creator_key on mgd.ALL_CellLine_Derivat
 
 create index ALL_CellLine_Derivation_idx_Refs_key on mgd.ALL_CellLine_Derivation (_Refs_key);
 
+create index ALL_CellLine_Derivation_idx_Vector_key on mgd.ALL_CellLine_Derivation (_Vector_key);
+
+create index ALL_CellLine_Derivation_idx_VectorType_key on mgd.ALL_CellLine_Derivation (_VectorType_key);
+
 create index ALL_CellLine_Derivation_idx_name on mgd.ALL_CellLine_Derivation (name, _Derivation_key);
 
 create index ALL_CellLine_Derivation_idx_pcl on mgd.ALL_CellLine_Derivation (_ParentCellLine_key, _Derivation_key);
