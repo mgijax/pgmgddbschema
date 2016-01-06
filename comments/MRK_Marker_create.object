@@ -12,8 +12,6 @@ COMMENT ON COLUMN MRK_Marker._CreatedBy_key IS 'user who created the record';
 
 COMMENT ON COLUMN MRK_Marker.creation_date IS 'date record was created';
 
-COMMENT ON COLUMN MRK_Marker._CurationState_key IS 'foreign key to VOC_Term where _Vocab_key = 15 (Curation State); obsolete column; used in EI Nomen module (not displayed); see TR10841';
-
 COMMENT ON COLUMN MRK_Marker.cytogeneticOffset IS 'cytogenetic band';
 
 COMMENT ON COLUMN MRK_Marker._Marker_key IS 'primary key';
