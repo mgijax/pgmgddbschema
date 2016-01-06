@@ -1,3 +1,10 @@
+TAG: pgmgddbschema-6-0-2-7
+DATE: 01/06/2016
+STAFF: lec 
+CHANGES:
+1) index/ALL_CellLine_Derivation
+add indexes to _vector_key & _vectortype_key
+
 TAG: pgmgddbschema-6-0-2-6
 DATE: 12/14/2015
 STAFF: lec 
