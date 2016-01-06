@@ -30,7 +30,7 @@ COMMENT ON COLUMN MRK_Location_Cache.modification_date IS 'date record was last 
 
 COMMENT ON COLUMN MRK_Location_Cache._ModifiedBy_key IS 'user who last modified the record';
 
-COMMENT ON COLUMN MRK_Location_Cache.offset IS 'cytogenetic cmOffset';
+COMMENT ON COLUMN MRK_Location_Cache.cmOffset IS 'cytogenetic cmOffset';
 
 COMMENT ON COLUMN MRK_Location_Cache._Organism_key IS 'foreign key to MGI_Organism';
 
