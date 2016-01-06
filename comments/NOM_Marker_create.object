@@ -16,8 +16,6 @@ COMMENT ON COLUMN NOM_Marker._CreatedBy_key IS 'user who created the record';
 
 COMMENT ON COLUMN NOM_Marker.creation_date IS 'date record was created';
 
-COMMENT ON COLUMN NOM_Marker._CurationState_key IS 'foreign key to VOC_Term where _Vocab_key = 15 (Curation State)';
-
 COMMENT ON COLUMN NOM_Marker.humanSymbol IS 'human ortholog';
 
 COMMENT ON COLUMN NOM_Marker._Marker_Event_key IS 'foreign key to MRK_Event';
