@@ -14,10 +14,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.GXD_GelLaneStructure_idx(_EMAPA_Term_key)
+drop index if exists mgd.GXD_GelLaneStructure_idx_EMAPA_Term_key
 ;
 
-drop index if exists mgd.GXD_GelLaneStructure_idx(_Stage_key)
+drop index if exists mgd.GXD_GelLaneStructure_idx_Stage_key
 ;
 
 EOSQL

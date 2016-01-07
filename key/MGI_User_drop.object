@@ -269,10 +269,6 @@ ALTER TABLE mgd.MGI_Note DROP CONSTRAINT MGI_Note__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_Note DROP CONSTRAINT MGI_Note__CreatedBy_key_fkey CASCADE;
 
-ALTER TABLE mgd.MGI_EMAPS_Mapping DROP CONSTRAINT MGI_EMAPS_Mapping__ModifiedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_EMAPS_Mapping DROP CONSTRAINT MGI_EMAPS_Mapping__CreatedBy_key_fkey CASCADE;
-
 ALTER TABLE mgd.MAP_Coordinate DROP CONSTRAINT MAP_Coordinate__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MAP_Coordinate DROP CONSTRAINT MAP_Coordinate__CreatedBy_key_fkey CASCADE;

@@ -32,7 +32,7 @@ create table mgd.GXD_Expression (
 	_AssayType_key                 int             not null,
 	_Genotype_key                  int             not null,
 	_Marker_key                    int             not null,
-	_EMAPS_Term_key                int             not null,
+	_EMAPA_Term_key                int             not null,
 	_Stage_key                     int             not null,
 	_Specimen_key		       int	       null,
 	_GelLane_key		       int	       null,
