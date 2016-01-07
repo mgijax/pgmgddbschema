@@ -1,7 +1,10 @@
 #!/bin/sh
 
 #
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
+# History
+#
+# 01/07/2016    lec 
+#       - TR12223/converting _structure_key -> _emapa_term_key/_stage_key
 #
 
 cd `dirname $0` && . ./Configuration
@@ -9,7 +12,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.GXD_GelLaneStructure ADD PRIMARY KEY (_GelLane_key, _Structure_key);
+ALTER TABLE mgd.GXD_GelLaneStructure ADD PRIMARY KEY (_GelLane_key, _EMAPA_Term_key, _Stage_key);
 
 
 EOSQL
