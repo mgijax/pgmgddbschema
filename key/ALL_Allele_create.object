@@ -3,10 +3,14 @@
 #
 # History
 #
+# 01/07/2016    lec 
+#       - TR12223/converting _structure_key -> _emapa_term_key/_stage_key
+#
 # 09/03/2009	lec
 #	- TR 9797; add ALL_Cre_Cache
 #
 # 2/13/2009 - jsb - removed ALL_Cache
+#
 # 11/15/07 - jsb - added ALL_Cache and SEQ_Allele_Assoc
 #
 # 02/04/2003

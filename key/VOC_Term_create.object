@@ -3,6 +3,9 @@
 #
 # History
 #
+# 01/07/2016    lec 
+#       - TR12223/converting _structure_key -> _emapa_term_key/_stage_key
+#
 # 02/13/2015    sc
 #       - TR 11771; Misc project Hybrid/HGNC human/mouse homology
 #
@@ -31,7 +34,7 @@
 # 01/18/2010 - jsb - added SEQ_Sequence_Assoc
 #
 # 09/03/2009	lec
-#	- TR9797; add GXD_Structure, GXD_TheilerStage, ALL_Cre_Cache
+#	- TR9797; add GXD_TheilerStage, ALL_Cre_Cache
 #
 # 02/13/2009 - jsb - move _Transmission_key from ALL_Cache to ALL_Allele
 # 01/14/2009 - jsb - added ALL_CellLine_Derivation._Vector_key
@@ -115,10 +118,10 @@ ALTER TABLE mgd.GXD_Index_Stages ADD FOREIGN KEY (_IndexAssay_key) REFERENCES mg
 ALTER TABLE mgd.GXD_Index_Stages ADD FOREIGN KEY (_StageID_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
-ALTER TABLE mgd.GXD_Structure ADD FOREIGN KEY (_System_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+ALTER TABLE mgd.GXD_GelLaneStructure ADD FOREIGN KEY (_EMAPA_Term_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
-ALTER TABLE mgd.GXD_TheilerStage ADD FOREIGN KEY (_defaultSystem_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+ALTER TABLE mgd.GXD_ISResultStructure ADD FOREIGN KEY (_EMAPA_Term_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
 ALTER TABLE mgd.IMG_Image ADD FOREIGN KEY (_ImageType_key) REFERENCES mgd.VOC_Term DEFERRABLE;
@@ -268,7 +271,10 @@ ALTER TABLE mgd.VOC_Term_EMAPS ADD FOREIGN KEY (_EMAPA_Term_key) REFERENCES mgd.
 ALTER TABLE mgd.ALL_Cre_Cache ADD FOREIGN KEY (_Allele_Type_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE DEFERRABLE;
 
 
-ALTER TABLE mgd.ALL_Cre_Cache ADD FOREIGN KEY (_System_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE DEFERRABLE;
+ALTER TABLE mgd.ALL_Cre_Cache ADD FOREIGN KEY (_EMAPA_Term_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE DEFERRABLE;
+
+
+ALTER TABLE mgd.GXD_Expression ADD FOREIGN KEY (_EMAPA_Term_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE DEFERRABLE;
 
 
 ALTER TABLE mgd.MRK_OMIM_Cache ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE DEFERRABLE;

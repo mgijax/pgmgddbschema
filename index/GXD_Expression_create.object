@@ -1,6 +1,10 @@
 #!/bin/sh
 
-# HISTORY
+#
+# History
+#
+# 01/07/2016    lec 
+#       - TR12223/converting _structure_key -> _emapa_term_key/_stage_key
 #
 # 01/26/2015
 #	- added _Genotype_key without isForGXD
@@ -19,13 +23,13 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.GXD_Expression USING GXD_Expression_pkey;
 
-create index GXD_Expression_idx_clustered on mgd.GXD_Expression (_Marker_key, _Structure_key, isForGXD);
+create index GXD_Expression_idx_clustered on mgd.GXD_Expression (_Marker_key, _EMAPA_Term_key, _Stage_key, isForGXD);
 
 create index GXD_Expression_idx_Assay_key on mgd.GXD_Expression (_Assay_key);
 
 create index GXD_Expression_idx_Refs_key on mgd.GXD_Expression (_Refs_key);
 
-create index GXD_Expression_idx_Refs_etc_key on mgd.GXD_Expression (_Refs_key, _Structure_key, isForGXD);
+create index GXD_Expression_idx_Refs_etc_key on mgd.GXD_Expression (_Refs_key, _EMAPA_Term_key, _Stage_key, isForGXD);
 
 create index GXD_Expression_idx_AssayType_key on mgd.GXD_Expression (_AssayType_key);
 
@@ -33,9 +37,7 @@ create index GXD_Expression_idx_Genotype_key on mgd.GXD_Expression (_Genotype_ke
 
 create index GXD_Expression_idx_GenotypeGXD_key on mgd.GXD_Expression (_Genotype_key, isForGXD);
 
-create index GXD_Expression_idx_Structure_key on mgd.GXD_Expression (_Structure_key, _Expression_key, isForGXD);
-
-create index GXD_Expression_idx_emaps_key on mgd.GXD_Expression (_emaps_key);
+create index GXD_Expression_idx_EMAPA_Term_key on mgd.GXD_Expression (_EMAPA_Term_key, _Stage_key, _Expression_key, isForGXD);
 
 create index GXD_Expression_idx_Specimen_key on mgd.GXD_Expression (_Specimen_key);
 

@@ -1,7 +1,10 @@
 #!/bin/sh
+
 #
 # History
 #
+# 01/07/2016    lec 
+#       - TR12223/converting _structure_key -> _emapa_term_key/_stage_key
 #
 # 02/25/2014    sc
 #       - TR11560 - added MGI_Relationship* FKs
@@ -29,7 +32,9 @@
 # 09/30/2005	lec
 #	- TR 7094; MGI 3.5
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.VOC_Term_EMAPS DROP CONSTRAINT VOC_Term_EMAPS__ModifiedBy_key_fkey CASCADE;
@@ -383,6 +388,7 @@ ALTER TABLE mgd.ACC_AccessionReference DROP CONSTRAINT ACC_AccessionReference__C
 ALTER TABLE mgd.ACC_Accession DROP CONSTRAINT ACC_Accession__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.ACC_Accession DROP CONSTRAINT ACC_Accession__CreatedBy_key_fkey CASCADE;
+
 ALTER TABLE mgd.MGI_User DROP CONSTRAINT MGI_User_pkey CASCADE;
 
 EOSQL

@@ -1,3 +1,24 @@
+TAG: pgmgddbschema-tr12223-?
+DATE: 01/07/2016
+STAFF: lec
+CHANGES:
+#####
+obsolete:
+GXD_StructureClosure
+GXD_Structure
+GXD_StructureName
+MGI_EMAPS_Mapping
+######
+conversion:
+  add _Stage_key
+  rename _Structure_key -> _EMAPA_Term_key (VOC_Term_EMAPA)
+
+ALL_Cre_Cache
+GXD_Expression
+GXD_GelLaneStructure
+GXD_ISResultStructure
+######
+
 TAG: pgmgddbschema-tr12223-BP
 DATE: 01/07/2016
 STAFF: lec

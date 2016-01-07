@@ -1,7 +1,10 @@
 #!/bin/sh
 
 #
-# HISTORY:
+# History
+#
+# 01/07/2016	lec
+#	- TR12223/converting _structure_key -> _emapa_term_key/_stage_key
 #
 # 02/24/2015	kstone
 #	added _specimen_key and _gellane_key
@@ -29,16 +32,16 @@ create table mgd.GXD_Expression (
 	_AssayType_key                 int             not null,
 	_Genotype_key                  int             not null,
 	_Marker_key                    int             not null,
-	_Structure_key                 int             not null,
-	_emaps_key		       int             null,
-	_Specimen_key			int		null,
-	_GelLane_key			int		null,
-	expressed                      smallint             not null,
+	_EMAPS_Term_key                int             not null,
+	_Stage_key                     int             not null,
+	_Specimen_key		       int	       null,
+	_GelLane_key		       int	       null,
+	expressed                      smallint        not null,
 	age                            varchar(50)     not null,
-	ageMin                         numeric           null,
-	ageMax                         numeric           null,
-	isRecombinase                  smallint         not null,
-	isForGXD                       smallint         not null,
+	ageMin                         numeric         null,
+	ageMax                         numeric         null,
+	isRecombinase                  smallint        not null,
+	isForGXD                       smallint        not null,
 	hasImage		       smallint	       not null,
 	creation_date                  timestamp DEFAULT now()        not null,
 	modification_date              timestamp DEFAULT now()        not null 
