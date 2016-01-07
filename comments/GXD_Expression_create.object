@@ -20,8 +20,6 @@ COMMENT ON COLUMN GXD_Expression._AssayType_key IS 'foreign key to GXD_AssayType
 
 COMMENT ON COLUMN GXD_Expression.creation_date IS 'date record was created';
 
-COMMENT ON COLUMN GXD_Expression._emaps_key IS 'None';
-
 COMMENT ON COLUMN GXD_Expression.expressed IS 'is Marker expressed in Structure?  yes (1), no (0)';
 
 COMMENT ON COLUMN GXD_Expression._Expression_key IS 'primary key';
@@ -44,6 +42,8 @@ COMMENT ON COLUMN GXD_Expression._Refs_key IS 'foreign key to BIB_Refs';
 
 COMMENT ON COLUMN GXD_Expression._Specimen_key IS 'None';
 
-COMMENT ON COLUMN GXD_Expression._Structure_key IS 'foreign key to GXD_Structure';
+COMMENT ON COLUMN GXD_Expression._EMAPA_Term_key IS 'foreign key to VOC_Term where _Vocab_key = 90 (EMAPA)';
+
+COMMENT ON COLUMN GXD_Expression._Stage_key IS 'foreign key to GXD_TheilerStage';
 
 EOSQL

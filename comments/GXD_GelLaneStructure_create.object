@@ -14,6 +14,8 @@ COMMENT ON COLUMN GXD_GelLaneStructure._GelLane_key IS 'foreign key to GXD_GelLa
 
 COMMENT ON COLUMN GXD_GelLaneStructure.modification_date IS 'date record was last modified';
 
-COMMENT ON COLUMN GXD_GelLaneStructure._Structure_key IS 'foreign key to GXD_Structure';
+COMMENT ON COLUMN GXD_GelLaneStructure._EMAPA_Term_key IS 'foreign key to VOC_Term where _Vocab_key = 90 (EMAPA)';
+
+COMMENT ON COLUMN GXD_GelLaneStructure._Stage_key IS 'foreign key to GXD_TheilerStage';
 
 EOSQL

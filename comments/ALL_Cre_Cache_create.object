@@ -42,13 +42,13 @@ COMMENT ON COLUMN ALL_Cre_Cache.name IS 'Allele name';
 
 COMMENT ON COLUMN ALL_Cre_Cache.printName IS 'None';
 
-COMMENT ON COLUMN ALL_Cre_Cache.structure IS 'Structure name';
+COMMENT ON COLUMN ALL_Cre_Cache.emapaTerm IS 'EMAPA term';
 
-COMMENT ON COLUMN ALL_Cre_Cache._Structure_key IS 'foreign key to GXD_Structure';
+COMMENT ON COLUMN ALL_Cre_Cache._EMAPA_Term_key IS 'foreign key to VOC_Term where _Vocab_key = 90 (EMAPA)';
+
+COMMENT ON COLUMN ALL_Cre_Cache._Stage_key IS 'foreign key to GXD_TheilerStage';
 
 COMMENT ON COLUMN ALL_Cre_Cache.symbol IS 'Allele symbol';
-
-COMMENT ON COLUMN ALL_Cre_Cache.system IS 'System name (see _System_key)';
 
 COMMENT ON COLUMN ALL_Cre_Cache._System_key IS 'foreign key for VOC_Vocab where _Vocab_key = 75 (Anatomical Systems); ''adipose tissue'', ''alimentary system'', ''embryo-other'', ''head'', ''limbs'', etc.';
 
