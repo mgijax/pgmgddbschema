@@ -40,7 +40,6 @@ GXD_InSituResult_View_create.object \
 GXD_Index_View_create.object \
 GXD_ProbePrep_View_create.object \
 GXD_Specimen_View_create.object \
-GXD_Structure_Acc_View_create.object \
 )
 $i $*
 end

@@ -6,7 +6,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 COMMENT ON TABLE mgd.GXD_TheilerStage IS 'Defines the Theiler Stages, one for each developmental stage defined in the Theiler system.  Each stage has a "stage" attribute, which is an integer from 1 to 28, an approximate mapping to DPC values, and a short description of the main anatomical developments for the stage.
 
-See GXD_Structure.';
+See VOC_Term_EMAPA.';
 
 COMMENT ON COLUMN GXD_TheilerStage.creation_date IS 'date record was created';
 
