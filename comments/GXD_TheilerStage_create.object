@@ -10,8 +10,6 @@ See GXD_Structure.';
 
 COMMENT ON COLUMN GXD_TheilerStage.creation_date IS 'date record was created';
 
-COMMENT ON COLUMN GXD_TheilerStage._defaultSystem_key IS 'the default system key for this Theiler Stage; foreign key to VOC_Term where _Vocab_key = 75 (Anatomical Systems)';
-
 COMMENT ON COLUMN GXD_TheilerStage.description IS 'description of the anatomical developments';
 
 COMMENT ON COLUMN GXD_TheilerStage.dpcMax IS 'approximate mapping to maximum DPC value';
