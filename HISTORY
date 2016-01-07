@@ -1,3 +1,10 @@
+TAG: pgmgddbschema-tr12223-BP
+DATE: 01/07/2016
+STAFF: lec
+CHANGES:
+1) branch point tag for TR12223
+gxd_structure->voc_term_emapa conversion
+
 TAG: pgmgddbschema-6-0-2-8
 TAG: pgmgddbschema-6-0-2-7
 DATE: 01/06/2016
