@@ -18,4 +18,7 @@ drop index if exists mgd.VOC_Marker_Cache_idx_Marker_key
 drop index if exists mgd.VOC_Marker_Cache_idx_annotType
 ;
 
+drop index if exists mgd.VOC_Marker_Cache_idx_annotType_etc
+;
+
 EOSQL
