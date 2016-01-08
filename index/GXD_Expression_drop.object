@@ -47,6 +47,9 @@ drop index if exists mgd.GXD_Expression_idx_EMAPA_Term_key
 drop index if exists mgd.GXD_Expression_idx_Specimen_key
 ;
 
+drop index if exists mgd.GXD_Expression_idx_EMAPA_Term_etc_key
+;
+
 drop index if exists mgd.GXD_Expression_idx_GelLane_key
 ;
 

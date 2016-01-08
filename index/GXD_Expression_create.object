@@ -39,7 +39,11 @@ create index GXD_Expression_idx_Marker_key on mgd.GXD_Expression (_Marker_key);
 
 create index GXD_Expression_idx_GenotypeGXD_key on mgd.GXD_Expression (_Genotype_key, isForGXD);
 
-create index GXD_Expression_idx_EMAPA_Term_key on mgd.GXD_Expression (_EMAPA_Term_key, _Stage_key, _Expression_key, isForGXD);
+create index GXD_Expression_idx_EMAPA_Term_key on mgd.GXD_Expression (_EMAPA_Term_key);
+
+create index GXD_Expression_idx_Stage_key on mgd.GXD_Expression (_Stage_key);
+
+create index GXD_Expression_idx_EMAPA_Term_etc_key on mgd.GXD_Expression (_EMAPA_Term_key, _Stage_key, _Expression_key, isForGXD);
 
 create index GXD_Expression_idx_Specimen_key on mgd.GXD_Expression (_Specimen_key);
 
