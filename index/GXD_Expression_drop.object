@@ -35,6 +35,9 @@ drop index if exists mgd.GXD_Expression_idx_AssayType_key
 drop index if exists mgd.GXD_Expression_idx_Genotype_key
 ;
 
+drop index if exists mgd.GXD_Expression_idx_Marker_key
+;
+
 drop index if exists mgd.GXD_Expression_idx_GenotypeGXD_key
 ;
 
