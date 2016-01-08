@@ -3,6 +3,9 @@
 #
 # History
 #
+# 01/07/2016    lec 
+#       - TR12223/converting _structure_key -> _emapa_term_key/_stage_key
+#
 # 02/11/2015	kstone
 #	-- Removing call to gxd expression cache GXD_duplicateAssay
 #
@@ -149,7 +152,7 @@ FROM gellane_tmp s
 ;
 
 INSERT INTO GXD_GelLaneStructure
-SELECT v_gelLaneKey + seq, g._Structure_key, current_date, current_date
+SELECT v_gelLaneKey + seq, g._EMAPA_Term_key, g._Stage_key, current_date, current_date
 FROM gellane_tmp s, GXD_GelLaneStructure g
 WHERE s._GelLane_key = g._GelLane_key
 ;
@@ -189,7 +192,7 @@ WHERE s._Result_key = i._Result_key
 ;
 
 INSERT INTO GXD_ISResultStructure
-SELECT v_resultKey + seq, i._Structure_key, current_date, current_date
+SELECT v_resultKey + seq, i._EMAPA_Term_key, i._Stage_key, current_date, current_date
 FROM isresult_tmp s, GXD_ISResultStructure i
 WHERE s._Result_key = i._Result_key
 ;

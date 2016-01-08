@@ -18,11 +18,12 @@ ALL_Cre_Cache
 GXD_Expression
 GXD_GelLaneStructure
 GXD_ISResultStructure
+procedure/GXD_duplicateAssay
 ######
-changes to:
 VOC_Term_EMAPA
+- change startStage/endStage to int
 VOC_Term_EMAPS
-- change field type of "stage" fields to "integer"
+-- rename/change "stage" to _Stage_key/int
 and foreign key them to the GXD_TheilerStage table
 
 TAG: pgmgddbschema-tr12223-BP
