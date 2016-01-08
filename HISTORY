@@ -19,6 +19,11 @@ GXD_Expression
 GXD_GelLaneStructure
 GXD_ISResultStructure
 ######
+changes to:
+VOC_Term_EMAPA
+VOC_Term_EMAPS
+- change field type of "stage" fields to "integer"
+and foreign key them to the GXD_TheilerStage table
 
 TAG: pgmgddbschema-tr12223-BP
 DATE: 01/07/2016

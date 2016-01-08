@@ -34,7 +34,6 @@ create table mgd.ALL_Cre_Cache (
     alleleType           text            not null,
     driverNote           text            not null,
     emapaTerm            text            null,
-    printName            text            null,
     age                  varchar(50)     null,
     ageMin               numeric         null,
     ageMax               numeric         null,
