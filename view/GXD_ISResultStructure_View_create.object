@@ -12,7 +12,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create view mgd.GXD_ISResultStructure_View
 as
 select r._Specimen_key, r.sequenceNum, g.*, s.term, t.stage,
-'[DB]:Stage' || cast(t.stage as varchar(5)) || ';' || s.term as dbName
+'TS' || cast(t.stage as varchar(5)) || ';' || s.term as dbName
 from GXD_InSituResult r, GXD_ISResultStructure g, VOC_Term s, GXD_TheilerStage t
 where r._Result_key = g._Result_key
 and g._EMAPA_Term_key = s._Term_key
