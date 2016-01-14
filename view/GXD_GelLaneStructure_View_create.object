@@ -12,7 +12,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create view mgd.GXD_GelLaneStructure_View
 as
 select l._Assay_key, l.sequenceNum, g.*, s.term, t.stage,
-'[DB]:  Stage' || cast(t.stage as varchar(5)) || ';' || s.term as dbName
+'[DB]:Stage' || cast(t.stage as varchar(5)) || ';' || s.term as dbName
 from GXD_GelLane l, GXD_GelLaneStructure g, VOC_Term s, GXD_TheilerStage t
 where l._GelLane_key = g._GelLane_key
 and g._EMAPA_Term_key = s._Term_key
