@@ -12,7 +12,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER mgd.MGI_SetMember_EMAPA USING MGI_SetMemberEMAPA_pkey;
+CLUSTER mgd.MGI_SetMember_EMAPA USING MGI_SetMember_EMAPA_pkey;
 
 create index MGI_SetMember_EMAPA_idx_SetMember_key on mgd.MGI_SetMember_EMAPA (_SetMember_key);
 

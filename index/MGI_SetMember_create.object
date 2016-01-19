@@ -26,9 +26,9 @@ CLUSTER mgd.MGI_SetMember USING MGI_SetMember_pkey;
 
 create index MGI_SetMember_idx_ObjectSet_key on mgd.MGI_SetMember (_Object_key, _Set_key, sequenceNum);
 
-create index MGI_SetMember_idx_CreatedBy_key on mgd.MGI_SetMember_EMAPA (_CreatedBy_key);
+create index MGI_SetMember_idx_CreatedBy_key on mgd.MGI_SetMember (_CreatedBy_key);
 
-create index MGI_SetMember_idx_ModifiedBy_key on mgd.MGI_SetMember_EMAPA (_ModifiedBy_key);
+create index MGI_SetMember_idx_ModifiedBy_key on mgd.MGI_SetMember (_ModifiedBy_key);
 
 create unique index MGI_SetMember_idx_SetMember_key on mgd.MGI_SetMember (_SetMember_key);
 
