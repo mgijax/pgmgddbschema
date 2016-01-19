@@ -2,8 +2,11 @@
 
 #
 # History
+#
 # 07/12/2011 - lec - index -> MGI_SetMember_idx for consistency
+#
 # 04/22/2008 - jsb - restructured indexes to improve performance (MGI 4.B)
+#
 # 04/17/2003 - lec - MGI 2.96
 #
 # include the three main fields for performance, optimized for access by
@@ -22,6 +25,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 CLUSTER mgd.MGI_SetMember USING MGI_SetMember_pkey;
 
 create index MGI_SetMember_idx_ObjectSet_key on mgd.MGI_SetMember (_Object_key, _Set_key, sequenceNum);
+
+create index MGI_SetMember_idx_CreatedBy_key on mgd.MGI_SetMember_EMAPA (_CreatedBy_key);
+
+create index MGI_SetMember_idx_ModifiedBy_key on mgd.MGI_SetMember_EMAPA (_ModifiedBy_key);
 
 create unique index MGI_SetMember_idx_SetMember_key on mgd.MGI_SetMember (_SetMember_key);
 
