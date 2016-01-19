@@ -16,6 +16,8 @@ CLUSTER mgd.MGI_SetMember_EMAPA USING MGI_SetMemberEMAPA_pkey;
 
 create index MGI_SetMember_EMAPA_idx_SetMember_key on mgd.MGI_SetMember_EMAPA (_SetMember_key);
 
+create index MGI_SetMember_EMAPA_idx_Stage_key on mgd.MGI_SetMember_EMAPA (_Stage_key);
+
 create index MGI_SetMember_EMAPA_idx_CreatedBy_key on mgd.MGI_SetMember_EMAPA (_CreatedBy_key);
 
 create index MGI_SetMember_EMAPA_idx_ModifiedBy_key on mgd.MGI_SetMember_EMAPA (_ModifiedBy_key);
