@@ -2,7 +2,7 @@ TAG: pgmgddbschema-tr12223-?
 DATE: 01/07/2016
 STAFF: lec
 CHANGES:
-TR22223/gxd anatomy
+TR12223/gxd anatomy II
 #####
 obsolete:
 GXD_StructureClosure
@@ -25,6 +25,9 @@ VOC_Term_EMAPA
 VOC_Term_EMAPS
 -- rename/change "stage" to _Stage_key/int
 and foreign key them to the GXD_TheilerStage table
+######
+added:
+MGI_SetMember_EMAPA
 
 TAG: pgmgddbschema-tr12223-BP
 DATE: 01/07/2016
