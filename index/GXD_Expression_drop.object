@@ -44,6 +44,9 @@ drop index if exists mgd.GXD_Expression_idx_GenotypeGXD_key
 drop index if exists mgd.GXD_Expression_idx_EMAPA_Term_key
 ;
 
+drop index if exists mgd.GXD_Expression_idx_Stage_key
+;
+
 drop index if exists mgd.GXD_Expression_idx_Specimen_key
 ;
 
