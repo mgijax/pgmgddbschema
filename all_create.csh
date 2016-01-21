@@ -7,7 +7,7 @@
 
 cd `dirname $0`
 
-foreach i (table key index view procedure trigger)
+foreach i (table key index view procedure trigger, comments)
 cd $i
 foreach j (*_create.sh)
 $j $*

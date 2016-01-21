@@ -3,6 +3,9 @@
 #
 # History
 #
+# sc	01/21/2015
+#	-TR12057; RR IDs for genotypes
+#
 # lec	01/18/2006
 #	- TR 7182; increased prefixPart to 30
 #
@@ -29,7 +32,7 @@ CREATE OR REPLACE FUNCTION ACC_assignMGI (
 RETURNS VOID AS
 \$\$
 
-/* Assign MGI or J accession number
+/* Assign MGI or J accession number, or RR MGI 
    Allow override of J accession number
    Increment ACC_AccessionMax.maxNumericPart
 */
@@ -38,12 +41,13 @@ DECLARE
 v_nextACC int;
 v_mgiTypeKey int;
 v_accID acc_accession.accid%TYPE;
+v_rrID acc_accession.accid%TYPE;
 v_preferred int = 1;
 v_private int = 0;
 
 BEGIN
 
-v_nextACC := coalesce(max(_Accession_key),0) + 1 FROM ACC_Accession;
+v_nextACC := max(_Accession_key) + 1 FROM ACC_Accession;
 v_mgiTypeKey := _MGIType_key FROM ACC_MGIType WHERE name = v_mgiType;
 
 IF v_nextMGI = -1
@@ -73,6 +77,18 @@ THEN
 	WHERE prefixPart = v_prefixPart;
 END IF;
 
+IF v_mgiTypeKey = 12
+THEN
+    v_nextACC := max(_Accession_key) + 1 FROM ACC_Accession;
+    v_rrID := 'RRID:' || v_accID::char(30); 
+    INSERT INTO ACC_Accession
+	(_Accession_key, accID, prefixPart, numericPart,
+	_LogicalDB_key, _Object_key, _MGIType_key, preferred, private,
+	_CreatedBy_key, _ModifiedBy_key)
+	VALUES(v_nextACC, v_rrID, v_prefixPart, v_nextMGI, 179, v_objectKey,
+	v_mgiTypeKey, v_preferred, v_private, v_userKey, v_userKey);
+
+END IF;
 RETURN;
 
 END;
