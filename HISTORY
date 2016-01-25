@@ -28,6 +28,9 @@ and foreign key them to the GXD_TheilerStage table
 ######
 added:
 MGI_SetMember_EMAPA
+######
+update:
+MRK_OMIM_Cache
 
 TAG: pgmgddbschema-tr12223-BP
 DATE: 01/07/2016
