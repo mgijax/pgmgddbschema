@@ -33,6 +33,7 @@ where s._Strain_key = ss._Strain_key
 and s._Qualifier_key = t._Term_key
 and s._Genotype_key = a._Object_key
 and a._MGIType_key = 12
+and a._LogicalDB_Key = 1
 and s._Genotype_key = g._Genotype_key
 and g._Strain_key = gs._Strain_key
 and s._ModifiedBy_key = u._User_key
