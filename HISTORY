@@ -1,3 +1,12 @@
+TAG: pgmgddbschema-6-0-2-11
+DATE: 01/27/2016
+STAFF: lec
+CHANGES: add voc_annot checks
+trigger/MRK_Marker_create.object
+trigger/GXD_Genotype_create.object
+trigger/ALL_Allele_create.object
+trigger/PRB_Strain_create.object
+
 TAG: pgmgddbschema-6-0-2-10
 DATE: 01/26/2016
 STAFF: lec
