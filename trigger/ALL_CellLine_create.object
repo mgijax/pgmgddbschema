@@ -95,8 +95,6 @@ COMMENT ON FUNCTION mgd.ALL_CellLine_delete() IS 'creates a delete trigger for t
 
 EOSQL
 
-**************************************
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
@@ -139,8 +137,6 @@ EXECUTE PROCEDURE ALL_CellLine_insert();
 COMMENT ON FUNCTION mgd.ALL_CellLine_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
 
 EOSQL
-
-*************************************
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 

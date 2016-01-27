@@ -105,8 +105,6 @@ COMMENT ON FUNCTION mgd.VOC_Evidence_delete() IS 'creates a delete trigger for t
 
 EOSQL
 
-*****************************
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --

@@ -197,8 +197,6 @@ COMMENT ON FUNCTION mgd.ALL_Allele_insert() IS 'creates an insert trigger to cal
 
 EOSQL
 
-***************************************
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --

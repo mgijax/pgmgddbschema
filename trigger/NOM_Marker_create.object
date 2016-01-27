@@ -95,8 +95,6 @@ COMMENT ON FUNCTION mgd.NOM_Marker_delete() IS 'creates a delete trigger for thi
 
 EOSQL
 
-********************************
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
