@@ -5,6 +5,66 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
+-- NAME: VOC_Annot_delete()
+--
+-- DESCRIPTOIN:
+--    
+-- the template creates a trigger for all tables that use:
+--      _Object_key
+--      _MGIType_key
+--
+-- because these tables cannot use referencial integrity due 
+-- to the fact that their primary key is not necessarily the 
+-- member of the _Object_key/_MGIType_key table
+--
+-- . remove the statements that are not active for your table
+-- . add the statements that are being active for your table
+--
+-- or you may keep all statements in the trigger even if your table
+-- does not currently utilize them.
+--
+-- An example of a table that only needs ACC_Accession : MGI_Organism
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IF EXISTS VOC_Annot_delete_trigger ON VOC_Annot;
+DROP FUNCTION IF EXISTS VOC_Annot_delete();
+
+CREATE OR REPLACE FUNCTION VOC_Annot_delete() RETURNS TRIGGER AS \$\$
+BEGIN
+
+DELETE FROM VOC_AnnotHeader a
+WHERE a._Object_key = OLD._Allele_key
+AND a._AnnotType_key = 1002
+;
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION VOC_Annot_delete() TO public;
+
+CREATE TRIGGER VOC_Annot_delete_trigger
+AFTER DELETE on VOC_Annot
+FOR EACH ROW
+EXECUTE PROCEDURE VOC_Annot_delete();
+
+COMMENT ON FUNCTION mgd.VOC_Annot_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
+
+EOSQL
+
+***********************
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
 -- NAME: VOC_Annot_insert()
 --
 -- DESCRIPTOIN:
