@@ -4,20 +4,29 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
--- acc_accession
+select _mgitype_key, name from ACC_MGIType;
 
--- dag_mode
+-- acc_accession
+select count(a.*)
+from acc_accession a
+where _mgitype_key = 11
+and not exists (select 1 from all_allele s where a._object_key = s._allele_key)
+;
+
+select count(a.*)
+from acc_accession a
+where _mgitype_key = 12
+and not exists (select 1 from gxd_genotype s where a._object_key = s._genotype_key)
+;
 
 -- img_imagepane_assoc
 
--- 11 allele
 select count(a.*)
 from img_imagepane_assoc a
 where _mgitype_key = 11
 and not exists (select 1 from all_allele s where a._object_key = s._allele_key)
 ;
 
--- 12 genotype
 select count(a.*)
 from img_imagepane_assoc a
 where _mgitype_key = 12
