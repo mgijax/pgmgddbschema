@@ -151,8 +151,6 @@ COMMENT ON FUNCTION mgd.ALL_Allele_delete() IS 'creates a delete trigger for thi
 
 EOSQL
 
-*************************************
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --

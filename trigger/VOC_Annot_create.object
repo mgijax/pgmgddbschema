@@ -60,8 +60,6 @@ COMMENT ON FUNCTION mgd.VOC_Annot_delete() IS 'creates a delete trigger for this
 
 EOSQL
 
-***********************
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
@@ -104,8 +102,6 @@ EXECUTE PROCEDURE VOC_Annot_insert();
 COMMENT ON FUNCTION mgd.VOC_Annot_insert() IS 'creates an update trigger to call voc_annot';
 
 EOSQL
-
-***********************
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
