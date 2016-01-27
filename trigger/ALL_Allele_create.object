@@ -60,6 +60,13 @@ THEN
 	RAISE EXCEPTION E'Allele Symbol is referenced in MGI Relationship(s)';
 END IF;
 
+IF EXISTS (SELECT * FROM VOC_Annot a
+          WHERE OLD._Allele_key = a._Object_key
+          AND a._AnnotType_key = 1012)
+THEN
+        RAISE EXCEPTION E'Allele is referenced in Allele/Disease Annotations';
+END IF;
+
 -- update cache tables
 
 UPDATE GXD_AlleleGenotype set _Marker_key = null

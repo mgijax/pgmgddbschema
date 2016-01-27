@@ -56,6 +56,69 @@ THEN
         RAISE EXCEPTION E'Marker Symbol is referenced in MGI Relationship(s)';
 END IF;
 
+IF EXISTS (SELECT * FROM VOC_Annot a
+          WHERE OLD._Marker_key = a._Object_key
+          AND a._AnnotType_key = 1000)
+THEN
+        RAISE EXCEPTION E'Marker is referenced in GO-Marker Annotations';
+END IF; 
+
+IF EXISTS (SELECT * FROM VOC_Annot a
+          WHERE OLD._Marker_key = a._Object_key
+          AND a._AnnotType_key = 1003)
+THEN
+        RAISE EXCEPTION E'Marker is referenced in InterPro-Marker Annotations';
+END IF; 
+
+IF EXISTS (SELECT * FROM VOC_Annot a
+          WHERE OLD._Marker_key = a._Object_key
+          AND a._AnnotType_key = 1006)
+THEN
+        RAISE EXCEPTION E'Marker is referenced in OMIM-Human Marker Annotations';
+END IF; 
+
+IF EXISTS (SELECT * FROM VOC_Annot a
+          WHERE OLD._Marker_key = a._Object_key
+          AND a._AnnotType_key = 1007)
+THEN
+        RAISE EXCEPTION E'Marker is referenced in PIRSF-Marker Annotations';
+END IF; 
+
+IF EXISTS (SELECT * FROM VOC_Annot a
+          WHERE OLD._Marker_key = a._Object_key
+          AND a._AnnotType_key = 1010)
+THEN
+        RAISE EXCEPTION E'Marker is referenced in MouseCyc-Marker Annotations';
+END IF; 
+
+IF EXISTS (SELECT * FROM VOC_Annot a
+          WHERE OLD._Marker_key = a._Object_key
+          AND a._AnnotType_key = 1011)
+THEN
+        RAISE EXCEPTION E'Marker is referenced in MCV-Marker Annotations';
+END IF; 
+
+IF EXISTS (SELECT * FROM VOC_Annot a
+          WHERE OLD._Marker_key = a._Object_key
+          AND a._AnnotType_key = 1015)
+THEN
+        RAISE EXCEPTION E'Marker is referenced in Mammalian Phenotype-Marker Annotations';
+END IF; 
+
+IF EXISTS (SELECT * FROM VOC_Annot a
+          WHERE OLD._Marker_key = a._Object_key
+          AND a._AnnotType_key = 1016)
+THEN
+        RAISE EXCEPTION E'Marker is referenced in OMIM/Marker Annotations';
+END IF; 
+
+IF EXISTS (SELECT * FROM VOC_Annot a
+          WHERE OLD._Marker_key = a._Object_key
+          AND a._AnnotType_key = 1017)
+THEN
+        RAISE EXCEPTION E'Marker is referenced in Protein Ontology/Marker Annotations';
+END IF; 
+
 DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._Marker_key
 AND a._MGIType_key = 2

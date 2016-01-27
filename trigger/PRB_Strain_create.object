@@ -73,6 +73,11 @@ WHERE a._Object_key = OLD._Strain_key
 AND a._MGIType_key = 10
 ;
 
+DELETE FROM VOC_Annot a
+WHERE a._Object_key = OLD._Strain_key
+AND a._AnnotType_key in (1008, 1009)
+;
+
 DELETE FROM ACC_Accession a
 WHERE a._Object_key = OLD._Strain_key
 AND a._MGIType_key = 10
