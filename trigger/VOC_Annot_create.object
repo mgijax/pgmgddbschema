@@ -39,7 +39,7 @@ CREATE OR REPLACE FUNCTION VOC_Annot_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
 DELETE FROM VOC_AnnotHeader a
-WHERE a._Object_key = OLD._Allele_key
+WHERE OLD._Genotype_key = a._Object_key
 AND a._AnnotType_key = 1002
 ;
 
