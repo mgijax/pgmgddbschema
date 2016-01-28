@@ -200,6 +200,72 @@ where a._mgitype_key = 3
 and not exists (select 1 from prb_probe s where a._object_key = s._probe_key)
 ;
 
+select count(a.*)
+from mgi_note a
+where a._mgitype_key = 9
+and not exists (select 1 from img_image s where a._object_key = s._image_key)
+;
+
+select count(a.*)
+from mgi_note a
+where a._mgitype_key = 10
+and not exists (select 1 from prb_strain s where a._object_key = s._strain_key)
+;
+
+select count(a.*)
+from mgi_note a
+where a._mgitype_key = 11
+and not exists (select 1 from all_allele s where a._object_key = s._allele_key)
+;
+
+select count(a.*)
+from mgi_note a
+where a._mgitype_key = 12
+and not exists (select 1 from gxd_genotype s where a._object_key = s._genotype_key)
+;
+
+select count(a.*)
+from mgi_note a
+where a._mgitype_key = 13
+and not exists (select 1 from voc_term s where a._object_key = s._term_key)
+;
+
+select count(a.*)
+from mgi_note a
+where a._mgitype_key = 19
+and not exists (select 1 from seq_sequence s where a._object_key = s._sequence_key)
+;
+
+select count(a.*)
+from mgi_note a
+where a._mgitype_key = 21
+and not exists (select 1 from nom_marker s where a._object_key = s._nomen_key)
+;
+
+select count(a.*)
+from mgi_note a
+where a._mgitype_key = 25
+and not exists (select 1 from voc_evidence s where a._object_key = s._annotevidence_key)
+;
+
+select count(a.*)
+from mgi_note a
+where a._mgitype_key = 36
+and not exists (select 1 from all_cellline_derivation s where a._object_key = s._derivation_key)
+;
+
+select count(a.*)
+from mgi_note a
+where a._mgitype_key = 40
+and not exists (select 1 from mgi_relationship s where a._object_key = s._relationship_key)
+;
+
+select count(a.*)
+from mgi_note a
+where a._mgitype_key = 41
+and not exists (select 1 from voc_evidence_property s where a._object_key = s._evidenceproperty_key)
+;
+
 -- mgi_property
 
 select distinct _mgitype_key from mgi_property order by _mgitype_key;

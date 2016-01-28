@@ -21,10 +21,10 @@ CREATE INDEX toDelete_idx1 ON toDelete(_Note_key);
 
 select * from toDelete;
 
---delete FROM mgi_note
---using toDelete
---WHERE toDelete._probe_key = mgi_note._probe_key
---;
+delete FROM mgi_note
+using toDelete
+WHERE toDelete._note_key = mgi_note._note_key
+;
 
 select count(a.*)
 from mgi_note a
@@ -53,10 +53,10 @@ CREATE INDEX toDelete_idx1 ON toDelete(_Note_key);
 
 select * from toDelete;
 
---delete FROM mgi_note
---using toDelete
---WHERE toDelete._note_key = mgi_note._note_key
---;
+delete FROM mgi_note
+using toDelete
+WHERE toDelete._note_key = mgi_note._note_key
+;
 
 select count(a.*)
 from mgi_note a
@@ -85,10 +85,10 @@ CREATE INDEX toDelete_idx1 ON toDelete(_Note_key);
 
 select * from toDelete;
 
---delete FROM mgi_note
---using toDelete
---WHERE toDelete._note_key = mgi_note._note_key
---;
+delete FROM mgi_note
+using toDelete
+WHERE toDelete._note_key = mgi_note._note_key
+;
 
 select count(a.*)
 from mgi_note a
@@ -117,10 +117,10 @@ CREATE INDEX toDelete_idx1 ON toDelete(_Note_key);
 
 select * from toDelete;
 
---delete FROM mgi_note
---using toDelete
---WHERE toDelete._note_key = mgi_note._note_key
---;
+delete FROM mgi_note
+using toDelete
+WHERE toDelete._note_key = mgi_note._note_key
+;
 
 select count(a.*)
 from mgi_note a
@@ -149,10 +149,10 @@ CREATE INDEX toDelete_idx1 ON toDelete(_Note_key);
 
 select * from toDelete;
 
---delete FROM mgi_note
---using toDelete
---WHERE toDelete._note_key = mgi_note._note_key
---;
+delete FROM mgi_note
+using toDelete
+WHERE toDelete._note_key = mgi_note._note_key
+;
 
 select count(a.*)
 from mgi_note a
