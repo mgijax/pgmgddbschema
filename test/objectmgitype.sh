@@ -247,7 +247,7 @@ select distinct _mgitype_key from mgi_translationtype order by _mgitype_key;
 
 select count(a.*)
 from mgi_translation a, mgi_translationtype aa
-where a._mgitype_key = 13
+where aa._mgitype_key = 13
 and a._TranslationType_key = aa._TranslationType_key
 and not exists (select 1 from voc_term s where a._object_key = s._term_key)
 ;
