@@ -200,6 +200,39 @@ and not exists (select 1 from mrk_marker s where a._object_key = s._marker_key)
 
 EOSQL
 
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0 | tee -a $LOG
+
+CREATE TEMP TABLE toDelete
+as select a.*
+from mgi_synonym a
+where a._mgitype_key = 21
+and not exists (select 1 from nom_marker s where a._object_key = s._nomen_key)
+
+;
+
+CREATE INDEX toDelete_idx1 ON toDelete(_synonym_key);
+
+select * from toDelete;
+
+delete FROM mgi_synonym
+using toDelete
+WHERE toDelete._synonym_key = mgi_synonym._synonym_key
+;
+
+select count(a.*)
+from mgi_synonym a
+where a._mgitype_key = 21
+and not exists (select 1 from nom_marker s where a._object_key = s._nomen_key)
+;
+
+select count(a.*)
+from mgi_synonym a
+where a._mgitype_key = 21
+and exists (select 1 from nom_marker s where a._object_key = s._nomen_key)
+;
+
+EOSQL
+
 #
 # install new trigger changes (if necessary)
 #$PG_MGD_DBSCHEMADIR/trigger/GXD_Genotype_create.object

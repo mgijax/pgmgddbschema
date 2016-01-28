@@ -303,9 +303,34 @@ select distinct _mgitype_key from mgi_synonym order by _mgitype_key;
 
 select count(a.*)
 from mgi_synonym a
+where a._mgitype_key = 2
+and not exists (select 1 from mrk_marker s where a._object_key = s._marker_key)
+;
+
+select count(a.*)
+from mgi_synonym a
+where a._mgitype_key = 10
+and not exists (select 1 from prb_strain s where a._object_key = s._strain_key)
+;
+
+select count(a.*)
+from mgi_synonym a
+where a._mgitype_key = 11
+and not exists (select 1 from all_allele s where a._object_key = s._allele_key)
+;
+
+select count(a.*)
+from mgi_synonym a
 where a._mgitype_key = 13
 and not exists (select 1 from voc_term s where a._object_key = s._term_key)
 ;
+
+select count(a.*)
+from mgi_synonym a
+where a._mgitype_key = 21
+and not exists (select 1 from nom_marker s where a._object_key = s._nomen_key)
+;
+
 
 -- mgi_translation
 
@@ -313,9 +338,51 @@ select distinct _mgitype_key from mgi_translationtype order by _mgitype_key;
 
 select count(a.*)
 from mgi_translation a, mgi_translationtype aa
+where aa._mgitype_key = 5
+and a._TranslationType_key = aa._TranslationType_key
+and not exists (select 1 from prb_source s where a._object_key = s._source_key)
+;
+
+select count(a.*)
+from mgi_translation a, mgi_translationtype aa
+where aa._mgitype_key = 10
+and a._TranslationType_key = aa._TranslationType_key
+and not exists (select 1 from prb_strain s where a._object_key = s._strain_key)
+;
+
+select count(a.*)
+from mgi_translation a, mgi_translationtype aa
 where aa._mgitype_key = 13
 and a._TranslationType_key = aa._TranslationType_key
 and not exists (select 1 from voc_term s where a._object_key = s._term_key)
+;
+
+select count(a.*)
+from mgi_translation a, mgi_translationtype aa
+where aa._mgitype_key = 20
+and a._TranslationType_key = aa._TranslationType_key
+and not exists (select 1 from mgi_organism s where a._object_key = s._organism_key)
+;
+
+select count(a.*)
+from mgi_translation a, mgi_translationtype aa
+where aa._mgitype_key = 24
+and a._TranslationType_key = aa._TranslationType_key
+and not exists (select 1 from prb_tissue s where a._object_key = s._tissue_key)
+;
+
+select count(a.*)
+from mgi_translation a, mgi_translationtype aa
+where aa._mgitype_key = 28
+and a._TranslationType_key = aa._TranslationType_key
+and not exists (select 1 from all_cellline s where a._object_key = s._cellline_key)
+;
+
+select count(a.*)
+from mgi_translation a, mgi_translationtype aa
+where aa._mgitype_key = 36
+and a._TranslationType_key = aa._TranslationType_key
+and not exists (select 1 from all_cellline_derivation s where a._object_key = s._derivation_key)
 ;
 
 -- voc_annotheader
