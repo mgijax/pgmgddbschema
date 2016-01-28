@@ -88,6 +88,11 @@ WHERE a._Object_key = OLD._Genotype_key
 AND a._MGIType_key = 12
 ;
 
+DELETE FROM VOC_AnnotHeader a
+WHERE a._Object_key = OLD._Genotype_key
+AND a._AnnotType_key = 1002
+;
+
 DELETE FROM ACC_Accession a
 WHERE a._Object_key = OLD._Genotype_key
 AND a._MGIType_key = 12
