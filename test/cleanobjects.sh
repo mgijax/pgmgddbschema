@@ -168,6 +168,38 @@ and exists (select 1 from gxd_genotype s where a._object_key = s._genotype_key)
 
 EOSQL
 
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0 | tee -a $LOG
+
+CREATE TEMP TABLE toDelete
+as select a.*
+from map_coord_feature a
+where a._mgitype_key = 2 
+and not exists (select 1 from mrk_marker s where a._object_key = s._marker_key)
+;
+
+CREATE INDEX toDelete_idx1 ON toDelete(_feature_key);
+
+select * from toDelete;
+
+delete FROM map_coord_feature
+using toDelete
+WHERE toDelete._feature_key = map_coord_feature._feature_key
+;
+
+select count(a.*)
+from map_coord_feature a
+where a._mgitype_key = 2 
+and not exists (select 1 from mrk_marker s where a._object_key = s._marker_key)
+;
+
+select a.*
+from map_coord_feature a
+where a._mgitype_key = 2 
+and not exists (select 1 from mrk_marker s where a._object_key = s._marker_key)
+;
+
+EOSQL
+
 #
 # install new trigger changes (if necessary)
 #$PG_MGD_DBSCHEMADIR/trigger/GXD_Genotype_create.object

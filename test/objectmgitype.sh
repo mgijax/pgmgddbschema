@@ -292,7 +292,7 @@ select distinct _mgitype_key from mgi_set order by _mgitype_key;
 
 select count(a.*)
 from mgi_setmember a, mgi_set aa
-where a._mgitype_key = 13
+where aa._mgitype_key = 13
 and a._set_key = aa._set_key
 and not exists (select 1 from voc_term s where a._object_key = s._term_key)
 ;
