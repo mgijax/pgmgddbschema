@@ -275,6 +275,39 @@ where a._mgitype_key = 39
 and not exists (select 1 from mrk_cluster s where a._object_key = s._cluster_key)
 ;
 
+-- mgi_relationship
+
+select distinct _mgitype_key_1 from mgi_relationship_category order by _mgitype_key_1;
+select distinct _mgitype_key_2 from mgi_relationship_category order by _mgitype_key_2;
+
+select a.*
+from mgi_relationship a, mgi_relationship_category aa
+where aa._mgitype_key_1 = 2
+and aa._Category_key = a._Category_key
+and not exists (select 1 from mrk_marker s where a._object_key_1 = s._marker_key)
+;
+
+select a.*
+from mgi_relationship a, mgi_relationship_category aa
+where aa._mgitype_key_2 = 2
+and aa._Category_key = a._Category_key
+and not exists (select 1 from mrk_marker s where a._object_key_2 = s._marker_key)
+;
+
+select a.*
+from mgi_relationship a, mgi_relationship_category aa
+where aa._mgitype_key_1 = 11
+and aa._Category_key = a._Category_key
+and not exists (select 1 from all_allele s where a._object_key_1 = s._allele_key)
+;
+
+select a.*
+from mgi_relationship a, mgi_relationship_category aa
+where aa._mgitype_key_2 = 11
+and aa._Category_key = a._Category_key
+and not exists (select 1 from all_allele s where a._object_key_2 = s._allele_key)
+;
+
 -- mgi_reference_assoc
 
 select distinct _mgitype_key from mgi_reference_assoc order by _mgitype_key;
