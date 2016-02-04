@@ -12,7 +12,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create view mgd.GXD_Genotype_View
 as
 select g.*, s.strain, a.accID as mgiID,
-'[' || a.accID || ']:  ' || s.strain as dbName,
+'[' || a.accID || '] ' || s.strain as displayIt,
 u1.login as createdBy, u2.login as modifiedBy, vt.term as existsAs
 from GXD_Genotype g, PRB_Strain s, ACC_Accession a, VOC_Term vt, MGI_User u1, MGI_User u2
 where g._Strain_key = s._Strain_key
