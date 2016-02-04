@@ -1,0 +1,77 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/04/2016    lec 
+#       - TR12223/add Assay/EMAPA/Stage to EMAPA set/clipboard
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/GXD_addEMAPASet_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION GXD_addEMAPASet (
+v_userKey int,
+v_assayKey int
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_newSetMemberKey int;
+v_newSetMemberEMAPAKey int;
+v_newSeqKey int;
+
+BEGIN
+
+--
+-- find existing EMAPA/Stage terms by Assay
+-- add them to MGI_SetMember/MGI_SetMember_EMAPA (clipboard)
+--
+
+v_newSetMemberKey := max(_SetMember_key) FROM MGI_SetMember;
+v_newSetMemberEMAPAKey := max(_SetMember_EMAPA_key) FROM MGI_SetMember_EMAPA;
+v_newSeqKey := max(sequenceNum) FROM MGI_SetMember where _Set_key = 1046 and _CreatedBy_key = v_userKey;
+
+IF v_newSetMemberEMAPAKey is null THEN
+	v_newSetMemberEMAPAKey := 0;
+END IF;
+
+IF v_newSeqKey is null THEN
+	v_newSeqKey := 0;
+END IF;
+
+CREATE TEMP TABLE set_tmp ON COMMIT DROP
+AS SELECT row_number() over (ORDER BY s.term, s.stage) as seq,
+        s._EMAPA_Term_key, s._Stage_key, s.term, s.stage, min(s.sequenceNum) as sequenceNum
+FROM GXD_GelLaneStructure_View s
+WHERE s._Assay_key = v_assayKey
+GROUP BY s._EMAPA_Term_key, s._Stage_key, s.term, s.stage
+ORDER BY s.term, s.stage
+;
+
+INSERT INTO MGI_SetMember
+SELECT v_newSetMemberKey + seq, 1046, s._EMAPA_Term_key, v_newSeqKey + seq, v_userKey, v_userKey, now(), now()
+FROM set_tmp s
+;
+
+INSERT INTO MGI_SetMember_EMAPA
+SELECT v_newSetMemberEMAPAKey + seq, v_newSetMemberKey + seq, s._Stage_key, v_userKey, v_userKey, now(), now()
+FROM set_tmp s
+;
+
+RETURN
+;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION GXD_addEMAPASet(int,int) TO public;
+
+COMMENT ON FUNCTION mgd.GXD_addEMAPASet(int,int) IS 'add EMAPA/Stage used in Assay to EMAPA Clipboard';
+
+EOSQL
