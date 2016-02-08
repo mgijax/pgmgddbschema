@@ -31,6 +31,9 @@ BEGIN
 -- find existing EMAPA/Stage terms by Assay
 -- add them to MGI_SetMember/MGI_SetMember_EMAPA (clipboard)
 --
+-- exclude existing EMAPA/Stages terms that already exist in the clipboard
+-- that is, do not add dupliate structures to the clipboard
+--
 
 v_newSetMemberKey := max(_SetMember_key) FROM MGI_SetMember;
 v_newSetMemberEMAPAKey := max(_SetMember_EMAPA_key) FROM MGI_SetMember_EMAPA;
