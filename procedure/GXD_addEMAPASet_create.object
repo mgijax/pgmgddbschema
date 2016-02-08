@@ -74,7 +74,7 @@ AND NOT EXISTS (SELECT 1 FROM MGI_SetMember ms, MGI_SetMember_EMAPA mse
 	and mse._Stage_key = s._Stage_key)
 GROUP BY s._EMAPA_Term_key, s._Stage_key, s.term, s.stage
 )
-ORDER BY term, stage
+ORDER BY stage, term
 ;
 
 INSERT INTO MGI_SetMember
