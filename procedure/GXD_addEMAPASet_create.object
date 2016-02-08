@@ -49,7 +49,7 @@ END IF;
 
 CREATE TEMP TABLE set_tmp ON COMMIT DROP
 AS (
-SELECT row_number() over (ORDER BY s.term, s.stage) as seq,
+SELECT row_number() over (ORDER BY s.stage, s.term) as seq,
        s._EMAPA_Term_key, s._Stage_key, s.term, s.stage, min(s.sequenceNum) as sequenceNum
 FROM GXD_GelLaneStructure_View s
 WHERE s._Assay_key = v_assayKey
@@ -61,7 +61,7 @@ AND NOT EXISTS (SELECT 1 FROM MGI_SetMember ms, MGI_SetMember_EMAPA mse
 	and mse._Stage_key = s._Stage_key)
 GROUP BY s._EMAPA_Term_key, s._Stage_key, s.term, s.stage
 UNION ALL
-SELECT row_number() over (ORDER BY s.term, s.stage) as seq,
+SELECT row_number() over (ORDER BY s.stage, s.term) as seq,
        s._EMAPA_Term_key, s._Stage_key, s.term, s.stage, min(ss.sequenceNum) as sequenceNum
 FROM GXD_ISResultStructure_View s, GXD_Specimen ss
 WHERE ss._Assay_key = v_assayKey
