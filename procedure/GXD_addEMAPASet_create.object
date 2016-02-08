@@ -50,6 +50,12 @@ SELECT row_number() over (ORDER BY s.term, s.stage) as seq,
        s._EMAPA_Term_key, s._Stage_key, s.term, s.stage, min(s.sequenceNum) as sequenceNum
 FROM GXD_GelLaneStructure_View s
 WHERE s._Assay_key = v_assayKey
+AND NOT EXISTS (SELECT 1 FROM MGI_SetMember ms, MGI_SetMember_EMAPA mse
+	WHERE ms._Set_key = 1046
+	AND ms._Object_key = s._EMAPA_Term_key
+	AND ms._CreatedBy_key = v_userKey
+	AND ms._SetMember_key = mse._SetMember_key
+	and mse._Stage_key = s._Stage_key)
 GROUP BY s._EMAPA_Term_key, s._Stage_key, s.term, s.stage
 UNION ALL
 SELECT row_number() over (ORDER BY s.term, s.stage) as seq,
@@ -57,6 +63,12 @@ SELECT row_number() over (ORDER BY s.term, s.stage) as seq,
 FROM GXD_ISResultStructure_View s, GXD_Specimen ss
 WHERE ss._Assay_key = v_assayKey
 AND ss._Specimen_key = s._Specimen_key 
+AND NOT EXISTS (SELECT 1 FROM MGI_SetMember ms, MGI_SetMember_EMAPA mse
+	WHERE ms._Set_key = 1046
+	AND ms._Object_key = s._EMAPA_Term_key
+	AND ms._CreatedBy_key = v_userKey
+	AND ms._SetMember_key = mse._SetMember_key
+	and mse._Stage_key = s._Stage_key)
 GROUP BY s._EMAPA_Term_key, s._Stage_key, s.term, s.stage
 )
 ORDER BY term, stage
