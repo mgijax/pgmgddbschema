@@ -1,3 +1,10 @@
+TAG: pgmgddbschema-6-0-2-15
+DATE: 02/11/2016
+STAFF: lec
+CHANGES: 
+TR12245/add MGI_Relationship deletes
+MRK_deleteWithdrawal_create.object
+
 TAG: pgmgddbschema-6-0-2-14
 TAG: pgmgddbschema-6-0-2-13
 DATE: 01/28/2016
