@@ -3,6 +3,9 @@
 #
 # History
 #
+# 02/11/2016	lec
+#	- TR12245/add MGI_Relationship deletes
+#
 # 06/30/2004	lec
 #	- TR 5998
 #
@@ -74,6 +77,28 @@ THEN
 	RAISE EXCEPTION E'MRK_deleteWithdrawal: Could not add history';
 	RETURN;
 END IF;
+
+-- Remove MGI_Relationships that are annotated to this Marker
+
+CREATE TEMP TABLE toDelete ON COMMIT DROP
+AS SELECT r._Relationship_key
+FROM MGI_Relationship r, MGI_Relationship_Category c
+WHERE r._Object_key_1 = v_oldKey
+AND r._Category_key  = c._Category_key
+AND c._MGIType_key_1 = 2
+UNION
+SELECT r._Relationship_key
+FROM MGI_Relationship r, MGI_Relationship_Category c
+WHERE r._Object_key_2 = v_oldKey
+AND r._Category_key  = c._Category_key
+AND c._MGIType_key_2 = 2
+;
+
+DELETE 
+FROM MGI_Relationship
+USING toDelete d
+WHERE d._Relationship_key = MGI_Relationship._Relationship_key
+;
 
 RETURN;
 
