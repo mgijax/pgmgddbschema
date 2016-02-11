@@ -1,7 +1,12 @@
 #!/bin/sh
 
-# HISTORY
-#    09/16/2008 - jsb - removed idx_MGIType_key (TR 9037)
+#
+# History
+#
+# 02/11/2016	lec
+#	- add extra indexes
+#
+# 09/16/2008 - jsb - removed idx_MGIType_key (TR 9037)
 #
 
 cd `dirname $0` && . ./Configuration
@@ -22,6 +27,9 @@ drop index if exists mgd.VOC_AnnotType_idx_QualifierVocab_key
 ;
 
 drop index if exists mgd.VOC_AnnotType_idx_name
+;
+
+drop index if exists mgd.VOC_AnnotType_0
 ;
 
 EOSQL

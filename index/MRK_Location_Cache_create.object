@@ -3,6 +3,9 @@
 #
 # History
 #
+# 02/11/2016	lec
+#	- add extra indexes
+#
 # 08/31/2011	lec
 #	- TR10805/add _Organism_key
 #
@@ -26,5 +29,7 @@ create index MRK_Location_Cache_idx_Marker_Type_key on mgd.MRK_Location_Cache (_
 create index MRK_Location_Cache_idx_Organism_key on mgd.MRK_Location_Cache (_Organism_key);
 
 create index MRK_Location_Cache_idx_chromosome_cmOffset on mgd.MRK_Location_Cache (chromosome, cmOffset);
+
+create index MRK_Location_Cache_0 on mgd.MRK_Location_Cache (lower(chromosome));
 
 EOSQL

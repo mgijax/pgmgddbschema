@@ -15,24 +15,34 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
---drop index mgd.acc_accession_0;
+drop index if exists mgd.ACC_Accession_0
+;
 
---drop index mgd.acc_accession_1;
+drop index if exists mgd.ACC_Accession_1
+;
 
-drop index mgd.acc_mgitype_0;
+drop index if exists mgd.ACC_MGIType_0
+;
 
-drop index mgd.all_label_0;
+drop index if exists mgd.ALL_Label_0
+;
 
-drop index mgd.mgi_notetype_0;
+drop index if exists mgd.MGI_NoteType_0
+;
 
-drop index mgd.mgi_synonymtype_0;
+drop index if exists mgd.MGI_SynonymType_0
+;
 
-drop index mgd.mrk_label_0;
+drop index if exists mgd.MRK_Label_0
+;
 
-drop index mgd.mrk_location_cache_0;
+drop index if exists mgd.MRK_Location_Cache_0
+;
 
-drop index mgd.voc_annottype_0;
+drop index if exists mgd.VOC_AnnotType_0
+;
 
-drop index mgd.voc_term_0;
+drop index if exists mgd.VOC_Term_0
+;
 
 EOSQL

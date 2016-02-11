@@ -1,7 +1,12 @@
 #!/bin/sh
 
-# HISTORY
-#    09/16/2008 - jsb - altered VOC_Term_idx_term to include _Vocab_key and to not be
+#
+# History
+#
+# 02/11/2016	lec
+#	- add extra indexes
+#
+# 09/16/2008 - jsb - altered VOC_Term_idx_term to include _Vocab_key and to not be
 #	clustered; added new primary index
 #
 
@@ -21,5 +26,7 @@ create index VOC_Term_idx_Vocab_key on mgd.VOC_Term (_Vocab_key);
 create index VOC_Term_idx_CreatedBy_key on mgd.VOC_Term (_CreatedBy_key);
 
 create index VOC_Term_idx_ModifiedBy_key on mgd.VOC_Term (_ModifiedBy_key);
+
+create index VOC_Term_0 on mgd.VOC_Term (lower(term));
 
 EOSQL

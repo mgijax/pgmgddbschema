@@ -2,6 +2,9 @@
 
 # HISTORY
 #
+# 02/11/2016	lec
+#	- added extra indexes
+#
 # 01/04/2012	lec
 #	- re-arrange object/mgi_type to mgi_type/object per postgres results
 #
@@ -38,5 +41,11 @@ create index ACC_Accession_idx_CreatedBy_key on mgd.ACC_Accession (_CreatedBy_ke
 
 
 create index ACC_Accession_idx_ModifiedBy_key on mgd.ACC_Accession (_ModifiedBy_key);
+
+
+create index ACC_Accession_0 on mgd.ACC_Accession (lower(accID));
+
+
+create index ACC_Accession_1 on mgd.ACC_Accession (lower(prefixPart));
 
 EOSQL

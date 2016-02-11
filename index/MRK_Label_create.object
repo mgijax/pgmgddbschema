@@ -3,7 +3,11 @@
 #
 # History
 #
+# 02/11/2016	lec
+#	- add extra indexes
+#
 # 04/29/2008 - jsb - removed solo index on mgd._Marker_key, added MRK_Label_idx_label
+#
 # 02/14/2003 lec
 #	- TR 1892
 #
@@ -24,5 +28,7 @@ create index MRK_Label_idx_Label_Status_key on mgd.MRK_Label (_Label_Status_key)
 create index MRK_Label_idx_Organism_key on mgd.MRK_Label (_Organism_key);
 
 create index MRK_Label_idx_Priority on mgd.MRK_Label (priority);
+
+create index MRK_Label_0 on mgd.MRK_Label (lower(label));
 
 EOSQL

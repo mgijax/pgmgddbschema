@@ -3,6 +3,9 @@
 #
 # History
 #
+# 02/11/2016	lec
+#	- add extra indexes
+#
 # 08/31/2011	lec
 #	- TR10805/add _Organism_key
 #
@@ -28,6 +31,9 @@ drop index if exists mgd.MRK_Location_Cache_idx_Organism_key
 ;
 
 drop index if exists mgd.MRK_Location_Cache_idx_chromosome_cmOffset
+;
+
+drop index if exists mgd.MRK_Location_Cache_0
 ;
 
 EOSQL

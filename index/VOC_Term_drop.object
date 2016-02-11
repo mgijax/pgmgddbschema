@@ -1,7 +1,12 @@
 #!/bin/sh
 
-# HISTORY
-#    09/16/2008 - jsb - added primary index
+#
+# History
+#
+# 02/11/2016	lec
+#	- add extra indexes
+#
+# 09/16/2008 - jsb - added primary index
 #
 
 cd `dirname $0` && . ./Configuration
@@ -22,6 +27,9 @@ drop index if exists mgd.VOC_Term_idx_CreatedBy_key
 ;
 
 drop index if exists mgd.VOC_Term_idx_ModifiedBy_key
+;
+
+drop index if exists mgd.VOC_Term_0
 ;
 
 EOSQL

@@ -2,6 +2,9 @@
 
 # HISTORY
 #
+# 02/11/2016	lec
+#	- added extra indexes
+#
 # 01/04/2012    lec
 #       - re-arrange object/mgi_type to mgi_type/object per postgres results
 #
@@ -36,5 +39,11 @@ drop index if exists mgd.ACC_Accession_idx_CreatedBy_key
 
 drop index if exists mgd.ACC_Accession_idx_ModifiedBy_key
 ;
+
+drop index if exists mgd.ACC_Accession_0
+; 
+
+drop index if exists mgd.ACC_Accession_1
+; 
 
 EOSQL

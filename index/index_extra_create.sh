@@ -15,24 +15,58 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create index acc_accession_0 on mgd.acc_accession (lower(accID));
+drop index if exists mgd.ACC_Accession_0
+;
 
-create index acc_accession_1 on mgd.acc_accession (lower(prefixPart));
+drop index if exists mgd.ACC_Accession_1
+;
 
-create index acc_mgitype_0 on mgd.acc_mgitype (lower(name));
+drop index if exists mgd.ACC_MGIType_0
+;
 
-create index all_label_0 on mgd.all_label (lower(label));
+drop index if exists mgd.ALL_Label_0
+;
 
-create index mgi_notetype_0 on mgd.mgi_notetype (lower(noteType));
+drop index if exists mgd.MGI_NoteType_0
+;
 
-create index mgi_synonymtype_0 on mgd.mgi_synonymtype (lower(synonymType));
+drop index if exists mgd.MGI_SynonymType_0
+;
 
-create index mrk_label_0 on mgd.mrk_label (lower(label));
+drop index if exists mgd.MRK_Label_0
+;
 
-create index mrk_location_cache_0 on mgd.mrk_location_cache (lower(chromosome));
+drop index if exists mgd.MRK_Location_Cache_0
+;
 
-create index voc_annottype_0 on mgd.voc_annottype (lower(name));
+drop index if exists mgd.VOC_AnnotType_0
+;
 
-create index voc_term_0 on mgd.voc_term (lower(term));
+drop index if exists mgd.VOC_Term_0
+;
+
+EOSQL
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create index ACC_Accession_0 on mgd.ACC_Accession (lower(accID));
+
+create index ACC_Accession_1 on mgd.ACC_Accession (lower(prefixPart));
+
+create index ACC_MGIType_0 on mgd.ACC_MGIType (lower(name));
+
+create index ALL_Label_0 on mgd.ALL_Label (lower(label));
+
+create index MGI_NoteType_0 on mgd.MGI_NoteType (lower(noteType));
+
+create index MGI_SynonymType_0 on mgd.MGI_SynonymType (lower(synonymType));
+
+create index MRK_Label_0 on mgd.MRK_Label (lower(label));
+
+create index MRK_Location_Cache_0 on mgd.MRK_Location_Cache (lower(chromosome));
+
+create index VOC_AnnotType_0 on mgd.VOC_AnntType (lower(name));
+
+create index VOC_Term_0 on mgd.VOC_Term (lower(term));
 
 EOSQL
