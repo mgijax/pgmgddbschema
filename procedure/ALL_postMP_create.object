@@ -60,7 +60,7 @@ LOOP
     	UPDATE ALL_Allele 
 	SET _Transmission_key = 3982951, 
 	    _ModifiedBy_key = v_modifiedByKey,
-	    modification_date = current_date
+	    modification_date = now()
 	WHERE _Allele_key = v_alleleKey
 	;
     	PERFORM MGI_insertReferenceAssoc (1001, 11, v_alleleKey, v_refKey, 'Transmission');

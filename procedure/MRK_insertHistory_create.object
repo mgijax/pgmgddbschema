@@ -45,7 +45,7 @@ END IF;
 
 IF event_date IS NULL
 THEN
-	event_date := current_date;
+	event_date := now();
 END IF;
 
 IF createdByKey IS NULL
@@ -60,12 +60,12 @@ END IF;
 
 IF creation_date IS NULL
 THEN
-	creation_date := current_date;
+	creation_date := now();
 END IF;
 
 IF modification_date IS NULL
 THEN
-	modification_date := current_date;
+	modification_date := now();
 END IF;
 
 INSERT INTO MRK_History

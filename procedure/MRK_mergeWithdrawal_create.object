@@ -143,7 +143,7 @@ THEN
 	v_newChr := (SELECT chromosome FROM MRK_Marker WHERE _Marker_key = v_oldKey);
 
 	UPDATE MRK_Marker 
-	SET chromosome = v_newChr, _ModifiedBy_key = v_userKey, modification_date = current_date
+	SET chromosome = v_newChr, _ModifiedBy_key = v_userKey, modification_date = now()
 	WHERE _Marker_key = v_newKey
 	;
 
@@ -186,7 +186,7 @@ DELETE FROM MRK_Offset WHERE _Marker_key = v_oldKey AND source > 0;
 
 UPDATE MRK_Marker 
 SET name = v_withdrawnName, cytogeneticOffset = null, _Marker_Status_key = 2, 
-	_ModifiedBy_key = v_userKey, modification_date = current_date
+	_ModifiedBy_key = v_userKey, modification_date = now()
 WHERE _Marker_key = v_oldKey
 ;
 

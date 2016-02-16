@@ -58,7 +58,7 @@ LOOP
 
 	INSERT INTO ALL_Label 
 	(_Allele_key, _Label_Status_key, priority, label, labelType, labelTypeName, creation_date, modification_date)
-	VALUES (v_alleleKey, v_labelstatusKey, v_priority, v_label, v_labelType, v_labelTypeName, current_date, current_date)
+	VALUES (v_alleleKey, v_labelstatusKey, v_priority, v_label, v_labelType, v_labelTypeName, now(), now())
 	;
 
 END LOOP;

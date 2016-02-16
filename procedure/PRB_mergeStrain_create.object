@@ -260,7 +260,7 @@ WHERE _MGIType_key = 10 and _Object_key = v_oldStrainKey
 ;
 
 UPDATE ALL_Allele
-SET _Strain_key = v_newStrainKey, _ModifiedBy_key = v_strainmergeKey, modification_date = current_date
+SET _Strain_key = v_newStrainKey, _ModifiedBy_key = v_strainmergeKey, modification_date = now()
 WHERE _Strain_key = v_oldStrainKey
 ;
 
@@ -270,12 +270,12 @@ WHERE _Strain_key = v_oldStrainKey
 ;
 
 UPDATE PRB_Source
-SET _Strain_key = v_newStrainKey, _ModifiedBy_key = v_strainmergeKey, modification_date = current_date
+SET _Strain_key = v_newStrainKey, _ModifiedBy_key = v_strainmergeKey, modification_date = now()
 WHERE _Strain_key = v_oldStrainKey
 ;
 
 UPDATE PRB_Allele_Strain
-SET _Strain_key = v_newStrainKey, _ModifiedBy_key = v_strainmergeKey, modification_date = current_date
+SET _Strain_key = v_newStrainKey, _ModifiedBy_key = v_strainmergeKey, modification_date = now()
 WHERE _Strain_key = v_oldStrainKey
 ;
 
@@ -310,7 +310,7 @@ WHERE _StrainHT_key = v_oldStrainKey
 ;
 
 UPDATE GXD_Genotype
-SET _Strain_key = v_newStrainKey, _ModifiedBy_key = v_strainmergeKey, modification_date = current_date
+SET _Strain_key = v_newStrainKey, _ModifiedBy_key = v_strainmergeKey, modification_date = now()
 WHERE _Strain_key = v_oldStrainKey
 ;
 
@@ -476,7 +476,7 @@ THEN
 	INSERT INTO MGI_Translation (_Translation_key, _TranslationType_key, _Object_key, badName, sequenceNum,
 		_CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
 	SELECT v_nextKey, 1007, v_newStrainKey, strain, v_nextSeqKey, v_strainmergeKey, v_strainmergeKey,
-		current_date, current_date
+		now(), now()
 	FROM PRB_Strain WHERE _Strain_key = v_oldStrainKey
 	;
 END IF;

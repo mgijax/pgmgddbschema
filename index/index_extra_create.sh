@@ -65,7 +65,7 @@ create index MRK_Label_0 on mgd.MRK_Label (lower(label));
 
 create index MRK_Location_Cache_0 on mgd.MRK_Location_Cache (lower(chromosome));
 
-create index VOC_AnnotType_0 on mgd.VOC_AnntType (lower(name));
+create index VOC_AnnotType_0 on mgd.VOC_AnnotType (lower(name));
 
 create index VOC_Term_0 on mgd.VOC_Term (lower(term));
 

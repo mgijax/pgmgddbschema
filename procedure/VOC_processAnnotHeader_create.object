@@ -159,7 +159,7 @@ AND s1._Term_key = s3._Term_key
 
 INSERT INTO VOC_AnnotHeader 
 SELECT v_headerKey + id, v_annotTypeKey, v_objectKey, _Term_key, v_maxSeq + id, isNormal,
-	v_userKey, v_userKey, NULL, NULL, current_date, current_date
+	v_userKey, v_userKey, NULL, NULL, now(), now()
 FROM toAdd
 ;
 
@@ -168,7 +168,7 @@ FROM toAdd
 IF (SELECT count(*) FROM VOC_AnnotHeader WHERE _AnnotType_key = v_annotTypeKey AND _Object_key = v_objectKey) = 1
 THEN
     UPDATE VOC_AnnotHeader
-    SET _ApprovedBy_key = v_userKey, approval_date = current_date
+    SET _ApprovedBy_key = v_userKey, approval_date = now()
     WHERE _AnnotType_key = v_annotTypeKey AND _Object_key = v_objectKey
     ;
 

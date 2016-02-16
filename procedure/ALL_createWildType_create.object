@@ -45,7 +45,7 @@ PERFORM ALL_insertAllele (
 	v_userKey,
 	v_userKey,
 	v_userKey,
-	current_date,
+	now(),
 	-2,
 	'Not Applicable',
 	'Not Applicable'

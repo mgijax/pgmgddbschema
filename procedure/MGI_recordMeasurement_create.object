@@ -104,7 +104,7 @@ AND isLatest = 1
 ;
 
 INSERT INTO MGI_Measurement (_Statistic_key, timeRecorded, intValue, floatValue, isLatest)
-VALUES (v_statKey, current_date, v_intVal, v_floatVal, 1)
+VALUES (v_statKey, now(), v_intVal, v_floatVal, 1)
 ;
 
 END;

@@ -118,7 +118,7 @@ END LOOP;
 -- Now make the final necessary modifications to the old Sequence object */
 
 UPDATE SEQ_Sequence
-SET _SequenceStatus_key = v_splitStatusKey, _ModifiedBy_key = 1001, modification_date = current_date
+SET _SequenceStatus_key = v_splitStatusKey, _ModifiedBy_key = 1001, modification_date = now()
 WHERE _Sequence_key = v_fromSeqKey
 ;
 

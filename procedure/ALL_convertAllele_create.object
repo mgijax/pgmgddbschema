@@ -59,14 +59,14 @@ THEN
 	update ALL_Allele
 	set symbol = v_newSymbol || '<' ||
 		substring(symbol,  position('<' in symbol) + 1, char_length(symbol)),
-		_ModifiedBy_key = v_userKey, modification_date = current_date
+		_ModifiedBy_key = v_userKey, modification_date = now()
 	where _Marker_key = v_markerKey and symbol like '%<%'
 	;
 
 	--      oldallele         --> newsymbol         
 
 	update ALL_Allele set symbol = v_newSymbol, 
-		_ModifiedBy_key = v_userKey, modification_date = current_date
+		_ModifiedBy_key = v_userKey, modification_date = now()
 	where _Marker_key = v_markerKey and symbol = v_oldSymbol
 	;
 ELSE
@@ -83,7 +83,7 @@ ELSE
 	set symbol = v_newSymbol || '<' || 
 	        substring(symbol, 1, position('<' in symbol) - 1) || '-' ||
 		substring(symbol,  position('<' in symbol) + 1, char_length(symbol)),
-		_ModifiedBy_key = v_userKey, modification_date = current_date
+		_ModifiedBy_key = v_userKey, modification_date = now()
 	where _Marker_key = v_markerKey and symbol like '%<%' and isWildType = 0
 	;
 
@@ -91,7 +91,7 @@ ELSE
 
 	update ALL_Allele
 	set symbol = v_newSymbol || '<' || symbol || '>', 
-		_ModifiedBy_key = v_userKey, modification_date = current_date
+		_ModifiedBy_key = v_userKey, modification_date = now()
 	where _Marker_key = v_markerKey and symbol not like '%<%' and isWildType = 0
 	;
 
@@ -100,7 +100,7 @@ ELSE
 
 	update ALL_Allele
 	set symbol = v_newSymbol || '<+>',
-		_ModifiedBy_key = v_userKey, modification_date = current_date
+		_ModifiedBy_key = v_userKey, modification_date = now()
 	where _Marker_key = v_markerKey and isWildType = 1 and symbol like '%<+>'
 	;
 END IF;

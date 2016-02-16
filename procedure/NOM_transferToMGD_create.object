@@ -164,7 +164,7 @@ THEN
 	RETURN;
 END IF;
 
-INSERT INTO MRK_Current VALUES(v_markerKey, v_markerKey, current_date, current_date)
+INSERT INTO MRK_Current VALUES(v_markerKey, v_markerKey, now(), now())
 ;
 
 IF NOT FOUND
@@ -177,7 +177,7 @@ END IF;
 
 IF (SELECT _Marker_Type_key FROM NOM_Marker WHERE _Nomen_key = @v_nomenKey) = 1
 THEN
-        INSERT INTO GO_Tracking VALUES(v_markerKey, 0, null, v_userKey, v_userKey, null, current_date, current_date)
+        INSERT INTO GO_Tracking VALUES(v_markerKey, 0, null, v_userKey, v_userKey, null, now(), now())
 	;
 END IF;
 
@@ -221,7 +221,7 @@ ELSE
 	v_offset := -1.0;
 END IF;
 
-INSERT INTO MRK_Offset VALUES (v_markerKey, 0, v_offset, current_date, current_date);
+INSERT INTO MRK_Offset VALUES (v_markerKey, 0, v_offset, now(), now());
 
 IF NOT FOUND
 THEN
@@ -359,7 +359,7 @@ END IF;
 UPDATE NOM_Marker
 SET _NomenStatus_key = 166903, 
     _BroadcastBy_key = v_userKey, 
-    broadcast_date = current_date
+    broadcast_date = now()
 WHERE _Nomen_key = v_nomenKey
 ;
 

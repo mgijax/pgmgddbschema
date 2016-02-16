@@ -5,6 +5,7 @@
 
 cd `dirname $0`
 TOP=`pwd`
+unset LC_ALL
 
 echo "Object Type     Count"
 echo "==============  ============"

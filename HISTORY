@@ -27,7 +27,9 @@ VOC_Term_EMAPS
 and foreign key them to the GXD_TheilerStage table
 ######
 added:
-MGI_SetMember_EMAPA
+table/MGI_SetMember_EMAPA_create.object
+procedure/GXD_addEMAPASet_create.object
+index/added extra (lower) indexes
 ######
 update:
 MRK_OMIM_Cache

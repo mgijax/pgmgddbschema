@@ -59,7 +59,7 @@ END IF;
 
 UPDATE MRK_Marker 
 SET name = 'withdrawn', _Marker_Status_key = 2 , 
-	_ModifiedBy_key = v_userKey, modification_date = current_date 
+	_ModifiedBy_key = v_userKey, modification_date = now() 
 WHERE _Marker_key = v_oldKey
 ;
 
