@@ -129,7 +129,7 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION SEQ_deleteByCreatedBy(varchar) TO public;
 
-COMMENT ON FUNCTION mgd.SEQ_deleteByCreatedBy(varchar) IS 'delete FROM sequence objects by created by';
+COMMENT ON FUNCTION mgd.SEQ_deleteByCreatedBy(varchar) IS 'delete from sequence objects by created by';
 
 EOSQL
 

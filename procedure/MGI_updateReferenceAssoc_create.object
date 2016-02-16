@@ -107,6 +107,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MGI_updateReferenceAssoc(int,int,int,int,text) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_updateReferenceAssoc(int,int,int,int,text) IS '';
+COMMENT ON FUNCTION mgd.MGI_updateReferenceAssoc(int,int,int,int,text) IS 'update the allele/reference associations when an MP/Genotype annotation is added';
 
 EOSQL

@@ -113,7 +113,7 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MGI_recordMeasurement(varchar,int,numeric) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_recordMeasurement(varchar,int,numeric) IS '';
+COMMENT ON FUNCTION mgd.MGI_recordMeasurement(varchar,int,numeric) IS 'log a measurement with the given value into mgi_measurement';
 
 EOSQL
 
