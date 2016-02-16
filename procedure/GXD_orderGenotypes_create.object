@@ -272,6 +272,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION GXD_orderGenotypes(int,int) TO public;
 
-COMMENT ON FUNCTION mgd.GXD_orderGenotypes(int,int) IS 'load the gxd_allelegenotype (cache) table for the given allele';
+COMMENT ON FUNCTION mgd.GXD_orderGenotypes(int,int) IS 'load the gxd_allelegenotype (cache) for the given allele';
 
 EOSQL

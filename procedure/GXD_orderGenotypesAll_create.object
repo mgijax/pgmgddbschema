@@ -57,7 +57,7 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION GXD_orderGenotypesAll(int) TO public;
 
-COMMENT ON FUNCTION mgd.GXD_orderGenotypesAll(int) IS '';
+COMMENT ON FUNCTION mgd.GXD_orderGenotypesAll(int) IS 'refresh the gxd_allelegenotype (cache) for all genotypes';
 
 EOSQL
 

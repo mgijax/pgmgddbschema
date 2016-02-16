@@ -14,14 +14,14 @@ ${PG_MGD_DBSCHEMADIR}/procedure/GXD_orderAllelePairs_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION GXD_orderAllelePairs (
-v_genotypeKey int			-- Genotype key of Allele Pair
+v_genotypeKey int
 )
 RETURNS VOID AS
 \$\$
 
 DECLARE
-v_pkey int;	-- primary key of records to update
-v_oldSeq int;	-- current sequence number
+v_pkey int;		-- primary key of records to update
+v_oldSeq int;		-- current sequence number
 v_newSeq int := 1;	-- new sequence number
 seq_cursor refcursor;
 
@@ -69,6 +69,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION GXD_orderAllelePairs(int) TO public;
 
-COMMENT ON FUNCTION mgd.GXD_orderAllelePairs(int) IS '';
+COMMENT ON FUNCTION mgd.GXD_orderAllelePairs(int) IS 're-order the allele pairs of the given genotype';
 
 EOSQL

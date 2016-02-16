@@ -58,7 +58,7 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION GXD_orderGenotypesMissing() TO public;
 
-COMMENT ON FUNCTION mgd.GXD_orderGenotypesMissing() IS '';
+COMMENT ON FUNCTION mgd.GXD_orderGenotypesMissing() IS 'refresh the gxd_allelegenotype (cache) for all genotypes that are missing from cache';
 
 EOSQL
 
