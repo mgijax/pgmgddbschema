@@ -55,6 +55,13 @@ AND msm._Set_key = ms._Set_key
 AND ms._MGIType_key = 13
 ;
 
+DELETE FROM DAG_Node dnode
+USING DAG_DAG ddag
+WHERE dnode._Object_key = OLD._Term_key
+AND dnode._DAG_key = ddag._DAG_key
+AND ddag._MGIType_key = 13
+;
+
 DELETE FROM ACC_Accession a
 WHERE a._Object_key = OLD._Term_key
 AND a._MGIType_key = 13
