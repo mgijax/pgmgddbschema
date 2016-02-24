@@ -15,9 +15,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/GXD_removeBadGelBand_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CREATE OR REPLACE FUNCTION GXD_removeBadGelBand (
-assayKey int
-)
+CREATE OR REPLACE FUNCTION GXD_removeBadGelBand ()
 RETURNS VOID AS
 \$\$
 
@@ -45,8 +43,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION GXD_removeBadGelBand(int) TO public;
+GRANT EXECUTE ON FUNCTION GXD_removeBadGelBand() TO public;
 
-COMMENT ON FUNCTION mgd.GXD_removeBadGelBand(int) IS 'deletes bad gel lanes';
+COMMENT ON FUNCTION mgd.GXD_removeBadGelBand() IS 'deletes bad gel lanes';
 
 EOSQL
