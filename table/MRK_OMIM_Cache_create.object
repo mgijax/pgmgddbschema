@@ -38,7 +38,6 @@ create table mgd.MRK_OMIM_Cache (
 	alleleSymbol                   text            null,
 	orthologSymbol                 text            null,
 	strain                         text            null,
-	genotypeDisplay1               text            null,
 	header                         text            null,
 	headerFootnote                 text            null,
 	genotypeFootnote               text            null,
