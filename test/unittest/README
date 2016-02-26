@@ -1,0 +1,10 @@
+All unit tests for this product
+
+=Usage
+
+    python all_tests.py
+    -- or
+    cd trigger; python all_trigger_tests.py
+    -- or
+    cd trigger; python <table>_tests.py
+    -- etc
