@@ -1,0 +1,66 @@
+#!/bin/sh
+
+#
+# History
+#
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/MGI_deleteEMAPAClipboardDups_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION MGI_deleteEMAPAClipboardDups (
+v_setmember_key int	/* _setmember_key for the new clipboard entry */
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_stage_key int;	/* clipboard stage key */
+v_emapa_term_key int;	/* clipboard EMAPA _term_key */
+
+BEGIN
+
+/* Check if this is EMAPA/stage set */
+IF 1046 != (select _set_key from MGI_SetMember where _setmember_key = v_setmember_key)
+THEN
+	return;
+END IF;
+
+
+/* Check for matching stage record */
+
+v_stage_key = (select _stage_key
+	from MGI_SetMember_EMAPA
+	where _setmember_key = v_setmember_key);
+
+IF v_stage_key is NULL THEN
+	return;	
+END IF;
+
+v_emapa_term_key = (select _object_key from MGI_SetMember where _setmember_key = v_setmember_key);
+
+/* Delete all old occurrences of the new record's term/stage combo */
+
+delete from MGI_SetMember old
+using MGI_SetMember_EMAPA old_stage
+where old_stage._setmember_key = old._setmember_key
+  -- same stage
+  and old_stage._stage_key = v_stage_key
+  -- same term
+  and old._object_key = v_emapa_term_key
+  -- but not the new record
+  and old._setmember_key != v_setmember_key
+;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MGI_deleteEMAPAClipboardDups(int) TO public;
+
+COMMENT ON FUNCTION mgd.MGI_deleteEMAPAClipboardDups(int) IS 'Deletes duplicate EMAPA term/stage combo for the given MGI_SetMember';
+
+EOSQL

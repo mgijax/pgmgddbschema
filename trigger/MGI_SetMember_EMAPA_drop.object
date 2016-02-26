@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# simply drops the trigger
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP TRIGGER IF EXISTS MGI_SetMember_EMAPA_insert_trigger ON MGI_SetMember_EMAPA;
+
+DROP FUNCTION IF EXISTS MGI_SetMember_EMAPA_insert();
+
+DROP TRIGGER IF EXISTS MGI_SetMember_EMAPA_update_trigger ON MGI_SetMember_EMAPA;
+
+DROP FUNCTION IF EXISTS MGI_SetMember_EMAPA_update();
+
+EOSQL
