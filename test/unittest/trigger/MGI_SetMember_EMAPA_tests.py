@@ -62,9 +62,12 @@ class InsertUpdateTest(unittest.TestCase):
 		"""
 		_setmember_key = self.addEMAPATerm(TERM1["_term_key"])
 		
-		with self.assertRaises(DbManagerError):
-		    # add stage 28, which is outside range
-		    self.addEMAPAStage(_setmember_key, 28)
+		# add stage 28, which is outside range
+		args = [_setmember_key, 28]
+		self.assertRaises(DbManagerError, self.addEMAPAStage, *args)
+		# python 2.5+ syntax
+		#with self.assertRaises(DbManagerError):
+		#    self.addEMAPAStage(_setmember_key, 28)
 
 	def test_add_stage_lower_than_range(self):
 		"""
@@ -72,9 +75,12 @@ class InsertUpdateTest(unittest.TestCase):
 		"""
 		_setmember_key = self.addEMAPATerm(TERM1["_term_key"])
 		
-		with self.assertRaises(DbManagerError):
-		    # add stage 1, which is outside range
-		    self.addEMAPAStage(_setmember_key, 1)
+		# add stage 1, which is outside range
+		args = [_setmember_key, 1]
+		self.assertRaises(DbManagerError, self.addEMAPAStage, *args)
+		# python 2.5+ syntax
+		#with self.assertRaises(DbManagerError):
+		#    self.addEMAPAStage(_setmember_key, 1)
 
 
 	def test_add_multiple_stages_for_clipboard_item(self):
@@ -88,9 +94,12 @@ class InsertUpdateTest(unittest.TestCase):
 		validStage2 = TERM1["startstage"] + 1
 		self.addEMAPAStage(_setmember_key, validStage1)
 		
-		with self.assertRaises(DbManagerError):
-		    # add a second stage for the same set member
-		    self.addEMAPAStage(_setmember_key, validStage2)
+		# add a second stage for the same set member
+		args =[_setmember_key, validStage2]
+		self.assertRaises(DbManagerError, self.addEMAPAStage, *args)
+		# python 2.5+ syntax
+		#with self.assertRaises(DbManagerError):
+		#    self.addEMAPAStage(_setmember_key, validStage2)
 
 
 	def test_add_duplicate_clipboard_item(self):
@@ -145,9 +154,12 @@ class InsertUpdateTest(unittest.TestCase):
 		validStage = TERM1["startstage"] + 1
 		_setmember_emapa_key = self.addEMAPAStage(_setmember_key, validStage)
 
-		with self.assertRaises(DbManagerError):
-		    # add stage 28, which is outside range
-		    self.updateEMAPAStage(_setmember_emapa_key, 28)
+		# add stage 28, which is outside range
+		args = [_setmember_emapa_key, 28]
+		self.assertRaises(DbManagerError, self.updateEMAPAStage, *args)
+		# Python 2.5+ syntax
+		#with self.assertRaises(DbManagerError):
+		#    self.updateEMAPAStage(_setmember_emapa_key, 28)
 
 	def test_update_creates_duplicate_clipboard_item(self):
 		"""
