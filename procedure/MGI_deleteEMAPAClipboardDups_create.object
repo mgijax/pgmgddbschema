@@ -20,6 +20,7 @@ RETURNS VOID AS
 DECLARE
 v_stage_key int;	/* clipboard stage key */
 v_emapa_term_key int;	/* clipboard EMAPA _term_key */
+v_user_key int;		/* clipboard _createdby_key */
 
 BEGIN
 
@@ -40,13 +41,23 @@ IF v_stage_key is NULL THEN
 	return;	
 END IF;
 
-v_emapa_term_key = (select _object_key from MGI_SetMember where _setmember_key = v_setmember_key);
+
+/* gather the _emapa_term_key and _user_key for this set member */
+
+select _object_key, _createdby_key
+into v_emapa_term_key, v_user_key
+from MGI_SetMember
+where _setmember_key = v_setmember_key
+;
+
 
 /* Delete all old occurrences of the new record's term/stage combo */
 
 delete from MGI_SetMember old
 using MGI_SetMember_EMAPA old_stage
 where old_stage._setmember_key = old._setmember_key
+  -- same _createdby_key
+  and old._createdby_key = v_user_key
   -- same stage
   and old_stage._stage_key = v_stage_key
   -- same term
