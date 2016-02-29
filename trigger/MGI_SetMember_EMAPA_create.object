@@ -1,5 +1,12 @@
 #!/bin/sh
 
+#
+# History
+#
+# 02/29/2016	kstone
+#	- TR12223/gxd anatomy II
+#
+
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0

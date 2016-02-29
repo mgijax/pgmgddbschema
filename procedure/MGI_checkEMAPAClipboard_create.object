@@ -3,6 +3,9 @@
 #
 # History
 #
+# 02/29/2016	kstone
+#	- TR12223/gxd anatomy II
+#
 #
 
 cd `dirname $0` && . ./Configuration
