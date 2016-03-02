@@ -5,7 +5,6 @@
 #
 # 02/18/2016	lec
 #	- TR12223/gxd anatomy II/add 'label'
-#	label			   text		   null,
 #
 # 04/17/2003	lec
 #	- MGI 2.96
@@ -20,6 +19,7 @@ create table mgd.MGI_SetMember (
  	_SetMember_key             int             not null,
  	_Set_key                   int             not null,
  	_Object_key                int             not null,
+	label			   text		   null,
 	sequenceNum                int             not null,
 	_CreatedBy_key             int DEFAULT 1001             not null,
 	_ModifiedBy_key            int DEFAULT 1001             not null,

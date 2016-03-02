@@ -70,7 +70,7 @@ CREATE OR REPLACE FUNCTION VOC_Annot_update() RETURNS TRIGGER AS \$\$
 BEGIN
 
 UPDATE VOC_Evidence
-SET modification_date = current_date, _ModifiedBy_key = VOC_Evidence._ModifiedBy_key
+SET modification_date = now(), _ModifiedBy_key = VOC_Evidence._ModifiedBy_key
 WHERE NEW._Annot_key = VOC_Evidence._Annot_key
 ;
 

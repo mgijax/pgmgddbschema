@@ -18,6 +18,7 @@ ALL_Cre_Cache
 GXD_Expression
 GXD_GelLaneStructure
 GXD_ISResultStructure
+MGI_SetMember
 procedure/GXD_duplicateAssay
 ######
 VOC_Term_EMAPA
