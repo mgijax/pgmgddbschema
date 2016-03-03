@@ -3,6 +3,9 @@
 #
 # History
 #
+# 03/3/3016	lec
+#	- TR 12223; gxd anatomy II; added MGI_SetMember
+#
 # 03/16/2006	lec
 #	- TR 7530; removed MLD_Marker
 #
