@@ -78,7 +78,7 @@ ORDER BY stage, term
 ;
 
 INSERT INTO MGI_SetMember
-SELECT v_newSetMemberKey + seq, 1046, s._EMAPA_Term_key, v_newSeqKey + seq, v_userKey, v_userKey, now(), now()
+SELECT v_newSetMemberKey + seq, 1046, s._EMAPA_Term_key, null, v_newSeqKey + seq, v_userKey, v_userKey, now(), now()
 FROM set_tmp s
 ;
 

@@ -298,7 +298,7 @@ LOOP
 	ELSIF (v_table = 'MGI_SetMember')
 	THEN
 		UPDATE MGI_SetMember set sequenceNum = newSeq
-		WHERE _Set_key = pkey and _CreatedBy_key = v_userKey and sequenceNum = oldSeq;
+		WHERE _SetMember_key = pkey and _CreatedBy_key = v_userKey and sequenceNum = oldSeq;
 
 	END IF;
 
@@ -307,6 +307,8 @@ LOOP
 END LOOP;
 
 CLOSE seq_cursor;
+
+RETURN;
 
 END;
 \$\$
