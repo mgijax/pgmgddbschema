@@ -17,8 +17,9 @@ ${PG_MGD_DBSCHEMADIR}/procedure/MGI_resetSequenceNum_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION MGI_resetSequenceNum (
-v_table varchar(255),		/* Table Name */
-v_key int			/* Primary key */
+v_table text,
+v_key int,		/* Primary key */
+v_userKey int DEFAULT 0
 )
 RETURNS VOID AS
 \$\$
@@ -191,6 +192,15 @@ THEN
 	ORDER BY sequenceNum
 	;
 
+ELSIF (v_table = 'MGI_SetMember')
+THEN
+	OPEN seq_cursor FOR
+	SELECT _SetMember_key, sequenceNum
+	FROM MGI_SetMember
+	WHERE _Set_key = v_key and _CreatedBy_key = v_userKey
+	ORDER BY sequenceNum
+	;
+
 else
 	return;
 
@@ -285,6 +295,11 @@ LOOP
 		UPDATE VOC_Term set sequenceNum = newSeq
 		WHERE _Vocab_key = pkey and sequenceNum = oldSeq;
 
+	ELSIF (v_table = 'MGI_SetMember')
+	THEN
+		UPDATE MGI_SetMember set sequenceNum = newSeq
+		WHERE _Set_key = pkey and _CreatedBy_key = v_userKey and sequenceNum = oldSeq;
+
 	END IF;
 
         newSeq := newSeq + 1;
@@ -297,8 +312,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MGI_resetSequenceNum(varchar,int) TO public;
+GRANT EXECUTE ON FUNCTION MGI_resetSequenceNum(text,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_resetSequenceNum(varchar,int) IS 'resets the sequenceNum field on specific table/object';
+COMMENT ON FUNCTION mgd.MGI_resetSequenceNum(text,int,int) IS 'resets the sequenceNum field on specific table/object';
 
 EOSQL
