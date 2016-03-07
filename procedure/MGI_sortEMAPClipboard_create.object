@@ -1,0 +1,69 @@
+#!/bin/sh
+
+#
+# History
+#
+# 03/3/3016	lec
+#	- TR 12223; gxd anatomy II; added MGI_SetMember
+#
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/MGI_sortEMAPClipboard_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION MGI_sortEMAPClipboard (
+v_userKey int
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_setmember_key int;
+oldSeq int;	/* current sequence number */
+newSeq int := 1;	/* new sequence number */
+v_stage	gxd_theilerstage.stage%TYPE;
+v_term voc_term.term%TYPE;
+seq_cursor refcursor;
+
+BEGIN
+
+OPEN seq_cursor FOR
+SELECT DISTINCT s._SetMember_key, s.sequenceNum, t2.stage, t1.term
+FROM mgi_setmember s, mgi_setmember_emapa s2, voc_term t1, gxd_theilerstage t2    
+WHERE s._set_key = 1046 
+AND s._setmember_key = s2._setmember_key    
+AND s._object_key = t1._term_key 
+AND s2._Stage_key = t2._stage_key 
+AND s._CreatedBy_key = v_userKey
+ORDER BY t2.stage, t1.term
+;
+
+LOOP
+        FETCH seq_cursor INTO v_setmember_key, oldSeq, v_stage, v_term;
+        EXIT WHEN NOT FOUND;
+
+	UPDATE MGI_SetMember set sequenceNum = newSeq
+	WHERE _SetMember_key = v_setmember_key 
+	AND _CreatedBy_key = v_userKey 
+	AND sequenceNum = oldSeq;
+
+        newSeq := newSeq + 1;
+
+END LOOP;
+
+CLOSE seq_cursor;
+
+RETURN;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MGI_sortEMAPClipboard(int) TO public;
+
+COMMENT ON FUNCTION mgd.MGI_sortEMAPClipboard(int) IS 'sort EMAP Clipboard sequenceNum field by stage/term';
+
+EOSQL
