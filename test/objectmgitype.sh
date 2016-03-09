@@ -314,14 +314,44 @@ select distinct _mgitype_key from mgi_reference_assoc order by _mgitype_key;
 
 select a.*
 from mgi_reference_assoc a
+where a._mgitype_key = 2
+and not exists (select 1 from mrk_marker s where a._object_key = s._marker_key)
+;
+
+select a.*
+from mgi_reference_assoc a
+where a._mgitype_key = 6
+and not exists (select 1 from gxd_antibody s where a._object_key = s._antibody_key)
+;
+
+select a.*
+from mgi_reference_assoc a
+where a._mgitype_key = 10
+and not exists (select 1 from prb_strain s where a._object_key = s._strain_key)
+;
+
+select a.*
+from mgi_reference_assoc a
 where a._mgitype_key = 11
 and not exists (select 1 from all_allele s where a._object_key = s._allele_key)
 ;
 
 select a.*
 from mgi_reference_assoc a
+where a._mgitype_key = 19
+and not exists (select 1 from seq_sequence s where a._object_key = s._sequence_key)
+;
+
+select a.*
+from mgi_reference_assoc a
 where a._mgitype_key = 21
 and not exists (select 1 from nom_marker s where a._object_key = s._nomen_key)
+;
+
+select a.*
+from mgi_reference_assoc a
+where a._mgitype_key = 29
+and not exists (select 1 from img_imagepane_assoc s where a._mgitype_key = s._mgitype_key and a._object_key = s._object_key)
 ;
 
 -- mgi_setmember
