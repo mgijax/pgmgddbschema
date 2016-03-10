@@ -25,6 +25,11 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+--
+-- NOTE:  Any changes should also be reflected in: 
+--     pgdbutilities/sp/MGI_deletePrivateData.csh
+--
+
 ALTER TABLE mgd.ALL_Allele ADD PRIMARY KEY (_Allele_key);
 
 
@@ -40,6 +45,9 @@ ALTER TABLE mgd.ALL_Cre_Cache ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_A
 ALTER TABLE mgd.ALL_Label ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele ON DELETE CASCADE DEFERRABLE;
 
 
+ALTER TABLE mgd.ALL_Knockout_Cache ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele DEFERRABLE;
+
+
 ALTER TABLE mgd.MRK_OMIM_Cache ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele ON DELETE CASCADE DEFERRABLE;
 
 
@@ -47,9 +55,6 @@ ALTER TABLE mgd.PRB_Strain_Marker ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.A
 
 
 ALTER TABLE mgd.SEQ_Allele_Assoc ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele ON DELETE CASCADE DEFERRABLE;
-
-
-ALTER TABLE mgd.ALL_Knockout_Cache ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele DEFERRABLE;
 
 
 ALTER TABLE mgd.GXD_AlleleGenotype ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele DEFERRABLE;

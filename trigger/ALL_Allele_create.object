@@ -42,6 +42,11 @@ DROP FUNCTION IF EXISTS ALL_Allele_delete();
 CREATE OR REPLACE FUNCTION ALL_Allele_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
+--
+-- NOTE:  Any changes should also be reflected in:
+--     pgdbutilities/sp/MGI_deletePrivateData.csh
+--
+
 -- Disallow deletion if Allele is currently referenced elsewhere
 IF EXISTS (SELECT * FROM MGI_Relationship r, MGI_Relationship_Category c
           WHERE OLD._Allele_key = r._Object_key_1
