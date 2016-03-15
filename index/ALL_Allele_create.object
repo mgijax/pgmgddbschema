@@ -12,9 +12,9 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER mgd.ALL_Allele USING ALL_Allele_pkey;
-
 create index ALL_Allele_idx_clustered on mgd.ALL_Allele (_Marker_key);
+
+CLUSTER mgd.ALL_Allele USING ALL_Allele_idx_clustered;
 
 create index ALL_Allele_idx_Allele_Type_key on mgd.ALL_Allele (_Allele_Type_key);
 

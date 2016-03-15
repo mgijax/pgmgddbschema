@@ -12,9 +12,9 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CLUSTER mgd.ALL_Knockout_Cache USING ALL_Knockout_Cache_pkey;
-
 create index ALL_Knockout_Cache_idx_clustered on mgd.ALL_Knockout_Cache (_Allele_key);
+
+CLUSTER mgd.ALL_Knockout_Cache USING ALL_Knockout_Cache_idx_clustered;
 
 create unique index ALL_Knockout_Cache_idx_Marker_key on mgd.ALL_Knockout_Cache (_Marker_key);
 
