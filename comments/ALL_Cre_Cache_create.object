@@ -48,4 +48,6 @@ COMMENT ON COLUMN ALL_Cre_Cache.emapaTerm IS 'term from VOC_Term where _Vocab_ke
 
 COMMENT ON COLUMN ALL_Cre_Cache.symbol IS 'Allele symbol';
 
+COMMENT ON COLUMN ALL_Cre_Cache.cresystemlabel IS 'Cre System Label';
+
 EOSQL

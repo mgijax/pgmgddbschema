@@ -5,6 +5,7 @@
 #
 # 01/07/2016	lec
 #	- TR12223/converting _structure_key -> _emapa_term_key/_stage_key
+#	- add 'cresystemlabel' field
 #
 # 04/18/2013	lec
 #	- TR11248/add 'age'
@@ -39,6 +40,7 @@ create table mgd.ALL_Cre_Cache (
     ageMax               numeric         null,
     expressed            int             null,
     hasImage             int             null,
+    cresystemlabel	 text	         null,
     _CreatedBy_key       int DEFAULT 1001 not null,
     _ModifiedBy_key      int DEFAULT 1001 not null,
     creation_date        timestamp DEFAULT now() not null,
