@@ -4,6 +4,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION IF EXISTS MRK_insertHistory(int,int,int,int,int,int,varchar,timestamp,int,int,timestamp,timestamp);
+DROP FUNCTION IF EXISTS MRK_insertHistory(int,int,int,int,int,int,text,timestamp,int,int,timestamp,timestamp);
 
 EOSQL

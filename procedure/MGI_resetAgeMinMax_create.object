@@ -104,8 +104,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MGI_resetAgeMinMax(varchar,int) TO public;
+GRANT EXECUTE ON FUNCTION MGI_resetAgeMinMax(text,int) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_resetAgeMinMax(varchar,int) IS 'update the agemin/agemax values for table/object';
+COMMENT ON FUNCTION mgd.MGI_resetAgeMinMax(text,int) IS 'update the agemin/agemax values for table/object';
 
 EOSQL
