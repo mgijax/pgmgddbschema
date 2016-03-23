@@ -24,7 +24,7 @@ RETURNS VOID AS
 
 DECLARE
 -- text of error message if one is found
-v_error varchar(255);
+v_error text;
 v_statKey int;
 v_expectsInt int;
 
