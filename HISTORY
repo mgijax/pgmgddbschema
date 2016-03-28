@@ -9,6 +9,8 @@ GXD_StructureClosure
 GXD_Structure
 GXD_StructureName
 MGI_EMAPS_Mapping
+MGI_Organism_Homology_View
+MAP_Feature_View
 ######
 conversion:
   add _Stage_key

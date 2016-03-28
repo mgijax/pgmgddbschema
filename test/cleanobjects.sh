@@ -69,11 +69,6 @@ using toDelete2
 WHERE toDelete2._assoc_key = mgi_reference_assoc._assoc_key
 ;
 
-
-DELETE FROM MGI_Reference_Assoc where _MGIType_key = 29;
-DELETE FROM MGI_RefAssocType where _MGIType_key = 29;
-DELETE FROM ACC_MGIType where _MGIType_key in (29);
-
 EOSQL
 
 #
