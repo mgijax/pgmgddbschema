@@ -348,12 +348,6 @@ where a._mgitype_key = 21
 and not exists (select 1 from nom_marker s where a._object_key = s._nomen_key)
 ;
 
-select a.*
-from mgi_reference_assoc a
-where a._mgitype_key = 29
-and not exists (select 1 from img_imagepane_assoc s where a._mgitype_key = s._mgitype_key and a._object_key = s._object_key)
-;
-
 -- mgi_setmember
 
 select distinct _mgitype_key from mgi_set order by _mgitype_key;

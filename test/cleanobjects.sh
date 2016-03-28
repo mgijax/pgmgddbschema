@@ -70,20 +70,9 @@ WHERE toDelete2._assoc_key = mgi_reference_assoc._assoc_key
 ;
 
 
-CREATE TEMP TABLE toDelete3 AS
-select a.* 
-from mgi_reference_assoc a
-where a._mgitype_key = 29
-and not exists 
-(select 1 from img_imagepane_assoc s where a._mgitype_key = s._mgitype_key and a._object_key = s._object_key)
-;
-CREATE INDEX toDelete3_idx1 ON toDelete3(_assoc_key);
-select * from toDelete3;
-delete FROM mgi_reference_assoc
-using toDelete3
-WHERE toDelete3._assoc_key = mgi_reference_assoc._assoc_key
-;
-
+DELETE FROM MGI_Reference_Assoc where _MGIType_key = 29;
+DELETE FROM MGI_RefAssocType where _MGIType_key = 29;
+DELETE FROM ACC_MGIType where _MGIType_key in (29);
 
 EOSQL
 
