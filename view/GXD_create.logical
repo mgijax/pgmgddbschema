@@ -20,7 +20,6 @@ GXD_AntibodyAntigen_View_create.object \
 GXD_AntibodyMarker_View_create.object \
 GXD_AntibodyPrep_View_create.object \
 GXD_Antibody_Acc_View_create.object \
-GXD_Antibody_Summary_View_create.object \
 GXD_Antibody_View_create.object \
 GXD_Antigen_Acc_View_create.object \
 GXD_Antigen_Summary_View_create.object \
