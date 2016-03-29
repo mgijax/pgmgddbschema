@@ -25,7 +25,6 @@ GXD_Antigen_Acc_View_create.object \
 GXD_Antigen_Summary_View_create.object \
 GXD_Assay_Acc_View_create.object \
 GXD_Assay_Allele_View_create.object \
-GXD_Assay_Summary_View_create.object \
 GXD_Assay_View_create.object \
 GXD_GelBand_View_create.object \
 GXD_GelLaneStructure_View_create.object \
