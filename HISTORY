@@ -11,6 +11,22 @@ GXD_StructureName
 MGI_EMAPS_Mapping
 MGI_Organism_Homology_View
 MAP_Feature_View
+MRK_Types_Summary_View
+ALL_Allele_Strain_View
+ALL_CellLine_Strain_View
+BIB_Summary_View
+GXD_Antibody_Summary_View
+GXD_Assay_Summary_View
+PRB_Summary_View
+VOC_InterPro_Summary_View
+VOC_Term_Gender_View
+VOC_Term_SegmentType_View
+VOC_Vocab_DAG_Summary_View
+VOC_Vocab_Summary_View
+MGI_Organism_Antibody_View
+MGI_Synonym_HumMarker_View
+MGI_TranslationType_View
+MGI_User_Active_View
 ######
 conversion:
   add _Stage_key
