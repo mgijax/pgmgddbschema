@@ -86,6 +86,8 @@ LOOP
 END LOOP;
 CLOSE all_cursor2;
 
+RETURN;
+
 END;
 \$\$
 LANGUAGE plpgsql;

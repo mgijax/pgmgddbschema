@@ -249,6 +249,8 @@ LOOP
 
 END LOOP;
 
+RETURN;
+
 END;
 \$\$
 LANGUAGE plpgsql;
