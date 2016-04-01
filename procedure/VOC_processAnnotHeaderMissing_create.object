@@ -41,7 +41,6 @@ AND NOT EXISTS (select 1 FROM VOC_AnnotHeader h
 LOOP
         FETCH annot_cursor INTO v_objectKey;
         EXIT WHEN NOT FOUND;
-	RAISE NOTICE E'object %', v_objectKey;
 	PERFORM VOC_processAnnotHeader (1001, v_annotTypeKey, v_objectKey);
 END LOOP;
 CLOSE annot_cursor;

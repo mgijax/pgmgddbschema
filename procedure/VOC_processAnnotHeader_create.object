@@ -40,14 +40,6 @@ v_headerLabel := _Label_key FROM DAG_Label WHERE label = 'Header';
 v_headerKey := max(_AnnotHeader_key) FROM VOC_AnnotHeader;
 v_maxSeq := 0;
 
-DROP TABLE IF EXISTS set0;
-DROP TABLE IF EXISTS set1;
-DROP TABLE IF EXISTS set2;
-DROP TABLE IF EXISTS set3;
-DROP TABLE IF EXISTS normal;
-DROP TABLE IF EXISTS toAdd;
-DROP TABLE IF EXISTS toDelete;
-
 -- set of "new" headers based on most recent annotation update 
 -- need to check if any ancestors are header terms 
 -- and if the annotated term is itself a header term 
@@ -86,17 +78,11 @@ ORDER BY sequenceNum
 -- isNormal = 1 if all of the qualifiers for a given header term = 2181424
 -- else isNormal = 0
 
-CREATE TEMP TABLE normal ON COMMIT DROP
-AS SELECT DISTINCT _Term_key
+UPDATE set0
+SET isNormal = 1
 FROM set0 s1
 WHERE s1._Qualifier_key = 2181424
 AND NOT EXISTS (SELECT 1 FROM set0 s2 WHERE s1._Term_key = s2._Term_key AND s2._Qualifier_key != 2181424)
-;
-
-UPDATE set0
-SET isNormal = 1
-FROM normal n
-WHERE n._Term_key = set0._Term_key
 ;
 
 -- now SELECT the DISTINCT headers
@@ -205,6 +191,13 @@ THEN
     END LOOP;
     CLOSE seq_cursor;
 END IF;
+
+DROP TABLE IF EXISTS set0;
+DROP TABLE IF EXISTS set1;
+DROP TABLE IF EXISTS set2;
+DROP TABLE IF EXISTS set3;
+DROP TABLE IF EXISTS toAdd;
+DROP TABLE IF EXISTS toDelete;
 
 END;
 \$\$
