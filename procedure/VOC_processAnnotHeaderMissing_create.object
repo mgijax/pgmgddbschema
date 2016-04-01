@@ -31,7 +31,7 @@ BEGIN
 -- add missing VOC_AnnotHeader records by annotation type
 
 OPEN annot_cursor FOR
-SELECT v._Object_key
+SELECT DISTINCT v._Object_key
 FROM VOC_Annot v 
 WHERE v._AnnotType_key = v_annotTypeKey
 AND NOT EXISTS (select 1 FROM VOC_AnnotHeader h
