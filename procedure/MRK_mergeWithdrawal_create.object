@@ -323,6 +323,14 @@ THEN
 	END IF;
 END IF;
 
+-- Remove old symbol's wild type allele (TR12314
+DELETE FROM ALL_Allele a
+USING MRK_Marker m
+WHERE m._Marker_key = v_oldKey
+AND m._Marker_key = a._Marker_key
+AND a.isWildType = 1
+;
+
 -- Update keys from old key to new key
 
 PERFORM MRK_updateKeys (v_oldKey, v_newKey);
