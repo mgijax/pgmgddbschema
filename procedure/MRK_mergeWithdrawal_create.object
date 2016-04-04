@@ -4,6 +4,9 @@
 #
 # History
 #
+# 04/04/2016	lec
+#	- TR12314/remove wild-type alleles
+#
 # 10/14/2014 	sc
 #	- TR11674 - HDP-2 project
 #	- prevent merge if marker cross referenced in MGI_Relationship
@@ -323,7 +326,7 @@ THEN
 	END IF;
 END IF;
 
--- Remove old symbol's wild type allele (TR12314
+-- Remove old symbol's wild type allele
 DELETE FROM ALL_Allele a
 USING MRK_Marker m
 WHERE m._Marker_key = v_oldKey
