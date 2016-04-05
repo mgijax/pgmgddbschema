@@ -30,7 +30,6 @@ RETURNS VOID AS
 
 DECLARE
 v_refKey int;
-marker_cursor refcursor;
 
 BEGIN
 
@@ -39,7 +38,7 @@ BEGIN
 DELETE FROM MRK_Reference WHERE _Marker_key = v_markerKey
 ;
 
-OPEN marker_cursor FOR
+FOR v_refKey IN
 SELECT distinct m._Refs_key
 FROM PRB_Marker m
 WHERE m._Marker_key = v_markerKey
@@ -90,12 +89,8 @@ UNION
 SELECT distinct _Refs_key
 FROM MGI_Reference_Assoc
 WHERE _Object_key = v_markerKey AND _MGIType_key = 2
-;
 
 LOOP
-        FETCH marker_cursor INTO v_refKey;
-        EXIT WHEN NOT FOUND;
-
 	IF NOT exists (SELECT * FROM MRK_Reference WHERE _Marker_key = v_markerKey
 		AND _Refs_key = v_refKey)
 	THEN
@@ -122,7 +117,6 @@ LOOP
 	END IF;
 
 END LOOP;
-CLOSE marker_cursor;
 
 END;
 \$\$

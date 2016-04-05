@@ -47,9 +47,6 @@ v_jaxRegistryNew acc_accession.accID%TYPE;
 v_jaxRegistryOld acc_accession.accID%TYPE;
 v_strainmergeKey int;
 
-allele_cursor refcursor;
-
-note_cursor refcursor;
 v_noteKey int;
 v_noteTypeKey int;
 v_maxSeq int;
@@ -102,16 +99,12 @@ END IF;
 
 -- Check for potential duplicate Probe RFLV Entries
 
-OPEN allele_cursor FOR
+FOR v_alleleKey IN
 SELECT DISTINCT _Allele_key
 FROM PRB_Allele_Strain
 WHERE _Strain_key in (v_oldStrainKey, v_newStrainkey)
 GROUP by _Allele_key having count(*) > 1
-;
 LOOP
-        FETCH allele_cursor INTO v_alleleKey;
-        EXIT WHEN NOT FOUND;
-
 	SELECT p.name as v_probe, b.accID as v_jnum
 	FROM PRB_Allele a, PRB_RFLV v, PRB_Reference  r, PRB_Probe p, BIB_Acc_View b
 	WHERE a._Allele_key = v_alleleKey and
@@ -126,7 +119,6 @@ LOOP
 	RAISE EXCEPTION E'PRB_mergeStrain: This merge would create a duplicate entry for Probe %, %.', v_probe, v_jnum;
 	RETURN;
 END LOOP;
-CLOSE allele_cursor;
 
 -- all Strains must have same symbols
 
@@ -326,14 +318,10 @@ WHERE _Strain_key_2 = v_oldStrainKey
 
 -- NOTES
 
-OPEN note_cursor FOR
+FOR v_noteTypeKey IN
 SELECT _NoteType_key
 FROM MGI_NoteType_Strain_View
-;
 LOOP
-    FETCH note_cursor INTO v_noteTypeKey;
-    EXIT WHEN NOT FOUND;
-
     -- if both old and new strains have notes, concatenate old notes onto new notes
 
     IF EXISTS (select 1 from MGI_Note 
@@ -380,7 +368,6 @@ LOOP
     -- else if only new strain has notes, do nothing 
 
 END LOOP;
-CLOSE note_cursor;
 
 -- END NOTES
 

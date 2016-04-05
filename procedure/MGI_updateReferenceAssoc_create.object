@@ -49,7 +49,6 @@ RETURNS VOID AS
 DECLARE
 v_refsTypeKey int;
 v_allelekey int;
-allele_cursor refcursor;
 
 BEGIN
 
@@ -60,13 +59,9 @@ THEN
 	v_refsTypeKey := _RefAssocType_key FROM MGI_RefAssocType 
 		WHERE _MGIType_key = 11 AND assocType = v_refsType;
 
-	OPEN allele_cursor FOR
+	FOR v_allelekey IN
 	SELECT _Allele_key FROM GXD_AlleleGenotype WHERE _Genotype_key = v_objectKey
-	;
 	LOOP
-        	FETCH allele_cursor INTO v_allelekey;
-        	EXIT WHEN NOT FOUND;
-
 		-- Update non-assocType (see query below)
 		-- Reference to new Reference Type 
 		-- If no such record exists, then create a new Allele Reference record
@@ -96,7 +91,6 @@ THEN
   			PERFORM MGI_insertReferenceAssoc (v_userKey, 11, v_allelekey, v_refsKey, v_refsType);
 		END IF;
 	END LOOP;
-	CLOSE allele_cursor;
 END IF;
 
 RETURN;

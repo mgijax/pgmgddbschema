@@ -28,7 +28,6 @@ v_annotTypeKey int;
 v_qualifierKey int;
 v_annotKey int;
 v_strainKey int;
-strain_cursor refcursor;
 
 BEGIN
 
@@ -51,16 +50,11 @@ END IF;
 -- marker key is non-null
 IF v_markerKey IS NOT null
 THEN
-    OPEN strain_cursor FOR
+    FOR v_strainKey IN
     SELECT DISTINCT _Strain_key
     FROM PRB_Strain_Marker
     WHERE _Marker_key = v_markerKey
-    ;
-
     LOOP
-        FETCH strain_cursor INTO v_strainKey;
-        EXIT WHEN NOT FOUND;
-
 	IF NOT EXISTS (SELECT 1 FROM VOC_Annot
 	    WHERE _AnnotType_key = v_annotTypeKey
 		AND _Object_key = v_strainKey
@@ -75,20 +69,14 @@ THEN
 	    v_annotKey := v_annotKey + 1;
         END IF;
     END LOOP;
-    CLOSE strain_cursor;
 
 -- allele key is non-null
 ELSE	
-    OPEN strain_cursor FOR
+    FOR v_strainKey IN
     SELECT DISTINCT _Strain_key
     FROM PRB_Strain_Marker
     WHERE _Allele_key = v_alleleKey
-    ;
-
     LOOP
-        FETCH strain_cursor INTO v_strainKey;
-        EXIT WHEN NOT FOUND;
-
 	IF NOT EXISTS (SELECT 1 FROM VOC_Annot
 	    WHERE _AnnotType_key = v_annotTypeKey
 		AND _Object_key = v_strainKey
@@ -104,7 +92,6 @@ ELSE
         END IF;
 
     END LOOP;
-    CLOSE strain_cursor;
 END IF;
 
 RETURN;
