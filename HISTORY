@@ -1,3 +1,4 @@
+TAG: pgmgddbschema-6-0-3-4
 TAG: pgmgddbschema-6-0-3-3
 TAG: pgmgddbschema-6-0-3-2
 DATE: 04/01/2016, 04/05/2016
@@ -7,6 +8,7 @@ TR12273/IMPC fixes
 1) procedures/VOC_processAnnotHeader_create.object
 2) procedures/VOC_processAnnotHeaderMissing_create.object
 3) trigger/ALL_CellLine_create.object/ALL_CellLine_drop.object
+4) procedure/MRK_mergeWithdrawal_create.object
 
 TAG: pgmgddbschema-6-0-3-1
 DATE: 03/14/2016
