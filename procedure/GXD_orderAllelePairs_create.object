@@ -23,7 +23,6 @@ DECLARE
 v_pkey int;		-- primary key of records to update
 v_oldSeq int;		-- current sequence number
 v_newSeq int := 1;	-- new sequence number
-seq_cursor refcursor;
 
 BEGIN
 
@@ -41,25 +40,18 @@ THEN
     RETURN;
 END IF;
 
-OPEN seq_cursor FOR
+FOR v_pkey, v_oldSeq IN
 SELECT _AllelePair_key, sequenceNum
 FROM GXD_AllelePair_View
 WHERE _Genotype_key = v_genotypeKey 
 ORDER BY symbol
-;
-
 LOOP
-        FETCH seq_cursor INTO v_pkey, v_oldSeq;
-        EXIT WHEN NOT FOUND;
-
   	UPDATE GXD_AllelePair 
 	SET sequenceNum = v_newSeq
     	WHERE _AllelePair_key = v_pkey
 	;
-
   	v_newSeq := v_newSeq + 1;
 END LOOP;
-CLOSE seq_cursor;
 
 RETURN;
 

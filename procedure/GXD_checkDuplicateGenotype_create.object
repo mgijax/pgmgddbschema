@@ -33,7 +33,6 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-genotype_cursor refcursor;
 v_dupgenotypeKey int;
 v_isDuplicate int;
 
@@ -65,7 +64,7 @@ BEGIN
 --             then the given genotype is a duplicate      
 --                                                         
 
-OPEN genotype_cursor FOR
+FOR v_dupgenotypeKey IN
 SELECT DISTINCT g1._Genotype_key
 FROM GXD_Genotype g1, GXD_AllelePair ap1, GXD_Genotype g2, GXD_AllelePair ap2
 WHERE g2._Genotype_key = v_genotypeKey
@@ -86,12 +85,7 @@ AND g1.isConditional = g2.isConditional
 AND g1._Genotype_key != v_genotypeKey
 AND NOT exists (SELECT 1 FROM GXD_AllelePair ap1 WHERE g1._Genotype_key = ap1._Genotype_key)
 AND NOT exists (SELECT 1 FROM GXD_AllelePair ap2 WHERE g2._Genotype_key = ap2._Genotype_key)
-;
-
 LOOP
-        FETCH genotype_cursor INTO v_dupgenotypeKey;
-	EXIT WHEN NOT FOUND;
-
 	-- if the # of Allele Pairs is different, then it's not a duplicate
 
 	IF (SELECT count(*) FROM GXD_AllelePair WHERE _Genotype_key = v_genotypeKey) != 
@@ -187,9 +181,7 @@ LOOP
 		v_isDuplicate := 1;
 		EXIT;
 	END IF;
-
 END LOOP;
-CLOSE genotype_cursor;
 
 IF v_isDuplicate = 1
 THEN

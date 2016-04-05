@@ -20,7 +20,6 @@ RETURNS VOID AS
 
 DECLARE
 v_alleleKey int;
-allele_cursor refcursor;
 
 BEGIN
 
@@ -29,7 +28,7 @@ BEGIN
 -- which are missing
 --
 
-OPEN allele_cursor FOR
+FOR v_alleleKey IN
 SELECT DISTINCT _Allele_key_1 
 FROM GXD_AllelePair a
 WHERE not exists 
@@ -44,13 +43,9 @@ AND NOT EXISTS
 (SELECT 1 FROM GXD_AlleleGenotype g 
 WHERE a._Genotype_key = g._Genotype_key
 AND a._Allele_key_2 = g._Allele_key)
-;
 LOOP
-        FETCH allele_cursor INTO v_alleleKey;
-        EXIT WHEN NOT FOUND;
  	PERFORM GXD_orderGenotypes (v_alleleKey);
 END LOOP;
-CLOSE allele_cursor;
 
 END;
 \$\$

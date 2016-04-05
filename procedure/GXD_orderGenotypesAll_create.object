@@ -24,7 +24,6 @@ RETURNS VOID AS
 
 DECLARE
 v_alleleKey int;
-allele_cursor refcursor;
 
 BEGIN
 
@@ -32,7 +31,7 @@ BEGIN
 
 DELETE FROM GXD_AlleleGenotype WHERE _Genotype_key = v_genotypeKey;
 
-OPEN allele_cursor FOR
+FOR v_alleleKey IN
 SELECT DISTINCT _Allele_key_1 
 FROM GXD_AllelePair
 WHERE _Genotype_key = v_genotypeKey
@@ -41,13 +40,9 @@ SELECT DISTINCT _Allele_key_2
 FROM GXD_AllelePair
 WHERE _Genotype_key = v_genotypeKey
 AND _Allele_key_2 IS NOT NULL
-;
 LOOP
-        FETCH allele_cursor INTO v_alleleKey;
-        EXIT WHEN NOT FOUND;
   	PERFORM GXD_orderGenotypes (v_alleleKey, 1001);
 END LOOP;
-CLOSE allele_cursor;
  
 RETURN;
 

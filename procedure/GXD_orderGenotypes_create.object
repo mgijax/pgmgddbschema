@@ -30,7 +30,6 @@ DECLARE
 v_pkey int;	-- primary key of records to UPDATE 
 v_oldSeq int;	-- current sequence number
 v_newSeq int;	-- new sequence number
-seq_cursor refcursor;
 
 BEGIN
 
@@ -234,29 +233,22 @@ AND ap._Allele_key_2 = v_alleleKey
 
 v_newSeq := 1;
 
-OPEN seq_cursor FOR
+FOR v_pkey, v_oldSeq IN
 SELECT ap._Genotype_key, ap.sequenceNum, s.strain
 FROM GXD_AlleleGenotype ap, GXD_Genotype g, PRB_Strain s
 WHERE ap._Allele_key = v_alleleKey
 AND ap._Genotype_key = g._Genotype_key
 AND g._Strain_key = s._Strain_key
 ORDER BY ap.sequenceNum, s.strain
-;
 LOOP
-	FETCH seq_cursor INTO v_pkey, v_oldSeq;
-        EXIT WHEN NOT FOUND;
-
 	--RAISE NOTICE 're-sequence %:%:%', v_alleleKey, v_pkey, v_newSeq;
-
 	UPDATE GXD_AlleleGenotype 
 	SET sequenceNum = v_newSeq 
 	WHERE _Genotype_key = v_pkey 
 	AND _Allele_key = v_alleleKey
 	;
-
 	v_newSeq := v_newSeq + 1;
 END LOOP;
-CLOSE seq_cursor;
  
 -- Drop temp tables
 DROP TABLE IF EXISTS genotypes_tmp1;
