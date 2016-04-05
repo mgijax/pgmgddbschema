@@ -52,6 +52,10 @@ index/added extra (lower) indexes
 ######
 update:
 MRK_OMIM_Cache
+#####
+TR12314/remove wild-type alleles
+procedure/MRK_mergeWithdrawal_create.object 
+procedure/MRK_deleteWithdrawal_create.object
 
 TAG: pgmgddbschema-tr12223-BP
 DATE: 01/07/2016
