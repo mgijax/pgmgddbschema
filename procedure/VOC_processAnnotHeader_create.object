@@ -32,7 +32,6 @@ v_maxSeq int;
 v_pkey int;	-- primary key of records to update
 v_oldSeq int;	-- current sequence number
 v_newSeq int;	-- new sequence number
-seq_cursor refcursor;
 
 BEGIN
 
@@ -103,16 +102,11 @@ ORDER BY sequenceNum
 
 -- any headers in set2 that is not in set1 are deleted
 
-CREATE TEMP TABLE toDelete ON COMMIT DROP
-AS SELECT s2.* 
-FROM set2 s2 
-WHERE NOT EXISTS (SELECT 1 FROM set1 s1 WHERE s2._Term_key = s1._Term_key)
-;
-
 DELETE 
 FROM VOC_AnnotHeader
-USING toDelete d
-WHERE d._AnnotHeader_key = VOC_AnnotHeader._AnnotHeader_key
+USING set1, set2
+WHERE set2._AnnotHeader_key = VOC_AnnotHeader._AnnotHeader_key
+AND NOT EXISTS (SELECT 1 FROM set1 WHERE set2._Term_key = set1._Term_key)
 ;
 
 -- set of headers that are currently cached after deletion
@@ -172,24 +166,17 @@ END IF;
 
 IF (v_reorder = 1)
 THEN
-
     v_newSeq := 1;
- 
-    OPEN seq_cursor FOR
+    FOR v_pkey, v_oldSeq IN
     SELECT _AnnotHeader_key, sequenceNum
     FROM VOC_AnnotHeader
     WHERE _AnnotType_key = v_annotTypeKey 
     AND _Object_key = v_objectKey
     ORDER BY sequenceNum
-    ;
-
     LOOP
-        FETCH seq_cursor INTO v_pkey, v_oldSeq;
-        EXIT WHEN NOT FOUND;
         UPDATE VOC_AnnotHeader SET sequenceNum = v_newSeq WHERE _AnnotHeader_key = v_pkey;
         v_newSeq := v_newSeq + 1;
     END LOOP;
-    CLOSE seq_cursor;
 END IF;
 
 DROP TABLE IF EXISTS set0;
@@ -197,7 +184,6 @@ DROP TABLE IF EXISTS set1;
 DROP TABLE IF EXISTS set2;
 DROP TABLE IF EXISTS set3;
 DROP TABLE IF EXISTS toAdd;
-DROP TABLE IF EXISTS toDelete;
 
 END;
 \$\$

@@ -181,7 +181,7 @@ CREATE INDEX idx1 on maxSequence(_Object_key)
 
 INSERT INTO VOC_AnnotHeader
 SELECT v_headerKey + i, v_annotTypeKey, t._Object_key, t._Term_key, m.maxSeq + i, isNormal,
-1001, 1001, NULL, NULL, now(), now()
+1001, 1001, NULL, NULL, current_date, current_date
 FROM toAdd t, maxSequence m
 WHERE t._Object_key = m._Object_key
 ;
@@ -198,7 +198,7 @@ group by _Object_key having count(*) = 1
 CREATE INDEX toApprove_idx1 ON toApprove(_AnnotHeader_key);
 
 UPDATE VOC_AnnotHeader
-SET _ApprovedBy_key = 1001, approval_date = now()
+SET _ApprovedBy_key = 1001, approval_date = current_date
 FROM toApprove t
 WHERE t._AnnotHeader_key = VOC_AnnotHeader._AnnotHeader_key
 ;
@@ -248,8 +248,6 @@ LOOP
     v_prevObjectKey := v_objectKey;
 
 END LOOP;
-
-RETURN;
 
 END;
 \$\$

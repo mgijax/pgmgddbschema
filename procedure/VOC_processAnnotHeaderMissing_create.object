@@ -24,26 +24,21 @@ RETURNS VOID AS
 
 DECLARE
 v_objectKey int;
-annot_cursor refcursor;
 
 BEGIN
 
 -- add missing VOC_AnnotHeader records by annotation type
 
-OPEN annot_cursor FOR
+FOR v_objectKey IN
 SELECT DISTINCT v._Object_key
 FROM VOC_Annot v 
 WHERE v._AnnotType_key = v_annotTypeKey
 AND NOT EXISTS (select 1 FROM VOC_AnnotHeader h
 	WHERE v._AnnotType_key = h._AnnotType_key 
 	AND v._Object_key = h._Object_key)
-;
 LOOP
-        FETCH annot_cursor INTO v_objectKey;
-        EXIT WHEN NOT FOUND;
 	PERFORM VOC_processAnnotHeader (1001, v_annotTypeKey, v_objectKey);
 END LOOP;
-CLOSE annot_cursor;
 
 END;
 \$\$
