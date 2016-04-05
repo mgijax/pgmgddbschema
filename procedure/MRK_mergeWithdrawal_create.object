@@ -251,7 +251,7 @@ END IF;
 
 UPDATE MRK_Current 
 SET _Current_key = v_newKey 
-WHERE _Marker_key = v_oldKey
+WHERE _Current_key = v_oldKey
 ;
 
 IF NOT FOUND
