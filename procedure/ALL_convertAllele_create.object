@@ -2,7 +2,9 @@
 
 #
 # History
+#
 # 10/23/2008 - jsb - added check for null marker keys
+#
 # 06/30/2004	lec
 #	- TR 5998
 
@@ -24,7 +26,6 @@ RETURNS VOID AS
 
 DECLARE
 v_alleleKey int;
-allele_cursor refcursor;
 
 BEGIN
 
@@ -105,15 +106,11 @@ ELSE
 	;
 END IF;
 
-OPEN allele_cursor FOR
+FOR v_alleleKey IN
 SELECT _Allele_key from ALL_Allele where _Marker_key = v_markerKey
-;
 LOOP
-        FETCH allele_cursor INTO v_alleleKey;
-        EXIT WHEN NOT FOUND;
 	PERFORM ALL_reloadLabel (v_alleleKey);
 END LOOP;
-CLOSE allele_cursor;
 
 END;
 \$\$
