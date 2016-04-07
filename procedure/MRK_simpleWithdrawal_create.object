@@ -123,9 +123,12 @@ THEN
 END IF;
 
 -- Update the Current marker of the new marker
+
 UPDATE MRK_Current 
 SET _Current_key = v_oldKey 
 WHERE _Current_key = v_newKey;
+
+INSERT INTO MRK_Current VALUES (v_oldKey, v_newKey, now(), now());
 
 -- Update old marker record with new symbol and name values
 UPDATE MRK_Marker 
