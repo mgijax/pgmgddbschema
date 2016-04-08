@@ -18,6 +18,8 @@ COMMENT ON COLUMN GXD_AssayType.isGelAssay IS 'is assay type a gel assay?  yes (
 
 COMMENT ON COLUMN GXD_AssayType.isRNAAssay IS 'does assay type detect RNA? yes (1), no (0)';
 
+COMMENT ON COLUMN GXD_AssayType.sequencenum IS 'Custom order of GXD Assay Types';
+
 COMMENT ON COLUMN GXD_AssayType.modification_date IS 'date record was last modified';
 
 EOSQL

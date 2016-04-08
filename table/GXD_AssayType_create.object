@@ -14,6 +14,7 @@ create table mgd.GXD_AssayType (
 	assayType                      varchar(80)     not null,
 	isRNAAssay                     smallint             not null,
 	isGelAssay                     smallint             not null,
+ 	sequencenum 	               int       DEFAULT 9999         not null,
 	creation_date                  timestamp DEFAULT now()        not null,
 	modification_date              timestamp DEFAULT now()        not null 
 );
