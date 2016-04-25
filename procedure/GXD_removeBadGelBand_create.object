@@ -3,7 +3,8 @@
 #
 # History
 #
-# 08/18/2014	lec
+# 04/25/2016	lec
+#	- fix for postgres
 #
 # 05/10/2004	lec
 #	- remove bad gel lanes
@@ -15,37 +16,36 @@ ${PG_MGD_DBSCHEMADIR}/procedure/GXD_removeBadGelBand_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CREATE OR REPLACE FUNCTION GXD_removeBadGelBand (
-assayKey int
-)
+CREATE OR REPLACE FUNCTION GXD_removeBadGelBand ()
 RETURNS VOID AS
 \$\$
 
 BEGIN
 
-select distinct _Assay_key into temporary table tmp_band from GXD_GelRow;
-select tmp_band.*, b.*
+CREATE TEMP TABLE tmp_band ON COMMIT DROP
+AS (select distinct _Assay_key from GXD_GelRow);
+
+CREATE TEMP TABLE tmp_delete ON COMMIT DROP
+AS (select tmp_band.*, b.*
 from tmp_band, GXD_GelBand b, GXD_GelRow r, GXD_GelLane l
 WHERE b._GelLane_key = l._GelLane_key
 AND r._GelRow_key = b._GelRow_key
 AND r._Assay_key != l._Assay_key
 AND r._Assay_key = tmp_band._Assay_key
+)
 ;
 
 DELETE FROM GXD_GelBand
-USING GXD_GelBand b, GXD_GelRow r, GXD_GelLane l
-WHERE b._GelLane_key = l._GelLane_key
-AND r._GelRow_key = b._GelRow_key
-AND r._Assay_key != l._Assay_key
-AND r._Assay_key = assayKey
+USING tmp_delete
+WHERE tmp_delete._GelBand_key = GXD_GelBand._GelBand_key
 ;
 
 END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION GXD_removeBadGelBand(int) TO public;
+GRANT EXECUTE ON FUNCTION GXD_removeBadGelBand() TO public;
 
-COMMENT ON FUNCTION mgd.GXD_removeBadGelBand(int) IS 'deletes bad gel lanes';
+COMMENT ON FUNCTION mgd.GXD_removeBadGelBand() IS 'deletes bad gel lanes';
 
 EOSQL
