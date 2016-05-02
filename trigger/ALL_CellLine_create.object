@@ -95,57 +95,6 @@ COMMENT ON FUNCTION mgd.ALL_CellLine_delete() IS 'creates a delete trigger for t
 
 EOSQL
 
---
--- TR12273/IMPC load issue
--- this trigger was added as part of the migration to Postgres in August 2015.
--- however, we do not require an MGI id for a ES Cell Line as these
--- have their own no-MGI accession ids.
---
--- therefore, this trigger was removed.
--- 
---cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
---
---
--- NAME: ALL_CellLine_insert()
---
--- DESCRIPTOIN:
---
---	this insert trigger will call ACC_assignMGI
---	in order to add a distinct MGI accession id
---	to the NEW object
---
--- INPUT:
---	none
---
--- RETURNS:
---	NEW
---
---
---DROP TRIGGER IF EXISTS ALL_CellLine_insert_trigger ON ALL_CellLine;
---DROP FUNCTION IF EXISTS ALL_CellLine_insert();
---
---CREATE OR REPLACE FUNCTION ALL_CellLine_insert() RETURNS TRIGGER AS \$\$
---BEGIN
---
---PERFORM ACC_assignMGI(1001, NEW._CellLine_key, 'ES Cell Line');
---
---RETURN NEW;
---
---END;
---\$\$
---LANGUAGE plpgsql;
---
---GRANT EXECUTE ON FUNCTION ALL_CellLine_insert() TO public;
-
-CREATE TRIGGER ALL_CellLine_insert_trigger
-AFTER INSERT on ALL_CellLine
-FOR EACH ROW
-EXECUTE PROCEDURE ALL_CellLine_insert();
-
-COMMENT ON FUNCTION mgd.ALL_CellLine_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
-
-EOSQL
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
