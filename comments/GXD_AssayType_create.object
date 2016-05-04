@@ -12,13 +12,13 @@ COMMENT ON COLUMN GXD_AssayType.assayType IS 'assay type description';
 
 COMMENT ON COLUMN GXD_AssayType._AssayType_key IS 'primary key';
 
-COMMENT ON COLUMN GXD_AssayType.creation_date IS 'date record was created';
-
 COMMENT ON COLUMN GXD_AssayType.isGelAssay IS 'is assay type a gel assay?  yes (1), no (0)';
 
 COMMENT ON COLUMN GXD_AssayType.isRNAAssay IS 'does assay type detect RNA? yes (1), no (0)';
 
-COMMENT ON COLUMN GXD_AssayType.sequenceNum IS 'Custom order of GXD Assay Types';
+COMMENT ON COLUMN GXD_AssayType.sequenceNum IS 'sequence number for ordering records';
+
+COMMENT ON COLUMN GXD_AssayType.creation_date IS 'date record was created';
 
 COMMENT ON COLUMN GXD_AssayType.modification_date IS 'date record was last modified';
 
