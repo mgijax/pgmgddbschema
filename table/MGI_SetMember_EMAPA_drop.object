@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/19/2016
+#	- TR12223/gxd anatomay II
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop table mgd.MGI_SetMember_EMAPA
+
+CASCADE
+;
+EOSQL

@@ -95,8 +95,6 @@ COMMENT ON FUNCTION mgd.PRB_Probe_delete() IS 'creates a delete trigger for this
 
 EOSQL
 
-***************************************
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --

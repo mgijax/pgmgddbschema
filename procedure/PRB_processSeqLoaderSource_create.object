@@ -69,7 +69,7 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION PRB_processSeqLoaderSource(int,int,int,int,int,int,int,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.PRB_processSeqLoaderSource(int,int,int,int,int,int,int,int,int) IS '';
+COMMENT ON FUNCTION mgd.PRB_processSeqLoaderSource(int,int,int,int,int,int,int,int,int) IS 'process (modify) a Sequence Molecular Source from the Sequence Loader';
 
 EOSQL
 

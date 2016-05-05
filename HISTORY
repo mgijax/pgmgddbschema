@@ -1,74 +1,67 @@
-TAG: pgmgddbschema-6-0-3-11
-DATE: 04/25/2016
+TAG: pgmgddbschema-6-0-4-1
+DATE: 05/05/2016
 STAFF: lec
-CHANGES: 
-1) procedure/GXD_removeBadGelBand_create.object : fix for postgres
+CHANGES:
+TR12223/gxd anatomy II : merge to trunk
 
-TAG: pgmgddbschema-6-0-3-10
-DATE: 04/11/2016
+TAG: pgmgddbschema-tr12223-1
+DATE: 01/07/2016, 05/04/2016
 STAFF: lec
-CHANGES: 
-1) TR12034:table/GXD_AssayType : add sequenceNum
+CHANGES:
+TR12223/gxd anatomy II
+#####
+obsolete:
+GXD_StructureClosure
+GXD_Structure
+GXD_StructureName
+MGI_EMAPS_Mapping
+MGI_Organism_Homology_View
+MAP_Feature_View
+MRK_Types_Summary_View
+ALL_Allele_Strain_View
+ALL_CellLine_Strain_View
+BIB_Summary_View
+GXD_Antibody_Summary_View
+GXD_Assay_Summary_View
+PRB_Summary_View
+VOC_InterPro_Summary_View
+VOC_Term_Gender_View
+VOC_Term_SegmentType_View
+VOC_Vocab_DAG_Summary_View
+VOC_Vocab_Summary_View
+MGI_Organism_Antibody_View
+MGI_Synonym_HumMarker_View
+MGI_TranslationType_View
+MGI_User_Active_View
+######
+conversion:
+  add _Stage_key
+  rename _Structure_key -> _EMAPA_Term_key (VOC_Term_EMAPA)
 
-TAG: pgmgddbschema-6-0-3-9
-TAG: pgmgddbschema-6-0-3-8
-TAG: pgmgddbschema-6-0-3-7
-TAG: pgmgddbschema-6-0-3-6
-TAG: pgmgddbschema-6-0-3-5
-TAG: pgmgddbschema-6-0-3-4
-TAG: pgmgddbschema-6-0-3-3
-TAG: pgmgddbschema-6-0-3-2
-DATE: 04/01/2016, 04/05/2016
-STAFF: lec
-CHANGES: 
-TR12273/IMPC fixes
-1) procedures/VOC_processAnnotHeader_create.object
-2) procedures/VOC_processAnnotHeaderMissing_create.object
-3) trigger/ALL_CellLine_create.object/ALL_CellLine_drop.object
-4) procedure/MRK_mergeWithdrawal_create.object
-4) procedure/MRK_simpleWithdrawal_create.object
-
-TAG: pgmgddbschema-6-0-3-1
-DATE: 03/14/2016
-STAFF: lec
-CHANGES: 
-procedure/MGI_recordMeasurement_create.object/use now() timestamp
-
-TAG: pgmgddbschema-6-0-2-15
-DATE: 02/11/2016
-STAFF: lec
-CHANGES: 
-TR12245/add MGI_Relationship deletes
-MRK_deleteWithdrawal_create.object
-
-TAG: pgmgddbschema-6-0-2-14
-TAG: pgmgddbschema-6-0-2-13
-DATE: 01/28/2016
-STAFF: lec
-CHANGES: add voc_annot checks
-trigger/VOC_Annot_create.object
-
-TAG: pgmgddbschema-6-0-2-12
-TAG: pgmgddbschema-6-0-2-11
-DATE: 01/27/2016
-STAFF: lec
-CHANGES: add voc_annot checks
-trigger/MRK_Marker_create.object
-trigger/GXD_Genotype_create.object
-trigger/ALL_Allele_create.object
-trigger/PRB_Strain_create.object
-
-TAG: pgmgddbschema-6-0-2-10
-DATE: 01/26/2016
-STAFF: lec
-CHANGES: TR12057 RR IDs for genotypes
-1) view/PRB_Strain_Genotype_View_create.object
-
-TAG: pgmgddbschema-6-0-2-9
-DATE: 01/21/2016
-STAFF: sc
-CHANGES: TR12057 RR IDs for genotypes
-1) procedure/ACC_assignMGI_create.object - create RR IDs for genotypes
+ALL_Cre_Cache
+GXD_Expression
+GXD_GelLaneStructure
+GXD_ISResultStructure
+MGI_SetMember
+procedure/GXD_duplicateAssay
+######
+VOC_Term_EMAPA
+- change startStage/endStage to int
+VOC_Term_EMAPS
+-- rename/change "stage" to _Stage_key/int
+and foreign key them to the GXD_TheilerStage table
+######
+added:
+table/MGI_SetMember_EMAPA_create.object
+procedure/GXD_addEMAPASet_create.object
+index/added extra (lower) indexes
+######
+update:
+MRK_OMIM_Cache
+#####
+TR12314/remove wild-type alleles
+procedure/MRK_mergeWithdrawal_create.object 
+procedure/MRK_deleteWithdrawal_create.object
 
 TAG: pgmgddbschema-tr12223-BP
 DATE: 01/07/2016

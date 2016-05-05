@@ -14,11 +14,9 @@ foreach i (\
 ALL_Acc_View_create.object \
 ALL_Allele_CellLine_View_create.object \
 ALL_Allele_Mutation_View_create.object \
-ALL_Allele_Strain_View_create.object \
 ALL_Allele_SubType_View_create.object \
 ALL_Allele_View_create.object \
 ALL_CellLine_Acc_View_create.object \
-ALL_CellLine_Strain_View_create.object \
 ALL_CellLine_View_create.object \
 ALL_CellLine_Derivation_View_create.object \
 ALL_Derivation_Summary_View_create.object \

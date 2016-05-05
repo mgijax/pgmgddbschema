@@ -27,7 +27,7 @@ RETURNS VOID AS
 
 DECLARE
 -- text of error message if one is found
-v_error varchar(255);
+v_error text;
 v_statKey int;
 v_expectsInt int;
 
@@ -116,7 +116,7 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MGI_recordMeasurement(varchar,int,numeric) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_recordMeasurement(varchar,int,numeric) IS '';
+COMMENT ON FUNCTION mgd.MGI_recordMeasurement(varchar,int,numeric) IS 'log a measurement with the given value into mgi_measurement';
 
 EOSQL
 

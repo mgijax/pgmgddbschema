@@ -73,7 +73,7 @@ END IF;
 
 INSERT INTO MGI_Reference_Assoc
 VALUES (v_assocKey, v_refsKey, v_objectKey, v_mgiTypeKey, v_refsTypeKey,
-	v_userKey, v_userKey, current_date, current_date)
+	v_userKey, v_userKey, now(), now())
 ;
 
 

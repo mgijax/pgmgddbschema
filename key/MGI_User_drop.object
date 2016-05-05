@@ -1,7 +1,11 @@
 #!/bin/sh
+
 #
 # History
 #
+# 01/07/2016    lec 
+#       - TR12223/converting _structure_key -> _emapa_term_key/_stage_key
+#	- added MGI_SetMember_EMAPA
 #
 # 02/25/2014    sc
 #       - TR11560 - added MGI_Relationship* FKs
@@ -29,7 +33,9 @@
 # 09/30/2005	lec
 #	- TR 7094; MGI 3.5
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.VOC_Term_EMAPS DROP CONSTRAINT VOC_Term_EMAPS__ModifiedBy_key_fkey CASCADE;
@@ -206,7 +212,11 @@ ALTER TABLE mgd.MGI_Synonym DROP CONSTRAINT MGI_Synonym__CreatedBy_key_fkey CASC
 
 ALTER TABLE mgd.MGI_SetMember DROP CONSTRAINT MGI_SetMember__ModifiedBy_key_fkey CASCADE;
 
-ALTER TABLE mgd.MGI_SetMember DROP CONSTRAINT MGI_SetMember__CreatedBy_key_fkey CASCADE;
+ALTER TABLE mgd.MGI_SetMember DROP CONSTRAINT MGI_SetMember_EMAPA__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_SetMember_EMAPA DROP CONSTRAINT MGI_SetMember__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_SetMember_EMAPA DROP CONSTRAINT MGI_SetMember_EMAPA__CreatedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_Set DROP CONSTRAINT MGI_Set__ModifiedBy_key_fkey CASCADE;
 
@@ -263,10 +273,6 @@ ALTER TABLE mgd.MGI_NoteChunk DROP CONSTRAINT MGI_NoteChunk__CreatedBy_key_fkey 
 ALTER TABLE mgd.MGI_Note DROP CONSTRAINT MGI_Note__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_Note DROP CONSTRAINT MGI_Note__CreatedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_EMAPS_Mapping DROP CONSTRAINT MGI_EMAPS_Mapping__ModifiedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_EMAPS_Mapping DROP CONSTRAINT MGI_EMAPS_Mapping__CreatedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MAP_Coordinate DROP CONSTRAINT MAP_Coordinate__ModifiedBy_key_fkey CASCADE;
 
@@ -383,6 +389,7 @@ ALTER TABLE mgd.ACC_AccessionReference DROP CONSTRAINT ACC_AccessionReference__C
 ALTER TABLE mgd.ACC_Accession DROP CONSTRAINT ACC_Accession__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.ACC_Accession DROP CONSTRAINT ACC_Accession__CreatedBy_key_fkey CASCADE;
+
 ALTER TABLE mgd.MGI_User DROP CONSTRAINT MGI_User_pkey CASCADE;
 
 EOSQL

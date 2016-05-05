@@ -1,8 +1,10 @@
 #!/bin/sh
 
+#
 # History
 #
 # 09/16/2008 - jsb - removed ALL_Label_idx_Allele_key (TR 9037)
+#
 # 02/14/2003 lec
 #	- TR 1892
 #
@@ -19,5 +21,7 @@ create index ALL_Label_idx_label on mgd.ALL_Label (label);
 create index ALL_Label_idx_Label_Status_key on mgd.ALL_Label (_Label_Status_key);
 
 create index ALL_Label_idx_Priority on mgd.ALL_Label (priority);
+
+create index ALL_Label_0 on mgd.ALL_Label (lower(label));
 
 EOSQL

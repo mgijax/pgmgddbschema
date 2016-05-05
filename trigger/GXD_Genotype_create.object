@@ -52,7 +52,6 @@ THEN
         RAISE EXCEPTION E'Genotype is referenced in OMIM/Genotype Annotations';
 END IF; 
 
-
 DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._Genotype_key
 AND a._MGIType_key = 12
@@ -114,8 +113,6 @@ EXECUTE PROCEDURE GXD_Genotype_delete();
 COMMENT ON FUNCTION mgd.GXD_Genotype_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
 
 EOSQL
-
-**************************************
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 

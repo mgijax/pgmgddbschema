@@ -3,6 +3,9 @@
 #
 # History
 #
+# 02/11/2016	lec
+#	- add extra indexes
+#
 # 09/29/2004	lec
 #	- TR 5686
 #
@@ -21,5 +24,7 @@ create index MGI_SynonymType_idx_Organism_key on mgd.MGI_SynonymType (_Organism_
 create index MGI_SynonymType_idx_CreatedBy_key on mgd.MGI_SynonymType (_CreatedBy_key);
 
 create index MGI_SynonymType_idx_ModifiedBy_key on mgd.MGI_SynonymType (_ModifiedBy_key);
+
+create index MGI_SynonymType_0 on mgd.MGI_SynonymType (lower(synonymType));
 
 EOSQL

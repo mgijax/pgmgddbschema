@@ -42,6 +42,8 @@ ALTER TABLE mgd.MRK_Reference DROP CONSTRAINT MRK_Reference__Marker_key_fkey CAS
 
 ALTER TABLE mgd.MRK_OMIM_Cache DROP CONSTRAINT MRK_OMIM_Cache__Marker_key_fkey CASCADE;
 
+ALTER TABLE mgd.MRK_OMIM_Cache DROP CONSTRAINT MRK_OMIM_Cache__OrthologMarker_key_fkey CASCADE;
+
 ALTER TABLE mgd.MRK_Offset DROP CONSTRAINT MRK_Offset__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Notes DROP CONSTRAINT MRK_Notes__Marker_key_fkey CASCADE;

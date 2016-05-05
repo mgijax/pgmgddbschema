@@ -3,7 +3,11 @@
 #
 # History
 #
+# 02/11/2016	lec
+#	- add extra indexes
+#
 # 04/29/2008 - jsb - removed solo index on _Marker_key, added idx_label
+#
 # 02/14/2003 lec
 #	- TR 1892
 #
@@ -26,6 +30,9 @@ drop index if exists mgd.MRK_Label_idx_Organism_key
 ;
 
 drop index if exists mgd.MRK_Label_idx_priority
+;
+
+drop index if exists mgd.MRK_Label_0
 ;
 
 EOSQL

@@ -1,0 +1,23 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_SetMember_EMAPA IS 'A record in this table represents the EMAPA info of a specific Set Member.';
+
+COMMENT ON COLUMN MGI_SetMember_EMAPA._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN MGI_SetMember_EMAPA.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MGI_SetMember_EMAPA.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MGI_SetMember_EMAPA._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN MGI_SetMember_EMAPA._Stage_key IS 'foreign key to GXD_TheilerStage';
+
+COMMENT ON COLUMN MGI_SetMember_EMAPA._SetMember_key IS 'foreign key to MGI_SetMember';
+
+COMMENT ON COLUMN MGI_SetMember_EMAPA._SetMember_EMAPA_key IS 'primary key';
+
+EOSQL

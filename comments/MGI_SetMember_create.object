@@ -16,6 +16,8 @@ COMMENT ON COLUMN MGI_SetMember._ModifiedBy_key IS 'user who last modified the r
 
 COMMENT ON COLUMN MGI_SetMember._Object_key IS 'foreign key to any object defined in ACC_MGIType';
 
+COMMENT ON COLUMN MGI_SetMember.label IS 'label of the member (optional)';
+
 COMMENT ON COLUMN MGI_SetMember.sequenceNum IS 'order of the member within the Set';
 
 COMMENT ON COLUMN MGI_SetMember._Set_key IS 'foreign key to MGI_Set';

@@ -16,4 +16,6 @@ create index VOC_Term_EMAPS_idx_parent on mgd.VOC_Term_EMAPS (_DefaultParent_key
 
 create index VOC_Term_EMAPS_idx_emapa on mgd.VOC_Term_EMAPS (_EMAPA_Term_key);
 
+create index VOC_Term_EMAPS_idx_Stage_key on mgd.VOC_Term_EMAPS (_Stage_key);
+
 EOSQL

@@ -3,6 +3,9 @@
 #
 # History
 #
+# 04/04/2016    lec 
+#       - TR12314/remove wild-type alleles
+#
 # 02/11/2016	lec
 #	- TR12245/add MGI_Relationship deletes
 #
@@ -59,7 +62,7 @@ END IF;
 
 UPDATE MRK_Marker 
 SET name = 'withdrawn', _Marker_Status_key = 2 , 
-	_ModifiedBy_key = v_userKey, modification_date = current_date 
+	_ModifiedBy_key = v_userKey, modification_date = now() 
 WHERE _Marker_key = v_oldKey
 ;
 
@@ -77,6 +80,14 @@ THEN
 	RAISE EXCEPTION E'MRK_deleteWithdrawal: Could not add history';
 	RETURN;
 END IF;
+
+-- Remove old symbol's wild type allele
+DELETE FROM ALL_Allele a
+USING MRK_Marker m
+WHERE m._Marker_key = v_oldKey
+AND m._Marker_key = a._Marker_key
+AND a.isWildType = 1 
+;
 
 -- Remove MGI_Relationships that are annotated to this Marker
 

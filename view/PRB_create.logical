@@ -31,7 +31,6 @@ PRB_Strain_NeedsReview_View_create.object \
 PRB_Strain_Genotype_View_create.object \
 PRB_Strain_Marker_View_create.object \
 PRB_Strain_Summary_View_create.object \
-PRB_Summary_View_create.object \
 PRB_Tissue_Summary_View_create.object 
 do
 $i $*

@@ -4,7 +4,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-COMMENT ON TABLE mgd.BIB_Notes IS 'A record in this table represents a 255-character segment of a Reference s note.';
+COMMENT ON TABLE mgd.BIB_Notes IS 'A record in this table represents a Reference note.';
 
 COMMENT ON COLUMN BIB_Notes.creation_date IS 'date record was created';
 

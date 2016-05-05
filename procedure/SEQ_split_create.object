@@ -33,7 +33,6 @@ v_toAccID acc_accession.accID%TYPE;
 v_idx text;
 v_accID acc_accession.accID%TYPE;
 v_logicalDB int;
-acc_cursor refcursor;
 
 BEGIN
 
@@ -95,7 +94,7 @@ WHILE (v_toSeqIDs != NULL) LOOP
                 DELETE FROM SEQ_Probe_Cache where _Sequence_key = v_toSeqKey;
 
 		-- copy all Accession IDs of v_fromSeqKey to v_toSeqKey - make them all secondary
-		OPEN acc_cursor FOR
+		FOR v_accID, v_logicalDB IN
 		SELECT a1.accID, a1._LogicalDB_key
 		FROM ACC_Accession a1
 		WHERE a1._MGIType_key = 19
@@ -104,21 +103,16 @@ WHILE (v_toSeqIDs != NULL) LOOP
 			WHERE a2._MGIType_key = 19
 			AND a2._Object_key = v_toSeqKey
 			AND a2.accID = a1.accID)
-		;
 		LOOP
-        		FETCH acc_cursor INTO v_accID, v_logicalDB;
-        		EXIT WHEN NOT FOUND;
 			PERFORM ACC_insertNoChecks (1001, v_toSeqKey, v_accID, v_logicalDB, 'Sequence', -1, 0, 0);
 		END LOOP;
-		CLOSE acc_cursor;
-
 	END IF;
 END LOOP;
 
 -- Now make the final necessary modifications to the old Sequence object */
 
 UPDATE SEQ_Sequence
-SET _SequenceStatus_key = v_splitStatusKey, _ModifiedBy_key = 1001, modification_date = current_date
+SET _SequenceStatus_key = v_splitStatusKey, _ModifiedBy_key = 1001, modification_date = now()
 WHERE _Sequence_key = v_fromSeqKey
 ;
 

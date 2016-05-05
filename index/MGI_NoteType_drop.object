@@ -3,6 +3,9 @@
 #
 # History
 #
+# 02/11/2016	lec
+#	- add extra indexes
+#
 # 05/13/2002	lec
 #	- TR 1463; SAO
 #
@@ -19,6 +22,9 @@ drop index if exists mgd.MGI_NoteType_idx_CreatedBy_key
 ;
 
 drop index if exists mgd.MGI_NoteType_idx_ModifiedBy_key
+;
+
+drop index if exists mgd.MGI_NoteType_0
 ;
 
 EOSQL

@@ -57,7 +57,7 @@ END IF;
 
 UPDATE GXD_Antigen
 SET _Source_key = v_newMSOKey,
-modification_date = current_date
+modification_date = now()
 WHERE _Antigen_key = v_objectKey
 ;
 

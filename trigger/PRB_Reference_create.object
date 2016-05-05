@@ -47,8 +47,6 @@ COMMENT ON FUNCTION mgd.PRB_Reference_delete() IS 'delete trigger for this _Obje
 
 EOSQL
 
-***************************************
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --

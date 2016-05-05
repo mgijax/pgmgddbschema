@@ -23,7 +23,6 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-marker_cursor refcursor;
 maxKey int;
 v_markerTypeKey int;
 v_organismKey int;
@@ -46,7 +45,10 @@ DELETE FROM MRK_Location_Cache where _Marker_key = v_markerKey;
 
 maxKey := max(_Cache_key) + 1 from MRK_Location_Cache;
 
-OPEN marker_cursor FOR
+FOR v_chromosome, v_cytogeneticOffset, v_markerTypeKey, v_organismKey, v_cmoffset, 
+    v_sequenceNum, v_startCoordinate, v_endCoordinate, v_strand, v_mapUnits, 
+    v_provider, v_version, v_genomicChromosome
+IN
 select m.chromosome, m.cytogeneticOffset, m._Marker_Type_key, m._Organism_key,
 o.cmoffset, c.sequenceNum,
 f.startCoordinate, f.endCoordinate, f.strand, u.term, cl.abbreviation, cc.version, gc.chromosome as genomicChromosome
@@ -115,13 +117,8 @@ and mc._Sequence_key = c._Sequence_key)
 and not exists (select 1 from MAP_Coord_Feature f
 where m._Marker_key = f._Object_key
 and f._MGIType_key = 2)
-;
-LOOP
-        FETCH marker_cursor INTO v_chromosome, v_cytogeneticOffset, v_markerTypeKey, v_organismKey, v_cmoffset, 
-		v_sequenceNum, v_startCoordinate, v_endCoordinate, v_strand, v_mapUnits, 
-		v_provider, v_version, v_genomicChromosome;
-        EXIT WHEN NOT FOUND;
 
+LOOP
 	INSERT INTO MRK_Location_Cache
 	(_Cache_key, _Marker_key, _Marker_Type_key, _Organism_key, chromosome, sequenceNum, cytogeneticOffset, 
 		cmoffset, genomicChromosome, startCoordinate, endCoordinate, strand, mapUnits, provider, version)
@@ -131,7 +128,6 @@ LOOP
 
 	maxKey := maxKey + 1;
 END LOOP;
-CLOSE marker_cursor;
 
 END;
 \$\$

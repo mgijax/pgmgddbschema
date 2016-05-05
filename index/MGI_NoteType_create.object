@@ -3,6 +3,9 @@
 #
 # History
 #
+# 02/11/2016	lec
+#	- add extra indexes
+#
 # 05/13/2002	lec
 #	- TR 1463; SAO
 #
@@ -19,5 +22,7 @@ create index MGI_NoteType_idx_MGIType_key on mgd.MGI_NoteType (_MGIType_key);
 create index MGI_NoteType_idx_CreatedBy_key on mgd.MGI_NoteType (_CreatedBy_key);
 
 create index MGI_NoteType_idx_ModifiedBy_key on mgd.MGI_NoteType (_ModifiedBy_key);
+
+create index MGI_NoteType_0 on mgd.MGI_NoteType (lower(noteType));
 
 EOSQL

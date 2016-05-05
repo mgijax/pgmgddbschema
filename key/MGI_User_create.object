@@ -3,6 +3,10 @@
 #
 # History
 #
+# 01/07/2016    lec 
+#       - TR12223/converting _structure_key -> _emapa_term_key/_stage_key
+#	- added MGI_SetMember_EMAPA
+#
 # 02/13/2015    sc
 #       - TR 11771; Misc project Hybrid/HGNC human/mouse homology
 #
@@ -217,12 +221,6 @@ ALTER TABLE mgd.MAP_Coordinate ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.M
 ALTER TABLE mgd.MAP_Coordinate ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
 
 
-ALTER TABLE mgd.MGI_EMAPS_Mapping ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
-
-
-ALTER TABLE mgd.MGI_EMAPS_Mapping ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
-
-
 ALTER TABLE mgd.MGI_Note ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
 
 
@@ -311,6 +309,12 @@ ALTER TABLE mgd.MGI_SetMember ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MG
 
 
 ALTER TABLE mgd.MGI_SetMember ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
+
+
+ALTER TABLE mgd.MGI_SetMember_EMAPA ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
+
+
+ALTER TABLE mgd.MGI_SetMember_EMAPA ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
 
 
 ALTER TABLE mgd.MGI_Synonym ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;

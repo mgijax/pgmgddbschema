@@ -75,8 +75,6 @@ COMMENT ON FUNCTION mgd.PRB_Marker_insert() IS 'creates an insert trigger to cal
 
 EOSQL
 
-***************************************
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --

@@ -37,8 +37,8 @@ v_imageType int;
 BEGIN
 
 -- If image_key is valid and a PIX foreign accession number
--- doesnot already exist for the _Image_key and the PIX: accession
--- ID doesnot already exist, the new ID is added to ACC_Accession
+-- does not already exist for the _Image_key and the PIX: accession
+-- ID does not already exist, the new ID is added to ACC_Accession
 -- and the x,y dim update the image record.
 -- ASSUMES:
 -- - _LogicalDB_key for "MGI Image Archive" is 19,
@@ -115,6 +115,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION IMG_setPDO(int,int,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.IMG_setPDO(int,int,int,int) IS '';
+COMMENT ON FUNCTION mgd.IMG_setPDO(int,int,int,int) IS 'add new pix: accession row and update xdim/ydim to images';
 
 EOSQL

@@ -16,8 +16,6 @@ COMMENT ON COLUMN MRK_OMIM_Cache.creation_date IS 'date record was created';
 
 COMMENT ON COLUMN MRK_OMIM_Cache.genotypeDisplay1 IS 'genotype display text for WI';
 
-COMMENT ON COLUMN MRK_OMIM_Cache.genotypeDisplay2 IS 'genotype display text for WI';
-
 COMMENT ON COLUMN MRK_OMIM_Cache.genotypeFootnote IS 'genotype footnote for WI';
 
 COMMENT ON COLUMN MRK_OMIM_Cache._Genotype_key IS 'foreign key to GXD_Genotype';

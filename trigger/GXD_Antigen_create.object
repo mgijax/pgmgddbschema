@@ -95,8 +95,6 @@ COMMENT ON FUNCTION mgd.GXD_Antigen_delete() IS 'creates a delete trigger for th
 
 EOSQL
 
-*************************************
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --

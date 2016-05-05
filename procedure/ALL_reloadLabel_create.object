@@ -21,7 +21,6 @@ RETURNS VOID AS
 
 DECLARE
 v_userKey int;
-allele_cursor refcursor;
 v_labelstatusKey int;
 v_priority int;
 v_label all_label.label%TYPE;
@@ -34,7 +33,7 @@ BEGIN
 
 DELETE FROM ALL_Label WHERE _Allele_key = v_alleleKey;
 
-OPEN allele_cursor FOR
+FOR v_labelstatusKey, v_priority, v_label, v_labelType, v_labelTypeName IN
 SELECT DISTINCT 1 as _Label_Status_key, 1 as priority, 
 a.symbol, 'AS' as labelType, 'allele symbol' as labelTypeName
 FROM ALL_Allele a
@@ -51,18 +50,12 @@ SELECT 1 as _Label_Status_key, 3 as priority,
 s.synonym, 'AY' as labelType, 'synonym' as labelTypeName
 FROM MGI_Synonym_Allele_View s
 WHERE s._Object_key = v_alleleKey
-;
 LOOP
-        FETCH allele_cursor INTO v_labelstatusKey, v_priority, v_label, v_labelType, v_labelTypeName;
-        EXIT WHEN NOT FOUND;
-
 	INSERT INTO ALL_Label 
 	(_Allele_key, _Label_Status_key, priority, label, labelType, labelTypeName, creation_date, modification_date)
-	VALUES (v_alleleKey, v_labelstatusKey, v_priority, v_label, v_labelType, v_labelTypeName, current_date, current_date)
+	VALUES (v_alleleKey, v_labelstatusKey, v_priority, v_label, v_labelType, v_labelTypeName, now(), now())
 	;
-
 END LOOP;
-CLOSE allele_cursor;
 
 END;
 \$\$

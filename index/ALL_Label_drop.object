@@ -22,4 +22,7 @@ drop index if exists mgd.ALL_Label_idx_Label_Status_key
 drop index if exists mgd.ALL_Label_idx_priority
 ;
 
+drop index if exists mgd.ALL_Label_0
+; 
+
 EOSQL

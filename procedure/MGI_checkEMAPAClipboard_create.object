@@ -1,0 +1,79 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/29/2016	kstone
+#	- TR12223/gxd anatomy II
+#
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/MGI_checkEMAPAClipboard_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION MGI_checkEMAPAClipboard (
+v_setmember_key int	/* _setmember_key for clipboard entry */
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_stage_key int;		/* clipboard stage key */
+v_emapa_term_key int;	/* clipboard EMAPA _term_key */
+v_startstage int;		/* clipboard EMAPA startstage for term */
+v_endstage int;		/* clipboard EMAPA endstage for term */
+
+BEGIN
+
+/* Check if this is EMAPA/stage set */
+IF 1046 != (select _set_key from MGI_SetMember where _setmember_key = v_setmember_key)
+THEN
+	return;
+END IF;
+
+
+/* Check for matching stage record */
+
+v_stage_key = (select _stage_key
+	from MGI_SetMember_EMAPA
+	where _setmember_key = v_setmember_key);
+
+IF v_stage_key is NULL THEN
+	return;	
+END IF;
+
+
+/* Check for matching EMAPA record */
+/* gather stage range variables */
+
+select _term_key, startstage, endstage
+    into v_emapa_term_key, v_startstage, v_endstage
+    from VOC_Term_EMAPA vte
+        join MGI_SetMember msm on
+            msm._object_key = vte._term_key
+    where msm._setmember_key = v_setmember_key;
+
+IF v_emapa_term_key is NULL THEN
+	return;	
+END IF;
+
+
+/* Check for valid stage range */
+IF v_stage_key < v_startstage OR v_stage_key > v_endstage THEN
+    RAISE EXCEPTION E'Invalid clipboard stage %, outside range of %-% for _emapa_term_key=: %',
+	v_stage_key, v_startstage, v_endstage, v_emapa_term_key;
+END IF;
+
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MGI_checkEMAPAClipboard(int) TO public;
+
+COMMENT ON FUNCTION mgd.MGI_checkEMAPAClipboard(int) IS 'Validates EMAPA term/stage combo for the given MGI_SetMember';
+
+EOSQL

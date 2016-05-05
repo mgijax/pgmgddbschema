@@ -4,7 +4,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-COMMENT ON TABLE mgd.VOC_Text IS 'A record in this table represents textual information of a Vocabulary Term.  The Term''s definition and example are part of the textual information.  This implements one unlimited-length note per Term and each record represents one 255-char chunk of the note.';
+COMMENT ON TABLE mgd.VOC_Text IS 'A record in this table represents textual information of a Vocabulary Term';
 
 COMMENT ON COLUMN VOC_Text.creation_date IS 'date record was created';
 

@@ -4,7 +4,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-COMMENT ON TABLE mgd.MRK_Notes IS 'A record in this table represents a 255 chunk of note for a Marker.';
+COMMENT ON TABLE mgd.MRK_Notes IS 'A record in this table represents a note for a Marker.';
 
 COMMENT ON COLUMN MRK_Notes.creation_date IS 'date record was created';
 

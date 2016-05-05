@@ -1,7 +1,10 @@
 #!/bin/sh
 
 #
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
+# History
+#
+# 02/11/2016	lec
+#	- add extra indexes
 #
 
 cd `dirname $0` && . ./Configuration
@@ -10,6 +13,9 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 drop index if exists mgd.ACC_MGIType_idx_name
+;
+
+drop index if exists mgd.ACC_MGIType_0
 ;
 
 EOSQL

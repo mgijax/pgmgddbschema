@@ -81,7 +81,7 @@ END IF;
 UPDATE PRB_Probe
 SET _Source_key = v_newMSOKey,
     _ModifiedBy_key = v_modifiedByKey,
-    modification_date = current_date
+    modification_date = now()
 WHERE _Probe_key = v_objectKey
 ;
 

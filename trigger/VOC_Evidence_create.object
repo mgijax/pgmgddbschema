@@ -105,8 +105,6 @@ COMMENT ON FUNCTION mgd.VOC_Evidence_delete() IS 'creates a delete trigger for t
 
 EOSQL
 
-*****************************
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 --
@@ -215,7 +213,7 @@ END IF;
 IF (SELECT a._AnnotType_key FROM VOC_Annot a where NEW._Annot_key = a._Annot_key) = 1000
 THEN
         UPDATE BIB_DataSet_Assoc
-        SET isNeverUsed = 0 , modification_date = current_date, _ModifiedBy_key = 1001
+        SET isNeverUsed = 0 , modification_date = now(), _ModifiedBy_key = 1001
         WHERE _Refs_key = NEW._Refs_key
         AND _DataSet_key = 1005
 	;

@@ -30,8 +30,6 @@ RETURNS VOID AS
 DECLARE
 v_alleleKey int;
 v_modifiedByKey int;
-all_cursor1 refcursor;
-all_cursor2 refcursor;
 
 BEGIN
 
@@ -42,7 +40,7 @@ v_modifiedByKey := _User_key from MGI_User where login like v_modifiedBy;
 PERFORM VOC_processAnnotHeaderMissing (v_annotTypeKey);
 
 -- update transmission status
-OPEN all_cursor1 FOR
+FOR v_alleleKey IN
 SELECT DISTINCT aa._Allele_key
 FROM GXD_AlleleGenotype g, VOC_Annot a, VOC_Evidence e, ALL_Allele aa
 WHERE g._Genotype_key = a._Object_key
@@ -52,23 +50,18 @@ AND aa.isWildType = 0
 AND aa._Transmission_key in (3982952, 3982953)
 AND a._Annot_key = e._Annot_key
 AND e._Refs_key = v_refKey
-;
-
 LOOP
-        FETCH all_cursor1 INTO v_alleleKey;
-        EXIT WHEN NOT FOUND;
     	UPDATE ALL_Allele 
 	SET _Transmission_key = 3982951, 
 	    _ModifiedBy_key = v_modifiedByKey,
-	    modification_date = current_date
+	    modification_date = now()
 	WHERE _Allele_key = v_alleleKey
 	;
     	PERFORM MGI_insertReferenceAssoc (1001, 11, v_alleleKey, v_refKey, 'Transmission');
 END LOOP;
-CLOSE all_cursor1;
 
 -- add used-FC references
-OPEN all_cursor2 FOR
+FOR v_alleleKey IN
 SELECT DISTINCT aa._Allele_key
 FROM GXD_AlleleGenotype g, VOC_Annot a, VOC_Evidence e, ALL_Allele aa
 WHERE g._Genotype_key = a._Object_key
@@ -77,14 +70,11 @@ AND g._Allele_key = aa._Allele_key
 AND aa.isWildType = 0
 AND a._Annot_key = e._Annot_key
 AND e._Refs_key = v_refKey
-;
-
 LOOP
-        FETCH all_cursor2 INTO v_alleleKey;
-        EXIT WHEN NOT FOUND;
     	PERFORM MGI_insertReferenceAssoc (1001, 11, v_alleleKey, v_refKey, 'Used-FC');
 END LOOP;
-CLOSE all_cursor2;
+
+RETURN;
 
 END;
 \$\$

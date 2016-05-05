@@ -19,7 +19,7 @@ historyKey int,
 refKey int,
 eventKey int,
 eventReasonKey int,
-name varchar(255) DEFAULT null,
+name mrk_history.name%TYPE DEFAULT null,
 event_date timestamp DEFAULT null,
 createdByKey int DEFAULT null,
 modifiedByKey int DEFAULT null,
@@ -45,7 +45,7 @@ END IF;
 
 IF event_date IS NULL
 THEN
-	event_date := current_date;
+	event_date := now();
 END IF;
 
 IF createdByKey IS NULL
@@ -60,12 +60,12 @@ END IF;
 
 IF creation_date IS NULL
 THEN
-	creation_date := current_date;
+	creation_date := now();
 END IF;
 
 IF modification_date IS NULL
 THEN
-	modification_date := current_date;
+	modification_date := now();
 END IF;
 
 INSERT INTO MRK_History
@@ -79,8 +79,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MRK_insertHistory(int,int,int,int,int,int,varchar,timestamp,int,int,timestamp,timestamp) TO public;
+GRANT EXECUTE ON FUNCTION MRK_insertHistory(int,int,int,int,int,int,text,timestamp,int,int,timestamp,timestamp) TO public;
 
-COMMENT ON FUNCTION mgd.MRK_insertHistory(int,int,int,int,int,int,varchar,timestamp,int,int,timestamp,timestamp) IS 'insert new history record into mrk_history';
+COMMENT ON FUNCTION mgd.MRK_insertHistory(int,int,int,int,int,int,text,timestamp,int,int,timestamp,timestamp) IS 'insert new history record into mrk_history';
 
 EOSQL

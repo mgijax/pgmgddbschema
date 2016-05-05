@@ -4,7 +4,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-COMMENT ON TABLE mgd.MGI_NoteChunk IS 'A record in this table represents a 255-character segment of a specific Note object (defined in MGI_Note).';
+COMMENT ON TABLE mgd.MGI_NoteChunk IS 'A record in this table represents specific Note object (defined in MGI_Note).';
 
 COMMENT ON COLUMN MGI_NoteChunk._CreatedBy_key IS 'user who created the record';
 

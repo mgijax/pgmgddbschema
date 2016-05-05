@@ -6,7 +6,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 COMMENT ON TABLE mgd.GXD_ISResultStructure IS 'Defines relationship between an In Situ Result and an Anatomical Structure.  One In Situ Result can have one or more Anatomical Structures associated with it.
 
-See GXD_InSituResult, GXD_Structure.';
+See GXD_InSituResult, VOC_Term_EMAPA.';
 
 COMMENT ON COLUMN GXD_ISResultStructure.creation_date IS 'date record was created';
 
@@ -14,6 +14,8 @@ COMMENT ON COLUMN GXD_ISResultStructure.modification_date IS 'date record was la
 
 COMMENT ON COLUMN GXD_ISResultStructure._Result_key IS 'foreign key to GXD_InSituResult';
 
-COMMENT ON COLUMN GXD_ISResultStructure._Structure_key IS 'foreign key to GXD_Structure';
+COMMENT ON COLUMN GXD_ISResultStructure._EMAPA_Term_key IS 'foreign key to VOC_Term where _Vocab_key = 90 (EMAPA)';
+
+COMMENT ON COLUMN GXD_ISResultStructure._Stage_key IS 'foreign key to GXD_TheilerStage';
 
 EOSQL

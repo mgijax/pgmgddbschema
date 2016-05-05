@@ -1,11 +1,17 @@
 #!/bin/sh
+
 #
 # History
+#
+# 01/07/2016    lec 
+#       - TR12223/converting _structure_key -> _emapa_term_key/_stage_key
 #
 # 09/03/2009    lec
 #       - TR 9797/Cre; added ALL_Cre_Cache
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.GXD_AssayNote DROP CONSTRAINT GXD_AssayNote__Assay_key_fkey CASCADE;
@@ -19,6 +25,7 @@ ALTER TABLE mgd.GXD_Specimen DROP CONSTRAINT GXD_Specimen__Assay_key_fkey CASCAD
 ALTER TABLE mgd.GXD_GelLane DROP CONSTRAINT GXD_GelLane__Assay_key_fkey CASCADE;
 
 ALTER TABLE mgd.ALL_Cre_Cache DROP CONSTRAINT ALL_Cre_Cache__Assay_key_fkey CASCADE;
+
 ALTER TABLE mgd.GXD_Assay DROP CONSTRAINT GXD_Assay_pkey CASCADE;
 
 EOSQL

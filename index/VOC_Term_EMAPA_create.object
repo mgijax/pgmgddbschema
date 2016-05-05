@@ -14,4 +14,8 @@ CLUSTER mgd.VOC_Term_EMAPA USING VOC_Term_EMAPA_pkey;
 
 create index VOC_Term_EMAPA_idx_parent on mgd.VOC_Term_EMAPA (_DefaultParent_key);
 
+create index VOC_Term_EMAPA_idx_startStage on mgd.VOC_Term_EMAPA (startStage);
+
+create index VOC_Term_EMAPA_idx_endStage on mgd.VOC_Term_EMAPA (endStage);
+
 EOSQL

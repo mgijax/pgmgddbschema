@@ -3,6 +3,9 @@
 #
 # History
 #
+# 02/11/2016	lec
+#	- add extra indexes
+#
 # 09/29/2004	lec
 #	- TR 5686
 #
@@ -22,6 +25,9 @@ drop index if exists mgd.MGI_SynonymType_idx_CreatedBy_key
 ;
 
 drop index if exists mgd.MGI_SynonymType_idx_ModifiedBy_key
+;
+
+drop index if exists mgd.MGI_SynonymType_0
 ;
 
 EOSQL

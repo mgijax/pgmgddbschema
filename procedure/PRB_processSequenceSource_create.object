@@ -55,7 +55,7 @@ THEN
     UPDATE SEQ_Source_Assoc
     SET _Source_key = v_msoKey,
     	_ModifiedBy_key = v_modifiedByKey,
-    	modification_date = current_date
+    	modification_date = now()
     WHERE _Assoc_key = v_assocKey
     ;
 ELSE
@@ -103,13 +103,13 @@ ELSE
         UPDATE SEQ_Source_Assoc
         SET _Source_key = v_newMSOKey,
 	    _ModifiedBy_key = v_modifiedByKey,
-	    modification_date = current_date
+	    modification_date = now()
         WHERE _Assoc_key = v_assocKey
 	;
     ELSE
         v_newAssocKey := max(_Assoc_key) + 1 from SEQ_Source_Assoc;
         INSERT INTO SEQ_Source_Assoc 
-        VALUES (v_newAssocKey, v_objectKey, v_newMSOKey, v_modifiedByKey, v_modifiedByKey, current_date, current_date)
+        VALUES (v_newAssocKey, v_objectKey, v_newMSOKey, v_modifiedByKey, v_modifiedByKey, now(), now())
 	;
     END IF;
     

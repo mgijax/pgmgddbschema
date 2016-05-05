@@ -181,7 +181,7 @@ THEN
 	   description = v_tissueTreatment,
 	   isCuratorEdited = v_isCuratorEdited,
 	   _ModifiedBy_key = v_modifiedByKey,
-	   modification_date = current_date
+	   modification_date = now()
 	   WHERE _Source_key = v_newMSOKey
 	   ;
 
@@ -203,7 +203,7 @@ THEN
 	   description = v_tissueTreatment,
 	   isCuratorEdited = v_isCuratorEdited,
 	   _ModifiedBy_key = v_modifiedByKey,
-	   modification_date = current_date
+	   modification_date = now()
 	   WHERE _Source_key = v_msoKey
 	   ;
 
@@ -220,7 +220,7 @@ ELSE
 	VALUES (v_newMSOKey, v_segmentTypeKey, v_vectorTypeKey, v_organismKey,
 	    v_strainKey, v_tissueKey, v_genderKey, v_cellLineKey, NULL, NULL, v_tissueTreatment, v_age,
 	    v_ageMin, v_ageMax, v_isCuratorEdited, v_modifiedBykey, v_modifiedBykey,
-	    current_date, current_date)
+	    now(), now())
 	;
 
 	RETURN;

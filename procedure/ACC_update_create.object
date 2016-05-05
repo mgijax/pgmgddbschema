@@ -75,7 +75,7 @@ ELSE
 		   	prefixPart = v_prefixPart,
 		   	numericPart = null,
 		   	_ModifiedBy_key = v_userKey,
-		   	modification_date = current_date
+		   	modification_date = now()
 	       	where _Accession_key = v_accKey;
         ELSE
 		update ACC_Accession
@@ -83,7 +83,7 @@ ELSE
 		   	prefixPart = v_prefixPart,
 		   	numericPart = v_numericPart::integer,
 		   	_ModifiedBy_key = v_userKey,
-		   	modification_date = current_date
+		   	modification_date = now()
 	       	where _Accession_key = v_accKey;
 	END IF;
 
@@ -92,7 +92,7 @@ ELSE
 		update ACC_AccessionReference
 		       set _Refs_key = v_refsKey,
 		           _ModifiedBy_key = v_userKey,
-		           modification_date = current_date
+		           modification_date = now()
 		           where _Accession_key = v_accKey and _Refs_key = v_origRefsKey;
 	END IF;
 

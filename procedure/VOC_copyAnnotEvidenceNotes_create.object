@@ -31,12 +31,12 @@ AND _Object_key = v_fromAnnotEvidenceKey
 CREATE INDEX idx1 ON toAdd(_Note_key);
 
 INSERT INTO MGI_Note
-SELECT v_noteKey + id, v_toAnnotEvidenceKey, 25, _NoteType_key, v_userKey, v_userKey, current_date, current_date
+SELECT v_noteKey + id, v_toAnnotEvidenceKey, 25, _NoteType_key, v_userKey, v_userKey, now(), now()
 FROM toAdd
 ;
 
 INSERT INTO MGI_NoteChunk
-SELECT v_noteKey + id, c.sequenceNum, c.note, v_userKey, v_userKey, current_date, current_date
+SELECT v_noteKey + id, c.sequenceNum, c.note, v_userKey, v_userKey, now(), now()
 FROM toAdd t, MGI_NoteChunk c
 WHERE t._Note_key = c._Note_key
 ;
