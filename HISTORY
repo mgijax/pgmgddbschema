@@ -1,3 +1,11 @@
+TAG: pgmgddbschema-?
+DATE: 05/11/2016
+STAFF: lec
+CHANGES:
+TR6939/replace genotype in assay data" 
+1) procedure/GXD_replaceGenotype
+2) view/GXD_Genotype_Acc_View
+
 TAG: pgmgddbschema-6-0-4-2
 TAG: pgmgddbschema-6-0-4-1
 DATE: 05/05/2016
