@@ -1,0 +1,57 @@
+#!/bin/sh
+
+#
+# History
+#
+# 05/10/2015
+#       - TR 6939/new
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/GXD_mergeGenotype_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION GXD_replaceGenotype (
+v_refsKey int,
+v_oldGenotypeKey int,
+v_newGenotypeKey int
+)
+RETURNS VOID AS
+\$\$
+
+BEGIN
+
+UPDATE GXD_Specimen s
+SET _Genotype_key = v_newGenotypeKey
+FROM GXD_Assay a
+WHERE a._Refs_key = v_refsKey
+and a._Assay_key = s._Assay_key
+and s._Genotype_key = v_oldGenotypeKey
+;
+
+UPDATE GXD_GelLane s
+SET _Genotype_key = v_newGenotypeKey
+FROM GXD_Assay a
+WHERE a._Refs_key = v_refsKey
+and a._Assay_key = s._Assay_key
+and s._Genotype_key = v_oldGenotypeKey
+;
+
+UPDATE GXD_Expression s
+SET _Genotype_key = v_newGenotypeKey
+WHERE s._Refs_key = v_refsKey
+and s._Assay_key = s._Assay_key
+and s._Genotype_key = v_oldGenotypeKey
+;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION GXD_replaceGenotype(int,int,int) TO public;
+
+COMMENT ON FUNCTION mgd.GXD_replaceGenotype(int,int,int) IS 'assay/genotype modify/replace';
+
+EOSQL
