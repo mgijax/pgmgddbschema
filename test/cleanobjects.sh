@@ -8,38 +8,6 @@ touch $LOG
  
 date | tee -a $LOG
  
-#cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0 | tee -a $LOG
-#
-#CREATE TEMP TABLE toDelete
-#as select a.* 
-#from mgi_note a
-#where a._mgitype_key = 3
-#and not exists (select 1 from prb_probe s where a._object_key = s._probe_key)
-#;
-#
-#CREATE INDEX toDelete_idx1 ON toDelete(_Note_key);
-#
-#select * from toDelete;
-#
-#delete FROM mgi_note
-#using toDelete
-#WHERE toDelete._note_key = mgi_note._note_key
-#;
-#
-#select count(a.*)
-#from mgi_note a
-#where a._mgitype_key = 3
-#and not exists (select 1 from prb_probe s where a._object_key = s._probe_key)
-#;
-#
-#select count(a.*)
-#from mgi_note a
-#where a._mgitype_key = 3
-#and exists (select 1 from prb_probe s where a._object_key = s._probe_key)
-#;
-#
-#EOSQL
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0 | tee -a $LOG
 
 CREATE TEMP TABLE toDelete1 AS

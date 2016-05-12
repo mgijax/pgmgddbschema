@@ -3,6 +3,9 @@
 #
 # History
 #
+# lec	05/09/2016
+#	- add verification check for v_nextACC
+#
 # sc	01/21/2015
 #	-TR12057; RR IDs for genotypes
 #
@@ -32,10 +35,11 @@ CREATE OR REPLACE FUNCTION ACC_assignMGI (
 RETURNS VOID AS
 \$\$
 
-/* Assign MGI or J accession number, or RR MGI 
-   Allow override of J accession number
-   Increment ACC_AccessionMax.maxNumericPart
-*/
+--
+-- Assign MGI or J accession number, or RR MGI 
+-- Allow override of J accession number
+-- Increment ACC_AccessionMax.maxNumericPart
+--
 
 DECLARE
 v_nextACC int;
@@ -60,6 +64,16 @@ THEN
     RETURN;
 END IF;
 
+-- check if v_nextACC already exists in ACC_Accession table
+--IF (SELECT count(*) FROM ACC_Accession
+--    WHERE _MGIType_key = v_mgiTypeKey
+--    AND prefixPart = v_prefixPart
+--    AND numericPart = v_nextACC) > 0
+--THEN
+--    RAISE EXCEPTION 'v_nextMGI already exists in ACC_Accession: %', v_nextMGI;
+--    RETURN;
+--END IF;
+
 v_accID := v_prefixPart || v_nextMGI::char(30);
 
 INSERT INTO ACC_Accession 
@@ -77,6 +91,9 @@ THEN
 	WHERE prefixPart = v_prefixPart;
 END IF;
 
+--
+-- add RRID for Genotypes
+--
 IF v_mgiTypeKey = 12
 THEN
     v_nextACC := max(_Accession_key) + 1 FROM ACC_Accession;
@@ -87,8 +104,8 @@ THEN
 	_CreatedBy_key, _ModifiedBy_key)
 	VALUES(v_nextACC, v_rrID, v_prefixPart, v_nextMGI, 179, v_objectKey,
 	v_mgiTypeKey, v_preferred, v_private, v_userKey, v_userKey);
-
 END IF;
+
 RETURN;
 
 END;

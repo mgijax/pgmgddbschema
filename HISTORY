@@ -5,6 +5,10 @@ CHANGES:
 TR6939/replace genotype in assay data" 
 1) procedure/GXD_replaceGenotype
 2) view/GXD_Genotype_Acc_View
+3) fixes to clean up objectCounter.sh:
+index/BIB_Notes_create.object
+index/MLD_Expt_Notes_create.object
+index/MLD_Notes_create.object
 
 TAG: pgmgddbschema-6-0-4-2
 TAG: pgmgddbschema-6-0-4-1

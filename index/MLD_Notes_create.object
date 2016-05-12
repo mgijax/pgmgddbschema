@@ -11,6 +11,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.MLD_Notes USING MLD_Notes_pkey;
 
-create index MLD_Notes_idx_note on mgd.MLD_Notes (note);
+--create index MLD_Notes_idx_note on mgd.MLD_Notes (note);
 
 EOSQL

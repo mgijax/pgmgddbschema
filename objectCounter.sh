@@ -16,11 +16,11 @@ psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*
 
 cd ${TOP}/key
 echo "Primary Keys         `ls *_create.object | wc -l` scripts  (`grep -i 'ADD PRIMARY KEY' *_create.object | wc -l` primary keys)"
-#psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from pg_stat_user_indexes where schemaname = 'mgd' and indexrelname like '%_idx%'" 
+psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from pg_stat_user_indexes where schemaname = 'mgd' and indexrelname like '%_pkey'" 
 
 cd ${TOP}/index
-echo "Indexes         `ls *_create.object | wc -l` scripts  (`grep -i '^create .*index ' *_create.object | wc -l` indexes)"
-psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from pg_stat_user_indexes where schemaname = 'mgd' and indexrelname like '%_idx%'" 
+echo "Indexes         `ls *_create.object | wc -l` scripts  (`grep -i '^create' *_create.object | wc -l` indexes)"
+psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from pg_stat_user_indexes where schemaname = 'mgd' and indexrelname not like '%_pkey'" 
 
 cd ${TOP}/procedure
 echo "Procedures      `ls *_create.object | wc -l` scripts (`grep -i '^CREATE OR REPLACE' *_create.object | wc -l` functios)"

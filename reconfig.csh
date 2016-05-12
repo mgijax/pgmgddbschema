@@ -23,3 +23,4 @@ rm ./logs/trigger/*.log
 ./trigger/trigger_drop.sh
 ./trigger/trigger_create.sh
 
+${PG_DBUTILS}/bin/grantPublicPerms.csh

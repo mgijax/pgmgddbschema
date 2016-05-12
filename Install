@@ -18,6 +18,3 @@ do
     cd ..
 done
 
-mkdir -p ${EXPORTDATA}
-mkdir -p ${EXPORTLOGS}
-
