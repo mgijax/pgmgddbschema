@@ -14,6 +14,7 @@ as
 select a.*, l.name as LogicalDB, s.strain as description
 from ACC_Accession a, ACC_LogicalDB l, GXD_Genotype g, PRB_Strain s
 where a._MGIType_key = 12
+and a.prefixPart = 'MGI:'
 and a._LogicalDB_key = l._LogicalDB_key
 and a._Object_key = g._Genotype_key
 and g._Strain_key = s._Strain_key
