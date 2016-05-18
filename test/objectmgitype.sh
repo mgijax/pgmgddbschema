@@ -218,9 +218,12 @@ and not exists (select 1 from all_allele s where a._object_key = s._allele_key)
 ;
 
 select a.*
-from mgi_note a
+from mgi_note a, VOC_Annot v, VOC_Evidence e
 where a._mgitype_key = 12
-and not exists (select 1 from gxd_genotype s where a._object_key = s._genotype_key)
+and v._Annot_key = e._Annot_key    
+and e._AnnotEvidence_key = a._Object_key    
+and v._AnnotType_key = 1005
+and not exists (select 1 from gxd_genotype s where v._Object_key = s._genotype_key)
 ;
 
 select a.*
@@ -263,6 +266,13 @@ select a.*
 from mgi_note a
 where a._mgitype_key = 41
 and not exists (select 1 from voc_evidence_property s where a._object_key = s._evidenceproperty_key)
+;
+
+-- where the note/mgitype is not equal to the notetype/mgitype
+select a.*, t._mgitype_key, t._notetype_key 
+from mgi_note a, mgi_notetype t 
+where a._notetype_key = t._notetype_key
+and a._mgitype_key != t._mgitype_key
 ;
 
 -- mgi_property
