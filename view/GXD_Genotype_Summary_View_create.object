@@ -30,48 +30,57 @@ select a.*,
        a.accID as mgiID,
        s.strain as subType,
        s.strain || ' ' || a1.symbol || ',' || a2.symbol as description,
-       a1.symbol || ',' || a2.symbol as short_description
+       a1.symbol || ',' || a2.symbol as short_description,
+       l.name as LogicalDB
 from ACC_Accession a
         INNER JOIN GXD_Genotype g on (a._Object_key = g._Genotype_key)
         INNER JOIN PRB_Strain s on (g._Strain_key = s._Strain_key)
         INNER JOIN GXD_AllelePair ap on (g._Genotype_key = ap._Genotype_key)
         INNER JOIN ALL_Allele a1 on (ap._Allele_key_1 = a1._Allele_key)
         INNER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key)
+	INNER JOIN ACC_LogicalDB l on (a._LogicalDB_key = l._LogicalDB_key)
 where a._MGIType_key = 12
 and a._LogicalDB_key = 1
 and a.prefixPart = 'MGI:'
 and a.preferred = 1
+and a._LogicalDB_key = l._LogicalDB_key
 
 union
 select a.*,
        a.accID as mgiID,
        s.strain as subType,
        s.strain || ' ' || a1.symbol as description,
-       a1.symbol as short_description
+       a1.symbol as short_description,
+       l.name as LogicalDB
 from ACC_Accession a
         INNER JOIN GXD_Genotype g on (a._Object_key = g._Genotype_key)
         INNER JOIN PRB_Strain s on (g._Strain_key = s._Strain_key)
         INNER JOIN GXD_AllelePair ap on (g._Genotype_key = ap._Genotype_key
 		and ap._Allele_key_2 is null)
         INNER JOIN ALL_Allele a1 on (ap._Allele_key_1 = a1._Allele_key)
+	INNER JOIN ACC_LogicalDB l on (a._LogicalDB_key = l._LogicalDB_key)
 where a._MGIType_key = 12
 and a._LogicalDB_key = 1
 and a.prefixPart = 'MGI:'
 and a.preferred = 1
+and a._LogicalDB_key = l._LogicalDB_key
 
 union
 select a.*,
        a.accID as mgiID,
        s.strain as subType,
        s.strain as description,
-       null as short_description
+       null as short_description,
+       l.name as LogicalDB
 from ACC_Accession a
         INNER JOIN GXD_Genotype g on (a._Object_key = g._Genotype_key)
         INNER JOIN PRB_Strain s on (g._Strain_key = s._Strain_key)
+	INNER JOIN ACC_LogicalDB l on (a._LogicalDB_key = l._LogicalDB_key)
 where a._MGIType_key = 12
 and a._LogicalDB_key = 1
 and a.prefixPart = 'MGI:'
 and a.preferred = 1
+and a._LogicalDB_key = l._LogicalDB_key
 and not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key)
 
 
