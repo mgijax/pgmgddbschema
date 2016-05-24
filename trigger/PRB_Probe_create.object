@@ -38,6 +38,13 @@ DROP FUNCTION IF EXISTS PRB_Probe_delete();
 CREATE OR REPLACE FUNCTION PRB_Probe_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
+-- delete GXD_ProbePrep records if they are no longer used in Assays
+-- then the system should allow the probe to be deleted
+DELETE FROM GXD_ProbePrep p
+WHERE p._Probe_key = OLD._Probe_key
+AND NOT EXISTS (SELECT 1 FROM GXD_Assay a WHERE p._ProbePrep_key = a._ProbePrep_key)
+;
+
 DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._Probe_key
 AND a._MGIType_key = 3
