@@ -35,6 +35,8 @@ BEGIN
 
 v_asymbol := v_symbol || '<+>';
 
+RAISE NOTICE '%:%:%', v_userKey, v_markerKey, v_asymbol;
+
 PERFORM ALL_insertAllele (
 	v_userKey,
 	v_markerKey,
@@ -45,10 +47,16 @@ PERFORM ALL_insertAllele (
 	v_userKey,
 	v_userKey,
 	v_userKey,
-	now(),
+	current_date,
 	-2,
 	'Not Applicable',
-	'Not Applicable'
+	'Not Applicable',
+        'Approved',
+        null,
+        'Not Applicable',
+        'Not Specified',
+        'Not Specified',
+        'Curated'
 	);
 
 IF NOT FOUND
