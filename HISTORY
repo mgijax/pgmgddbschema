@@ -1,3 +1,9 @@
+TAG: pgmgddbschema-?
+DATE: 06/02/2016
+STAFF: lec
+CHANGES: TR12349/gone-dor & more
+1) table/MGI_User_create.object : added orcID
+
 TAG: pgmgddbschema-tr12349
 DATE: 06/02/2016
 STAFF: lec
