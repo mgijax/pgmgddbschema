@@ -28,11 +28,11 @@ COMMENT ON COLUMN GXD_HTExperiment.arrayDesign IS 'textual description of the ar
 
 COMMENT ON COLUMN GXD_HTExperiment._EvaluatedBy_key IS 'foreign key to MGI_User; user who evaluated this experiment and set its _Relevance_key';
 
-COMMENT ON COLUMN GXD_HTExperiment.evaluation_date IS 'date experiment was evaluated';
+COMMENT ON COLUMN GXD_HTExperiment.evaluated_date IS 'date experiment was evaluated';
 
 COMMENT ON COLUMN GXD_HTExperiment._CuratedBy_key IS 'foreign key to MGI_User; user who curated the experiment, converting it from its raw status';
 
-COMMENT ON COLUMN GXD_HTExperiment.cuated_date IS 'date record was curated';
+COMMENT ON COLUMN GXD_HTExperiment.curated_date IS 'date record was curated';
 
 COMMENT ON COLUMN GXD_HTExperiment._CreatedBy_key IS 'foreign key to MGI_User; user who created the record';
 
