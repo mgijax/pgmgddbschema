@@ -3,6 +3,9 @@
 #
 # History
 #
+# 08/08/2016	jsb
+#	- TR12370 / adding GXD_HT* tables for High-Throughput Indexing project
+#
 # 01/07/2016    lec 
 #       - TR12223/converting _structure_key -> _emapa_term_key/_stage_key
 #
@@ -161,6 +164,24 @@ ALTER TABLE mgd.GXD_GXD_ISResultStructure DROP CONSTRAINT GXD_GXD_ISResultStruct
 ALTER TABLE mgd.GXD_Index_Stages DROP CONSTRAINT GXD_Index_Stages__StageID_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Index_Stages DROP CONSTRAINT GXD_Index_Stages__IndexAssay_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSampleOrganism DROP CONSTRAINT GXD_HTSampleOrganism__OrganismTerm_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Sex_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Relevance_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Emapa_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTExperimentVariable DROP CONSTRAINT GXD_HTExperimentVariable__Term_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__Source_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__TriageState_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__CurationState_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__StudyType_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__Priority_key_fkey CASCADE;
 

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# 08/08/2016	jsb
+#	added for TR12370 / GXD High-Throughput Indexing project
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CLUSTER mgd.GXD_HTExperimentVariable USING GXD_HTExperimentVariable_pkey;
+
+create index GXD_HTExperimentVariable_idx_Experiment_key on mgd.GXD_HTExperimentVariable (_Experiment_key);
+
+create index GXD_HTExperimentVariable_idx_Term_key on mgd.GXD_HTExperimentVariable (_Term_key);
+
+EOSQL

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# History
+#
+# 08/08/2016	jsb
+#	- TR12370 / GXD High-Throughput Indexing project
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.GXD_HTSample ADD PRIMARY KEY (_Sample_key);
+
+ALTER TABLE mgd.GXD_HTSampleOrganism ADD FOREIGN KEY (_Sample_key) REFERENCES mgd.GXD_HTSample ON DELETE CASCADE DEFERRABLE;
+
+EOSQL

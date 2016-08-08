@@ -1,0 +1,15 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_HTExperimentVariable IS 'A record in this table represents one curator-identified experiment variable for an experiment.  Each experiment (GXD_HTExperiment) can have zero or more expression variables associated with it.';
+
+COMMENT ON COLUMN GXD_HTExperimentVariable._ExperimentVariable_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_HTExperimentVariable._Experiment_key IS 'foreign key to GXD_Experiment, identifies the experiment of the variable';
+
+COMMENT ON COLUMN GXD_HTExperimentVariable._Term_key IS 'foreign key to VOC_Term, identifying whether the experiment variable';
+
+EOSQL

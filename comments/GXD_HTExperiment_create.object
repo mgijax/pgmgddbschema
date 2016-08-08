@@ -1,0 +1,45 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_HTExperiment IS 'A record in this table represents one high-througput expression experiment.  There can be zero or more samples per experiment (GXD_HTSample) and zero or more experiment variables (GXD_ExperimentVariable).  Many other experiment attributes are stored as properties (MGI_Property), as notes (MGI_Note), and as accession IDs (ACC_Accession).';
+
+COMMENT ON COLUMN GXD_HTExperiment._Experiment_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_HTExperiment._Source_key IS 'foreign key to VOC_Term, identifies site from which we downloaded raw data for this experiment';
+
+COMMENT ON COLUMN GXD_HTExperiment.name IS 'name/title of the experiment';
+
+COMMENT ON COLUMN GXD_HTExperiment.description IS 'textual description';
+
+COMMENT ON COLUMN GXD_HTExperiment.release_date IS 'date the experiment was first uploaded to source';
+
+COMMENT ON COLUMN GXD_HTExperiment.lastupdate_date IS 'date the experiment was last updated at source';
+
+COMMENT ON COLUMN GXD_HTExperiment._TriageState_key IS 'foreign key to VOC_Term, identifying whether this experiment has been curated or not';
+
+COMMENT ON COLUMN GXD_HTExperiment._CurationState_key IS 'foreign key to VOC_Term, identifying whether curation for this experiment has finished';
+
+COMMENT ON COLUMN GXD_HTExperiment._StudyType_key IS 'foreign key to VOC_Term, identifying whether this experiment is a baseline or differential study';
+
+COMMENT ON COLUMN GXD_HTExperiment.arrayDesign IS 'textual description of the array design';
+
+COMMENT ON COLUMN GXD_HTExperiment._EvaluatedBy_key IS 'foreign key to MGI_User; user who evaluated this experiment and set its _Relevance_key';
+
+COMMENT ON COLUMN GXD_HTExperiment.evaluation_date IS 'date experiment was evaluated';
+
+COMMENT ON COLUMN GXD_HTExperiment._CuratedBy_key IS 'foreign key to MGI_User; user who curated the experiment, converting it from its raw status';
+
+COMMENT ON COLUMN GXD_HTExperiment.cuated_date IS 'date record was curated';
+
+COMMENT ON COLUMN GXD_HTExperiment._CreatedBy_key IS 'foreign key to MGI_User; user who created the record';
+
+COMMENT ON COLUMN GXD_HTExperiment.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_HTExperiment._ModifiedBy_key IS 'foreign key to MGI_User; user who last modified the record';
+
+COMMENT ON COLUMN GXD_HTExperiment.modification_date IS 'date record was last modified';
+
+EOSQL

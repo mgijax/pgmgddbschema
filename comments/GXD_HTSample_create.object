@@ -1,0 +1,41 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_HTSample IS 'A record in this table represents one curated sample for a high-throughput expression experiment (GXD_HTExperiment). Each sample can have accession IDs (ACC_Accession), associated organisms (GXD_HTSampleOrganism), notes (MGI_Note), properties (MGI_Property), and a genotype (GXD_Genotype).';
+
+COMMENT ON COLUMN GXD_HTSample._Sample_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_HTSample._Experiment_key IS 'foreign key to GXD_HTExperiment, identifies the experiment with which this sample is associated';
+
+COMMENT ON COLUMN GXD_HTSample._Relevance_key IS 'foreign key to VOC_Term, identifies if this sample is relevant for GXD or, if not, why not';
+
+COMMENT ON COLUMN GXD_HTSample.name IS 'name/title of the sample';
+
+COMMENT ON COLUMN GXD_HTSample.description IS 'textual description';
+
+COMMENT ON COLUMN GXD_HTSample.age IS 'textual age of the sample';
+
+COMMENT ON COLUMN GXD_HTSample.ageMin IS 'minimum age of the sample (for sorting)';
+
+COMMENT ON COLUMN GXD_HTSample.ageMax IS 'maximum age of the sample (for sorting)';
+
+COMMENT ON COLUMN GXD_HTSample._Sex_key IS 'foreign key to VOC_Term, identifying sex of the sample';
+
+COMMENT ON COLUMN GXD_HTSample._Emapa_key IS 'foreign key to VOC_Term, identifying the EMAPA structure for this sample';
+
+COMMENT ON COLUMN GXD_HTSample._Stage_key IS 'foreign key to GXD_TheilerStage, identifying the Theiler Stage of the sample';
+
+COMMENT ON COLUMN GXD_HTSample._Genotype_key IS 'foreign key to GXD_Genotype, identifying the genotype of the sample';
+
+COMMENT ON COLUMN GXD_HTSample._CreatedBy_key IS 'foreign key to MGI_User; user who created the record';
+
+COMMENT ON COLUMN GXD_HTSample.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_HTSample._ModifiedBy_key IS 'foreign key to MGI_User; user who last modified the record';
+
+COMMENT ON COLUMN GXD_HTSample.modification_date IS 'date record was last modified';
+
+EOSQL
