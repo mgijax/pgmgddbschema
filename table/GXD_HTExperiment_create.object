@@ -23,7 +23,6 @@ create table mgd.GXD_HTExperiment (
 	_TriageState_key	int				null,
 	_CurationState_key	int				null,
 	_StudyType_key		int				null,
-	arrayDesign		text				null,
 	_EvaluatedBy_key	int				null,
 	_CuratedBy_key		int				null,
 	evaluated_date		timestamp DEFAULT now()		not null,
