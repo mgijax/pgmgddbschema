@@ -13,6 +13,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create table mgd.VOC_Marker_Cache (
  	_Term_key	int		not null,
 	_Marker_key	int		not null,
-	annotType	varchar(30)	not null
+	annotType	text		not null
 );
 EOSQL
