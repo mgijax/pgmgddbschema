@@ -15,7 +15,7 @@ create table mgd.GXD_HTExperiment (
 	_Source_key		int            			not null,
 	name			text				null,
 	description		text				null,
-	release_date		timestamp			not null,
+	release_date		timestamp			null,
 	lastupdate_date		timestamp			null,
 	arrayDesign		text				null,
 	assayCount		int				null,
