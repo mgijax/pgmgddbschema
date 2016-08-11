@@ -22,6 +22,8 @@ COMMENT ON COLUMN GXD_HTSample.ageMin IS 'minimum age of the sample (for sorting
 
 COMMENT ON COLUMN GXD_HTSample.ageMax IS 'maximum age of the sample (for sorting)';
 
+COMMENT ON COLUMN GXD_HTSample._Organism_key IS 'foreign key to MGI_Organism, identifying type of organism for the sample';
+
 COMMENT ON COLUMN GXD_HTSample._Sex_key IS 'foreign key to VOC_Term, identifying sex of the sample';
 
 COMMENT ON COLUMN GXD_HTSample._Emapa_key IS 'foreign key to VOC_Term, identifying the EMAPA structure for this sample';
