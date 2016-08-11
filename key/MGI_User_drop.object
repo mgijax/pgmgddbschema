@@ -305,10 +305,6 @@ ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__ModifiedBy_key_fkey CASCADE
 
 ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__CreatedBy_key_fkey CASCADE;
 
-ALTER TABLE mgd.GXD_HTSampleOrganism DROP CONSTRAINT GXD_HTSampleOrganism__ModifiedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.GXD_HTSampleOrganism DROP CONSTRAINT GXD_HTSampleOrganism__CreatedBy_key_fkey CASCADE;
-
 ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__CreatedBy_key_fkey CASCADE;

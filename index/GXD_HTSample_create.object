@@ -14,6 +14,8 @@ create index GXD_HTSample_idx_Experiment_key on mgd.GXD_HTSample (_Experiment_ke
 
 create index GXD_HTSample_idx_Relevance_key on mgd.GXD_HTSample (_Relevance_key);
 
+create index GXD_HTSample_idx_Organism_key on mgd.GXD_HTSample (_Organism_key);
+
 create index GXD_HTSample_idx_Sex_key on mgd.GXD_HTSample (_Sex_key);
 
 create index GXD_HTSample_idx_Emapa_key on mgd.GXD_HTSample (_Emapa_key);

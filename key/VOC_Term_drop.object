@@ -165,8 +165,6 @@ ALTER TABLE mgd.GXD_Index_Stages DROP CONSTRAINT GXD_Index_Stages__StageID_key_f
 
 ALTER TABLE mgd.GXD_Index_Stages DROP CONSTRAINT GXD_Index_Stages__IndexAssay_key_fkey CASCADE;
 
-ALTER TABLE mgd.GXD_HTSampleOrganism DROP CONSTRAINT GXD_HTSampleOrganism__OrganismTerm_key_fkey CASCADE;
-
 ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Sex_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Relevance_key_fkey CASCADE;

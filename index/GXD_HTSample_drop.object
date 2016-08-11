@@ -15,6 +15,9 @@ drop index if exists mgd.GXD_HTSample_idx_Experiment_key
 drop index if exists mgd.GXD_HTSample_idx_Relevance_key
 ;
 
+drop index if exists mgd.GXD_HTSample_idx_Organism_key
+;
+
 drop index if exists mgd.GXD_HTSample_idx_Sex_key
 ;
 

@@ -3,6 +3,9 @@
 #
 # History
 #
+# 08/11/2016	jsb
+#	- TR12370; added GXD_HTSample for GXD High-Throughput Indexing project
+#
 # 08/14/2002	lec
 #	- TR 1463; renamed Species to Organism
 #
@@ -19,6 +22,9 @@ ALTER TABLE mgd.MGI_Organism ADD PRIMARY KEY (_Organism_key);
 
 
 ALTER TABLE mgd.ACC_LogicalDB ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism DEFERRABLE;
+
+
+ALTER TABLE mgd.GXD_HTSample ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism DEFERRABLE;
 
 
 ALTER TABLE mgd.GXD_Antibody ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism DEFERRABLE;
