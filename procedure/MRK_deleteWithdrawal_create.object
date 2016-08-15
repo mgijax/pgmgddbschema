@@ -45,7 +45,7 @@ BEGIN
 
 v_oldName := (SELECT name FROM MRK_Marker
 	 WHERE _Organism_key = 1
-	 AND _Marker_Status_key in (1,3)
+	 AND _Marker_Status_key = 1
 	 AND _Marker_key = v_oldKey);
 
 -- Update MGD offset of old symbol
