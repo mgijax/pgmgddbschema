@@ -13,6 +13,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create table mgd.VOC_Allele_Cache (
  	_Term_key	int		not null,
 	_Allele_key	int		not null,
-	annotType	varchar(60)	not null
+	annotType	text		not null
 );
 EOSQL
