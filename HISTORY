@@ -1,3 +1,16 @@
+TAG: pgmgddbschema-6-0-6-?
+DATE: 08/25
+STAFF: lec
+CHANGES: TR12349/gone-dor & more
+1) table/MGI_User_create.object : added orcID
+2) TR12345/GPAD/GO_Noctua added: VOC_deleteGOGAFRed_create.object
+
+change _Marker_Status_key in (1,3) to "= 1"
+procedure/MRK_alleleWithdrawal_create.object
+procedure/MRK_deleteWithdrawal_create.object
+procedure/MRK_mergeWithdrawal_create.object
+procedure/MRK_simpleWithdrawal_create.object
+
 TAG: pgmgddbschema-6-0-5-3
 DATE: 08/22/2016
 STAFF: lec

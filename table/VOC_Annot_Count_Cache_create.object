@@ -16,6 +16,6 @@ create table mgd.VOC_Annot_Count_Cache (
 	_MGIType_key		int		not null,
 	objectCount		int		not null,
 	annotCount		int		not null,
-	annotType		varchar(30)	not null
+	annotType		text		not null
 );
 EOSQL

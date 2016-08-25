@@ -156,7 +156,7 @@ ALTER TABLE mgd.IMG_Image DROP CONSTRAINT IMG_Image__ImageType_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_GelLaneStructure DROP CONSTRAINT GXD_GelLaneStructure__EMAPA_Term_key_fkey CASCADE;
 
-ALTER TABLE mgd.GXD_GXD_ISResultStructure DROP CONSTRAINT GXD_GXD_ISResultStructure__EMAPA_Term_key_fkey CASCADE;
+ALTER TABLE mgd.GXD_ISResultStructure DROP CONSTRAINT GXD_ISResultStructure__EMAPA_Term_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Index_Stages DROP CONSTRAINT GXD_Index_Stages__StageID_key_fkey CASCADE;
 
