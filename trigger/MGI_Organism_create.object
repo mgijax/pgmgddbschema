@@ -119,7 +119,7 @@ DROP FUNCTION IF EXISTS MGI_Organism_insert();
 CREATE OR REPLACE FUNCTION MGI_Organism_insert() RETURNS TRIGGER AS \$\$
 BEGIN
 
-PERFORM ACC_assignMGI(NEW._Organism_key, 'Organism');
+PERFORM ACC_assignMGI(1001, NEW._Organism_key, 'Organism');
 
 RETURN NEW;
 
