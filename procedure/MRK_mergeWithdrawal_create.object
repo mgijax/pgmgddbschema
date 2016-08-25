@@ -308,7 +308,7 @@ THEN
 		   FROM MRK_Marker 
                    WHERE _Marker_key = v_oldKey
                         AND _Organism_key = 1
-                        AND _Marker_Status_key in (1,3)
+                        AND _Marker_Status_key = 1
 		        AND symbol like '%Rik'
 		   )
 	THEN
