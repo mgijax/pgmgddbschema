@@ -507,6 +507,12 @@ where a._annottype_key in (1008, 1009)
 and not exists (select 1 from prb_strain s where a._object_key = s._strain_key)
 ;
 
+select a.*
+from voc_annot a
+where a._annottype_key in (1018)
+and not exists (select 1 from voc_term s where a._object_key = s._term_key)
+;
+
 EOSQL
 
 date |tee -a $LOG
