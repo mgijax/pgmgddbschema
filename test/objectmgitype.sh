@@ -1,5 +1,20 @@
 #!/bin/sh
 
+#
+# purpose:
+#
+# since we cannot create referential integrity (foreign key) in poostgres for
+# for the _mgitype_key/_object_key instances...
+#
+# this script is meant to find any obsolete _mgitype_key/_object_key instances
+#
+# for example:
+# any instance where the _mgitype_key/_object_key exists in acc_accession, 
+# but does not exist in the "master" object table
+#
+# if a new _mgitype_key is added to the database, then a new test should be added
+#
+
 cd `dirname $0` && . ./Configuration
 
 LOG=$0.log
