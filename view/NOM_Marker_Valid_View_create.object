@@ -18,7 +18,7 @@ as
 select n.*
 from NOM_Marker n, VOC_Term s
 where n._NomenStatus_key = s._Term_key
-and s.term in ('In Progress', 'Reserved')
+and s.term in ('Reserved')
 
 
 
