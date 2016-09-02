@@ -20,6 +20,7 @@ as
 select *
 from MGI_NoteType
 where _NoteType_key in (1030, 1035)
+--where _NoteType_key in (1030, 1035, 1004,1005,1009)
 
 
 
