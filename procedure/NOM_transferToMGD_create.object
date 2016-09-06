@@ -63,8 +63,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION NOM_transferToMGD (
 v_userKey int,
-v_nomenKey int,
-v_transferSynonyms int DEFAULT 1
+v_nomenKey int
 )
 RETURNS VOID AS
 \$\$
@@ -343,9 +342,9 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION NOM_transferToMGD(int,int,int) TO public;
+GRANT EXECUTE ON FUNCTION NOM_transferToMGD(int,int) TO public;
 
-COMMENT ON FUNCTION mgd.NOM_transferToMGD(int,int,int) IS 'create/transfer Marker from NOM_Marker to MRK_Marker';
+COMMENT ON FUNCTION mgd.NOM_transferToMGD(int,int) IS 'create/transfer Marker from NOM_Marker to MRK_Marker';
 
 EOSQL
 
