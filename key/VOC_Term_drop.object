@@ -175,11 +175,13 @@ ALTER TABLE mgd.GXD_HTExperimentVariable DROP CONSTRAINT GXD_HTExperimentVariabl
 
 ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__Source_key_fkey CASCADE;
 
-ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__TriageState_key_fkey CASCADE;
+ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__EvaluationState_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__CurationState_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__StudyType_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__ExperimentType_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__Priority_key_fkey CASCADE;
 
