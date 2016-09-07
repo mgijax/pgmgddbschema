@@ -12,15 +12,19 @@ CLUSTER mgd.GXD_HTExperiment USING GXD_HTExperiment_pkey;
 
 create index GXD_HTExperiment_idx_Source_key on mgd.GXD_HTExperiment (_Source_key);
 
-create index GXD_HTExperiment_idx_TriageState_key on mgd.GXD_HTExperiment (_TriageState_key);
+create index GXD_HTExperiment_idx_EvaluationState_key on mgd.GXD_HTExperiment (_EvaluationState_key);
 
 create index GXD_HTExperiment_idx_CurationState_key on mgd.GXD_HTExperiment (_CurationState_key);
 
 create index GXD_HTExperiment_idx_StudyType_key on mgd.GXD_HTExperiment (_StudyType_key);
 
+create index GXD_HTExperiment_idx_ExperimentType_key on mgd.GXD_HTExperiment (_ExperimentType_key);
+
 create index GXD_HTExperiment_idx_EvaluatedBy_key on mgd.GXD_HTExperiment (_EvaluatedBy_key);
 
-create index GXD_HTExperiment_idx_CuratedBy_key on mgd.GXD_HTExperiment (_CuratedBy_key);
+create index GXD_HTExperiment_idx_InitialCuratedBy_key on mgd.GXD_HTExperiment (_InitialCuratedBy_key);
+
+create index GXD_HTExperiment_idx_LastCuratedBy_key on mgd.GXD_HTExperiment (_LastCuratedBy_key);
 
 create index GXD_HTExperiment_idx_CreatedBy_key on mgd.GXD_HTExperiment (_CreatedBy_key);
 
