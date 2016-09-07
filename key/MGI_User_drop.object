@@ -313,6 +313,12 @@ ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__ModifiedBy_ke
 
 ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__CreatedBy_key_fkey CASCADE;
 
+ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__EvaluatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__InitialCuratedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__LastCuratedBy_key_fkey CASCADE;
+
 ALTER TABLE mgd.GXD_Genotype DROP CONSTRAINT GXD_Genotype__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Genotype DROP CONSTRAINT GXD_Genotype__CreatedBy_key_fkey CASCADE;
