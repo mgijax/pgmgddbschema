@@ -111,6 +111,7 @@ ALTER TABLE mgd.CRS_Matrix DROP CONSTRAINT CRS_Matrix__Marker_key_fkey CASCADE;
 ALTER TABLE mgd.ALL_Knockout_Cache DROP CONSTRAINT ALL_Knockout_Cache__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.ALL_Allele DROP CONSTRAINT ALL_Allele__Marker_key_fkey CASCADE;
+
 ALTER TABLE mgd.MRK_Marker DROP CONSTRAINT MRK_Marker_pkey CASCADE;
 
 EOSQL
