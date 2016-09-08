@@ -5,7 +5,6 @@
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.MLD_ISRegion DROP CONSTRAINT MLD_ISRegion__Expt_key_fkey CASCADE;
 ALTER TABLE mgd.MLD_InSitu DROP CONSTRAINT MLD_InSitu_pkey CASCADE;
 
 EOSQL

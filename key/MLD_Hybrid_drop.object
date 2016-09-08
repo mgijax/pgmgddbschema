@@ -5,7 +5,6 @@
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.MLD_Concordance DROP CONSTRAINT MLD_Concordance__Expt_key_fkey CASCADE;
 ALTER TABLE mgd.MLD_Hybrid DROP CONSTRAINT MLD_Hybrid_pkey CASCADE;
 
 EOSQL
