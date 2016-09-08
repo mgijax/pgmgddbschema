@@ -1,8 +1,11 @@
 #!/bin/sh
+
 #
 # This file was generated automatically by dbschemaScripts.py -- edit with care.
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__AssayType_key_fkey CASCADE;
