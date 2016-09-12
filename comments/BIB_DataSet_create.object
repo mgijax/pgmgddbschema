@@ -24,6 +24,6 @@ COMMENT ON COLUMN BIB_DataSet.modification_date IS 'date record was last modifie
 
 COMMENT ON COLUMN BIB_DataSet._ModifiedBy_key IS 'user who last modified the record';
 
-COMMENT ON COLUMN BIB_DataSet.sequenceNum IS 'sequence number of data set';
+COMMENT ON COLUMN BIB_DataSet.sequenceNum IS 'sequence number for ordering records';
 
 EOSQL
