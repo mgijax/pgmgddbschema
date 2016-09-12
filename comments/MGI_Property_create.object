@@ -4,7 +4,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-COMMENT ON TABLE mgd.MGI_Property IS 'None';
+COMMENT ON TABLE mgd.MGI_Property IS 'A record in this table represents ordered properties, or name-value pairs, of a specific Property Type, for any object defined in ACC_MGIType';
 
 COMMENT ON COLUMN MGI_Property._CreatedBy_key IS 'user who created the record';
 
@@ -18,14 +18,14 @@ COMMENT ON COLUMN MGI_Property._ModifiedBy_key IS 'user who last modified the re
 
 COMMENT ON COLUMN MGI_Property._Object_key IS 'foreign key to any object defined in ACC_MGIType';
 
-COMMENT ON COLUMN MGI_Property._Property_key IS 'None';
+COMMENT ON COLUMN MGI_Property._PropertyTerm_key IS 'foreign key to VOC_Term';
 
-COMMENT ON COLUMN MGI_Property._PropertyTerm_key IS 'None';
+COMMENT ON COLUMN MGI_Property._PropertyType_key IS 'foreign key to MGI_PropertyType';
 
-COMMENT ON COLUMN MGI_Property._PropertyType_key IS 'None';
+COMMENT ON COLUMN MGI_Property.sequenceNum IS 'sequence number for ordering records';
 
-COMMENT ON COLUMN MGI_Property.sequenceNum IS 'None';
+COMMENT ON COLUMN MGI_Property.value IS 'property value';
 
-COMMENT ON COLUMN MGI_Property.value IS 'None';
+COMMENT ON COLUMN MGI_Property._Property_key IS 'primary key';
 
 EOSQL

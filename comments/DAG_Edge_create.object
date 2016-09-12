@@ -20,6 +20,6 @@ COMMENT ON COLUMN DAG_Edge.modification_date IS 'date record was last modified';
 
 COMMENT ON COLUMN DAG_Edge._Parent_key IS 'foreign key to DAG_Node._Node_key';
 
-COMMENT ON COLUMN DAG_Edge.sequenceNum IS 'orders the child within the parent and is unique for a given parent.';
+COMMENT ON COLUMN DAG_Edge.sequenceNum IS 'sequence number for ordering records';
 
 EOSQL
