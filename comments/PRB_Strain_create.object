@@ -10,7 +10,7 @@ COMMENT ON COLUMN PRB_Strain._CreatedBy_key IS 'user who created the record';
 
 COMMENT ON COLUMN PRB_Strain.creation_date IS 'date record was created';
 
-COMMENT ON COLUMN PRB_Strain.geneticBackground IS 'None';
+COMMENT ON COLUMN PRB_Strain.geneticBackground IS 'genetic background/strain prefix';
 
 COMMENT ON COLUMN PRB_Strain.modification_date IS 'date record was last modified';
 

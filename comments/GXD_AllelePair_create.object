@@ -29,9 +29,9 @@ COMMENT ON COLUMN GXD_AllelePair.modification_date IS 'date record was last modi
 
 COMMENT ON COLUMN GXD_AllelePair._ModifiedBy_key IS 'user who last modified the record';
 
-COMMENT ON COLUMN GXD_AllelePair._MutantCellLine_key_1 IS 'None';
+COMMENT ON COLUMN GXD_AllelePair._MutantCellLine_key_1 IS 'foreign key to ALL_CellLine';
 
-COMMENT ON COLUMN GXD_AllelePair._MutantCellLine_key_2 IS 'None';
+COMMENT ON COLUMN GXD_AllelePair._MutantCellLine_key_2 IS 'foreign key to ALL_CellLine';
 
 COMMENT ON COLUMN GXD_AllelePair._PairState_key IS 'foreign key to VOC_Term where _Vocab_key = 39 (Allele Pair State)';
 

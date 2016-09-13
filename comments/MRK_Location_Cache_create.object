@@ -18,7 +18,7 @@ COMMENT ON COLUMN MRK_Location_Cache.cytogeneticOffset IS 'cytogenetic cmOffset'
 
 COMMENT ON COLUMN MRK_Location_Cache.endCoordinate IS 'end genome coordinate';
 
-COMMENT ON COLUMN MRK_Location_Cache.genomicChromosome IS 'None';
+COMMENT ON COLUMN MRK_Location_Cache.genomicChromosome IS 'chromosome';
 
 COMMENT ON COLUMN MRK_Location_Cache.mapUnits IS 'units of genome coordinates';
 

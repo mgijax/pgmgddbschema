@@ -8,7 +8,7 @@ COMMENT ON TABLE mgd.MRK_Cluster IS 'A record in this table defines a relationsh
 
 See MRK_Marker';
 
-COMMENT ON COLUMN MRK_Cluster.cluster_date IS 'None';
+COMMENT ON COLUMN MRK_Cluster.cluster_date IS 'Cluster Date';
 
 COMMENT ON COLUMN MRK_Cluster.clusterID IS 'Cluster Accession ID';
 

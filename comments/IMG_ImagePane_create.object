@@ -8,7 +8,7 @@ COMMENT ON TABLE mgd.IMG_ImagePane IS 'A record in this table represents an Imag
 
 COMMENT ON COLUMN IMG_ImagePane.creation_date IS 'date record was created';
 
-COMMENT ON COLUMN IMG_ImagePane.height IS 'None';
+COMMENT ON COLUMN IMG_ImagePane.height IS 'height of image pdf';
 
 COMMENT ON COLUMN IMG_ImagePane._Image_key IS 'foreign key to IMG_Image';
 
@@ -18,10 +18,10 @@ COMMENT ON COLUMN IMG_ImagePane.modification_date IS 'date record was last modif
 
 COMMENT ON COLUMN IMG_ImagePane.paneLabel IS 'pane label';
 
-COMMENT ON COLUMN IMG_ImagePane.width IS 'None';
+COMMENT ON COLUMN IMG_ImagePane.width IS 'width of image pdf';
 
-COMMENT ON COLUMN IMG_ImagePane.x IS 'None';
+COMMENT ON COLUMN IMG_ImagePane.x IS 'x coordinate of image pdf';
 
-COMMENT ON COLUMN IMG_ImagePane.y IS 'None';
+COMMENT ON COLUMN IMG_ImagePane.y IS 'y coordinate of image pdf';
 
 EOSQL

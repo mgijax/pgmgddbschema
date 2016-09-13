@@ -24,7 +24,7 @@ COMMENT ON COLUMN GXD_Expression.expressed IS 'is Marker expressed in Structure?
 
 COMMENT ON COLUMN GXD_Expression._Expression_key IS 'primary key';
 
-COMMENT ON COLUMN GXD_Expression._GelLane_key IS 'None';
+COMMENT ON COLUMN GXD_Expression._GelLane_key IS 'foreign key to GXD_GelLane';
 
 COMMENT ON COLUMN GXD_Expression._Genotype_key IS 'foreign key to GXD_Genotype';
 
@@ -40,7 +40,7 @@ COMMENT ON COLUMN GXD_Expression.modification_date IS 'date record was last modi
 
 COMMENT ON COLUMN GXD_Expression._Refs_key IS 'foreign key to BIB_Refs';
 
-COMMENT ON COLUMN GXD_Expression._Specimen_key IS 'None';
+COMMENT ON COLUMN GXD_Expression._Specimen_key IS 'foreign key to GXD_Specimen';
 
 COMMENT ON COLUMN GXD_Expression._EMAPA_Term_key IS 'foreign key to VOC_Term where _Vocab_key = 90 (EMAPA)';
 
