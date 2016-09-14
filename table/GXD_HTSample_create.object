@@ -15,7 +15,6 @@ create table mgd.GXD_HTSample (
  	_Experiment_key		int			not null,
 	_Relevance_key		int			not null,
 	name			text			null,
-	description		text			null,
 	age			text			null,
 	ageMin			float			null,
 	ageMax			float			null,

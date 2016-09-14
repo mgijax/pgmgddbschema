@@ -14,8 +14,6 @@ COMMENT ON COLUMN GXD_HTSample._Relevance_key IS 'foreign key to VOC_Term, ident
 
 COMMENT ON COLUMN GXD_HTSample.name IS 'name/title of the sample';
 
-COMMENT ON COLUMN GXD_HTSample.description IS 'textual description';
-
 COMMENT ON COLUMN GXD_HTSample.age IS 'textual age of the sample';
 
 COMMENT ON COLUMN GXD_HTSample.ageMin IS 'minimum age of the sample (for sorting)';
