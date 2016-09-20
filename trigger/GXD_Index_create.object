@@ -79,32 +79,36 @@ CREATE OR REPLACE FUNCTION GXD_Index_insert_before() RETURNS TRIGGER AS \$\$
 
 BEGIN
 
--- no default
+-- if reference is not currently used, no default
 IF NOT EXISTS (SELECT 1 FROM GXD_Index WHERE _Refs_key = NEW._Refs_key)
    AND NEW._Priority_key IS NULL
 THEN
     RAISE EXCEPTION E'Priority Required';
 END IF;
 
--- default is 'Not Applicable'
+-- if reference is not currently used, default is 'Not Applicable'
 IF NOT EXISTS (SELECT 1 FROM GXD_Index WHERE _Refs_key = NEW._Refs_key)
    AND NEW._ConditionalMutants_key IS NULL
 THEN
    NEW._ConditionalMutants_key := 4834242;
 END IF;
 
+-- if reference is used...
 IF EXISTS (SELECT 1 FROM GXD_Index WHERE _Refs_key = NEW._Refs_key)
 THEN
+    -- if priority is null, then use default
     IF NEW._Priority_key IS NULL
     THEN
         NEW._Priority_key := DISTINCT _Priority_key FROM GXD_Index WHERE _Refs_key = NEW._Refs_key;
     END IF;
 
+    -- if conditional is null, then use default
     IF NEW._ConditionalMutants_key IS NULL
     THEN
         NEW._ConditionalMutants_key := DISTINCT _ConditionalMutants_key FROM GXD_Index WHERE _Refs_key = NEW._Refs_key;
     END IF;
 
+    -- same priority/conditional is used for every instance of the reference
     UPDATE GXD_Index
     SET _Priority_key = NEW._Priority_key,
         _ConditionalMutants_key = NEW._ConditionalMutants_key 
