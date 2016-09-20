@@ -90,6 +90,13 @@ THEN
     THEN
         NEW._ConditionalMutants_key := DISTINCT _ConditionalMutants_key FROM GXD_Index WHERE _Refs_key = NEW._Refs_key;
     END IF;
+
+    UPDATE GXD_Index
+    SET _Priority_key = NEW._Priority_key,
+        _ConditionalMutants_key = NEW._ConditionalMutants_key 
+    WHERE _Refs_key = NEW._Refs_key
+    ;
+
 END IF;
 
 RETURN NEW;
