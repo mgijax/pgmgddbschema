@@ -88,9 +88,9 @@ END IF;
 
 -- default is 'Not Applicable'
 IF NOT EXISTS (SELECT 1 FROM GXD_Index WHERE _Refs_key = NEW._Refs_key)
-   AND NEW._ConditionalMutants_key_key IS NULL
+   AND NEW._ConditionalMutants_key IS NULL
 THEN
-   NEW._ConditionalMutants_key_key := 4834242;
+   NEW._ConditionalMutants_key := 4834242;
 END IF;
 
 IF EXISTS (SELECT 1 FROM GXD_Index WHERE _Refs_key = NEW._Refs_key)
