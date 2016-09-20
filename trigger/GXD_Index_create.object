@@ -81,8 +81,15 @@ BEGIN
 
 IF EXISTS (SELECT 1 FROM GXD_Index WHERE _Refs_key = NEW._Refs_key)
 THEN
-    NEW._Priority_key := DISTINCT _Priority_key FROM GXD_Index WHERE _Refs_key = NEW._Refs_key;
-    NEW._ConditionalMutants_key := DISTINCT _ConditionalMutants_key FROM GXD_Index WHERE _Refs_key = NEW._Refs_key;
+    IF NEW._Priority_key IS NULL
+    THEN
+        NEW._Priority_key := DISTINCT _Priority_key FROM GXD_Index WHERE _Refs_key = NEW._Refs_key;
+    END IF;
+
+    IF NEW._ConditionalMutants_key IS NULL
+    THEN
+        NEW._ConditionalMutants_key := DISTINCT _ConditionalMutants_key FROM GXD_Index WHERE _Refs_key = NEW._Refs_key;
+    END IF;
 END IF;
 
 RETURN NEW;
