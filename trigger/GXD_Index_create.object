@@ -83,7 +83,7 @@ BEGIN
 IF NOT EXISTS (SELECT 1 FROM GXD_Index WHERE _Refs_key = NEW._Refs_key)
    AND NEW._Priority_key IS NULL
 THEN
-    RAISE EXCEPTION E'Priority Required';
+    RAISE EXCEPTION E'\nPriority Required';
 END IF;
 
 -- default is 'Not Applicable'
