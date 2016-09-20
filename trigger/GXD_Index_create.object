@@ -52,6 +52,100 @@ AFTER INSERT on GXD_Index
 FOR EACH ROW
 EXECUTE PROCEDURE GXD_Index_insert();
 
-COMMENT ON FUNCTION mgd.GXD_Index_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+COMMENT ON FUNCTION mgd.GXD_Index_insert() IS 'creates an after-insert trigger';
 
 EOSQL
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: GXD_Index_insert_before()
+--
+-- DESCRIPTOIN:
+--
+--	1) set the _Priority_key/_ConditionalMutants_key values to same values as an existing _Refs_key
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IF EXISTS GXD_Index_insert_before_trigger ON GXD_Index;
+DROP FUNCTION IF EXISTS GXD_Index_insert_before();
+
+CREATE OR REPLACE FUNCTION GXD_Index_insert_before() RETURNS TRIGGER AS \$\$
+
+BEGIN
+
+IF EXISTS (SELECT 1 FROM GXD_Index WHERE _Refs_key = NEW._Refs_key)
+THEN
+    NEW._Priority_key := DISTINCT _Priority_key FROM GXD_Index WHERE _Refs_key = NEW._Refs_key;
+    NEW._ConditionalMutants_key := DISTINCT _ConditionalMutants_key FROM GXD_Index WHERE _Refs_key = NEW._Refs_key;
+END IF;
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION GXD_Index_insert_before() TO public;
+
+CREATE TRIGGER GXD_Index_insert_before_trigger
+BEFORE INSERT on GXD_Index
+FOR EACH ROW
+EXECUTE PROCEDURE GXD_Index_insert_before();
+
+COMMENT ON FUNCTION mgd.GXD_Index_insert_before() IS 'creates an before-insert trigger';
+
+EOSQL
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: GXD_Index_update()
+--
+-- DESCRIPTOIN:
+--
+--	1) update all _Priority_key/_ConditionalMutants_key for all instances of NEW._Refs_key
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+DROP TRIGGER IF EXISTS GXD_Index_update_trigger ON GXD_Index;
+DROP FUNCTION IF EXISTS GXD_Index_update();
+
+CREATE OR REPLACE FUNCTION GXD_Index_update() RETURNS TRIGGER AS \$\$
+
+BEGIN
+
+UPDATE GXD_Index
+SET _Priority_key = NEW._Priority_key,
+    _ConditionalMutants_key = NEW._ConditionalMutants_key 
+WHERE _Refs_key = NEW._Refs_key
+;
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION GXD_Index_update() TO public;
+
+CREATE TRIGGER GXD_Index_update_trigger
+AFTER UPDATE OF _Priority_key, _ConditionalMutants_key ON GXD_Index
+FOR EACH ROW
+WHEN (pg_trigger_depth() < 1)
+EXECUTE PROCEDURE GXD_Index_update();
+
+COMMENT ON FUNCTION mgd.GXD_Index_update() IS 'creates an after-update trigger';
+
+EOSQL
+

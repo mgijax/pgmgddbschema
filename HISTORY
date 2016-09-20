@@ -2,6 +2,42 @@ TAG: pgmgddbschema-6-0-6-1
 DATE: 09/12/2016
 STAFF: lec
 CHANGES: TR12349/gone-dor & more
+1) view : all 'drop' statements in 'create' statements
+2) TR11083/obsolete/NOM_Marker
+comments/NOM_Marker_create.object
+index/NOM_Marker_create.object
+index/NOM_Marker_drop.object
+index/index_cluster_create.sh
+key/MGI_User_create.object
+key/MGI_User_drop.object
+key/MRK_EventReason_create.object
+key/MRK_EventReason_drop.object
+key/MRK_Event_create.object
+key/MRK_Event_drop.object
+key/MRK_Types_create.object
+key/MRK_Types_drop.object
+key/NOM_Marker_create.object
+key/NOM_Marker_drop.object
+key/VOC_Term_create.object
+key/VOC_Term_drop.object
+procedure/NOM_transferToMGD_create.object
+table/NOM_Marker_create.object
+table/NOM_Marker_drop.object
+table/NOM_Marker_truncate.object
+trigger/NOM_Marker_create.object
+trigger/NOM_Marker_drop.object
+view/NOM_AccNoRef_View_create.object
+view/NOM_Marker_Valid_View_create.object
+view/NOM_Marker_Valid_View_drop.object
+view/NOM_Marker_View_create.object
+view/NOM_Marker_View_drop.object
+3) trigger/GXD_Index_create.object
+see trigger code for details
+
+TAG: pgmgddbschema-6-0-6-1
+DATE: 09/12/2016
+STAFF: lec
+CHANGES: TR12349/gone-dor & more
 1) table/MGI_User_create.object : added orcID
 2) TR12345/GPAD/GO_Noctua added: VOC_deleteGOGAFRed_create.object
 3) procedure/NOM_transferToMGD_create.object/remove check for "Delete"/obsolete
