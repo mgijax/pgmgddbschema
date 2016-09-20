@@ -79,6 +79,20 @@ CREATE OR REPLACE FUNCTION GXD_Index_insert_before() RETURNS TRIGGER AS \$\$
 
 BEGIN
 
+-- no default
+IF NOT EXISTS (SELECT 1 FROM GXD_Index WHERE _Refs_key = NEW._Refs_key)
+   AND NEW._Priority_key IS NULL
+THEN
+    RAISE EXCEPTION E'Please select a Priority value';
+END IF;
+
+-- default is 'Not Applicable'
+IF NOT EXISTS (SELECT 1 FROM GXD_Index WHERE _Refs_key = NEW._Refs_key)
+   AND NEW._ConditionalMutants_key_key IS NULL
+THEN
+   NEW._ConditionalMutants_key_key := 4834242;
+END IF;
+
 IF EXISTS (SELECT 1 FROM GXD_Index WHERE _Refs_key = NEW._Refs_key)
 THEN
     IF NEW._Priority_key IS NULL
