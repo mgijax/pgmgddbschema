@@ -8,7 +8,7 @@ COMMENT ON TABLE mgd.GXD_Expression IS 'A cache table of redundant Assay results
 
 See GXD_Assay.';
 
-COMMENT ON COLUMN GXD_Expression.age IS 'age of Anatomical Structure';
+COMMENT ON COLUMN GXD_Expression.age IS 'age of anatomical structure';
 
 COMMENT ON COLUMN GXD_Expression.ageMax IS 'maximum age value determined by age field';
 
