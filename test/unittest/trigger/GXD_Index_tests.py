@@ -24,71 +24,51 @@ class InsertUpdateTest(unittest.TestCase):
 	    verify that *all* priority/conditional mutant values 
 	    for same reference is modified
 	    '''
-	    # key constants
-	    CONDITIONAL_KEY = 4834240
-	    NOT_APPLICABLE_KEY = 4834242
-
-	    LOW_PRIORITY_KEY = 74716
-	    HIGH_PRIORITY_KEY = 74714
 
 	    r = db.sql('''
-                    select i.*
-                    from BIB_Citation_Cache r, GXD_Index i
-                    where r.jnumID in ('J:12603')
-                    and r._Refs_key = i._Refs_key
-                    and i._Priority_key != %d
-                    and i._ConditionalMutants_key != %d
-                    ;
-                ''' % (LOW_PRIORITY_KEY, NOT_APPLICABLE_KEY)
-		 , 'auto')
+		    select i
+		    from BIB_Citation_Cache r, GXD_Index i
+		    where r.jnumID in ('J:12603')
+		    and r._Refs_key = i._Refs_key
+		    and i._Priority_key != 74716
+		    ;
+		    ''', 'auto')
             before_count = len(r)
 
-	    # find a single index key for J:12603
-	    single_refs_key = r[0]['_index_key']
-            # update priority and conditional for that record
 	    db.sql('''
 		update GXD_Index 
-		set _Priority_key = %d, 
-		    _ConditionalMutants_key = %d 
-		where _Index_key = %d;
-		''' % (LOW_PRIORITY_KEY, NOT_APPLICABLE_KEY, single_refs_key)
-		, None)
-    
-
-	    r = db.sql('''
-                    select i.*
-                    from BIB_Citation_Cache r, GXD_Index i
-                    where r.jnumID in ('J:12603')
-                    and r._Refs_key = i._Refs_key
-                    and i._Priority_key = %d
-                    and i._ConditionalMutants_key = %d
-                    ;
-                ''' % (LOW_PRIORITY_KEY, NOT_APPLICABLE_KEY)
-		 , 'auto')
-            after_count = len(r)
-
-	    self.assertTrue((before_count == after_count), 'updated priority/conditional')
-
-
-	    # update priority and conditional again
-	    db.sql('''
-		update GXD_Index 
-		set _Priority_key = %d,
-		    _ConditionalMutants_key = %d
-		where _Index_key = %d
-		''' % (HIGH_PRIORITY_KEY, CONDITIONAL_KEY, single_refs_key)
-		, None)
+		set _Priority_key = 74716, 
+		    _ConditionalMutants_key = 4834242
+		where _Index_key = 1327;
+		''', None)
     
 	    r = db.sql('''
 		    select i
 		    from BIB_Citation_Cache r, GXD_Index i
 		    where r.jnumID in ('J:12603')
 		    and r._Refs_key = i._Refs_key
-		    and i._Priority_key = %d
-		    and i._ConditionalMutants_key = %d
+		    and i._Priority_key = 74716
 		    ;
-		    ''' % (HIGH_PRIORITY_KEY, CONDITIONAL_KEY)
-	 	, 'auto')
+		    ''', 'auto')
+            after_count = len(r)
+
+	    self.assertTrue((before_count == after_count), 'updated priority/conditional')
+
+	    db.sql('''
+		update GXD_Index 
+		set _Priority_key = 74714, 
+		    _ConditionalMutants_key = 4834242
+		where _Index_key = 1327;
+		''', None)
+    
+	    r = db.sql('''
+		    select i
+		    from BIB_Citation_Cache r, GXD_Index i
+		    where r.jnumID in ('J:12603')
+		    and r._Refs_key = i._Refs_key
+		    and i._Priority_key != 74716
+		    ;
+		    ''', 'auto')
             before_count = len(r)
 
 	    self.assertTrue((before_count == after_count), 'updated priority/conditional')
