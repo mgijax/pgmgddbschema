@@ -12,7 +12,7 @@ touch $LOG
  
 date | tee -a $LOG
  
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0 | tee -a $LOG
 
 select * from VOC_Term where _Vocab_key = 11;
 select * from VOC_Term where _Vocab_key = 74;
@@ -77,6 +77,38 @@ and i._Marker_key = 27555
 delete from GXD_Index where _Index_key = (select max(_Index_key) from GXD_Index) 
 and _Refs_key = 12567
 and _Marker_key = 27555
+;
+
+--
+-- add
+-- J:1 (75786)
+-- Zan (12180)
+-- Zan (12181)
+--
+
+select r.*
+from BIB_Citation_Cache r
+where r.jnumID in ('J:1')
+and not exists (select 1 from GXD_Index i where r._Refs_key = i._Refs_key)
+;
+
+-- should raise exception
+insert into GXD_Index values((select max(_Index_key) + 1 from GXD_Index), 
+	75786, 12180, null, null, null, 1000, 1000, now(), now())
+;	
+
+-- should work and use default conditional
+insert into GXD_Index values((select max(_Index_key) + 1 from GXD_Index), 
+	75786, 12180, 74714, null, null, 1000, 1000, now(), now())
+;	
+
+select i.*
+from BIB_Citation_Cache r, GXD_Index i
+where r.jnumID in ('J:1')
+and r._Refs_key = i._Refs_key
+;
+
+delete from GXD_Index where _Refs_key = 75786;
 ;
 
 EOSQL
