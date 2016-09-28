@@ -1,6 +1,7 @@
 """
     Test triggers on GXD_Index table
 
+    see trigger/GXD_Index_create.object for more details
 """
 
 import unittest
@@ -181,7 +182,7 @@ class InsertUpdateTest(unittest.TestCase):
 		    and i._Marker_key = 12180
 	    	    ''', 'auto')
             check_count = len(r)
-	    self.assertTrue((1 == check_count), 'new index record; priority = null; should use existing priority values')
+	    self.assertTrue((1 == check_count), 'new index record; priority is null; conditional is null')
 
 	    #####
 
@@ -196,7 +197,7 @@ class InsertUpdateTest(unittest.TestCase):
 	    	    and i._Marker_key = 12181
 	    	    ''', 'auto')
             check_count = len(r)
-	    self.assertTrue((1 == check_count), 'new index record; priority included; should use existing priority')
+	    self.assertTrue((1 == check_count), 'new index record; priority not null; conditional is not null')
 
 	    #####
 
