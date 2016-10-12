@@ -16,4 +16,8 @@ CLUSTER mgd.VOC_GO_Cache USING VOC_GO_Cache_pkey;
 
 create index VOC_GO_Cache_idx_clustered on mgd.VOC_GO_Cache (_Term_key);
 
+create index VOC_GO_Cache_idx_Term_key on mgd.VOC_GO_Cache (_Term_key);
+
+create index VOC_GO_Cache_idx_DAG_key on mgd.VOC_GO_Cache (_DAG_key);
+
 EOSQL

@@ -12,10 +12,12 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.VOC_Annot_Count_Cache (
+	_Cache_key      	SERIAL,
  	_Term_key		int		not null,
 	_MGIType_key		int		not null,
 	objectCount		int		not null,
 	annotCount		int		not null,
 	annotType		text		not null
 );
+
 EOSQL

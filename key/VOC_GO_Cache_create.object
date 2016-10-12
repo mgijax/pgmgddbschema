@@ -9,10 +9,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.VOC_GO_Cache ADD PRIMARY KEY (_Term_key, _DAG_key);
-
+ALTER TABLE mgd.VOC_GO_Cache ADD PRIMARY KEY (_Cache_key);
 
 EOSQL

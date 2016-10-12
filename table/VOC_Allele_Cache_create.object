@@ -11,6 +11,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 /* cache of which alleles are associated with with vocabulary terms */
 create table mgd.VOC_Allele_Cache (
+	_Cache_key      SERIAL,
  	_Term_key	int		not null,
 	_Allele_key	int		not null,
 	annotType	text		not null

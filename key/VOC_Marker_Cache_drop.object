@@ -1,12 +1,16 @@
 #!/bin/sh
+
 #
 # History
 #
 # 03/31/2011	lec
 #	- new
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
 ALTER TABLE mgd.VOC_Marker_Cache DROP CONSTRAINT VOC_Marker_Cache_pkey CASCADE;
 
 EOSQL

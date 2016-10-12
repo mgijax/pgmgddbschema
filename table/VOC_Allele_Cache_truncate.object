@@ -6,11 +6,10 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+truncate table mgd.VOC_Allele_Cache;
 
-truncate table mgd.VOC_Allele_Cache
+ALTER SEQUENCE voc_allele_cache__cache_key_seq RESTART WITH 1;
 
-;
 EOSQL
