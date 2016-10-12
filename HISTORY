@@ -2,6 +2,7 @@ TAG: created tr12427 branch/no tag
 DATE: 10/03/2016
 STAFF: lec 
 TR12427/DO (Disease Ontology)
+TR12083/add cache key to VOC cache tables
 
 TAG: pgmgddbschema-6-0-6-2
 TAG: pgmgddbschema-6-0-6-1
