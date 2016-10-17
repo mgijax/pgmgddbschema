@@ -175,3 +175,239 @@ EXECUTE PROCEDURE MRK_Marker_delete();
 COMMENT ON FUNCTION mgd.MRK_Marker_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
 
 EOSQL
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: MRK_Marker_insert()
+--
+-- DESCRIPTOIN:
+--
+--      this insert trigger will call ACC_assignMGI
+--      in order to add a distinct MGI accession id
+--      to the NEW object
+--
+-- INPUT:
+--      none
+--
+-- RETURNS:
+--      NEW 
+--
+
+DROP TRIGGER IF EXISTS MRK_Marker_insert_trigger ON MRK_Marker;
+DROP FUNCTION IF EXISTS MRK_Marker_insert();
+
+CREATE OR REPLACE FUNCTION MRK_Marker_insert() RETURNS TRIGGER AS \$\$
+
+DECLARE
+v_offset float;
+
+BEGIN
+
+-- Only Mouse Markers use this trigger
+IF (NEW._Organism_key != 1)
+THEN
+    RETURN NEW;
+END IF;
+
+-- No duplicates
+IF (SELECT count(*) FROM MRK_Marker WHERE _Organism_key = 1 AND symbol = NEW.symbol) > 1
+THEN
+    RAISE EXCEPTION E'MRK_Marker_inserrt_trigger: Symbol "%" already exists', NEW.symbol;
+    RETURN NEW;
+END IF;
+
+-- Create Current for new marker
+INSERT INTO MRK_Current VALUES(New._Marker_key, NEW._Marker_key, now(), now());
+
+IF NOT FOUND
+THEN
+    RAISE EXCEPTION E'MRK_Marker_inserrt_trigger: MRK_Current';
+    RETURN NEW;
+END IF;
+
+-- Create Offset for new marker
+
+IF (NEW.chromosome = 'UN')
+THEN
+        v_offset := -999.0;
+ELSE
+        v_offset := -1.0;
+END IF; 
+
+INSERT INTO MRK_Offset VALUES (NEW._Marker_key, 0, v_offset, now(), now());
+
+IF NOT FOUND
+THEN
+    RAISE EXCEPTION E'MRK_Marker_inserrt_trigger: MRK_Offset';
+    RETURN NEW;
+END IF;
+
+-- this is called from the EI/Marker module due to Reference rules
+-- Create History line for new marker
+-- J:23000 : 22864
+--PERFORM MRK_insertHistory (NEW._CreatedBy_key, NEW._Marker_key, NEW._Marker_key, 22864, 1, -1,  NEW.name);
+
+--IF NOT FOUND
+--THEN
+    --RAISE EXCEPTION E'MRK_Marker_inserrt_trigger: MRK_insertHistory';
+    --RETURN NEW;
+--END IF;
+
+-- If marker is 'official', and 'gene', etc., then create wild type Allele
+IF NEW._Marker_Status_key in (1)
+   AND NEW._Marker_Type_key = 1 
+   AND NEW.symbol not like 'mt-%'
+   AND NEW.name not like 'withdrawn, =%' 
+   AND NEW.name not like '%dna segment%'
+   AND NEW.name not like 'EST %'
+   AND NEW.name not like '%expressed sequence%'
+   AND NEW.name not like '%cDNA sequence%'
+   AND NEW.name not like '%gene model%'
+   AND NEW.name not like '%hypothetical protein%'
+   AND NEW.name not like '%ecotropic viral integration site%'        
+   AND NEW.name not like '%viral polymerase%'
+   AND NOT EXISTS (SELECT 1 FROM ALL_Allele where _Marker_key = NEW._Marker_key)
+THEN
+        PERFORM ALL_createWildType (NEW._ModifiedBy_key, NEW._Marker_key, NEW.symbol);
+
+        IF NOT FOUND
+        THEN
+                RAISE EXCEPTION E'MRK_Marker_insert_trigger: ALL_createWildType';
+                RETURN NEW;
+        END IF;
+END IF;
+
+-- Create Accession id for new marker
+PERFORM ACC_assignMGI(1001, NEW._Marker_key, 'Marker');
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MRK_Marker_insert() TO public;
+
+CREATE TRIGGER MRK_Marker_insert_trigger
+AFTER INSERT ON MRK_Marker
+FOR EACH ROW 
+EXECUTE PROCEDURE MRK_Marker_insert();
+
+COMMENT ON FUNCTION mgd.MRK_Marker_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
+
+EOSQL
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP TRIGGER IF EXISTS MRK_Marker_update_trigger ON MRK_Marker;
+DROP FUNCTION IF EXISTS MRK_Marker_update();
+
+CREATE OR REPLACE FUNCTION MRK_Marker_update() RETURNS TRIGGER AS \$\$
+
+BEGIN
+
+-- Only Mouse Markers use this trigger
+IF (NEW._Organism_key != 1)
+THEN
+    RETURN NEW;
+END IF;
+
+--
+-- from: 'reserved' (_Marker_Status_key = 3)
+-- to:  'official' (_Marker_Status_key = 1)
+--
+
+-- and:
+--	reference = J:23000
+--
+
+IF OLD._Marker_Status_key in (3)
+   AND NEW._Marker_Status_key in (1)
+   AND EXISTS (SELECT 1 FROM MRK_History 
+	WHERE _Marker_key = NEW._Marker_key 
+	AND _History_key = NEW._Marker_key
+	AND _Marker_Event_key = 1
+	AND sequenceNum = 1
+	AND _Refs_key = 22864
+	)
+THEN
+	RAISE EXCEPTION E'MRK_Marker_update_trigger: Symbol is using J:23000';
+	RETURN NEW;
+END IF;
+
+-- and:
+--      marker type = 'Gene'
+--      and wild-type allele does not exist
+--      see other conitionals below
+--
+-- then create wild-type allele
+--
+
+IF OLD._Marker_Status_key in (3)
+   AND NEW._Marker_Status_key in (1)
+   AND NEW._Marker_Type_key = 1
+   AND NEW.symbol not like 'mt-%'
+   AND NEW.name not like 'withdrawn, =%'
+   AND NEW.name not like '%dna segment%'
+   AND NEW.name not like 'EST %'
+   AND NEW.name not like '%expressed sequence%'
+   AND NEW.name not like '%cDNA sequence%'
+   AND NEW.name not like '%gene model%'
+   AND NEW.name not like '%hypothetical protein%'
+   AND NEW.name not like '%ecotropic viral integration site%'
+   AND NEW.name not like '%viral polymerase%'
+   AND NOT EXISTS (SELECT 1 FROM ALL_Allele where _Marker_key = NEW._Marker_key)
+THEN
+        PERFORM ALL_createWildType (NEW._ModifiedBy_key, NEW._Marker_key, NEW.symbol);
+
+        IF NOT FOUND
+        THEN
+                RAISE EXCEPTION E'MRK_Marker_update_trigger: ALL_createWildType';
+                RETURN NEW;
+        END IF;
+END IF;
+
+IF OLD._Marker_Status_key in (1) AND NEW._Marker_Status_key in (3)
+	AND (EXISTS (SELECT 1 FROM ALL_Allele WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM ALL_Knockout_Cache WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM GO_Tracking WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM GXD_AlleleGenotype WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM GXD_AllelePair WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM GXD_AntibodyMarker WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM GXD_Assay WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM GXD_Expression WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM GXD_Index WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM MLD_Expt_Marker WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM MRK_ClusterMember WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM MRK_MCV_Cache WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM MRK_OMIM_Cache WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM PRB_Marker WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM PRB_RFLV WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM PRB_Strain_Marker WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM SEQ_Marker_Cache WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM VOC_Marker_Cache WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM WKS_Rosetta WHERE NEW._Marker_key = _Marker_key)
+	     )
+THEN
+	RAISE EXCEPTION E'MRK_Marker_update_trigger: Cannot change "official" to "reserved"';
+	RETURN NEW;
+END IF;
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MRK_Marker_update() TO public;
+
+CREATE TRIGGER MRK_Marker_update_trigger
+AFTER UPDATE ON MRK_Marker
+FOR EACH ROW
+EXECUTE PROCEDURE MRK_Marker_update();
+
+COMMENT ON FUNCTION mgd.MRK_Marker_update() IS 'creates an update trigger';
+
+EOSQL
+

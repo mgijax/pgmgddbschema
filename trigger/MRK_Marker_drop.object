@@ -12,4 +12,12 @@ DROP TRIGGER IF EXISTS MRK_Marker_delete_trigger ON MRK_Marker;
 
 DROP FUNCTION IF EXISTS MRK_Marker_delete();
 
+DROP TRIGGER IF EXISTS MRK_Marker_insert_trigger ON MRK_Marker;
+
+DROP FUNCTION IF EXISTS MRK_Marker_insert();
+
+DROP TRIGGER IF EXISTS MRK_Marker_update_trigger ON MRK_Marker;
+
+DROP FUNCTION IF EXISTS MRK_Marker_update();
+
 EOSQL
