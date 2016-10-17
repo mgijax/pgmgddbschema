@@ -114,13 +114,13 @@ END IF;
 --DELETE FROM ALL_Allele WHERE _Marker_key = v_newKey;
 
 -- Create Offset for new marker
-INSERT INTO MRK_Offset VALUES (v_newKey, 0, -999.0, now(), now());
+--INSERT INTO MRK_Offset VALUES (v_newKey, 0, -999.0, now(), now());
 
-IF NOT FOUND
-THEN
-	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add offset';
-	RETURN;
-END IF;
+--IF NOT FOUND
+--THEN
+	--RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add offset';
+	--RETURN;
+--END IF;
 
 -- Update the Current marker of the new marker
 
@@ -128,7 +128,7 @@ UPDATE MRK_Current
 SET _Current_key = v_oldKey 
 WHERE _Current_key = v_newKey;
 
-INSERT INTO MRK_Current VALUES (v_oldKey, v_newKey, now(), now());
+--INSERT INTO MRK_Current VALUES (v_oldKey, v_newKey, now(), now());
 
 -- Update old marker record with new symbol and name values
 UPDATE MRK_Marker 

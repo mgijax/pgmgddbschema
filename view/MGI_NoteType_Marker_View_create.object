@@ -9,6 +9,7 @@
 # 01/22/2006	lec
 #	- TR 8115
 #
+# where _NoteType_key in (1030,1035)
 
 cd `dirname $0` && . ./Configuration
 
@@ -20,8 +21,7 @@ create view mgd.MGI_NoteType_Marker_View
 as
 select *
 from MGI_NoteType
-where _NoteType_key in (1030,1035)
---where _NoteType_key in (1030,1035,1004,1009)
+where _NoteType_key in (1030,1035,1004,1009)
 
 
 

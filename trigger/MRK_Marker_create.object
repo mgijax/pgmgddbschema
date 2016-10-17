@@ -318,6 +318,7 @@ END IF;
 -- to:  'official' (_Marker_Status_key = 1)
 --
 
+--
 -- and:
 --	reference = J:23000
 --
@@ -332,10 +333,11 @@ IF OLD._Marker_Status_key in (3)
 	AND _Refs_key = 22864
 	)
 THEN
-	RAISE EXCEPTION E'MRK_Marker_update_trigger: Symbol is using J:23000';
+	RAISE NOTICE E'MRK_Marker_update_trigger: Symbol is using J:23000';
 	RETURN NEW;
 END IF;
 
+--
 -- and:
 --      marker type = 'Gene'
 --      and wild-type allele does not exist
