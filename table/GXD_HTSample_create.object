@@ -16,8 +16,6 @@ create table mgd.GXD_HTSample (
 	_Relevance_key		int			not null,
 	name			text			null,
 	age			text			null,
-	ageMin			float			null,
-	ageMax			float			null,
 	_Organism_key		int			not null,
 	_Sex_key		int			not null,
  	_Emapa_key		int			null,
