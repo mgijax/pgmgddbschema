@@ -3,7 +3,7 @@ DATE: 10/03/2016
 STAFF: lec 
 TR12427/DO (Disease Ontology)
 TR12083/add cache key to VOC cache tables
-TR11083/NOM obsolete/merged with MRK_Marker
+TR11083/NOM_Marker obsolete/merged with MRK_Marker
 MRK_simpleWithdrawal_create
 trigger/MRK_Marker_create.object/MRK_Marker_drop.object
 
