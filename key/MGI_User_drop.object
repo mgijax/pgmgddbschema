@@ -148,12 +148,6 @@ ALTER TABLE mgd.PRB_Alias DROP CONSTRAINT PRB_Alias__ModifiedBy_key_fkey CASCADE
 
 ALTER TABLE mgd.PRB_Alias DROP CONSTRAINT PRB_Alias__CreatedBy_key_fkey CASCADE;
 
-ALTER TABLE mgd.NOM_Marker DROP CONSTRAINT NOM_Marker__BroadcastBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.NOM_Marker DROP CONSTRAINT NOM_Marker__ModifiedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.NOM_Marker DROP CONSTRAINT NOM_Marker__CreatedBy_key_fkey CASCADE;
-
 ALTER TABLE mgd.MRK_MCV_Count_Cache DROP CONSTRAINT MRK_MCV_Count_Cache__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_MCV_Count_Cache DROP CONSTRAINT MRK_MCV_Count_Cache__CreatedBy_key_fkey CASCADE;

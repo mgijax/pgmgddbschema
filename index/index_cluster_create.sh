@@ -146,7 +146,6 @@ CLUSTER mgd.MRK_Offset USING MRK_Offset_pkey;
 CLUSTER mgd.MRK_Reference USING MRK_Reference_pkey;
 CLUSTER mgd.MRK_Status USING MRK_Status_pkey;
 CLUSTER mgd.MRK_Types USING MRK_Types_pkey;
-CLUSTER mgd.NOM_Marker USING NOM_Marker_idx_clustered;
 CLUSTER mgd.PRB_Alias USING PRB_Alias_idx_clustered;
 CLUSTER mgd.PRB_Allele_Strain USING PRB_Allele_Strain_pkey;
 CLUSTER mgd.PRB_Allele USING PRB_Allele_idx_clustered;

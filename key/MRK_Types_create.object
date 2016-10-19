@@ -7,7 +7,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.MRK_Types ADD PRIMARY KEY (_Marker_Type_key);
@@ -20,9 +19,6 @@ ALTER TABLE mgd.MRK_Marker ADD FOREIGN KEY (_Marker_Type_key) REFERENCES mgd.MRK
 
 
 ALTER TABLE mgd.MRK_OMIM_Cache ADD FOREIGN KEY (_Marker_Type_key) REFERENCES mgd.MRK_Types DEFERRABLE;
-
-
-ALTER TABLE mgd.NOM_Marker ADD FOREIGN KEY (_Marker_Type_key) REFERENCES mgd.MRK_Types DEFERRABLE;
 
 
 ALTER TABLE mgd.SEQ_GeneModel ADD FOREIGN KEY (_GMMarker_Type_key) REFERENCES mgd.MRK_Types DEFERRABLE;

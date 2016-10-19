@@ -15,7 +15,4 @@ ALTER TABLE mgd.MRK_Event ADD PRIMARY KEY (_Marker_Event_key);
 ALTER TABLE mgd.MRK_History ADD FOREIGN KEY (_Marker_Event_key) REFERENCES mgd.MRK_Event DEFERRABLE;
 
 
-ALTER TABLE mgd.NOM_Marker ADD FOREIGN KEY (_Marker_Event_key) REFERENCES mgd.MRK_Event DEFERRABLE;
-
-
 EOSQL
