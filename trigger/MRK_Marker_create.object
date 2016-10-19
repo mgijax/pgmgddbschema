@@ -313,6 +313,13 @@ THEN
     RETURN NEW;
 END IF;
 
+-- No duplicates
+IF (SELECT count(*) FROM MRK_Marker WHERE _Organism_key = 1 AND symbol = NEW.symbol) > 1
+THEN
+    RAISE EXCEPTION E'MRK_Marker_inserrt_trigger: Symbol "%" already exists', NEW.symbol;
+    RETURN NEW;
+END IF;
+
 --
 -- from: 'reserved' (_Marker_Status_key = 3)
 -- to:  'official' (_Marker_Status_key = 1)
