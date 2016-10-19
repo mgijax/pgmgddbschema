@@ -213,7 +213,7 @@ END IF;
 -- No duplicates
 IF (SELECT count(*) FROM MRK_Marker WHERE _Organism_key = 1 AND symbol = NEW.symbol) > 1
 THEN
-    RAISE EXCEPTION E'MRK_Marker_inserrt_trigger: Symbol "%" already exists', NEW.symbol;
+    RAISE EXCEPTION E'MRK_Marker_insert_trigger: Symbol "%" already exists', NEW.symbol;
     RETURN NEW;
 END IF;
 
@@ -222,7 +222,7 @@ INSERT INTO MRK_Current VALUES(New._Marker_key, NEW._Marker_key, now(), now());
 
 IF NOT FOUND
 THEN
-    RAISE EXCEPTION E'MRK_Marker_inserrt_trigger: MRK_Current';
+    RAISE EXCEPTION E'MRK_Marker_insert_trigger: MRK_Current';
     RETURN NEW;
 END IF;
 
@@ -239,7 +239,7 @@ INSERT INTO MRK_Offset VALUES (NEW._Marker_key, 0, v_offset, now(), now());
 
 IF NOT FOUND
 THEN
-    RAISE EXCEPTION E'MRK_Marker_inserrt_trigger: MRK_Offset';
+    RAISE EXCEPTION E'MRK_Marker_insert_trigger: MRK_Offset';
     RETURN NEW;
 END IF;
 
@@ -250,7 +250,7 @@ END IF;
 
 --IF NOT FOUND
 --THEN
-    --RAISE EXCEPTION E'MRK_Marker_inserrt_trigger: MRK_insertHistory';
+    --RAISE EXCEPTION E'MRK_Marker_insert_trigger: MRK_insertHistory';
     --RETURN NEW;
 --END IF;
 
@@ -316,7 +316,7 @@ END IF;
 -- No duplicates
 IF (SELECT count(*) FROM MRK_Marker WHERE _Organism_key = 1 AND symbol = NEW.symbol) > 1
 THEN
-    RAISE EXCEPTION E'MRK_Marker_inserrt_trigger: Symbol "%" already exists', NEW.symbol;
+    RAISE EXCEPTION E'MRK_Marker_insert_trigger: Symbol "%" already exists', NEW.symbol;
     RETURN NEW;
 END IF;
 
