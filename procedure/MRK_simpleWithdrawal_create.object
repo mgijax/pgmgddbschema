@@ -93,10 +93,9 @@ THEN
 END IF;
 
 -- Create a new marker record using the old marker record as the template
-
 INSERT INTO MRK_Marker 
 (_Marker_key, _Organism_key, _Marker_Type_key, _Marker_Status_key, symbol, name, chromosome, _CreatedBy_key, _ModifiedBy_key)
-SELECT v_newKey, _Organism_key, _Marker_Type_key, 2, symbol, v_withdrawnName, chromosome, v_userKey, v_userKey
+SELECT v_newKey, _Organism_key, _Marker_Type_key, 2, symbol||'_tmp', v_withdrawnName, chromosome, v_userKey, v_userKey
 FROM MRK_Marker
 WHERE _Marker_key = v_oldKey
 ;
@@ -128,12 +127,18 @@ UPDATE MRK_Current
 SET _Current_key = v_oldKey 
 WHERE _Current_key = v_newKey;
 
+-- handled by trigger
 --INSERT INTO MRK_Current VALUES (v_oldKey, v_newKey, now(), now());
 
 -- Update old marker record with new symbol and name values
 UPDATE MRK_Marker 
 SET symbol = v_newSymbol, name = v_newName, _ModifiedBy_key = v_userKey, modification_date = now()
 WHERE _Marker_key = v_oldKey;
+
+-- Update old marker record with old symbol (remove '_tmp')
+UPDATE MRK_Marker 
+SET symbol = symbol
+WHERE _Marker_key = v_newKey;
 
 -- Update history lines
 UPDATE MRK_History 
@@ -162,17 +167,17 @@ END IF;
 
 -- If marker type = 'gene' (1) and no wild type allele exists for new symbol, create it
 
-IF (SELECT _Marker_Type_key FROM MRK_Marker WHERE _Marker_key = v_newKey) = 1
-	AND NOT EXISTS (SELECT 1 FROM ALL_Allele WHERE _Marker_key = v_oldKey AND isWildType = 1)
-THEN
-	PERFORM ALL_createWildType (v_userKey, v_oldKey, v_newSymbol);
+--IF (SELECT _Marker_Type_key FROM MRK_Marker WHERE _Marker_key = v_newKey) = 1
+	--AND NOT EXISTS (SELECT 1 FROM ALL_Allele WHERE _Marker_key = v_oldKey AND isWildType = 1)
+--THEN
+	--PERFORM ALL_createWildType (v_userKey, v_oldKey, v_newSymbol);
 
-	IF NOT FOUND
-	THEN
-		RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add wild type allele';
-		RETURN;
-	END IF;
-END IF;
+	--IF NOT FOUND
+	--THEN
+		--RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add wild type allele';
+		--RETURN;
+	--END IF;
+--END IF;
 
 -- Convert Alleles, if necessary
 
