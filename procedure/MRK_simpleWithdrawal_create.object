@@ -49,6 +49,7 @@ RETURNS VOID AS
 DECLARE
 v_newKey int;
 v_withdrawnName mrk_marker.name%TYPE;
+v_savesymbol mrk_marker.symbol%TYPE;
 
 BEGIN
 
@@ -91,6 +92,8 @@ THEN
 	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Duplicate Symbol (%)', v_newSymbol;
 	RETURN;
 END IF;
+
+v_savesymbol := symbol FROM MRK_Marker WHERE _Marker_key = v_oldKey;
 
 -- Create a new marker record using the old marker record as the template
 INSERT INTO MRK_Marker 
@@ -137,7 +140,7 @@ WHERE _Marker_key = v_oldKey;
 
 -- Update old marker record with old symbol (remove '_tmp')
 UPDATE MRK_Marker 
-SET symbol = symbol
+SET symbol = v_savesymbol
 WHERE _Marker_key = v_newKey;
 
 -- Update history lines
