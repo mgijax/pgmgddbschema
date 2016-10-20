@@ -211,7 +211,7 @@ THEN
 END IF;
 
 -- No duplicates
-IF (SELECT count(*) FROM MRK_Marker WHERE _Organism_key = 1 AND symbol = NEW.symbol) > 1
+IF (SELECT count(*) FROM MRK_Marker WHERE _Organism_key = 1 AND _Marker_Status_key in (1,3) AND symbol = NEW.symbol) > 1
 THEN
     RAISE EXCEPTION E'MRK_Marker_insert_trigger: Symbol "%" already exists', NEW.symbol;
     RETURN NEW;
@@ -314,7 +314,7 @@ THEN
 END IF;
 
 -- No duplicates
-IF (SELECT count(*) FROM MRK_Marker WHERE _Organism_key = 1 AND symbol = NEW.symbol) > 1
+IF (SELECT count(*) FROM MRK_Marker WHERE _Organism_key = 1 AND _Marker_Status_key in (1,3) AND symbol = NEW.symbol) > 1
 THEN
     RAISE EXCEPTION E'MRK_Marker_insert_trigger: Symbol "%" already exists', NEW.symbol;
     RETURN NEW;
