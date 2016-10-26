@@ -6,13 +6,13 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 COMMENT ON TABLE mgd.ALL_Cre_Cache IS 'A record in this table represents the cached values of a Cre Allele (that may/may not contain Assay information).  See ALL_Allele, GXD_Assay, allcacheload/allelecrecache.csh.';
 
-COMMENT ON COLUMN ALL_Cre_Cache.accID IS 'None';
+COMMENT ON COLUMN ALL_Cre_Cache.accID IS 'accession id';
 
-COMMENT ON COLUMN ALL_Cre_Cache.age IS 'None';
+COMMENT ON COLUMN ALL_Cre_Cache.age IS 'age of anatomical structure';
 
-COMMENT ON COLUMN ALL_Cre_Cache.ageMax IS 'None';
+COMMENT ON COLUMN ALL_Cre_Cache.ageMax IS 'maximum age value determined by age field';
 
-COMMENT ON COLUMN ALL_Cre_Cache.ageMin IS 'None';
+COMMENT ON COLUMN ALL_Cre_Cache.ageMin IS 'minimum age value determined by age field';
 
 COMMENT ON COLUMN ALL_Cre_Cache._Allele_key IS 'foreign key to ALL_Allele';
 
@@ -32,7 +32,7 @@ COMMENT ON COLUMN ALL_Cre_Cache.driverNote IS 'MGI_NoteType._NoteType_key = 1034
 
 COMMENT ON COLUMN ALL_Cre_Cache.expressed IS 'if 1 (true), then this Assay is expressing this Structure, else 0';
 
-COMMENT ON COLUMN ALL_Cre_Cache.hasImage IS 'None';
+COMMENT ON COLUMN ALL_Cre_Cache.hasImage IS 'does this record have an image?';
 
 COMMENT ON COLUMN ALL_Cre_Cache.modification_date IS 'date record was last modified';
 

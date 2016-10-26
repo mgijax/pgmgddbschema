@@ -148,7 +148,7 @@ AFTER UPDATE OF _Strain_key ON ALL_CellLine
 FOR EACH ROW
 EXECUTE PROCEDURE ALL_CellLine_update1();
 
-COMMENT ON FUNCTION mgd.ALL_CellLine_update1() IS 'update trigger: _Strain_key';
+COMMENT ON FUNCTION mgd.ALL_CellLine_update1() IS 'creates an update trigger: _Strain_key';
 
 --------------------------------------------
 
@@ -181,6 +181,6 @@ AFTER UPDATE OF _Derivation_key ON ALL_CellLine
 FOR EACH ROW
 EXECUTE PROCEDURE ALL_CellLine_update2();
 
-COMMENT ON FUNCTION mgd.ALL_CellLine_update2() IS 'update trigger: _Derivation_key';
+COMMENT ON FUNCTION mgd.ALL_CellLine_update2() IS 'creates an update trigger: _Derivation_key';
 
 EOSQL

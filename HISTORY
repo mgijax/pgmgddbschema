@@ -9,6 +9,79 @@ STAFF: jsb
 CHANGES:
 1) branch point for GXD High-Throughput Indexing project
 
+TAG: pgmgddbschema-6-0-6-3
+DATE: 10/24/2016
+STAFF: lec 
+TR11083/obsolete/NOM_Marker
+procedure/NOM_transferToMGD_create.object
+
+TAG: created tr12427 branch/no tag 
+DATE: 10/03/2016
+STAFF: lec 
+TR12427/DO (Disease Ontology)
+
+TAG: pgmgddbschema-6-0-6-2
+TAG: pgmgddbschema-6-0-6-1
+DATE: 09/12/2016, 09/26/2016
+STAFF: lec
+CHANGES: TR12349/gone-dor & more
+1) view : all 'drop' statements in 'create' statements
+2) TR11083/obsolete/NOM_Marker
+comments/NOM_Marker_create.object
+index/NOM_Marker_create.object
+index/NOM_Marker_drop.object
+index/index_cluster_create.sh
+key/MGI_User_create.object
+key/MGI_User_drop.object
+key/MRK_EventReason_create.object
+key/MRK_EventReason_drop.object
+key/MRK_Event_create.object
+key/MRK_Event_drop.object
+key/MRK_Types_create.object
+key/MRK_Types_drop.object
+key/NOM_Marker_create.object
+key/NOM_Marker_drop.object
+key/VOC_Term_create.object
+key/VOC_Term_drop.object
+procedure/NOM_transferToMGD_create.object
+table/NOM_Marker_create.object
+table/NOM_Marker_drop.object
+table/NOM_Marker_truncate.object
+trigger/NOM_Marker_create.object
+trigger/NOM_Marker_drop.object
+view/NOM_AccNoRef_View_create.object
+view/NOM_Marker_Valid_View_create.object
+view/NOM_Marker_Valid_View_drop.object
+view/NOM_Marker_View_create.object
+view/NOM_Marker_View_drop.object
+3) trigger/GXD_Index_create.object
+see trigger code for details
+
+TAG: pgmgddbschema-6-0-6-1
+DATE: 09/12/2016
+STAFF: lec
+CHANGES: TR12349/gone-dor & more
+1) table/MGI_User_create.object : added orcID
+2) TR12345/GPAD/GO_Noctua added: VOC_deleteGOGAFRed_create.object
+3) procedure/NOM_transferToMGD_create.object/remove check for "Delete"/obsolete
+
+change _Marker_Status_key in (1,3) to "= 1"
+procedure/MRK_alleleWithdrawal_create.object
+procedure/MRK_deleteWithdrawal_create.object
+procedure/MRK_mergeWithdrawal_create.object
+procedure/MRK_simpleWithdrawal_create.object
+
+TAG: pgmgddbschema-6-0-5-3
+DATE: 08/22/2016
+STAFF: lec
+CHANGES:
+1) TR12414
+trigger/MGI_Organism_create.object
+
+TAG: pgmgddbschema-6-0-5-2
+TAG: pgmgddbschema-6-0-5-1
+????
+
 TAG: pgmgddbschema-tr12267-1
 DATE: 06/01/2016
 STAFF: sc

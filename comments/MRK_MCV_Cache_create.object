@@ -10,7 +10,7 @@ COMMENT ON COLUMN MRK_MCV_Cache._CreatedBy_key IS 'user who created the record';
 
 COMMENT ON COLUMN MRK_MCV_Cache.creation_date IS 'date record was created';
 
-COMMENT ON COLUMN MRK_MCV_Cache.directTerms IS 'None';
+COMMENT ON COLUMN MRK_MCV_Cache.directTerms IS 'direct vocabulary terms';
 
 COMMENT ON COLUMN MRK_MCV_Cache._Marker_key IS 'foreign key to MRK_Marker';
 

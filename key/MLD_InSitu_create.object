@@ -12,7 +12,4 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.MLD_InSitu ADD PRIMARY KEY (_Expt_key);
 
 
-ALTER TABLE mgd.MLD_ISRegion ADD FOREIGN KEY (_Expt_key) REFERENCES mgd.MLD_InSitu DEFERRABLE;
-
-
 EOSQL

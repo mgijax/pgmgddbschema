@@ -31,6 +31,7 @@
 
 cd `dirname $0` && . ./Configuration
 
+${PG_MGD_DBSCHEMADIR}/view/ALL_Allele_CellLine_View_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 

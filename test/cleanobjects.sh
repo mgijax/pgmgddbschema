@@ -11,10 +11,11 @@ date | tee -a $LOG
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0 | tee -a $LOG
 
 CREATE TEMP TABLE toDelete1 AS
-select a._note_key, a._object_key, a._mgitype_key, a._notetype_key, t._mgitype_key as _mgitype_key_t
-from mgi_note a, mgi_notetype t 
+select a.*, t._mgitype_key as _mgitype_key_t, t._notetype_key as _notetype_key_t
+from mgi_note a, mgi_notetype t
 where a._notetype_key = t._notetype_key
 and a._mgitype_key != t._mgitype_key
+and a._mgitype_key in (12)
 ;
 
 select t.*, n.note 

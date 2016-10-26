@@ -3,6 +3,8 @@
 #
 # History
 #
+# current_date must remain as current_date; do not change to now()
+#
 # 01/23/2003 lec
 #	- TR 4463; set J: (reference) to Null (was J:23000)
 #
@@ -34,8 +36,6 @@ BEGIN
 /* Set all other attributes = Not Applicable */
 
 v_asymbol := v_symbol || '<+>';
-
-RAISE NOTICE '%:%:%', v_userKey, v_markerKey, v_asymbol;
 
 PERFORM ALL_insertAllele (
 	v_userKey,

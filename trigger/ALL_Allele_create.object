@@ -327,7 +327,7 @@ AFTER UPDATE ON ALL_Allele
 FOR EACH ROW
 EXECUTE PROCEDURE ALL_Allele_update();
 
-COMMENT ON FUNCTION mgd.ALL_Allele_update() IS 'creates an UPDATE trigger to check some permissions';
+COMMENT ON FUNCTION mgd.ALL_Allele_update() IS 'creates an update trigger';
 
 -------------------------
 
@@ -352,7 +352,7 @@ AFTER UPDATE OF symbol ON ALL_Allele
 FOR EACH ROW
 EXECUTE PROCEDURE ALL_Allele_update2();
 
-COMMENT ON FUNCTION mgd.ALL_Allele_update2() IS 'creates an UPDATE trigger when specific field is updated';
+COMMENT ON FUNCTION mgd.ALL_Allele_update2() IS 'creates an update trigger when symbol field is updated';
 
 EOSQL
 

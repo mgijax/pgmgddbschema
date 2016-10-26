@@ -3,6 +3,9 @@
 #
 # History
 #
+# 06/10/2016	lec
+#	- TR12345/GPAD/GO_Noctua added
+#
 # 09/24/2015	lec
 #	- TR11955/added GOA_CACAO/1551
 #
@@ -39,11 +42,11 @@ RETURNS VOID AS
 BEGIN
 
 -- if the user name is not in the list...return
--- this list should contain: GOA_%, RGD, GOC, GO_Central, UniProtKB
+-- this list should contain: GOA_%, RGD, GOC, GO_Central, UniProtKB, GO_Noctua
 
 IF (SELECT count(*) FROM MGI_User WHERE login like v_userName 
 	AND _User_key IN 
-	(1446,1447,1448,1449,1450,1458,1459,1460,1469,1470,1471,1498,1503,1509,1510,1511,1517,1539,1551)) = 0
+	(1446,1447,1448,1449,1450,1458,1459,1460,1469,1470,1471,1498,1503,1509,1510,1511,1517,1539,1551,1559)) = 0
 THEN
     RETURN;
 END IF;
@@ -52,7 +55,7 @@ END IF;
 -- that are:              
 --   not red terms       
 --   non-IEAs           
---   assigned by GOA, RGD, GOC, GO_Central, UniProtKB
+--   assigned by GOA, RGD, GOC, GO_Central, UniProtKB, GO_Noctua
 
 CREATE TEMP TABLE goannot ON COMMIT DROP
 AS SELECT DISTINCT a._Object_key, n._DAG_key

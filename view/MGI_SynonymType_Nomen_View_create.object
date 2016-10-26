@@ -9,6 +9,7 @@
 
 cd `dirname $0` && . ./Configuration
 
+${PG_MGD_DBSCHEMADIR}/view/MGI_SynonymType_Nomen_View_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 

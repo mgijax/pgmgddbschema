@@ -27,6 +27,7 @@
 
 cd `dirname $0` && . ./Configuration
 
+${PG_MGD_DBSCHEMADIR}/view/GXD_AllelePair_View_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 

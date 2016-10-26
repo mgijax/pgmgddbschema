@@ -1,5 +1,20 @@
 #!/bin/sh
 
+#
+# purpose:
+#
+# since we cannot create referential integrity (foreign key) in poostgres for
+# for the _mgitype_key/_object_key instances...
+#
+# this script is meant to find any obsolete _mgitype_key/_object_key instances
+#
+# for example:
+# any instance where the _mgitype_key/_object_key exists in acc_accession, 
+# but does not exist in the "master" object table
+#
+# if a new _mgitype_key is added to the database, then a new test should be added
+#
+
 cd `dirname $0` && . ./Configuration
 
 LOG=$0.log
@@ -488,7 +503,7 @@ and not exists (select 1 from gxd_genotype s where a._object_key = s._genotype_k
 
 select a.*
 from voc_annot a
-where a._annottype_key in (1000, 1003, 1006, 1007, 1010, 1011, 1015, 1016, 1017)
+where a._annottype_key in (1000, 1003, 1006, 1007, 1010, 1011, 1015, 1016, 1017, 1019)
 and not exists (select 1 from mrk_marker s where a._object_key = s._marker_key)
 ;
 
@@ -502,6 +517,12 @@ select a.*
 from voc_annot a
 where a._annottype_key in (1008, 1009)
 and not exists (select 1 from prb_strain s where a._object_key = s._strain_key)
+;
+
+select a.*
+from voc_annot a
+where a._annottype_key in (1018)
+and not exists (select 1 from voc_term s where a._object_key = s._term_key)
 ;
 
 EOSQL

@@ -10,6 +10,7 @@
 
 cd `dirname $0` && . ./Configuration
 
+${PG_MGD_DBSCHEMADIR}/view/MRK_Marker_View_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 

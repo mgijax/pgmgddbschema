@@ -65,9 +65,15 @@ ALTER TABLE mgd.VOC_Evidence DROP CONSTRAINT VOC_Evidence__EvidenceTerm_key_fkey
 
 ALTER TABLE mgd.VOC_AnnotHeader DROP CONSTRAINT VOC_AnnotHeader__Term_key_fkey CASCADE;
 
---ALTER TABLE mgd.VOC_Marker_Cache DROP CONSTRAINT VOC_Marker_Cache__Term_key_fkey CASCADE;
+ALTER TABLE mgd.VOC_Marker_Cache DROP CONSTRAINT VOC_Marker_Cache__Term_key_fkey CASCADE;
+
+ALTER TABLE mgd.VOC_Annot_Count_Cache DROP CONSTRAINT VOC_Annot_Count_Cache__Term_key_fkey CASCADE;
+
+ALTER TABLE mgd.VOC_Allele_Cache DROP CONSTRAINT VOC_Allele_Cache__Term_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_Annot DROP CONSTRAINT VOC_Annot__Term_key_fkey CASCADE;
+
+ALTER TABLE mgd.VOC_Annot DROP CONSTRAINT VOC_Annot__Qualifier_key_fkey CASCADE;
 
 ALTER TABLE mgd.SEQ_Sequence_Assoc DROP CONSTRAINT SEQ_Sequence_Assoc__Qualifier_key_fkey CASCADE;
 
@@ -159,7 +165,7 @@ ALTER TABLE mgd.IMG_Image DROP CONSTRAINT IMG_Image__ImageType_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_GelLaneStructure DROP CONSTRAINT GXD_GelLaneStructure__EMAPA_Term_key_fkey CASCADE;
 
-ALTER TABLE mgd.GXD_GXD_ISResultStructure DROP CONSTRAINT GXD_GXD_ISResultStructure__EMAPA_Term_key_fkey CASCADE;
+ALTER TABLE mgd.GXD_ISResultStructure DROP CONSTRAINT GXD_ISResultStructure__EMAPA_Term_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Index_Stages DROP CONSTRAINT GXD_Index_Stages__StageID_key_fkey CASCADE;
 

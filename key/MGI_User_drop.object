@@ -215,9 +215,9 @@ ALTER TABLE mgd.MGI_Synonym DROP CONSTRAINT MGI_Synonym__CreatedBy_key_fkey CASC
 
 ALTER TABLE mgd.MGI_SetMember DROP CONSTRAINT MGI_SetMember__ModifiedBy_key_fkey CASCADE;
 
-ALTER TABLE mgd.MGI_SetMember DROP CONSTRAINT MGI_SetMember_EMAPA__ModifiedBy_key_fkey CASCADE;
+ALTER TABLE mgd.MGI_SetMember DROP CONSTRAINT MGI_SetMember__CreatedBy_key_fkey CASCADE;
 
-ALTER TABLE mgd.MGI_SetMember_EMAPA DROP CONSTRAINT MGI_SetMember__CreatedBy_key_fkey CASCADE;
+ALTER TABLE mgd.MGI_SetMember_EMAPA DROP CONSTRAINT MGI_SetMember_EMAPA__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_SetMember_EMAPA DROP CONSTRAINT MGI_SetMember_EMAPA__CreatedBy_key_fkey CASCADE;
 

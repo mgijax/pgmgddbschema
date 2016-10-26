@@ -3,6 +3,9 @@
 #
 # History
 #
+# 06/02/2016	lec
+#	- TR12349/add orcID
+#
 # 03/14/2003	lec
 #	- TR 1463; SAO
 #
@@ -17,10 +20,11 @@ create table mgd.MGI_User (
  	_UserType_key              int             not null,
  	_UserStatus_key            int             not null,
 	login                      varchar(50)     not null,
-	name                       text    not null,
-	_CreatedBy_key                 int DEFAULT 1001             not null,
-	_ModifiedBy_key                int DEFAULT 1001             not null,
-	creation_date              timestamp DEFAULT now()        not null,
-	modification_date          timestamp DEFAULT now()        not null 
+	name                       text            not null,
+	orcID                      text            null,
+	_CreatedBy_key             int DEFAULT 1001 not null,
+	_ModifiedBy_key            int DEFAULT 1001 not null,
+	creation_date              timestamp DEFAULT now() not null,
+	modification_date          timestamp DEFAULT now() not null 
 );
 EOSQL

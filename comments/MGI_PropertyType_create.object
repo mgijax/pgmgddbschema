@@ -4,7 +4,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-COMMENT ON TABLE mgd.MGI_PropertyType IS 'None';
+COMMENT ON TABLE mgd.MGI_PropertyType IS 'A record in this table represents a Property Type from a specific VOcabulary for a specific Object Type';
 
 COMMENT ON COLUMN MGI_PropertyType._CreatedBy_key IS 'user who created the record';
 
@@ -16,10 +16,10 @@ COMMENT ON COLUMN MGI_PropertyType.modification_date IS 'date record was last mo
 
 COMMENT ON COLUMN MGI_PropertyType._ModifiedBy_key IS 'user who last modified the record';
 
-COMMENT ON COLUMN MGI_PropertyType.propertyType IS 'None';
+COMMENT ON COLUMN MGI_PropertyType.propertyType IS 'property type';
 
-COMMENT ON COLUMN MGI_PropertyType._PropertyType_key IS 'None';
+COMMENT ON COLUMN MGI_PropertyType._Vocab_key IS 'foreign key to VOC_Vocab';
 
-COMMENT ON COLUMN MGI_PropertyType._Vocab_key IS 'None';
+COMMENT ON COLUMN MGI_PropertyType._PropertyType_key IS 'primary key';
 
 EOSQL

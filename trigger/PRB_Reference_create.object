@@ -94,6 +94,6 @@ AFTER UPDATE ON PRB_Reference
 FOR EACH ROW
 EXECUTE PROCEDURE PRB_Reference_update();
 
-COMMENT ON FUNCTION mgd.PRB_Reference_update() IS 'update trigger';
+COMMENT ON FUNCTION mgd.PRB_Reference_update() IS 'creates an update trigger';
 
 EOSQL
