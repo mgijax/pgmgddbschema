@@ -3,6 +3,9 @@
 #
 # History
 #
+# 08/08/2016	jsb
+#	- TR12370 / adding GXD_HT* tables for High-Throughput Indexing project
+#
 # 07/23/2002
 #       - TR 3802
 #
@@ -13,6 +16,9 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.GXD_Genotype ADD PRIMARY KEY (_Genotype_key);
+
+
+ALTER TABLE mgd.GXD_HTSample ADD FOREIGN KEY (_Genotype_key) REFERENCES mgd.GXD_Genotype DEFERRABLE;
 
 
 ALTER TABLE mgd.GXD_GelLane ADD FOREIGN KEY (_Genotype_key) REFERENCES mgd.GXD_Genotype DEFERRABLE;

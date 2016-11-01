@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# 08/08/2016	jsb
+#	added for TR12370 / GXD High-Throughput Indexing project
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CLUSTER mgd.GXD_HTSample USING GXD_HTSample_pkey;
+
+create index GXD_HTSample_idx_Experiment_key on mgd.GXD_HTSample (_Experiment_key);
+
+create index GXD_HTSample_idx_Relevance_key on mgd.GXD_HTSample (_Relevance_key);
+
+create index GXD_HTSample_idx_Organism_key on mgd.GXD_HTSample (_Organism_key);
+
+create index GXD_HTSample_idx_Sex_key on mgd.GXD_HTSample (_Sex_key);
+
+create index GXD_HTSample_idx_Emapa_key on mgd.GXD_HTSample (_Emapa_key);
+
+create index GXD_HTSample_idx_Stage_key on mgd.GXD_HTSample (_Stage_key);
+
+create index GXD_HTSample_idx_Genotype_key on mgd.GXD_HTSample (_Genotype_key);
+
+create index GXD_HTSample_idx_CreatedBy_key on mgd.GXD_HTSample (_CreatedBy_key);
+
+create index GXD_HTSample_idx_ModifiedBy_key on mgd.GXD_HTSample (_ModifiedBy_key);
+
+EOSQL

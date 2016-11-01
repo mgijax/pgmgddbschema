@@ -18,4 +18,6 @@ COMMENT ON COLUMN MGI_Organism_MGIType._ModifiedBy_key IS 'user who last modifie
 
 COMMENT ON COLUMN MGI_Organism_MGIType._Organism_key IS 'organism (foreign key to MGI_Organism)';
 
+COMMENT ON COLUMN VOC_Term.sequenceNum IS 'enables us to define an ordered list of of Organisms for a given MGI Type';
+
 EOSQL

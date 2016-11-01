@@ -2,6 +2,9 @@
 #
 # History
 #
+# 08/08/2016	jsb
+#	- TR12370 / adding GXD_HT* tables for High-Throughput Indexing project
+#
 # 07/23/2002
 #       - TR 3802
 #
@@ -17,6 +20,8 @@ ALTER TABLE mgd.GXD_AllelePair DROP CONSTRAINT GXD_AllelePair__Genotype_key_fkey
 ALTER TABLE mgd.GXD_AlleleGenotype DROP CONSTRAINT GXD_AlleleGenotype__Genotype_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__Genotype_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Genotype_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Specimen DROP CONSTRAINT GXD_Specimen__Genotype_key_fkey CASCADE;
 

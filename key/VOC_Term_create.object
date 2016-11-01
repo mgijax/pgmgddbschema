@@ -3,6 +3,9 @@
 #
 # History
 #
+# 08/08/2016	jsb
+#	- TR12370 / adding GXD_HT* tables for High-Throughput Indexing project
+#
 # 01/07/2016    lec 
 #       - TR12223/converting _structure_key -> _emapa_term_key/_stage_key
 #	- added MGI_SetMember_EMAPA
@@ -153,6 +156,31 @@ ALTER TABLE mgd.GXD_Assay ADD FOREIGN KEY (_ReporterGene_key) REFERENCES mgd.VOC
 
 ALTER TABLE mgd.GXD_Genotype ADD FOREIGN KEY (_ExistsAs_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
+
+ALTER TABLE mgd.GXD_HTSample ADD FOREIGN KEY (_Emapa_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
+ALTER TABLE mgd.GXD_HTSample ADD FOREIGN KEY (_Sex_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
+ALTER TABLE mgd.GXD_HTSample ADD FOREIGN KEY (_Relevance_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
+ALTER TABLE mgd.GXD_HTExperimentVariable ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
+ALTER TABLE mgd.GXD_HTExperiment ADD FOREIGN KEY (_Source_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
+ALTER TABLE mgd.GXD_HTExperiment ADD FOREIGN KEY (_EvaluationState_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
+ALTER TABLE mgd.GXD_HTExperiment ADD FOREIGN KEY (_CurationState_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
+ALTER TABLE mgd.GXD_HTExperiment ADD FOREIGN KEY (_StudyType_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+ALTER TABLE mgd.GXD_HTExperiment ADD FOREIGN KEY (_ExperimentType_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 ALTER TABLE mgd.GXD_Index ADD FOREIGN KEY (_Priority_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 

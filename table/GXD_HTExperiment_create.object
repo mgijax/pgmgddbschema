@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# HISTORY
+#
+# 08/01/2016	jsb
+#	- TR 12370 (GXD High-Throughput Indexing)
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.GXD_HTExperiment (
+ 	_Experiment_key		int		         	not null,
+	_Source_key		int            			not null,
+	name			text				null,
+	description		text				null,
+	release_date		timestamp			null,
+	lastupdate_date		timestamp			null,
+	evaluated_date		timestamp			null,
+	_EvaluationState_key	int				not null,
+	_CurationState_key	int				not null,
+	_StudyType_key		int				not null,
+	_ExperimentType_key	int				not null,
+	_EvaluatedBy_key	int				null,
+	_InitialCuratedBy_key	int				null,
+	_LastCuratedBy_key	int				null,
+	initial_curated_date	timestamp			null,
+	last_curated_date 	timestamp                       null,
+	_CreatedBy_key		int DEFAULT 1001		not null,
+	_ModifiedBy_key		int DEFAULT 1001		not null,
+	creation_date		timestamp DEFAULT now()		not null,
+	modification_date	timestamp DEFAULT now()		not null 
+);
+EOSQL

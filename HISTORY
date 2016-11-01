@@ -1,3 +1,33 @@
+TAG: pgmgddbschema-6-0-6-6
+DATE: 10/28/2016
+STAFF: sc
+CHANGES: TR12370 GXD HT project
+1) table/MGI_Organism_MGIType_create.object
+2) comments/MGI_Organism_MGIType_create.object
+
+TAG: pgmgddbschema-6-0-6-5
+TAG: pgmgddbschema-6-0-6-4
+DATE: 10/26/2016
+STAFF: sc
+CHANGES: Merge tr12370 branch to trunk
+
+TAG: pgmgddbschema-tr12370-1
+DATE: 10/26/2016
+STAFF: sc
+CHANGES: Added GXD HT tables etc
+
+TAG: pgmgddbschema-tr12370-BP
+DATE: 08/01/2016
+STAFF: jsb
+CHANGES:
+1) branch point for GXD High-Throughput Indexing project
+
+TAG: pgmgddbschema-6-0-6-3
+DATE: 10/24/2016
+STAFF: lec 
+TR11083/obsolete/NOM_Marker
+procedure/NOM_transferToMGD_create.object
+
 TAG: created tr12427 branch/no tag 
 DATE: 10/03/2016
 STAFF: lec 

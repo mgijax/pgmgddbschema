@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# HISTORY
+#
+# 08/01/2016	jsb
+#	- TR 12370 (GXD High-Throughput Indexing)
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.GXD_HTExperimentVariable (
+ 	_ExperimentVariable_key		int	not null,
+ 	_Experiment_key			int	not null,
+ 	_Term_key			int	not null
+);
+EOSQL

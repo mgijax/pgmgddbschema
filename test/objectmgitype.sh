@@ -149,6 +149,18 @@ where a._mgitype_key = 39
 and not exists (select 1 from mrk_cluster s where a._object_key = s._cluster_key)
 ;
 
+select a.*
+from acc_accession a
+where a._mgitype_key = 42 
+and not exists (select 1 from gxd_htexperiment s where a._object_key = s._experiment_key)
+;
+
+select a.*
+from acc_accession a
+where a._mgitype_key = 43
+and not exists (select 1 from gxd_htsample s where a._object_key = s._sample_key)
+;
+
 -- img_imagepane_assoc
 
 select distinct _mgitype_key from img_imagepane_assoc order by _mgitype_key;

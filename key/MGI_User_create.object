@@ -3,6 +3,9 @@
 #
 # History
 #
+# 08/08/2016	jsb
+#	- TR12370 / added new GXD_HT* tables for High-Throughput Indexing proj.
+#
 # 01/07/2016    lec 
 #       - TR12223/converting _structure_key -> _emapa_term_key/_stage_key
 #	- added MGI_SetMember_EMAPA
@@ -177,6 +180,22 @@ ALTER TABLE mgd.GXD_Genotype ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI
 
 
 ALTER TABLE mgd.GXD_Genotype ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
+
+ALTER TABLE mgd.GXD_HTExperiment ADD FOREIGN KEY (_EvaluatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
+
+ALTER TABLE mgd.GXD_HTExperiment ADD FOREIGN KEY (_InitialCuratedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
+
+ALTER TABLE mgd.GXD_HTExperiment ADD FOREIGN KEY (_LastCuratedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
+
+ALTER TABLE mgd.GXD_HTExperiment ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
+
+ALTER TABLE mgd.GXD_HTExperiment ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
+
+
+ALTER TABLE mgd.GXD_HTSample ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
+
+
+ALTER TABLE mgd.GXD_HTSample ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
 
 
 ALTER TABLE mgd.GXD_Index ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;

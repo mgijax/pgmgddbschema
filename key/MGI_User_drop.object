@@ -3,6 +3,9 @@
 #
 # History
 #
+# 08/08/2016	jsb
+#	- TR12370 / added new GXD_HT* tables for High-Throughput Indexing proj.
+#
 # 01/07/2016    lec 
 #       - TR12223/converting _structure_key -> _emapa_term_key/_stage_key
 #	- added MGI_SetMember_EMAPA
@@ -295,6 +298,20 @@ ALTER TABLE mgd.GXD_Index_Stages DROP CONSTRAINT GXD_Index_Stages__CreatedBy_key
 ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__EvaluatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__InitialCuratedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__LastCuratedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Genotype DROP CONSTRAINT GXD_Genotype__ModifiedBy_key_fkey CASCADE;
 
