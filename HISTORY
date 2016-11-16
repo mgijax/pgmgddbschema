@@ -1,3 +1,10 @@
+TAG: pgmgddbschema-6-0-6-7
+DATE: 11/16/2016
+STAFF: sc
+CHANGES: TR12459 gbseqload failure
+1) add setting of min/max age for age 'Not Resolved' 
+    procedure/PRB_ageMinMax_create.object
+
 TAG: pgmgddbschema-6-0-6-6
 DATE: 10/28/2016
 STAFF: sc
