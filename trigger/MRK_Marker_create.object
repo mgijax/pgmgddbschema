@@ -102,7 +102,7 @@ IF EXISTS (SELECT * FROM VOC_Annot a
           WHERE OLD._Marker_key = a._Object_key
           AND a._AnnotType_key = 1015)
 THEN
-        RAISE EXCEPTION E'Marker is referenced in Mammalian Phenotype-Marker Annotations';
+        RAISE EXCEPTION E'Marker is referenced in Mammalian Phenotype-Marker Annotations %', OLD._Marker_key;
 END IF; 
 
 IF EXISTS (SELECT * FROM VOC_Annot a
