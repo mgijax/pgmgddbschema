@@ -1,0 +1,27 @@
+#!/bin/sh
+
+#
+# History
+# 09/16/2008 - jsb - removed idx_Term_key (TR 9037)
+# 02/14/2003 lec
+#	- TR 1892
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index if exists mgd.MRK_DO_Cache_idx_clustered
+;
+
+drop index if exists mgd.MRK_DO_Cache_idx_Marker_key
+;
+
+drop index if exists mgd.MRK_DO_Cache_idx_Genotype_key
+;
+
+drop index if exists mgd.MRK_DO_Cache_idx_Refs_key
+;
+
+EOSQL
