@@ -1,9 +1,16 @@
 #!/bin/sh
+
 #
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
+# History
 #
+# 11/28/2016	lec
+#	- TR12427/Disease Ontology (DO)
+#
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
 ALTER TABLE mgd.MRK_DO_Cache DROP CONSTRAINT MRK_DO_Cache_pkey CASCADE;
 
 EOSQL
