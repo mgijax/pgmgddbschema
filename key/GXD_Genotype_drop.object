@@ -1,6 +1,13 @@
 #!/bin/sh
+
 #
 # History
+#
+# 11/28/2016	lec
+#	- TR12427/Disease Ontology (DO)
+#
+# 11/28/2016	lec
+#	- TR12427/Disease Ontology (DO)
 #
 # 08/08/2016	jsb
 #	- TR12370 / adding GXD_HT* tables for High-Throughput Indexing project
@@ -8,10 +15,14 @@
 # 07/23/2002
 #       - TR 3802
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.PRB_Strain_Genotype DROP CONSTRAINT PRB_Strain_Genotype__Genotype_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_DO_Cache DROP CONSTRAINT MRK_DO_Cache__Genotype_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_OMIM_Cache DROP CONSTRAINT MRK_OMIM_Cache__Genotype_key_fkey CASCADE;
 
@@ -26,6 +37,7 @@ ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Genotype_key_fkey CAS
 ALTER TABLE mgd.GXD_Specimen DROP CONSTRAINT GXD_Specimen__Genotype_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_GelLane DROP CONSTRAINT GXD_GelLane__Genotype_key_fkey CASCADE;
+
 ALTER TABLE mgd.GXD_Genotype DROP CONSTRAINT GXD_Genotype_pkey CASCADE;
 
 EOSQL

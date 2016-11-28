@@ -1,6 +1,11 @@
 #!/bin/sh
+
 #
-# HISTORY
+# History
+#
+# 11/28/2016	lec
+#	- TR12427/Disease Ontology (DO)
+#
 # 12/04/2012 - jsb - added MRK_ClusterMember foreign key
 #
 # 06/09/2010    lec
@@ -21,7 +26,9 @@
 #
 # 08/26/2005    sc
 #       - TR 1560; SNP added foreign keys
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.WKS_Rosetta DROP CONSTRAINT WKS_Rosetta__Marker_key_fkey CASCADE;
@@ -39,6 +46,8 @@ ALTER TABLE mgd.PRB_RFLV DROP CONSTRAINT PRB_RFLV__Marker_key_fkey CASCADE;
 ALTER TABLE mgd.PRB_Marker DROP CONSTRAINT PRB_Marker__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Reference DROP CONSTRAINT MRK_Reference__Marker_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_DO_Cache DROP CONSTRAINT MRK_DO_Cache__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_OMIM_Cache DROP CONSTRAINT MRK_OMIM_Cache__Marker_key_fkey CASCADE;
 

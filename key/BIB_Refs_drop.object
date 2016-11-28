@@ -1,5 +1,10 @@
 #!/bin/sh
+
+#
 # History
+#
+# 11/28/2016	lec
+#	- TR12427/Disease Ontology (DO)
 #
 # 02/25/2014    sc
 #       - TR11560 - added MGI_Relationship FK
@@ -8,6 +13,7 @@
 #	- TR8156; remove GXD_Antibody, BIB_Refs
 #
 # 02/13/2009 - jsb removed ALL_Cache
+#
 # 11/15/2007 - jsb - added ALL_Cache, SEQ_Allele_Assoc, and
 # 	ALL_CellLine_Derivation
 #
@@ -17,7 +23,9 @@
 # 05/13/2002	lec
 #	- TR 1463; SAO
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.VOC_Evidence DROP CONSTRAINT VOC_Evidence__Refs_key_fkey CASCADE;
@@ -39,6 +47,8 @@ ALTER TABLE mgd.PRB_Reference DROP CONSTRAINT PRB_Reference__Refs_key_fkey CASCA
 ALTER TABLE mgd.PRB_Marker DROP CONSTRAINT PRB_Marker__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Reference DROP CONSTRAINT MRK_Reference__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_DO_Cache DROP CONSTRAINT MRK_DO_Cache__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_OMIM_Cache DROP CONSTRAINT MRK_OMIM_Cache__Refs_key_fkey CASCADE;
 

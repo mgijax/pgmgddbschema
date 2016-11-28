@@ -3,6 +3,9 @@
 #
 # History
 #
+# 11/28/2016	lec
+#	- TR12427/Disease Ontology (DO)
+#
 # 08/08/2016	jsb
 #	- TR12370 / adding GXD_HT* tables for High-Throughput Indexing project
 #
@@ -120,6 +123,8 @@ ALTER TABLE mgd.PRB_Source DROP CONSTRAINT PRB_Source__SegmentType_key_fkey CASC
 ALTER TABLE mgd.PRB_Probe DROP CONSTRAINT PRB_Probe__Vector_key_fkey CASCADE;
 
 ALTER TABLE mgd.PRB_Probe DROP CONSTRAINT PRB_Probe__SegmentType_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_DO_Cache DROP CONSTRAINT MRK_DO_Cache__Term_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_OMIM_Cache DROP CONSTRAINT MRK_OMIM_Cache__Term_key_fkey CASCADE;
 

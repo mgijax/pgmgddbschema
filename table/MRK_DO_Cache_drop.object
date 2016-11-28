@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/28/2016	lec
+#	- TR12427/Disease Ontology (DO)
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop table mgd.MRK_DO_Cache
+CASCADE
+;
+
+EOSQL

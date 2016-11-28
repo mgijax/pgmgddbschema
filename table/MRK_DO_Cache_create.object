@@ -1,0 +1,33 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/28/2016	lec
+#	- TR12427/Disease Ontology (DO)
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.MRK_DO_Cache (
+	_Cache_key                     int             not null,
+ 	_Marker_key                    int             null,
+ 	_Genotype_key                  int             null,
+ 	_Term_key                      int             not null,
+ 	_Refs_key                      int             not null,
+	omimCategory1                  int             not null,
+	omimCategory3                  int             not null,
+	qualifier                      text            null,
+	term                           text            not null,
+	termID                         text            not null,
+	jnumID                         text            not null,
+	header                         text            null,
+	headerFootnote                 text            null,
+	genotypeFootnote               text            null,
+	creation_date                  timestamp DEFAULT now()        not null,
+	modification_date              timestamp DEFAULT now()        not null 
+);
+EOSQL

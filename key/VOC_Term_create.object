@@ -3,6 +3,9 @@
 #
 # History
 #
+# 11/28/2016	lec
+#	- TR12427/Disease Ontology (DO)
+#
 # 08/08/2016	jsb
 #	- TR12370 / adding GXD_HT* tables for High-Throughput Indexing project
 #
@@ -69,6 +72,9 @@ ALTER TABLE mgd.ALL_Cre_Cache ADD FOREIGN KEY (_EMAPA_Term_key) REFERENCES mgd.V
 
 
 ALTER TABLE mgd.GXD_Expression ADD FOREIGN KEY (_EMAPA_Term_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE DEFERRABLE;
+
+
+ALTER TABLE mgd.MRK_DO_Cache ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE DEFERRABLE;
 
 
 ALTER TABLE mgd.MRK_OMIM_Cache ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE DEFERRABLE;

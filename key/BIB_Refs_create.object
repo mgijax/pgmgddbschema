@@ -3,6 +3,8 @@
 #
 # History
 #
+# 11/28/2016	lec
+#	- TR12427/Disease Ontology (DO)
 #
 # 02/25/2014    sc
 #       - TR11560 - added MGI_Relationship* FK
@@ -48,6 +50,9 @@ ALTER TABLE mgd.BIB_Notes ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs ON
 
 
 ALTER TABLE mgd.GXD_Expression ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs ON DELETE CASCADE DEFERRABLE;
+
+
+ALTER TABLE mgd.MRK_DO_Cache ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs ON DELETE CASCADE DEFERRABLE;
 
 
 ALTER TABLE mgd.MRK_OMIM_Cache ADD FOREIGN KEY (_Refs_key) REFERENCES mgd.BIB_Refs ON DELETE CASCADE DEFERRABLE;
