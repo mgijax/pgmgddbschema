@@ -16,6 +16,8 @@ CLUSTER mgd.MRK_DO_Cache USING MRK_DO_Cache_pkey;
 
 create index MRK_DO_Cache_idx_clustered on mgd.MRK_DO_Cache (_Term_key, _Marker_key);
 
+create index MRK_DO_Cache_idx_Organism_key on mgd.MRK_DO_Cache (_Organism_key);
+
 create index MRK_DO_Cache_idx_Marker_key on mgd.MRK_DO_Cache (_Marker_key);
 
 create index MRK_DO_Cache_idx_Genotype_key on mgd.MRK_DO_Cache (_Genotype_key);

@@ -24,6 +24,8 @@ ALTER TABLE mgd.MRK_Label DROP CONSTRAINT MRK_Label__OrthologOrganism_key_fkey C
 
 ALTER TABLE mgd.MRK_Label DROP CONSTRAINT MRK_Label__Organism_key_fkey CASCADE;
 
+ALTER TABLE mgd.MRK_DO_Cache DROP CONSTRAINT MRK_OMIM_Cache__Organism_key_fkey CASCADE;
+
 ALTER TABLE mgd.MRK_OMIM_Cache DROP CONSTRAINT MRK_OMIM_Cache__OrthologOrganism_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_OMIM_Cache DROP CONSTRAINT MRK_OMIM_Cache__Organism_key_fkey CASCADE;
