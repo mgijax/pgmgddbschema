@@ -42,6 +42,9 @@ ALTER TABLE mgd.MRK_Chromosome ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MG
 ALTER TABLE mgd.MRK_Marker ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism DEFERRABLE;
 
 
+ALTER TABLE mgd.MRK_DO_Cache ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism DEFERRABLE;
+
+
 ALTER TABLE mgd.MRK_OMIM_Cache ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism DEFERRABLE;
 
 
