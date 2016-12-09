@@ -78,7 +78,7 @@ FROM ACC_Accession a
 WHERE a._Object_key = NEW._Probe_key
 and a._MGIType_key = 3
 and a._Accession_key = ACC_AccessionReference._Accession_key
-and NEW._Refs_key = OLD._Refs_key
+and ACC_AccessionReference._Refs_key = OLD._Refs_key
 ;
 
 RETURN NEW;
