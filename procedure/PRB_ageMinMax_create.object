@@ -53,6 +53,7 @@ saveAge := v_age;
 IF v_age = 'Not Specified' 
 	or v_age = 'Not Applicable' 
 	or v_age = 'Not Loaded'
+	or v_age = 'Not Resolved'
 THEN
 	v_ageMin := -1.0;
 	v_ageMax := -1.0;

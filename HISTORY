@@ -7,6 +7,19 @@ TR11083/NOM_Marker obsolete/merged with MRK_Marker
 MRK_simpleWithdrawal_create
 trigger/MRK_Marker_create.object/MRK_Marker_drop.object
 
+TAG: pgmgddbschema-6-0-6-8
+DATE: 12/09/2016
+STAFF: lec
+CHANGES: 
+TR12478/trigger/PRB_Reference_create.object bug fix
+
+TAG: pgmgddbschema-6-0-6-7
+DATE: 11/16/2016
+STAFF: sc
+CHANGES: TR12459 gbseqload failure
+1) add setting of min/max age for age 'Not Resolved' 
+    procedure/PRB_ageMinMax_create.object
+
 TAG: pgmgddbschema-6-0-6-6
 DATE: 10/28/2016
 STAFF: sc
