@@ -3,6 +3,9 @@
 #
 # History
 #
+# 11/22/2016	lec
+#	- TR12463/add exception for ALL_Allele
+#
 # 04/04/2016    lec 
 #       - TR12314/remove wild-type alleles
 #
@@ -42,6 +45,12 @@ BEGIN
 --	a) the "old" marker key
 --	b) a reference key
 --
+
+IF EXISTS (SELECT 1 FROM ALL_Allele WHERE _Marker_key = v_oldKey and isWildType = 0)
+THEN
+        RAISE EXCEPTION E'\nMRK_deleteWithdrawal: Cannot Delete:  Marker is referenced by Allele.';
+        RETURN;
+END IF;
 
 v_oldName := (SELECT name FROM MRK_Marker
 	 WHERE _Organism_key = 1
