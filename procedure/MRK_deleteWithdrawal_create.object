@@ -46,7 +46,7 @@ BEGIN
 --	b) a reference key
 --
 
-IF EXISTS (SELECT 1 FROM ALL_Allele WHERE _Marker_key = v_oldKey)
+IF EXISTS (SELECT 1 FROM ALL_Allele WHERE _Marker_key = v_oldKey and isWildType = 0)
 THEN
         RAISE EXCEPTION E'\nMRK_deleteWithdrawal: Cannot Delete:  Marker is referenced by Allele.';
         RETURN;

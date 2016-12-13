@@ -6,6 +6,8 @@ TR12083/add cache key to VOC cache tables
 TR11083/NOM_Marker obsolete/merged with MRK_Marker
 MRK_simpleWithdrawal_create
 trigger/MRK_Marker_create.object/MRK_Marker_drop.object
+TR12478/trigger/PRB_Reference_create.object
+TR12463/procedure/MRK_deleteWithdrawal_create.object
 
 TAG: pgmgddbschema-6-0-6-8
 DATE: 12/09/2016
