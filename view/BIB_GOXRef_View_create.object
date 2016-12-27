@@ -28,17 +28,19 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create view mgd.BIB_GOXRef_View
 as
 
-/* References which are: */
-/*                                                                         */
-/* a. not 'GenBank Submission' or 'Mouse News Lett'		           */
-/*                                                                         */
-/* b. < 03/13/2002, not in Gene Ontology bucket (1005) as never-used       */
-/*    and in Allele (1002), Expression (1004) bucket                       */
-/*                                                                         */
-/* c. >= 03/13/2002, in Gene Ontology bucket (1005) and not never-used     */
-/*                                                                         */
-/* d. is-reviewed = true in Gene Ontology bucket (1005) and not never-used */
-/*                                                                         */
+-- References which are:
+--
+-- a. not 'GenBank Submission' or 'Mouse News Lett'		           
+--                                                                        
+-- b. < 03/13/2002
+--    not in Gene Ontology bucket (1005) as never-used                     
+--    and in Allele (1002), Expression (1004) bucket                       
+--    and in Allele/Used (MGI_Reference_Allele_View)
+--                                                                         
+-- c. >= 03/13/2002, in Gene Ontology bucket (1005) and not never-used     
+--                                                                         
+-- d. is-reviewed = true in Gene Ontology bucket (1005) and not never-used 
+--                                                                         
 
 select r._Refs_key, r.jnum, r.short_citation, m._Marker_key, r.jnumID, r.title, r.creation_date
 from MRK_Reference m, BIB_All_View r
@@ -52,6 +54,7 @@ and not exists (select 1 from BIB_DataSet_Assoc ba
 and exists (select 1 from BIB_DataSet_Assoc ba
   	  where r._Refs_key = ba._Refs_key and
   	  ba._DataSet_key in (1002, 1004))
+and exists (select 1 from MGI_Reference_Allele_View aa where r._Refs_key = aa._Refs_key)
 
 union
 select r._Refs_key, r.jnum, r.short_citation, m._Marker_key, r.jnumID, r.title, r.creation_date
