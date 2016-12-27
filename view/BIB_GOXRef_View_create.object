@@ -33,9 +33,9 @@ as
 -- a. not 'GenBank Submission' or 'Mouse News Lett'		           
 --                                                                        
 -- b. < 03/13/2002
---    not in Gene Ontology bucket (1005) as never-used                     
---    and in Allele (1002), Expression (1004) bucket                       
---    and in Allele/Used (MGI_Reference_Allele_View)
+--    and not Never Used for GO (1005)
+--    and Selected for Allele (1002), Expression (1004) bucket                       
+--    and Used for Allele/Used (MGI_Reference_Allele_View)
 --                                                                         
 -- c. >= 03/13/2002, in Gene Ontology bucket (1005) and not never-used     
 --                                                                         
