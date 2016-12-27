@@ -17,12 +17,12 @@ touch $LOG
  
 date | tee -a $LOG
  
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0 | tee -a $LOG
 DROP FUNCTION IF EXISTS GXD_orderGenotypesAll_reload();
 TRUNCATE TABLE GXD_AlleleGenotype;
 EOSQL
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0 | tee -a $LOG
 
 CREATE OR REPLACE FUNCTION GXD_orderGenotypesAll_reload (
 )
