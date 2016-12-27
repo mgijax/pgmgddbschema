@@ -55,6 +55,10 @@ SELECT DISTINCT 0 as _Refs_key, s.strain as label, 'Strain' as dataSet
 FROM PRB_Strain_Genotype ps, PRB_Strain s
 WHERE ps._Genotype_key = v_genotypeKey
 AND ps._Strain_key = s._Strain_key
+--UNION ALL
+--SELECT DISTINCT 0, 'Reference' as label, 'HT Samples' as dataSet
+--FROM GXD_HTSample a
+--where a._Object_key = v_genotypeKey
 ;
 
 CREATE INDEX idx1 ON objects(_Refs_key);
