@@ -40,9 +40,14 @@ AND a._Object_key = v_genotypeKey
 AND a._Annot_key = e._Annot_key
 UNION ALL
 SELECT DISTINCT e._Refs_key, 'Reference' as label, 'OMIM Annotation' as dataSet
-FROM VOC_Evidence e, VOC_Annot a, VOC_AnnotType t
-where t.name = 'OMIM/Genotype'
-AND t._AnnotType_key = a._AnnotType_key
+FROM VOC_Evidence e, VOC_Annot a
+where a._AnnotType_key = 1005
+AND a._Object_key = v_genotypeKey
+AND a._Annot_key = e._Annot_key
+UNION ALL
+SELECT DISTINCT e._Refs_key, 'Reference' as label, 'DO Annotation' as dataSet
+FROM VOC_Evidence e, VOC_Annot a
+where a._AnnotType_key = 1020
 AND a._Object_key = v_genotypeKey
 AND a._Annot_key = e._Annot_key
 UNION ALL
@@ -50,6 +55,10 @@ SELECT DISTINCT 0 as _Refs_key, s.strain as label, 'Strain' as dataSet
 FROM PRB_Strain_Genotype ps, PRB_Strain s
 WHERE ps._Genotype_key = v_genotypeKey
 AND ps._Strain_key = s._Strain_key
+UNION ALL
+SELECT DISTINCT 0 as _Refs_key, a.name as label, 'HT Samples' as dataSet
+FROM GXD_HTSample a
+where a._Genotype_key = v_genotypeKey
 ;
 
 CREATE INDEX idx1 ON objects(_Refs_key);
@@ -104,10 +113,20 @@ where a._AnnotType_key = 1005
 AND a._Object_key = v_genotypeKey
 AND a._Annot_key = e._Annot_key
 UNION
+SELECT DISTINCT e._Refs_key, 'Reference' as label, 'DO Annotation' as dataSet
+FROM VOC_Evidence e, VOC_Annot a
+where a._AnnotType_key = 1020
+AND a._Object_key = v_genotypeKey
+AND a._Annot_key = e._Annot_key
+UNION
 SELECT DISTINCT 0 as _Refs_key, s.strain as label, 'Strain' as dataSet
 FROM PRB_Strain_Genotype ps, PRB_Strain s
 WHERE ps._Genotype_key = v_genotypeKey
 AND ps._Strain_key = s._Strain_key
+UNION
+SELECT DISTINCT 0 as _Refs_key, a.name as label, 'HT Sample' as dataSet
+FROM GXD_HTSample a
+WHERE a._Genotype_key = v_genotypeKey
 ;
 
 CREATE INDEX idx1 ON objects(_Refs_key);
