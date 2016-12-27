@@ -40,9 +40,14 @@ AND a._Object_key = v_genotypeKey
 AND a._Annot_key = e._Annot_key
 UNION ALL
 SELECT DISTINCT e._Refs_key, 'Reference' as label, 'OMIM Annotation' as dataSet
-FROM VOC_Evidence e, VOC_Annot a, VOC_AnnotType t
-where t.name = 'OMIM/Genotype'
-AND t._AnnotType_key = a._AnnotType_key
+FROM VOC_Evidence e, VOC_Annot a
+where a._AnnotType_key = 1005
+AND a._Object_key = v_genotypeKey
+AND a._Annot_key = e._Annot_key
+UNION ALL
+SELECT DISTINCT e._Refs_key, 'Reference' as label, 'DO Annotation' as dataSet
+FROM VOC_Evidence e, VOC_Annot a
+where a._AnnotType_key = 1020
 AND a._Object_key = v_genotypeKey
 AND a._Annot_key = e._Annot_key
 UNION ALL
