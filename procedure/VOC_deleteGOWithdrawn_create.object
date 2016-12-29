@@ -1,0 +1,46 @@
+#!/bin/sh
+
+#
+# History
+#
+# 12/29/2016	lec
+#	- TR10674/delete GO annotations of withdrawn markers
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/VOC_deleteGOGAFRed_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION VOC_deleteGOWithdrawn ( 
+)
+RETURNS VOID AS
+\$\$
+
+BEGIN
+
+-- set of GO annotations that are using withdrawn markers
+
+CREATE TEMP TABLE toDelete ON COMMIT DROP
+AS SELECT m.symbol, a.* 
+FROM VOC_Annot a, MRK_Marker m
+WHERE a._AnnotType_key = 1000
+AND a._Object_key = m._Marker_key
+AND m._Marker_Status_key = 2 
+;
+
+DELETE FROM VOC_Annot a
+USING toDelete d
+WHERE d._Annot_key = a._Annot_key
+;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION VOC_deleteGOWithdrawn() TO public;
+
+COMMENT ON FUNCTION mgd.VOC_deleteGOWithdrawn() IS 'remove GO/annotations of withdrawn markers';
+
+EOSQL

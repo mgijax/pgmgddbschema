@@ -3,6 +3,9 @@
 #
 # History
 #
+# 12/27/2016	lec
+#	- TR12418/Used for Allele/Used (MGI_Reference_Allele_View)
+#
 # 03/02/2006	lec
 #	- added creation_date for TR 7532 qc report
 #
