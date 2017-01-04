@@ -15,8 +15,8 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create table mgd.WKS_Rosetta (
 	_Rosetta_key               int             not null,
  	_Marker_key                int             null,
-	wks_markerSymbol           varchar(50)     null,
-	wks_markerURL              varchar(100)    null,
+	wks_markerSymbol           text            null,
+	wks_markerURL              text            null,
 	creation_date              timestamp DEFAULT now()        not null,
 	modification_date          timestamp DEFAULT now()        not null 
 );
