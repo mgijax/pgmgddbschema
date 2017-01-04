@@ -19,11 +19,11 @@ create table mgd.BIB_Citation_Cache (
 	jnumID                     varchar(30)     not null,
 	mgiID                      varchar(30)     not null,
 	pubmedID                   varchar(30)     null,
-	reviewStatus		   varchar(40)     not null,
-	journal		           varchar(100)    null,
-	citation                   text    not null,
-	short_citation             text    not null,
-	isReviewArticle            smallint             not null,
+	reviewStatus		   text            not null,
+	journal		           text            null,
+	citation                   text            not null,
+	short_citation             text            not null,
+	isReviewArticle            smallint        not null,
 	isReviewArticleString      char(3)         not null
 );
 EOSQL
