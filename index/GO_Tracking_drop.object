@@ -15,4 +15,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 drop index if exists mgd.GO_Tracking_idx_CompletedBy_key
 ;
 
+drop index if exists mgd.GO_Tracking_idx_completion_date
+;
+
 EOSQL
