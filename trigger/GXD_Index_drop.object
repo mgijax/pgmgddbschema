@@ -12,4 +12,12 @@ DROP TRIGGER IF EXISTS GXD_Index_insert_trigger ON GXD_Index;
 
 DROP FUNCTION IF EXISTS GXD_Index_insert();
 
+DROP TRIGGER IF EXISTS GXD_Index_insert_before_trigger ON GXD_Index;
+
+DROP FUNCTION IF EXISTS GXD_Index_insert_before();
+
+DROP TRIGGER IF EXISTS GXD_Index_update_trigger ON GXD_Index;
+
+DROP FUNCTION IF EXISTS GXD_Index_update();
+
 EOSQL

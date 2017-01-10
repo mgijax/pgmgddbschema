@@ -9,7 +9,7 @@
 
 cd `dirname $0` && . ./Configuration
 
-${PG_MGD_DBSCHEMADIR}/procedure/VOC_deleteGOGAFRed_drop.object
+${PG_MGD_DBSCHEMADIR}/procedure/VOC_deleteGOWithdrawn_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
