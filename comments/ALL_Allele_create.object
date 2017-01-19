@@ -33,7 +33,7 @@ COMMENT ON COLUMN ALL_Allele.isWildType IS 'if 1, Allele is a wild type allele, 
 
 COMMENT ON COLUMN ALL_Allele._Marker_key IS 'foreign key to MRK_Marker; foreign key to ALL_Marker_Assoc';
 
-COMMENT ON COLUMN ALL_Allele._Mode_key IS 'foreign key to VOC_Term where _Vocab_key = 59 (Allele Mode); ''Strain of Origin'', ''Strain of Specimen''';
+COMMENT ON COLUMN ALL_Allele._Mode_key IS 'foreign key to VOC_Term where _Vocab_key = 35 (Allele Inheritance Mode); ''Semidominant'', ''Codominant''';
 
 COMMENT ON COLUMN ALL_Allele.modification_date IS 'date record was last modified';
 
