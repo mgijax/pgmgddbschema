@@ -149,7 +149,8 @@ THEN
 
 	s2 := substring(v_note, idx + 1, char_length(v_note));
 
-	v_note := s1 || ' ' || v_short_citation || s2;
+	--v_note := s1 || ' ' || v_short_citation || s2;
+	v_note := s1 || v_short_citation || s2;
 
 	copyright := v_note;
 
