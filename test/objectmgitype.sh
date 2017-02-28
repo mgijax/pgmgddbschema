@@ -121,12 +121,6 @@ and not exists (select 1 from mgi_organism s where a._object_key = s._organism_k
 
 select a.*
 from acc_accession a
-where a._mgitype_key = 21
-and not exists (select 1 from nom_marker s where a._object_key = s._nomen_key)
-;
-
-select a.*
-from acc_accession a
 where a._mgitype_key = 25
 and not exists (select 1 from voc_evidence s where a._object_key = s._annotevidence_key)
 ;
@@ -267,12 +261,6 @@ and not exists (select 1 from seq_sequence s where a._object_key = s._sequence_k
 
 select a.*
 from mgi_note a
-where a._mgitype_key = 21
-and not exists (select 1 from nom_marker s where a._object_key = s._nomen_key)
-;
-
-select a.*
-from mgi_note a
 where a._mgitype_key = 25
 and not exists (select 1 from voc_evidence s where a._object_key = s._annotevidence_key)
 ;
@@ -379,12 +367,6 @@ where a._mgitype_key = 19
 and not exists (select 1 from seq_sequence s where a._object_key = s._sequence_key)
 ;
 
-select a.*
-from mgi_reference_assoc a
-where a._mgitype_key = 21
-and not exists (select 1 from nom_marker s where a._object_key = s._nomen_key)
-;
-
 -- mgi_setmember
 
 select distinct _mgitype_key from mgi_set order by _mgitype_key;
@@ -422,12 +404,6 @@ select a.*
 from mgi_synonym a
 where a._mgitype_key = 13
 and not exists (select 1 from voc_term s where a._object_key = s._term_key)
-;
-
-select a.*
-from mgi_synonym a
-where a._mgitype_key = 21
-and not exists (select 1 from nom_marker s where a._object_key = s._nomen_key)
 ;
 
 -- mgi_translation

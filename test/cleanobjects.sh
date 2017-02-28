@@ -25,6 +25,7 @@ where t._note_key = n._note_key
 
 CREATE INDEX toDelete1_idx1 ON toDelete1(_note_key);
 select * from toDelete1;
+
 delete FROM mgi_note
 using toDelete1
 WHERE toDelete1._note_key = mgi_note._note_key
