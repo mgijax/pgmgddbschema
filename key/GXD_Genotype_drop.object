@@ -24,8 +24,6 @@ ALTER TABLE mgd.PRB_Strain_Genotype DROP CONSTRAINT PRB_Strain_Genotype__Genotyp
 
 ALTER TABLE mgd.MRK_DO_Cache DROP CONSTRAINT MRK_DO_Cache__Genotype_key_fkey CASCADE;
 
-ALTER TABLE mgd.MRK_OMIM_Cache DROP CONSTRAINT MRK_OMIM_Cache__Genotype_key_fkey CASCADE;
-
 ALTER TABLE mgd.GXD_AllelePair DROP CONSTRAINT GXD_AllelePair__Genotype_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_AlleleGenotype DROP CONSTRAINT GXD_AlleleGenotype__Genotype_key_fkey CASCADE;

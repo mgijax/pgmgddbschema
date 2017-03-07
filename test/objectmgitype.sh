@@ -243,7 +243,7 @@ from mgi_note a, VOC_Annot v, VOC_Evidence e
 where a._mgitype_key = 12
 and v._Annot_key = e._Annot_key    
 and e._AnnotEvidence_key = a._Object_key    
-and v._AnnotType_key = 1005
+and v._AnnotType_key = 1020
 and not exists (select 1 from gxd_genotype s where v._Object_key = s._genotype_key)
 ;
 
@@ -473,19 +473,19 @@ select distinct _mgitype_key from voc_annottype order by _mgitype_key;
 
 select a.*
 from voc_annot a
-where a._annottype_key in (1002, 1005)
+where a._annottype_key in (1002, 1020)
 and not exists (select 1 from gxd_genotype s where a._object_key = s._genotype_key)
 ;
 
 select a.*
 from voc_annot a
-where a._annottype_key in (1000, 1003, 1006, 1007, 1010, 1011, 1015, 1016, 1017, 1019)
+where a._annottype_key in (1000, 1003, 1022, 1007, 1010, 1011, 1015, 1016, 1017, 1019)
 and not exists (select 1 from mrk_marker s where a._object_key = s._marker_key)
 ;
 
 select a.*
 from voc_annot a
-where a._annottype_key in (1012, 1014)
+where a._annottype_key in (1021, 1014)
 and not exists (select 1 from all_allele s where a._object_key = s._allele_key)
 ;
 
@@ -497,7 +497,7 @@ and not exists (select 1 from prb_strain s where a._object_key = s._strain_key)
 
 select a.*
 from voc_annot a
-where a._annottype_key in (1018)
+where a._annottype_key in (1024)
 and not exists (select 1 from voc_term s where a._object_key = s._term_key)
 ;
 

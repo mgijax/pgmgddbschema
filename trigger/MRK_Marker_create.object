@@ -72,13 +72,6 @@ END IF;
 
 IF EXISTS (SELECT * FROM VOC_Annot a
           WHERE OLD._Marker_key = a._Object_key
-          AND a._AnnotType_key = 1006)
-THEN
-        RAISE EXCEPTION E'Marker is referenced in OMIM-Human Marker Annotations';
-END IF; 
-
-IF EXISTS (SELECT * FROM VOC_Annot a
-          WHERE OLD._Marker_key = a._Object_key
           AND a._AnnotType_key = 1022)
 THEN
         RAISE EXCEPTION E'Marker is referenced in DO-Human Marker Annotations';
@@ -116,7 +109,7 @@ IF EXISTS (SELECT * FROM VOC_Annot a
           WHERE OLD._Marker_key = a._Object_key
           AND a._AnnotType_key = 1016)
 THEN
-        RAISE EXCEPTION E'Marker is referenced in OMIM/Marker Annotations';
+        RAISE EXCEPTION E'Marker is referenced in DO/Marker Annotations';
 END IF; 
 
 IF EXISTS (SELECT * FROM VOC_Annot a
@@ -397,7 +390,7 @@ IF OLD._Marker_Status_key in (1) AND NEW._Marker_Status_key in (3)
 	     OR EXISTS (SELECT 1 FROM MRK_ClusterMember WHERE NEW._Marker_key = _Marker_key)
 	     OR EXISTS (SELECT 1 FROM MRK_MCV_Cache WHERE NEW._Marker_key = _Marker_key)
 	     OR EXISTS (SELECT 1 FROM MRK_DO_Cache WHERE NEW._Marker_key = _Marker_key)
-	     OR EXISTS (SELECT 1 FROM MRK_OMIM_Cache WHERE NEW._Marker_key = _Marker_key)
+	     OR EXISTS (SELECT 1 FROM MRK_DO_Cache WHERE NEW._Marker_key = _Marker_key)
 	     OR EXISTS (SELECT 1 FROM PRB_Marker WHERE NEW._Marker_key = _Marker_key)
 	     OR EXISTS (SELECT 1 FROM PRB_RFLV WHERE NEW._Marker_key = _Marker_key)
 	     OR EXISTS (SELECT 1 FROM PRB_Strain_Marker WHERE NEW._Marker_key = _Marker_key)

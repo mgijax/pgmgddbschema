@@ -67,7 +67,7 @@ END IF;
 
 IF EXISTS (SELECT * FROM VOC_Annot a
           WHERE OLD._Allele_key = a._Object_key
-          AND a._AnnotType_key = 1012)
+          AND a._AnnotType_key = 1021)
 THEN
         RAISE EXCEPTION E'Allele is referenced in Allele/Disease Annotations';
 END IF;
@@ -84,7 +84,7 @@ WHERE _Marker_key = OLD._Marker_key
 AND (_Allele_key_1 = OLD._Allele_key or _Allele_key_2 = OLD._Allele_key)
 ;
 
-UPDATE MRK_OMIM_Cache set _Marker_key = null
+UPDATE MRK_DO_Cache set _Marker_key = null
 WHERE _Marker_key = OLD._Marker_key
 AND _Allele_key = OLD._Allele_key
 ;
@@ -304,7 +304,7 @@ WHERE (_Allele_key_1 = NEW._Allele_key or _Allele_key_2 = NEW._Allele_key)
 AND NEW._MarkerAllele_Status_key != 4268546
 ;
 
-UPDATE MRK_OMIM_Cache set _Marker_key = NEW._Marker_key
+UPDATE MRK_DO_Cache set _Marker_key = NEW._Marker_key
 WHERE _Allele_key = NEW._Allele_key
 AND NEW._MarkerAllele_Status_key != 4268546
 ;

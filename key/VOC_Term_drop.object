@@ -126,8 +126,6 @@ ALTER TABLE mgd.PRB_Probe DROP CONSTRAINT PRB_Probe__SegmentType_key_fkey CASCAD
 
 ALTER TABLE mgd.MRK_DO_Cache DROP CONSTRAINT MRK_DO_Cache__Term_key_fkey CASCADE;
 
-ALTER TABLE mgd.MRK_OMIM_Cache DROP CONSTRAINT MRK_OMIM_Cache__Term_key_fkey CASCADE;
-
 ALTER TABLE mgd.MRK_BiotypeMapping DROP CONSTRAINT MRK_BiotypeMapping__biotypeterm_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_BiotypeMapping DROP CONSTRAINT MRK_BiotypeMapping__MCVTerm_key_fkey CASCADE;

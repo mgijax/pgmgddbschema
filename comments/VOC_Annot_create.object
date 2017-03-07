@@ -8,7 +8,7 @@ COMMENT ON TABLE mgd.VOC_Annot IS 'A record in this table represents the Annotat
 
 COMMENT ON COLUMN VOC_Annot._Annot_key IS 'primary key';
 
-COMMENT ON COLUMN VOC_Annot._AnnotType_key IS 'foreign key to VOC_AnnotType; examples include 1000:GO/Marker), 1002:Mammelian Phenotypes/Genotype, 1005:OMIM/Human Marker';
+COMMENT ON COLUMN VOC_Annot._AnnotType_key IS 'foreign key to VOC_AnnotType; examples include 1000:GO/Marker), 1002:Mammelian Phenotypes/Genotype, 1020:DO/Genotype';
 
 COMMENT ON COLUMN VOC_Annot.creation_date IS 'date record was created';
 
