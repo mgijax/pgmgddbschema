@@ -20,8 +20,6 @@ ALTER TABLE mgd.SEQ_Allele_Assoc DROP CONSTRAINT SEQ_Allele_Assoc__Allele_key_fk
 
 ALTER TABLE mgd.PRB_Strain_Marker DROP CONSTRAINT PRB_Strain_Marker__Allele_key_fkey CASCADE;
 
-ALTER TABLE mgd.MRK_DO_Cache DROP CONSTRAINT MRK_DO_Cache__Allele_key_fkey CASCADE;
-
 ALTER TABLE mgd.MLD_Expt_Marker DROP CONSTRAINT MLD_Expt_Marker__Allele_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_AllelePair DROP CONSTRAINT GXD_AllelePair__Allele_key_2_fkey CASCADE;
