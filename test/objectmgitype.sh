@@ -479,7 +479,7 @@ and not exists (select 1 from gxd_genotype s where a._object_key = s._genotype_k
 
 select a.*
 from voc_annot a
-where a._annottype_key in (1000, 1003, 1022, 1007, 1010, 1011, 1015, 1016, 1017, 1019)
+where a._annottype_key in (1000, 1003, 1022, 1007, 1010, 1011, 1015, 1017, 1019, 1023)
 and not exists (select 1 from mrk_marker s where a._object_key = s._marker_key)
 ;
 

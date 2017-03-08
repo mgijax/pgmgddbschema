@@ -4,7 +4,7 @@
 # History
 #
 # 02/26/2015    lec
-#       Delete roll-up annotations (_AnnotType_key = 1015, 1016)
+#       Delete roll-up annotations (_AnnotType_key = 1015, 1023)
 #       Delete MRK_ClusterMember
 #
 # 02/24/2015    lec
@@ -215,11 +215,11 @@ PERFORM VOC_mergeAnnotations (1003, v_oldKey, v_newKey);
 
 -- Delete roll-up annotations
 -- 1015 : Mammalian Phenotype/Marker (Derived)
--- 1016 : OMIM/Marker (Derived)
+-- 1023 : DO/Marker (Derived)
 --
 
 DELETE FROM VOC_Annot WHERE _AnnotType_key = 1015 AND _Object_key = v_oldKey;
-DELETE FROM VOC_Annot WHERE _AnnotType_key = 1016 AND _Object_key = v_oldKey;
+DELETE FROM VOC_Annot WHERE _AnnotType_key = 1023 AND _Object_key = v_oldKey;
 
 -- Delete MRK_ClusterMember from old Symbol
 DELETE FROM MRK_ClusterMember where _Marker_key = v_oldKey;

@@ -49,7 +49,7 @@ IF EXISTS (SELECT * FROM VOC_Annot a
           WHERE OLD._Genotype_key = a._Object_key
 	  AND a._AnnotType_key = 1020)
 THEN
-        RAISE EXCEPTION E'Genotype is referenced in OMIM/Genotype Annotations';
+        RAISE EXCEPTION E'Genotype is referenced in DO/Genotype Annotations';
 END IF; 
 
 DELETE FROM IMG_ImagePane_Assoc a

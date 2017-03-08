@@ -72,13 +72,6 @@ END IF;
 
 IF EXISTS (SELECT * FROM VOC_Annot a
           WHERE OLD._Marker_key = a._Object_key
-          AND a._AnnotType_key = 1022)
-THEN
-        RAISE EXCEPTION E'Marker is referenced in DO-Human Marker Annotations';
-END IF; 
-
-IF EXISTS (SELECT * FROM VOC_Annot a
-          WHERE OLD._Marker_key = a._Object_key
           AND a._AnnotType_key = 1007)
 THEN
         RAISE EXCEPTION E'Marker is referenced in PIRSF-Marker Annotations';
@@ -107,7 +100,14 @@ END IF;
 
 IF EXISTS (SELECT * FROM VOC_Annot a
           WHERE OLD._Marker_key = a._Object_key
-          AND a._AnnotType_key = 1016)
+          AND a._AnnotType_key = 1022)
+THEN
+        RAISE EXCEPTION E'Marker is referenced in DO-Human Marker Annotations';
+END IF; 
+
+IF EXISTS (SELECT * FROM VOC_Annot a
+          WHERE OLD._Marker_key = a._Object_key
+          AND a._AnnotType_key = 1023)
 THEN
         RAISE EXCEPTION E'Marker is referenced in DO/Marker Annotations';
 END IF; 
