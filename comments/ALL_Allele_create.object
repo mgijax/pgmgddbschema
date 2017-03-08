@@ -41,7 +41,7 @@ COMMENT ON COLUMN ALL_Allele._ModifiedBy_key IS 'user who last modified the reco
 
 COMMENT ON COLUMN ALL_Allele.name IS 'Allele Name';
 
-COMMENT ON COLUMN ALL_Allele.nomenSymbol IS 'Marker Symbol if the Marker is still "in progress" or "reserved" in NomenDB';
+COMMENT ON COLUMN ALL_Allele.nomenSymbol IS 'obsolete';
 
 COMMENT ON COLUMN ALL_Allele._Strain_key IS 'foreign key to PRB_Strain; the Strain Of Origin; for Transgenes this is the Strain fro which the mutation was made';
 
