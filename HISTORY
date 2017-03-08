@@ -2,6 +2,21 @@ TAG: pgmgddbschema-6-0-10-?
 DATE: 03/07/2017
 STAFF: lec
 TR12540/DO (Disease Ontology)
+obsolete:
+view/MGI_NoteType_Nomen_View_create.object
+view/MGI_NoteType_Nomen_View_drop.object
+view/MGI_Note_Nomen_View_create.object
+view/MGI_Note_Nomen_View_drop.object
+view/MGI_RefType_Nomen_View_create.object
+view/MGI_RefType_Nomen_View_drop.object
+view/MGI_Reference_Nomen_View_create.object
+view/MGI_Reference_Nomen_View_drop.object
+view/MGI_SynonymType_Nomen_View_create.object
+view/MGI_SynonymType_Nomen_View_drop.object
+view/MGI_Synonym_Nomen_View_create.object
+view/MGI_Synonym_Nomen_View_drop.object
+view/VOC_Term_NomenStatus_View_create.object
+view/VOC_Term_NomenStatus_View_drop.object
 
 TAG: pgmgddbschema-6-0-8-2
 DATE: 03/08/2017
