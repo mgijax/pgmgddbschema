@@ -3,6 +3,8 @@
 #
 # This file was generated automatically by dbschemaScripts.py -- edit with care.
 #
+# NOTE that PRB_Allele._Allele_key is *not* the same as ALL_Allele._Allele_key
+#
 
 cd `dirname $0` && . ./Configuration
 
