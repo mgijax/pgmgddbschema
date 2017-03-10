@@ -6,6 +6,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.CRS_Typings DROP CONSTRAINT CRS_Typings__Cross_key_fkey CASCADE;
+
 ALTER TABLE mgd.CRS_Matrix DROP CONSTRAINT CRS_Matrix_pkey CASCADE;
 
 EOSQL

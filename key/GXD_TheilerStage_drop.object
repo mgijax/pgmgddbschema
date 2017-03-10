@@ -15,24 +15,24 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.GXD_GelLaneStructure DROP CONSTRAINT GXD_GelLaneStructure__Stage_key_fkey CASCADE;
-
-ALTER TABLE mgd.GXD_ISResultStructure DROP CONSTRAINT GXD_ISResultStructure__Stage_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_SetMember_EMAPA DROP CONSTRAINT MGI_SetMember_EMAPA__Stage_key_fkey CASCADE;
+ALTER TABLE mgd.VOC_Term_EMAPS DROP CONSTRAINT VOC_Term_EMAPS__Stage_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_Term_EMAPA DROP CONSTRAINT VOC_Term_EMAPA_startstage_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_Term_EMAPA DROP CONSTRAINT VOC_Term_EMAPA_endstage_fkey CASCADE;
 
-ALTER TABLE mgd.VOC_Term_EMAPS DROP CONSTRAINT VOC_Term_EMAPS__Stage_key_fkey CASCADE;
+ALTER TABLE mgd.MGI_SetMember_EMAPA DROP CONSTRAINT MGI_SetMember_EMAPA__Stage_key_fkey CASCADE;
 
-ALTER TABLE mgd.ALL_Cre_Cache DROP CONSTRAINT ALL_Cre_Cache__Stage_key_fkey CASCADE;
+ALTER TABLE mgd.GXD_ISResultStructure DROP CONSTRAINT GXD_ISResultStructure__Stage_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Stage_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_GelLaneStructure DROP CONSTRAINT GXD_GelLaneStructure__Stage_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__Stage_key_fkey CASCADE;
 
-ALTER TABLE mgd.GXD_TheilerStage DROP CONSTRAINT GXD_TheilerStage_pkey CASCADE;
+ALTER TABLE mgd.ALL_Cre_Cache DROP CONSTRAINT ALL_Cre_Cache__Stage_key_fkey CASCADE;
 
-ALTER TABLE mgd.GXD_HTSample  DROP CONSTRAINT GXD_HTSample__Stage_fkey CASCADE;
+ALTER TABLE mgd.GXD_TheilerStage DROP CONSTRAINT GXD_TheilerStage_pkey CASCADE;
 
 EOSQL

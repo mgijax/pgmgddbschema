@@ -12,6 +12,9 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 ALTER TABLE mgd.CRS_Cross ADD PRIMARY KEY (_Cross_key);
 
 
+ALTER TABLE mgd.CRS_Matrix ADD FOREIGN KEY (_Cross_key) REFERENCES mgd.CRS_Cross DEFERRABLE;
+
+
 ALTER TABLE mgd.CRS_Progeny ADD FOREIGN KEY (_Cross_key) REFERENCES mgd.CRS_Cross DEFERRABLE;
 
 
@@ -19,9 +22,6 @@ ALTER TABLE mgd.CRS_References ADD FOREIGN KEY (_Cross_key) REFERENCES mgd.CRS_C
 
 
 ALTER TABLE mgd.MLD_Matrix ADD FOREIGN KEY (_Cross_key) REFERENCES mgd.CRS_Cross DEFERRABLE;
-
-
-ALTER TABLE mgd.CRS_Matrix ADD FOREIGN KEY (_Cross_key) REFERENCES mgd.CRS_Cross DEFERRABLE;
 
 
 EOSQL
