@@ -16,7 +16,11 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.SEQ_Sequence DROP CONSTRAINT SEQ_Sequence__Organism_key_fkey CASCADE;
 
+ALTER TABLE mgd.SEQ_Marker_Cache DROP CONSTRAINT SEQ_Marker_Cache__Organism_key_fkey CASCADE;
+
 ALTER TABLE mgd.PRB_Source DROP CONSTRAINT PRB_Source__Organism_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_Marker DROP CONSTRAINT MRK_Marker__Organism_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Location_Cache DROP CONSTRAINT MRK_Location_Cache__Organism_key_fkey CASCADE;
 
@@ -25,8 +29,6 @@ ALTER TABLE mgd.MRK_Label DROP CONSTRAINT MRK_Label__OrthologOrganism_key_fkey C
 ALTER TABLE mgd.MRK_Label DROP CONSTRAINT MRK_Label__Organism_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_DO_Cache DROP CONSTRAINT MRK_DO_Cache__Organism_key_fkey CASCADE;
-
-ALTER TABLE mgd.MRK_Marker DROP CONSTRAINT MRK_Marker__Organism_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Chromosome DROP CONSTRAINT MRK_Chromosome__Organism_key_fkey CASCADE;
 
@@ -39,6 +41,7 @@ ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Organism_key_fkey CAS
 ALTER TABLE mgd.GXD_Antibody DROP CONSTRAINT GXD_Antibody__Organism_key_fkey CASCADE;
 
 ALTER TABLE mgd.ACC_LogicalDB DROP CONSTRAINT ACC_LogicalDB__Organism_key_fkey CASCADE;
+
 ALTER TABLE mgd.MGI_Organism DROP CONSTRAINT MGI_Organism_pkey CASCADE;
 
 EOSQL

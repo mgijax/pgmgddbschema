@@ -24,10 +24,10 @@ ALTER TABLE mgd.MGI_Organism ADD PRIMARY KEY (_Organism_key);
 ALTER TABLE mgd.ACC_LogicalDB ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism DEFERRABLE;
 
 
-ALTER TABLE mgd.GXD_HTSample ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism DEFERRABLE;
-
-
 ALTER TABLE mgd.GXD_Antibody ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism DEFERRABLE;
+
+
+ALTER TABLE mgd.GXD_HTSample ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism DEFERRABLE;
 
 
 ALTER TABLE mgd.MGI_Organism_MGIType ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism ON DELETE CASCADE DEFERRABLE;
@@ -37,9 +37,6 @@ ALTER TABLE mgd.MGI_SynonymType ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.M
 
 
 ALTER TABLE mgd.MRK_Chromosome ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism ON DELETE CASCADE DEFERRABLE;
-
-
-ALTER TABLE mgd.MRK_Marker ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism DEFERRABLE;
 
 
 ALTER TABLE mgd.MRK_DO_Cache ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism DEFERRABLE;
@@ -54,7 +51,13 @@ ALTER TABLE mgd.MRK_Label ADD FOREIGN KEY (_OrthologOrganism_key) REFERENCES mgd
 ALTER TABLE mgd.MRK_Location_Cache ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism DEFERRABLE;
 
 
+ALTER TABLE mgd.MRK_Marker ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism DEFERRABLE;
+
+
 ALTER TABLE mgd.PRB_Source ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism DEFERRABLE;
+
+
+ALTER TABLE mgd.SEQ_Marker_Cache ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism DEFERRABLE;
 
 
 ALTER TABLE mgd.SEQ_Sequence ADD FOREIGN KEY (_Organism_key) REFERENCES mgd.MGI_Organism DEFERRABLE;
