@@ -48,9 +48,9 @@ ALTER TABLE mgd.PRB_Marker DROP CONSTRAINT PRB_Marker__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Reference DROP CONSTRAINT MRK_Reference__Refs_key_fkey CASCADE;
 
-ALTER TABLE mgd.MRK_DO_Cache DROP CONSTRAINT MRK_DO_Cache__Refs_key_fkey CASCADE;
-
 ALTER TABLE mgd.MRK_History DROP CONSTRAINT MRK_History__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_DO_Cache DROP CONSTRAINT MRK_DO_Cache__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.MLD_Notes DROP CONSTRAINT MLD_Notes__Refs_key_fkey CASCADE;
 
@@ -70,6 +70,8 @@ ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__Refs_key_fkey CAS
 
 ALTER TABLE mgd.GXD_Assay DROP CONSTRAINT GXD_Assay__Refs_key_fkey CASCADE;
 
+ALTER TABLE mgd.GXD_Antibody DROP CONSTRAINT GXD_AntibodyAlias__Refs_key_fkey CASCADE;
+
 ALTER TABLE mgd.GXD_AntibodyAlias DROP CONSTRAINT GXD_AntibodyAlias__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.DAG_DAG DROP CONSTRAINT DAG_DAG__Refs_key_fkey CASCADE;
@@ -80,9 +82,9 @@ ALTER TABLE mgd.BIB_Notes DROP CONSTRAINT BIB_Notes__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.BIB_DataSet_Assoc DROP CONSTRAINT BIB_DataSet_Assoc__Refs_key_fkey CASCADE;
 
-ALTER TABLE mgd.BIB_Books DROP CONSTRAINT BIB_Books__Refs_key_fkey CASCADE;
-
 ALTER TABLE mgd.BIB_Citation_Cache DROP CONSTRAINT BIB_Citation_Cache__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.BIB_Books DROP CONSTRAINT BIB_Books__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.ALL_CellLine_Derivation DROP CONSTRAINT ALL_CellLine_Derivation__Refs_key_fkey CASCADE;
 
