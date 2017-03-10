@@ -70,8 +70,6 @@ ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__Refs_key_fkey CAS
 
 ALTER TABLE mgd.GXD_Assay DROP CONSTRAINT GXD_Assay__Refs_key_fkey CASCADE;
 
-ALTER TABLE mgd.GXD_Antibody DROP CONSTRAINT GXD_AntibodyAlias__Refs_key_fkey CASCADE;
-
 ALTER TABLE mgd.GXD_AntibodyAlias DROP CONSTRAINT GXD_AntibodyAlias__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.DAG_DAG DROP CONSTRAINT DAG_DAG__Refs_key_fkey CASCADE;
