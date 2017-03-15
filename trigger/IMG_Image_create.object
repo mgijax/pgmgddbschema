@@ -81,6 +81,12 @@ WHERE a._Object_key = OLD._Image_key
 AND a._MGIType_key = 9
 ;
 
+-- EMAGE ids
+DELETE FROM ACC_Accession a
+WHERE a._Object_key = OLD._ThumbnailImage_key
+AND a._MGIType_key = 35
+;
+
 -- if this is a Full Size Image, then delete its Thumbnail as well
 
 IF (OLD._ImageType_key = 1072158)
@@ -101,6 +107,12 @@ THEN
     DELETE FROM ACC_Accession a
     WHERE a._Object_key = OLD._ThumbnailImage_key
     AND a._MGIType_key = 9
+    ;
+
+    -- EMAGE ids
+    DELETE FROM ACC_Accession a
+    WHERE a._Object_key = OLD._ThumbnailImage_key
+    AND a._MGIType_key = 35
     ;
 
 END IF;
