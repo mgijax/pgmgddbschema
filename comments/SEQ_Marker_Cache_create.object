@@ -30,7 +30,7 @@ COMMENT ON COLUMN SEQ_Marker_Cache._ModifiedBy_key IS 'user who last modified th
 
 COMMENT ON COLUMN SEQ_Marker_Cache._Organism_key IS 'foreign key to MGI_Organism';
 
-COMMENT ON COLUMN SEQ_Marker_Cache._Qualifier_key IS 'foreign key to VOC_Term where _Vocab_key = 19 (Sequence Quality); qualifies the association between the Marker and the Sequence';
+COMMENT ON COLUMN SEQ_Marker_Cache._Qualifier_key IS 'foreign key to VOC_Term where _Vocab_key =289 (Representative Sequence Qualifier); qualifies the association between the Marker and the Sequence';
 
 COMMENT ON COLUMN SEQ_Marker_Cache.rawbiotype IS 'raw biotype';
 
