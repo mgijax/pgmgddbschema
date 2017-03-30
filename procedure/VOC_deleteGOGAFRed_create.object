@@ -3,6 +3,9 @@
 #
 # History
 #
+# 03/30/2017	lec
+#	- TR12550/GOA_CAFA added/1568
+#
 # 06/10/2016	lec
 #	- TR12345/GPAD/GO_Noctua added
 #
@@ -44,7 +47,7 @@ BEGIN
 -- if the user name is not in the list...return
 -- this list should contain: GOA_%, RGD, GOC, GO_Central, UniProtKB, GO_Noctua
 
-IF (SELECT count(*) FROM MGI_User WHERE _User_key in (1446,1447,1448,1449,1450,1458,1459,1460,1469,1470,1471,1498,1503,1509,1510,1511,1517,1539,1551,1562,1564,1565,1566)) = 0
+IF (SELECT count(*) FROM MGI_User WHERE _User_key in (1446,1447,1448,1449,1450,1458,1459,1460,1469,1470,1471,1498,1503,1509,1510,1511,1517,1539,1551,1562,1564,1565,1566,1568)) = 0
 THEN
     RETURN;
 END IF;
