@@ -107,7 +107,7 @@ END IF;
 
 INSERT INTO ALL_Allele
 (_Allele_key, _Marker_key, _Strain_key, _Mode_key, _Allele_Type_key, _Allele_Status_key, _Transmission_key,
-        _Collection_key, symbol, name, nomenSymbol, isWildType, isExtinct, isMixed,
+        _Collection_key, symbol, name, isWildType, isExtinct, isMixed,
 	_Refs_key, _MarkerAllele_Status_key,
         _CreatedBy_key, _ModifiedBy_key, _ApprovedBy_key, approval_date, creation_date, modification_date)
 VALUES(v_alleleKey, v_markerKey, v_strainKey, v_modeKey, v_typeKey, v_statusKey, v_transmissionKey,

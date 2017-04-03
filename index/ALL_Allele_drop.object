@@ -36,9 +36,6 @@ drop index if exists mgd.ALL_Allele_idx_Allele_Status_key
 drop index if exists mgd.ALL_Allele_idx_MarkerAllele_Status_key
 ;
 
-drop index if exists mgd.ALL_Allele_idx_nomenSymbol
-;
-
 drop index if exists mgd.ALL_Allele_idx_CreatedBy_key
 ;
 

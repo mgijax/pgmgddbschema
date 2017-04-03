@@ -30,8 +30,6 @@ create index ALL_Allele_idx_Allele_Status_key on mgd.ALL_Allele (_Allele_Status_
 
 create index ALL_Allele_idx_MarkerAllele_Status_key on mgd.ALL_Allele (_MarkerAllele_Status_key);
 
-create index ALL_Allele_idx_nomenSymbol on mgd.ALL_Allele (nomenSymbol);
-
 create index ALL_Allele_idx_CreatedBy_key on mgd.ALL_Allele (_CreatedBy_key);
 
 create index ALL_Allele_idx_ModifiedBy_key on mgd.ALL_Allele (_ModifiedBy_key);
