@@ -16,9 +16,9 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create table mgd.BIB_Citation_Cache (
  	_Refs_key                  int             not null,
 	numericPart                int             not null,
-	jnumID                     varchar(30)     not null,
-	mgiID                      varchar(30)     not null,
-	pubmedID                   varchar(30)     null,
+	jnumID                     text            not null,
+	mgiID                      text            not null,
+	pubmedID                   text            null,
 	reviewStatus		   text            not null,
 	journal		           text            null,
 	citation                   text            not null,
