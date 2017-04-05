@@ -59,9 +59,9 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ALL_mergeWildTypes(int,int,varchar,varchar) TO public;
+GRANT EXECUTE ON FUNCTION ALL_mergeWildTypes(int,int,text,text) TO public;
 
-COMMENT ON FUNCTION mgd.ALL_mergeWildTypes(int,int,varchar,varchar) IS 'merge wildtype alleles of old/new symbols';
+COMMENT ON FUNCTION mgd.ALL_mergeWildTypes(int,int,text,text) IS 'merge wildtype alleles of old/new symbols';
 
 EOSQL
 

@@ -80,9 +80,9 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ALL_postMP(int,int,varchar) TO public;
+GRANT EXECUTE ON FUNCTION ALL_postMP(int,int,text) TO public;
 
-COMMENT ON FUNCTION mgd.ALL_postMP(int,int,varchar) IS 'perform post-Allele-MP updates';
+COMMENT ON FUNCTION mgd.ALL_postMP(int,int,text) IS 'perform post-Allele-MP updates';
 
 EOSQL
 

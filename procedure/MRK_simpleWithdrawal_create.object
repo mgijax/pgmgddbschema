@@ -223,8 +223,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MRK_simpleWithdrawal(int,int,int,int,varchar,text,int) TO public;
+GRANT EXECUTE ON FUNCTION MRK_simpleWithdrawal(int,int,int,int,text,text,int) TO public;
 
-COMMENT ON FUNCTION mgd.MRK_simpleWithdrawal(int,int,int,int,varchar,text,int) IS 'process a simple marker withdrawal';
+COMMENT ON FUNCTION mgd.MRK_simpleWithdrawal(int,int,int,int,text,text,int) IS 'process a simple marker withdrawal';
 
 EOSQL

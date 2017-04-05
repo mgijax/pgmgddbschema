@@ -68,8 +68,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ALL_createWildType(int,int,varchar) TO public;
+GRANT EXECUTE ON FUNCTION ALL_createWildType(int,int,text) TO public;
 
-COMMENT ON FUNCTION ALL_createWildType(int,int,varchar) IS 'create wild type allele';
+COMMENT ON FUNCTION ALL_createWildType(int,int,text) IS 'create wild type allele';
 
 EOSQL

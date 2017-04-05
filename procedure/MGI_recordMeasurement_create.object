@@ -18,7 +18,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/MGI_recordMeasurement_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION MGI_recordMeasurement (
-v_abbrev varchar(30),
+v_abbrev mgi_statistic.abbreviation%TYPE,
 v_intVal int DEFAULT NULL,
 v_floatVal numeric DEFAULT NULL
 )
@@ -114,9 +114,9 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MGI_recordMeasurement(varchar,int,numeric) TO public;
+GRANT EXECUTE ON FUNCTION MGI_recordMeasurement(text,int,numeric) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_recordMeasurement(varchar,int,numeric) IS 'log a measurement with the given value into mgi_measurement';
+COMMENT ON FUNCTION mgd.MGI_recordMeasurement(text,int,numeric) IS 'log a measurement with the given value into mgi_measurement';
 
 EOSQL
 

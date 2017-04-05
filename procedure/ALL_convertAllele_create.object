@@ -116,9 +116,9 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ALL_convertAllele(int,int,varchar,varchar,int) TO public;
+GRANT EXECUTE ON FUNCTION ALL_convertAllele(int,int,text,text,int) TO public;
 
-COMMENT ON FUNCTION mgd.ALL_convertAllele(int,int,varchar,varchar,int) IS 'convert allele symbols of using old symbol/new symbol';
+COMMENT ON FUNCTION mgd.ALL_convertAllele(int,int,text,text,int) IS 'convert allele symbols of using old symbol/new symbol';
 
 EOSQL
 

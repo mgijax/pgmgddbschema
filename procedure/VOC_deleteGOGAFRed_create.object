@@ -121,8 +121,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION VOC_deleteGOGAFRed(varchar) TO public;
+GRANT EXECUTE ON FUNCTION VOC_deleteGOGAFRed(text) TO public;
 
-COMMENT ON FUNCTION mgd.VOC_deleteGOGAFRed(varchar) IS 'remove GO/red annotations that have non-IEA evidence codes';
+COMMENT ON FUNCTION mgd.VOC_deleteGOGAFRed(text) IS 'remove GO/red annotations that have non-IEA evidence codes';
 
 EOSQL
