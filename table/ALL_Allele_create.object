@@ -3,16 +3,6 @@
 #
 # History:
 #
-# during next schema change:
-#	remove nomenSymbol
-#	change symbol/varchar to text
-#
-# lec	
-# 	TR11083/nomenSymbol is obsolete
-#	during next schema change, remove
-#
-# 02/13/2009 - added _Transmission_key and isMixed fields
-#
 
 cd `dirname $0` && . ./Configuration
 
@@ -28,9 +18,8 @@ create table mgd.ALL_Allele (
 	_Allele_Status_key             int               not null,
 	_Transmission_key	       int	         not null,
 	_Collection_key	       	       int	         not null,
-	symbol                         varchar(60)       not null,
+	symbol                         text
 	name                           text              not null,
-	nomenSymbol                    varchar(50)       null,
 	isWildType                     smallint          not null,
 	isExtinct		       smallint	         not null,
 	isMixed			       smallint	         not null,
