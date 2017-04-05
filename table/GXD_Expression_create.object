@@ -37,7 +37,7 @@ create table mgd.GXD_Expression (
 	_Specimen_key		       int	       null,
 	_GelLane_key		       int	       null,
 	expressed                      smallint        not null,
-	age                            varchar(50)     not null,
+	age                            text            not null,
 	ageMin                         numeric         null,
 	ageMax                         numeric         null,
 	isRecombinase                  smallint        not null,
