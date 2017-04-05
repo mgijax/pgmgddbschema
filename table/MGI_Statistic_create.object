@@ -12,10 +12,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.MGI_Statistic (
 	_Statistic_key		int		not null,
-	name			text	not null,
-	abbreviation		varchar(30)	not null,
-	definition		text	null,
-	isPrivate		smallint		not null,
-	hasIntValue		smallint		not null
+	name			text	        not null,
+	abbreviation		text       	not null,
+	definition		text	        null,
+	isPrivate		smallint	not null,
+	hasIntValue		smallint	not null
 );
 EOSQL
