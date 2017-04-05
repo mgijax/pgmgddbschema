@@ -11,12 +11,12 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.MLD_FISH (
  	_Expt_key                      int             not null,
-	band                           varchar(50)     null,
+	band                           text            null,
 	_Strain_key                    int             not null,
-	cellOrigin                     varchar(30)     null,
-	karyotype                      varchar(30)     null,
-	robertsonians                  text    null,
-	label                          varchar(50)     null,
+	cellOrigin                     text            null,
+	karyotype                      text            null,
+	robertsonians                  text            null,
+	label                          text            null,
 	numMetaphase                   int             null,
 	totalSingle                    int             null,
 	totalDouble                    int             null,

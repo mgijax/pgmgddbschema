@@ -16,8 +16,8 @@ create table mgd.MLD_Statistics (
 	_Marker_key_2                  int             not null,
 	recomb                         int             not null,
 	total                          int             not null,
-	pcntrecomb                     numeric           not null,
-	stderr                         numeric           not null,
+	pcntrecomb                     numeric         not null,
+	stderr                         numeric         not null,
 	creation_date                  timestamp DEFAULT now()        not null,
 	modification_date              timestamp DEFAULT now()        not null 
 );

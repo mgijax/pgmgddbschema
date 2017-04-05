@@ -11,8 +11,8 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.MLD_Hybrid (
  	_Expt_key                      int             not null,
-	chrsOrGenes                    smallint             not null,
-	band                           varchar(50)     null,
+	chrsOrGenes                    smallint        not null,
+	band                           text            null,
 	creation_date                  timestamp DEFAULT now()        not null,
 	modification_date              timestamp DEFAULT now()        not null 
 );

@@ -13,7 +13,7 @@ create table mgd.MLD_Concordance (
  	_Expt_key                      int             not null,
 	sequenceNum                    int             not null,
 	_Marker_key                    int             null,
-	chromosome                     varchar(8)      null,
+	chromosome                     text            null,
 	cpp                            int             not null,
 	cpn                            int             not null,
 	cnp                            int             not null,
