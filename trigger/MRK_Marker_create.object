@@ -267,7 +267,7 @@ IF NEW._Marker_Status_key in (1)
    AND NEW.name not like '%hypothetical protein%'
    AND NEW.name not like '%ecotropic viral integration site%'        
    AND NEW.name not like '%viral polymerase%'
-   AND NOT EXISTS (SELECT 1 FROM ALL_Allele where _Marker_key = NEW._Marker_key)
+   AND NOT EXISTS (SELECT 1 FROM ALL_Allele where _Marker_key = NEW._Marker_key and isWildType = 1)
 THEN
         PERFORM ALL_createWildType (NEW._ModifiedBy_key, NEW._Marker_key, NEW.symbol);
 
