@@ -18,8 +18,8 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-oldCyto varchar(20);
-newCyto varchar(20);
+oldCyto mrk_marker.cytogeneticOffset%TYPE;
+newCyto mrk_marker.cytogeneticOffset%TYPE;
 oldMGD float;
 newMGD float;
 oldCC float;

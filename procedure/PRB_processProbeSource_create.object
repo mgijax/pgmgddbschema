@@ -98,9 +98,9 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION PRB_processProbeSource(int,int,int,int,int,int,int,int,varchar,text,int) TO public;
+GRANT EXECUTE ON FUNCTION PRB_processProbeSource(int,int,int,int,int,int,int,int,text,text,int) TO public;
 
-COMMENT ON FUNCTION mgd.PRB_processProbeSource(int,int,int,int,int,int,int,int,varchar,text,int) IS 'process (modify) a Probe Molecular Source';
+COMMENT ON FUNCTION mgd.PRB_processProbeSource(int,int,int,int,int,int,int,int,text,text,int) IS 'process (modify) a Probe Molecular Source';
 
 EOSQL
 

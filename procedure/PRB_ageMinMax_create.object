@@ -28,7 +28,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/PRB_ageMinMax_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION PRB_ageMinMax (
-v_age varchar(50),
+v_age prb_source.age%TYPE,
 out v_ageMin numeric,
 out v_ageMax numeric
 )
@@ -36,8 +36,8 @@ AS
 \$\$
 
 DECLARE
-saveAge varchar(50);
-stem varchar(50);
+saveAge prb_source.age%TYPE;
+stem prb_source.age%TYPE;
 timeUnit varchar(25);
 timeRange varchar(25);
 i integer;

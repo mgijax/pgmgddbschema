@@ -127,8 +127,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION PRB_processSequenceSource(int,int,int,int,int,int,int,int,int,varchar,int) TO public;
+GRANT EXECUTE ON FUNCTION PRB_processSequenceSource(int,int,int,int,int,int,int,int,int,text,int) TO public;
 
-COMMENT ON FUNCTION mgd.PRB_processSequenceSource(int,int,int,int,int,int,int,int,int,varchar,int) IS 'process (modify) a Sequence Molecular Source';
+COMMENT ON FUNCTION mgd.PRB_processSequenceSource(int,int,int,int,int,int,int,int,int,text,int) IS 'process (modify) a Sequence Molecular Source';
 
 EOSQL
