@@ -12,7 +12,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create table mgd.PRB_Allele (
  	_Allele_key                    int             not null,
 	_RFLV_key                      int             not null,
-	allele                         varchar(30)     not null,
+	allele                         text            not null,
 	fragments                      text    not null,
 	_CreatedBy_key                 int DEFAULT 1001             not null,
 	_ModifiedBy_key                int DEFAULT 1001             not null,
