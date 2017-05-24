@@ -3,6 +3,9 @@
 #
 # History
 #
+# lec	05/24/2017
+#       - TR12240/12083/varchar to text
+#
 # lec	08/20/2014
 #
 # lec	01/18/2006
@@ -37,8 +40,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ACC_setMax(int,varchar) TO public;
+GRANT EXECUTE ON FUNCTION ACC_setMax(int,text) TO public;
 
-COMMENT ON FUNCTION mgd.ACC_setMax(int,varchar) IS 'updates the acc_accessionmax:maxNumericPart field';
+COMMENT ON FUNCTION mgd.ACC_setMax(int,text) IS 'updates the acc_accessionmax:maxNumericPart field';
 
 EOSQL

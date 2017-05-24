@@ -62,6 +62,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION ACCRef_process(int,int,int,text,int,text,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.ACCRef_process(int,int,int,varchar,int,varchar,int,int) IS 'creates a new acc_accessionreference row using a new or existing acc_accession row';
+COMMENT ON FUNCTION mgd.ACCRef_process(int,int,int,text,int,text,int,int) IS 'creates a new acc_accessionreference row using a new or existing acc_accession row';
 
 EOSQL

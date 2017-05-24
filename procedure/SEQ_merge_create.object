@@ -7,6 +7,9 @@
 # lib_java_dbsrdr
 # lib_java_dla
 #
+# 05/24/2017    lec
+#       - TR12240/12083/varchar to text
+#
 # 01/12/2004
 #	- JSAM
 #
@@ -88,9 +91,9 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION SEQ_merge(varchar,varchar) TO public;
+GRANT EXECUTE ON FUNCTION SEQ_merge(text,text) TO public;
 
-COMMENT ON FUNCTION mgd.SEQ_merge(varchar,varchar) IS 'merge sequences';
+COMMENT ON FUNCTION mgd.SEQ_merge(text,text) IS 'merge sequences';
 
 EOSQL
 
