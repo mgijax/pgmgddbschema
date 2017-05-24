@@ -3,6 +3,9 @@
 #
 # History
 #
+# 05/24/2017	lec
+#	- TR12240/12083/varchar to text
+#
 # 01/18/2006	lec
 #	- TR 7182; prefixPart increased to 30
 #
@@ -14,7 +17,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.ACC_AccessionMax (
- 	prefixPart                     varchar(30)     not null,
+ 	prefixPart                     text            not null,
 	maxNumericPart                 int             not null,
 	creation_date                  timestamp DEFAULT now()        not null,
 	modification_date              timestamp DEFAULT now()        not null

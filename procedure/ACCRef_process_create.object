@@ -3,6 +3,9 @@
 #
 # HISTORY
 #
+# 05/24/2017	lec
+#	- TR12240/12083/varchar to text
+#
 # lec   08/27/2014
 #       - TR11654/remove obsolete TR1270/IMAGE sp
 #
@@ -57,7 +60,7 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ACCRef_process(int,int,int,varchar,int,varchar,int,int) TO public;
+GRANT EXECUTE ON FUNCTION ACCRef_process(int,int,int,text,int,text,int,int) TO public;
 
 COMMENT ON FUNCTION mgd.ACCRef_process(int,int,int,varchar,int,varchar,int,int) IS 'creates a new acc_accessionreference row using a new or existing acc_accession row';
 
