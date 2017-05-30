@@ -76,6 +76,12 @@ ALTER TABLE mgd.DAG_DAG DROP CONSTRAINT DAG_DAG__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.CRS_References DROP CONSTRAINT CRS_References__Refs_key_fkey CASCADE;
 
+ALTER TABLE mgd.BIB_Workflow_Tag DROP CONSTRAINT BIB_Workflow_Tag__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.BIB_Workflow_Status DROP CONSTRAINT BIB_Workflow_Status__Refs_key_fkey CASCADE;
+
+ALTER TABLE mgd.BIB_Workflow_Data DROP CONSTRAINT BIB_Workflow_Data__Refs_key_fkey CASCADE;
+
 ALTER TABLE mgd.BIB_Notes DROP CONSTRAINT BIB_Notes__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.BIB_DataSet_Assoc DROP CONSTRAINT BIB_DataSet_Assoc__Refs_key_fkey CASCADE;

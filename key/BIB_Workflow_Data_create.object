@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#
+# History
+#
+# 05/30/2017	lec
+#	- TR12250/Lit Triage
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.BIB_Workflow_Data ADD PRIMARY KEY (_Refs_key);
+
+EOSQL

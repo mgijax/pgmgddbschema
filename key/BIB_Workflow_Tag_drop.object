@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#
+# History
+#
+# 05/30/2017	lec
+#	- TR12250/Lit Triage
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.BIB_Workflow_Tag DROP CONSTRAINT BIB_Workflow_Tag_pkey CASCADE;
+
+EOSQL
