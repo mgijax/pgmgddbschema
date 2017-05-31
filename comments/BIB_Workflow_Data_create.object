@@ -1,0 +1,25 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.BIB_Workflow_Data IS 'A record in this table represents Reference information needed by the Triage Workflow process';
+
+COMMENT ON COLUMN BIB_Workflow_Data.hasPDF IS 'does Reference have a PDF?';
+
+COMMENT ON COLUMN BIB_Workflow_Data.linkPDF IS 'location of PDF file';
+
+COMMENT ON COLUMN BIB_Workflow_Data.hasSupplimenta IS 'does Reference have supplimental data in PubMed?';
+
+COMMENT ON COLUMN BIB_Workflow_Data.linkSupplimental IS 'location of supplimental data file(s)';
+
+COMMENT ON COLUMN BIB_Workflow_Data._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN BIB_Workflow_Data.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN BIB_Workflow_Data.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN BIB_Workflow_Data._ModifiedBy_key IS 'user who last modified the record';
+
+EOSQL
