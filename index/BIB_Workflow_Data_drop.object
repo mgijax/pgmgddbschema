@@ -12,10 +12,10 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd..BIB_Workflow_Data_idx_hasPDF
+drop index if exists mgd.BIB_Workflow_Data_idx_hasPDF
 ;
 
-drop index if exists mgd..BIB_Workflow_Data_idx_hasSupplimental
+drop index if exists mgd.BIB_Workflow_Data_idx_hasSupplimental
 ;
 
 drop index if exists mgd.BIB_Workflow_Data_idx_CreatedBy_key
