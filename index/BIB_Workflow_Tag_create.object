@@ -1,7 +1,10 @@
 #!/bin/sh
 
 #
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
+# History
+#
+# 05/30/2017	lec
+#	- TR12250/Lit Triage
 #
 
 cd `dirname $0` && . ./Configuration
