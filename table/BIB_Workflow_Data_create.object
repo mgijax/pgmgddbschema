@@ -16,7 +16,7 @@ create table mgd.BIB_Workflow_Data (
  	_Refs_key                      int                      not null,
 	hasPDF                         smallint DEFAULT 0       not null,
 	linkPDF                        text                     null,
-	_Supplemental_key              int
+	_Supplemental_key              int			not null,
 	linkSupplemental               text                     null,
 	extractedText                  text                     null,
 	_CreatedBy_key                 int DEFAULT 1001         not null,
