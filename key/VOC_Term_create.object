@@ -3,6 +3,9 @@
 #
 # History
 #
+# 05/31/2017    lec 
+#       - TR12250/Lit Triage
+#
 # 11/28/2016	lec
 #	- TR12427/Disease Ontology (DO)
 #
@@ -148,6 +151,18 @@ ALTER TABLE mgd.ALL_CellLine_Derivation ADD FOREIGN KEY (_Creator_key) REFERENCE
 
 
 ALTER TABLE mgd.ALL_CellLine_Derivation ADD FOREIGN KEY (_Vector_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
+ALTER TABLE mgd.BIB_Workflow_Data ADD FOREIGN KEY (_Supplemental_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
+ALTER TABLE mgd.BIB_Workflow_Status ADD FOREIGN KEY (_Group_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
+ALTER TABLE mgd.BIB_Workflow_Status ADD FOREIGN KEY (_Status_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
+ALTER TABLE mgd.BIB_Workflow_Tag ADD FOREIGN KEY (_Tag_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
 ALTER TABLE mgd.GXD_AllelePair ADD FOREIGN KEY (_Compound_key) REFERENCES mgd.VOC_Term DEFERRABLE;
