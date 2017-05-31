@@ -3,6 +3,9 @@
 #
 # History
 #
+# 05/31/2017	lec
+#	- TR12250/Lit Triage
+#
 # 01/03/2013	lec
 #	- TR 10273/added BIB_Citation_Cache_idx_numericPart
 #
@@ -20,5 +23,11 @@ CLUSTER mgd.BIB_Citation_Cache USING BIB_Citation_Cache_pkey;
 create index BIB_Citation_Cache_idx_journal on mgd.BIB_Citation_Cache (journal);
 
 create index BIB_Citation_Cache_idx_numericPart on mgd.BIB_Citation_Cache (numericPart);
+
+create index BIB_Citation_Cache_idx_jnumID on mgd.BIB_Citation_Cache (jnumID);
+
+create index BIB_Citation_Cache_idx_pubmedID on mgd.BIB_Citation_Cache (pubmedID);
+
+create index BIB_Citation_Cache_idx_doiID on mgd.BIB_Citation_Cache (doiID);
 
 EOSQL
