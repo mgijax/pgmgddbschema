@@ -20,6 +20,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.BIB_Refs (
  	_Refs_key                      int             not null,
+	_ReferenceType_key             int             not null,
 	authors                        text            null,
 	_primary                       text            null,
 	title                          text            null,
