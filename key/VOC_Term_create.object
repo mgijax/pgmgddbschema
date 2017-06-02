@@ -153,6 +153,9 @@ ALTER TABLE mgd.ALL_CellLine_Derivation ADD FOREIGN KEY (_Creator_key) REFERENCE
 ALTER TABLE mgd.ALL_CellLine_Derivation ADD FOREIGN KEY (_Vector_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
+ALTER TABLE mgd.BIB_Refs ADD FOREIGN KEY (_ReferenceType_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
 ALTER TABLE mgd.BIB_Workflow_Data ADD FOREIGN KEY (_Supplemental_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 

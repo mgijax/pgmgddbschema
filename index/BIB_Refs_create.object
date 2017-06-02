@@ -21,7 +21,7 @@ create index BIB_Refs_idx_journal on mgd.BIB_Refs (journal);
 
 create index BIB_Refs_idx_title on mgd.BIB_Refs (title);
 
-create index BIB_Refs_idx_ReviewStatus_key on mgd.BIB_Refs (_ReviewStatus_key);
+create index BIB_Refs_idx_ReferenceType_key on mgd.BIB_Refs (_ReferenceType_key);
 
 create index BIB_Refs_idx_CreatedBy_key on mgd.BIB_Refs (_CreatedBy_key);
 

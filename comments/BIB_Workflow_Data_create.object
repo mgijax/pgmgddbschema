@@ -8,8 +8,6 @@ COMMENT ON TABLE mgd.BIB_Workflow_Data IS 'A record in this table represents Ref
 
 COMMENT ON COLUMN BIB_Workflow_Data.hasPDF IS 'does Reference have a PDF?';
 
-COMMENT ON COLUMN BIB_Workflow_Data.linkPDF IS 'location of PDF file';
-
 COMMENT ON COLUMN BIB_Workflow_Data._Supplemental_key IS 'foreign key to VOC_Term where_Vocab_key = ?? (Workflow Supplemental Status)';
 
 COMMENT ON COLUMN BIB_Workflow_Data.linkSupplimental IS 'location of supplimental data file(s)';

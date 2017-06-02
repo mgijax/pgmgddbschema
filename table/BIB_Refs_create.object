@@ -3,6 +3,9 @@
 #
 # This file was generated automatically by dbschemaScripts.py -- edit with care.
 #
+# 06/02/2017	lec
+#	TR12250/Lit Triage
+#
 # 08/25/2015	lec
 #	- TR10592/TR10283 : authors2, title2 are obsolete
 #	- step 1 : merge and set authors2/title2 = null
@@ -17,8 +20,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.BIB_Refs (
  	_Refs_key                      int             not null,
-	_ReviewStatus_key              int             not null,
-	refType                        char(4)         not null,
 	authors                        text            null,
 	_primary                       text            null,
 	title                          text            null,
@@ -28,7 +29,6 @@ create table mgd.BIB_Refs (
 	date                           text            null,
 	year                           int             null,
 	pgs                            text            null,
-	NLMstatus                      char            not null,
 	abstract                       text            null,
 	isReviewArticle                smallint        not null,
 	_CreatedBy_key                 int DEFAULT 1001             not null,
