@@ -23,10 +23,10 @@ create table mgd.BIB_Citation_Cache (
 	mgiID                      text            not null,
 	pubmedID                   text            null,
 	doiID                      text            null,
-	reviewStatus		   text            not null,
 	journal		           text            null,
 	citation                   text            not null,
 	short_citation             text            not null,
+	referenceType		   text            not null,
 	isReviewArticle            smallint        not null,
 	isReviewArticleString      char(3)         not null
 );
