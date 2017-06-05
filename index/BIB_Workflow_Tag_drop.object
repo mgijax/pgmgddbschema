@@ -1,0 +1,27 @@
+#!/bin/sh
+
+#
+# History
+#
+# 05/30/2017	lec
+#	- TR12250/Lit Triage
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index if exists mgd.BIB_Workflow_Tag_idx_Refs_key
+;
+
+drop index if exists mgd.BIB_Workflow_Tag_idx_Tag_key
+;
+
+drop index if exists mgd.BIB_Workflow_Tag_idx_CreatedBy_key
+;
+
+drop index if exists mgd.BIB_Workflow_Tag_idx_ModifiedBy_key
+;
+
+EOSQL

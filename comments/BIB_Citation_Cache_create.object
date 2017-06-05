@@ -22,6 +22,8 @@ COMMENT ON COLUMN BIB_Citation_Cache.numericPart IS 'the trailing numerical port
 
 COMMENT ON COLUMN BIB_Citation_Cache.pubmedID IS 'pubmed accession ID';
 
+COMMENT ON COLUMN BIB_Citation_Cache.doiID IS 'DOI (digital object identifier) accession ID';
+
 COMMENT ON COLUMN BIB_Citation_Cache._Refs_key IS 'foreign key to BIB_Refs';
 
 COMMENT ON COLUMN BIB_Citation_Cache.reviewStatus IS 'status description';

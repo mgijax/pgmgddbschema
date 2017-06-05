@@ -3,6 +3,9 @@
 #
 # History
 #
+# 05/24/2017	lec
+#	- TR12240/12083/varchar to text
+#
 # 01/18/2006	lec
 #	- TR 7182; prefixPart increased to 30
 #
@@ -16,17 +19,17 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.ACC_Accession (
- 	_Accession_key                 int             not null,
-	accID                          varchar(30)     not null,
-	prefixPart                     varchar(30)     null,
-	numericPart                    int             null,
-	_LogicalDB_key                 int             not null,
-	_Object_key                    int             not null,
-	_MGIType_key                   int             not null,
-	private                        smallint             not null,
-	preferred                      smallint             not null,
-	_CreatedBy_key                 int DEFAULT 1001             not null,
-	_ModifiedBy_key                int DEFAULT 1001             not null,
+ 	_Accession_key                 int               not null,
+	accID                          text              not null,
+	prefixPart                     text              null,
+	numericPart                    int               null,
+	_LogicalDB_key                 int               not null,
+	_Object_key                    int               not null,
+	_MGIType_key                   int               not null,
+	private                        smallint          not null,
+	preferred                      smallint          not null,
+	_CreatedBy_key                 int DEFAULT 1001  not null,
+	_ModifiedBy_key                int DEFAULT 1001  not null,
 	creation_date                  timestamp DEFAULT now()        not null,
 	modification_date              timestamp DEFAULT now()        not null
 );

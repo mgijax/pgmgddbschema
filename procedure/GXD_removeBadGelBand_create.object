@@ -9,6 +9,11 @@
 # 05/10/2004	lec
 #	- remove bad gel lanes
 #
+# this check also needs to be checked:
+# select gs.*
+# from GXD_GelLaneStructure gs
+# where not exists (select 1 from GXD_GelBand gb where gs._GelLane_key = gb._GelLane_key)
+#
 
 cd `dirname $0` && . ./Configuration
 

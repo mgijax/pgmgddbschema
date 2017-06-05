@@ -3,6 +3,9 @@
 #
 # History
 #
+# 05/31/2017	lec
+#	- TR12250/Lit Triage
+#
 # 01/03/2013	lec
 #	- TR 10273/added idx_numericPart
 #
@@ -19,6 +22,15 @@ drop index if exists mgd.BIB_Citation_Cache_idx_journal
 ;
 
 drop index if exists mgd.BIB_Citation_Cache_idx_numericPart
+;
+
+drop index if exists mgd.BIB_Citation_Cache_idx_jnumID
+;
+
+drop index if exists mgd.BIB_Citation_Cache_idx_pubmedID
+;
+
+drop index if exists mgd.BIB_Citation_Cache_idx_doiID
 ;
 
 EOSQL

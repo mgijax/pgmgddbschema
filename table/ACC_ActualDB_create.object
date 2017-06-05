@@ -1,7 +1,10 @@
 #!/bin/sh
 
 #
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
+# History
+#
+# 05/24/2017	lec
+#	- TR12240/12083/varchar to text
 #
 
 cd `dirname $0` && . ./Configuration
@@ -10,15 +13,15 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.ACC_ActualDB (
- 	_ActualDB_key                  int             not null,
-	_LogicalDB_key                 int             not null,
-	name                           varchar(80)     not null,
-	active                         smallint             not null,
-	url                            text    not null,
-	allowsMultiple                 smallint             not null,
-	delimiter                      char(8)         null,
-	_CreatedBy_key                 int DEFAULT 1001             not null,
-	_ModifiedBy_key                int DEFAULT 1001             not null,
+ 	_ActualDB_key                  int               not null,
+	_LogicalDB_key                 int               not null,
+	name                           text              not null,
+	active                         smallint          not null,
+	url                            text              not null,
+	allowsMultiple                 smallint          not null,
+	delimiter                      char(8)           null,
+	_CreatedBy_key                 int DEFAULT 1001  not null,
+	_ModifiedBy_key                int DEFAULT 1001  not null,
 	creation_date                  timestamp DEFAULT now()        not null,
 	modification_date              timestamp DEFAULT now()        not null
 );

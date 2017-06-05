@@ -3,6 +3,9 @@
 #
 # History
 #
+# 05/31/2017	lec
+#	- TR12250/Lit Triage
+#
 # 10/17/2006	lec
 #	- TR6812
 #
@@ -16,13 +19,14 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create table mgd.BIB_Citation_Cache (
  	_Refs_key                  int             not null,
 	numericPart                int             not null,
-	jnumID                     text            not null,
+	jnumID                     text            null,
 	mgiID                      text            not null,
 	pubmedID                   text            null,
-	reviewStatus		   text            not null,
+	doiID                      text            null,
 	journal		           text            null,
 	citation                   text            not null,
 	short_citation             text            not null,
+	referenceType		   text            not null,
 	isReviewArticle            smallint        not null,
 	isReviewArticleString      char(3)         not null
 );

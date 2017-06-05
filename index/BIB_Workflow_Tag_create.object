@@ -1,0 +1,25 @@
+#!/bin/sh
+
+#
+# History
+#
+# 05/30/2017	lec
+#	- TR12250/Lit Triage
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CLUSTER mgd.BIB_Workflow_Tag USING BIB_Workflow_Tag_pkey;
+
+create index BIB_Workflow_Tag_idx_Refs_key on mgd.BIB_Workflow_Tag (_Refs_key);
+
+create index BIB_Workflow_Tag_idx_Tag_key on mgd.BIB_Workflow_Tag (_Tag_key);
+
+create index BIB_Workflow_Tag_idx_CreatedBy_key on mgd.BIB_Workflow_Tag (_CreatedBy_key);
+
+create index BIB_Workflow_Tag_idx_ModifiedBy_key on mgd.BIB_Workflow_Tag (_ModifiedBy_key);
+
+EOSQL

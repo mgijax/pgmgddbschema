@@ -1,0 +1,21 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.BIB_Workflow_Tag IS 'A record in this table represents a distinct Tag associated with a Reference';
+
+COMMENT ON COLUMN BIB_Workflow_Tag._Refs_key IS 'foreign key to BIB_Refs';
+
+COMMENT ON COLUMN BIB_Workflow_Tag._Tag_key IS 'foreign key to VOC_Term where _Vocab_key = ?? (Workflow Tag)';
+
+COMMENT ON COLUMN BIB_Workflow_Tag._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN BIB_Workflow_Tag.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN BIB_Workflow_Tag.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN BIB_Workflow_Tag._ModifiedBy_key IS 'user who last modified the record';
+
+EOSQL

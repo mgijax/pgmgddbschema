@@ -3,6 +3,9 @@
 #
 # History
 #
+# lec	05/24/2017
+#       - TR12240/12083/varchar to text
+#
 # lec	11/26/2014
 #	- converted from Sybase-to-Postgres
 #
@@ -49,8 +52,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ACC_split(varchar) TO public;
+GRANT EXECUTE ON FUNCTION ACC_split(text) TO public;
 
-COMMENT ON FUNCTION mgd.ACC_split(varchar) IS 'splits the accession id into prefix & numeric parts';
+COMMENT ON FUNCTION mgd.ACC_split(text) IS 'splits the accession id into prefix & numeric parts';
 
 EOSQL

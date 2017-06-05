@@ -5,6 +5,9 @@
 #
 # lib_java_dla/.../loader/seq/MergeSplitProcessor.java
 #
+# 05/24/2017    lec
+#       - TR12240/12083/varchar to text
+#
 # 03/05/2015	lec
 #	- remove calls to obsolete procedures (seq_loadmarkercache, seq_loadprobecache)
 #
@@ -120,9 +123,9 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION SEQ_split(varchar,text) TO public;
+GRANT EXECUTE ON FUNCTION SEQ_split(text,text) TO public;
 
-COMMENT ON FUNCTION mgd.SEQ_split(varchar,text) IS 'split sequences';
+COMMENT ON FUNCTION mgd.SEQ_split(text,text) IS 'split sequences';
 
 EOSQL
 

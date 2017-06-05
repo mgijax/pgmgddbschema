@@ -1,0 +1,25 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.BIB_Workflow_Status IS 'A record in this table represents the Group/Status of a Reference by User over time';
+
+COMMENT ON COLUMN BIB_Workflow_Status._Refs_key IS 'foreign key to BIB_Refs';
+
+COMMENT ON COLUMN BIB_Workflow_Status._Group_key IS 'foreign key to VOC_Term where _Vocab_key = ?? (Workflow Group)';
+
+COMMENT ON COLUMN BIB_Workflow_Status._Status_key IS 'foreign key to VOC_Term where _Vocab_key = ?? (Workflow Status)';
+
+COMMENT ON COLUMN BIB_Workflow_Status.isCurrent IS 'if 1, then current Status for this Reference/Group';
+
+COMMENT ON COLUMN BIB_Workflow_Status._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN BIB_Workflow_Status.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN BIB_Workflow_Status.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN BIB_Workflow_Status._ModifiedBy_key IS 'user who last modified the record';
+
+EOSQL

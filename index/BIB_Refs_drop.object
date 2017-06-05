@@ -24,7 +24,7 @@ drop index if exists mgd.BIB_Refs_idx_journal
 drop index if exists mgd.BIB_Refs_idx_title
 ;
 
-drop index if exists mgd.BIB_Refs_idx_ReviewStatus_key
+drop index if exists mgd.BIB_Refs_idx_ReferenceType_key
 ;
 
 drop index if exists mgd.BIB_Refs_idx_CreatedBy_key
