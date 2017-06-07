@@ -32,7 +32,7 @@ COMMENT ON COLUMN BIB_Refs._primary IS 'primary author; extracted from authors f
 
 COMMENT ON COLUMN BIB_Refs._Refs_key IS 'primary key';
 
-COMMENT ON COLUMN BIB_Refs._ReferenceType_key IS 'foreign key to VOC_Term where _Vocab_key = ? (Reference Type)';
+COMMENT ON COLUMN BIB_Refs._ReferenceType_key IS 'foreign key to VOC_Term where _Vocab_key = 131 (Reference Type)';
 
 COMMENT ON COLUMN BIB_Refs.title IS 'reference title';
 

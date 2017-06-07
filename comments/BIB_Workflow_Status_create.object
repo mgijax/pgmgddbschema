@@ -8,9 +8,9 @@ COMMENT ON TABLE mgd.BIB_Workflow_Status IS 'A record in this table represents t
 
 COMMENT ON COLUMN BIB_Workflow_Status._Refs_key IS 'foreign key to BIB_Refs';
 
-COMMENT ON COLUMN BIB_Workflow_Status._Group_key IS 'foreign key to VOC_Term where _Vocab_key = ?? (Workflow Group)';
+COMMENT ON COLUMN BIB_Workflow_Status._Group_key IS 'foreign key to VOC_Term where _Vocab_key = 127 (Workflow Group)';
 
-COMMENT ON COLUMN BIB_Workflow_Status._Status_key IS 'foreign key to VOC_Term where _Vocab_key = ?? (Workflow Status)';
+COMMENT ON COLUMN BIB_Workflow_Status._Status_key IS 'foreign key to VOC_Term where _Vocab_key = 128 (Workflow Status)';
 
 COMMENT ON COLUMN BIB_Workflow_Status.isCurrent IS 'if 1, then current Status for this Reference/Group';
 

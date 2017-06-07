@@ -8,7 +8,7 @@ COMMENT ON TABLE mgd.BIB_Workflow_Tag IS 'A record in this table represents a di
 
 COMMENT ON COLUMN BIB_Workflow_Tag._Refs_key IS 'foreign key to BIB_Refs';
 
-COMMENT ON COLUMN BIB_Workflow_Tag._Tag_key IS 'foreign key to VOC_Term where _Vocab_key = ?? (Workflow Tag)';
+COMMENT ON COLUMN BIB_Workflow_Tag._Tag_key IS 'foreign key to VOC_Term where _Vocab_key = 129 (Workflow Tag)';
 
 COMMENT ON COLUMN BIB_Workflow_Tag._CreatedBy_key IS 'user who created the record';
 
