@@ -25,5 +25,6 @@ rm ./logs/trigger/*.log
 
 ${PG_MGD_DBSCHEMADIR}/comments/comments.sh
 
-${PG_DBUTILS}/bin/grantPublicPerms.csh
+${PG_DBUTILS}/bin/grantPublicPerms.csh ${PG_DBSERVER} ${PG_DBNAME} mgd
 
+${PG_MGD_DBSCHEMADIR}/objectCounter.sh
