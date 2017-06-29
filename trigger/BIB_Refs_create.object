@@ -162,6 +162,7 @@ CREATE OR REPLACE FUNCTION BIB_Refs_update() RETURNS TRIGGER AS \$\$
 
 BEGIN
 
+-- 31576679 = Book
 IF OLD._ReferenceType_key in (31576679)
    AND NEW._ReferenceType_key not in (31576679)
 THEN
