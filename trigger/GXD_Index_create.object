@@ -14,7 +14,13 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --
 -- DESCRIPTOIN:
 --
---	add BIB_DataSet_Assoc, if necessary
+--	1) if the Reference exists as group = 'Expression'
+--		and status in ('Not Routed', 'Rejected')
+--		in BIB_Workflow_Status,
+--	   then
+--		change status = 'Indexed'
+--
+--	2) add BIB_DataSet_Assoc, if necessary
 --
 -- INPUT:
 --	none
@@ -41,6 +47,18 @@ THEN
 
     INSERT INTO BIB_DataSet_Assoc 
 	VALUES(v_assocKey, NEW._Refs_key, 1004, 0, 0, NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
+    ;
+END IF;
+
+IF EXISTS (SELECT 1 FROM BIB_Workflow_Status b
+        WHERE NEW._Refs_key = b._Refs_key
+        AND b._Group_key = 31576665
+	AND b._Status_key in (31576669, 31576672))
+THEN
+    UPDATE BIB_Workflow_Status w set _Status_key = 31576673
+    WHERE NEW._Refs_key = w._Refs_key
+        AND w._Group_key = 31576665
+	AND w._Status_key in (31576669, 31576672)
     ;
 END IF;
 
