@@ -129,6 +129,7 @@ v_assocKey int;
 
 BEGIN
 
+-- obsolete
 IF NOT EXISTS (SELECT 1 FROM BIB_DataSet_Assoc b
         WHERE NEW._Refs_key = b._Refs_key
         AND b._DataSet_key = 1004)
