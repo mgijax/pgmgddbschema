@@ -22,6 +22,7 @@ create table mgd.MGI_User (
 	login                      text            not null,
 	name                       text            not null,
 	orcID                      text            null,
+	_Group_key		   text            null,
 	_CreatedBy_key             int DEFAULT 1001 not null,
 	_ModifiedBy_key            int DEFAULT 1001 not null,
 	creation_date              timestamp DEFAULT now() not null,
