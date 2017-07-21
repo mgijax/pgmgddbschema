@@ -20,6 +20,8 @@ create index MGI_User_idx_UserStatus_key on mgd.MGI_User (_UserStatus_key);
 
 create index MGI_User_idx_login on mgd.MGI_User (login);
 
+create index MGI_User_idx_Group_key on mgd.MGI_User (_Group_key);
+
 create index MGI_User_idx_CreatedBy_key on mgd.MGI_User (_CreatedBy_key);
 
 create index MGI_User_idx_ModifiedBy_key on mgd.MGI_User (_ModifiedBy_key);

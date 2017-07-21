@@ -20,6 +20,8 @@ COMMENT ON COLUMN MGI_User.name IS 'user name';
 
 COMMENT ON COLUMN MGI_User.orcID IS 'ORC ids (see orcid.org)';
 
+COMMENT ON COLUMN MGI_User._Group_key IS 'foreign key to VOC_Term where _Vocab_key = 127 (Workflow Group)';
+
 COMMENT ON COLUMN MGI_User._User_key IS 'primary key';
 
 COMMENT ON COLUMN MGI_User._UserStatus_key IS 'foreign key to VOC_Term where _Vocab_key = 22 (User Status)';
