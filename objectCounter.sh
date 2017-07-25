@@ -35,5 +35,8 @@ echo "Views           `ls *_create.object | wc -l` scripts"
 psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(*) from pg_catalog.pg_views where schemaname = 'mgd'" 
 
 cd ${TOP}/key
-echo "Keys            `ls *_create.object | wc -l` scripts  (`grep -i 'ADD PRIMARY' *_create.object | wc -l` primary keys)"
+#echo "Keys            `ls *_create.object | wc -l` scripts  (`grep -i 'ADD PRIMARY' *_create.object | wc -l` primary keys)"
+echo "Keys            `ls *_create.object | wc -l` scripts  (`grep -i '^ALTER TABLE' *_create.object | wc -l` foreign keys)"
+psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select count(c.conname) from pg_constraint c join pg_namespace n on n.oid = c.connamespace where c.contype     in ('f', 'p') and         n.nspname = 'mgd'" 
+psql -h ${PG_DBSERVER} -U ${PG_DBUSER} -d ${PG_DBNAME} --command "select c.conname as duplidateKeys from pg_constraint c join pg_namespace n on n.oid = c.connamespace where c.contype     in ('f', 'p') and         n.nspname = 'mgd' and c.conname like '%fkey1%'" 
 

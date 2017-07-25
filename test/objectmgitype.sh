@@ -283,6 +283,15 @@ where a._mgitype_key = 41
 and not exists (select 1 from voc_evidence_property s where a._object_key = s._evidenceproperty_key)
 ;
 
+select a.*
+from mgi_note a
+where not exists (select 1 from mgi_notechunk c where a._note_key = c._note_key)
+;
+
+select a.*
+from mgi_notechunk a
+where not exists (select 1 from mgi_note c where a._note_key = c._note_key)
+;
 -- where the note/mgitype is not equal to the notetype/mgitype
 select a.*, t._mgitype_key, t._notetype_key 
 from mgi_note a, mgi_notetype t 
