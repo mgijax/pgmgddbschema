@@ -112,6 +112,12 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --
 -- DESCRIPTOIN:
 --
+--	1) if GO annotation 
+--              if Reference exists as group = 'GO' and status in ('Not Routed', 'Rejected')
+--		in BIB_Workflow_Status,
+--	   then
+--		change status = 'Indexed'
+--
 -- INPUT:
 --	none
 --
@@ -212,11 +218,24 @@ END IF;
 
 IF (SELECT a._AnnotType_key FROM VOC_Annot a where NEW._Annot_key = a._Annot_key) = 1000
 THEN
+	--obsolete
         UPDATE BIB_DataSet_Assoc
         SET isNeverUsed = 0 , modification_date = now(), _ModifiedBy_key = 1001
         WHERE _Refs_key = NEW._Refs_key
         AND _DataSet_key = 1005
 	;
+
+        IF EXISTS (SELECT 1 FROM BIB_Workflow_Status b
+                WHERE NEW._Refs_key = b._Refs_key
+                AND b._Group_key = 31576666
+                AND b._Status_key in (31576669, 31576672))
+        THEN
+            UPDATE BIB_Workflow_Status w set _Status_key = 31576673
+            WHERE NEW._Refs_key = w._Refs_key
+                AND w._Group_key = 31576666
+                AND w._Status_key in (31576669, 31576672)
+            ;   
+        END IF;
 END IF;
 
 -- if this an MP annotation                       

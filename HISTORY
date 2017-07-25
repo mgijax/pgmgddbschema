@@ -6,7 +6,7 @@ TR12250/Lit Triage
 triggers:
 GXD_Assay_create.object
 GXD_Index_create.object
-
+VOC_Evidence_create.object
 
 TAG: pgmgddbschema-6-0-10-3
 DATE: 06/26/2017
