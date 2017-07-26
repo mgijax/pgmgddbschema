@@ -237,9 +237,6 @@ ALTER TABLE mgd.MAP_Coordinate ADD FOREIGN KEY (_Units_key) REFERENCES mgd.VOC_T
 ALTER TABLE mgd.MGI_Property ADD FOREIGN KEY (_PropertyTerm_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
-ALTER TABLE mgd.MGI_Property ADD FOREIGN KEY (_PropertyType_key) REFERENCES mgd.VOC_Term DEFERRABLE;
-
-
 ALTER TABLE mgd.MGI_Relationship ADD FOREIGN KEY (_RelationshipTerm_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 

@@ -154,8 +154,6 @@ ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__Qualifier_key
 
 ALTER TABLE mgd.MGI_Relationship DROP CONSTRAINT MGI_Relationship__RelationshipTerm_key_fkey CASCADE;
 
-ALTER TABLE mgd.MGI_Property DROP CONSTRAINT MGI_Property__PropertyType_key_fkey CASCADE;
-
 ALTER TABLE mgd.MGI_Property DROP CONSTRAINT MGI_Property__PropertyTerm_key_fkey CASCADE;
 
 ALTER TABLE mgd.MAP_Coordinate DROP CONSTRAINT MAP_Coordinate__Units_key_fkey CASCADE;
