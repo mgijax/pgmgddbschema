@@ -110,7 +110,8 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --		and status in ('Not Routed', 'Rejected')
 --		in BIB_Workflow_Status,
 --	   then
---		change status = 'Chosen'
+--		set existing BIB_Workflow_Status.isCurrent = 0
+--		add new BIB_Workflow_Status._Status_key = 'Chosen'
 --
 -- INPUT:
 --	none
@@ -147,10 +148,14 @@ IF EXISTS (SELECT 1 FROM BIB_Workflow_Status b
 	AND b._Status_key in (31576669, 31576672))
    AND NEW._AssayType_key in (1,2,3,4,5,6,8,9)
 THEN
-    UPDATE BIB_Workflow_Status w set _Status_key = 31576671
+    UPDATE BIB_Workflow_Status w set isCurrent = 0
     WHERE NEW._Refs_key = w._Refs_key
         AND w._Group_key = 31576665
 	AND w._Status_key in (31576669, 31576672)
+    ;
+    INSERT INTO BIB_Workflow_Status 
+    VALUES((NEW._Assoc_key, NEW._Refs_key, NEW._Group_key, 31576671, 1, 
+    	NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
     ;
 END IF;
 
