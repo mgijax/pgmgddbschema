@@ -154,7 +154,7 @@ THEN
 	AND w._Status_key in (31576669, 31576672)
     ;
     INSERT INTO BIB_Workflow_Status 
-    VALUES(NEW._Assoc_key, NEW._Refs_key, NEW._Group_key, 31576671, 1, 
+    VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, 31576665, 31576671, 1, 
     	NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
     ;
 END IF;
