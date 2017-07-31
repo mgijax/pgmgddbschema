@@ -13,7 +13,7 @@ CLUSTER mgd.BIB_Refs USING BIB_Refs_pkey;
 
 create index BIB_Refs_idx_isprimary on mgd.BIB_Refs (_primary);
 
-create index BIB_Refs_idx_authors on mgd.BIB_Refs (authors);
+--create index BIB_Refs_idx_authors on mgd.BIB_Refs (authors);
 
 create index BIB_Refs_idx_year on mgd.BIB_Refs (year);
 
