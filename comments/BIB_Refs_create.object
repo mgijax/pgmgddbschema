@@ -18,6 +18,8 @@ COMMENT ON COLUMN BIB_Refs.date IS 'reference date';
 
 COMMENT ON COLUMN BIB_Refs.isReviewArticle IS 'is this a review article?';
 
+COMMENT ON COLUMN BIB_Refs.isDiscard IS 'is this a discarded reference?';
+
 COMMENT ON COLUMN BIB_Refs.issue IS 'reference issue';
 
 COMMENT ON COLUMN BIB_Refs.journal IS 'reference journal';
