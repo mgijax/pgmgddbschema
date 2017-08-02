@@ -3,6 +3,9 @@
 #
 # History
 #
+$ 08/02/2017	lec
+#	TR12250/Lit Triage
+#
 # 12/27/2016	lec
 #	- TR12418/Used for Allele/Used (MGI_Reference_Allele_View)
 #
@@ -33,56 +36,21 @@ as
 
 -- References which are:
 --
--- a. not 'GenBank Submission' or 'Mouse News Lett'		           
+-- a. group = 'GO'
 --                                                                        
--- b. < 03/13/2002
---    and not Never Used for GO (1005)
---    and Selected for Allele (1002), Expression (1004) bucket                       
---    and Used for Allele/Used (MGI_Reference_Allele_View)
---                                                                         
--- c. >= 03/13/2002, in Gene Ontology bucket (1005) and not never-used     
---                                                                         
--- d. is-reviewed = true in Gene Ontology bucket (1005) and not never-used 
+-- b. status in ('Chosen', 'Routed')
 --                                                                         
 
 select r._Refs_key, r.jnum, r.short_citation, m._Marker_key, r.jnumID, r.title, r.creation_date
 from MRK_Reference m, BIB_All_View r
 where m._Refs_key = r._Refs_key
-and r.journal not in ('GenBank Submission', 'Mouse News Lett') 
-and r.creation_date < '03/13/2002' 
-and not exists (select 1 from BIB_DataSet_Assoc ba
-	  where r._Refs_key = ba._Refs_key and
-	  ba._DataSet_key = 1005 and
-	  ba.isNeverUsed = 1)
-and exists (select 1 from BIB_DataSet_Assoc ba
-  	  where r._Refs_key = ba._Refs_key and
-  	  ba._DataSet_key in (1002, 1004))
-and exists (select 1 from MGI_Reference_Allele_View aa where r._Refs_key = aa._Refs_key)
-
-union
-select r._Refs_key, r.jnum, r.short_citation, m._Marker_key, r.jnumID, r.title, r.creation_date
-from MRK_Reference m, BIB_All_View r
-where m._Refs_key = r._Refs_key
-and r.journal not in ('GenBank Submission', 'Mouse News Lett')
-and r.creation_date >= '03/13/2002' 
-and exists (select 1 from BIB_DataSet_Assoc ba
-	  where r._Refs_key = ba._Refs_key and
-	  ba._DataSet_key = 1005 and 
-	  ba.isNeverUsed = 0)
-
-union
-select r._Refs_key, r.jnum, r.short_citation, m._Marker_key, r.jnumID, r.title, r.creation_date
-from MRK_Reference m, BIB_All_View r
-where m._Refs_key = r._Refs_key
-and r.journal not in ('GenBank Submission', 'Mouse News Lett')
-and r.isReviewArticle = 1 
-and exists (select 1 from BIB_DataSet_Assoc ba
-	  where r._Refs_key = ba._Refs_key and
-	  ba._DataSet_key = 1005 and 
-	  ba.isNeverUsed = 0)
-
-
-
+and exists (select 1 from BIB_Workflow_Status ws, VOC_Term wst1, VOC_Term wst2
+	where r._Refs_key = ws._Refs_Key
+	and ws._Group_key = wst1._Term_key
+	and wst1.abbreviation in ('GO')
+	and ws._Status_key = wst2._Term_key
+	and wst2.term in ('Chosen', 'Routed')
+	)
 ;
 
 EOSQL
