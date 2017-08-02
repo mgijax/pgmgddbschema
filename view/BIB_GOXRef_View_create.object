@@ -50,6 +50,7 @@ and exists (select 1 from BIB_Workflow_Status ws, VOC_Term wst1, VOC_Term wst2
 	and wst1.abbreviation in ('GO')
 	and ws._Status_key = wst2._Term_key
 	and wst2.term in ('Chosen', 'Routed')
+	and ws.isCurrent = 1
 	)
 ;
 
