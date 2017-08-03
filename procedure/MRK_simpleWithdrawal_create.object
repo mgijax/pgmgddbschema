@@ -71,7 +71,7 @@ v_withdrawnName := 'withdrawn, = ' || v_newSymbol;
 v_newKey := max(_Marker_key) + 1 from MRK_Marker;
 
 CREATE TEMP TABLE mrk_tmp ON COMMIT DROP
-AS SELECT m.symbol as oldSymbol, m.name as oldName, h._Refs_key as assigningRefKey
+AS SELECT distinct m.symbol as oldSymbol, m.name as oldName, h._Refs_key as assigningRefKey
 FROM MRK_Marker m, MRK_History h
 WHERE m._Organism_key = 1
      AND m._Marker_Status_key = 1
