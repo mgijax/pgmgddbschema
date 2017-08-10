@@ -11,11 +11,11 @@
 #
 #	1. by individual reference
 #
-#	2. all references (v_refsKey = -1)
+#	2. if v_refsKey = -1, process all references
 #
-#	3. if needed, add v_refsKey -2 for references that do not have entries
+#	3. if v_refsKey = -2, process references that do not exist in the cache
 #
-#	4. if needed, add v_refsKey -3 for specific day
+#	4. if needed, add v_refsKey = -3, process references modified during a particular date/time
 #
 
 cd `dirname $0` && . ./Configuration
