@@ -6,6 +6,17 @@
 # 08/09/2017    lec
 #       - TR12250/Lit Triage
 #
+# Purpose:
+#	To delete/reload the BIB_Citation_Cache
+#
+#	1. by individual reference
+#
+#	2. all references (v_refsKey = -1)
+#
+#	3. if needed, add v_refsKey -2 for references that do not have entries
+#
+#	4. if needed, add v_refsKey -3 for specific day
+#
 
 cd `dirname $0` && . ./Configuration
 
@@ -23,8 +34,6 @@ BEGIN
 
 IF (v_refsKey = -1)
 THEN
-
-DELETE FROM BIB_Citation_Cache;
 
 CREATE TEMP TABLE toAdd ON COMMIT DROP
 AS SELECT r._Refs_key, null::int as numericPart, null::text as jnumID, a.accID, null::text as pubmedID, null::text as doiID, 
@@ -47,9 +56,39 @@ AND a._LogicalDB_key = 1
 AND a.prefixPart =  'MGI:'
 ;
 
-ELSE
+DELETE FROM BIB_Citation_Cache;
 
-DELETE FROM BIB_Citation_Cache WHERE _Refs_key = v_refsKey;
+ELSIF (v_refsKey = -2)
+THEN
+
+CREATE TEMP TABLE toAdd ON COMMIT DROP
+AS SELECT r._Refs_key, null::int as numericPart, null::text as jnumID, a.accID, null::text as pubmedID, null::text as doiID, 
+r.journal, 
+coalesce(r.journal, '') || ' ' || coalesce(r.date, '') || ';' ||  
+coalesce(r.vol, '') || '(' || coalesce(r.issue, '') || '):' ||  
+coalesce(r.pgs, '') as citation, 
+coalesce(r._primary, '') || ', ' || coalesce(r.journal, '') || ' ' ||  
+coalesce(r.date, '') || ';' || coalesce(r.vol, '') || '(' ||  
+coalesce(r.issue, '') || '):' || coalesce(r.pgs, '') as short_citation,
+s.term as referenceType, 
+r.isReviewArticle, 
+case when isReviewArticle = 1 then 'Yes' else 'No' end,
+r.isDiscard
+FROM BIB_Refs r, VOC_Term s, ACC_Accession a
+WHERE r._ReferenceType_key = s._Term_key 
+AND r._Refs_key = a._Object_key 
+AND a._MGIType_key = 1 
+AND a._LogicalDB_key = 1 
+AND a.prefixPart =  'MGI:'
+AND not exists (select 1 from BIB_Citation_Cache c where r._Refs_key = c._Refs_key)
+;
+
+DELETE FROM BIB_Citation_Cache r
+USING toAdd t
+WHERE t._Refs_key = r._Refs_key
+;
+
+ELSE
 
 CREATE TEMP TABLE toAdd ON COMMIT DROP
 AS SELECT r._Refs_key, null::int as numericPart, null::text as jnumID, a.accID, null::text as pubmedID, null::text as doiID, 
@@ -72,6 +111,8 @@ AND a._LogicalDB_key = 1
 AND a.prefixPart =  'MGI:'
 AND r._Refs_key = v_refsKey
 ;
+
+DELETE FROM BIB_Citation_Cache WHERE _Refs_key = v_refsKey;
 
 END IF;
 
