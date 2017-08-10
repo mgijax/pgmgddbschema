@@ -117,7 +117,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --		in BIB_Workflow_Status,
 --	   then
 --		set existing BIB_Workflow_Status.isCurrent = 0
---		add new BIB_Workflow_Status._Status_key = 'Indexed'
+--		add new BIB_Workflow_Status._Status_key = 'Full-coded'
 --
 -- INPUT:
 --	none
@@ -237,7 +237,7 @@ THEN
                 AND w._Status_key in (31576669, 31576672)
             ;   
             INSERT INTO BIB_Workflow_Status 
-            VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, 31576666, 31576673, 1, 
+            VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, 31576666, 31576674, 1, 
     	        NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
             ;
         END IF;
