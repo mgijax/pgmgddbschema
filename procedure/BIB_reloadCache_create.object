@@ -26,8 +26,8 @@ THEN
 
 DELETE FROM BIB_Citation_Cache;
 
-INSERT INTO BIB_Citation_Cache
-SELECT r._Refs_key, null, null, a.accID, null, null, 
+CREATE TEMP TABLE toAdd ON COMMIT DROP
+AS SELECT r._Refs_key, null::int as numericPart, null::text as jnumID, a.accID, null::text as pubmedID, null::text as doiID, 
 r.journal, 
 coalesce(r.journal, '') || ' ' || coalesce(r.date, '') || ';' ||  
 coalesce(r.vol, '') || '(' || coalesce(r.issue, '') || '):' ||  
@@ -45,42 +45,14 @@ AND r._Refs_key = a._Object_key
 AND a._MGIType_key = 1 
 AND a._LogicalDB_key = 1 
 AND a.prefixPart =  'MGI:'
-;
-
-UPDATE BIB_Citation_Cache r
-SET numericPart = a.numericPart, jnumID = a.accID
-FROM ACC_Accession a 
-WHERE r._Refs_key = a._Object_key 
-AND a._MGIType_key = 1 
-AND a._LogicalDB_key = 1 
-AND a.prefixPart = 'J:' 
-AND a.preferred = 1 
-;
-
-UPDATE BIB_Citation_Cache r
-SET pubmedID = a.accID
-FROM ACC_Accession a 
-WHERE r._Refs_key = a._Object_key 
-AND a._MGIType_key = 1 
-AND a._LogicalDB_key = 29
-AND a.preferred = 1 
-;
-
-UPDATE BIB_Citation_Cache r
-SET doiID = a.accID
-FROM ACC_Accession a 
-WHERE r._Refs_key = a._Object_key 
-AND a._MGIType_key = 1 
-AND a._LogicalDB_key = 65
-AND a.preferred = 1 
 ;
 
 ELSE
 
 DELETE FROM BIB_Citation_Cache WHERE _Refs_key = v_refsKey;
 
-INSERT INTO BIB_Citation_Cache
-SELECT r._Refs_key, null, null, a.accID, null, null, 
+CREATE TEMP TABLE toAdd ON COMMIT DROP
+AS SELECT r._Refs_key, null::int as numericPart, null::text as jnumID, a.accID, null::text as pubmedID, null::text as doiID, 
 r.journal, 
 coalesce(r.journal, '') || ' ' || coalesce(r.date, '') || ';' ||  
 coalesce(r.vol, '') || '(' || coalesce(r.issue, '') || '):' ||  
@@ -98,41 +70,47 @@ AND r._Refs_key = a._Object_key
 AND a._MGIType_key = 1 
 AND a._LogicalDB_key = 1 
 AND a.prefixPart =  'MGI:'
-AND r._Refs_key = v_refs_key
+AND r._Refs_key = v_refsKey
+;
+
+END IF;
+
+CREATE INDEX toAdd_idx1 ON toAdd(_Refs_key);
+
+INSERT INTO BIB_Citation_Cache SELECT * from toAdd
 ;
 
 UPDATE BIB_Citation_Cache r
 SET numericPart = a.numericPart, jnumID = a.accID
-FROM ACC_Accession a 
-WHERE r._Refs_key = a._Object_key 
+FROM toAdd t, ACC_Accession a 
+WHERE t._Refs_key = r._Refs_key
+AND r._Refs_key = a._Object_key 
 AND a._MGIType_key = 1 
 AND a._LogicalDB_key = 1 
 AND a.prefixPart = 'J:' 
 AND a.preferred = 1 
-AND r._Refs_key = v_refs_key
 ;
 
 UPDATE BIB_Citation_Cache r
 SET pubmedID = a.accID
-FROM ACC_Accession a 
-WHERE r._Refs_key = a._Object_key 
+FROM toAdd t, ACC_Accession a 
+WHERE t._Refs_key = r._Refs_key
+AND r._Refs_key = a._Object_key 
 AND a._MGIType_key = 1 
 AND a._LogicalDB_key = 29
 AND a.preferred = 1 
-AND r._Refs_key = v_refs_key
 ;
 
 UPDATE BIB_Citation_Cache r
 SET doiID = a.accID
-FROM ACC_Accession a 
-WHERE r._Refs_key = a._Object_key 
+FROM toAdd t, ACC_Accession a 
+WHERE t._Refs_key = r._Refs_key
+AND r._Refs_key = a._Object_key 
 AND a._MGIType_key = 1 
 AND a._LogicalDB_key = 65
 AND a.preferred = 1 
-AND r._Refs_key = v_refs_key
 ;
 
-END IF;
 
 END;
 
