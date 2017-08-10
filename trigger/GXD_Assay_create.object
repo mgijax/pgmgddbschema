@@ -107,7 +107,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	to the NEW object
 --
 --	1) if the Reference exists as group = 'Expression'
---		and status in ('Not Routed', 'Rejected')
 --		in BIB_Workflow_Status,
 --	   then
 --		set existing BIB_Workflow_Status.isCurrent = 0
@@ -144,8 +143,7 @@ END IF;
 
 IF EXISTS (SELECT 1 FROM BIB_Workflow_Status b
         WHERE NEW._Refs_key = b._Refs_key
-        AND b._Group_key = 31576665
-	AND b._Status_key in (31576669, 31576672))
+        AND b._Group_key = 31576665)
    AND NEW._AssayType_key in (1,2,3,4,5,6,8,9)
 THEN
     UPDATE BIB_Workflow_Status w set isCurrent = 0
