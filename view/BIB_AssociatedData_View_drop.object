@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# 08/17/2017  jsb
+#	Added to support PWI needs.  (See create script for details.)
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop view if exists mgd.BIB_AssociatedData_View
+
+CASCADE
+;
+EOSQL
