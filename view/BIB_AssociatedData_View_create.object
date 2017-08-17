@@ -29,7 +29,9 @@ select r._Refs_key,
   case when exists (select 1 from mrk_reference m where r._Refs_key = m._Refs_key) then 1
     else 0 end as has_markers,
   case when exists (select 1 from mgi_reference_assoc mr where r._Refs_key = mr._Refs_key and mr._MGIType_key = 11) then 1
-    else 0 end as has_alleles
+    else 0 end as has_alleles,
+  case when exists (select 1 from mgi_reference_assoc mr where r._Refs_key = mr._Refs_key and mr._MGIType_key = 6) then 1
+    else 0 end as has_antibodies
 from BIB_Citation_Cache r
 group by 1
 
