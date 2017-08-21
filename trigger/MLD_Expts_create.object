@@ -111,9 +111,15 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --
 -- DESCRIPTOIN:
 --
---	this insert trigger will call ACC_assignMGI
---	in order to add a distinct MGI accession id
---	to the NEW object
+--      1) if the Reference is for group = 'QTL'
+--              in BIB_Workflow_Status, and the status is not 'Fully-coded'
+--         then
+--              set existing BIB_Workflow_Status.isCurrent = 0
+--              add new BIB_Workflow_Status._Status_key = 'Indexed'
+
+--	2) this insert trigger will call ACC_assignMGI
+--	   in order to add a distinct MGI accession id
+--	   to the NEW object
 --
 -- INPUT:
 --	none
@@ -127,6 +133,24 @@ DROP FUNCTION IF EXISTS MLD_Expts_insert();
 
 CREATE OR REPLACE FUNCTION MLD_Expts_insert() RETURNS TRIGGER AS \$\$
 BEGIN
+
+IF EXISTS (SELECT 1 FROM BIB_Workflow_Status b, MLD_Expt_Marker em, MRK_Marker m
+        WHERE NEW._Refs_key = b._Refs_key
+        AND b._Group_key = 31576668
+        AND b._Status_key != 31576674
+	AND NEW._Expt_key = em._Expt_key
+	AND em._Marker_key = m._Marker_key
+	AND m._MarkerType_key = 6)
+THEN
+    UPDATE BIB_Workflow_Status w set isCurrent = 0
+    WHERE NEW._Refs_key = w._Refs_key
+        AND w._Group_key = 31576668
+    ;
+    INSERT INTO BIB_Workflow_Status
+    VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, 31576668, 31576673, 1,
+        NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
+    ;
+END IF;
 
 PERFORM ACC_assignMGI(1001, NEW._Expt_key, 'Experiment');
 
