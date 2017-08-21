@@ -16,6 +16,23 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ACCRef_process_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+--
+-- NAME: ACCRef_process
+--
+-- DESCRIPTOIN:
+--        
+-- To add a new Accession/Reference row to ACC_AccessionReference
+--
+-- If an Accession object already exists, then call ACCRef_insert() to add the new Accession/Reference row
+-- Else, call ACC_insertNoChecks() to add a new Accession object and a new Accession/Reference row
+--
+-- INPUT:
+--      
+--
+-- RETURNS:
+--      
+--
+
 CREATE OR REPLACE FUNCTION ACCRef_process (
 v_userKey int,
 v_objectKey int,
