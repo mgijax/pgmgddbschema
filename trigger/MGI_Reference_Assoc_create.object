@@ -65,3 +65,66 @@ EXECUTE PROCEDURE MGI_Reference_Assoc_delete();
 COMMENT ON FUNCTION mgd.MGI_Reference_Assoc_delete() IS 'delete trigger for this _Object_key/_MGIType_key table';
 
 EOSQL
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: MGI_Reference_Assoc_insert()
+--
+-- DESCRIPTION:
+--
+--      1) if the Reference is for an Allele and exists as group = 'AP'
+--              in BIB_Workflow_Status, and the status is not 'Fully-coded'
+--         then
+--              set existing BIB_Workflow_Status.isCurrent = 0
+--              add new BIB_Workflow_Status._Status_key = 'Indexed'
+--
+-- INPUT:
+--      none
+--
+-- RETURNS:
+--      NEW
+--
+
+DROP TRIGGER IF EXISTS MGI_Reference_Assoc_insert_trigger ON MGI_Reference_Assoc;
+DROP FUNCTION IF EXISTS  MGI_Reference_Assoc_insert();
+
+CREATE OR REPLACE FUNCTION MGI_Reference_Assoc_insert() RETURNS TRIGGER AS \$\$
+
+BEGIN
+
+-- Allele objects ...
+
+IF NEW._MGIType_key = 11
+AND EXISTS (SELECT 1 FROM BIB_Workflow_Status b
+	WHERE NEW._Refs_key = b._Refs_key
+	AND b._Group_key = 31576664
+	AND b._Status_key != 31576674)
+THEN
+    UPDATE BIB_Workflow_Status w set isCurrent = 0
+    WHERE NEW._Refs_key = w._Refs_key
+	AND w._Group_key = 31576664
+    ;
+    INSERT INTO BIB_Workflow_Status
+    VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, 31576664, 31576673, 1,
+	NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
+    ;
+END IF;
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MGI_Reference_Assoc_insert() TO public;
+
+CREATE TRIGGER MGI_Reference_Assoc_insert_trigger
+AFTER INSERT ON MGI_Reference_Assoc
+FOR EACH ROW
+EXECUTE PROCEDURE MGI_Reference_Assoc_insert();
+
+COMMENT ON FUNCTION mgd.MGI_Reference_Assoc_insert() IS 'creates an insert trigger to set A&P BIB_Workflow_Status for Alleles';
+
+EOSQL
+

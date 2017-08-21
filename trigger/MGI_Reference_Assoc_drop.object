@@ -12,4 +12,8 @@ DROP TRIGGER IF EXISTS MGI_Reference_Assoc_delete_trigger ON MGI_Reference_Assoc
 
 DROP FUNCTION IF EXISTS MGI_Reference_Assoc_delete();
 
+DROP TRIGGER IF EXISTS MGI_Reference_Assoc_insert_trigger ON MGI_Reference_Assoc;
+
+DROP FUNCTION IF EXISTS MGI_Reference_Assoc_insert();
+
 EOSQL
