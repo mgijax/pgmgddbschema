@@ -258,6 +258,27 @@ THEN
     PERFORM MGI_updateReferenceAssoc (1001, 12, v_objectKey, NEW._Refs_key, 'Used-FC');
 END IF;
 
+-- if this is an MP annotation
+-- any time a J# (Reference) is attached to a new/existing MP term,
+-- set the Group AP/Status = "Full-coded"
+
+IF (SELECT a._AnnotType_key FROM VOC_Annot a where NEW._Annot_key = a._Annot_key) = 1002
+THEN
+        IF EXISTS (SELECT 1 FROM BIB_Workflow_Status b
+                WHERE NEW._Refs_key = b._Refs_key
+                AND b._Group_key = 31576664)
+        THEN
+            UPDATE BIB_Workflow_Status w set isCurrent = 0
+            WHERE NEW._Refs_key = w._Refs_key
+                AND w._Group_key = 3157664
+            ;
+            INSERT INTO BIB_Workflow_Status
+            VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, 31576664, 31576674, 1,
+                NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
+            ;
+        END IF;
+END IF;
+
 RETURN NEW;
 
 END;
