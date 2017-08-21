@@ -2,10 +2,7 @@
 
 # 08/17/2017  jsb
 # 	Added to support PWI identification of types of data associated with
-#	a reference.  Note that we use BIB_Citation_Cache rather than BIB_Refs
-#	as we only expect data with J: numbers to be associated with data in
-#	MGI.  (BIB_Refs will start holding many unused references, as of the
-#	Lit Triage project in Fall 2017.)
+#	a reference.  
 
 cd `dirname $0` && . ./Configuration
 
@@ -29,8 +26,10 @@ select r._Refs_key,
   case when exists (select 1 from mrk_reference m where r._Refs_key = m._Refs_key) then 1
     else 0 end as has_markers,
   case when exists (select 1 from mgi_reference_assoc mr where r._Refs_key = mr._Refs_key and mr._MGIType_key = 11) then 1
-    else 0 end as has_alleles
-from BIB_Citation_Cache r
+    else 0 end as has_alleles,
+  case when exists (select 1 from mgi_reference_assoc mr where r._Refs_key = mr._Refs_key and mr._MGIType_key = 6) then 1
+    else 0 end as has_antibodies
+from BIB_Refs r
 group by 1
 
 
