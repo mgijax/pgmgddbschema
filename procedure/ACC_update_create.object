@@ -31,6 +31,25 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ACC_update_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+--
+-- NAME: ACC_update
+--
+-- DESCRIPTOIN:
+--        
+-- To update an ACC_Accession, ACC_AccessionReference records
+--
+-- INPUT:
+--      
+-- v_userKey     : MGI_User._User_key
+-- v_accKey      : ACC_Accession._Accession_key
+-- v_accID       : ACC_Accession.accID
+-- v_origRefsKey : original ACC_AccessionReference._Refs_key
+-- v_refsKey     : new ACC_AccessionReference._Refs_key
+--
+-- RETURNS:
+--	VOID
+--      
+
 CREATE OR REPLACE FUNCTION ACC_update (
 v_userKey int,
 v_accKey int,

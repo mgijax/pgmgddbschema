@@ -19,6 +19,24 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ACC_delete_byAccKey_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+--
+-- NAME: ACC_delete_byAccKey
+--
+-- DESCRIPTOIN:
+--        
+-- To delete ACC_Accession and ACC_AccessionReference
+-- This may be obsolete now that referential integrity exists
+--
+-- INPUT:
+--      
+-- v_accKey  : ACC_Accession._Accession_key
+-- v_refsKey : BIB_Refs._Refs_key
+--
+-- RETURNS:
+--	VOID
+--      
+--
+
 CREATE OR REPLACE FUNCTION ACC_delete_byAccKey (
 v_accKey int,
 v_refsKey int DEFAULT -1

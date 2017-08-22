@@ -19,6 +19,24 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ACC_setMax_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+--
+-- NAME: ACC_setMax
+--
+-- DESCRIPTOIN:
+--        
+-- To update/set the ACC_AccessionMax.maxNumericPart for given type
+--
+-- INPUT:
+--      
+-- v_increment : the amount to which to increment the maxNumericPart
+-- v_prefixPart acc_accession.prefixPart%TYPE DEFAULT 'MGI:'
+--	the default is 'MGI:' type
+--      else enter a valid ACC_Accession.prefixPart ('J:')
+--
+-- RETURNS:
+--	VOID
+--      
+
 CREATE OR REPLACE FUNCTION ACC_setMax (
 v_increment int,
 v_prefixPart acc_accession.prefixPart%TYPE DEFAULT 'MGI:'

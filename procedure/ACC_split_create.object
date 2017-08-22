@@ -26,6 +26,23 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ACC_split_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+--
+-- NAME: ACC_split
+--
+-- DESCRIPTOIN:
+--        
+-- To split an Accession ID into a prefixPart and a numericPart
+--
+-- INPUT:
+--      
+-- v_accID acc_accession.accid%TYPE                : ACC_Accession.accID
+--
+-- RETURNS:
+--	prefixPart  : ACC_Accession.prefixPart%TYPE
+--      numericPart : ACC_Accession.numericPart%TYPE
+--      
+--
+
 CREATE OR REPLACE FUNCTION ACC_split (
 v_accID acc_accession.accid%TYPE,
 out v_prefixPart acc_accession.prefixPart%TYPE,

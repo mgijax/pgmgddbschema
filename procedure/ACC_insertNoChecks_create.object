@@ -19,6 +19,29 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ACC_insertNoChecks_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+--
+-- NAME: ACC_insertNoChecks
+--
+-- DESCRIPTOIN:
+--        
+-- To add new ACC_Accession record with out checking Accession id rules
+--
+-- INPUT:
+--      
+-- v_userKey                        : MGI_User._User_key
+-- v_objectKey                      : ACC_Accession._Object_key
+-- v_accID acc_accession.accid%TYPE : ACC_Accession.accID
+-- v_logicalDB                      : ACC_Accession._LogicalDB_key
+-- v_mgiType acc_mgitype.name%TYPE  : ACC_Accession._MGIType_key
+-- v_refsKey int DEFAULT -1         : BIB_Refs._Refs_key; if Reference, then call ACCRef_insert()
+-- v_preferred int DEFAULT 1        : ACC_Accession.prefixPart
+-- v_private int DEFAULT 0          : ACC_Accession.private
+-- v_dosplit int DEFAULT 1          : if 1, split the accession id into prefixpart/numericpart
+--
+-- RETURNS:
+--      
+--
+
 CREATE OR REPLACE FUNCTION ACC_insertNoChecks (
 v_userKey int,
 v_objectKey int,
