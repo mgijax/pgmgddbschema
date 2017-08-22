@@ -1,0 +1,74 @@
+#!/bin/sh
+
+#
+# History
+#
+# 08/22/2017    lec 
+#       - TR12250/Lit Triage
+#
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/BIB_updateWFStatusGXD_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: BIB_updateWFStatusGXD
+--
+-- DESCRIPTION:
+--        
+-- To set the group GXD/current Workflow Status = Full-coded
+--
+-- where the Reference exists in GXD_Assay
+-- and the group GXD/current Workflow Status is *not* Full-coded
+--
+-- INPUT:
+--	None
+--
+-- RETURNS:
+--	VOID
+--      
+
+CREATE OR REPLACE FUNCTION BIB_updateWFStatusGXD (
+)
+RETURNS VOID AS
+\$\$
+ 
+DECLARE
+rec record;
+
+BEGIN
+
+FOR rec IN
+SELECT r._Refs_key 
+FROM BIB_Refs r
+WHERE EXISTS (SELECT 1 FROM GXD_Assay a WHERE r._Refs_key = a._Refs_key)
+AND EXISTS (SELECT 1 FROM BIB_Workflow_Status wfl
+        WHERE r._Refs_key = wfl._Refs_key
+        AND wfl._Group_key = 31576665
+        AND wfl._Status_key != 31576674
+        AND wfl.isCurrent = 1)
+LOOP
+    UPDATE BIB_Workflow_Status w set isCurrent = 0 
+    WHERE rec._Refs_key = w._Refs_key
+        AND w._Group_key = 31576665
+    ;   
+    INSERT INTO BIB_Workflow_Status 
+    VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), rec._Refs_key, 31576665, 31576674, 1,  
+        1001, 1001, now(), now())
+    ;   
+END LOOP;
+
+RETURN;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION BIB_updateWFStatusGXD() TO public;
+
+COMMENT ON FUNCTION mgd.BIB_updateWFStatusGXD() IS 'update the Workflow Status for group GXD';
+
+EOSQL

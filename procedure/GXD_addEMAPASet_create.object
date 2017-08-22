@@ -13,6 +13,16 @@ ${PG_MGD_DBSCHEMADIR}/procedure/GXD_addEMAPASet_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+--
+-- NAME: 
+--
+-- DESCRIPTION:
+--        
+-- INPUT:
+--      
+-- RETURNS:
+--
+
 CREATE OR REPLACE FUNCTION GXD_addEMAPASet (
 v_userKey int,
 v_assayKey int
