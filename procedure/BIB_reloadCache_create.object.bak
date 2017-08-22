@@ -1,0 +1,101 @@
+#!/bin/sh
+
+#
+# History
+#
+# 08/09/2017    lec
+#       - TR12250/Lit Triage
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/BIB_reloadCache_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION BIB_reloadCache (
+file_name text
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_mgiID acc_accession.accID%TYPE;
+v_jnumID acc_accession.accID%TYPE;
+v_pubmedID acc_accession.accID%TYPE;
+v_doiID acc_accession.accID%TYPE;
+statement text;
+rec record;
+
+BEGIN
+
+CREATE TEMP TABLE mgiID ON COMMIT DROP
+AS SELECT a._Object_key, a.accID
+FROM BIB_Refs r, ACC_Accession a 
+WHERE r._Refs_key = a._Object_key 
+AND a._MGIType_key = 1 
+AND a._LogicalDB_key = 1 
+AND a.prefixPart =  'MGI:'
+AND a.preferred = 1 
+;
+CREATE INDEX mgiID_key on mgiID(_Object_key);
+
+CREATE TEMP TABLE jnumID ON COMMIT DROP
+AS SELECT a._Object_key, a.accID
+FROM BIB_Refs r, ACC_Accession a 
+WHERE r._Refs_key = a._Object_key 
+AND a._MGIType_key = 1 
+AND a._LogicalDB_key = 1 
+AND a.prefixPart =  'J:'
+AND a.preferred = 1 
+;
+CREATE INDEX jnumID_key on jnumID(_Object_key);
+
+CREATE TEMP TABLE pubmedID ON COMMIT DROP
+AS SELECT a._Object_key, a.accID
+FROM BIB_Refs r, ACC_Accession a 
+WHERE r._Refs_key = a._Object_key 
+AND a._MGIType_key = 1 
+AND a._LogicalDB_key = 29
+AND a.preferred = 1 
+;
+CREATE INDEX pubmedID_key on pubmedID(_Object_key);
+
+CREATE TEMP TABLE doiID ON COMMIT DROP
+AS SELECT a._Object_key, a.accID
+FROM BIB_Refs r, ACC_Accession a 
+WHERE r._Refs_key = a._Object_key 
+AND a._MGIType_key = 1 
+AND a._LogicalDB_key = 65
+AND a.preferred = 1 
+;
+CREATE INDEX doiID_key on doiID(_Object_key);
+
+CREATE TEMP TABLE refTmp ON COMMIT DROP
+AS SELECT r._Refs_key, 
+r.journal, 
+s.term as referenceType, 
+r.isReviewArticle, 
+r.isDiscard,
+coalesce(r.journal, '') || ' ' || coalesce(r.date, '') || ';' ||  
+coalesce(r.vol, '') || '(' || coalesce(r.issue, '') || '):' ||  
+coalesce(r.pgs, '') as citation, 
+coalesce(r._primary, '') || ', ' || coalesce(r.journal, '') || ' ' ||  
+coalesce(r.date, '') || ';' || coalesce(r.vol, '') || '(' ||  
+coalesce(r.issue, '') || '):' || coalesce(r.pgs, '') as short_citation
+FROM BIB_Refs r, VOC_Term s
+WHERE r._ReferenceType_key = s._Term_key 
+AND r._Refs_key = 1000
+;
+
+EXECUTE format('COPY (select _Refs_key, citation from refTmp) TO ''lec''');
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION BIB_reloadCache(text) TO public;
+
+COMMENT ON FUNCTION mgd.BIB_reloadCache(text) IS 'reload BIB_Citation_Cache table';
+
+EOSQL
