@@ -28,6 +28,28 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ACC_assignMGI_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+--
+-- NAME: ACC_assignMGI
+--
+-- DESCRIPTOIN:
+--        
+-- To assign a new MGI id (MGI:xxxx)
+-- Add RRID for Genotypes objects (_MGIType_key = 12)
+--
+-- INPUT:
+--      
+-- v_userKey                        : MGI_User._User_key
+-- v_objectKey                      : ACC_Accession._Object_key
+-- v_mgiType acc_mgitype.name%TYPE  : ACC_Accession._MGIType_key
+-- v_prefixPart acc_accession.prefixpart%TYPE DEFAULT 'MGI:' : ACC_Accession.prefixPart
+-- v_nextMGI int DEFAULT -1 : if -1 then use next available MGI id
+--		this sp does not allow an override of a generated MGI accession id
+--
+-- RETURNS:
+--	VOID
+--      
+--
+
 CREATE OR REPLACE FUNCTION ACC_assignMGI (
   v_userKey int,
   v_objectKey int,

@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/procedure/ACC_assignJ_drop.object
@@ -17,6 +13,25 @@ v_nextMGI int DEFAULT -1
 )
 RETURNS VOID AS
 \$\$
+
+--
+-- NAME: ACC_assignJ
+--
+-- DESCRIPTOIN:
+--        
+-- To assign a new J: to a Reference
+--
+-- INPUT:
+--      
+-- v_userKey   : MGI_User._User_key
+-- v_objectKey : ACC_Accession._Object_key
+-- v_nextMGI   : if -1, then ACC_assignMGI() will use the next available J:
+--		 else, try to use the v_nextMGI as the J: (an override)
+--
+-- RETURNS:
+--	VOID
+--      
+--
 
 DECLARE
 j_exists int;
