@@ -18,6 +18,25 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ALL_createWildType_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+--
+-- NAME: ALL_createWildType
+--
+-- DESCRIPTION:
+--        
+-- Create a Wild Type Allele
+-- Use Reference = J:23000
+-- Set all other attributes = Not Applicable
+--
+-- INPUT:
+--
+-- v_userKey   : MGI_User._User_key
+-- v_markerKey : MRK_Marker._Marker_key
+-- v_symbol mrk_marker.symbol%TYPE
+--
+-- RETURNS:
+--	VOID
+--      
+
 CREATE OR REPLACE FUNCTION ALL_createWildType (
 v_userKey int,
 v_markerKey int,
@@ -30,10 +49,6 @@ DECLARE
 v_asymbol all_allele.symbol%TYPE;
 
 BEGIN
-
-/* Create a Wild Type Allele */
-/* Use Reference = J:23000 */
-/* Set all other attributes = Not Applicable */
 
 v_asymbol := v_symbol || '<+>';
 

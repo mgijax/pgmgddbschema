@@ -148,7 +148,7 @@ THEN
     ;
     INSERT INTO BIB_Workflow_Status
     VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, 31576668, 31576673, 1,
-        NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
+        now(), now())
     ;
 END IF;
 

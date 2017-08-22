@@ -14,6 +14,27 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ALL_convertAllele_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+--
+-- NAME: ALL_convertAllele
+--
+-- DESCRIPTION:
+--        
+-- Convert allele symbols of v_markerKey using v_oldSymbol and v_newSymbol values;
+-- do NOT call this with a null value of v_markerKey, or it will fail and roll
+-- back your transaction.
+--
+-- INPUT:
+--      
+-- v_userKey : MGI_User._User_key
+-- v_markerKey : MRK_Marker._Marker_key
+-- v_oldSymbol mrk_marker.symbol%TYPE : old marker symbol
+-- v_newSymbol mrk_marker.symbol%TYPE : new marker symbol
+-- v_alleleOf int DEFAULT 0 : is old Symbol an Allele of the new Symbol?
+--
+-- RETURNS:
+--	VOID
+--      
+
 CREATE OR REPLACE FUNCTION ALL_convertAllele (
 v_userKey int,
 v_markerKey int,
@@ -29,11 +50,6 @@ v_alleleKey int;
 
 BEGIN
 
---
--- Convert allele symbols of v_markerKey using v_oldSymbol and v_newSymbol values;
--- do NOT call this with a null value of v_markerKey, or it will fail and roll
--- back your transaction.
---
 -- If the marker key is null, then this procedure will not work.  Bail out
 -- now before anything gets mixed up.
 --
