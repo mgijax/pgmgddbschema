@@ -9,7 +9,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --
 -- NAME: ACC_assignJ
 --
--- DESCRIPTOIN:
+-- DESCRIPTION:
 --        
 -- To assign a new J: to a Reference
 --

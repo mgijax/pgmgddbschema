@@ -26,6 +26,21 @@ ${PG_MGD_DBSCHEMADIR}/procedure/BIB_getCopyright_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+--
+-- NAME: BIB_getCopyright
+--
+-- DESCRIPTOIN:
+--        
+-- To return the Copyright for a given Reference by Journal
+--
+-- INPUT:
+--	v_refsKey : BIB_Refs._Refs_key
+--      
+-- RETURNS:
+--	copyright
+--      
+--
+
 CREATE OR REPLACE FUNCTION BIB_getCopyright (
 v_refsKey int,
 out copyright text
@@ -46,8 +61,6 @@ s  mgi_notechunk.note%TYPE;
 idx int;
 
 BEGIN
-
--- Returns copyright for journal
 
 SELECT
 c.note,

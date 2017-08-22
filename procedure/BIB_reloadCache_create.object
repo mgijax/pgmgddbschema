@@ -6,23 +6,35 @@
 # 08/09/2017    lec
 #       - TR12250/Lit Triage
 #
-# Purpose:
-#	To delete/reload the BIB_Citation_Cache
-#
-#	1. by individual reference
-#
-#	2. if v_refsKey = -1, process all references
-#
-#	3. if v_refsKey = -2, process references that do not exist in the cache
-#
-#	4. if needed, add v_refsKey = -3, process references modified during a particular date/time
-#
 
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/procedure/BIB_reloadCache_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: BIB_reloadCache
+--
+-- DESCRIPTOIN:
+--        
+-- To delete/reload the BIB_Citation_Cache
+--
+-- 1. by individual reference
+-- 
+-- 2. if v_refsKey = -1, process all references
+-- 
+-- 3. if v_refsKey = -2, process references that do not exist in the cache
+-- 
+-- 4. if needed, add v_refsKey = -3, process references modified during a particular date/time
+-- 
+-- INPUT:
+-- v_refsKey : BIB_Refs._Refs_key
+--      
+-- RETURNS:
+--	VOID
+--      
+--
 
 CREATE OR REPLACE FUNCTION BIB_reloadCache (
 v_refsKey int DEFAULT -1
