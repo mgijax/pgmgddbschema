@@ -1,0 +1,77 @@
+#!/bin/sh
+
+#
+# History
+#
+# 08/22/2017    lec 
+#       - TR12250/Lit Triage
+#
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/BIB_updateWFStatusQTL_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+--
+-- NAME: BIB_updateWFStatusQTL
+--
+-- DESCRIPTION:
+--        
+-- To set the group QTL/current Workflow Status = Full-coded
+--
+-- where the Reference exists in QTL Annotation (_AnnotType_key = 1002)
+-- and the group QTL/current Workflow Status is *not* Full-coded
+--
+-- INPUT:
+--	None
+--
+-- RETURNS:
+--	VOID
+--      
+
+CREATE OR REPLACE FUNCTION BIB_updateWFStatusQTL (
+)
+RETURNS VOID AS
+\$\$
+ 
+DECLARE
+rec record;
+
+BEGIN
+
+FOR rec IN
+SELECT r._Refs_key 
+FROM BIB_Refs r
+WHERE EXISTS (SELECT 1 FROM VOC_Annot a, VOC_Evidence v 
+	WHERE r._Refs_key = v._Refs_key
+	and v._Annot_key = a._Annot_key
+	and a._AnnotType_key = 1002)
+AND EXISTS (SELECT 1 FROM BIB_Workflow_Status wfl
+        WHERE r._Refs_key = wfl._Refs_key
+        AND wfl._Group_key = 31576668
+        AND wfl._Status_key != 31576674
+        AND wfl.isCurrent = 1)
+LOOP
+    UPDATE BIB_Workflow_Status w set isCurrent = 0 
+    WHERE rec._Refs_key = w._Refs_key
+        AND w._Group_key = 31576668
+    ;   
+    INSERT INTO BIB_Workflow_Status 
+    VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), rec._Refs_key, 31576668, 31576674, 1,  
+        1001, 1001, now(), now())
+    ;   
+END LOOP;
+
+RETURN;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION BIB_updateWFStatusQTL() TO public;
+
+COMMENT ON FUNCTION mgd.BIB_updateWFStatusQTL() IS 'update the Workflow Status for group QTL';
+
+EOSQL
