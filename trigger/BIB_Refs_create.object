@@ -106,6 +106,9 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	in order to add a distinct MGI accession id
 --	to the NEW object
 --
+--	adds: BIB_Workflow_Status, one row per Group, status = 'Not Routed'
+--	adds: BIB_Workflow_Data, supplimental term = 'does not have'
+--
 -- INPUT:
 --	none
 --
