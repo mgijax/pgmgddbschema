@@ -187,7 +187,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER IF EXISTS BIB_Refs_update_trigger ON MRK_Marker;
+DROP TRIGGER IF EXISTS BIB_Refs_update_trigger ON BIB_Refs;
 DROP FUNCTION IF EXISTS BIB_Refs_update();
 
 CREATE OR REPLACE FUNCTION BIB_Refs_update() RETURNS TRIGGER AS \$\$
