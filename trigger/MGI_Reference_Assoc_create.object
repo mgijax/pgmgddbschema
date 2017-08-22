@@ -74,7 +74,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- DESCRIPTION:
 --
 --      1) if the Reference is for an Allele and exists as group = 'AP'
---              in BIB_Workflow_Status, and the status is not 'Fully-coded'
+--              in BIB_Workflow_Status, and the status is not 'Indexed'
 --         then
 --              set existing BIB_Workflow_Status.isCurrent = 0
 --              add new BIB_Workflow_Status._Status_key = 'Indexed'
@@ -99,7 +99,7 @@ IF NEW._MGIType_key = 11
 AND EXISTS (SELECT 1 FROM BIB_Workflow_Status b
 	WHERE NEW._Refs_key = b._Refs_key
 	AND b._Group_key = 31576664
-	AND b._Status_key != 31576674)
+	AND b._Status_key != 31576673)
 THEN
     UPDATE BIB_Workflow_Status w set isCurrent = 0
     WHERE NEW._Refs_key = w._Refs_key
