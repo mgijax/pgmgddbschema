@@ -158,9 +158,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION BIB_Refs_insert() TO public;
 
-DROP TRIGGER IF EXISTS BIB_Refs_insert_trigger ON BIB_Refs;
-DROP FUNCTION IF EXISTS BIB_Refs_insert_trigger;
-
 CREATE TRIGGER BIB_Refs_insert_trigger
 AFTER INSERT ON BIB_Refs
 FOR EACH ROW
