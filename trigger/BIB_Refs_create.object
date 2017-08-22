@@ -121,6 +121,31 @@ BEGIN
 
 PERFORM ACC_assignMGI(1001, NEW._Refs_key, 'Reference');
 
+INSERT INTO BIB_Workflow_Status 
+VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, 31576664, 31576669, 1,  
+	NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
+;
+
+INSERT INTO BIB_Workflow_Status 
+VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, 31576665, 31576669, 1,  
+	NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
+;
+
+INSERT INTO BIB_Workflow_Status 
+VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, 31576666, 31576669, 1,  
+	NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
+;
+
+INSERT INTO BIB_Workflow_Status 
+VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, 31576667, 31576669, 1,  
+	NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
+;
+
+INSERT INTO BIB_Workflow_Status 
+VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, 31576668, 31576669, 1,  
+	NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
+;
+
 RETURN NEW;
 
 END;
