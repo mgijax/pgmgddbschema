@@ -25,7 +25,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --
 -- INPUT:
 --      
--- v_userKey : MGI_User._User_key
+-- v_userKey   : MGI_User._User_key
 -- v_markerKey : MRK_Marker._Marker_key
 -- v_oldSymbol mrk_marker.symbol%TYPE : old marker symbol
 -- v_newSymbol mrk_marker.symbol%TYPE : new marker symbol
@@ -50,9 +50,9 @@ v_alleleKey int;
 
 BEGIN
 
+--
 -- If the marker key is null, then this procedure will not work.  Bail out
 -- now before anything gets mixed up.
---
 --
 
 IF v_markerKey IS NULL

@@ -20,6 +20,22 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ALL_insertAllele_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+--
+-- NAME: ALL_insertAllele
+--
+-- DESCRIPTION:
+--        
+-- To insert a new Allele into ALL_Allele
+-- Also calls: MGI_insertReferenceAssoc() to create 'Original' reference
+--
+-- INPUT:
+--      
+-- see below
+--
+-- RETURNS:
+--	VOID
+--      
+
 CREATE OR REPLACE FUNCTION ALL_insertAllele (
 v_userKey int,
 v_markerKey int,

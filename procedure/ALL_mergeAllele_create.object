@@ -13,6 +13,23 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ALL_mergeAllele_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+--
+-- NAME: ALL_mergeAllele
+--
+-- DESCRIPTION:
+--        
+-- To re-set _Allele_key from old _Allele_key to new _Allele_key
+-- called from ALL_mergeWildTypes()
+--
+-- INPUT:
+--      
+-- v_oldAlleleKey : ALL_Allele._Allele_key (old)
+-- v_newAlleleKey : ALL_Allele._Allele_key (new)
+--
+-- RETURNS:
+--	VOID
+--      
+
 CREATE OR REPLACE FUNCTION ALL_mergeAllele (
 v_oldAlleleKey int,
 v_newAlleleKey int
