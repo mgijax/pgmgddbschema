@@ -15,6 +15,26 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ALL_mergeWildTypes_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+--
+-- NAME: ALL_mergeWildTypes
+--
+-- DESCRIPTION:
+--        
+-- To merge wild type alleles : calls ALL_mergeAllele()
+-- exception if oldSymbol or newSymbol is null
+--
+-- INPUT:
+--
+-- v_oldKey : ALL_Allele._Allele_key
+-- v_newKey : ALL_Allele._Allele_key
+-- v_oldSymbol mrk_marker.symbol%TYPE
+-- v_newSymbol mrk_marker.symbol%TYPE
+--      
+--
+-- RETURNS:
+--	VOID
+--      
+
 CREATE OR REPLACE FUNCTION ALL_mergeWildTypes (
 v_oldKey int,
 v_newKey int,
@@ -38,7 +58,7 @@ BEGIN
 
 IF (v_oldKey IS NULL) OR (v_newKey IS NULL)
 THEN
-	RAISE EXCEPTION E'ALL_mergeWildTypes : Cannot merge wild types when at least one marker key is null';
+	RAISE EXCEPTION E'ALL_mergeWildTypes : Cannot merge wild types if a marker key is null';
 	RETURN;
 END IF;
 
