@@ -16,4 +16,8 @@ DROP TRIGGER IF EXISTS BIB_Refs_insert_trigger ON BIB_Refs;
 
 DROP FUNCTION IF EXISTS BIB_Refs_insert();
 
+DROP TRIGGER IF EXISTS BIB_Refs_update_trigger ON BIB_Refs;
+
+DROP FUNCTION IF EXISTS BIB_Refs_update();
+
 EOSQL
