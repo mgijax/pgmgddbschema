@@ -26,11 +26,24 @@ v_newSeq int := 1;	-- new sequence number
 
 BEGIN
 
+--
+-- NAME: GXD_orderAllelePairs
+--
+-- DESCRIPTION:
+--        
 -- Re-order the Allele Pairs of the given Genotype
 -- alphabetically by Marker Symbol
 --
 -- if the Genotype contains an Allele whose Compound value != Not Applicable
 -- then do not reorder
+--
+-- INPUT:
+--      
+-- v_genotypeKey : GXD_Genotype._Genotype_key
+--
+-- RETURNS:
+--	VOID
+--      
 
 IF EXISTS (SELECT 1 FROM GXD_AllelePair ap, VOC_Term t
 	WHERE ap._Genotype_key = v_genotypeKey

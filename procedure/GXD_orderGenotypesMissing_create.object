@@ -24,9 +24,19 @@ v_alleleKey int;
 BEGIN
 
 --
+-- NAME: GXD_orderGenotypesMissing
+--
+-- DESCRIPTION:
+--        
 -- Refresh the GXD_AlleleGenotype (cache) table for all Genotypes
 -- which are missing
 --
+-- INPUT:
+--	None
+--
+-- RETURNS:
+--	VOID
+--      
 
 FOR v_alleleKey IN
 SELECT DISTINCT _Allele_key_1 
