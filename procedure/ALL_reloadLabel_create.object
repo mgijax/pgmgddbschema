@@ -29,6 +29,21 @@ v_labelTypeName all_label.labelTypeName%TYPE;
 
 BEGIN
 
+--
+-- NAME: ALL_reloadLabel
+--
+-- DESCRIPTION:
+--        
+-- reload ALL_Label for given Allele
+--
+-- INPUT:
+--      
+-- v_alleleKey : ALL_Allele._Allele_key
+--
+-- RETURNS:
+--	VOID
+--      
+
 -- Delete all ALL_Label records for a Allele and regenerate
 
 DELETE FROM ALL_Label WHERE _Allele_key = v_alleleKey;

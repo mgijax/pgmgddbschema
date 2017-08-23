@@ -16,11 +16,13 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create view mgd.MGI_Reference_Marker_View
 as
 select r.*, t.assocType, t.allowOnlyOne,
-c.jnumID, c.numericPart as jnum, c.short_citation, c.isReviewArticle, c.isReviewArticleString
-from MGI_Reference_Assoc r, MGI_RefAssocType t, BIB_Citation_Cache c
+c.jnumID, c.numericPart as jnum, c.short_citation, c.isReviewArticle, c.isReviewArticleString,
+u2.login as modifiedBy
+from MGI_Reference_Assoc r, MGI_RefAssocType t, BIB_Citation_Cache c, MGI_User u2
 where r._MGIType_key = 2
 and r._RefAssocType_key = t._RefAssocType_key
 and r._Refs_key = c._Refs_key
+and r._ModifiedBy_key = u2._User_key
 
 
 ;
