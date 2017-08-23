@@ -137,6 +137,10 @@ VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, rec
 ;
 END LOOP;
 
+INSERT INTO BIB_Workflow_Data 
+VALUES(NEW._Refs_key, 0, 31576676, null, null, NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
+;
+
 RETURN NEW;
 
 END;
