@@ -4,6 +4,12 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS VOC_Term_delete_trigger ON VOC_Term;
+DROP FUNCTION IF EXISTS VOC_Term_delete();
+
+CREATE OR REPLACE FUNCTION VOC_Term_delete() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: VOC_Term_delete()
 --
@@ -31,12 +37,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS VOC_Term_delete_trigger ON VOC_Term;
-DROP FUNCTION IF EXISTS VOC_Term_delete();
-
-CREATE OR REPLACE FUNCTION VOC_Term_delete() RETURNS TRIGGER AS \$\$
-BEGIN
 
 DELETE FROM MGI_Note m
 WHERE m._Object_key = OLD._Term_key
@@ -107,6 +107,11 @@ EOSQL
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP FUNCTION IF EXISTS VOC_Term_insert();
+
+CREATE OR REPLACE FUNCTION VOC_Term_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: VOC_Term_insert()
 --
@@ -124,11 +129,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --
 
 DROP TRIGGER IF EXISTS VOC_Term_insert_trigger ON VOC_Term;
-DROP FUNCTION IF EXISTS VOC_Term_insert();
-
-CREATE OR REPLACE FUNCTION VOC_Term_insert() RETURNS TRIGGER AS \$\$
-BEGIN
-
 IF (select v._LogicalDB_key from VOC_Vocab v
 	where v._Vocab_key = NEW._Vocab_key) = 1
 THEN

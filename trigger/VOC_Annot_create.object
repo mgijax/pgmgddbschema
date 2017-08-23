@@ -4,6 +4,13 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS VOC_Annot_insert_trigger ON VOC_Annot;
+DROP FUNCTION IF EXISTS VOC_Annot_insert();
+
+CREATE OR REPLACE FUNCTION VOC_Annot_insert() RETURNS TRIGGER AS \$\$
+
+BEGIN
+
 --
 -- NAME: VOC_Annot_insert()
 --
@@ -15,13 +22,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS VOC_Annot_insert_trigger ON VOC_Annot;
-DROP FUNCTION IF EXISTS VOC_Annot_insert();
-
-CREATE OR REPLACE FUNCTION VOC_Annot_insert() RETURNS TRIGGER AS \$\$
-
-BEGIN
 
 IF (SELECT t.isObsolete FROM VOC_Term t WHERE t._Term_key = NEW._Term_key) = 1
 THEN
@@ -47,6 +47,13 @@ EOSQL
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS VOC_Annot_update_trigger ON VOC_Annot;
+DROP FUNCTION IF EXISTS VOC_Annot_update();
+
+CREATE OR REPLACE FUNCTION VOC_Annot_update() RETURNS TRIGGER AS \$\$
+
+BEGIN
+
 --
 -- NAME: VOC_Annot_update()
 --
@@ -61,13 +68,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS VOC_Annot_update_trigger ON VOC_Annot;
-DROP FUNCTION IF EXISTS VOC_Annot_update();
-
-CREATE OR REPLACE FUNCTION VOC_Annot_update() RETURNS TRIGGER AS \$\$
-
-BEGIN
 
 UPDATE VOC_Evidence
 SET modification_date = now(), _ModifiedBy_key = VOC_Evidence._ModifiedBy_key
