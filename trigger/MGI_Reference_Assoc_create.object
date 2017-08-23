@@ -81,7 +81,7 @@ BEGIN
 -- DESCRIPTION:
 --
 --      1) if the Reference is for an Allele and exists as group = 'AP'
---              in BIB_Workflow_Status, and the status is not 'Indexed'
+--              in BIB_Workflow_Status, and the status is not 'Full-coded'
 --         then
 --              set existing BIB_Workflow_Status.isCurrent = 0
 --              add new BIB_Workflow_Status._Status_key = 'Indexed'
