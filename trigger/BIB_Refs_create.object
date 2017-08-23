@@ -129,7 +129,7 @@ BEGIN
 PERFORM ACC_assignMGI(1001, NEW._Refs_key, 'Reference');
 
 FOR rec IN
-SELECT _Term_key FROM VOC_Term where _Vocab_key = 127;
+SELECT _Term_key FROM VOC_Term where _Vocab_key = 127
 LOOP
 INSERT INTO BIB_Workflow_Status 
 VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, rec._Term_key, 31576669, 1,  
