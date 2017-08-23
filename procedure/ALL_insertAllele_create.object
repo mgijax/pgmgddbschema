@@ -65,6 +65,22 @@ v_isMixed all_allele.ismixed%TYPE;
 
 BEGIN
 
+--
+-- NAME: ALL_insertAllele
+--
+-- DESCRIPTION:
+--        
+-- To insert a new Allele into ALL_Allele
+-- Also calls: MGI_insertReferenceAssoc() to create 'Original' reference
+--
+-- INPUT:
+--      
+-- see below
+--
+-- RETURNS:
+--	VOID
+--      
+
 v_alleleKey := max(_Allele_key) + 1 from ALL_Allele;
 
 IF v_createdBy IS NULL

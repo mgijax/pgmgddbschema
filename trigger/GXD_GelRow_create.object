@@ -4,6 +4,12 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS GXD_GelRow_insert_trigger ON GXD_GelRow;
+DROP FUNCTION IF EXISTS GXD_GelRow_insert();
+
+CREATE OR REPLACE FUNCTION GXD_GelRow_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: GXD_GelRow_insert()
 --
@@ -17,12 +23,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS GXD_GelRow_insert_trigger ON GXD_GelRow;
-DROP FUNCTION IF EXISTS GXD_GelRow_insert();
-
-CREATE OR REPLACE FUNCTION GXD_GelRow_insert() RETURNS TRIGGER AS \$\$
-BEGIN
 
 IF NEW.size IS NOT NULL AND NEW._GelUnits_key < 0
 THEN

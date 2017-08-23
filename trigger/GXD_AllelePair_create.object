@@ -4,6 +4,12 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS GXD_AllelePair_insert_trigger ON GXD_AllelePair;
+DROP FUNCTION IF EXISTS GXD_AllelePair_insert();
+
+CREATE OR REPLACE FUNCTION GXD_AllelePair_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: GXD_AllelePair_insert()
 --
@@ -15,12 +21,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS GXD_AllelePair_insert_trigger ON GXD_AllelePair;
-DROP FUNCTION IF EXISTS GXD_AllelePair_insert();
-
-CREATE OR REPLACE FUNCTION GXD_AllelePair_insert() RETURNS TRIGGER AS \$\$
-BEGIN
 
 -- Pair State error checks
 

@@ -4,6 +4,12 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS GXD_Assay_delete_trigger ON GXD_Assay;
+DROP FUNCTION IF EXISTS GXD_Assay_delete();
+
+CREATE OR REPLACE FUNCTION GXD_Assay_delete() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: GXD_Assay_delete()
 --
@@ -31,12 +37,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS GXD_Assay_delete_trigger ON GXD_Assay;
-DROP FUNCTION IF EXISTS GXD_Assay_delete();
-
-CREATE OR REPLACE FUNCTION GXD_Assay_delete() RETURNS TRIGGER AS \$\$
-BEGIN
 
 DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._Assay_key
@@ -97,6 +97,16 @@ EOSQL
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS GXD_Assay_insert_trigger ON GXD_Assay;
+DROP FUNCTION IF EXISTS GXD_Assay_insert();
+
+CREATE OR REPLACE FUNCTION GXD_Assay_insert() RETURNS TRIGGER AS \$\$
+
+DECLARE
+v_assocKey int;
+
+BEGIN
+
 --
 -- NAME: GXD_Assay_insert()
 --
@@ -120,16 +130,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS GXD_Assay_insert_trigger ON GXD_Assay;
-DROP FUNCTION IF EXISTS GXD_Assay_insert();
-
-CREATE OR REPLACE FUNCTION GXD_Assay_insert() RETURNS TRIGGER AS \$\$
-
-DECLARE
-v_assocKey int;
-
-BEGIN
 
 -- obsolete
 IF NOT EXISTS (SELECT 1 FROM BIB_DataSet_Assoc b

@@ -4,6 +4,12 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS IMG_Image_delete_trigger ON IMG_Image;
+DROP FUNCTION IF EXISTS IMG_Image_delete();
+
+CREATE OR REPLACE FUNCTION IMG_Image_delete() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: IMG_Image_delete()
 --
@@ -34,12 +40,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS IMG_Image_delete_trigger ON IMG_Image;
-DROP FUNCTION IF EXISTS IMG_Image_delete();
-
-CREATE OR REPLACE FUNCTION IMG_Image_delete() RETURNS TRIGGER AS \$\$
-BEGIN
 
 DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._Image_key
@@ -136,6 +136,12 @@ EOSQL
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS IMG_Image_insert_trigger ON IMG_Image;
+DROP FUNCTION IF EXISTS IMG_Image_insert();
+
+CREATE OR REPLACE FUNCTION IMG_Image_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: IMG_Image_insert()
 --
@@ -151,12 +157,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS IMG_Image_insert_trigger ON IMG_Image;
-DROP FUNCTION IF EXISTS IMG_Image_insert();
-
-CREATE OR REPLACE FUNCTION IMG_Image_insert() RETURNS TRIGGER AS \$\$
-BEGIN
 
 PERFORM ACC_assignMGI(1001, NEW._Image_key, 'Image');
 

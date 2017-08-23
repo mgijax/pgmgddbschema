@@ -27,6 +27,20 @@ RETURNS VOID AS
 
 BEGIN
 
+--
+-- NAME: GXD_removeBadGelBand
+--
+-- DESCRIPTION:
+--        
+-- To delete Gel Bands that are not associated with any Gel Rows
+--
+-- INPUT:
+--	None
+--      
+-- RETURNS:
+--	VOID
+--      
+
 CREATE TEMP TABLE tmp_band ON COMMIT DROP
 AS (select distinct _Assay_key from GXD_GelRow);
 

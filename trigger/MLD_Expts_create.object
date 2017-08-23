@@ -4,6 +4,12 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS MLD_Expts_delete_trigger ON MLD_Expts;
+DROP FUNCTION IF EXISTS MLD_Expts_delete();
+
+CREATE OR REPLACE FUNCTION MLD_Expts_delete() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: MLD_Expts_delete()
 --
@@ -31,12 +37,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS MLD_Expts_delete_trigger ON MLD_Expts;
-DROP FUNCTION IF EXISTS MLD_Expts_delete();
-
-CREATE OR REPLACE FUNCTION MLD_Expts_delete() RETURNS TRIGGER AS \$\$
-BEGIN
 
 -- Re-order the tag numbers for experiments if one is deleted
 
@@ -106,6 +106,12 @@ EOSQL
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS MLD_Expts_insert_trigger ON MLD_Expts;
+DROP FUNCTION IF EXISTS MLD_Expts_insert();
+
+CREATE OR REPLACE FUNCTION MLD_Expts_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: MLD_Expts_insert()
 --
@@ -116,7 +122,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --         then
 --              set existing BIB_Workflow_Status.isCurrent = 0
 --              add new BIB_Workflow_Status._Status_key = 'Indexed'
-
+--
 --	2) this insert trigger will call ACC_assignMGI
 --	   in order to add a distinct MGI accession id
 --	   to the NEW object
@@ -127,12 +133,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS MLD_Expts_insert_trigger ON MLD_Expts;
-DROP FUNCTION IF EXISTS MLD_Expts_insert();
-
-CREATE OR REPLACE FUNCTION MLD_Expts_insert() RETURNS TRIGGER AS \$\$
-BEGIN
 
 IF EXISTS (SELECT 1 FROM BIB_Workflow_Status b
         WHERE NEW._Refs_key = b._Refs_key
@@ -145,7 +145,7 @@ THEN
     ;
     INSERT INTO BIB_Workflow_Status
     VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, 31576668, 31576673, 1,
-        NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
+        1001, 1001, now(), now())
     ;
 END IF;
 

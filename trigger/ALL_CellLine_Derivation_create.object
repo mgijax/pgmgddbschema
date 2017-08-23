@@ -4,6 +4,12 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS ALL_CellLine_Derivation_update_trigger ON ALL_CellLine_Derivation;
+DROP FUNCTION IF EXISTS ALL_CellLine_Derivation_update();
+
+CREATE OR REPLACE FUNCTION ALL_CellLine_Derivation_update() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: ALL_CellLine_Derivation_update()
 --
@@ -15,12 +21,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS ALL_CellLine_Derivation_update_trigger ON ALL_CellLine_Derivation;
-DROP FUNCTION IF EXISTS ALL_CellLine_Derivation_update();
-
-CREATE OR REPLACE FUNCTION ALL_CellLine_Derivation_update() RETURNS TRIGGER AS \$\$
-BEGIN
 
 --
 -- if we update the derivation's parent cell line, then we need to propagate

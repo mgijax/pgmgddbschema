@@ -39,6 +39,22 @@ v_isDuplicate int;
 BEGIN
 
 --
+-- NAME: GXD_checkDuplicateGenotype
+--
+-- DESCRIPTION:
+--        
+-- To check if Genotype is a duplicate
+--
+-- INPUT:
+--      
+-- v_genotypeKey : GXD_Genotype._Genotype_key
+--
+-- RETURNS:
+--	always VOID
+--	but RAISE EXCPEPTION if duplicate Genotype is found
+--      
+
+--
 -- Check if the given genotype record is a duplicate.
 -- If it is a duplicate, the transaction is rolled back. 
 --

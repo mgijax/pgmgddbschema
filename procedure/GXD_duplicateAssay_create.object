@@ -49,9 +49,23 @@ v_gelBandKey int;
 BEGIN
 
 --
--- Duplicate the given Assay (assayKey)
--- if duplicateDetails = 1, then also duplicate Assay details
+-- NAME: GXD_duplicateAssay
 --
+-- DESCRIPTION:
+--        
+-- To duplicate an existing Assay
+--
+-- INPUT:
+--      
+-- v_userKey  : MGI_User._User_key
+-- v_assayKey : GXD_Assay._Assay_key
+-- v_duplicateDetails : type of duplication
+--	if 2, then duplicates the Specimen or Gel
+--	if 1, then duplicates the Specimen Results
+--
+-- RETURNS:
+--	INT : new _Assay_key of the duplicated Assay
+--      
 
 -- Duplicate the Antibody Prep
 

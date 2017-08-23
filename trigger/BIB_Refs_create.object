@@ -4,6 +4,12 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS BIB_Refs_delete_trigger ON BIB_Refs;
+DROP FUNCTION IF EXISTS BIB_Refs_delete();
+
+CREATE OR REPLACE FUNCTION BIB_Refs_delete() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: BIB_Refs_delete()
 --
@@ -31,12 +37,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS BIB_Refs_delete_trigger ON BIB_Refs;
-DROP FUNCTION IF EXISTS BIB_Refs_delete();
-
-CREATE OR REPLACE FUNCTION BIB_Refs_delete() RETURNS TRIGGER AS \$\$
-BEGIN
 
 DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._Refs_key
@@ -97,6 +97,16 @@ EOSQL
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS BIB_Refs_insert_trigger ON BIB_Refs;
+DROP FUNCTION IF EXISTS BIB_Refs_insert();
+
+CREATE OR REPLACE FUNCTION BIB_Refs_insert() RETURNS TRIGGER AS \$\$
+
+DECLARE
+rec record;
+
+BEGIN
+
 --
 -- NAME: BIB_Refs_insert()
 --
@@ -106,6 +116,9 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	in order to add a distinct MGI accession id
 --	to the NEW object
 --
+--	adds: BIB_Workflow_Status, one row per Group, status = 'Not Routed'
+--	adds: BIB_Workflow_Data, supplimental term = 'does not have'
+--
 -- INPUT:
 --	none
 --
@@ -113,13 +126,20 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	NEW
 --
 
-DROP TRIGGER IF EXISTS BIB_Refs_insert_trigger ON BIB_Refs;
-DROP FUNCTION IF EXISTS BIB_Refs_insert();
-
-CREATE OR REPLACE FUNCTION BIB_Refs_insert() RETURNS TRIGGER AS \$\$
-BEGIN
-
 PERFORM ACC_assignMGI(1001, NEW._Refs_key, 'Reference');
+
+FOR rec IN
+SELECT _Term_key FROM VOC_Term where _Vocab_key = 127
+LOOP
+INSERT INTO BIB_Workflow_Status 
+VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, rec._Term_key, 31576669, 1,  
+	NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
+;
+END LOOP;
+
+INSERT INTO BIB_Workflow_Data 
+VALUES(NEW._Refs_key, 0, 31576676, null, null, NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
+;
 
 RETURN NEW;
 
@@ -140,6 +160,13 @@ EOSQL
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS BIB_Refs_update_trigger ON BIB_Refs;
+DROP FUNCTION IF EXISTS BIB_Refs_update();
+
+CREATE OR REPLACE FUNCTION BIB_Refs_update() RETURNS TRIGGER AS \$\$
+
+BEGIN
+
 --
 -- NAME: BIB_Refs_update()
 --
@@ -154,13 +181,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS BIB_Refs_update_trigger ON MRK_Marker;
-DROP FUNCTION IF EXISTS BIB_Refs_update();
-
-CREATE OR REPLACE FUNCTION BIB_Refs_update() RETURNS TRIGGER AS \$\$
-
-BEGIN
 
 -- 31576679 = Book
 IF OLD._ReferenceType_key in (31576679)

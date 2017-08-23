@@ -30,13 +30,29 @@ v_alleleKey int;
 BEGIN
 
 --
+-- NAME: ALL_convertAllele
+--
+-- DESCRIPTION:
+--        
 -- Convert allele symbols of v_markerKey using v_oldSymbol and v_newSymbol values;
 -- do NOT call this with a null value of v_markerKey, or it will fail and roll
 -- back your transaction.
 --
+-- INPUT:
+--      
+-- v_userKey   : MGI_User._User_key
+-- v_markerKey : MRK_Marker._Marker_key
+-- v_oldSymbol mrk_marker.symbol%TYPE : old marker symbol
+-- v_newSymbol mrk_marker.symbol%TYPE : new marker symbol
+-- v_alleleOf int DEFAULT 0 : is old Symbol an Allele of the new Symbol?
+--
+-- RETURNS:
+--	VOID
+--      
+
+--
 -- If the marker key is null, then this procedure will not work.  Bail out
 -- now before anything gets mixed up.
---
 --
 
 IF v_markerKey IS NULL

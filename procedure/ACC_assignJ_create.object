@@ -6,25 +6,6 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ACC_assignJ_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
---
--- NAME: ACC_assignJ
---
--- DESCRIPTION:
---        
--- To assign a new J: to a Reference
---
--- INPUT:
---      
--- v_userKey   : MGI_User._User_key
--- v_objectKey : ACC_Accession._Object_key
--- v_nextMGI   : if -1, then ACC_assignMGI() will use the next available J:
---		 else, try to use the v_nextMGI as the J: (an override)
---
--- RETURNS:
---	VOID
---      
---
-
 CREATE OR REPLACE FUNCTION ACC_assignJ (
 v_userKey int,
 v_objectKey int,
@@ -37,6 +18,26 @@ DECLARE
 j_exists int;
 
 BEGIN
+
+--
+-- NAME: ACC_assignJ
+--
+-- DESCRIPTION:
+--        
+-- To assign a new J: to a Reference
+-- Calls ACC_assignMGI()
+--
+-- INPUT:
+--      
+-- v_userKey   : MGI_User._User_key
+-- v_objectKey : ACC_Accession._Object_key
+-- v_nextMGI   : if -1, then ACC_assignMGI() will use the next available J:
+--		 else, try to use the v_nextMGI as the J: (an override)
+--
+-- RETURNS:
+--	VOID
+--      
+--
 
 IF v_nextMGI != -1
 THEN

@@ -22,6 +22,23 @@ RETURNS VOID AS
 
 BEGIN
 
+--
+-- NAME: ALL_mergeAllele
+--
+-- DESCRIPTION:
+--        
+-- To re-set _Allele_key from old _Allele_key to new _Allele_key
+-- called from ALL_mergeWildTypes()
+--
+-- INPUT:
+--      
+-- v_oldAlleleKey : ALL_Allele._Allele_key (old)
+-- v_newAlleleKey : ALL_Allele._Allele_key (new)
+--
+-- RETURNS:
+--	VOID
+--      
+
 UPDATE ALL_Knockout_Cache SET _Allele_key = v_newAlleleKey WHERE _Allele_key = v_oldAlleleKey
 ;
 

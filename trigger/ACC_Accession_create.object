@@ -4,6 +4,12 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS ACC_Accession_delete_trigger ON ACC_Accession;
+DROP FUNCTION IF EXISTS ACC_Accession_delete();
+
+CREATE OR REPLACE FUNCTION ACC_Accession_delete() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: ACC_Accession_delete()
 --
@@ -17,12 +23,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS ACC_Accession_delete_trigger ON ACC_Accession;
-DROP FUNCTION IF EXISTS ACC_Accession_delete();
-
-CREATE OR REPLACE FUNCTION ACC_Accession_delete() RETURNS TRIGGER AS \$\$
-BEGIN
 
 IF OLD._LogicalDB_key = 19
 THEN

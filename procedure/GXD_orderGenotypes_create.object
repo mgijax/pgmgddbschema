@@ -34,13 +34,24 @@ v_newSeq int;	-- new sequence number
 BEGIN
 
 --
+-- NAME: GXD_orderGenotypes
+--
+-- DESCRIPTION:
+--        
 -- Load the GXD_AlleleGenotype (cache) table for the given Allele.
 -- Executed after any modification to GXD_AllelePair.
 -- test: 263, 8734
 --
+-- INPUT:
+--
+-- v_alleleKey : ALL_Allele._Allele_key
+-- v_userKey   : MGI_User._User_key = 1001 (DEFAULT)
+--      
+-- RETURNS:
+--	VOID
+--      
 
 -- Delete any pre-existing cache results for given Allele
-
 DELETE FROM GXD_AlleleGenotype WHERE _Allele_key = v_alleleKey;
 
 CREATE TEMP TABLE genotypes_tmp1 ON COMMIT DROP

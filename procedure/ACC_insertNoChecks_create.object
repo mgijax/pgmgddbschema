@@ -19,29 +19,6 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ACC_insertNoChecks_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
---
--- NAME: ACC_insertNoChecks
---
--- DESCRIPTION:
---        
--- To add new ACC_Accession record with out checking Accession id rules
---
--- INPUT:
---      
--- v_userKey                        : MGI_User._User_key
--- v_objectKey                      : ACC_Accession._Object_key
--- v_accID acc_accession.accid%TYPE : ACC_Accession.accID
--- v_logicalDB                      : ACC_Accession._LogicalDB_key
--- v_mgiType acc_mgitype.name%TYPE  : ACC_Accession._MGIType_key
--- v_refsKey int DEFAULT -1         : BIB_Refs._Refs_key; if Reference, then call ACCRef_insert()
--- v_preferred int DEFAULT 1        : ACC_Accession.prefixPart
--- v_private int DEFAULT 0          : ACC_Accession.private
--- v_dosplit int DEFAULT 1          : if 1, split the accession id into prefixpart/numericpart
---
--- RETURNS:
---      
---
-
 CREATE OR REPLACE FUNCTION ACC_insertNoChecks (
 v_userKey int,
 v_objectKey int,
@@ -64,8 +41,29 @@ v_numericPart acc_accession.prefixPart%Type;
 
 BEGIN
 
-/* Insert record into master Accession table. */
-/* If reference is given, insert record into Accession Reference table. */
+--
+-- NAME: ACC_insertNoChecks
+--
+-- DESCRIPTION:
+--        
+-- To add new ACC_Accession record with out checking Accession id rules
+-- If reference is given, insert record into ACC_AccessionReference
+--
+-- INPUT:
+--      
+-- v_userKey                        : MGI_User._User_key
+-- v_objectKey                      : ACC_Accession._Object_key
+-- v_accID acc_accession.accid%TYPE : ACC_Accession.accID
+-- v_logicalDB                      : ACC_Accession._LogicalDB_key
+-- v_mgiType acc_mgitype.name%TYPE  : ACC_Accession._MGIType_key
+-- v_refsKey int DEFAULT -1         : BIB_Refs._Refs_key; if Reference, then call ACCRef_insert()
+-- v_preferred int DEFAULT 1        : ACC_Accession.prefixPart
+-- v_private int DEFAULT 0          : ACC_Accession.private
+-- v_dosplit int DEFAULT 1          : if 1, split the accession id into prefixpart/numericpart
+--
+-- RETURNS:
+--      
+--
 
 IF v_accID IS NULL
 THEN
@@ -78,11 +76,11 @@ v_mgiTypeKey := _MGIType_key FROM ACC_MGIType WHERE name = v_mgiType;
 v_prefixPart := v_accID;
 v_numericPart := '';
 
-/* skip the splitting...for example, the Reference/DOI ids are not split */
+-- skip the splitting...for example, the Reference/DOI ids are not split
 
 IF v_dosplit
 THEN
-	/* split accession id INTO prefixPart/numericPart */
+	-- split accession id INTO prefixPart/numericPart
 	SELECT * FROM ACC_split(v_accID) INTO v_prefixPart, v_numericPart;
 END IF;
 

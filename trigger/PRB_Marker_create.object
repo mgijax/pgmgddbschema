@@ -4,6 +4,12 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS PRB_Marker_insert_trigger ON PRB_Marker;
+DROP FUNCTION IF EXISTS PRB_Marker_insert();
+
+CREATE OR REPLACE FUNCTION PRB_Marker_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: PRB_Marker_insert()
 --
@@ -15,12 +21,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS PRB_Marker_insert_trigger ON PRB_Marker;
-DROP FUNCTION IF EXISTS PRB_Marker_insert();
-
-CREATE OR REPLACE FUNCTION PRB_Marker_insert() RETURNS TRIGGER AS \$\$
-BEGIN
 
 -- Cannot annotate using the Auto-E reference/J:85324 (86302)
 
@@ -77,6 +77,12 @@ EOSQL
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS PRB_Marker_update_trigger ON PRB_Marker;
+DROP FUNCTION IF EXISTS PRB_Marker_update();
+
+CREATE OR REPLACE FUNCTION PRB_Marker_update() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: PRB_Marker_update()
 --
@@ -91,12 +97,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS PRB_Marker_update_trigger ON PRB_Marker;
-DROP FUNCTION IF EXISTS PRB_Marker_update();
-
-CREATE OR REPLACE FUNCTION PRB_Marker_update() RETURNS TRIGGER AS \$\$
-BEGIN
 
 -- Cannot annotate using the Auto-E reference/J:85324 (86302)
 

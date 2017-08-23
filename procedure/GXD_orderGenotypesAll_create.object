@@ -27,7 +27,20 @@ v_alleleKey int;
 
 BEGIN
 
+--
+-- NAME: GXD_orderGenotypesAll
+--
+-- DESCRIPTION:
+--        
 -- Refrest the GXD_AlleleGenotype (cache) table for all Genotypes
+--
+-- INPUT:
+--      
+-- v_genotypeKey : GXD_Genotype._Genotype_key
+--
+-- RETURNS:
+--	VOID
+--      
 
 DELETE FROM GXD_AlleleGenotype WHERE _Genotype_key = v_genotypeKey;
 

@@ -24,6 +24,25 @@ RETURNS VOID AS
 
 BEGIN
 
+--
+-- NAME: GXD_replaceGenotype
+--
+-- DESCRIPTION:
+--        
+-- To replace old Genotype with new Genotype
+-- in GXD_Specimen, GXD_GelLane, GXD_Expression, GXD_Assay
+--
+-- INPUT:
+--      
+-- v_userKey : MGI_User._User_key
+-- v_refsKey : BIB_Refs._Refs_key
+-- v_oldGenotypeKey : GXD_Genotype._Genotype_key
+-- v_newGenotypeKey : GXD_Genotype._Genotype_key
+--
+-- RETURNS:
+--	VOID
+--      
+
 UPDATE GXD_Specimen s
 SET _Genotype_key = v_newGenotypeKey
 FROM GXD_Assay a

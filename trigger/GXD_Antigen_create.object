@@ -4,6 +4,12 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS GXD_Antigen_delete_trigger ON GXD_Antigen;
+DROP FUNCTION IF EXISTS GXD_Antigen_delete();
+
+CREATE OR REPLACE FUNCTION GXD_Antigen_delete() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: GXD_Antigen_delete()
 --
@@ -31,12 +37,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS GXD_Antigen_delete_trigger ON GXD_Antigen;
-DROP FUNCTION IF EXISTS GXD_Antigen_delete();
-
-CREATE OR REPLACE FUNCTION GXD_Antigen_delete() RETURNS TRIGGER AS \$\$
-BEGIN
 
 DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._Antigen_key
@@ -97,6 +97,12 @@ EOSQL
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS GXD_Antigen_insert_trigger ON GXD_Antigen;
+DROP FUNCTION IF EXISTS GXD_Antigen_insert();
+
+CREATE OR REPLACE FUNCTION GXD_Antigen_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: GXD_Antigen_insert()
 --
@@ -112,12 +118,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS GXD_Antigen_insert_trigger ON GXD_Antigen;
-DROP FUNCTION IF EXISTS GXD_Antigen_insert();
-
-CREATE OR REPLACE FUNCTION GXD_Antigen_insert() RETURNS TRIGGER AS \$\$
-BEGIN
 
 PERFORM ACC_assignMGI(1001, NEW._Antigen_key, 'Antigen');
 

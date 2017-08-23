@@ -9,6 +9,16 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS GXD_Index_insert_trigger ON GXD_Index;
+DROP FUNCTION IF EXISTS GXD_Index_insert();
+
+CREATE OR REPLACE FUNCTION GXD_Index_insert() RETURNS TRIGGER AS \$\$
+
+DECLARE
+v_assocKey int;
+
+BEGIN
+
 --
 -- NAME: GXD_Index_insert()
 --
@@ -29,16 +39,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS GXD_Index_insert_trigger ON GXD_Index;
-DROP FUNCTION IF EXISTS GXD_Index_insert();
-
-CREATE OR REPLACE FUNCTION GXD_Index_insert() RETURNS TRIGGER AS \$\$
-
-DECLARE
-v_assocKey int;
-
-BEGIN
 
 -- obsolete
 IF NOT EXISTS (SELECT 1 FROM BIB_DataSet_Assoc b
@@ -87,6 +87,13 @@ EOSQL
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS GXD_Index_insert_before_trigger ON GXD_Index;
+DROP FUNCTION IF EXISTS GXD_Index_insert_before();
+
+CREATE OR REPLACE FUNCTION GXD_Index_insert_before() RETURNS TRIGGER AS \$\$
+
+BEGIN
+
 --
 -- NAME: GXD_Index_insert_before()
 --
@@ -101,13 +108,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS GXD_Index_insert_before_trigger ON GXD_Index;
-DROP FUNCTION IF EXISTS GXD_Index_insert_before();
-
-CREATE OR REPLACE FUNCTION GXD_Index_insert_before() RETURNS TRIGGER AS \$\$
-
-BEGIN
 
 -- if reference is not currently used and priority is null, no default
 IF NOT EXISTS (SELECT 1 FROM GXD_Index WHERE _Refs_key = NEW._Refs_key)
@@ -166,6 +166,13 @@ EOSQL
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS GXD_Index_update_trigger ON GXD_Index;
+DROP FUNCTION IF EXISTS GXD_Index_update();
+
+CREATE OR REPLACE FUNCTION GXD_Index_update() RETURNS TRIGGER AS \$\$
+
+BEGIN
+
 --
 -- NAME: GXD_Index_update()
 --
@@ -179,13 +186,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS GXD_Index_update_trigger ON GXD_Index;
-DROP FUNCTION IF EXISTS GXD_Index_update();
-
-CREATE OR REPLACE FUNCTION GXD_Index_update() RETURNS TRIGGER AS \$\$
-
-BEGIN
 
 UPDATE GXD_Index
 SET _Priority_key = NEW._Priority_key,

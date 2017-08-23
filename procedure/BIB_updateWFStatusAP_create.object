@@ -14,6 +14,16 @@ ${PG_MGD_DBSCHEMADIR}/procedure/BIB_updateWFStatusAP_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CREATE OR REPLACE FUNCTION BIB_updateWFStatusAP (
+)
+RETURNS VOID AS
+\$\$
+ 
+DECLARE
+rec record;
+
+BEGIN
+
 --
 -- NAME: BIB_updateWFStatusAP
 --
@@ -31,16 +41,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --	VOID
 --      
 
-CREATE OR REPLACE FUNCTION BIB_updateWFStatusAP (
-)
-RETURNS VOID AS
-\$\$
- 
-DECLARE
-rec record;
-
-BEGIN
-
 FOR rec IN
 SELECT r._Refs_key 
 FROM BIB_Refs r
@@ -56,7 +56,7 @@ AND EXISTS (SELECT 1 FROM BIB_Workflow_Status wfl
 LOOP
     UPDATE BIB_Workflow_Status w set isCurrent = 0 
     WHERE rec._Refs_key = w._Refs_key
-        AND w._Group_key = 31576666
+        AND w._Group_key = 31576664
     ;   
     INSERT INTO BIB_Workflow_Status 
     VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), rec._Refs_key, 31576664, 31576674, 1,  
