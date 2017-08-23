@@ -4,6 +4,12 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS MGI_Relationship_delete_trigger ON MGI_Relationship;
+DROP FUNCTION IF EXISTS MGI_Relationship_delete();
+
+CREATE OR REPLACE FUNCTION MGI_Relationship_delete() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: MGI_Relationship_delete()
 --
@@ -31,12 +37,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS MGI_Relationship_delete_trigger ON MGI_Relationship;
-DROP FUNCTION IF EXISTS MGI_Relationship_delete();
-
-CREATE OR REPLACE FUNCTION MGI_Relationship_delete() RETURNS TRIGGER AS \$\$
-BEGIN
 
 DELETE FROM MGI_Note m
 WHERE m._Object_key = OLD._Relationship_key

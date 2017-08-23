@@ -4,6 +4,12 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS MGI_Statistic_delete_trigger ON MGI_Statistic;
+DROP FUNCTION IF EXISTS MGI_Statistic_delete();
+
+CREATE OR REPLACE FUNCTION MGI_Statistic_delete() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: MGI_Statistic_delete()
 --
@@ -31,12 +37,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS MGI_Statistic_delete_trigger ON MGI_Statistic;
-DROP FUNCTION IF EXISTS MGI_Statistic_delete();
-
-CREATE OR REPLACE FUNCTION MGI_Statistic_delete() RETURNS TRIGGER AS \$\$
-BEGIN
 
 DELETE FROM MGI_SetMember msm
 USING MGI_Set ms

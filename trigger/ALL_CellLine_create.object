@@ -4,6 +4,12 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS ALL_CellLine_delete_trigger ON ALL_CellLine;
+DROP FUNCTION IF EXISTS ALL_CellLine_delete();
+
+CREATE OR REPLACE FUNCTION ALL_CellLine_delete() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: ALL_CellLine_delete()
 --
@@ -31,12 +37,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS ALL_CellLine_delete_trigger ON ALL_CellLine;
-DROP FUNCTION IF EXISTS ALL_CellLine_delete();
-
-CREATE OR REPLACE FUNCTION ALL_CellLine_delete() RETURNS TRIGGER AS \$\$
-BEGIN
 
 DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._CellLine_key
@@ -97,6 +97,15 @@ EOSQL
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+DROP TRIGGER IF EXISTS ALL_CellLine_update1_trigger ON ALL_CellLine;
+DROP FUNCTION IF EXISTS ALL_CellLine_update1();
+
+DROP TRIGGER IF EXISTS ALL_CellLine_update2_trigger ON ALL_CellLine;
+DROP FUNCTION IF EXISTS ALL_CellLine_update2();
+
+CREATE OR REPLACE FUNCTION ALL_CellLine_update1() RETURNS TRIGGER AS \$\$
+BEGIN
+
 --
 -- NAME: ALL_CellLine_update1()
 -- NAME: ALL_CellLine_update2()
@@ -109,15 +118,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	NEW
 --
-
-DROP TRIGGER IF EXISTS ALL_CellLine_update1_trigger ON ALL_CellLine;
-DROP FUNCTION IF EXISTS ALL_CellLine_update1();
-
-DROP TRIGGER IF EXISTS ALL_CellLine_update2_trigger ON ALL_CellLine;
-DROP FUNCTION IF EXISTS ALL_CellLine_update2();
-
-CREATE OR REPLACE FUNCTION ALL_CellLine_update1() RETURNS TRIGGER AS \$\$
-BEGIN
 
 -- update strains of mutant cell lines derived from this parent line
 
