@@ -99,7 +99,8 @@ IF NEW._MGIType_key = 11
 AND EXISTS (SELECT 1 FROM BIB_Workflow_Status b
 	WHERE NEW._Refs_key = b._Refs_key
 	AND b._Group_key = 31576664
-	AND b._Status_key != 31576674)
+	AND b._Status_key != 31576674
+	AND b.isCurrent = 1)
 THEN
     UPDATE BIB_Workflow_Status w set isCurrent = 0
     WHERE NEW._Refs_key = w._Refs_key
