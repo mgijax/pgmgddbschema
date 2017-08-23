@@ -36,18 +36,38 @@ v_imageType int;
 
 BEGIN
 
+--
+-- NAME: IMG_setPDO
+--
+-- DESCRIPTION:
+--        
+-- adds the PIX id to the MGI Image (ACC_Accession, IMG_Image)
+-- set the IMG_Image.xDim, yDim values
+--
 -- If image_key is valid and a PIX foreign accession number
 -- does not already exist for the _Image_key and the PIX: accession
 -- ID does not already exist, the new ID is added to ACC_Accession
 -- and the x,y dim update the image record.
+--
 -- ASSUMES:
 -- - _LogicalDB_key for "MGI Image Archive" is 19,
 -- - _MGIType_key for mgi Image objects is 9
+--
 -- REQUIRES:
 -- - four integer inputs
 -- - _Image_key exists
 -- - _Image_key is not referenced by an existing PIX:#
 -- - PIX:# does not exist (referencing another _Image_key)
+--
+-- INPUT:
+--
+-- v_pixID     : ACC_Accession.accID
+-- v_xDim      : IMG_Image.xDmin
+-- v_yDim      : IMG_Image.yDmin
+-- v_image_key : IMG_Image._Image_key
+--
+-- RETURNS:
+--	VOID
 
 v_prefix := 'PIX:'; 
 v_imageLDB := 19;
