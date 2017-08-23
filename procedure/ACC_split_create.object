@@ -26,23 +26,6 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ACC_split_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
---
--- NAME: ACC_split
---
--- DESCRIPTION:
---        
--- To split an Accession ID into a prefixPart and a numericPart
---
--- INPUT:
---      
--- v_accID acc_accession.accid%TYPE                : ACC_Accession.accID
---
--- RETURNS:
---	prefixPart  : ACC_Accession.prefixPart%TYPE
---      numericPart : ACC_Accession.numericPart%TYPE
---      
---
-
 CREATE OR REPLACE FUNCTION ACC_split (
 v_accID acc_accession.accid%TYPE,
 out v_prefixPart acc_accession.prefixPart%TYPE,
@@ -53,9 +36,26 @@ AS
 
 BEGIN
 
+--
+-- NAME: ACC_split
+--
+-- DESCRIPTION:
+--        
+-- To split an Accession ID into a prefixPart and a numericPart
+--
 -- to call : select v_prefixPart, v_numericPart from ACC_split('MGI:12345');
 -- example : A2ALT2 -> (A2ALT, 2)
 -- example : MGI:12345 -> (MGI:, 12345)
+--
+-- INPUT:
+--      
+-- v_accID acc_accession.accid%TYPE                : ACC_Accession.accID
+--
+-- RETURNS:
+--	prefixPart  : ACC_Accession.prefixPart%TYPE
+--      numericPart : ACC_Accession.numericPart%TYPE
+--      
+--
 
 -- v_prefixPart is alphanumeric
 v_prefixPart := (SELECT (regexp_matches(v_accID, E'^((.*[^0-9])?)([0-9]*)', 'g'))[2]);

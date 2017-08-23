@@ -16,6 +16,24 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ACCRef_process_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CREATE OR REPLACE FUNCTION ACCRef_process (
+v_userKey int,
+v_objectKey int,
+v_refsKey int,
+v_accID acc_accession.accid%TYPE,
+v_logicalDB int,
+v_mgiType acc_mgitype.name%TYPE,
+v_preferred int DEFAULT 1,
+v_private int DEFAULT 0
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_accKey int;
+
+BEGIN
+
 --
 -- NAME: ACCRef_process
 --
@@ -42,27 +60,9 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 --      
 --
 
-CREATE OR REPLACE FUNCTION ACCRef_process (
-v_userKey int,
-v_objectKey int,
-v_refsKey int,
-v_accID acc_accession.accid%TYPE,
-v_logicalDB int,
-v_mgiType acc_mgitype.name%TYPE,
-v_preferred int DEFAULT 1,
-v_private int DEFAULT 0
-)
-RETURNS VOID AS
-\$\$
-
-DECLARE
-v_accKey int;
-
-BEGIN
-
-/* If the Object/Acc ID pair already exists, then use that _Accession_key */
-/* and simply insert a new ACC_AccessionReference record (ACCRef_insert) */
-/* Else, create a new ACC_Accession and ACC_AccessionReference record (ACC_insert) */
+-- If the Object/Acc ID pair already exists, then use that _Accession_key
+-- and simply insert a new ACC_AccessionReference record (ACCRef_insert)
+-- Else, create a new ACC_Accession and ACC_AccessionReference record (ACC_insert)
 
 SELECT INTO v_accKey a._Accession_key 
 FROM ACC_Accession a, ACC_MGIType m

@@ -13,16 +13,6 @@ ${PG_MGD_DBSCHEMADIR}/procedure/GXD_addEMAPASet_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
---
--- NAME: 
---
--- DESCRIPTION:
---        
--- INPUT:
---      
--- RETURNS:
---
-
 CREATE OR REPLACE FUNCTION GXD_addEMAPASet (
 v_userKey int,
 v_assayKey int
@@ -36,6 +26,23 @@ v_newSetMemberEMAPAKey int;
 v_newSeqKey int;
 
 BEGIN
+
+--
+-- NAME: GXD_addEMAPASet
+--
+-- DESCRIPTION:
+--
+-- To add Assay/EMAPA/Stage to EMAPA set for the clipboard
+-- (MGI_SetMember, MGI_SetMember_EMAPA)
+--        
+-- INPUT:
+--      
+-- v_userKey  : MGI_User._User_key
+-- v_assayKey : GXD_Assay._Assay_key
+--
+-- RETURNS:
+--	VOID
+--
 
 --
 -- find existing EMAPA/Stage terms by Assay

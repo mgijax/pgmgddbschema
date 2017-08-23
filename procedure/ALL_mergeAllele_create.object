@@ -13,6 +13,15 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ALL_mergeAllele_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CREATE OR REPLACE FUNCTION ALL_mergeAllele (
+v_oldAlleleKey int,
+v_newAlleleKey int
+)
+RETURNS VOID AS
+\$\$
+
+BEGIN
+
 --
 -- NAME: ALL_mergeAllele
 --
@@ -29,15 +38,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	VOID
 --      
-
-CREATE OR REPLACE FUNCTION ALL_mergeAllele (
-v_oldAlleleKey int,
-v_newAlleleKey int
-)
-RETURNS VOID AS
-\$\$
-
-BEGIN
 
 UPDATE ALL_Knockout_Cache SET _Allele_key = v_newAlleleKey WHERE _Allele_key = v_oldAlleleKey
 ;

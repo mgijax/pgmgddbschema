@@ -13,6 +13,14 @@ ${PG_MGD_DBSCHEMADIR}/procedure/BIB_reloadCache_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CREATE OR REPLACE FUNCTION BIB_reloadCache (
+v_refsKey int DEFAULT -1
+)
+RETURNS VOID AS
+\$\$
+
+BEGIN
+
 --
 -- NAME: BIB_reloadCache
 --
@@ -34,14 +42,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	VOID
 --
-
-CREATE OR REPLACE FUNCTION BIB_reloadCache (
-v_refsKey int DEFAULT -1
-)
-RETURNS VOID AS
-\$\$
-
-BEGIN
 
 IF (v_refsKey = -1)
 THEN

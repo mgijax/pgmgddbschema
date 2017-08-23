@@ -18,6 +18,19 @@ ${PG_MGD_DBSCHEMADIR}/procedure/ALL_createWildType_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+CREATE OR REPLACE FUNCTION ALL_createWildType (
+v_userKey int,
+v_markerKey int,
+v_symbol mrk_marker.symbol%TYPE
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_asymbol all_allele.symbol%TYPE;
+
+BEGIN
+
 --
 -- NAME: ALL_createWildType
 --
@@ -36,19 +49,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 -- RETURNS:
 --	VOID
 --      
-
-CREATE OR REPLACE FUNCTION ALL_createWildType (
-v_userKey int,
-v_markerKey int,
-v_symbol mrk_marker.symbol%TYPE
-)
-RETURNS VOID AS
-\$\$
-
-DECLARE
-v_asymbol all_allele.symbol%TYPE;
-
-BEGIN
 
 v_asymbol := v_symbol || '<+>';
 

@@ -18,6 +18,24 @@ RETURNS TABLE (
 
 BEGIN
 
+--
+-- NAME: GXD_getGenotypesDataSets
+--
+-- DESCRIPTION:
+--        
+-- To select all references/data sets that a given Genotype is associated with
+--
+-- INPUT:
+--
+-- v_genotypeKey : GXD_Genotyype._Genotype_key
+--      
+-- RETURNS:
+--	TABLE
+--	jnum
+--	short_citation
+--	dataSet
+--      
+
 -- Select all Data Sets for given Genotype 
 
 CREATE TEMP TABLE objects ON COMMIT DROP
