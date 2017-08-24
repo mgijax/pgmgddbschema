@@ -31,7 +31,20 @@ rec record;
 
 BEGIN
 
+--
+-- NAME: VOC_processAnnotHeaderAll
+--
+-- DESCRIPTION:
+--        
 -- incrementally update VOC_AnnotHeader by annotation type
+--
+-- INPUT:
+--      
+-- v_annotTypeKey : VOC_Annot._AnnotType_key
+--
+-- RETURNS:
+--	VOID
+--      
 
 v_headerLabel := _Label_key FROM DAG_Label WHERE label = 'Header';
 v_headerKey := max(_AnnotHeader_key) FROM VOC_AnnotHeader;
@@ -78,9 +91,9 @@ CREATE INDEX set0_idx2 ON set0(_Object_key);
 
 CREATE INDEX set0_idx3 ON set0(_Qualifier_key);
 
-/* set isNormal */
-/* isNormal = 1 if all of the qualifiers for a given header term = 2181424 */
-/* else isNormal = 0 */
+-- set isNormal 
+-- isNormal = 1 if all of the qualifiers for a given header term = 2181424 
+-- else isNormal = 0 
 CREATE TEMP TABLE normal ON COMMIT DROP
 AS SELECT DISTINCT _Object_key, _Term_key
 FROM set0 s1
@@ -98,7 +111,7 @@ WHERE n._Object_key = set0._Object_key
 AND n._Term_key = set0._Term_key
 ;
 
-/* now SELECT the DISTINCT headers */
+-- now SELECT the DISTINCT headers 
 CREATE TEMP TABLE set1 ON COMMIT DROP
 AS SELECT DISTINCT _Object_key, _Term_key, sequenceNum, isNormal
 FROM set0
@@ -108,7 +121,7 @@ CREATE INDEX set1_idx1 ON set1(_Term_key);
 
 CREATE INDEX set1_idx2 ON set1(_Object_key);
 
-/* set of headers that are currently cached */
+-- set of headers that are currently cached 
 CREATE TEMP TABLE set2 ON COMMIT DROP
 AS SELECT _AnnotHeader_key, _Object_key, _Term_key, sequenceNum, isNormal
 FROM VOC_AnnotHeader
@@ -119,7 +132,7 @@ ORDER BY _Object_key, sequenceNum
 CREATE INDEX set2_idx1 ON set2(_Term_key);
 CREATE INDEX set2_idx2 ON set2(_Object_key);
 
-/* any headers in set2 that is not in set1 are deleted */
+-- any headers in set2 that is not in set1 are deleted 
 CREATE TEMP TABLE toDelete ON COMMIT DROP
 AS SELECT s2._AnnotHeader_key 
 FROM set2 s2
@@ -134,7 +147,7 @@ using toDelete d
 WHERE d._AnnotHeader_key = VOC_AnnotHeader._AnnotHeader_key
 ;
 
-/* set of headers that are currently cached after deletion */
+-- set of headers that are currently cached after deletion 
 CREATE TEMP TABLE set3 ON COMMIT DROP
 AS SELECT _Object_key, _Term_key, sequenceNum
 FROM VOC_AnnotHeader
@@ -145,7 +158,7 @@ ORDER BY _Object_key, sequenceNum
 CREATE INDEX set3_idx1 ON set3(_Term_key);
 CREATE INDEX set3_idx2 ON set3(_Object_key);
 
-/* any headers in set1 that are not in set3 are added */
+-- any headers in set1 that are not in set3 are added 
 CREATE TEMP TABLE toAdd ON COMMIT DROP
 AS SELECT 1 as SERIAL, _Object_key, _Term_key, sequenceNum, isNorma
 FROM set1 s1
@@ -153,7 +166,7 @@ WHERE NOT EXISTS (SELECT 1 FROM set3 s3 WHERE s1._Term_key = s3._Term_key AND s1
 ORDER BY s1._Object_key, s1.sequenceNum
 ;
 
-/* update the isNormal bit for any headers in #set1 that are in #set3 (existing headers) */
+-- update the isNormal bit for any headers in #set1 that are in #set3 (existing headers) 
 update VOC_AnnotHeader
 set isNormal = s1.isNormal
 FROM set1 s1, set3 s3
@@ -164,14 +177,14 @@ AND s1._Object_key = s3._Object_key
 AND s1._Term_key = s3._Term_key
 ;
 
-/* get the maximum sequence number for existing headers */
+-- get the maximum sequence number for existing headers 
 CREATE TEMP TABLE maxSequence ON COMMIT DROP
 AS SELECT max(sequenceNum) as maxSeq, _Object_key
 FROM set3
 group by _Object_key
 ;
 
-/* get the maximum sequence number for any new headers */
+-- get the maximum sequence number for any new headers 
 INSERT INTO maxSequence SELECT DISTINCT 0, _Object_key FROM toAdd t
 WHERE not EXISTS (SELECT 1 FROM set3 s WHERE t._Object_key = s._Object_key)
 ;
@@ -186,7 +199,7 @@ FROM toAdd t, maxSequence m
 WHERE t._Object_key = m._Object_key
 ;
 
-/* automatically approve all annotations with one header */
+-- automatically approve all annotations with one header 
 CREATE TEMP TABLE toApprove ON COMMIT DROP
 AS SELECT _AnnotHeader_key
 FROM VOC_AnnotHeader
@@ -203,7 +216,7 @@ FROM toApprove t
 WHERE t._AnnotHeader_key = VOC_AnnotHeader._AnnotHeader_key
 ;
 
-/* automatically set all headers to non-approved if there is at least one header (by object) that is non-approved */
+-- automatically set all headers to non-approved if there is at least one header (by object) that is non-approved */
 CREATE TEMP TABLE toNotApprove ON COMMIT DROP
 AS SELECT _AnnotHeader_key
 FROM VOC_AnnotHeader v1

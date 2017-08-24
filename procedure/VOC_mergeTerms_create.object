@@ -47,7 +47,6 @@ BEGIN
 -- RETURNS:
 --      
 
-
 UPDATE ACC_Accession
 SET _Object_key = newKey, preferred = 0
 WHERE _Object_key = oldKey

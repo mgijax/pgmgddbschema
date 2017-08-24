@@ -35,6 +35,24 @@ v_newSeq int;	-- new sequence number
 
 BEGIN
 
+--
+-- NAME: VOC_processAnnotHeader
+--
+-- DESCRIPTION:
+--        
+-- set headers by Annotation Type, Object
+--
+-- INPUT:
+--      
+-- v_userKey      : MGI_User._User_key
+-- v_annotTypeKey : VOC_Annot._AnnotType_key
+-- v_objectKey    : VOC_Annot._Object_key
+-- v_reorder      : DEFAULT 1, if updating the cache for a single object, 
+--	            then re-set the sequence numbers so there are no gaps
+--
+-- RETURNS:
+--	VOID
+
 v_headerLabel := _Label_key FROM DAG_Label WHERE label = 'Header';
 v_headerKey := max(_AnnotHeader_key) FROM VOC_AnnotHeader;
 v_maxSeq := 0;

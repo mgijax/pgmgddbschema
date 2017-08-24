@@ -38,7 +38,7 @@ RETURNS VOID AS
 BEGIN
 
 --
--- NAME: 
+-- NAME: VOC_mergeAnnotations
 --
 -- DESCRIPTION:
 --        
@@ -67,7 +67,6 @@ BEGIN
 -- without duplications. 
 -- for annotations of the old set which are not present in the new set 
 -- move the annotations to the newKey 
---
 --
 -- INPUT:
 --      

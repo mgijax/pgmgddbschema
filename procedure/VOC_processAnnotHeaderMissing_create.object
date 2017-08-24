@@ -27,7 +27,20 @@ v_objectKey int;
 
 BEGIN
 
+--
+-- NAME: VOC_processAnnotHeaderMissing
+--
+-- DESCRIPTION:
+--        
 -- add missing VOC_AnnotHeader records by annotation type
+--
+-- INPUT:
+--      
+-- v_annotTypeKey : VOC_Annot._AnnotType_key
+--
+-- RETURNS:
+--	VOID
+--      
 
 FOR v_objectKey IN
 SELECT DISTINCT v._Object_key
