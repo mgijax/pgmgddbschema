@@ -29,14 +29,25 @@ v_createdBy mgi_user.login%TYPE
 RETURNS VOID AS
 \$\$
 
---
--- Delete Sequence objects by Created By
---
-
 DECLARE
 v_userKey int;
 
 BEGIN
+
+--
+-- NAME: SEQ_deleteByCreatedBy
+--
+-- DESCRIPTION:
+--
+-- Delete Sequence objects by Created By
+--
+-- INPUT:
+--      
+-- v_createdBy mgi_user.login%TYPE
+--
+-- RETURNS:
+--	VOID
+--      
 
 v_userKey := _User_key FROM MGI_User WHERE login = v_createdBy;
 
