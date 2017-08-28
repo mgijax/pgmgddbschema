@@ -19,6 +19,23 @@ v_noteKey int;
 
 BEGIN
 
+--
+-- NAME: VOC_copyAnnotEvidenceNotes
+--
+-- DESCRIPTION:
+--        
+-- copy Annotation Evidence Notes from one Evidence record to another
+--
+-- INPUT:
+--      
+-- v_userKey 	          : MGI_User._User_key
+-- v_fromAnnotEvidenceKey : VOC_Evidence._AnnotEvidence_key
+-- v_toAnnotEvidenceKey   : VOC_Evidence._AnnotEvidence_key
+--
+-- RETURNS:
+--	VOID
+--      
+
 v_noteKey = max(_Note_key) from MGI_Note;
 
 CREATE TEMP TABLE toAdd ON COMMIT DROP

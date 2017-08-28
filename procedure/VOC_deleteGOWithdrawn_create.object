@@ -20,7 +20,19 @@ RETURNS VOID AS
 
 BEGIN
 
--- set of GO annotations that are using withdrawn markers
+--
+-- NAME: VOC_deleteGOWithdrawn
+--
+-- DESCRIPTION:
+--        
+-- delete GO Annotations that are using withdrawn markers
+--
+-- INPUT:
+--	None
+--
+-- RETURNS:
+--	VOID
+--      
 
 CREATE TEMP TABLE toDelete ON COMMIT DROP
 AS SELECT m.symbol, a.* 

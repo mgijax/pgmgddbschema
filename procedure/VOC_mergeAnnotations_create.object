@@ -38,6 +38,10 @@ RETURNS VOID AS
 BEGIN
 
 --
+-- NAME: VOC_mergeAnnotations
+--
+-- DESCRIPTION:
+--        
 -- Executed from MRK_updateKeys during merge process 
 --
 -- A unique VOC_Annotation record is defined by: 
@@ -64,6 +68,16 @@ BEGIN
 -- for annotations of the old set which are not present in the new set 
 -- move the annotations to the newKey 
 --
+-- INPUT:
+--      
+-- annotTypeKey : VOC_Annot._AnnotType_key
+-- oldKey       : VOC_Annot._Annot_key "from" key
+-- newKey       : VOC_Annot._Annot_key "to" key
+--
+-- RETURNS:
+--	VOID
+--      
+
 
 UPDATE VOC_Annot
 SET _Object_key = newKey

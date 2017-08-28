@@ -44,10 +44,33 @@ RETURNS VOID AS
 
 BEGIN
 
--- if the user name is not in the list...return
--- this list should contain: GOA_%, RGD, GOC, GO_Central, UniProtKB, GO_Noctua
+--
+-- NAME: VOC_deleteGOGAFRed
+--
+-- DESCRIPTION:
+--        
+-- detemine which GO annotations currently contain "red" annotations
+-- that are no longer necessary because that the marker also has non-red
+-- annotations.
+--
+-- and the GO anntotation was created by a specific user (see list below)
+--
+-- "red" annotations contain GO terms: 
+--	cellular_component, molecular_function, biological_process
+--
+-- INPUT:
+--      
+-- v_userName : MGI_User._User_key
+--
+-- RETURNS:
+--	VOID
+--      
 
-IF (SELECT count(*) FROM MGI_User WHERE _User_key in (1446,1447,1448,1449,1450,1458,1459,1460,1469,1470,1471,1498,1503,1509,1510,1511,1517,1539,1551,1562,1564,1565,1566,1568)) = 0
+-- if the user name is not in the list...return
+-- this list includes: GOA_%, RGD, GOC, GO_Central, UniProtKB, GO_Noctua, etc.
+
+IF (SELECT count(*) FROM MGI_User WHERE _User_key 
+in (1446,1447,1448,1449,1450,1458,1459,1460,1469,1470,1471,1498,1503,1509,1510,1511,1517,1539,1551,1562,1564,1565,1566,1568)) = 0
 THEN
     RETURN;
 END IF;

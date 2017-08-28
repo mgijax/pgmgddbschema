@@ -26,6 +26,11 @@ RETURNS VOID AS
 
 BEGIN
 
+--
+-- NAME: VOC_mergeTerms
+--
+-- DESCRIPTION:
+--        
 -- To merge a term:
 --
 -- a.  make the accID of the old term a secondary accID of the new term 
@@ -33,6 +38,14 @@ BEGIN
 -- c.  delete the old term                                               
 --
 -- a.  make the accID of the old term a secondary accID of the new term 
+--
+-- INPUT:
+--      
+-- oldKey : VOC_Term._Term_key : old
+-- newKey : VOC_Term._Term_key : new
+--
+-- RETURNS:
+--      
 
 UPDATE ACC_Accession
 SET _Object_key = newKey, preferred = 0
