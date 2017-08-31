@@ -25,7 +25,7 @@ BEGIN
 -- DESCRIPTION:
 --        
 -- To assign a new J: to a Reference
--- Calls ACC_assignMGI()
+-- Calls ACC_assignMGI() sending prefixPart = 'J:'
 --
 -- INPUT:
 --      

@@ -53,7 +53,7 @@ BEGIN
 --
 -- DESCRIPTION:
 --        
--- To assign a new MGI id (MGI:xxxx)
+-- To assign a new MGI id (MGI:xxxx) or new J (J:xxxx)
 -- Add RRID for Genotypes objects (_MGIType_key = 12)
 -- Increment ACC_AccessionMax.maxNumericPart
 --
@@ -61,15 +61,14 @@ BEGIN
 --      
 -- v_userKey                        : MGI_User._User_key
 -- v_objectKey                      : ACC_Accession._Object_key
--- v_mgiType acc_mgitype.name%TYPE  : ACC_Accession._MGIType_key
--- v_prefixPart acc_accession.prefixpart%TYPE DEFAULT 'MGI:' : ACC_Accession.prefixPart
+-- v_mgiType acc_mgitype.name%TYPE  : ACC_Accession._MGIType_key (MGI: or J:)
+-- v_prefixPart acc_accession.prefixpart%TYPE : ACC_Accession.prefixPart
+--		The default is 'MGI:', but 'J:' is also valid
 -- v_nextMGI int DEFAULT -1 : if -1 then use next available MGI id
 --		this sp does not allow an override of a generated MGI accession id
---
 -- RETURNS:
 --	VOID
 --      
---
 
 v_nextACC := max(_Accession_key) + 1 FROM ACC_Accession;
 v_mgiTypeKey := _MGIType_key FROM ACC_MGIType WHERE name = v_mgiType;
