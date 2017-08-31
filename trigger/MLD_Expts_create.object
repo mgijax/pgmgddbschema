@@ -139,7 +139,7 @@ IF EXISTS (SELECT 1 FROM BIB_Workflow_Status b
         AND b._Group_key = 31576668
         AND b._Status_key != 31576674
 	AND b.isCurrent = 1
-	AND NEW.expttype in ('TEXT-QTL', 'TEXT-QTL-Candidate Genes', 'TEXT-Congenic', 'Text-Meta Analysis'))
+	AND NEW.expttype in ('TEXT-QTL', 'TEXT-QTL-Candidate Genes', 'TEXT-Congenic', 'TEXT-Meta Analysis'))
 
 
 THEN
