@@ -25,7 +25,12 @@ BEGIN
 -- DESCRIPTION:
 --        
 -- To assign a new J: to a Reference
--- Calls ACC_assignMGI() sending prefixPart = 'J:'
+--
+-- 1:Calls ACC_assignMGI() sending prefixPart = 'J:'
+--
+-- 2:If BIB_Workflow_Data.extractedText contains 'supplemental' text
+--	then set supplemental = 'Db found supplement' (31576675)
+--	else set supplemental = 'Db supplement not found' (31576676)
 --
 -- INPUT:
 --      
@@ -54,6 +59,28 @@ THEN
 END IF;
 
 PERFORM ACC_assignMGI (v_userKey, v_objectKey, 'Reference', 'J:', v_nextMGI);
+
+--
+-- BIB_Workflow_Data.extractedText._Supplemental_key : see (2:BIB_Workflow_Data above)
+--
+-- 'supplemental' 
+-- 'supplementary' 
+-- 'supplement ' (space important)
+-- 'additional file'
+--
+
+IF (select count(*) from BIB_Workflow_Data 
+	where _Refs_key = v_objectKey
+	and (lower(extractedText) like lower('%supplemental%')
+		or lower(extractedText) like lower('%supplementary%')
+		or lower(extractedText) like lower('%supplement %')
+		or lower(extractedText) like lower('%additional file%')
+		)) = 1
+THEN
+	UPDATE BIB_Workflow_Data set _Supplemental_key = 31576675 where _Refs_key = v_objectKey;
+ELSE
+	UPDATE BIB_Workflow_Data set _Supplemental_key = 31576676 where _Refs_key = v_objectKey;
+END IF;
 
 RETURN;
 
