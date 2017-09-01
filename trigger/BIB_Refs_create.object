@@ -117,7 +117,7 @@ BEGIN
 --	to the NEW object
 --
 --	adds: BIB_Workflow_Status, one row per Group, status = 'Not Routed'
---	adds: BIB_Workflow_Data, supplimental term = 'does not have'
+--	adds: BIB_Workflow_Data, supplimental term = 'No supplemental data'
 --
 -- INPUT:
 --	none
@@ -138,7 +138,7 @@ VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, rec
 END LOOP;
 
 INSERT INTO BIB_Workflow_Data 
-VALUES(NEW._Refs_key, 0, 31576676, null, null, NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
+VALUES(NEW._Refs_key, 0, 34026998, null, null, NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
 ;
 
 RETURN NEW;
