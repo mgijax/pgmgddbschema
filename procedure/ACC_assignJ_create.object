@@ -77,14 +77,14 @@ IF (select count(*) from BIB_Workflow_Data
 		or lower(extractedText) like lower('%additional file%')
 		)) = 1
 THEN
-	UPDATE BIB_Workflow_Data set _Supplemental_key = 31576675, _modifiedby_key = v_userKey, modification_date = now()
+	UPDATE BIB_Workflow_Data set _Supplemental_key = 31576675, _ModifiedBy_key = v_userKey, modification_date = now()
 	where _Refs_key = v_objectKey;
-	UPDATE BIB_Refs set _modifiedby_key = v_userKey, modification_date = now()
+	UPDATE BIB_Refs set _ModifiedBy_key = v_userKey, modification_date = now()
 	where _Refs_key = v_objectKey;
 ELSE
-	UPDATE BIB_Workflow_Data set _Supplemental_key = 31576676, _modifiedby_key = v_userKey, modification_date = now()
+	UPDATE BIB_Workflow_Data set _Supplemental_key = 31576676, _ModifiedBy_key = v_userKey, modification_date = now()
 	where _Refs_key = v_objectKey;
-	UPDATE BIB_Refs set _modifiedby_key = v_userKey, modification_date = now()
+	UPDATE BIB_Refs set _ModifiedBy_key = v_userKey, modification_date = now()
 	where _Refs_key = v_objectKey;
 END IF;
 
