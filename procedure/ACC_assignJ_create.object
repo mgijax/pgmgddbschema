@@ -75,6 +75,7 @@ IF (select count(*) from BIB_Workflow_Data
 		or lower(extractedText) like lower('%supplementary%')
 		or lower(extractedText) like lower('%supplement %')
 		or lower(extractedText) like lower('%additional file%')
+		or lower(extractedText) like lower('%appendix%')
 		)) = 1
 THEN
 	UPDATE BIB_Workflow_Data set _Supplemental_key = 31576675, _ModifiedBy_key = v_userKey, modification_date = now()
