@@ -163,6 +163,7 @@ AND a._LogicalDB_key = 65
 AND a.preferred = 1 
 ;
 
+DROP TABLE toAdd; 
 
 END;
 
