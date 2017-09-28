@@ -2,6 +2,9 @@
 #
 # History
 #
+# 09/27/2017    jsb
+#       - lit triage project (MGI_APILog_Object)
+#
 # 02/25/2014    sc
 #       - TR11560 - added MGI_Relationship_Category FKs
 #
@@ -55,6 +58,8 @@ ALTER TABLE mgd.MGI_Organism_MGIType DROP CONSTRAINT MGI_Organism_MGIType__MGITy
 ALTER TABLE mgd.MGI_NoteType DROP CONSTRAINT MGI_NoteType__MGIType_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_Note DROP CONSTRAINT MGI_Note__MGIType_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_APILog_Object DROP CONSTRAINT MGI_APILog_Object__MGIType_key_fkey CASCADE;
 
 ALTER TABLE mgd.MAP_Coordinate DROP CONSTRAINT MAP_Coordinate__MGIType_key_fkey CASCADE;
 

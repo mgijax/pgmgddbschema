@@ -3,6 +3,9 @@
 #
 # History
 #
+# 09/27/2017    jsb
+#       - lit triage project (MGI_APILog_Object)
+#
 # 02/13/2015    sc
 #       - TR 11771; Misc project Hybrid/HGNC human/mouse homology
 #
@@ -55,6 +58,9 @@ ALTER TABLE mgd.MAP_Coord_Feature ADD FOREIGN KEY (_MGIType_key) REFERENCES mgd.
 
 
 ALTER TABLE mgd.MAP_Coordinate ADD FOREIGN KEY (_MGIType_key) REFERENCES mgd.ACC_MGIType DEFERRABLE;
+
+
+ALTER TABLE mgd.MGI_APILog_Object ADD FOREIGN KEY (_MGIType_key) REFERENCES mgd.ACC_MGIType DEFERRABLE;
 
 
 ALTER TABLE mgd.MGI_Note ADD FOREIGN KEY (_MGIType_key) REFERENCES mgd.ACC_MGIType DEFERRABLE;

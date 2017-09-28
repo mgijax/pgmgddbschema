@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# 09/27/2017	jsb
+#	initial introduction for lit triage project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.MGI_APILog_Event ADD PRIMARY KEY (_Event_key);
+
+
+ALTER TABLE mgd.MGI_APILog_Object ADD FOREIGN KEY (_Event_key) REFERENCES mgd.MGI_APILog_Event DEFERRABLE;
+
+
+EOSQL

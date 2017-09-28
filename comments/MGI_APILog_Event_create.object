@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_APILog_Event IS 'A record in this table represents one call to an API endpoint that alters (create / update / delete) data.';
+
+COMMENT ON COLUMN MGI_APILog_Event._Event_key IS 'primary key for this table';
+
+COMMENT ON COLUMN MGI_APILog_Event.endpoint IS 'name of the endpoint that was called';
+
+COMMENT ON COLUMN MGI_APILog_Event.parameters IS 'parameters passed to endpoint (as JSON)';
+
+COMMENT ON COLUMN MGI_APILog_Event._User_key IS 'user who made the call to the endpoint';
+
+COMMENT ON COLUMN MGI_APILog_Event.creation_date IS 'date/time when endpoint was called';
+
+EOSQL

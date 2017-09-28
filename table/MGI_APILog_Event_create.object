@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/26/2017	jsb
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.MGI_APILog_Event (
+ 	_Event_key				   int			   not null,
+ 	endpoint                   text            not null,
+ 	parameters                 text            not null,
+	_User_key      	  	       int             null,
+	creation_date              timestamp DEFAULT now() not null
+);
+EOSQL
