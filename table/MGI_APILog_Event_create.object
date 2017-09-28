@@ -15,7 +15,7 @@ create table mgd.MGI_APILog_Event (
  	_Event_key				   int			   not null,
  	endpoint                   text            not null,
  	parameters                 text            not null,
-	_User_key      	  	       int             null,
+	_User_key      	  	   int             null,
 	creation_date              timestamp DEFAULT now() not null
 );
 EOSQL
