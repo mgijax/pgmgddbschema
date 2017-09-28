@@ -3,6 +3,9 @@
 #
 # History
 #
+# 09/28/2017    lec
+#       - lit triage project (MGI_APILog_Event)
+#
 # 08/08/2016	jsb
 #	- TR12370 / added new GXD_HT* tables for High-Throughput Indexing proj.
 #
