@@ -6,9 +6,11 @@
 #
 
 cd `dirname $0` && . ./Configuration
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
-ALTER TABLE mgd.MGI_APILog_Event DROP CONSTRAINT MGI_APILog_Event_pkey CASCADE;
 
-ALTER TABLE mgd.MGI_APILog_Object DROP CONSTRAINT MGI_APILog_Event__Event_key_fkey CASCADE;
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.MGI_APILog_Object DROP CONSTRAINT MGI_APILog_Object__Event_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_APILog_Event DROP CONSTRAINT MGI_APILog_Event_pkey CASCADE;
 
 EOSQL
