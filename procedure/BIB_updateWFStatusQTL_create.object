@@ -29,7 +29,7 @@ BEGIN
 --
 -- DESCRIPTION:
 --        
--- To set the group QTL/current Workflow Status = Full-coded
+-- To set the group QTL/current Workflow Status = Indexed
 --
 -- where the Reference exists in QTL Annotation (_AnnotType_key = 1002)
 -- and the group QTL/current Workflow Status is *not* Full-coded
@@ -44,14 +44,13 @@ BEGIN
 FOR rec IN
 SELECT r._Refs_key 
 FROM BIB_Refs r
-WHERE EXISTS (SELECT 1 FROM VOC_Annot a, VOC_Evidence v 
-	WHERE r._Refs_key = v._Refs_key
-	and v._Annot_key = a._Annot_key
-	and a._AnnotType_key = 1002)
+WHERE EXISTS (SELECT 1 from MLD_Expts e
+	WHERE r._Refs_key = e._Refs_key
+	AND e.expttype in ('TEXT-QTL', 'TEXT-QTL-Candidate Genes', 'TEXT-Congenic', 'TEXT-Meta Analysis'))
 AND EXISTS (SELECT 1 FROM BIB_Workflow_Status wfl
         WHERE r._Refs_key = wfl._Refs_key
         AND wfl._Group_key = 31576668
-        AND wfl._Status_key != 31576674
+        AND wfl._Status_key not in (31576674, 31576673)
         AND wfl.isCurrent = 1)
 LOOP
     UPDATE BIB_Workflow_Status w set isCurrent = 0 
@@ -59,7 +58,7 @@ LOOP
         AND w._Group_key = 31576668
     ;   
     INSERT INTO BIB_Workflow_Status 
-    VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), rec._Refs_key, 31576668, 31576674, 1,  
+    VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), rec._Refs_key, 31576668, 31576673, 1,  
         1001, 1001, now(), now())
     ;   
 END LOOP;
