@@ -31,7 +31,7 @@ BEGIN
 --        
 -- To set the group QTL/current Workflow Status = Indexed
 --
--- where the Reference exists in QTL Annotation (_AnnotType_key = 1002)
+-- where the Reference exists in QTL Mapping Experiment
 -- and the group QTL/current Workflow Status is *not* Full-coded
 --
 -- INPUT:
