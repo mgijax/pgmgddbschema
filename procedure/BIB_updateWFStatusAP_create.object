@@ -64,26 +64,6 @@ LOOP
     ;   
 END LOOP;
 
-FOR rec IN
-SELECT a._Refs_key
-FROM ALL_Allele a
-WHERE _Refs_key is not null
-AND EXISTS(SELECT 1 FROM  BIB_Workflow_Status wfl
-	WHERE a._Refs_key = wfl._Refs_key
-        AND wfl._Group_key = 31576664
-        AND wfl._Status_key != 31576674
-        AND wfl.isCurrent = 1)
-LOOP
-    UPDATE BIB_Workflow_Status w set isCurrent = 0
-    WHERE rec._Refs_key = w._Refs_key
-        AND w._Group_key = 31576664
-    ;
-    INSERT INTO BIB_Workflow_Status
-    VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), rec._Refs_key, 31576664, 31576674, 1,
-        1001, 1001, now(), now())
-    ;
-END LOOP;
-
 RETURN;
 
 END;
