@@ -124,14 +124,15 @@ BEGIN
 --
 -- DESCRIPTOIN:
 --
---	1) if GO annotation 
---              if Reference exists as group = 'GO'
+--	1) if AP/GO annotation 
+--              if Reference exists as group = 'AP', 'GO'
 --		in BIB_Workflow_Status,
 --	   then
 --		set existing BIB_Workflow_Status.isCurrent = 0
 --		add new BIB_Workflow_Status._Status_key = 'Full-coded'
 --
 -- changes to this trigger require changes to procedure/BIB_updateWFStatusAP_create.object
+-- changes to this trigger require changes to procedure/BIB_updateWFStatusGO_create.object
 --
 -- INPUT:
 --	none
