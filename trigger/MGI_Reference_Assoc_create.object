@@ -86,6 +86,8 @@ BEGIN
 --              set existing BIB_Workflow_Status.isCurrent = 0
 --              add new BIB_Workflow_Status._Status_key = 'Indexed'
 --
+-- changes to this trigger require changes to procedure/BIB_updateWFStatusAP_create.object
+--
 -- INPUT:
 --      none
 --
