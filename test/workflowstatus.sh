@@ -117,7 +117,7 @@ and r._Refs_key = s._Refs_key
 and s._Group_key = g._Term_key
 and s._Status_key = t._Term_key
 and s._Group_key = 31576666
-and s._Status_key not in (31576673, 31576672)
+and s._Status_key not in (31576673, 31576672, 31576671)
 and s.isCurrent = 1
 ;
 
