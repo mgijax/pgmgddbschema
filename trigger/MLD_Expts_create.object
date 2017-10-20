@@ -127,6 +127,8 @@ BEGIN
 --	   in order to add a distinct MGI accession id
 --	   to the NEW object
 --
+-- changes to this trigger require changes to procedure/BIB_updateWFStatusQTL_create.object
+--
 -- INPUT:
 --	none
 --
