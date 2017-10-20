@@ -33,6 +33,8 @@ BEGIN
 --
 --	2) add BIB_DataSet_Assoc, if necessary
 --
+-- changes to this trigger require changes to procedure/BIB_updateWFStatusGXD_create.object
+--
 -- INPUT:
 --	none
 --
