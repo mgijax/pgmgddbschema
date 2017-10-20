@@ -29,10 +29,10 @@ BEGIN
 --
 -- DESCRIPTION:
 --        
--- To set the group QTL/current Workflow Status = Indexed
+-- To set the group QTL/current Workflow Status = Full-coded
 --
 -- where the Reference exists in QTL Mapping Experiment
--- and the group QTL/current Workflow Status is *not* Full-coded or Indexed
+-- and the group QTL/current Workflow Status is *not* Full-coded 
 --
 -- INPUT:
 --	None
@@ -50,7 +50,7 @@ WHERE EXISTS (SELECT 1 from MLD_Expts e
 AND EXISTS (SELECT 1 FROM BIB_Workflow_Status wfl
         WHERE r._Refs_key = wfl._Refs_key
         AND wfl._Group_key = 31576668
-        AND wfl._Status_key not in (31576674, 31576673)
+        AND wfl._Status_key not in (31576674)
         AND wfl.isCurrent = 1)
 LOOP
     UPDATE BIB_Workflow_Status w set isCurrent = 0 
@@ -58,7 +58,7 @@ LOOP
         AND w._Group_key = 31576668
     ;   
     INSERT INTO BIB_Workflow_Status 
-    VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), rec._Refs_key, 31576668, 31576673, 1,  
+    VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), rec._Refs_key, 31576668, 31576674, 1,  
         1001, 1001, now(), now())
     ;   
 END LOOP;

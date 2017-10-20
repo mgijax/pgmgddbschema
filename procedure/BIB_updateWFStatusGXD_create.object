@@ -44,7 +44,8 @@ BEGIN
 FOR rec IN
 SELECT r._Refs_key 
 FROM BIB_Refs r
-WHERE EXISTS (SELECT 1 FROM GXD_Assay a WHERE r._Refs_key = a._Refs_key)
+WHERE EXISTS (SELECT 1 FROM GXD_Assay a WHERE r._Refs_key = a._Refs_key
+	AND a._AssayType_key in (1,2,3,4,5,6,8,9))
 AND EXISTS (SELECT 1 FROM BIB_Workflow_Status wfl
         WHERE r._Refs_key = wfl._Refs_key
         AND wfl._Group_key = 31576665

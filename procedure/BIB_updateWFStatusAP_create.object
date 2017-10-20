@@ -33,6 +33,12 @@ BEGIN
 --
 -- where the Reference exists in AP Annotation (_AnnotType_key = 1002)
 -- and the group AP/current Workflow Status is *not* Full-coded
+-- 
+-- To set the group AP/current Workflow Status = Indexed
+--
+-- where the Reference exists for an Allele in MGI_Reference_Assoc but there
+-- is no MP Annotation snd the group AP/current Workflow Status is *not*
+-- Indexed
 --
 -- INPUT:
 --	None
@@ -63,6 +69,31 @@ LOOP
         1001, 1001, now(), now())
     ;   
 END LOOP;
+
+FOR rec IN
+SELECT r._Refs_key
+FROM MGI_Reference_Assoc r
+WHERE r._MGIType_key = 11
+AND NOT EXISTS (SELECT 1 FROM VOC_Annot a, VOC_Evidence v
+        WHERE r._Refs_key = v._Refs_key
+        and v._Annot_key = a._Annot_key
+        and a._AnnotType_key = 1002)
+AND EXISTS (SELECT 1 FROM BIB_Workflow_Status wfl
+        WHERE r._Refs_key = wfl._Refs_key
+        AND wfl._Group_key = 31576664
+        AND wfl._Status_key not in(31576673, 31576674)
+        AND wfl.isCurrent = 1)
+LOOP
+    UPDATE BIB_Workflow_Status w set isCurrent = 0
+    WHERE rec._Refs_key = w._Refs_key
+        AND w._Group_key = 31576664
+    ;
+    INSERT INTO BIB_Workflow_Status
+    VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), rec._Refs_key, 31576664, 31576673, 1,
+        1001, 1001, now(), now())
+    ;
+END LOOP;
+
 
 RETURN;
 
