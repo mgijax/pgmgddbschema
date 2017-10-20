@@ -118,10 +118,10 @@ BEGIN
 -- DESCRIPTOIN:
 --
 --      1) if the Reference is for group = 'QTL'
---              in BIB_Workflow_Status, and the status is not 'Fully-coded'
+--              in BIB_Workflow_Status, and the status is not 'Full-coded'
 --         then
 --              set existing BIB_Workflow_Status.isCurrent = 0
---              add new BIB_Workflow_Status._Status_key = 'Indexed'
+--              add new BIB_Workflow_Status._Status_key = 'Full-coded'
 --
 --	2) this insert trigger will call ACC_assignMGI
 --	   in order to add a distinct MGI accession id
@@ -148,7 +148,7 @@ THEN
         AND w._Group_key = 31576668
     ;
     INSERT INTO BIB_Workflow_Status
-    VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, 31576668, 31576673, 1,
+    VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, 31576668, 31576674, 1,
         1001, 1001, now(), now())
     ;
 END IF;
