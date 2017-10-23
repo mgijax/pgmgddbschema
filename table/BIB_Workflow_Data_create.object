@@ -3,8 +3,12 @@
 #
 # History
 #
+# 10/23/2017	lec
+# 	linkSupplemental is not being used and can be removed at a later time
+#
 # 05/30/2017	lec
 #	- TR12250/Lit Triage
+#
 #
 
 cd `dirname $0` && . ./Configuration
