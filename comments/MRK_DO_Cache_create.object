@@ -4,7 +4,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-COMMENT ON TABLE mgd.MRK_DO_Cache IS 'A record in this table represents the cached value of a mouse genotype/DO annotation or a human marker/DO annotation. See mrkcacheload/mrkomim.csh.';
+COMMENT ON TABLE mgd.MRK_DO_Cache IS 'A record in this table represents the cached value of a mouse genotype/DO annotation or a human marker/DO annotation. See mrkcacheload/mrkdo.csh.';
 
 COMMENT ON COLUMN MRK_DO_Cache._Cache_key IS 'primary key';
 
