@@ -3,6 +3,9 @@
 #
 # History
 #
+# 10/25/2016	lec
+#	- TR12643/add 'TSS region' MCV:0000056
+#
 # 08/25/2015	sc
 #	-TR12058
 #	lncRNA gene
@@ -105,9 +108,8 @@ and a.accID in (
   'MCV:0000052',
   'MCV:0000053',
   'MCV:0000054',
-  'MCV:0000055')
-
-
+  'MCV:0000055',
+  'MCV:0000056')
 
 ;
 
