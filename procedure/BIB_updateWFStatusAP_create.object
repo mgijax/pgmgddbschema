@@ -71,7 +71,7 @@ LOOP
 END LOOP;
 
 FOR rec IN
-SELECT r._Refs_key
+SELECT distinct r._Refs_key
 FROM MGI_Reference_Assoc r
 WHERE r._MGIType_key = 11
 AND NOT EXISTS (SELECT 1 FROM VOC_Annot a, VOC_Evidence v
