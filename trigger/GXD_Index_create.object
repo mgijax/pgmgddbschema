@@ -180,6 +180,7 @@ BEGIN
 -- DESCRIPTOIN:
 --
 --	update all _Priority_key/_ConditionalMutants_key for all instances of NEW._Refs_key
+--	only if index count < 2000
 --
 -- INPUT:
 --	none
@@ -206,7 +207,7 @@ CREATE TRIGGER GXD_Index_update_trigger
 AFTER UPDATE OF _Priority_key, _ConditionalMutants_key ON GXD_Index
 FOR EACH ROW
 -- to avoid recursive trigger calls
-WHEN (pg_trigger_depth() < 1)
+WHEN (pg_trigger_depth() < 1 AND ((SELECT COUNT(*) FROM GXD_Index WHERE _Refs_key = NEW._Refs_key) < 2000))
 EXECUTE PROCEDURE GXD_Index_update();
 
 COMMENT ON FUNCTION mgd.GXD_Index_update() IS 'creates an after-update trigger';
