@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/15/2017	lec
+# 	TR12662/Driver Note
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop view if exists mgd.MGI_Organism_Allele_View
+
+CASCADE
+;
+EOSQL

@@ -1,0 +1,26 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/15/2017	lec
+# 	TR12662/Driver Note
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/MGI_Organism_Marker_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MGI_Organism_Allele_View
+as 
+select s.*, s.commonName || ' (' || s.latinName || ')' as organism
+from MGI_Organism s, MGI_Organism_MGIType t
+where s._Organism_key = t._Organism_key
+and t._MGIType_key = 11
+
+
+;
+
+EOSQL
