@@ -191,7 +191,6 @@ BEGIN
 
 IF (SELECT COUNT(*) FROM GXD_Index WHERE _Refs_key = NEW._Refs_key) < 2000
 THEN
-
 	UPDATE GXD_Index
 	SET _Priority_key = NEW._Priority_key,
     	_ConditionalMutants_key = NEW._ConditionalMutants_key 
