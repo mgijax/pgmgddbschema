@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/16/2017	lec
+#	- TR12662/GMC/Driver Gene
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop view if exists mgd.ALL_Allele_Driver_View
+
+CASCADE
+;
+EOSQL

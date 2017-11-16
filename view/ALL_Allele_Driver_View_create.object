@@ -1,0 +1,25 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/16/2017	lec
+#	- TR12662/GMC/Driver Gene
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/ALL_Allele_Driver_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.ALL_Allele_Driver_View
+as
+select r._Relationship_key, m._Organism_key, m._Marker_key, o.commonname, m.symbol
+from MGI_Relationship r, MRK_Marker m, MGI_Organism o
+where r._Category_key = 1006
+and r._Object_key_2 = m._Marker_key
+and m._Organism_key = o._Organism_key
+;
+
+EOSQL
