@@ -22,7 +22,7 @@ v_returnText voc_term.term%TYPE;
 
 BEGIN
 
-RAISE NOTICE '%', v_userKey;
+--RAISE NOTICE '%', v_userKey;
 
 IF v_taskType = 'delete'
 THEN
