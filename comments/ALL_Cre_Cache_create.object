@@ -28,7 +28,7 @@ COMMENT ON COLUMN ALL_Cre_Cache._CreatedBy_key IS 'user who created the record';
 
 COMMENT ON COLUMN ALL_Cre_Cache.creation_date IS 'date record was created';
 
-COMMENT ON COLUMN ALL_Cre_Cache.driverNote IS 'MGI_NoteType._NoteType_key = 1034 (Driver)';
+COMMENT ON COLUMN ALL_Cre_Cache.driverNote IS 'MGI_Relationship._Object_key_2 (marker) where _Category_key = 1006';
 
 COMMENT ON COLUMN ALL_Cre_Cache.expressed IS 'if 1 (true), then this Assay is expressing this Structure, else 0';
 
