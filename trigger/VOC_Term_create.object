@@ -72,20 +72,9 @@ WHERE a._Object_key =  OLD._Term_key
 AND a._AnnotType_key = 1024
 ;
 
-DELETE FROM MGI_Relationship r
-      WHERE EXISTS (select 1 from MGI_Relationship_Category c
-          WHERE r._Object_key_1 = OLD._Term_key
-          AND r._Category_key  = c._Category_key
-          AND c._MGIType_key_1 = 13
-          AND r._Category_key = 1005)
-;
-
-DELETE FROM MGI_Relationship r
-      WHERE EXISTS (select 1 from MGI_Relationship_Category c
-          WHERE r._Object_key_2 = OLD._Term_key
-          AND r._Category_key  = c._Category_key
-          AND c._MGIType_key_1 = 13
-          AND r._Category_key = 1005)
+DELETE FROM MGI_Relationship r 
+WHERE r._Object_key_1 = OLD._Term_key 
+AND r._Category_key = 1005
 ;
 
 RETURN NEW;
