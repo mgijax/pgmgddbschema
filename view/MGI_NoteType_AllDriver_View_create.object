@@ -3,6 +3,9 @@
 #
 # History
 #
+# 11/21/2017	lec
+#	- TR12662/GMC/remove driver note
+#
 # 05/02/2013	lec
 #	- TR10248/add cre/user note
 #
@@ -21,7 +24,7 @@ as
 select *
 from MGI_NoteType
 where _MGIType_key = 11
-and noteType in ('Driver', 'User (Cre)')
+and noteType in ('User (Cre)')
 
 
 
