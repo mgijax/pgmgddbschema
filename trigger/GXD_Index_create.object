@@ -64,7 +64,7 @@ THEN
         AND w._Group_key = 31576665
     ;
     INSERT INTO BIB_Workflow_Status 
-    VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), NEW._Refs_key, 31576665, 31576673, 1, 
+    VALUES((select nextval('bib_workflow_status_serial')), NEW._Refs_key, 31576665, 31576673, 1, 
     	NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
     ;
 END IF;
@@ -179,24 +179,24 @@ BEGIN
 --
 -- DESCRIPTOIN:
 --
---      update all _Priority_key/_ConditionalMutants_key for all instances of NEW._Refs_key
---      only if index count < 2000
+--	update all _Priority_key/_ConditionalMutants_key for all instances of NEW._Refs_key
+--	only if index count < 2000
 --
 -- INPUT:
---      none
+--	none
 --
 -- RETURNS:
---      NEW 
+--	NEW
 --
 
 IF (SELECT COUNT(*) FROM GXD_Index WHERE _Refs_key = NEW._Refs_key) < 2000
 THEN
-        UPDATE GXD_Index
-        SET _Priority_key = NEW._Priority_key,
-        _ConditionalMutants_key = NEW._ConditionalMutants_key 
-        WHERE _Refs_key = NEW._Refs_key
-        ;
-END IF; 
+	UPDATE GXD_Index
+	SET _Priority_key = NEW._Priority_key,
+    	_ConditionalMutants_key = NEW._ConditionalMutants_key 
+	WHERE _Refs_key = NEW._Refs_key
+	;
+END IF;
 
 RETURN NEW;
 
@@ -208,7 +208,7 @@ GRANT EXECUTE ON FUNCTION GXD_Index_update() TO public;
 
 CREATE TRIGGER GXD_Index_update_trigger
 AFTER UPDATE OF _Priority_key, _ConditionalMutants_key ON GXD_Index
-FOR EACH ROW 
+FOR EACH ROW
 -- to avoid recursive trigger calls
 WHEN (pg_trigger_depth() < 1)
 EXECUTE PROCEDURE GXD_Index_update();

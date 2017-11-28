@@ -1,3 +1,8 @@
+TAG: pgmgddbschema-6-0-11-7
+DATE: 11/28/2017
+STAFF: lec
+add SEQUENCE 'bib_workflow_status_serial' to BIB_Workflow_Status
+
 TAG: pgmgddbschema-6-0-11-6
 TAG: pgmgddbschema-6-0-11-5
 DATE: 11/14/2017
