@@ -12,8 +12,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
---drop sequence IF EXISTS bib_workflow_status_serial;
-
 drop table mgd.BIB_Workflow_Status CASCADE;
+
+drop sequence bib_workflow_status_serial;
 
 EOSQL
