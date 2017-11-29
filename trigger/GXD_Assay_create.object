@@ -133,18 +133,6 @@ BEGIN
 --	NEW
 --
 
--- obsolete
-IF NOT EXISTS (SELECT 1 FROM BIB_DataSet_Assoc b
-        WHERE NEW._Refs_key = b._Refs_key
-        AND b._DataSet_key = 1004)
-   AND NEW._AssayType_key in (1,2,3,4,5,6,8,9)
-THEN
-    v_assocKey := max(_Assoc_key) + 1 from BIB_DataSet_Assoc;
-    INSERT INTO BIB_DataSet_Assoc
-        SELECT v_assocKey, NEW._Refs_key, 1004, 0, 0, NEW._CreatedBy_key, NEW._ModifiedBy_key, 
-		now(), now();
-END IF;
-
 IF EXISTS (SELECT 1 FROM BIB_Workflow_Status b
         WHERE NEW._Refs_key = b._Refs_key
         AND b._Group_key = 31576665

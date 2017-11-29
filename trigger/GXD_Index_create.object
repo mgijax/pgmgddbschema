@@ -31,8 +31,6 @@ BEGIN
 --		set existing BIB_Workflow_Status.isCurrent = 0
 --		add new BIB_Workflow_Status._Status_key = 'Indexed'
 --
---	2) add BIB_DataSet_Assoc, if necessary
---
 -- changes to this trigger require changes to procedure/BIB_updateWFStatusGXD_create.object
 --
 -- INPUT:
@@ -41,18 +39,6 @@ BEGIN
 -- RETURNS:
 --	NEW
 --
-
--- obsolete
-IF NOT EXISTS (SELECT 1 FROM BIB_DataSet_Assoc b
-        WHERE NEW._Refs_key = b._Refs_key
-        AND b._DataSet_key = 1004)
-THEN
-    v_assocKey := max(_Assoc_key) + 1 from BIB_DataSet_Assoc;
-
-    INSERT INTO BIB_DataSet_Assoc 
-	VALUES(v_assocKey, NEW._Refs_key, 1004, 0, 0, NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
-    ;
-END IF;
 
 IF EXISTS (SELECT 1 FROM BIB_Workflow_Status b
         WHERE NEW._Refs_key = b._Refs_key
