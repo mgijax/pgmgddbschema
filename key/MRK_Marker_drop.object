@@ -69,8 +69,6 @@ ALTER TABLE mgd.MRK_Current DROP CONSTRAINT MRK_Current__Marker_key_fkey CASCADE
 
 ALTER TABLE mgd.MRK_ClusterMember DROP CONSTRAINT MRK_ClusterMember__Marker_key_fkey CASCADE;
 
-ALTER TABLE mgd.MRK_Classes DROP CONSTRAINT MRK_Classes__Marker_key_fkey CASCADE;
-
 ALTER TABLE mgd.MRK_Anchors DROP CONSTRAINT MRK_Anchors__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Alias DROP CONSTRAINT MRK_Alias__Alias_key_fkey CASCADE;

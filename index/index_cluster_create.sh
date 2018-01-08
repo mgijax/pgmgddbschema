@@ -129,8 +129,6 @@ CLUSTER mgd.MLD_Statistics USING MLD_Statistics_pkey;
 CLUSTER mgd.MRK_Alias USING MRK_Alias_pkey;
 CLUSTER mgd.MRK_Anchors USING MRK_Anchors_pkey;
 CLUSTER mgd.MRK_Chromosome USING MRK_Chromosome_idx_clustered;
-CLUSTER mgd.MRK_Class USING MRK_Class_pkey;
-CLUSTER mgd.MRK_Classes USING MRK_Classes_pkey;
 CLUSTER mgd.MRK_Current USING MRK_Current_pkey;
 CLUSTER mgd.MRK_EventReason USING MRK_EventReason_pkey;
 CLUSTER mgd.MRK_Event USING MRK_Event_pkey;

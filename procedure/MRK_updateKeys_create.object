@@ -115,19 +115,6 @@ UPDATE MRK_Anchors SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 UPDATE MGI_Synonym SET _Object_key = v_newKey WHERE _MGIType_key = 2 AND _Object_key = v_oldKey ;
 UPDATE MRK_Notes SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 
--- MRK_Classes may contain potential duplicates 
-
-INSERT INTO MRK_Classes
-SELECT v_newKey, m._Class_key, m.creation_date, m.modification_date
-FROM MRK_Classes m
-WHERE m._Marker_key = v_oldKey
-AND not exists (select m2.* FROM MRK_Classes m2
-WHERE m2._Marker_key = v_newKey
-AND m2._Class_key = m._Class_key)
-;
-
-DELETE FROM MRK_Classes WHERE _Marker_key = v_oldKey ;
-
 -- Update all auxiliary references to old symbol w/ new symbol 
 
 UPDATE CRS_Matrix SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
