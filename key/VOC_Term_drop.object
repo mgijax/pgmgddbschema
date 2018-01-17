@@ -188,6 +188,8 @@ ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__StudyType_key
 
 ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__ExperimentType_key_fkey CASCADE;
 
+ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__ConditionalMutants_fkey CASCADE;
+
 ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__Priority_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Genotype DROP CONSTRAINT GXD_Genotype__ExistsAs_key_fkey CASCADE;
