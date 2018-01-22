@@ -14,6 +14,4 @@ COMMENT ON COLUMN MLD_Expt_Notes.modification_date IS 'date record was last modi
 
 COMMENT ON COLUMN MLD_Expt_Notes.note IS 'note';
 
-COMMENT ON COLUMN MLD_Expt_Notes.sequenceNum IS 'sequence number of note';
-
 EOSQL
