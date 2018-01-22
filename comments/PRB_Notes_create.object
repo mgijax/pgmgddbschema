@@ -14,6 +14,4 @@ COMMENT ON COLUMN PRB_Notes.note IS 'note';
 
 COMMENT ON COLUMN PRB_Notes._Probe_key IS 'foreign key to PRB_Probe';
 
-COMMENT ON COLUMN PRB_Notes.sequenceNum IS 'sequence number of note';
-
 EOSQL
