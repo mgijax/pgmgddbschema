@@ -14,6 +14,4 @@ COMMENT ON COLUMN BIB_Notes.note IS 'note';
 
 COMMENT ON COLUMN BIB_Notes._Refs_key IS 'foreign key to BIB_Refs';
 
-COMMENT ON COLUMN BIB_Notes.sequenceNum IS 'sequence number for ordering records';
-
 EOSQL
