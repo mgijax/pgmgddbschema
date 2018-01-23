@@ -12,8 +12,6 @@ COMMENT ON COLUMN VOC_Text.modification_date IS 'date record was last modified';
 
 COMMENT ON COLUMN VOC_Text.note IS 'textual information';
 
-COMMENT ON COLUMN VOC_Text.sequenceNum IS 'sequence number of note';
-
 COMMENT ON COLUMN VOC_Text._Term_key IS 'foreign key to VOC_Term';
 
 EOSQL
