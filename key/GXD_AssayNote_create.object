@@ -9,7 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.GXD_AssayNote ADD PRIMARY KEY (_Assay_key, sequenceNum);
+ALTER TABLE mgd.GXD_AssayNote ADD PRIMARY KEY (_Assay_key);
 
 
 EOSQL
