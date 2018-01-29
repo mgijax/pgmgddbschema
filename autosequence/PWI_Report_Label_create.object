@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/29/2018    sc
+#       - TR122662/GMC Project
+#
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE pwi_report_label_id_seq;	 
+ALTER TABLE PWI_Report_Label ALTER id SET DEFAULT NEXTVAL('pwi_report_label_id_seq');
+
+EOSQL

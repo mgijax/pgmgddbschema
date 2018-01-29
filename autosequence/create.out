@@ -1,0 +1,108 @@
+CREATE SEQUENCE all_allele_cellline_serial;
+CREATE SEQUENCE
+ALTER TABLE ALL_Allele_CellLine ALTER _Assoc_key SET DEFAULT NEXTVAL('all_allele_cellline_serial');
+ALTER TABLE
+select setval('all_allele_cellline_serial', (select max(_Assoc_key) + 1 from ALL_Allele_CellLine));
+ setval  
+---------
+ 1047394
+(1 row)
+
+CREATE SEQUENCE bib_workflow_status_serial;
+CREATE SEQUENCE
+ALTER TABLE BIB_Workflow_Status ALTER _Assoc_key SET DEFAULT NEXTVAL('bib_workflow_status_serial');
+ALTER TABLE
+select setval('bib_workflow_status_serial', (select max(_Assoc_key) + 1 from BIB_Workflow_Status));
+ setval  
+---------
+ 1402892
+(1 row)
+
+CREATE SEQUENCE bib_workflow_tag_serial;
+CREATE SEQUENCE
+ALTER TABLE BIB_Workflow_Tag ALTER _Assoc_key SET DEFAULT NEXTVAL('bib_workflow_tag_serial');
+ALTER TABLE
+select setval('bib_workflow_tag_serial', (select max(_Assoc_key) + 1 from BIB_Workflow_Tag));
+ setval 
+--------
+ 393596
+(1 row)
+
+CREATE SEQUENCE img_imagepane_serial;
+CREATE SEQUENCE
+ALTER TABLE IMG_ImagePane ALTER _ImagePane_key SET DEFAULT NEXTVAL('img_imagepane_serial');
+ALTER TABLE
+select setval('img_imagepane_serial', (select max(_ImagePane_key) + 1 from IMG_ImagePane));
+ setval 
+--------
+ 517170
+(1 row)
+
+CREATE SEQUENCE mgi_reference_assoc_serial;
+CREATE SEQUENCE
+ALTER TABLE MGI_Reference_Assoc ALTER _Assoc_key SET DEFAULT NEXTVAL('mgi_reference_assoc_serial');
+ALTER TABLE
+select setval('mgi_reference_assoc_serial', (select max(_Assoc_key) + 1 from MGI_Reference_Assoc));
+  setval  
+----------
+ 38931243
+(1 row)
+
+CREATE SEQUENCE mgi_setmember_emapa_serial;
+CREATE SEQUENCE
+ALTER TABLE MGI_SetMember_EMAPA ALTER _SetMember_EMAPA_key SET DEFAULT NEXTVAL('mgi_setmember_emapa_serial');
+ALTER TABLE
+select setval('mgi_setmember_emapa_serial', (select max(_SetMember_EMAPA_key) + 1 from MGI_SetMember_EMAPA));
+ setval 
+--------
+   3633
+(1 row)
+
+CREATE SEQUENCE prb_strain_marker_serial;
+CREATE SEQUENCE
+ALTER TABLE PRB_Strain_Marker ALTER _StrainMarker_key SET DEFAULT NEXTVAL('prb_strain_marker_serial');
+ALTER TABLE
+select setval('prb_strain_marker_serial', (select max(_StrainMarker_key) + 1 from PRB_Strain_Marker));
+ setval 
+--------
+  45991
+(1 row)
+
+CREATE SEQUENCE prb_strain_genotype_serial;
+CREATE SEQUENCE
+ALTER TABLE PRB_Strain_Genotype ALTER _StrainGenotype_key SET DEFAULT NEXTVAL('prb_strain_genotype_serial');
+ALTER TABLE
+select setval('prb_strain_genotype_serial', (select max(_StrainGenotype_key) + 1 from PRB_Strain_Genotype));
+ setval 
+--------
+  19716
+(1 row)
+
+CREATE SEQUENCE pwi_report_id_seq;
+CREATE SEQUENCE
+ALTER TABLE PWI_Report ALTER id SET DEFAULT NEXTVAL('pwi_report_id_seq');
+ALTER TABLE
+CREATE SEQUENCE pwi_report_label_id_seq;
+CREATE SEQUENCE
+ALTER TABLE PWI_Report_Label ALTER id SET DEFAULT NEXTVAL('pwi_report_label_id_seq');
+ALTER TABLE
+CREATE SEQUENCE seq_source_assoc_serial;
+CREATE SEQUENCE
+ALTER TABLE SEQ_Source_Assoc ALTER _Assoc_key SET DEFAULT NEXTVAL('seq_source_assoc_serial');
+ALTER TABLE
+select setval('seq_source_assoc_serial', (select max(_Assoc_key) + 1 from SEQ_Source_Assoc));
+  setval  
+----------
+ 37934395
+(1 row)
+
+CREATE SEQUENCE voc_evidence_serial;
+CREATE SEQUENCE
+ALTER TABLE VOC_Evidence ALTER _AnnotEvidence_key SET DEFAULT NEXTVAL('voc_evidence_serial');
+ALTER TABLE
+select setval('voc_evidence_serial', (select max(_AnnotEvidence_key) + 1 from VOC_Evidence));
+  setval   
+-----------
+ 365894635
+(1 row)
+

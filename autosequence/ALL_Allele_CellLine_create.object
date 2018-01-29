@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/29/2018	sc
+#	- TR122662/GMC Project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE all_allele_cellline_serial;    
+ALTER TABLE ALL_Allele_CellLine ALTER _Assoc_key SET DEFAULT NEXTVAL('all_allele_cellline_serial');
+select setval('all_allele_cellline_serial', (select max(_Assoc_key) + 1 from ALL_Allele_CellLine));
+
+EOSQL

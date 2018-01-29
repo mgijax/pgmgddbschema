@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/29/2018	sc
+#	- TR122662/GMC Project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE bib_workflow_status_serial;    
+ALTER TABLE BIB_Workflow_Status ALTER _Assoc_key SET DEFAULT NEXTVAL('bib_workflow_status_serial');
+select setval('bib_workflow_status_serial', (select max(_Assoc_key) + 1 from BIB_Workflow_Status));
+--select last_value from bib_workflow_status_serial;
+
+EOSQL

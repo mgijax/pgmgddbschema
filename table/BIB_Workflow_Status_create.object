@@ -24,9 +24,4 @@ create table mgd.BIB_Workflow_Status (
 	modification_date              timestamp DEFAULT now()  not null 
 );
 
-CREATE SEQUENCE bib_workflow_status_serial;    
-ALTER TABLE BIB_Workflow_Status ALTER _Assoc_key SET DEFAULT NEXTVAL('bib_workflow_status_serial');
-select setval('bib_workflow_status_serial', (select max(_Assoc_key) + 1 from BIB_Workflow_Status));
---select last_value from bib_workflow_status_serial;
-
 EOSQL

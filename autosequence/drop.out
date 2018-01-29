@@ -1,0 +1,36 @@
+DROP SEQUENCE IF EXISTS  all_allele_cellline_serial CASCADE;
+psql:<stdin>:2: NOTICE:  drop cascades to default for table all_allele_cellline column _assoc_key
+DROP SEQUENCE
+DROP SEQUENCE IF EXISTS bib_workflow_status_serial CASCADE;
+psql:<stdin>:2: NOTICE:  drop cascades to default for table bib_workflow_status column _assoc_key
+DROP SEQUENCE
+DROP SEQUENCE IF EXISTS bib_workflow_tag_serial CASCADE;
+psql:<stdin>:2: NOTICE:  drop cascades to default for table bib_workflow_tag column _assoc_key
+DROP SEQUENCE
+DROP SEQUENCE IF EXISTS img_imagepane_serial CASCADE;
+psql:<stdin>:2: NOTICE:  drop cascades to default for table img_imagepane column _imagepane_key
+DROP SEQUENCE
+DROP SEQUENCE IF EXISTS mgi_reference_assoc_serial CASCADE;
+psql:<stdin>:2: NOTICE:  drop cascades to default for table mgi_reference_assoc column _assoc_key
+DROP SEQUENCE
+DROP SEQUENCE IF EXISTS mgi_setmember_emapa_serial CASCADE;
+psql:<stdin>:2: NOTICE:  drop cascades to default for table mgi_setmember_emapa column _setmember_emapa_key
+DROP SEQUENCE
+DROP SEQUENCE IF EXISTS prb_strain_marker_serial CASCADE;
+psql:<stdin>:2: NOTICE:  drop cascades to default for table prb_strain_marker column _strainmarker_key
+DROP SEQUENCE
+DROP SEQUENCE IF EXISTS prb_strain_genotype_serial CASCADE;
+psql:<stdin>:2: NOTICE:  drop cascades to default for table prb_strain_genotype column _straingenotype_key
+DROP SEQUENCE
+DROP SEQUENCE IF EXISTS pwi_report_id_seq CASCADE;
+psql:<stdin>:2: NOTICE:  drop cascades to default for table pwi_report column id
+DROP SEQUENCE
+DROP SEQUENCE IF EXISTS pwi_report_label_id_seq CASCADE;
+psql:<stdin>:2: NOTICE:  drop cascades to default for table pwi_report_label column id
+DROP SEQUENCE
+DROP SEQUENCE IF EXISTS seq_source_assoc_serial CASCADE;
+psql:<stdin>:2: NOTICE:  drop cascades to default for table seq_source_assoc column _assoc_key
+DROP SEQUENCE
+DROP SEQUENCE IF EXISTS voc_evidence_serial CASCADE;
+psql:<stdin>:2: NOTICE:  drop cascades to default for table voc_evidence column _annotevidence_key
+DROP SEQUENCE

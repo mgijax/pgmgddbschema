@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/29/2018	sc
+#	- TR122662/GMC Project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE voc_evidence_serial;    
+ALTER TABLE VOC_Evidence ALTER _AnnotEvidence_key SET DEFAULT NEXTVAL('voc_evidence_serial');
+select setval('voc_evidence_serial', (select max(_AnnotEvidence_key) + 1 from VOC_Evidence));
+--select last_value from voc_evidence_serial;
+
+EOSQL

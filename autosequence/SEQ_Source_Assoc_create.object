@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/29/2018	sc
+#	- TR122662/GMC Project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE seq_source_assoc_serial;    
+ALTER TABLE SEQ_Source_Assoc ALTER _Assoc_key SET DEFAULT NEXTVAL('seq_source_assoc_serial');
+select setval('seq_source_assoc_serial', (select max(_Assoc_key) + 1 from SEQ_Source_Assoc));
+--select last_value from seq_source_assoc_serial;
+
+EOSQL

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/29/2018	sc
+#	- TR122662/GMC Project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE mgi_setmember_emapa_serial;    
+ALTER TABLE MGI_SetMember_EMAPA ALTER _SetMember_EMAPA_key SET DEFAULT NEXTVAL('mgi_setmember_emapa_serial');
+select setval('mgi_setmember_emapa_serial', (select max(_SetMember_EMAPA_key) + 1 from MGI_SetMember_EMAPA));
+
+EOSQL
