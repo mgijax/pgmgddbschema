@@ -233,7 +233,7 @@ THEN
                 AND w._Group_key = 31576666
             ;   
             INSERT INTO BIB_Workflow_Status 
-            VALUES((select nextval('bib_workflow_status_serial')), NEW._Refs_key, 31576666, 31576674, 1, 
+            VALUES((select nextval('bib_workflow_status_seq')), NEW._Refs_key, 31576666, 31576674, 1, 
     	        NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
             ;
         END IF;
@@ -273,7 +273,7 @@ THEN
                 AND w._Group_key = 31576664
             ;
             INSERT INTO BIB_Workflow_Status
-            VALUES((select nextval('bib_workflow_status_serial')), NEW._Refs_key, 31576664, 31576674, 1,
+            VALUES((select nextval('bib_workflow_status_seq')), NEW._Refs_key, 31576664, 31576674, 1,
                 NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
             ;
         END IF;

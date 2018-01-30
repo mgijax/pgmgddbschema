@@ -50,7 +50,7 @@ THEN
         AND w._Group_key = 31576665
     ;
     INSERT INTO BIB_Workflow_Status 
-    VALUES((select nextval('bib_workflow_status_serial')), NEW._Refs_key, 31576665, 31576673, 1, 
+    VALUES((select nextval('bib_workflow_status_seq')), NEW._Refs_key, 31576665, 31576673, 1, 
     	NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
     ;
 END IF;

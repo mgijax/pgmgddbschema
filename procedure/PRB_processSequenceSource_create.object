@@ -107,7 +107,7 @@ ELSE
         WHERE _Assoc_key = v_assocKey
 	;
     ELSE
-        v_newAssocKey := nextval('seq_source_assoc_serial')
+        v_newAssocKey := nextval('seq_source_assoc_seq');
         INSERT INTO SEQ_Source_Assoc 
         VALUES (v_newAssocKey, v_objectKey, v_newMSOKey, v_modifiedByKey, v_modifiedByKey, now(), now())
 	;
