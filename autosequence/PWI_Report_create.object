@@ -7,9 +7,10 @@
 #       - TR122662/GMC Project
 #
 
+cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CREATE SEQUENCE pwi_report_id_seq;	 
-ALTER TABLE PWI_Report ALTER id SET DEFAULT NEXTVAL('pwi_report_id_seq');
+DROP SEQUENCE IF EXISTS pwi_report_id_seq CASCADE;
 
 EOSQL

@@ -3,8 +3,8 @@
 #
 # History
 #
-# 01/29/2018	sc
-#	- TR122662/GMC Project
+# 01/29/2018    sc
+#       - TR122662/GMC Project
 #
 
 cd `dirname $0` && . ./Configuration
@@ -12,8 +12,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CREATE SEQUENCE mgi_reference_assoc_serial;    
-ALTER TABLE MGI_Reference_Assoc ALTER _Assoc_key SET DEFAULT NEXTVAL('mgi_reference_assoc_serial');
-select setval('mgi_reference_assoc_serial', (select max(_Assoc_key) + 1 from MGI_Reference_Assoc));
+DROP SEQUENCE IF EXISTS mgi_reference_assoc_seq CASCADE;
 
 EOSQL

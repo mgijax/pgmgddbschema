@@ -3,8 +3,8 @@
 #
 # History
 #
-# 01/29/2018	sc
-#	- TR122662/GMC Project
+# 01/29/2018    sc
+#       - TR122662/GMC Project
 #
 
 cd `dirname $0` && . ./Configuration
@@ -12,8 +12,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CREATE SEQUENCE img_imagepane_serial;    
-ALTER TABLE IMG_ImagePane ALTER _ImagePane_key SET DEFAULT NEXTVAL('img_imagepane_serial');
-select setval('img_imagepane_serial', (select max(_ImagePane_key) + 1 from IMG_ImagePane));
+DROP SEQUENCE IF EXISTS img_imagepane_seq CASCADE;
 
 EOSQL

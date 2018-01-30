@@ -3,8 +3,8 @@
 #
 # History
 #
-# 01/29/2018	sc
-#	- TR122662/GMC Project
+# 01/29/2018    sc
+#       - TR122662/GMC Project
 #
 
 cd `dirname $0` && . ./Configuration
@@ -12,8 +12,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CREATE SEQUENCE prb_strain_genotype_serial;    
-ALTER TABLE PRB_Strain_Genotype ALTER _StrainGenotype_key SET DEFAULT NEXTVAL('prb_strain_genotype_serial');
-select setval('prb_strain_genotype_serial', (select max(_StrainGenotype_key) + 1 from PRB_Strain_Genotype));
+DROP SEQUENCE IF EXISTS prb_strain_genotype_seq CASCADE;
 
 EOSQL
