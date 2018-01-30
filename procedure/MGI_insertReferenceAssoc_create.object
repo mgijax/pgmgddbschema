@@ -39,7 +39,7 @@ v_assocKey int;
 BEGIN
 
 v_refsTypeKey := _RefAssocType_key FROM MGI_RefAssocType WHERE _MGIType_key = v_mgiTypeKey AND assocType = v_refsType;
-v_assocKey := max(_Assoc_key) + 1 FROM MGI_Reference_Assoc;
+v_assocKey := nextval('mgi_reference_assoc_serial');
 
 -- Insert record into MGI_Reference_Assoc 
 -- if the reference does not already exist
