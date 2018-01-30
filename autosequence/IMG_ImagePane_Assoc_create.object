@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/29/2018	sc
+#	- TR122662/GMC Project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE img_imagepane_assoc_seq;    
+ALTER TABLE IMG_ImagePane_Assoc ALTER _Assoc_key SET DEFAULT NEXTVAL('img_imagepane_assoc_seq');
+select setval('img_imagepane_assoc_seq', (select max(_Assoc_key) + 1 from IMG_ImagePane_Assoc));
+
+EOSQL
