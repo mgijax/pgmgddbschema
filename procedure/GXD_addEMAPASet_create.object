@@ -53,7 +53,7 @@ BEGIN
 --
 
 v_newSetMemberKey := max(_SetMember_key) FROM MGI_SetMember;
-v_newSetMemberEMAPAKey := nexval('mgi_setmember_emapa_serial');
+v_newSetMemberEMAPAKey := nexval('mgi_setmember_emapa_seq');
 v_newSeqKey := max(sequenceNum) FROM MGI_SetMember where _Set_key = 1046 and _CreatedBy_key = v_userKey;
 
 IF v_newSetMemberEMAPAKey is null THEN
