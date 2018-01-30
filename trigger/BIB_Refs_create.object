@@ -132,7 +132,7 @@ FOR rec IN
 SELECT _Term_key FROM VOC_Term where _Vocab_key = 127
 LOOP
 INSERT INTO BIB_Workflow_Status 
-VALUES((select nextval('bib_workflow_status_serial')), NEW._Refs_key, rec._Term_key, 31576669, 1,  
+VALUES((select nextval('bib_workflow_status_seq')), NEW._Refs_key, rec._Term_key, 31576669, 1,  
 	NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
 ;
 END LOOP;
