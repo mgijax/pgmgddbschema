@@ -3,8 +3,8 @@
 #
 # History
 #
-# 01/29/2018    sc
-#       - TR122662/GMC Project
+# 01/29/2018	sc
+#	- TR122662/GMC Project
 #
 
 cd `dirname $0` && . ./Configuration
@@ -12,6 +12,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP SEQUENCE IF EXISTS seq_source_assoc_seq CASCADE;
+CREATE SEQUENCE seq_source_assoc_seq;    
+ALTER TABLE SEQ_Source_Assoc ALTER _Assoc_key SET DEFAULT NEXTVAL('seq_source_assoc_seq');
+select setval('seq_source_assoc_seq', (select max(_Assoc_key) + 1 from SEQ_Source_Assoc));
 
 EOSQL

@@ -3,8 +3,8 @@
 #
 # History
 #
-# 01/29/2018    sc
-#       - TR122662/GMC Project
+# 01/29/2018	sc
+#	- TR122662/GMC Project
 #
 
 cd `dirname $0` && . ./Configuration
@@ -12,6 +12,9 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP SEQUENCE IF EXISTS bib_workflow_tag_seq CASCADE;
+CREATE SEQUENCE bib_workflow_tag_seq;    
+ALTER TABLE BIB_Workflow_Tag ALTER _Assoc_key SET DEFAULT NEXTVAL('bib_workflow_tag_seq');
+select setval('bib_workflow_tag_seq', (select max(_Assoc_key) + 1 from BIB_Workflow_Tag));
+--select last_value from bib_workflow_tag_seq;
 
 EOSQL
