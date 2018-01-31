@@ -5,6 +5,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 DROP FUNCTION IF EXISTS PRB_Probe_delete();
+DROP TRIGGER IF EXISTS PRB_Probe_delete_trigger ON PRB_Probe;
 
 CREATE OR REPLACE FUNCTION PRB_Probe_delete() RETURNS TRIGGER AS \$\$
 BEGIN
@@ -37,7 +38,6 @@ BEGIN
 --	NEW
 --
 
-DROP TRIGGER IF EXISTS PRB_Probe_delete_trigger ON PRB_Probe;
 -- delete GXD_ProbePrep records if they are no longer used in Assays
 -- then the system should allow the probe to be deleted
 DELETE FROM GXD_ProbePrep p
