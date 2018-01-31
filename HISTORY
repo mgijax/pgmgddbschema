@@ -1,3 +1,9 @@
+TAG: pgmgddbschema-6-0-11-9
+DATE: 01/31/2018
+STAFF: lec
+1) trigger/PRB_Probe_create.object
+2) trigger/VOC_Term_create.object
+
 TAG: pgmgddbschema-6-0-11-8
 DATE: 1/30/2018
 STAFF: dbm
