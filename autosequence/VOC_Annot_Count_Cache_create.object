@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/01/2018	lec
+#	- TR122662/GMC Project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE voc_annot_count_cache_seq;    
+ALTER TABLE VOC_Annot_Count_Cache ALTER _Cache_key SET DEFAULT NEXTVAL('voc_annot_count_cache_seq');
+select setval('voc_annot_count_cache_seq', (select max(_Cache_key) + 1 from VOC_Annot_Count_Cache));
+
+EOSQL
