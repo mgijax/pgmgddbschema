@@ -12,8 +12,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CREATE SEQUENCE prb_strain_marker_seq;    
-ALTER TABLE PRB_Strain_Marker ALTER _StrainMarker_key SET DEFAULT NEXTVAL('prb_strain_marker_seq');
-select setval('prb_strain_marker_seq', (select max(_StrainMarker_key) + 1 from PRB_Strain_Marker));
+CREATE SEQUENCE prb_strain_genotype_seq;    
+ALTER TABLE PRB_Strain_Genotype ALTER _StrainGenotype_key SET DEFAULT NEXTVAL('prb_strain_genotype_seq');
+select setval('prb_strain_genotype_seq', (select max(_StrainGenotype_key) + 1 from PRB_Strain_Genotype));
 
 EOSQL

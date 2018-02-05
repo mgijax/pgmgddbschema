@@ -12,6 +12,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP SEQUENCE IF EXISTS prb_strain_marker_seq CASCADE;
+DROP SEQUENCE IF EXISTS prb_strain_genotype_seq CASCADE;
 
 EOSQL
