@@ -58,7 +58,7 @@ LOOP
         AND w._Group_key = 31576668
     ;   
     INSERT INTO BIB_Workflow_Status 
-    VALUES((select max(_Assoc_key) + 1 from BIB_Workflow_Status), rec._Refs_key, 31576668, 31576674, 1,  
+    VALUES((select nextval('bib_workflow_status_seq')), rec._Refs_key, 31576668, 31576674, 1,  
         1001, 1001, now(), now())
     ;   
 END LOOP;
