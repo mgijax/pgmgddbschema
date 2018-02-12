@@ -14,6 +14,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE SEQUENCE voc_allele_cache_seq;    
 ALTER TABLE VOC_Allele_Cache ALTER _Cache_key SET DEFAULT NEXTVAL('voc_allele_cache_seq');
-select setval('voc_allele_cache_seq', (select max(_Cache_key) + 1 from VOC_Allele_Cache));
+select setval('voc_allele_cache_seq', (select max(_Cache_key) from VOC_Allele_Cache));
 
 EOSQL

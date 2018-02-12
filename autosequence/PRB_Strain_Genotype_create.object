@@ -14,6 +14,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE SEQUENCE prb_strain_genotype_seq;    
 ALTER TABLE PRB_Strain_Genotype ALTER _StrainGenotype_key SET DEFAULT NEXTVAL('prb_strain_genotype_seq');
-select setval('prb_strain_genotype_seq', (select max(_StrainGenotype_key) + 1 from PRB_Strain_Genotype));
+select setval('prb_strain_genotype_seq', (select max(_StrainGenotype_key) from PRB_Strain_Genotype));
 
 EOSQL

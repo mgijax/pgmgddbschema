@@ -11,6 +11,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE SEQUENCE pwi_report_label_id_seq;	 
 ALTER TABLE PWI_Report_Label ALTER id SET DEFAULT NEXTVAL('pwi_report_label_id_seq');
-select setval('pwi_report_label_id_seq', (select max(id) + 1 from PWI_Report_Label));
+select setval('pwi_report_label_id_seq', (select max(id) from PWI_Report_Label));
 
 EOSQL

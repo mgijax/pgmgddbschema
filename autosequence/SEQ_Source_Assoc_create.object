@@ -14,6 +14,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE SEQUENCE seq_source_assoc_seq;    
 ALTER TABLE SEQ_Source_Assoc ALTER _Assoc_key SET DEFAULT NEXTVAL('seq_source_assoc_seq');
-select setval('seq_source_assoc_seq', (select max(_Assoc_key) + 1 from SEQ_Source_Assoc));
+select setval('seq_source_assoc_seq', (select max(_Assoc_key) from SEQ_Source_Assoc));
 
 EOSQL

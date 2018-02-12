@@ -14,6 +14,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE SEQUENCE voc_evidence_seq;    
 ALTER TABLE VOC_Evidence ALTER _AnnotEvidence_key SET DEFAULT NEXTVAL('voc_evidence_seq');
-select setval('voc_evidence_seq', (select max(_AnnotEvidence_key) + 1 from VOC_Evidence));
+select setval('voc_evidence_seq', (select max(_AnnotEvidence_key) from VOC_Evidence));
 
 EOSQL

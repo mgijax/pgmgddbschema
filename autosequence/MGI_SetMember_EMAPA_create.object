@@ -14,6 +14,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE SEQUENCE mgi_setmember_emapa_seq;    
 ALTER TABLE MGI_SetMember_EMAPA ALTER _SetMember_EMAPA_key SET DEFAULT NEXTVAL('mgi_setmember_emapa_seq');
-select setval('mgi_setmember_emapa_seq', (select max(_SetMember_EMAPA_key) + 1 from MGI_SetMember_EMAPA));
+select setval('mgi_setmember_emapa_seq', (select max(_SetMember_EMAPA_key) from MGI_SetMember_EMAPA));
 
 EOSQL
