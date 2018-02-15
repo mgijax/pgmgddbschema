@@ -8,6 +8,8 @@ COMMENT ON TABLE mgd.VOC_Term IS 'A record in this table represents a Vocabulary
 
 COMMENT ON COLUMN VOC_Term.abbreviation IS 'abbervated term';
 
+COMMENT ON COLUMN VOC_Term.note IS 'textual information/description';
+
 COMMENT ON COLUMN VOC_Term._CreatedBy_key IS 'user who created the record';
 
 COMMENT ON COLUMN VOC_Term.creation_date IS 'date record was created';

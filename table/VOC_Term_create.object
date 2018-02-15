@@ -15,6 +15,7 @@ create table mgd.VOC_Term (
  	_Vocab_key                 int             not null,
 	term                       text    	   null,
 	abbreviation               text    	   null,
+	note                       text    	   null,
 	sequenceNum                int             null,
 	isObsolete                 smallint,
 	_CreatedBy_key             int DEFAULT 1001 		not null,

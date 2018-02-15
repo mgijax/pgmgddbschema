@@ -8,34 +8,34 @@ COMMENT ON TABLE mgd.MRK_DO_Cache IS 'A record in this table represents the cach
 
 COMMENT ON COLUMN MRK_DO_Cache._Cache_key IS 'primary key';
 
-COMMENT ON COLUMN MRK_DO_Cache.creation_date IS 'date record was created';
-
-COMMENT ON COLUMN MRK_DO_Cache.genotypeFootnote IS 'genotype footnote for WI';
-
-COMMENT ON COLUMN MRK_DO_Cache._Genotype_key IS 'foreign key to GXD_Genotype';
-
-COMMENT ON COLUMN MRK_DO_Cache.header IS 'genotype header for WI';
-
-COMMENT ON COLUMN MRK_DO_Cache.headerFootnote IS 'genotype header footnote for WI';
-
-COMMENT ON COLUMN MRK_DO_Cache.jnumID IS 'J: id of Annotation reference';
+COMMENT ON COLUMN MRK_DO_Cache._Organism_key IS 'foreign key to MGI_Organism';
 
 COMMENT ON COLUMN MRK_DO_Cache._Marker_key IS 'foreign key to MRK_Marker';
 
-COMMENT ON COLUMN MRK_DO_Cache.modification_date IS 'date record was last modified';
+COMMENT ON COLUMN MRK_DO_Cache._Genotype_key IS 'foreign key to GXD_Genotype';
 
-COMMENT ON COLUMN MRK_DO_Cache.omimCategory1 IS 'display category for Human Disease Detail page, table 1';
-
-COMMENT ON COLUMN MRK_DO_Cache.omimCategory3 IS 'display category for Allele Detail page';
-
-COMMENT ON COLUMN MRK_DO_Cache.qualifier IS 'DO qualifier';
+COMMENT ON COLUMN MRK_DO_Cache._Term_key IS 'foreign key to VOC_Term where _Vocab_key = 44 (DO)';
 
 COMMENT ON COLUMN MRK_DO_Cache._Refs_key IS 'foreign key to BIB_Refs; reference for DO annotation';
+
+COMMENT ON COLUMN MRK_DO_Cache.omimCategory3 IS 'disease mouse model format';
+
+COMMENT ON COLUMN MRK_DO_Cache.qualifier IS 'DO qualifier';
 
 COMMENT ON COLUMN MRK_DO_Cache.term IS 'DO term';
 
 COMMENT ON COLUMN MRK_DO_Cache.termID IS 'DO term ID';
 
-COMMENT ON COLUMN MRK_DO_Cache._Term_key IS 'foreign key to VOC_Term where _Vocab_key = 44 (DO)';
+COMMENT ON COLUMN MRK_DO_Cache.jnumID IS 'J: id of Annotation reference';
+
+COMMENT ON COLUMN MRK_DO_Cache.header IS 'genotype header for WI';
+
+COMMENT ON COLUMN MRK_DO_Cache.headerFootnote IS 'genotype header footnote for WI';
+
+COMMENT ON COLUMN MRK_DO_Cache.genotypeFootnote IS 'genotype footnote for WI';
+
+COMMENT ON COLUMN MRK_DO_Cache.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MRK_DO_Cache.modification_date IS 'date record was last modified';
 
 EOSQL

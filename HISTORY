@@ -1,9 +1,10 @@
-
 TAG: pgmgddbschema-6-0-12-?
 DATE: 01/22/2018
 STAFF: lec
 TR12662/GMC
 1) MLD_Notes/remove sequenceNum
+2) VOC_Text/merged to VOC_Term
+3) autosequence folder : new
 
 TAG: pgmgddbschema-6-0-11-10
 DATE: 02/05/2018

@@ -181,7 +181,6 @@ CLUSTER mgd.VOC_Evidence USING VOC_Evidence_idx_clustered;
 CLUSTER mgd.VOC_GO_Cache USING VOC_GO_Cache_idx_clustered;
 CLUSTER mgd.VOC_Marker_Cache USING VOC_Marker_Cache_pkey;
 CLUSTER mgd.VOC_Term USING VOC_Term_idx_clustered;
-CLUSTER mgd.VOC_Text USING VOC_Text_pkey;
 CLUSTER mgd.VOC_VocabDAG USING VOC_VocabDAG_pkey;
 CLUSTER mgd.VOC_Vocab USING VOC_Vocab_pkey;
 CLUSTER mgd.WKS_Rosetta USING WKS_Rosetta_idx_clustered;
