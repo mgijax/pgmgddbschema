@@ -55,14 +55,6 @@ THEN
 	RAISE EXCEPTION E'Allele Symbol is referenced in MGI Relationship(s)';
 END IF;
 
--- Disallow deletion if Allele is currently referenced as Feature Relationship Category
-IF EXISTS (SELECT * FROM MGI_Relationship
-          WHERE OLD._Allele_key = _Object_key_2
-          AND _Category_key in (1003, 1004))
-THEN
-	RAISE EXCEPTION E'Allele Symbol is referenced in MGI Relationship(s)';
-END IF;
-
 IF EXISTS (SELECT * FROM VOC_Annot a
           WHERE OLD._Allele_key = a._Object_key
           AND a._AnnotType_key = 1021)
