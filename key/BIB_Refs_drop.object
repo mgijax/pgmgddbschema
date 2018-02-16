@@ -84,8 +84,6 @@ ALTER TABLE mgd.BIB_Workflow_Data DROP CONSTRAINT BIB_Workflow_Data__Refs_key_fk
 
 ALTER TABLE mgd.BIB_Notes DROP CONSTRAINT BIB_Notes__Refs_key_fkey CASCADE;
 
-ALTER TABLE mgd.BIB_DataSet_Assoc DROP CONSTRAINT BIB_DataSet_Assoc__Refs_key_fkey CASCADE;
-
 ALTER TABLE mgd.BIB_Citation_Cache DROP CONSTRAINT BIB_Citation_Cache__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.BIB_Books DROP CONSTRAINT BIB_Books__Refs_key_fkey CASCADE;
