@@ -69,7 +69,7 @@ do_diff ()
     S_COUNT=`cat ${TMP_SCHEMA} | wc -l`
     D_COUNT=`cat ${TMP_DB} | wc -l`
     echo "Schema count: ${S_COUNT}    Database count: ${D_COUNT}"
-    rm -f ${TMP_DIFF}
+#    rm -f ${TMP_DIFF}
     diff -i ${TMP_SCHEMA} ${TMP_DB} > ${TMP_DIFF}
     if [ `cat ${TMP_DIFF} | wc -l` -eq 0 ]
     then
@@ -103,8 +103,10 @@ do_diff ()
 #
 cd ${TOP}/table
 rm -f ${TMP_SCHEMA} ${TMP_DB}
-grep -i "^CREATE TABLE " *_create.object | cut -d':' -f2 | cut -d' ' -f3 | sed 's/mgd\.//' | sed 's/(//' | sort > ${TMP_SCHEMA}
+grep -i "^CREATE TABLE " *_create.object | cut -d':' -f2 | cut -d' ' -f3 | sed 's/mgd\.//' | sed 's/(//' | sed 's/./\L&/g' | sort > ${TMP_SCHEMA}
 psql -h ${PG_DBSERVER} -d ${PG_DBNAME} -U ${PG_DBUSER} -t --command "select tablename from pg_catalog.pg_tables where schemaname = 'mgd'" | sed "s/ //g" | grep -v "^$" | sort > ${TMP_DB}
+cp ${TMP_SCHEMA} ~lec
+cp ${TMP_DB} ~lec
 do_diff Tables
 
 #
@@ -120,8 +122,8 @@ do_diff Tables
 #
 cd ${TOP}/index
 rm -f ${TMP_SCHEMA} ${TMP_DB} ${TMP_SORT}
-grep -i "^CREATE INDEX " *_create.object | cut -d':' -f2 | grep -v "^\-\-" | cut -d' ' -f3 > ${TMP_SORT}
-grep -i "^CREATE UNIQUE INDEX " *_create.object | cut -d':' -f2 | grep -v "^\-\-" | cut -d' ' -f4 >> ${TMP_SORT}
+grep -i "^CREATE INDEX " *_create.object | cut -d':' -f2 | grep -v "^\-\-" | cut -d' ' -f3 | sed 's/./\L&/g' > ${TMP_SORT}
+grep -i "^CREATE UNIQUE INDEX " *_create.object | cut -d':' -f2 | grep -v "^\-\-" | cut -d' ' -f4 | sed 's/./\L&/g' >> ${TMP_SORT}
 sort ${TMP_SORT} > ${TMP_SCHEMA}
 psql -h ${PG_DBSERVER} -d ${PG_DBNAME} -U ${PG_DBUSER} -t --command "select indexrelname from pg_stat_user_indexes where schemaname = 'mgd' and indexrelname not like '%_pkey'" | sed "s/ //g" | grep -v "^$" | sort > ${TMP_DB}
 do_diff Indexes
@@ -138,7 +140,7 @@ do_diff Indexes
 #
 cd ${TOP}/procedure
 rm -f ${TMP_SCHEMA} ${TMP_DB}
-grep -i "^CREATE OR REPLACE FUNCTION " *_create.object | cut -d':' -f2 | cut -d' ' -f5 | sed 's/(//' | sort > ${TMP_SCHEMA}
+grep -i "^CREATE OR REPLACE FUNCTION " *_create.object | cut -d':' -f2 | cut -d' ' -f5 | sed 's/(//' | sed 's/./\L&/g' | sort > ${TMP_SCHEMA}
 psql -h ${PG_DBSERVER} -d ${PG_DBNAME} -U ${PG_DBUSER} -t --command "\df" | grep -i "^ mgd " | grep -i 'normal' | cut -d'|' -f2 | sed 's/ //g' | sort > ${TMP_DB}
 do_diff Procedures
 
@@ -152,7 +154,7 @@ do_diff Procedures
 #
 cd ${TOP}/trigger
 rm -f ${TMP_SCHEMA} ${TMP_DB}
-grep -i "^CREATE TRIGGER " *_create.object | cut -d':' -f2 | cut -d' ' -f3 | sort > ${TMP_SCHEMA}
+grep -i "^CREATE TRIGGER " *_create.object | cut -d':' -f2 | cut -d' ' -f3 | sed 's/./\L&/g' | sort > ${TMP_SCHEMA}
 psql -h ${PG_DBSERVER} -d ${PG_DBNAME} -U ${PG_DBUSER} -t --command "select tgname from pg_catalog.pg_trigger where tgname like '%_trigger'" | sed "s/ //g" | grep -v "^$" | sort > ${TMP_DB}
 do_diff Triggers
 
@@ -168,7 +170,7 @@ do_diff Triggers
 #
 cd ${TOP}/view
 rm -f ${TMP_SCHEMA} ${TMP_DB}
-grep -i "^CREATE VIEW " *_create.object | cut -d':' -f2 | cut -d' ' -f3 | sed 's/mgd\.//' | sort > ${TMP_SCHEMA}
+grep -i "^CREATE VIEW " *_create.object | cut -d':' -f2 | cut -d' ' -f3 | sed 's/mgd\.//' | sed 's/./\L&/g' | sort > ${TMP_SCHEMA}
 psql -h ${PG_DBSERVER} -d ${PG_DBNAME} -U ${PG_DBUSER} -t --command "select viewname from pg_catalog.pg_views where schemaname = 'mgd'" | sed "s/ //g" | grep -v "^$" | sort > ${TMP_DB}
 do_diff Views
 
@@ -186,7 +188,7 @@ do_diff Views
 #
 cd ${TOP}/key
 rm -f ${TMP_SCHEMA} ${TMP_DB}
-grep -i "ADD PRIMARY KEY" *_create.object | cut -d':' -f2 | grep -v "^\-\-" | cut -d' ' -f3 | sed 's/mgd\.//' | sed 's/$/_pkey/' | sort > ${TMP_SCHEMA}
+grep -i "ADD PRIMARY KEY" *_create.object | cut -d':' -f2 | grep -v "^\-\-" | cut -d' ' -f3 | sed 's/mgd\.//' | sed 's/$/_pkey/' | sed 's/./\L&/g' | sort > ${TMP_SCHEMA}
 psql -h ${PG_DBSERVER} -d ${PG_DBNAME} -U ${PG_DBUSER} -t --command "select indexrelname from pg_stat_user_indexes where schemaname = 'mgd' and indexrelname like '%_pkey'" | sed "s/ //g" | grep -v "^$" | sort > ${TMP_DB}
 do_diff "Primary Keys"
 
@@ -205,7 +207,7 @@ do_diff "Primary Keys"
 #
 cd ${TOP}/key
 rm -f ${TMP_SCHEMA} ${TMP_DB}
-grep -i "ADD FOREIGN KEY" *_create.object | cut -d':' -f2 | grep -v "^\-\-" | awk '{print $3 $7}' | sed 's/mgd\.//' | sed 's/(/_/' | sed 's/[),]/_fkey/' | sort > ${TMP_SCHEMA}
+grep -i "ADD FOREIGN KEY" *_create.object | cut -d':' -f2 | grep -v "^\-\-" | awk '{print $3 $7}' | sed 's/mgd\.//' | sed 's/(/_/' | sed 's/[),]/_fkey/' | sed 's/./\L&/g' | sort > ${TMP_SCHEMA}
 psql -h ${PG_DBSERVER} -d ${PG_DBNAME} -U ${PG_DBUSER} -t --command "select conname from pg_constraint c join pg_namespace n on n.oid = c.connamespace where c.contype in ('f') and n.nspname = 'mgd'" | sed "s/ //g" | grep -v "^$" | sort > ${TMP_DB}
 do_diff "Foreign Keys"
 
