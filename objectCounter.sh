@@ -69,7 +69,7 @@ do_diff ()
     S_COUNT=`cat ${TMP_SCHEMA} | wc -l`
     D_COUNT=`cat ${TMP_DB} | wc -l`
     echo "Schema count: ${S_COUNT}    Database count: ${D_COUNT}"
-#    rm -f ${TMP_DIFF}
+    rm -f ${TMP_DIFF}
     diff -i ${TMP_SCHEMA} ${TMP_DB} > ${TMP_DIFF}
     if [ `cat ${TMP_DIFF} | wc -l` -eq 0 ]
     then
