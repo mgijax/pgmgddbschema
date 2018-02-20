@@ -105,8 +105,6 @@ cd ${TOP}/table
 rm -f ${TMP_SCHEMA} ${TMP_DB}
 grep -i "^CREATE TABLE " *_create.object | cut -d':' -f2 | cut -d' ' -f3 | sed 's/mgd\.//' | sed 's/(//' | sed 's/./\L&/g' | sort > ${TMP_SCHEMA}
 psql -h ${PG_DBSERVER} -d ${PG_DBNAME} -U ${PG_DBUSER} -t --command "select tablename from pg_catalog.pg_tables where schemaname = 'mgd'" | sed "s/ //g" | grep -v "^$" | sort > ${TMP_DB}
-cp ${TMP_SCHEMA} ~lec
-cp ${TMP_DB} ~lec
 do_diff Tables
 
 #
