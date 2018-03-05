@@ -74,9 +74,9 @@ order by m.commonname
 
 EOSQL
 
-#cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
-#DROP FUNCTION IF EXISTS GXD_orderHTSample();
-#EOSQL
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+DROP FUNCTION IF EXISTS GXD_orderHTSample();
+EOSQL
 
 date |tee -a $LOG
 
