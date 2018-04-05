@@ -11,6 +11,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.MRK_StrainGene DROP CONSTRAINT MRK_StrainGene_pkey CASCADE;
+ALTER TABLE mgd.MRK_StrainMarker DROP CONSTRAINT MRK_StrainMarker_pkey CASCADE;
 
 EOSQL

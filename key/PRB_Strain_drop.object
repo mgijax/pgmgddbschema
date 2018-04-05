@@ -28,7 +28,7 @@ ALTER TABLE mgd.PRB_Strain_Genotype DROP CONSTRAINT PRB_Strain_Genotype__Strain_
 
 ALTER TABLE mgd.PRB_Allele_Strain DROP CONSTRAINT PRB_Allele_Strain__Strain_key_fkey CASCADE;
 
-ALTER TABLE mgd.MRK_StrainGene DROP CONSTRAINT MRK_StrainGene__Strain_key_fkey CASCADE;
+ALTER TABLE mgd.MRK_StrainMarker DROP CONSTRAINT MRK_StrainMarker__Strain_key_fkey CASCADE;
 
 ALTER TABLE mgd.MLD_InSitu DROP CONSTRAINT MLD_InSitu__Strain_key_fkey CASCADE;
 

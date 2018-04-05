@@ -48,7 +48,7 @@ ALTER TABLE mgd.PRB_RFLV DROP CONSTRAINT PRB_RFLV__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.PRB_Marker DROP CONSTRAINT PRB_Marker__Marker_key_fkey CASCADE;
 
-ALTER TABLE mgd.MRK_StrainGene DROP CONSTRAINT MRK_StrainGene__Marker_key_fkey CASCADE;
+ALTER TABLE mgd.MRK_StrainMarker DROP CONSTRAINT MRK_StrainMarker__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Reference DROP CONSTRAINT MRK_Reference__Marker_key_fkey CASCADE;
 

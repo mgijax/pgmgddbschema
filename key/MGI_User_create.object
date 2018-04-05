@@ -4,7 +4,7 @@
 # History
 #
 # 04/05/2018	lec
-#	- TR12734/Genome FeVah/MRK_StrainGene
+#	- TR12734/Genome FeVah/MRK_StrainMarker
 #
 # 09/28/2017    lec
 #       - lit triage project (MGI_APILog_Event)
@@ -417,10 +417,10 @@ ALTER TABLE mgd.MRK_MCV_Count_Cache ADD FOREIGN KEY (_CreatedBy_key) REFERENCES 
 ALTER TABLE mgd.MRK_MCV_Count_Cache ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
 
 
-ALTER TABLE mgd.MRK_StrainGene ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
+ALTER TABLE mgd.MRK_StrainMarker ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
 
 
-ALTER TABLE mgd.MRK_StrainGene ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
+ALTER TABLE mgd.MRK_StrainMarker ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
 
 
 ALTER TABLE mgd.PRB_Alias ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;

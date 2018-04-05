@@ -8,8 +8,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP TRIGGER IF EXISTS MRK_StrainGene_delete_trigger ON MRK_StrainGene;
+DROP TRIGGER IF EXISTS MRK_StrainMarker_delete_trigger ON MRK_StrainMarker;
 
-DROP FUNCTION IF EXISTS MRK_StrainGene_delete();
+DROP FUNCTION IF EXISTS MRK_StrainMarker_delete();
 
 EOSQL

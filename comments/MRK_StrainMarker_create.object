@@ -4,20 +4,20 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-COMMENT ON TABLE mgd.MRK_StrainGene IS 'A record in this table represents a Strain/Marker relationship';
+COMMENT ON TABLE mgd.MRK_StrainMarker IS 'A record in this table represents a Strain/Marker relationship';
 
-COMMENT ON COLUMN MRK_StrainGene._StrainGene_key IS 'primary key';
+COMMENT ON COLUMN MRK_StrainMarker._StrainMarker_key IS 'primary key';
 
-COMMENT ON COLUMN MRK_StrainGene._Strain_key IS 'foreign key to PRB_Strain';
+COMMENT ON COLUMN MRK_StrainMarker._Strain_key IS 'foreign key to PRB_Strain';
 
-COMMENT ON COLUMN MRK_StrainGene._Marker_key IS 'foreign key to MRK_Marker/if null, then not canonical gene';
+COMMENT ON COLUMN MRK_StrainMarker._Marker_key IS 'foreign key to MRK_Marker/if null, then not canonical gene';
 
-COMMENT ON COLUMN MRK_StrainGene._CreatedBy_key IS 'user who created the record';
+COMMENT ON COLUMN MRK_StrainMarker._CreatedBy_key IS 'user who created the record';
 
-COMMENT ON COLUMN MRK_StrainGene.creation_date IS 'date record was created';
+COMMENT ON COLUMN MRK_StrainMarker.creation_date IS 'date record was created';
 
-COMMENT ON COLUMN MRK_StrainGene.modification_date IS 'date record was last modified';
+COMMENT ON COLUMN MRK_StrainMarker.modification_date IS 'date record was last modified';
 
-COMMENT ON COLUMN MRK_StrainGene._ModifiedBy_key IS 'user who last modified the record';
+COMMENT ON COLUMN MRK_StrainMarker._ModifiedBy_key IS 'user who last modified the record';
 
 EOSQL

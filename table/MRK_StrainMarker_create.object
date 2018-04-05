@@ -12,8 +12,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create table mgd.MRK_StrainGene (
- 	_StrainGene_key                int             not null,
+create table mgd.MRK_StrainMarker (
+ 	_StrainMarker_key              int             not null,
  	_Strain_key                    int             not null,
  	_Marker_key                    int             null,
 	_CreatedBy_key                 int DEFAULT 1001             not null,
