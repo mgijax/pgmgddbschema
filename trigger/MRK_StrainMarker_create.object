@@ -42,7 +42,7 @@ IF EXISTS (SELECT * FROM MAP_Coord_Feature a
           WHERE OLD._StrainMarker_key = a._Object_key
           AND a._MGIType_key = 44)
 THEN
-        RAISE EXCEPTION E'Strain-Gene is referenced in MAP_Coord_Feature table';
+        RAISE EXCEPTION E'Strain/Marker is referenced in MAP_Coord_Feature table';
 END IF; 
 
 DELETE FROM IMG_ImagePane_Assoc a
