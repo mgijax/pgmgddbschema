@@ -1,0 +1,24 @@
+#!/bin/sh
+
+#
+# History
+#
+# 04/05/2018    lec 
+#       - TR12734/GenomeFeVah
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CLUSTER mgd.MRK_StrainGene USING MRK_StrainGene_pkey;
+
+create index MRK_StrainGene_idx_Strain_key on mgd.MRK_StrainGene (_Strain_key);
+
+create index MRK_StrainGene_idx_Marker_key on mgd.MRK_StrainGene (_Marker_key);
+
+create index MRK_StrainGene_idx_CreatedBy_key on mgd.MRK_StrainGene (_CreatedBy_key);
+
+create index MRK_StrainGene_idx_ModifiedBy_key on mgd.MRK_StrainGene (_ModifiedBy_key);
+
+EOSQL

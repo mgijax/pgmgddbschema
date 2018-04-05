@@ -4,14 +4,14 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP TRIGGER IF EXISTS MRK_StrainMarker_delete_trigger ON MRK_StrainMarker;
-DROP FUNCTION IF EXISTS MRK_StrainMarker_delete();
+DROP TRIGGER IF EXISTS MRK_StrainGene_delete_trigger ON MRK_StrainGene;
+DROP FUNCTION IF EXISTS MRK_StrainGene_delete();
 
-CREATE OR REPLACE FUNCTION MRK_StrainMarker_delete() RETURNS TRIGGER AS \$\$
+CREATE OR REPLACE FUNCTION MRK_StrainGene_delete() RETURNS TRIGGER AS \$\$
 BEGIN
 
 --
--- NAME: MRK_StrainMarker_delete()
+-- NAME: MRK_StrainGene_delete()
 --
 -- DESCRIPTOIN:
 --	
@@ -40,7 +40,7 @@ BEGIN
 
 IF EXISTS (SELECT * FROM MAP_Coord_Feature a
           WHERE OLD._StrainGene_key = a._Object_key
-          AND a._MGIType_key = 44
+          AND a._MGIType_key = 44)
 THEN
         RAISE EXCEPTION E'Strain-Gene is referenced in MAP_Coord_Feature table';
 END IF; 
@@ -91,14 +91,14 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MRK_StrainMarker_delete() TO public;
+GRANT EXECUTE ON FUNCTION MRK_StrainGene_delete() TO public;
 
-CREATE TRIGGER MRK_StrainMarker_delete_trigger
-AFTER DELETE on MRK_StrainMarker
+CREATE TRIGGER MRK_StrainGene_delete_trigger
+AFTER DELETE on MRK_StrainGene
 FOR EACH ROW
-EXECUTE PROCEDURE MRK_StrainMarker_delete();
+EXECUTE PROCEDURE MRK_StrainGene_delete();
 
-COMMENT ON FUNCTION mgd.MRK_StrainMarker_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
+COMMENT ON FUNCTION mgd.MRK_StrainGene_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
 
 EOSQL
 

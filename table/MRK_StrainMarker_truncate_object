@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 04/05/2018    lec 
+#       - TR12734/GenomeFeVah
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+truncate table mgd.MRK_StrainGene
+
+;
+EOSQL
