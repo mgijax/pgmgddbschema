@@ -3,6 +3,9 @@
 #
 # History
 #
+# 04/05/2018    lec 
+#       - TR12734/GenomeFeVah
+#
 # 02/14/2006    lec
 #       - TR 7461; SNP_Coord_Cache moved to snp database
 #
@@ -43,6 +46,9 @@ ALTER TABLE mgd.MLD_FISH ADD FOREIGN KEY (_Strain_key) REFERENCES mgd.PRB_Strain
 
 
 ALTER TABLE mgd.MLD_InSitu ADD FOREIGN KEY (_Strain_key) REFERENCES mgd.PRB_Strain DEFERRABLE;
+
+
+ALTER TABLE mgd.MRK_StrainGene ADD FOREIGN KEY (_Strain_key) REFERENCES mgd.PRB_Strain DEFERRABLE;
 
 
 ALTER TABLE mgd.PRB_Allele_Strain ADD FOREIGN KEY (_Strain_key) REFERENCES mgd.PRB_Strain DEFERRABLE;

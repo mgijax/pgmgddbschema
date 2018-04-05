@@ -3,6 +3,9 @@
 #
 # History
 #
+# 04/05/2018    lec 
+#       - TR12734/GenomeFeVah
+#
 # 11/28/2016	lec
 #	- TR12427/Disease Ontology (DO)
 #
@@ -79,6 +82,9 @@ ALTER TABLE mgd.MRK_Offset ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Mark
 
 
 ALTER TABLE mgd.MRK_Reference ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker ON DELETE CASCADE DEFERRABLE;
+
+
+ALTER TABLE mgd.MRK_StrainGene ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker ON DELETE CASCADE DEFERRABLE;
 
 
 ALTER TABLE mgd.ALL_Knockout_Cache ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker ON DELETE CASCADE DEFERRABLE;

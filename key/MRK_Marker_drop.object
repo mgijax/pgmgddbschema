@@ -3,6 +3,9 @@
 #
 # History
 #
+# 04/05/2018    lec 
+#       - TR12734/GenomeFeVah
+#
 # 11/28/2016	lec
 #	- TR12427/Disease Ontology (DO)
 #
@@ -44,6 +47,8 @@ ALTER TABLE mgd.PRB_Strain_Marker DROP CONSTRAINT PRB_Strain_Marker__Marker_key_
 ALTER TABLE mgd.PRB_RFLV DROP CONSTRAINT PRB_RFLV__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.PRB_Marker DROP CONSTRAINT PRB_Marker__Marker_key_fkey CASCADE;
+
+ALTER TABLE mgd.MRK_StrainGene DROP CONSTRAINT MRK_StrainGene__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Reference DROP CONSTRAINT MRK_Reference__Marker_key_fkey CASCADE;
 
