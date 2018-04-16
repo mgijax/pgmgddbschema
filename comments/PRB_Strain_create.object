@@ -26,6 +26,6 @@ COMMENT ON COLUMN PRB_Strain.strain IS 'strain description';
 
 COMMENT ON COLUMN PRB_Strain._Strain_key IS 'primary key';
 
-COMMENT ON COLUMN PRB_Strain._StrainType_key IS 'foreign key to VOC_Term where _Vocab_key = 27 (Strain Attributes)';
+COMMENT ON COLUMN PRB_Strain._StrainType_key IS 'foreign key to VOC_Term where _Vocab_key = 55 (Strain Type)';
 
 EOSQL
