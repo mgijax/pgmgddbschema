@@ -17,6 +17,9 @@ drop index if exists mgd.MRK_StrainMarker_idx_Strain_key
 drop index if exists mgd.MRK_StrainMarker_idx_Marker_key
 ;
 
+drop index if exists mgd.MRK_StrainMarker_idx_Refs_key
+;
+
 drop index if exists mgd.MRK_StrainMarker_idx_CreatedBy_key
 ;
 

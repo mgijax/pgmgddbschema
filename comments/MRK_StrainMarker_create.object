@@ -10,7 +10,9 @@ COMMENT ON COLUMN MRK_StrainMarker._StrainMarker_key IS 'primary key';
 
 COMMENT ON COLUMN MRK_StrainMarker._Strain_key IS 'foreign key to PRB_Strain';
 
-COMMENT ON COLUMN MRK_StrainMarker._Marker_key IS 'foreign key to MRK_Marker/if null, then not canonical gene';
+COMMENT ON COLUMN MRK_StrainMarker._Marker_key IS 'foreign key to MRK_Marker/if null, then no canonical gene';
+
+COMMENT ON COLUMN MRK_StrainMarker._Refs_key IS 'foreign key to BIB_Refs';
 
 COMMENT ON COLUMN MRK_StrainMarker._CreatedBy_key IS 'user who created the record';
 

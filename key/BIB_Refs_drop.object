@@ -94,6 +94,8 @@ ALTER TABLE mgd.ALL_Allele DROP CONSTRAINT ALL_Allele__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.ACC_AccessionReference DROP CONSTRAINT ACC_AccessionReference__Refs_key_fkey CASCADE;
 
+ALTER TABLE mgd.MRK_StrainMarker DROP CONSTRAINTmgd.MRK_StrainMarker__Refs_key_fkey CASCADE;
+
 ALTER TABLE mgd.BIB_Refs DROP CONSTRAINT BIB_Refs_pkey CASCADE;
 
 EOSQL

@@ -17,6 +17,8 @@ create index MRK_StrainMarker_idx_Strain_key on mgd.MRK_StrainMarker (_Strain_ke
 
 create index MRK_StrainMarker_idx_Marker_key on mgd.MRK_StrainMarker (_Marker_key);
 
+create index MRK_StrainMarker_idx_Refs_key on mgd.MRK_StrainMarker (_Refs_key);
+
 create index MRK_StrainMarker_idx_CreatedBy_key on mgd.MRK_StrainMarker (_CreatedBy_key);
 
 create index MRK_StrainMarker_idx_ModifiedBy_key on mgd.MRK_StrainMarker (_ModifiedBy_key);
