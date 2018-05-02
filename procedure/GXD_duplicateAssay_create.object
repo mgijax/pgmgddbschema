@@ -114,7 +114,7 @@ WHERE _Assay_key = v_assayKey
 -- Duplicate the Assay Note
 
 INSERT INTO GXD_AssayNote
-SELECT v_newAssayKey, sequenceNum, assayNote, now(), now()
+SELECT v_newAssayKey, assayNote, now(), now()
 FROM GXD_AssayNote
 WHERE _Assay_key = v_assayKey
 ;
