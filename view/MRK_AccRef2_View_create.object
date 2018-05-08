@@ -16,9 +16,6 @@
 #	27      RefSeq
 #	13      SWISSPROT
 #	41      TrEMBL
-#	85      VEGAGeneModel
-#	132     VEGAProtein        
-#	131     VEGATranscript        
 #
 
 cd `dirname $0` && . ./Configuration
@@ -43,7 +40,7 @@ and a._LogicalDB_key = l._LogicalDB_key
 and a._MGIType_key = m._MGIType_key
 and ar._Refs_key = b._Refs_key
 and a._ModifiedBy_key = u1._User_key
-and a._LogicalDB_key in (55,27,85,59,139,60,131,132,133,134,13,41)
+and a._LogicalDB_key in (55,27,59,139,60,133,134,13,41)
 
 
 
