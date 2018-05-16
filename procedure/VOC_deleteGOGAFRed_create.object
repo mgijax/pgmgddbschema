@@ -67,7 +67,7 @@ BEGIN
 --      
 
 -- if the user name is not in the list...return
--- this list includes: GOA_%, RGD, GOC, GO_Central, UniProtKB, GO_Noctua, etc.
+-- this list includes: GOA_%, RGD, GOC, GO_Central, UniProtKB, NOCTUA_, etc.
 
 IF (SELECT count(*) FROM MGI_User WHERE _User_key 
 in (1446,1447,1448,1449,1450,1458,1459,1460,1469,1470,1471,1498,1503,1509,1510,1511,1517,1539,1551,1562,1564,1565,1566,1568)) = 0
@@ -79,7 +79,7 @@ END IF;
 -- that are:              
 --   not red terms       
 --   non-IEAs           
---   assigned by GOA, RGD, GOC, GO_Central, UniProtKB, GO_Noctua
+--   assigned by GOA, RGD, GOC, GO_Central, UniProtKB, NOCTUA_
 
 CREATE TEMP TABLE goannot ON COMMIT DROP
 AS SELECT DISTINCT a._Object_key, n._DAG_key
