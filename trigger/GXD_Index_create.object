@@ -1,10 +1,5 @@
 #!/bin/sh
 
-#
-# any changes to the trigger may required changes to the unittests 
-# see test/unittest/trigger/GXD_Index_tests.py
-#
-
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
