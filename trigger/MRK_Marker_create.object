@@ -41,7 +41,7 @@ BEGIN
 -- Disallow deletion if Marker is currently referenced elsewhere
 IF EXISTS (SELECT * FROM MGI_Relationship
           WHERE OLD._Marker_key = _Object_key_1
-          AND _Category_key in (1001, 1002))
+          AND _Category_key in (1001, 1002, 1008))
 THEN
         RAISE EXCEPTION E'Marker Symbol is referenced in MGI Relationship(s)';
 END IF;
@@ -49,7 +49,7 @@ END IF;
 -- Disallow deletion if Marker is currently referenced elsewhere
 IF EXISTS (SELECT * FROM MGI_Relationship
           WHERE OLD._Marker_key = _Object_key_2
-          AND _Category_key in (1001, 1002, 1003, 1004, 1006))
+          AND _Category_key in (1001, 1002, 1003, 1004, 1006, 1008))
 THEN
         RAISE EXCEPTION E'Marker Symbol is referenced in MGI Relationship(s)';
 END IF;
