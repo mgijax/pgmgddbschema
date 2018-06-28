@@ -23,7 +23,6 @@ RETURNS VOID AS
 \$\$
 
 DECLARE
-maxKey int;
 v_markerTypeKey int;
 v_organismKey int;
 v_sequenceNum int;
@@ -37,13 +36,10 @@ v_mapUnits voc_term.term%TYPE;
 v_provider map_coord_collection.abbreviation%TYPE;
 v_version seq_coord_cache.version%TYPE;
 v_genomicChromosome seq_coord_cache.chromosome%TYPE;
-v_maxKey int;
 
 BEGIN
 
 DELETE FROM MRK_Location_Cache where _Marker_key = v_markerKey;
-
-maxKey := max(_Cache_key) + 1 from MRK_Location_Cache;
 
 FOR v_chromosome, v_cytogeneticOffset, v_markerTypeKey, v_organismKey, v_cmoffset, 
     v_sequenceNum, v_startCoordinate, v_endCoordinate, v_strand, v_mapUnits, 
@@ -120,13 +116,12 @@ and f._MGIType_key = 2)
 
 LOOP
 	INSERT INTO MRK_Location_Cache
-	(_Cache_key, _Marker_key, _Marker_Type_key, _Organism_key, chromosome, sequenceNum, cytogeneticOffset, 
+	(_Marker_key, _Marker_Type_key, _Organism_key, chromosome, sequenceNum, cytogeneticOffset, 
 		cmoffset, genomicChromosome, startCoordinate, endCoordinate, strand, mapUnits, provider, version)
-	VALUES(maxKey, v_markerKey, v_markerTypeKey, v_organismKey, v_chromosome, v_sequenceNum, v_cytogeneticOffset, 
+	VALUES(v_markerKey, v_markerTypeKey, v_organismKey, v_chromosome, v_sequenceNum, v_cytogeneticOffset, 
 		v_cmoffset, v_genomicChromosome, v_startCoordinate, v_endCoordinate, v_strand, v_mapUnits, v_provider, v_version)
 	;
 
-	maxKey := maxKey + 1;
 END LOOP;
 
 END;

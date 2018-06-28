@@ -22,8 +22,6 @@ CLUSTER mgd.MRK_Location_Cache USING MRK_Location_Cache_pkey;
 
 create index MRK_Location_Cache_idx_clustered on mgd.MRK_Location_Cache (chromosome, startCoordinate, endCoordinate);
 
-create index MRK_Location_Cache_idx_Marker_key on mgd.MRK_Location_Cache (_Marker_key);
-
 create index MRK_Location_Cache_idx_Marker_Type_key on mgd.MRK_Location_Cache (_Marker_Type_key);
 
 create index MRK_Location_Cache_idx_Organism_key on mgd.MRK_Location_Cache (_Organism_key);

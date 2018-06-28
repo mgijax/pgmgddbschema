@@ -6,7 +6,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 COMMENT ON TABLE mgd.MRK_Location_Cache IS 'A record in this table represents the cached value of a Marker and its genetic and physical location.  See mrkcacheload/mrklocation.csh.';
 
-COMMENT ON COLUMN MRK_Location_Cache._Cache_key IS 'primary key';
+COMMENT ON COLUMN MRK_Location_Cache._Marker_key IS 'primary key/foreign key to MRK_Marker';
 
 COMMENT ON COLUMN MRK_Location_Cache.chromosome IS 'chromosome';
 
@@ -21,8 +21,6 @@ COMMENT ON COLUMN MRK_Location_Cache.endCoordinate IS 'end genome coordinate';
 COMMENT ON COLUMN MRK_Location_Cache.genomicChromosome IS 'chromosome';
 
 COMMENT ON COLUMN MRK_Location_Cache.mapUnits IS 'units of genome coordinates';
-
-COMMENT ON COLUMN MRK_Location_Cache._Marker_key IS 'foreign key to MRK_Marker';
 
 COMMENT ON COLUMN MRK_Location_Cache._Marker_Type_key IS 'foreign key to MRK_Types';
 
