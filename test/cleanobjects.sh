@@ -54,6 +54,15 @@ USING toDelete2
 WHERE toDelete2._accession_key = acc_accession._accession_key
 ;
 
+select a.*
+from mgi_note a
+where not exists (select 1 from mgi_notechunk c where a._note_key = c._note_key)
+;
+delete from mgi_note a
+where not exists (select 1 from mgi_notechunk c where a._note_key = c._note_key)
+;
+
+
 EOSQL
 
 #
