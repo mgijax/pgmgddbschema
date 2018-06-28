@@ -6,6 +6,9 @@
 #
 # History
 #
+# 06/28/2018	lec
+#	- TR12734/GenFeVah ; remove _Cache_key; make _Marker_key primary key
+#
 # 04/02/2015
 #	- cmOffset, startCoordinate, endCoordinate : double precision
 #
