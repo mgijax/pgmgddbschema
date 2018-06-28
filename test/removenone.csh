@@ -21,15 +21,30 @@ date | tee -a $LOG
  
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0 | tee -a $LOG
 
-select c.mgiID, a.authors, a._primary, a.title
+select c.mgiID, a.authors, a._primary, a.title, a.vol, a.issue, a.pgs
 from BIB_Refs a, BIB_Citation_Cache c
-where a._primary = 'None'
+where (a._primary = 'None' or a.vol = 'None' or a.issue = 'None' or a.pgs = 'None')
 and a._Refs_key = c._Refs_key
 ;
 
 update BIB_Refs
 set authors = null, _primary = null
 where _primary = 'None'
+;
+
+update BIB_Refs
+set vol = null
+where vol = 'None'
+;
+
+update BIB_Refs
+set issue = null
+where issue = 'None'
+;
+
+update BIB_Refs
+set pgs = null
+where pgs = 'None'
 ;
 
 select c.mgiID, a.authors, a._primary, a.title

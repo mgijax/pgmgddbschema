@@ -69,5 +69,8 @@ EOSQL
 # install new trigger changes (if necessary)
 #$PG_MGD_DBSCHEMADIR/???
 
+# will delete probeprep objects that are obsolete/no longer used by any assay
+./gxdprobeprep.csh | tee -a $LOG
+
 date |tee -a $LOG
 

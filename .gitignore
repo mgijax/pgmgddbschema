@@ -3,4 +3,5 @@ Configuration
 */logs
 *.pyc
 *.log
+*/*.log
 *~
