@@ -3,6 +3,9 @@
 #
 # History
 #
+# 06/28/2018	lec
+#	- TR12734/GenFeVah ; remove _Cache_key; make _Marker_key primary key
+#
 # 04/04/2011	lec
 #	- TR 10658; add _Cache_key
 #
