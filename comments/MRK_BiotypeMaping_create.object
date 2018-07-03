@@ -11,6 +11,7 @@ COMMENT ON COLUMN MRK_BiotypeMapping._biotypevocab_key IS 'fk to voc_vocab; 1 of
 COMMENT ON COLUMN MRK_BiotypeMapping._biotypeterm_key IS 'fk to voc_term';
 COMMENT ON COLUMN MRK_BiotypeMapping._MCVTerm_key IS 'fk to voc_term where _vocab_key = 79 (Marker Category aka MCV term)';
 COMMENT ON COLUMN MRK_BiotypeMapping._Marker_Type_key IS 'fk to mrk_types';
+COMMENT ON COLUMN MRK_BiotypeMapping.primaryFeatureType IS 'primary feature type : see column 4 in raw biotype file';
 COMMENT ON COLUMN MRK_BiotypeMapping.useMCVchildren IS 'use feature type/MCV children to determine raw biotype conflicts';
 
 EOSQL
