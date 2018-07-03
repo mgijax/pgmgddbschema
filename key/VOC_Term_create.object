@@ -278,6 +278,9 @@ ALTER TABLE mgd.MRK_BiotypeMapping ADD FOREIGN KEY (_biotypeterm_key) REFERENCES
 ALTER TABLE mgd.MRK_BiotypeMapping ADD FOREIGN KEY (_MCVTerm_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
+ALTER TABLE mgd.MRK_BiotypeMapping ADD FOREIGN KEY (_PrimaryMCVTerm_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
 ALTER TABLE mgd.PRB_Probe ADD FOREIGN KEY (_SegmentType_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
