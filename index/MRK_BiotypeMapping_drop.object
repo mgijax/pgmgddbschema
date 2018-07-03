@@ -22,6 +22,9 @@ drop index if exists mgd.MRK_BiotypeMapping_idx_biotypeterm_key
 drop index if exists mgd.MRK_BiotypeMapping_idx_MCVTerm_key
 ;
 
+drop index if exists mgd.MRK_BiotypeMapping_idx_PrimaryMCVTerm_key
+;
+
 drop index if exists mgd.MRK_BiotypeMapping_idx_Marker_Type_key
 ;
 

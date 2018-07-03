@@ -20,6 +20,8 @@ create index MRK_BiotypeMapping_idx_biotypeterm_key on mgd.MRK_BiotypeMapping (_
 
 create index MRK_BiotypeMapping_idx_MCVTerm_key on mgd.MRK_BiotypeMapping (_MCVTerm_key);
 
+create index MRK_BiotypeMapping_idx_PrimaryMCVTerm_key on mgd.MRK_BiotypeMapping (_PrimaryMCVTerm_key);
+
 create index MRK_BiotypeMapping_idx_Marker_Type_key on mgd.MRK_BiotypeMapping (_Marker_Type_key);
 
 create index MRK_BiotypeMapping_idx_CreatedBy_key on mgd.MRK_BiotypeMapping (_CreatedBy_key);
