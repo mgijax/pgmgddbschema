@@ -1,3 +1,9 @@
+TAG: pgmgddbschema-6-0-12-7
+DATE: 07/10/2018
+STAFF: lec
+TR12897/add ENSEMBL_GeneID to the allowed providers
+VOC_deleteGOGAFRed_create.object
+
 TAG: pgmgddbschema-6-0-12-6
 DATE: 05/03/2018
 STAFF: lec
