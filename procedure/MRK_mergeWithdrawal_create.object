@@ -138,6 +138,19 @@ ELSE
 	v_alleleOf := 0;
 END IF;
 
+--see TR11855 : make sure new term exists before turning this on
+--if v_eventKey = 4
+--THEN
+        -- Update needsReview flag for strains
+        --PERFORM PRB_setStrainReview (v_oldKey, NULL, (select _Term_key from VOC_Term where _Vocab_key = 56 and term = 'Needs Review - Chr'));
+
+        --IF NOT FOUND
+        --THEN
+	        --RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Could not flag Strain record for needing review';
+	        --RETURN;
+        --END IF;
+--END IF;
+
 -- If new symbol has a chromosome of UN, update the new symbol's chromosome value
 -- with the old symbol chromosome value
 
