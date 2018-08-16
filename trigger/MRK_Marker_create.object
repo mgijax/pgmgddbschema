@@ -401,6 +401,19 @@ THEN
 	RETURN NEW;
 END IF;
 
+-- TR11855 : 08/16/2018 lec
+-- if chromosome value has changed, then add to "Needs Review - Chr"
+IF OLD.chromosome != NEW.chromosome
+THEN
+	PERFORM PRB_setStrainReview (NEW._Marker_key, NULL, (select _Term_key from VOC_Term where _Vocab_key = 56 and term = 'Needs Review - chr'));
+
+        IF NOT FOUND
+        THEN
+                RAISE EXCEPTION E'MRK_Marker_update_trigger: PRB_setStrainReview';
+                RETURN NEW;
+        END IF;
+END IF;
+
 RETURN NEW;
 
 END;
