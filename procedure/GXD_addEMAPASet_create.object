@@ -104,6 +104,8 @@ SELECT v_newSetMemberEMAPAKey + seq, v_newSetMemberKey + seq, s._Stage_key, v_us
 FROM set_tmp s
 ;
 
+v_newSetMemberEMAPAKey := nextval('mgi_setmember_emapa_seq');
+
 RETURN
 ;
 
