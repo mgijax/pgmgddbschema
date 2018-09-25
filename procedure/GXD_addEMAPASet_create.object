@@ -100,11 +100,9 @@ FROM set_tmp s
 ;
 
 INSERT INTO MGI_SetMember_EMAPA
-SELECT v_newSetMemberEMAPAKey + seq, v_newSetMemberKey + seq, s._Stage_key, v_userKey, v_userKey, now(), now()
+SELECT nextval('mgi_setmember_emapa_seq'), v_newSetMemberKey + seq, s._Stage_key, v_userKey, v_userKey, now(), now()
 FROM set_tmp s
 ;
-
-v_newSetMemberEMAPAKey := nextval('mgi_setmember_emapa_seq');
 
 RETURN
 ;
