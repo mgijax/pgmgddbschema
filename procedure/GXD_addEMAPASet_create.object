@@ -22,7 +22,7 @@ RETURNS VOID AS
 
 DECLARE
 v_newSetMemberKey int;
-v_newSetMemberEMAPAKey int;
+v_newSetMemberEmapaKey int;
 v_newSeqKey int;
 
 BEGIN
@@ -53,11 +53,11 @@ BEGIN
 --
 
 v_newSetMemberKey := max(_SetMember_key) FROM MGI_SetMember;
-v_newSetMemberEMAPAKey := nextval('mgi_setmember_emapa_seq');
+v_newSetMemberEmapaKey := max(_SetMember_EMAPA_key) FROM MGI_SetMember_EMAPA;
 v_newSeqKey := max(sequenceNum) FROM MGI_SetMember where _Set_key = 1046 and _CreatedBy_key = v_userKey;
 
-IF v_newSetMemberEMAPAKey is null THEN
-	v_newSetMemberEMAPAKey := 0;
+IF v_newSetMemberEmapaKey is null THEN
+	v_newSetMemberEmapaKey := 0;
 END IF;
 
 IF v_newSeqKey is null THEN
@@ -100,7 +100,7 @@ FROM set_tmp s
 ;
 
 INSERT INTO MGI_SetMember_EMAPA
-SELECT nextval('mgi_setmember_emapa_seq'), v_newSetMemberKey + seq, s._Stage_key, v_userKey, v_userKey, now(), now()
+SELECT v_newSetMemberEmapaKey + seq, v_newSetMemberKey + seq, s._Stage_key, v_userKey, v_userKey, now(), now()
 FROM set_tmp s
 ;
 

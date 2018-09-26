@@ -35,9 +35,6 @@ select last_value from img_imagepane_assoc_seq;
 select max(_Assoc_key) from MGI_Reference_Assoc;
 select last_value from mgi_reference_assoc_seq;
 
-select max(_SetMember_EMAPA_key) from MGI_SetMember_EMAPA;
-select last_value from mgi_setmember_emapa_seq;
-
 select max(_StrainGenotype_key) from PRB_Strain_Genotype;
 select last_value from prb_strain_genotype_seq;
 
