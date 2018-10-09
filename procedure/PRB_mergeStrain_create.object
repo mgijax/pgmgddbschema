@@ -47,9 +47,9 @@ v_jaxRegistryNew acc_accession.accID%TYPE;
 v_jaxRegistryOld acc_accession.accID%TYPE;
 v_strainmergeKey int;
 
-v_noteKey int;
 v_noteTypeKey int;
-v_maxSeq int;
+v_note1 text;
+v_note2 text;
 
 v_nextKey int;
 v_synTypeKey int;
@@ -331,21 +331,16 @@ LOOP
 		WHERE _MGIType_key = 10 and _NoteType_key = v_noteTypeKey and _Object_key = v_oldStrainKey)
     THEN
 
-        v_noteKey := _Note_key from MGI_Note 
-		WHERE _MGIType_key = 10 and _NoteType_key = v_noteTypeKey and _Object_key = v_newStrainKey;
+    	v_note1 := c.note from MGI_Note n, MGI_NoteChunk c WHERE n._MGIType_key = 10 and n._NoteType_key = v_noteTypeKey and n._Object_key = v_newStrainKey and n._Note_key = c._Note_key;
 
-        v_maxSeq := max(c.sequenceNum) from MGI_NoteChunk c, MGI_Note n
-	  	WHERE n._MGIType_key = 10 and 
-			n._NoteType_key = v_noteTypeKey  and
-	        	n._Object_key = v_newStrainKey and
-	        	n._Note_key = c._Note_key;
+	v_note2 := c.note from MGI_Note n, MGI_NoteChunk c WHERE n._MGIType_key = 10 and n._NoteType_key = v_noteTypeKey and n._Object_key = v_oldStrainKey and n._Note_key = c._Note_key;
 
 	UPDATE MGI_NoteChunk c
-	SET _Note_key = v_noteKey, sequenceNum = v_maxSeq + c.sequenceNum
+	SET note = v_note1 || E'\n' || v_note2
 	FROM MGI_Note n
 	WHERE n._MGIType_key = 10 
 	      AND n._NoteType_key = v_noteTypeKey 
-	      AND n._Object_key = v_oldStrainKey 
+	      AND n._Object_key = v_newStrainKey 
 	      AND n._Note_key = c._Note_key
 	;
 
