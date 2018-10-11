@@ -54,8 +54,6 @@ ALTER TABLE mgd.MRK_Reference DROP CONSTRAINT MRK_Reference__Marker_key_fkey CAS
 
 ALTER TABLE mgd.MRK_DO_Cache DROP CONSTRAINT MRK_DO_Cache__Marker_key_fkey CASCADE;
 
-ALTER TABLE mgd.MRK_Offset DROP CONSTRAINT MRK_Offset__Marker_key_fkey CASCADE;
-
 ALTER TABLE mgd.MRK_Notes DROP CONSTRAINT MRK_Notes__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_MCV_Cache DROP CONSTRAINT MRK_MCV_Cache__Marker_key_fkey CASCADE;
@@ -75,10 +73,6 @@ ALTER TABLE mgd.MRK_Current DROP CONSTRAINT MRK_Current__Marker_key_fkey CASCADE
 ALTER TABLE mgd.MRK_ClusterMember DROP CONSTRAINT MRK_ClusterMember__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Anchors DROP CONSTRAINT MRK_Anchors__Marker_key_fkey CASCADE;
-
-ALTER TABLE mgd.MRK_Alias DROP CONSTRAINT MRK_Alias__Alias_key_fkey CASCADE;
-
-ALTER TABLE mgd.MRK_Alias DROP CONSTRAINT MRK_Alias__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.MLD_Statistics DROP CONSTRAINT MLD_Statistics__Marker_key_2_fkey CASCADE;
 

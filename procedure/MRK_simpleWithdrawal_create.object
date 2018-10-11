@@ -97,8 +97,8 @@ v_savesymbol := symbol FROM MRK_Marker WHERE _Marker_key = v_oldKey;
 
 -- Create a new marker record using the old marker record as the template
 INSERT INTO MRK_Marker 
-(_Marker_key, _Organism_key, _Marker_Type_key, _Marker_Status_key, symbol, name, chromosome, _CreatedBy_key, _ModifiedBy_key)
-SELECT v_newKey, _Organism_key, _Marker_Type_key, 2, symbol||'_tmp', v_withdrawnName, chromosome, v_userKey, v_userKey
+(_Marker_key, _Organism_key, _Marker_Type_key, _Marker_Status_key, symbol, name, chromosome, cmOffset, _CreatedBy_key, _ModifiedBy_key)
+SELECT v_newKey, _Organism_key, _Marker_Type_key, 2, symbol||'_tmp', v_withdrawnName, chromosome, cmOffset, v_userKey, v_userKey
 FROM MRK_Marker
 WHERE _Marker_key = v_oldKey
 ;
@@ -108,21 +108,6 @@ THEN
 	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add marker (%)', v_newSymbol;
 	RETURN;
 END IF;
-
--- Remove Wild Type Allele (if one was created) from new Marker object */
--- A marker/insert trigger will create a wild-type allele.
--- In the case of a rename, this will create a duplicate wild-type allele.
--- This looks obsolete/not needed
---DELETE FROM ALL_Allele WHERE _Marker_key = v_newKey;
-
--- Create Offset for new marker
---INSERT INTO MRK_Offset VALUES (v_newKey, 0, -999.0, now(), now());
-
---IF NOT FOUND
---THEN
-	--RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not add offset';
-	--RETURN;
---END IF;
 
 -- Update the Current marker of the new marker
 

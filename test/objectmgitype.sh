@@ -299,6 +299,13 @@ where a._notetype_key = t._notetype_key
 and a._mgitype_key != t._mgitype_key
 ;
 
+select s.strain, n.*, c.* 
+from prb_strain s, mgi_note n, mgi_notechunk c
+where n._note_key = c._note_key
+and n._object_key = s._strain_key
+and c.sequenceNum > 1;
+;
+
 -- mgi_property
 
 select distinct _mgitype_key from mgi_property order by _mgitype_key;

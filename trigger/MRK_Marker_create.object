@@ -226,20 +226,12 @@ END IF;
 
 -- Create Offset for new marker
 
-IF (NEW.chromosome = 'UN')
-THEN
-        v_offset := -999.0;
-ELSE
-        v_offset := -1.0;
-END IF; 
-
-INSERT INTO MRK_Offset VALUES (NEW._Marker_key, 0, v_offset, now(), now());
-
-IF NOT FOUND
-THEN
-    RAISE EXCEPTION E'MRK_Marker_insert_trigger: MRK_Offset';
-    RETURN NEW;
-END IF;
+--IF (NEW.chromosome = 'UN')
+--THEN
+        --v_offset := -999.0;
+--ELSE
+        --v_offset := -1.0;
+--END IF; 
 
 -- this is called from the EI/Marker module due to Reference rules
 -- Create History line for new marker

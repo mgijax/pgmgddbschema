@@ -100,15 +100,8 @@ SET _Object_key = v_newKey
 WHERE _MGIType_key = 2 AND _Object_key = v_oldKey
 ;
 
--- Associate aliases, classes, other names, references w/ new symbol 
+-- Associate classes, other names, references w/ new symbol 
 
--- Remove reflexive Alias records, if they exist 
-
-DELETE FROM MRK_Alias WHERE _Marker_key = v_oldKey AND _Alias_key = v_newKey ;
-DELETE FROM MRK_Alias WHERE _Alias_key = v_oldKey AND _Marker_key = v_newKey ;
-
-UPDATE MRK_Alias SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
-UPDATE MRK_Alias SET _Alias_key = v_newKey WHERE _Alias_key = v_oldKey ;
 UPDATE ALL_Allele SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 UPDATE ALL_Knockout_Cache SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 UPDATE MRK_Anchors SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;

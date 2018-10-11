@@ -61,6 +61,8 @@ v_oldName mrk_marker.name%TYPE;
 v_newSymbol mrk_marker.symbol%TYPE;
 v_newChr mrk_marker.chromosome%TYPE;
 v_withdrawnName mrk_marker.name%TYPE;
+v_cytogeneticOffset mrk_marker.cytogeneticOffset%TYPE;
+v_cmOffset mrk_marker.cmOffset%TYPE;
 v_alleleSymbol all_allele.symbol%TYPE;
 
 BEGIN
@@ -170,38 +172,25 @@ THEN
 	END IF;
 END IF;
 
--- Update offset values of new symbol
+-- Update cytogenetic/offset values of new symbol
 
-PERFORM MRK_updateOffset (v_oldKey, v_newKey);
-
-IF NOT FOUND
-THEN
-	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Could not update offset values';
-	RETURN;
-END IF;
-
--- Update MGD offset of old symbol
-
-UPDATE MRK_Offset 
-SET cmoffset = -999.0 
-WHERE _Marker_key = v_oldKey 
-AND source = 0
+v_cytogeneticOffset := (SELECT cytogeneticOffset FROM MRK_Marker WHERE _Marker_key = v_oldKey);
+v_cmOffset := (SELECT cmOffset FROM MRK_Marker WHERE _Marker_key = v_oldKey);
+UPDATE MRK_Marker
+SET cytogeneticOffset = v_cytogeneticOffset, cmOffset = v_cmOffset
+WHERE _Marker_key = v_newKey
 ;
 
 IF NOT FOUND
 THEN
-	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Could not update offset of old symbol : %', v_oldKey;
+	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Could not update cytogenetic/offset values';
 	RETURN;
 END IF;
 
--- Delete remaining offsets of old symbol
-
-DELETE FROM MRK_Offset WHERE _Marker_key = v_oldKey AND source > 0;
-
--- Update name/cytogenetic offset of old symbol
+-- Update name/cytogenetic/offset of old symbol
 
 UPDATE MRK_Marker 
-SET name = v_withdrawnName, cytogeneticOffset = null, _Marker_Status_key = 2, 
+SET name = v_withdrawnName, cytogeneticOffset = null, _Marker_Status_key = 2, cmOffset = -999.0,
 	_ModifiedBy_key = v_userKey, modification_date = now()
 WHERE _Marker_key = v_oldKey
 ;

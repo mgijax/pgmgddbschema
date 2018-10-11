@@ -14,6 +14,8 @@ COMMENT ON COLUMN MRK_Marker.creation_date IS 'date record was created';
 
 COMMENT ON COLUMN MRK_Marker.cytogeneticOffset IS 'cytogenetic band';
 
+COMMENT ON COLUMN MRK_Marker.cmOffset IS 'approximate centimorgan (cM) position on chromosome';
+
 COMMENT ON COLUMN MRK_Marker._Marker_key IS 'primary key';
 
 COMMENT ON COLUMN MRK_Marker._Marker_Status_key IS 'foreign key to MRK_Status';
