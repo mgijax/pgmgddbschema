@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh -f
 
 #
 # purpose:
@@ -6,13 +6,21 @@
 # check if there are any Mouse Markers that do not have their MCV/Marker (1011) Feature Type
 #
 
-cd `dirname $0` && . ./Configuration
+if ( ${?MGICONFIG} == 0 ) then
+        setenv MGICONFIG /usr/local/mgi/live/mgiconfig
+endif
 
-LOG=$0.log
+source ${MGICONFIG}/master.config.csh
+
+cd `dirname $0`
+
+setenv LOG $0.log
 rm -rf $LOG
 touch $LOG
  
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0 | tee $0.log
+date | tee -a $LOG
+ 
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0 | tee -a $LOG
 
 select m.* from mrk_marker m 
 where m._organism_key = 1 
@@ -24,4 +32,3 @@ and not exists (select 1 from voc_annot a where m._marker_key = a._object_key an
 EOSQL
 
 date |tee -a $LOG
-
