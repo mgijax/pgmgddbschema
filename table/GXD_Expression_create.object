@@ -41,6 +41,7 @@ create table mgd.GXD_Expression (
 	_GelLane_key		       int	       null,
 	resultNote	               text            null,
 	expressed                      smallint        not null,
+	strength		       text            null,
 	age                            text            not null,
 	ageMin                         numeric         null,
 	ageMax                         numeric         null,
