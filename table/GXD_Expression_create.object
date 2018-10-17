@@ -3,6 +3,9 @@
 #
 # History
 #
+# 10/17/2018	lec
+#	- TR12904/add resultNote
+#
 # 01/07/2016	lec
 #	- TR12223/converting _structure_key -> _emapa_term_key/_stage_key
 #
@@ -36,6 +39,7 @@ create table mgd.GXD_Expression (
 	_Stage_key                     int             not null,
 	_Specimen_key		       int	       null,
 	_GelLane_key		       int	       null,
+	resultNote	               text            null,
 	expressed                      smallint        not null,
 	age                            text            not null,
 	ageMin                         numeric         null,
