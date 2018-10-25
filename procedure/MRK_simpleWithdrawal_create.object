@@ -3,6 +3,9 @@
 #
 # History
 #
+# 10/25/2018    lec 
+#       - TR12963/TeleUSE->API
+#
 # 01/08/2015    lec
 #       - TR11750/removed call to NOM_updateReserved() (obsolete)
 #
@@ -201,6 +204,9 @@ THEN
 	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not flag Strain record for needing review';
 	RETURN;
 END IF;
+
+-- reset the mrk_marker_seg
+select setval('mrk_marker_seq', (select max(_Marker_key) from MRK_Marker));
 
 RETURN;
 
