@@ -71,7 +71,7 @@ BEGIN
 -- 
 
 v_withdrawnName := 'withdrawn, = ' || v_newSymbol;
-v_newKey := max(_Marker_key) + 1 from MRK_Marker;
+v_newKey := nextval('mrk_marker_seq') as mrk_marker_seq;
 
 CREATE TEMP TABLE mrk_tmp ON COMMIT DROP
 AS SELECT distinct m.symbol as oldSymbol, m.name as oldName, h._Refs_key as assigningRefKey
@@ -204,9 +204,6 @@ THEN
 	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Could not flag Strain record for needing review';
 	RETURN;
 END IF;
-
--- reset the mrk_marker_seg
-select setval('mrk_marker_seq', (select max(_Marker_key) from MRK_Marker));
 
 RETURN;
 
