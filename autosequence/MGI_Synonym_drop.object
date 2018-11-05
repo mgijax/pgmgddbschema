@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/01/2018    lec
+#       - TR12963/TeleUSE->API
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP SEQUENCE IF EXISTS mgi_synonym_seq CASCADE;
+
+EOSQL
