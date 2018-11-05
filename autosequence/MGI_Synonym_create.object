@@ -14,7 +14,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE SEQUENCE mgi_synonym_seq;    
 ALTER TABLE MGI_Synonym ALTER _Synonym_key SET DEFAULT NEXTVAL('mgi_synonym_seq');
-select setval('mgi_synonym_seq', (select max(_Synonym_key) from MRK_Synonym));
+select setval('mgi_synonym_seq', (select max(_Synonym_key) from MGI_Synonym));
 --select last_value from mgi_synonym_seq;
 
 EOSQL
