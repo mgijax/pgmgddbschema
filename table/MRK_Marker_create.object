@@ -25,7 +25,7 @@ create table mgd.MRK_Marker (
 	name                           text            not null,
 	chromosome                     text            not null,
 	cytogeneticOffset              text            null,
-	cmOffset		       numeric         null,
+	cmOffset		       double precision null,
 	_CreatedBy_key                 int DEFAULT 1001             not null,
 	_ModifiedBy_key                int DEFAULT 1001             not null,
 	creation_date                  timestamp DEFAULT now()        not null,
