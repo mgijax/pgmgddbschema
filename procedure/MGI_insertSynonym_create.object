@@ -34,11 +34,6 @@ BEGIN
 
 v_synKey := nextval('mgi_synonym_seq');
 
-IF v_synKey IS NULL
-THEN
-	v_synKey := 1000;
-END IF;
-
 IF NOT EXISTS (SELECT 1 FROM MGI_Synonym
 	WHERE _Object_key = v_objectKey
 	AND _MGIType_key = v_mgiTypeKey
