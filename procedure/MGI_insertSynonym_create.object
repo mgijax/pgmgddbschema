@@ -32,7 +32,7 @@ v_synKey int;
 
 BEGIN
 
-v_synKey := max(_Synonym_key + 1) FROM MGI_Synonym;
+v_synKey := nextval('mgi_synonym_seq');
 
 IF v_synKey IS NULL
 THEN
