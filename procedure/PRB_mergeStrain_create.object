@@ -438,7 +438,7 @@ AND _MGIType_key = 10
 IF (SELECT strain FROM PRB_Strain WHERE _Strain_key = v_oldStrainKey) !=
    (SELECT strain FROM PRB_Strain WHERE _Strain_key = v_newStrainKey)
 THEN
-	v_nextKey := max(_Synonym_key) + 1 from MGI_Synonym;
+	v_nextKey := nextval('mgi_synonym_seq');
 	--v_synTypeKey := _SynonymType_key from MGI_SynonymType_Strain_View  WHERE synonymType = 'nomenclature history';
 	v_synTypeKey := 1001;
 
