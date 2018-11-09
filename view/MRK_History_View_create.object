@@ -17,7 +17,8 @@ cast(h.event_date as char(10)) as event_display,
 e.event, er.eventReason, 
 m1.symbol as history, m1.name as historyName, m2.symbol, m2.name as markerName,
 u1.login as createdBy, u2.login as modifiedBy,
-c.short_citation
+c.short_citation,
+c.jnumID
 from MRK_History h
 	LEFT OUTER JOIN BIB_Citation_Cache c on (h._Refs_key = c._Refs_key), 
 MRK_Event e, MRK_EventReason er, MRK_Marker m1, MRK_Marker m2,
