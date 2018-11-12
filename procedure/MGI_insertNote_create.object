@@ -1,0 +1,59 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/12/2018	lec
+#	- TR12963/teleuse-to-mgd_java_api
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/MGI_insertNote_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION MGI_insertNote (
+v_userKey int,
+v_objectKey int,
+v_mgiTypeKey int,
+v_noteTypeKey int,
+v_note mgi_notechunk.note%TYPE
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_noteKey int;
+
+BEGIN
+
+v_noteKey := max(_note_key) + 1 from MGI_Note;
+
+IF NOT EXISTS (SELECT 1 FROM MGI_Note
+	WHERE _Object_key = v_objectKey
+	AND _MGIType_key = v_mgiTypeKey
+	AND _NoteType_key = v_noteTypeKey)
+THEN
+	INSERT INTO MGI_Note
+	(_Note_key, _Object_key, _MGIType_key, _NoteType_key, 
+	 _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
+	VALUES (v_noteKey, v_objectKey, v_mgiTypeKey, v_noteTypeKey,
+		v_userKey, v_userKey, now(), now());
+
+	INSERT INTO MGI_NoteChunk
+	(_Note_key, sequenceNum, note, _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
+	VALUES (v_noteKey, 1, v_note, v_userKey, v_userKey, now(), now());
+
+END IF;
+
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MGI_insertNote(int,int,int,int,text) TO public;
+
+COMMENT ON FUNCTION mgd.MGI_insertNote(int,int,int,int,text) IS 'create a new synonym in the mgi_synonym table';
+
+EOSQL
