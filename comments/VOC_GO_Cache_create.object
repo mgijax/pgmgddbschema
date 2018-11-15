@@ -4,7 +4,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-COMMENT ON TABLE mgd.VOC_GO_Cache IS 'A record in thie table represents the cached value of the GO Terms, the GO DAG and GO accession ids. See mgicacheload/vocgo.csh.';
+COMMENT ON TABLE mgd.VOC_GO_Cache IS 'A record in this table represents the cached value of the GO Terms, the GO DAG and GO accession ids. See mgicacheload/vocgo.csh.';
 
 COMMENT ON COLUMN VOC_GO_Cache.accID IS 'GO accession id of the Term (GO:xxxxx)';
 
