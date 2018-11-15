@@ -69,9 +69,9 @@ THEN
 END IF;
 
 INSERT INTO MRK_History
-(_Marker_key, _History_key, _Refs_key, _Marker_Event_key, _Marker_EventReason_key, sequenceNum, name, 
- event_date, _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
-VALUES(markerKey, historyKey, refKey, eventKey, eventReasonKey, maxSeq + 1, name, 
+(_Assoc_key, _Marker_key, _History_key, _Refs_key, _Marker_Event_key, _Marker_EventReason_key, sequenceNum, 
+name, event_date, _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
+VALUES(nextval('mrk_history_seq'), markerKey, historyKey, refKey, eventKey, eventReasonKey, maxSeq + 1, name, 
        event_date, createdByKey, modifiedByKey, creation_date, modification_date)
 ;
 

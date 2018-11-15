@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 10/25/2018	lec
+#	- TR12963/TeleUSE->API
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE mrk_history_seq;    
+ALTER TABLE MRK_History ALTER _Assoc_key SET DEFAULT NEXTVAL('mrk_history_seq');
+select setval('mrk_history_seq', (select max(_Assoc_key) from MRK_History));
+--select last_value from mrk_history_seq;
+
+EOSQL
