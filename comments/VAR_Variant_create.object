@@ -1,0 +1,29 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.VAR_Variant IS 'A record in this table represents a variant for an allele. An allele can have multiple variants. Each variant will eventually have two records in this table -- one for reported data and the other for curated data.';
+
+COMMENT ON COLUMN VAR_Variant._Variant_key IS 'primary key, uniquely identifying the record';
+
+COMMENT ON COLUMN VAR_Variant._Allele_key IS 'foreign key to ALL_Allele, identifies the allele for this variant';
+
+COMMENT ON COLUMN VAR_Variant._SourceVariant_key IS 'null if this is a source (as reported) variant record; foreign key to VAR_Variant to identify the source variant, if this is a curated record';
+
+COMMENT ON COLUMN VAR_Variant._Strain_key IS 'foreign key to PRB_Strain, identifies the strain with this variant';
+
+COMMENT ON COLUMN VAR_Variant.isReviewed IS 'has this variant been reviewed by a curator (1) or not (0)?';
+
+COMMENT ON COLUMN VAR_Variant.description IS 'text description of this variant';
+
+COMMENT ON COLUMN VAR_Variant._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN VAR_Variant.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN VAR_Variant.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN VAR_Variant._ModifiedBy_key IS 'user who last modified the record';
+
+EOSQL

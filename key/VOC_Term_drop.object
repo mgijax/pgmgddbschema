@@ -3,6 +3,9 @@
 #
 # History
 #
+# 11/12/2018	jsb
+#		- adding VAR tables for variants
+#
 # 11/28/2016	lec
 #	- TR12427/Disease Ontology (DO)
 #
@@ -75,6 +78,12 @@ ALTER TABLE mgd.VOC_Annot DROP CONSTRAINT VOC_Annot__Term_key_fkey CASCADE;
 ALTER TABLE mgd.VOC_Annot DROP CONSTRAINT VOC_Annot__Qualifier_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_Allele_Cache DROP CONSTRAINT VOC_Allele_Cache__Term_key_fkey CASCADE;
+
+ALTER TABLE mgd.VAR_Effect DROP CONSTRAINT VAR_Effect__Effect_key_fkey CASCADE;
+
+ALTER TABLE mgd.VAR_Type DROP CONSTRAINT VAR_Type__Type_key_fkey CASCADE;
+
+ALTER TABLE mgd.VAR_Sequence DROP CONSTRAINT VAR_Sequence__Sequence_Type_key_fkey CASCADE;
 
 ALTER TABLE mgd.SEQ_Sequence_Assoc DROP CONSTRAINT SEQ_Sequence_Assoc__Qualifier_key_fkey CASCADE;
 

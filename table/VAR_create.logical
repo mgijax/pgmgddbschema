@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# Logical Group Script
+#
+# Executes all VAR*_create.object scripts
+#
+
+cd `dirname $0`
+
+for i in VAR*_create.object
+do
+$i $*
+done
+

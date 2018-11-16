@@ -3,6 +3,9 @@
 #
 # HISTORY
 #
+# 11/12/2018	jsb
+#		- adding VAR tables for variants
+#
 # 04/05/2018    lec 
 #       - TR12734/GenomeFeVah
 #
@@ -15,6 +18,8 @@
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.VAR_Variant DROP CONSTRAINT VAR_Variant__Strain_key_fkey CASCADE;
 
 ALTER TABLE mgd.RI_RISet DROP CONSTRAINT RI_RISet__Strain_key_2_fkey CASCADE;
 

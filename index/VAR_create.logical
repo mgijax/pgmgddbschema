@@ -1,0 +1,14 @@
+#!/bin/csh -f
+
+#
+# Logical Group Script
+#
+# Executes all VAR*_create.object scripts
+#
+
+cd `dirname $0`
+
+foreach i (VAR*_create.object)
+$i $*
+end
+

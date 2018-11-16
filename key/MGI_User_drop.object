@@ -3,6 +3,9 @@
 #
 # History
 #
+# 11/12/2018	jsb
+#		- adding VAR tables for variants
+#
 # 04/05/2018	lec
 #	- TR12734/Genome FeVah/MRK_StrainMarker
 #
@@ -46,6 +49,22 @@
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.VAR_Variant DROP CONSTRAINT VAR_Variant__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.VAR_Variant DROP CONSTRAINT VAR_Variant__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.VAR_Type DROP CONSTRAINT VAR_Type__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.VAR_Type DROP CONSTRAINT VAR_Type__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.VAR_Sequence DROP CONSTRAINT VAR_Sequence__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.VAR_Sequence DROP CONSTRAINT VAR_Sequence__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.VAR_Effect DROP CONSTRAINT VAR_Effect__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.VAR_Effect DROP CONSTRAINT VAR_Effect__CreatedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_Term_EMAPS DROP CONSTRAINT VOC_Term_EMAPS__ModifiedBy_key_fkey CASCADE;
 

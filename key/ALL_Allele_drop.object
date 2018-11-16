@@ -2,6 +2,9 @@
 #
 # History
 #
+# 11/12/2018	jsb
+#		- adding VAR tables for variants
+#
 # 09/03/2009    lec
 #       - TR 9797; add ALL_Cre_Cache
 #
@@ -15,6 +18,8 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.VOC_Allele_Cache DROP CONSTRAINT VOC_Allele_Cache__Allele_key_fkey CASCADE;
+
+ALTER TABLE mgd.VAR_Variant DROP CONSTRAINT VAR_Variant__Allele_key_fkey CASCADE;
 
 ALTER TABLE mgd.SEQ_Allele_Assoc DROP CONSTRAINT SEQ_Allele_Assoc__Allele_key_fkey CASCADE;
 

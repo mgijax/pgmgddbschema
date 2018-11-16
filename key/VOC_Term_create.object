@@ -3,6 +3,9 @@
 #
 # History
 #
+# 11/12/2018	jsb
+#		- adding VAR tables for variants
+#
 # 05/31/2017    lec 
 #       - TR12250/Lit Triage
 #
@@ -336,6 +339,15 @@ ALTER TABLE mgd.SEQ_Sequence ADD FOREIGN KEY (_SequenceProvider_key) REFERENCES 
 
 
 ALTER TABLE mgd.SEQ_Sequence_Assoc ADD FOREIGN KEY (_Qualifier_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
+ALTER TABLE mgd.VAR_Sequence ADD FOREIGN KEY (_Sequence_Type_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
+ALTER TABLE mgd.VAR_Effect ADD FOREIGN KEY (_Effect_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
+ALTER TABLE mgd.VAR_Type ADD FOREIGN KEY (_Type_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
 ALTER TABLE mgd.VOC_Allele_Cache ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term DEFERRABLE;
