@@ -41,6 +41,9 @@ select last_value from mgi_synonym_seq;
 select max(_marker_key) from MRK_Marker;
 select last_value from mrk_marker_seq;
 
+select max(_assoc_key) from MRK_History;
+select last_value from mrk_history_seq;
+
 select max(_StrainGenotype_key) from PRB_Strain_Genotype;
 select last_value from prb_strain_genotype_seq;
 

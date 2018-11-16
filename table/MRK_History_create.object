@@ -10,6 +10,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.MRK_History (
+	_Assoc_key		       int             not null,
  	_Marker_key                    int             not null,
 	_Marker_Event_key              int             not null,
 	_Marker_EventReason_key        int             not null,
