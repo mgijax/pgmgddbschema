@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/20/2018	jsb
+#	- TR12963/DADT Project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE var_effect_seq;    
+ALTER TABLE VAR_Effect ALTER _VariantEffect_key SET DEFAULT NEXTVAL('var_effect_seq');
+select setval('var_effect_seq', (select max(_VariantEffect_key) from VAR_Effect));
+
+EOSQL
