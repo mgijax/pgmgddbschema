@@ -1,0 +1,72 @@
+#!/bin/sh
+
+#
+# History
+#
+# lec	08/27/2014
+#	- TR11654/remove obsolete TR1270/IMAGE sp
+#
+# lec	07/10/2008
+#	- TR9125; gene model check
+#
+# 02/15/2005	lec
+#	- permissions
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/ACC_delete_byAccKey_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION ACC_delete_byAccKey (
+v_accKey int,
+v_refsKey int DEFAULT -1
+)
+RETURNS VOID AS
+\$\$
+
+BEGIN
+
+--
+-- NAME: ACC_delete_byAccKey
+--
+-- DESCRIPTION:
+--        
+-- To delete ACC_Accession and ACC_AccessionReference
+-- This may be obsolete now that referential integrity exists
+--
+-- INPUT:
+--      
+-- v_accKey  : ACC_Accession._Accession_key
+-- v_refsKey : BIB_Refs._Refs_key
+--
+-- RETURNS:
+--	VOID
+--      
+--
+
+IF v_refsKey = -1
+THEN
+        DELETE FROM ACC_Accession WHERE _Accession_key = v_accKey;
+ELSE
+        DELETE FROM ACC_AccessionReference WHERE _Accession_key = v_accKey and _Refs_key = v_refsKey;
+
+        -- If the deletion of the detail would leave the master all alone...
+        -- then delete the master too.
+
+        IF NOT EXISTS (SELECT * FROM ACC_AccessionReference WHERE _Accession_key = v_accKey)
+        THEN
+            DELETE FROM ACC_Accession WHERE _Accession_key = v_accKey;
+        END IF;
+END IF;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ACC_delete_byAccKey(int,int) TO public;
+
+COMMENT ON FUNCTION mgd.ACC_delete_ByAccKey(int,int) IS 'delete acc_accession by _accession_key';
+
+EOSQL
