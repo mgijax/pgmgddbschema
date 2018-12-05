@@ -4,6 +4,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION IF EXISTS ACC_delete_byAccKey(int,int);
+DROP FUNCTION IF EXISTS ACC_insert(int,int,text,int,text,int,int,int,int);
 
 EOSQL

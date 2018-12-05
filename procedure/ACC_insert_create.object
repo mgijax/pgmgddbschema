@@ -1,0 +1,117 @@
+#!/bin/sh
+
+#
+# History
+#
+# lec	05/24/2017
+#       - TR12240/12083/varchar to text
+#
+# lec   07/09/2008
+#       - TR 9057; new
+#
+# example:
+#    select ACC_insert(1, 'test-A1B1C123', 1, 'Marker', -1, 0)
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/ACC_insert_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION ACC_insert (
+v_userKey int,
+v_objectKey int,
+v_accID acc_accession.accid%TYPE,
+v_logicalDB int,
+v_mgiType acc_mgitype.name%TYPE,
+v_refsKey int DEFAULT -1,
+v_preferred int DEFAULT 1,
+v_private int DEFAULT 0,
+v_dosplit int DEFAULT 1
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_nextACC int;
+v_mgiTypeKey int;
+v_prefixPart acc_accession.prefixPart%TYPE;
+v_numericPart acc_accession.prefixPart%Type;
+
+BEGIN
+
+--
+-- NAME: ACC_insert
+--
+-- DESCRIPTION:
+--        
+-- To add new ACC_Accession record with out checking Accession id rules
+-- If reference is given, insert record into ACC_AccessionReference
+--
+-- INPUT:
+--      
+-- v_userKey                        : MGI_User._User_key
+-- v_objectKey                      : ACC_Accession._Object_key
+-- v_accID acc_accession.accid%TYPE : ACC_Accession.accID
+-- v_logicalDB                      : ACC_Accession._LogicalDB_key
+-- v_mgiType acc_mgitype.name%TYPE  : ACC_Accession._MGIType_key
+-- v_refsKey int DEFAULT -1         : BIB_Refs._Refs_key; if Reference, then call ACCRef_insert()
+-- v_preferred int DEFAULT 1        : ACC_Accession.prefixPart
+-- v_private int DEFAULT 0          : ACC_Accession.private
+-- v_dosplit int DEFAULT 1          : if 1, split the accession id into prefixpart/numericpart
+--
+-- RETURNS:
+--      
+--
+
+IF v_accID IS NULL
+THEN
+	RETURN;
+END IF;
+
+v_nextACC := max(_Accession_key) + 1 FROM ACC_Accession;
+
+v_mgiTypeKey := _MGIType_key FROM ACC_MGIType WHERE name = v_mgiType;
+v_prefixPart := v_accID;
+v_numericPart := '';
+
+-- skip the splitting...for example, the Reference/DOI ids are not split
+
+IF v_dosplit
+THEN
+	-- split accession id INTO prefixPart/numericPart
+	SELECT * FROM ACC_split(v_accID) INTO v_prefixPart, v_numericPart;
+END IF;
+
+IF v_numericPart = ''
+THEN
+	INSERT INTO ACC_Accession
+	(_Accession_key, accID, prefixPart, numericPart, _LogicalDB_key, _Object_key, 
+ 	 _MGIType_key, private, preferred, _CreatedBy_key, _ModifiedBy_key)
+	VALUES(v_nextACC, v_accID, v_prefixPart, null, 
+               v_logicalDB, v_objectKey, v_mgiTypeKey, v_private, v_preferred, v_userKey, v_userKey);
+ELSE
+	INSERT INTO ACC_Accession
+	(_Accession_key, accID, prefixPart, numericPart, _LogicalDB_key, _Object_key, 
+ 	 _MGIType_key, private, preferred, _CreatedBy_key, _ModifiedBy_key)
+	VALUES(v_nextACC, v_accID, v_prefixPart, v_numericPart::integer, 
+               v_logicalDB, v_objectKey, v_mgiTypeKey, v_private, v_preferred, v_userKey, v_userKey);
+END IF;
+
+IF v_refsKey != -1
+THEN
+	PERFORM ACCRef_insert(v_userKey, v_nextAcc, v_refsKey);
+END IF;
+
+RETURN;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION ACC_insert(int,int,text,int,text,int,int,int,int) TO public;
+
+COMMENT ON FUNCTION mgd.ACC_insert(int,int,text,int,text,int,int,int,int) IS 'update acc_accession/acc_accessionreference';
+
+EOSQL
