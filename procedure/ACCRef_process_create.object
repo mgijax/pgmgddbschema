@@ -42,7 +42,7 @@ BEGIN
 -- To add a new Accession/Reference row to ACC_AccessionReference
 --
 -- If an Accession object already exists, then call ACCRef_insert() to add the new Accession/Reference row
--- Else, call ACC_insertNoChecks() to add a new Accession object and a new Accession/Reference row
+-- Else, call ACC_insert() to add a new Accession object and a new Accession/Reference row
 --
 -- INPUT:
 --      
@@ -77,7 +77,7 @@ IF v_accKey IS NOT NULL
 THEN
 	PERFORM ACCRef_insert (v_userKey, v_accKey, v_refsKey);
 ELSE
-	PERFORM ACC_insertNoChecks (v_userKey, v_objectKey, v_accID, v_logicalDB, v_mgiType, v_refsKey, v_preferred, v_private);
+	PERFORM ACC_insert (v_userKey, v_objectKey, v_accID, v_logicalDB, v_mgiType, v_refsKey, v_preferred, v_private);
 END IF;
 
 RETURN;

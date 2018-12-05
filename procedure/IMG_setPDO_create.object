@@ -109,7 +109,7 @@ THEN
 END IF;
 
 -- insert the new PIX: accession record 
-PERFORM ACC_insertNoChecks (1001, v_image_key, v_accID, v_imageLDB, 'Image', -1, 1, 1);
+PERFORM ACC_insert (1001, v_image_key, v_accID, v_imageLDB, 'Image', -1, 1, 1);
 
 IF NOT FOUND
 THEN
