@@ -107,7 +107,7 @@ WHILE (v_toSeqIDs != NULL) LOOP
 			AND a2._Object_key = v_toSeqKey
 			AND a2.accID = a1.accID)
 		LOOP
-			PERFORM ACC_insertNoChecks (1001, v_toSeqKey, v_accID, v_logicalDB, 'Sequence', -1, 0, 0);
+			PERFORM ACC_insert (1001, v_toSeqKey, v_accID, v_logicalDB, 'Sequence', -1, 0, 0);
 		END LOOP;
 	END IF;
 END LOOP;
