@@ -15,8 +15,8 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create view mgd.MGI_User_Active_View
 as
-select u.*, t2.term as userType
-from MGI_User u, VOC_Term t1, VOC_Vocab v1, VOC_Term t2, VOC_Vocab v2
+select u.*, t2.term as userType, u1.login as createdBy, u2.login as modifiedBy
+from MGI_User u, VOC_Term t1, VOC_Vocab v1, VOC_Term t2, VOC_Vocab v2, MGI_User u1, MGI_User u2
 where u._UserStatus_key = t1._Term_key
 and t1.term = 'Active'
 and t1._Vocab_key = v1._Vocab_key
@@ -24,6 +24,8 @@ and v1.name = 'User Status'
 and u._UserType_key = t2._Term_key
 and t2._Vocab_key = v2._Vocab_key
 and v2.name = 'User Type'
+and u._CreatedBy_key = u1._User_key
+and u._ModifiedBy_key = u2._User_key
 
 
 
