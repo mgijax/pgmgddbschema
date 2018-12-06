@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 12/06/2018	lec
+#	- TR12963/teleuse-to-mgd_java_api
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop view if exists mgd.MGI_Relationship_MarkerTSS_View
+
+CASCADE
+;
+EOSQL

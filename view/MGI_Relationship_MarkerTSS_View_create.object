@@ -1,0 +1,34 @@
+#!/bin/sh
+
+#
+# History
+#
+# 12/06/2018	lec
+#	- TR12963/teleuse-to-mgd_java_api
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/MGI_Relationship_MarkerTSS_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MGI_Relationship_MarkerTSS_View
+as
+select r.*, v1.name as categoryTerm, v2.term as qualifierTerm, v3.term as evidenceTerm,
+c.jnumID, c.numericPart as jnum, c.short_citation, u2.login as modifiedBy, u1.login as createdBy
+from MGI_Relationship r, BIB_Citation_Cache c, MGI_User u1, MGI_User u2, 
+	MGI_Relationship_Category v1, VOC_Term v2, VOC_Term v3
+where r._Category_key = 1008
+and r._Category_key = v1._Category_key
+and r._Qualifier_key = v2._Term_key
+and r._Evidence_key = v3._Term_key
+and r._Refs_key = c._Refs_key
+and r._CreatedBy_key = u1._User_key
+and r._ModifiedBy_key = u2._User_key
+
+
+
+;
+
+EOSQL
