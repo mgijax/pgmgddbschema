@@ -24,16 +24,16 @@ ar._Refs_key,
 b.numericPart as jnum, 
 b.short_citation, 
 b.jnumID,
-u1.login as modifiedBy,
-u2.login as createdBy
+u2.login as modifiedBy,
+u1.login as createdBy
 from ACC_Accession a, ACC_LogicalDB l, ACC_MGIType m, ACC_AccessionReference ar, BIB_Citation_Cache b, MGI_User u1, MGI_User u2
 where a._MGIType_key = 2
 and a._Accession_key = ar._Accession_key
 and a._LogicalDB_key = l._LogicalDB_key
 and a._MGIType_key = m._MGIType_key
 and ar._Refs_key = b._Refs_key
-and a._ModifiedBy_key = u1._User_key
-and a._CreatedBy_key = u2._User_key
+and a._CreatedBy_key = u1._User_key
+and a._ModifiedBy_key = u2._User_key
 and a._LogicalDB_key in (9)
 
 
