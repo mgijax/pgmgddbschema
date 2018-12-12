@@ -34,7 +34,7 @@ and a._MGIType_key = m._MGIType_key
 and ar._Refs_key = b._Refs_key
 and a._CreatedBy_key = u1._User_key
 and a._ModifiedBy_key = u2._User_key
-and a._LogicalDB_key in (9)
+and a._LogicalDB_key in (8,9)
 
 
 
