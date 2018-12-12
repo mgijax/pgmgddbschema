@@ -22,10 +22,8 @@ and a._LogicalDB_key = l._LogicalDB_key
 and a._MGIType_key = m._MGIType_key
 and a._Object_key = ma._Marker_key
 and ma._Marker_Type_key = mt._Marker_Type_key
-and not exists (select r.* from ACC_AccessionReference r
-where a._Accession_key = r._Accession_key)
-
-
+and not exists (select r.* from ACC_AccessionReference r where a._Accession_key = r._Accession_key)
+and a._LogicalDB_key not in (117,118)
 
 ;
 
