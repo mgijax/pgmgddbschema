@@ -252,19 +252,6 @@ THEN
 	RETURN;
 END IF;
 
--- Update current symbols
-
-UPDATE MRK_Current 
-SET _Current_key = v_newKey 
-WHERE _Marker_key = v_oldKey
-;
-
-IF NOT FOUND
-THEN
-	RAISE EXCEPTION E'\nMRK_mergeWithdrawal: Could not update current symbols';
-	RETURN;
-END IF;
-
 -- Copy History records from old symbol to new symbol
 
 PERFORM MRK_copyHistory (v_userKey, v_oldKey, v_newKey);
