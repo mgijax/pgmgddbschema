@@ -215,6 +215,15 @@ THEN
     RETURN NEW;
 END IF;
 
+-- Create Current for new marker
+INSERT INTO MRK_Current VALUES(New._Marker_key, NEW._Marker_key, now(), now());
+
+IF NOT FOUND
+THEN
+    RAISE EXCEPTION E'MRK_Marker_insert_trigger: MRK_Current';
+    RETURN NEW;
+END IF;
+
 -- Create Offset for new marker
 
 --IF (NEW.chromosome = 'UN')

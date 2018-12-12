@@ -112,6 +112,15 @@ THEN
 	RETURN;
 END IF;
 
+-- Update the Current marker of the new marker
+
+UPDATE MRK_Current 
+SET _Current_key = v_oldKey 
+WHERE _Current_key = v_newKey;
+
+-- handled by trigger
+--INSERT INTO MRK_Current VALUES (v_oldKey, v_newKey, now(), now());
+
 -- Update old marker record with new symbol and name values
 UPDATE MRK_Marker 
 SET symbol = v_newSymbol, name = v_newName, _ModifiedBy_key = v_userKey, modification_date = now()
