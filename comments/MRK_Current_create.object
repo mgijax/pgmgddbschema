@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MRK_Current IS 'Defines relationship between a Marker and its Current Symbol(s).  A Marker may have one or more current symbols associated with it.  Usually there is only one current symbol for a marker.  But, if a marker is split, then each of the new symbols will be assigned as a current symbol of the split symbol.
+
+See MRK_Marker.';
+
+COMMENT ON COLUMN MRK_Current.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MRK_Current._Current_key IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN MRK_Current._Marker_key IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN MRK_Current.modification_date IS 'date record was last modified';
+
+EOSQL
