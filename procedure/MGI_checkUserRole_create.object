@@ -34,37 +34,29 @@ RETURNS INTEGER AS
 \$\$
 
 DECLARE
-isVerified int := 1;
+v_userKey int := _user_key from MGI_user where login = v_userLogin;
 
 BEGIN
 
 IF v_eiModule = 'AlleleModule'
 THEN
-	IF v_userLogin IN
+	IF v_userLogin NOT IN
 	(SELECT login FROM MGI_UserRole_View
 		WHERE userrole IN ('Pheno:Tier 4 (curator)',
 			'Pheno:Tier 5 (guru)'))
 	THEN
-		isVerified := 1;
-
-	ELSE
-		isVerified := 0;
-
+		v_userKey := 0;
 	END IF;
 
 ELSIF v_eiModule = 'ImageModule'
 THEN
-	IF v_userLogin IN
+	IF v_userLogin NOT IN
 	(SELECT login FROM MGI_UserRole_View
 		WHERE userrole IN ('GXD ImageModule',
 			'Pheno:Tier 4 (curator)',
 			'Pheno:Tier 5 (guru)'))
 	THEN
-		isVerified := 1;
-
-	ELSE
-		isVerified := 0;
-
+		v_userKey := 0;
 	END IF;
 
 ELSIF v_eiModule IN ('AlleleDerivationModule',
@@ -96,23 +88,17 @@ ELSIF v_eiModule IN ('AlleleDerivationModule',
 		'TranslationModule',
 		'UserRoleModule')
 THEN
-	IF v_userLogin IN
+	IF v_userLogin NOT IN
 		(SELECT login FROM MGI_UserRole_View WHERE userrole in (v_eiModule))
 	THEN
-		isVerified := 1;
-
-	ELSE
-		isVerified := 0;
-
+		v_userKey := 0;
 	END IF;
 
 -- default is to give permissions if none have been given
-ELSE
-	isVerified := 1;
 
 END IF;
 
-RETURN isVerified;
+RETURN v_userKey;
 
 END;
 \$\$
