@@ -1,3 +1,11 @@
+TAG: pgmgddbschema-6-0-13-7
+TAG: pgmgddbschema-6-0-13-6
+DATE: 12/17/2018
+STAFF: lec 
+CHANGES: 
+TR12904/pwi/add GXD_InSituResult.resultNote to GXD_Expression table
+TR12355/pwi/reporting strengh of expression in results summary
+
 TAG: pgmgddbschema-6-0-13-5
 DATE: 10/09/2018
 STAFF: lec
