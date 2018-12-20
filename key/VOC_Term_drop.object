@@ -4,7 +4,7 @@
 # History
 #
 # 11/12/2018	jsb
-#		- adding VAR tables for variants
+#		- adding ALL_Variant tables for variants
 #
 # 11/28/2016	lec
 #	- TR12427/Disease Ontology (DO)
@@ -78,12 +78,6 @@ ALTER TABLE mgd.VOC_Annot DROP CONSTRAINT VOC_Annot__Term_key_fkey CASCADE;
 ALTER TABLE mgd.VOC_Annot DROP CONSTRAINT VOC_Annot__Qualifier_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_Allele_Cache DROP CONSTRAINT VOC_Allele_Cache__Term_key_fkey CASCADE;
-
-ALTER TABLE mgd.VAR_Effect DROP CONSTRAINT VAR_Effect__Effect_key_fkey CASCADE;
-
-ALTER TABLE mgd.VAR_Type DROP CONSTRAINT VAR_Type__Type_key_fkey CASCADE;
-
-ALTER TABLE mgd.VAR_Sequence DROP CONSTRAINT VAR_Sequence__Sequence_Type_key_fkey CASCADE;
 
 ALTER TABLE mgd.SEQ_Sequence_Assoc DROP CONSTRAINT SEQ_Sequence_Assoc__Qualifier_key_fkey CASCADE;
 
@@ -226,6 +220,12 @@ ALTER TABLE mgd.BIB_Refs DROP CONSTRAINT BIB_Refs__ReferenceType_key_fkey CASCAD
 ALTER TABLE mgd.ALL_Cre_Cache DROP CONSTRAINT ALL_Cre_Cache__Allele_Type_key_fkey CASCADE;
 
 ALTER TABLE mgd.ALL_Cre_Cache DROP CONSTRAINT ALL_Cre_Cache__EMAPA_Term_key_fkey CASCADE;
+
+ALTER TABLE mgd.ALL_Variant_Effect DROP CONSTRAINT ALL_Variant_Effect__Effect_key_fkey CASCADE;
+
+ALTER TABLE mgd.ALL_Variant_Type DROP CONSTRAINT ALL_Variant_Type__Type_key_fkey CASCADE;
+
+ALTER TABLE mgd.ALL_Variant_Sequence DROP CONSTRAINT ALL_Variant_Sequence__Sequence_Type_key_fkey CASCADE;
 
 ALTER TABLE mgd.ALL_CellLine_Derivation DROP CONSTRAINT ALL_CellLine_Derivation__Vector_key_fkey CASCADE;
 

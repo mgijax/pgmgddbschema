@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# HISTORY
+#    11/14/2018 - jsb - added when adding variants to database
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index if exists mgd.ALL_Variant_idx_Allele_key;
+
+drop index if exists mgd.ALL_Variant_idx_SourceVariant_key;
+
+drop index if exists mgd.ALL_Variant_idx_Strain_key;
+
+drop index if exists mgd.ALL_Variant_idx_CreatedBy_key;
+
+drop index if exists mgd.ALL_Variant_idx_ModifiedBy_key;
+
+EOSQL

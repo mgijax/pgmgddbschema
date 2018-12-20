@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# HISTORY
+#    11/14/2018 - jsb - added when adding variants to database
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index if exists mgd.ALL_Variant_Effect_idx_Variant_key;
+
+drop index if exists mgd.ALL_Variant_Effect_idx_Effect_key;
+
+drop index if exists mgd.ALL_Variant_Effect_idx_CreatedBy_key;
+
+drop index if exists mgd.ALL_Variant_Effect_idx_ModifiedBy_key;
+
+EOSQL

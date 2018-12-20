@@ -4,7 +4,7 @@
 # History
 #
 # 11/12/2018	jsb
-#		- adding VAR tables for variants
+#		- adding ALL_Variant tables for variants
 #
 # 04/05/2018    lec 
 #       - TR12734/GenomeFeVah
@@ -34,6 +34,9 @@ ALTER TABLE mgd.ALL_CellLine ADD FOREIGN KEY (_Strain_key) REFERENCES mgd.PRB_St
 
 
 ALTER TABLE mgd.ALL_Allele ADD FOREIGN KEY (_Strain_key) REFERENCES mgd.PRB_Strain DEFERRABLE;
+
+
+ALTER TABLE mgd.ALL_Variant ADD FOREIGN KEY (_Strain_key) REFERENCES mgd.PRB_Strain DEFERRABLE;
 
 
 ALTER TABLE mgd.CRS_Cross ADD FOREIGN KEY (_StrainHT_key) REFERENCES mgd.PRB_Strain DEFERRABLE;
@@ -70,9 +73,6 @@ ALTER TABLE mgd.RI_RISet ADD FOREIGN KEY (_Strain_key_1) REFERENCES mgd.PRB_Stra
 
 
 ALTER TABLE mgd.RI_RISet ADD FOREIGN KEY (_Strain_key_2) REFERENCES mgd.PRB_Strain DEFERRABLE;
-
-
-ALTER TABLE mgd.VAR_Variant ADD FOREIGN KEY (_Strain_key) REFERENCES mgd.PRB_Strain DEFERRABLE;
 
 
 EOSQL

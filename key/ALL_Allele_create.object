@@ -4,7 +4,7 @@
 # History
 #
 # 11/12/2018	jsb
-#		- adding VAR tables for variants
+#		- adding ALL_Variant table for variants
 #
 # 01/07/2016    lec 
 #       - TR12223/converting _structure_key -> _emapa_term_key/_stage_key
@@ -42,6 +42,9 @@ ALTER TABLE mgd.ALL_Allele_CellLine ADD FOREIGN KEY (_Allele_key) REFERENCES mgd
 ALTER TABLE mgd.ALL_Allele_Mutation ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele ON DELETE CASCADE DEFERRABLE;
 
 
+ALTER TABLE mgd.ALL_Variant ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele DEFERRABLE CASCADE DEFERRABLE;
+
+
 ALTER TABLE mgd.ALL_Cre_Cache ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele ON DELETE CASCADE DEFERRABLE;
 
 
@@ -67,9 +70,6 @@ ALTER TABLE mgd.GXD_AllelePair ADD FOREIGN KEY (_Allele_key_2) REFERENCES mgd.AL
 
 
 ALTER TABLE mgd.MLD_Expt_Marker ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele DEFERRABLE;
-
-
-ALTER TABLE mgd.VAR_Variant ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele DEFERRABLE;
 
 
 ALTER TABLE mgd.VOC_Allele_Cache ADD FOREIGN KEY (_Allele_key) REFERENCES mgd.ALL_Allele DEFERRABLE;

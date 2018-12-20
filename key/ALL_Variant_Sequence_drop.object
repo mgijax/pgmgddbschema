@@ -1,14 +1,10 @@
 #!/bin/sh
-
 #
 # This file was generated automatically by dbschemaScripts.py -- edit with care.
 #
-
 cd `dirname $0` && . ./Configuration
-
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.VAR_Type ADD PRIMARY KEY (_VariantType_key);
+ALTER TABLE mgd.ALL_Variant_Sequence DROP CONSTRAINT ALL_Variant_Sequence_pkey CASCADE;
 
 EOSQL

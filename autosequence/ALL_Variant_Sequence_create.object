@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/20/2018	jsb
+#	- TR12963/DADT Project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE all_variantsequence_seq;    
+ALTER TABLE ALL_Variant_Sequence ALTER _VariantSequence_key SET DEFAULT NEXTVAL('all_variantsequence_seq');
+select setval('all_variantsequence_seq', (select max(_VariantSequence_key) from ALL_Variant_Sequence));
+
+EOSQL

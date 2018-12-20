@@ -9,6 +9,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.VAR_Sequence ADD PRIMARY KEY (_VariantSequence_key);
+ALTER TABLE mgd.ALL_Variant_Type ADD PRIMARY KEY (_VariantType_key);
 
 EOSQL

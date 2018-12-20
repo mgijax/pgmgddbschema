@@ -5,6 +5,6 @@
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.VAR_Sequence DROP CONSTRAINT VAR_Sequence_pkey CASCADE;
+ALTER TABLE mgd.ALL_Variant_Effect DROP CONSTRAINT ALL_Variant_Effect_pkey CASCADE;
 
 EOSQL
