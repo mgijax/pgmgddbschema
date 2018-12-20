@@ -12,7 +12,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create table mgd.VAR_Variant (
+create table mgd.ALL_Variant (
  	_Variant_key		int						not null,
  	_Allele_key			int						not null,
  	_SourceVariant_key	int						null,

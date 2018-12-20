@@ -10,7 +10,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 
-truncate table mgd.VAR_Sequence
+truncate table mgd.ALL_Variant_Sequence
 
 ;
 EOSQL
