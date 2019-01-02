@@ -7,10 +7,6 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.ALL_Variant_Sequence DROP CONSTRAINT ALL_Variant_Sequence_Variant_key_fkey CASCADE;
 
-ALTER TABLE mgd.ALL_Variant_Type DROP CONSTRAINT ALL_Variant_Type_Variant_key_fkey CASCADE;
-
-ALTER TABLE mgd.ALL_Variant_Effect DROP CONSTRAINT ALL_Variant_Effect_Variant_key_fkey CASCADE;
-
 ALTER TABLE mgd.ALL_Variant DROP CONSTRAINT ALL_Variant_pkey CASCADE;
 
 EOSQL

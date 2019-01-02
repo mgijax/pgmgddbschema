@@ -155,12 +155,6 @@ ALTER TABLE mgd.ALL_CellLine_Derivation ADD FOREIGN KEY (_Vector_key) REFERENCES
 ALTER TABLE mgd.ALL_Variant_Sequence ADD FOREIGN KEY (_Sequence_Type_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
-ALTER TABLE mgd.ALL_Variant_Effect ADD FOREIGN KEY (_Effect_key) REFERENCES mgd.VOC_Term DEFERRABLE;
-
-
-ALTER TABLE mgd.ALL_Variant_Type ADD FOREIGN KEY (_Type_key) REFERENCES mgd.VOC_Term DEFERRABLE;
-
-
 ALTER TABLE mgd.BIB_Refs ADD FOREIGN KEY (_ReferenceType_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 

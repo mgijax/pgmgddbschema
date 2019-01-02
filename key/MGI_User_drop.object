@@ -374,17 +374,9 @@ ALTER TABLE mgd.ALL_Variant DROP CONSTRAINT ALL_Variant__ModifiedBy_key_fkey CAS
 
 ALTER TABLE mgd.ALL_Variant DROP CONSTRAINT ALL_Variant__CreatedBy_key_fkey CASCADE;
 
-ALTER TABLE mgd.ALL_Variant_Type DROP CONSTRAINT ALL_Variant_Type__ModifiedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.ALL_Variant_Type DROP CONSTRAINT ALL_Variant_Type__CreatedBy_key_fkey CASCADE;
-
 ALTER TABLE mgd.ALL_Variant_Sequence DROP CONSTRAINT ALL_Variant_Sequence__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.ALL_Variant_Sequence DROP CONSTRAINT ALL_Variant_Sequence__CreatedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.ALL_Variant_Effect DROP CONSTRAINT ALL_Variant_Effect__ModifiedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.ALL_Variant_Effect DROP CONSTRAINT ALL_Variant_Effect__CreatedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.ALL_CellLine_Derivation DROP CONSTRAINT ALL_CellLine_Derivation__ModifiedBy_key_fkey CASCADE;
 
