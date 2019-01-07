@@ -13,7 +13,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.ALL_Variant_Sequence (
- 	_VariantSequence_key	int			  not null,
+ 	_VariantSequence_key		int		  not null,
  	_Variant_key			int		  not null,
  	_Sequence_Type_key		int		  not null,
         startCoordinate                 numeric           not null,
