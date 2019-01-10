@@ -13,7 +13,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE SEQUENCE voc_annot_seq;    
-ALTER TABLE VOC_Annot ALTER _annot_key SET DEFAULT NEXTVAL('voc_annot_seq');
-select setval('voc_annot_seq', (select max(_annot_key) from VOC_Annot));
+ALTER TABLE VOC_Annot ALTER _Annot_key SET DEFAULT NEXTVAL('voc_annot_seq');
+select setval('voc_annot_seq', (select max(_Annot_key) from VOC_Annot));
 
 EOSQL
