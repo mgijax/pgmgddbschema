@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/10/2019	lec
+#	- TR12963//teleuse-to-mgd_java_api
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE voc_annot_seq;    
+ALTER TABLE VOC_Annot ALTER _annot_key SET DEFAULT NEXTVAL('voc_annot_seq');
+select setval('voc_annot_seq', (select max(_annot_key) from VOC_Annot));
+
+EOSQL

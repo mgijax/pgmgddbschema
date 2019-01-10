@@ -12,6 +12,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP SEQUENCE IF EXISTS voc_evidence_seq CASCADE;
+DROP SEQUENCE IF EXISTS voc_annot_seq CASCADE;
 
 EOSQL
