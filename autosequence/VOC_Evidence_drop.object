@@ -3,8 +3,8 @@
 #
 # History
 #
-# 01/10/2019    lec
-#       - TR12963/teleuse-to-mgd_java_api
+# 01/29/2018    sc
+#       - TR122662/GMC Project
 #
 
 cd `dirname $0` && . ./Configuration

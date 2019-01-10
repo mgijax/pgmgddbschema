@@ -3,8 +3,8 @@
 #
 # History
 #
-# 01/10/2019	lec
-#	- TR12963//teleuse-to-mgd_java_api
+# 01/29/2018	sc
+#	- TR122662/GMC Project
 #
 
 cd `dirname $0` && . ./Configuration
@@ -13,7 +13,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE SEQUENCE voc_evidence_seq;    
-ALTER TABLE VOC_Evidence ALTER _annotevidence_key SET DEFAULT NEXTVAL('voc_evidence_seq');
-select setval('voc_evidence_seq', (select max(_annotevidence_key) from VOC_Evidence));
+ALTER TABLE VOC_Evidence ALTER _AnnotEvidence_key SET DEFAULT NEXTVAL('voc_evidence_seq');
+select setval('voc_evidence_seq', (select max(_AnnotEvidence_key) from VOC_Evidence));
 
 EOSQL
