@@ -65,6 +65,9 @@ select last_value from voc_allele_cache_seq;
 select max(_Cache_key) from VOC_Annot_Count_Cache;
 select last_value from voc_annot_count_cache_seq;
 
+select max(_Annot_key) from VOC_Annot;
+select last_value from voc_annot_seq;
+
 select max(_AnnotEvidence_key) from VOC_Evidence;
 select last_value from voc_evidence_seq;
 
