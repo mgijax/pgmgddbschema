@@ -63,6 +63,14 @@ WHERE a._Object_key = OLD._Variant_key
 AND a._MGIType_key = 45
 ;
 
+-- delete the source variant as well
+IF (OLD._SourceVariant_key is not null)
+THEN
+	DELETE FROM ALL_Variant a
+	WHERE a._Variant_key = OLD._SourceVariant_key
+	;
+END IF;
+
 RETURN NEW;
 
 END;
