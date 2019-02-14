@@ -3,6 +3,12 @@
 #
 # History
 #
+# 02/12/2019	lec
+#	- TR12763/add extractedTextWithRef
+#	see (litrefsection)
+#	extractedText stores pdf without reference section
+#	extractedTextWithRef stores pdf with reference section
+#
 # 05/30/2017	lec
 #	- TR12250/Lit Triage
 #
@@ -19,6 +25,7 @@ create table mgd.BIB_Workflow_Data (
 	_Supplemental_key              int			not null,
 	linkSupplemental               text                     null,
 	extractedText                  text                     null,
+	extractedTextWithRef           text                     null,
 	_CreatedBy_key                 int DEFAULT 1001         not null,
 	_ModifiedBy_key                int DEFAULT 1001         not null,
 	creation_date                  timestamp DEFAULT now()  not null,
