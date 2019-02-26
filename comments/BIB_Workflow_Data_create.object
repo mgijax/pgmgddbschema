@@ -6,15 +6,19 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 COMMENT ON TABLE mgd.BIB_Workflow_Data IS 'A record in this table represents Reference information needed by the Triage Workflow process';
 
-COMMENT ON COLUMN BIB_Workflow_Data._Refs_key IS 'primary key/foreign key to BIB_Refs';
+COMMENT ON COLUMN BIB_Workflow_Data._Assoc_key IS 'primary key';
+
+COMMENT ON COLUMN BIB_Workflow_Data._Refs_key IS 'foreign key to BIB_Refs';
 
 COMMENT ON COLUMN BIB_Workflow_Data.hasPDF IS 'does Reference have a PDF?';
 
 COMMENT ON COLUMN BIB_Workflow_Data._Supplemental_key IS 'foreign key to VOC_Term where_Vocab_key = 130 (Workflow Supplemental Status)';
 
+COMMENT ON COLUMN BIB_Workflow_Data._ExtractedText_key IS 'foreign key to VOC_Term where_Vocab_key = 142 (Lit Triage Extracted Text Section)';
+
 COMMENT ON COLUMN BIB_Workflow_Data.linkSupplemental IS 'not used/can be removed';
 
-COMMENT ON COLUMN BIB_Workflow_Data.extractedText IS 'PDF data that is saved as text';
+COMMENT ON COLUMN BIB_Workflow_Data.extractedText IS 'PDF data that is saved as text per specific section';
 
 COMMENT ON COLUMN BIB_Workflow_Data._CreatedBy_key IS 'user who created the record';
 

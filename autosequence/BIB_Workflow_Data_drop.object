@@ -3,8 +3,8 @@
 #
 # History
 #
-# 05/30/2017	lec
-#	- TR12250/Lit Triage
+# 02/26/2019	lec
+#       - TR12763/extracted text changes
 #
 
 cd `dirname $0` && . ./Configuration
@@ -12,6 +12,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.BIB_Workflow_Data ADD PRIMARY KEY (_Assoc_key);
+DROP SEQUENCE IF EXISTS bib_workflow_data_seq CASCADE;
 
 EOSQL

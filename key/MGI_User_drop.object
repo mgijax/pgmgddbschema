@@ -362,6 +362,18 @@ ALTER TABLE mgd.BIB_Refs DROP CONSTRAINT BIB_Refs__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.BIB_Refs DROP CONSTRAINT BIB_Refs__CreatedBy_key_fkey CASCADE;
 
+ALTER TABLE mgd.BIB_Workflow_Data DROP CONSTRAINT BIB_Workflow_Data__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.BIB_Workflow_Data DROP CONSTRAINT BIB_Workflow_Data__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.BIB_Workflow_Status DROP CONSTRAINT BIB_Workflow_Status__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.BIB_Workflow_Status DROP CONSTRAINT BIB_Workflow_Status__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.BIB_Workflow_Tag DROP CONSTRAINT BIB_Workflow_Tag__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.BIB_Workflow_Tag DROP CONSTRAINT BIB_Workflow_Tag__CreatedBy_key_fkey CASCADE;
+
 ALTER TABLE mgd.ALL_Knockout_Cache DROP CONSTRAINT ALL_Knockout_Cache__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.ALL_Knockout_Cache DROP CONSTRAINT ALL_Knockout_Cache__CreatedBy_key_fkey CASCADE;

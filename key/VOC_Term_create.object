@@ -161,6 +161,9 @@ ALTER TABLE mgd.BIB_Refs ADD FOREIGN KEY (_ReferenceType_key) REFERENCES mgd.VOC
 ALTER TABLE mgd.BIB_Workflow_Data ADD FOREIGN KEY (_Supplemental_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
+ALTER TABLE mgd.BIB_Workflow_Data ADD FOREIGN KEY (_ExtractedText_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
 ALTER TABLE mgd.BIB_Workflow_Status ADD FOREIGN KEY (_Group_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 

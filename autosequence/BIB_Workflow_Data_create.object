@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/26/2019	lec
+#	- TR12763/extracted text changes
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE bib_workflow_data_seq;    
+ALTER TABLE BIB_Workflow_Data ALTER _Assoc_key SET DEFAULT NEXTVAL('bib_workflow_data_seq');
+select setval('bib_workflow_data_seq', (select max(_Assoc_key) from BIB_Workflow_Data));
+--select last_value from bib_workflow_data_seq;
+
+EOSQL

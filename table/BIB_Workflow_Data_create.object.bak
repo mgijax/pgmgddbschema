@@ -3,12 +3,6 @@
 #
 # History
 #
-# 02/12/2019	lec
-#	- TR12763/add extractedTextWithRef
-#	see (litrefsection)
-#	extractedText stores pdf without reference section
-#	referenceSection stores pdf with reference section only
-#
 # 05/30/2017	lec
 #	- TR12250/Lit Triage
 #
@@ -20,11 +14,9 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.BIB_Workflow_Data (
- 	_Assoc_key                     int                      not null,
  	_Refs_key                      int                      not null,
 	hasPDF                         smallint DEFAULT 0       not null,
 	_Supplemental_key              int			not null,
-	_ExtractedText_key		int			not null,
 	linkSupplemental               text                     null,
 	extractedText                  text                     null,
 	_CreatedBy_key                 int DEFAULT 1001         not null,

@@ -19,8 +19,6 @@ create index BIB_Workflow_Data_idx_hasPDF on mgd.BIB_Workflow_Data (hasPDF);
 
 create index BIB_Workflow_Data_idx_Supplemental_key on mgd.BIB_Workflow_Data (_Supplemental_key);
 
-create index BIB_Workflow_Data_idx_ExtractedText_key on mgd.BIB_Workflow_Data (_Supplemental_key);
-
 create index BIB_Workflow_Data_idx_CreatedBy_key on mgd.BIB_Workflow_Data (_CreatedBy_key);
 
 create index BIB_Workflow_Data_idx_ModifiedBy_key on mgd.BIB_Workflow_Data (_ModifiedBy_key);
