@@ -9,6 +9,14 @@
 #	extractedText stores pdf without reference section
 #	referenceSection stores pdf with reference section only
 #
+# hasPDF, _Supplemental_key, linkSupplemental
+# 	only used if _ExtractedText_key = 48804490 (body)
+#
+# for all other _ExtractedText_key:
+#	hasPDF = 0
+#	_Supplemental_key = 48874093 (Not Applicable)
+#	linkSupplemental = null
+#
 # 05/30/2017	lec
 #	- TR12250/Lit Triage
 #
@@ -24,8 +32,8 @@ create table mgd.BIB_Workflow_Data (
  	_Refs_key                      int                      not null,
 	hasPDF                         smallint DEFAULT 0       not null,
 	_Supplemental_key              int			not null,
-	_ExtractedText_key		int			not null,
 	linkSupplemental               text                     null,
+	_ExtractedText_key	       int			not null,
 	extractedText                  text                     null,
 	_CreatedBy_key                 int DEFAULT 1001         not null,
 	_ModifiedBy_key                int DEFAULT 1001         not null,
