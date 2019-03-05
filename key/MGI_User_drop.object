@@ -9,9 +9,6 @@
 # 04/05/2018	lec
 #	- TR12734/Genome FeVah/MRK_StrainMarker
 #
-# 09/28/2017    lec
-#       - lit triage project (MGI_APILog_Event)
-#
 # 08/08/2016	jsb
 #	- TR12370 / added new GXD_HT* tables for High-Throughput Indexing proj.
 #
@@ -283,8 +280,6 @@ ALTER TABLE mgd.MGI_NoteChunk DROP CONSTRAINT MGI_NoteChunk__CreatedBy_key_fkey 
 ALTER TABLE mgd.MGI_Note DROP CONSTRAINT MGI_Note__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_Note DROP CONSTRAINT MGI_Note__CreatedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_APILog_Event DROP CONSTRAINT MGI_APILog_Event__User_key_fkey CASCADE;
 
 ALTER TABLE mgd.MAP_Coordinate DROP CONSTRAINT MAP_Coordinate__ModifiedBy_key_fkey CASCADE;
 

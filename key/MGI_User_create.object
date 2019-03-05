@@ -9,9 +9,6 @@
 # 04/05/2018	lec
 #	- TR12734/Genome FeVah/MRK_StrainMarker
 #
-# 09/28/2017    lec
-#       - lit triage project (MGI_APILog_Event)
-#
 # 08/08/2016	jsb
 #	- TR12370 / added new GXD_HT* tables for High-Throughput Indexing proj.
 #
@@ -265,9 +262,6 @@ ALTER TABLE mgd.MAP_Coordinate ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.M
 
 
 ALTER TABLE mgd.MAP_Coordinate ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
-
-
-ALTER TABLE mgd.MGI_APILog_Event ADD FOREIGN KEY (_User_key) REFERENCES mgd.MGI_User DEFERRABLE;
 
 
 ALTER TABLE mgd.MGI_Note ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
