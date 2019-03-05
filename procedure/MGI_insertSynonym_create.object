@@ -47,7 +47,7 @@ THEN
 	VALUES (v_synKey, v_objectKey, v_mgiTypeKey, v_synTypeKey, v_refsKey, v_synonym, 
 		v_userKey, v_userKey, now(), now());
 
-ELSIF v_ignoreduplicates = 0
+ELSIF v_ignoreduplicate = 0
 THEN
 	RAISE EXCEPTION E'\nMGI_insertSynonym: Duplicate Synonym Symbol (%)', v_synonym;
 	RETURN;
