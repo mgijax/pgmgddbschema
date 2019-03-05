@@ -187,7 +187,8 @@ IF v_addAsSynonym = 1
 THEN
 	PERFORM MGI_insertSynonym (v_userKey, v_oldKey, 2, 1004, 
 		(select oldSymbol from mrk_tmp), 
-		(select assigningRefKey from mrk_tmp));
+		(select assigningRefKey from mrk_tmp),
+		1);
 
 	IF NOT FOUND
 	THEN
