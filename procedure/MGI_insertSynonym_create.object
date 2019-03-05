@@ -23,7 +23,7 @@ v_mgiTypeKey int,
 v_synTypeKey int,
 v_synonym mgi_synonym.synonym%TYPE,
 v_refsKey int DEFAULT null,
-v_ignoreduplicate int DEFAULT 0
+v_ignoreDuplicate int DEFAULT 1
 )
 RETURNS VOID AS
 \$\$
@@ -47,11 +47,12 @@ THEN
 	VALUES (v_synKey, v_objectKey, v_mgiTypeKey, v_synTypeKey, v_refsKey, v_synonym, 
 		v_userKey, v_userKey, now(), now());
 
-ELSIF v_ignoreduplicate = 0
-THEN
-	RAISE EXCEPTION E'\nMGI_insertSynonym: Duplicate Synonym Symbol (%)', v_synonym;
-	RETURN;
-
+ELSE
+	IF v_ignoreDuplicate = 0
+	THEN
+		RAISE EXCEPTION E'\nMGI_insertSynonym: Duplicate Synonym Symbol (%)', v_synonym;
+		RETURN;
+	END IF;
 END IF;
 
 
@@ -59,8 +60,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MGI_insertSynonym(int,int,int,int,text,int, int) TO public;
+GRANT EXECUTE ON FUNCTION MGI_insertSynonym(int,int,int,int,text,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_insertSynonym(int,int,int,int,text,int, int) IS 'create a new synonym in the mgi_synonym table';
+COMMENT ON FUNCTION mgd.MGI_insertSynonym(int,int,int,int,text,int,int) IS 'create a new synonym in the mgi_synonym table';
 
 EOSQL
