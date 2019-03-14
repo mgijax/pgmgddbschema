@@ -46,7 +46,7 @@ BEGIN
 
 v_annotTypeKey := 1008;
 v_qualifierKey := 1614158;
-v_annotKey := max(_Annot_key) + 1 from VOC_Annot;
+v_annotKey := nextval('voc_annot_seq');
 
 IF (v_markerKey = null) AND (v_alleleKey = null)
 THEN
