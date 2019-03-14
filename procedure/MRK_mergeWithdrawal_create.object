@@ -319,7 +319,7 @@ THEN
 	    v_synTypeKey := 1004;
         END IF;
 
-	PERFORM MGI_insertSynonym (v_userKey, v_newKey, 2, v_synTypeKey, v_oldSymbol, v_assigningRefKey);
+	PERFORM MGI_insertSynonym (v_userKey, v_newKey, 2, v_synTypeKey, v_oldSymbol, v_assigningRefKey, 1);
 
 	IF NOT FOUND
 	THEN
