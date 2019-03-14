@@ -29,7 +29,6 @@ RETURNS VOID AS
 DECLARE
 v_annotTypeKey int;
 v_qualifierKey int;
-v_annotKey int;
 v_strainKey int;
 
 BEGIN
@@ -46,7 +45,6 @@ BEGIN
 
 v_annotTypeKey := 1008;
 v_qualifierKey := 1614158;
-v_annotKey := nextval('voc_annot_seq');
 
 IF (v_markerKey = null) AND (v_alleleKey = null)
 THEN
@@ -69,11 +67,10 @@ THEN
 	THEN
 	    INSERT INTO VOC_Annot (_Annot_key, _AnnotType_key, _Object_key, _Term_key, _Qualifier_key,
 		creation_date, modification_date)
-	    VALUES (v_annotKey, v_annotTypeKey, v_strainKey,
+	    VALUES (nextval('voc_annot_seq'), v_annotTypeKey, v_strainKey,
 	        v_reviewKey, v_qualifierKey, now(), now())
 	    ;
 
-	    v_annotKey := v_annotKey + 1;
         END IF;
     END LOOP;
 
@@ -91,11 +88,10 @@ ELSE
 	THEN
 	    INSERT INTO VOC_Annot (_Annot_key, _AnnotType_key, _Object_key, _Term_key, _Qualifier_key, 
 		creation_date, modification_date)
-	    VALUES (v_annotKey, v_annotTypeKey, v_strainKey,
+	    VALUES (nextval('voc_annot_seq'), v_annotTypeKey, v_strainKey,
 	        v_reviewKey, v_qualifierKey, now(), now())
 	    ;
 
-	    v_annotKey := v_annotKey + 1;
         END IF;
 
     END LOOP;
