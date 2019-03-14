@@ -84,6 +84,12 @@ WHERE m._Organism_key = 1
      AND h._Marker_Event_key = 1
 ;
 
+IF (SELECT * FROM mrk_tmp) = 0
+THEN
+	RAISE EXCEPTION E'\nMRK_simpleWithdrawal: Marker History is missing "assigned" event (%)', v_newSymbol;
+	RETURN;
+END IF;
+
 -- Check for duplicates; exclude cytogenetic markers
 
 IF EXISTS (SELECT * FROM MRK_Marker 
