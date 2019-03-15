@@ -59,23 +59,24 @@ select last_value from pwi_report_id_seq;
 select max(_Assoc_key) from SEQ_Source_Assoc;
 select last_value from seq_source_assoc_seq;
 
-select max(_Cache_key) from VOC_Allele_Cache;
-select last_value from voc_allele_cache_seq;
-
-select max(_Cache_key) from VOC_Annot_Count_Cache;
-select last_value from voc_annot_count_cache_seq;
-
 select max(_Annot_key) from VOC_Annot;
 select last_value from voc_annot_seq;
 
 select max(_AnnotEvidence_key) from VOC_Evidence;
 select last_value from voc_evidence_seq;
 
-select max(_Cache_key) from VOC_GO_Cache;
-select last_value from voc_go_cache_seq;
+--cache in production are empty
+--select max(_Cache_key) from VOC_Allele_Cache;
+--select last_value from voc_allele_cache_seq;
 
-select max(_Cache_key) from VOC_Marker_Cache;
-select last_value from voc_marker_cache_seq;
+--select max(_Cache_key) from VOC_Annot_Count_Cache;
+--select last_value from voc_annot_count_cache_seq;
+
+--select max(_Cache_key) from VOC_GO_Cache;
+--select last_value from voc_go_cache_seq;
+
+--select max(_Cache_key) from VOC_Marker_Cache;
+--select last_value from voc_marker_cache_seq;
 
 EOSQL
 
