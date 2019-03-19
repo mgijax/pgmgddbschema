@@ -1,7 +1,7 @@
 #!/bin/csh -f
 
 #
-# Template
+# find ascii characters and replace with '' (nothing)
 #
 
 
