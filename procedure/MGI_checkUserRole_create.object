@@ -60,6 +60,7 @@ THEN
 	END IF;
 
 ELSIF v_eiModule IN ('AlleleDerivationModule',
+		'AlleleVariantModule',
 		'AntibodyModule',
 		'AntigenModule',
 		'AssayModule',

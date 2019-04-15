@@ -117,7 +117,8 @@ BEGIN
 --	to the NEW object
 --
 --	adds: BIB_Workflow_Status, one row per Group, status = 'Not Routed'
---	adds: BIB_Workflow_Data, supplimental term = 'No supplemental data'
+--	adds: BIB_Workflow_Data, supplimental term = 'No supplemental data' (34026998)
+--	adds: BIB_Workflow_Data, extracted text section = 'body' (48804490)
 --
 -- INPUT:
 --	none
@@ -138,7 +139,7 @@ VALUES((select nextval('bib_workflow_status_seq')), NEW._Refs_key, rec._Term_key
 END LOOP;
 
 INSERT INTO BIB_Workflow_Data 
-VALUES(NEW._Refs_key, 0, 34026998, null, null, NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
+VALUES((select nextval('bib_workflow_data_seq')), NEW._Refs_key, 0, 34026998, null, 48804490, null, NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
 ;
 
 RETURN NEW;
