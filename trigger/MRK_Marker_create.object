@@ -146,6 +146,11 @@ WHERE a._Object_key = OLD._Marker_key
 AND a._MGIType_key = 2
 ;
 
+DELETE FROM VOC_Annot a
+WHERE a._Object_key = OLD._Marker_key
+AND a._AnnotType_key = 1011
+;
+
 DELETE FROM ACC_Accession a
 WHERE a._Object_key = OLD._Marker_key
 AND a._MGIType_key = 2
