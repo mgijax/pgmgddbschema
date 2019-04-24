@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 04/24/2019	lec
+#	- TR13007/RNA Seqeucne project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE gxd_htsample_rnaseq_seq;    
+ALTER TABLE GXD_HTSample_RNASeq ALTER _RNASeq_key SET DEFAULT NEXTVAL('gxd_htsample_rnaseq_seq');
+select setval('gxd_htsample_rnaseq_seq', (select max(_rnaseq_key) from GXD_HTSample_RNASeq));
+
+EOSQL

@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# 08/08/2016	jsb
+#	added for TR12370 / GXD High-Throughput Indexing project
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CLUSTER mgd.GXD_HTSample_RNASeq USING GXD_HTSample_RNASeq_pkey;
+
+create index GXD_HTSample_RNASeq_idx_Sample_key on mgd.GXD_HTSample_RNASeq (_Sample_key);
+
+create index GXD_HTSample_RNASeq_idx_RNASeqCombined_key on mgd.GXD_HTSample_RNASeq (_RNASeqCombined_key);
+
+create index GXD_HTSample_RNASeq_idx_Marker_key on mgd.GXD_HTSample_RNASeq (_Marker_key);
+
+create index GXD_HTSample_RNASeq_idx_CreatedBy_key on mgd.GXD_HTSample_RNASeq (_CreatedBy_key);
+
+create index GXD_HTSample_RNASeq_idx_ModifiedBy_key on mgd.GXD_HTSample_RNASeq (_ModifiedBy_key);
+
+EOSQL

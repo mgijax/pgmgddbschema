@@ -5,6 +5,8 @@
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+ALTER TABLE mgd.GXD_HTSample_RNASeq DROP CONSTRAINT GXD_HTSample_RNASeq__Sample_key_fkey CASCADE;
+
 ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample_pkey CASCADE;
 
 EOSQL

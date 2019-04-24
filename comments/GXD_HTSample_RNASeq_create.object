@@ -1,0 +1,29 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_HTSample_RNASeq IS 'A record in this table represents an experiment/sample/gene combination';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeq._RNASeq_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeq._Sample_key IS 'foreign key to GXD_HTSample';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeq._RNASeqCombined_key IS 'foreign key to GXD_HTSample_RNASeqCombined';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeq._Marker_key IS 'foreign key to MRK_Marker';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeq.averageTPM IS 'the average TPM of the sample';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeq.quantileNormalizedTPM IS 'the quantile normlized TPM of the sample';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeq._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeq.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeq.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeq._ModifiedBy_key IS 'user who last modified the record';
+
+EOSQL

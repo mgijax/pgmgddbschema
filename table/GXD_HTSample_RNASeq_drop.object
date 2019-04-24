@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# HISTORY
+#
+# 04/24/2019	lec
+#	- TR13007/RNA Sequence project
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop table mgd.GXD_HTSample_RNASeq
+
+CASCADE
+;
+EOSQL
