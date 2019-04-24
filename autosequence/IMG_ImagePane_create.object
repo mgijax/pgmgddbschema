@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 04/24/2019	lec
+#	- TR13007/RNA Seqeucne project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE img_imagepane_seq;    
+ALTER TABLE IMG_ImagePane ALTER _ImagePane_key SET DEFAULT NEXTVAL('img_imagepane_seq');
+select setval('img_imagepane_seq', (select max(_ImagePane_key) from IMG_ImagePane));
+
+EOSQL

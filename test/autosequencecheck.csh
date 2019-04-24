@@ -29,6 +29,12 @@ select last_value from bib_workflow_status_seq;
 select max(_Assoc_key) from BIB_Workflow_Tag;
 select last_value from bib_workflow_tag_seq;
 
+select max(_Image_key) from IMG_Image;
+select last_value from img_image_seq;
+
+select max(_ImagePane_key) from IMG_ImagePane;
+select last_value from img_imagepane_seq;
+
 select max(_Assoc_key) from IMG_ImagePane_Assoc;
 select last_value from img_imagepane_assoc_seq;
 
