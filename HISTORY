@@ -1,3 +1,10 @@
+TAG: pgmgddbschema-6-0-14-5
+DATE: 04/24/2019
+STAFF: sc
+CHANGES:
+Moved nextval call in procedure/MGI_insertReferenceAssoc_create.object
+   so only called if ref assoc is not a db duplicate
+
 TAG: pgmgddbschema-6-0-14-4
 TAG: pgmgddbschema-6-0-14-3
 TAG: pgmgddbschema-6-0-14-2
