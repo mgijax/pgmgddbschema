@@ -16,21 +16,22 @@ select i.*,
 ia.accID as mgiID, 
 ia.prefixPart, 
 ia.numericPart, 
-t.term as imageType,
-m.name as mgiType, 
+t2.term as imageType,
+t1.term as imageClass,
 c.jnumID, 
 c.numericPart as jnum,  
 c.short_citation, 
 u1.login as createdBy, 
 u2.login as modifiedBy
-from IMG_Image i, ACC_Accession ia, ACC_MGIType m, BIB_Citation_Cache c, VOC_Term t, MGI_User u1, MGI_User u2
+from IMG_Image i, ACC_Accession ia, BIB_Citation_Cache c, 
+VOC_Term t1, VOC_Term t2, MGI_User u1, MGI_User u2
 where i._Image_key = ia._Object_key
 and ia._MGIType_key = 9
 and ia._LogicalDB_key = 1
 and ia.prefixPart = 'MGI:'
 and ia.preferred = 1
-and i._MGIType_key = m._MGIType_key
-and i._ImageType_key = t._Term_key
+and i._ImageClass_key = t1._Term_key
+and i._ImageType_key = t2._Term_key
 and i._Refs_key = c._Refs_key
 and i._CreatedBy_key = u1._User_key
 and i._ModifiedBy_key = u2._User_key
