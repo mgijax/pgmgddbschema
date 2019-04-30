@@ -1,0 +1,30 @@
+#!/bin/sh
+
+# HISTORY
+#
+# 04/24/2019	lec
+#	- TR13007/RNA Sequence project
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.GXD_HTSample_RNASeqCombined (
+ 	_RNASeqCombined_key		int			not null,
+	_Marker_key			int			not null,
+	_Level_key			int			not null,
+	numberOfBiologicalReplicants 	int			not null,
+	averageQuantileNormalizedTPM	int 			not null,
+	note				text			null,
+        age                     	text                    not null,
+        _Organism_key           	int                     not null,
+        _Sex_key                	int                     not null,
+        _Emapa_key              	int                     not null,
+        _Stage_key              	int                     not null,
+        _Genotype_key           	int                     not null,
+	_CreatedBy_key			int DEFAULT 1001	not null,
+	_ModifiedBy_key			int DEFAULT 1001	not null,
+	creation_date			timestamp DEFAULT now()	not null,
+	modification_date		timestamp DEFAULT now()	not null 
+);
+EOSQL
