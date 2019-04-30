@@ -3,6 +3,9 @@
 #
 # History
 #
+# 04/30/2019	lec
+#	- TR13007/RNA Seq Project
+#
 # 11/12/2018	jsb
 #		- adding ALL_Variant tables for variants
 #
@@ -176,6 +179,12 @@ ALTER TABLE mgd.GXD_Index_Stages DROP CONSTRAINT GXD_Index_Stages__StageID_key_f
 ALTER TABLE mgd.GXD_Index_Stages DROP CONSTRAINT GXD_Index_Stages__IndexAssay_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__ConditionalMutants_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample_RNASeq_RNASeqCombined DROP CONSTRAINT GXD_HTSample_RNASeqCombined__Sex_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample_RNASeqCombined DROP CONSTRAINT GXD_HTSample_RNASeqCombined__Emapa_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample_RNASeqCombined DROP CONSTRAINT GXD_HTSample_RNASeqCombined__Level_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Sex_key_fkey CASCADE;
 

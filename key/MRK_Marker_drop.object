@@ -3,6 +3,9 @@
 #
 # History
 #
+# 04/30/2019	lec
+#	- TR13007/RNA Seq Project
+#
 # 04/05/2018    lec 
 #       - TR12734/GenomeFeVah
 #
@@ -91,6 +94,8 @@ ALTER TABLE mgd.MLD_MC2point DROP CONSTRAINT MLD_MC2point__Marker_key_1_fkey CAS
 ALTER TABLE mgd.MLD_Expt_Marker DROP CONSTRAINT MLD_Expt_Marker__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.MLD_Concordance DROP CONSTRAINT MLD_Concordance__Marker_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample_RNASeqCombined DROP CONSTRAINT GXD_HTSample_RNASeqCombined__Marker_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTSample_RNASeq DROP CONSTRAINT GXD_HTSample_RNASeq__Marker_key_fkey CASCADE;
 

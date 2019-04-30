@@ -1,7 +1,11 @@
 #!/bin/sh
 
-# 08/08/2016	jsb
-#	added for TR12370 / GXD High-Throughput Indexing project
+# 
+# History
+#
+# 04/30/2019    lec 
+#       - TR13007/RNA Seq Project
+#
 
 cd `dirname $0` && . ./Configuration
 

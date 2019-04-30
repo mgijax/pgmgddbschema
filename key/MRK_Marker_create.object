@@ -3,6 +3,9 @@
 #
 # History
 #
+# 04/30/2019	lec
+#	- TR13007/RNA Seq Project
+#
 # 04/05/2018    lec 
 #       - TR12734/GenomeFeVah
 #
@@ -112,6 +115,9 @@ ALTER TABLE mgd.GXD_Index ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marke
 
 
 ALTER TABLE mgd.GXD_HTSample_RNASeq ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker DEFERRABLE;
+
+
+ALTER TABLE mgd.GXD_HTSample_RNASeqCombined ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker DEFERRABLE;
 
 
 ALTER TABLE mgd.MLD_Concordance ADD FOREIGN KEY (_Marker_key) REFERENCES mgd.MRK_Marker DEFERRABLE;

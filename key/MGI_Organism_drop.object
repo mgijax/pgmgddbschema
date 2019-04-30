@@ -2,6 +2,9 @@
 #
 # History
 #
+# 04/30/2019	lec
+#	- TR13007/RNA Seq Project
+#
 # 08/11/2016	jsb
 #	- TR12370; added GXD_HTSample for GXD High-Throughput Indexing project
 #
@@ -35,6 +38,8 @@ ALTER TABLE mgd.MRK_Chromosome DROP CONSTRAINT MRK_Chromosome__Organism_key_fkey
 ALTER TABLE mgd.MGI_SynonymType DROP CONSTRAINT MGI_SynonymType__Organism_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_Organism_MGIType DROP CONSTRAINT MGI_Organism_MGIType__Organism_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample_RNASeqCombined DROP CONSTRAINT GXD_HTSample_RNASeqCombined__Organism_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Organism_key_fkey CASCADE;
 

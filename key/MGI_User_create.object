@@ -3,6 +3,9 @@
 #
 # History
 #
+# 04/30/2019	lec
+#	- TR13007/RNA Seq Project
+#
 # 11/12/2018	jsb
 #		- adding Variant tables for variants
 #
@@ -230,6 +233,12 @@ ALTER TABLE mgd.GXD_HTSample_RNASeq ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES
 
 
 ALTER TABLE mgd.GXD_HTSample_RNASeq ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
+
+
+ALTER TABLE mgd.GXD_HTSample_RNASeqCombined ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
+
+
+ALTER TABLE mgd.GXD_HTSample_RNASeqCombined ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
 
 
 ALTER TABLE mgd.GXD_Index ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;

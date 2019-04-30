@@ -3,6 +3,8 @@
 #
 # History
 #
+# 04/30/2019	lec
+#	- TR13007/RNA Seq Project
 #
 # 09/07/16      lec
 #       -TR12370 added FK GXD_HTSample._Stage_key
@@ -24,6 +26,8 @@ ALTER TABLE mgd.VOC_Term_EMAPA DROP CONSTRAINT VOC_Term_EMAPA_endstage_fkey CASC
 ALTER TABLE mgd.MGI_SetMember_EMAPA DROP CONSTRAINT MGI_SetMember_EMAPA__Stage_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_ISResultStructure DROP CONSTRAINT GXD_ISResultStructure__Stage_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample_RNASeqCombined DROP CONSTRAINT GXD_HTSample_RNASeqCombined__Stage_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Stage_key_fkey CASCADE;
 

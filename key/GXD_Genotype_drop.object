@@ -3,6 +3,9 @@
 #
 # History
 #
+# 04/30/2019	lec
+#	- TR13007/RNA Seq Project
+#
 # 11/28/2016	lec
 #	- TR12427/Disease Ontology (DO)
 #
@@ -29,6 +32,8 @@ ALTER TABLE mgd.GXD_AllelePair DROP CONSTRAINT GXD_AllelePair__Genotype_key_fkey
 ALTER TABLE mgd.GXD_AlleleGenotype DROP CONSTRAINT GXD_AlleleGenotype__Genotype_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__Genotype_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample_RNASeqCombined DROP CONSTRAINT GXD_HTSample_RNASeqCombined__Genotype_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Genotype_key_fkey CASCADE;
 

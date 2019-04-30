@@ -3,6 +3,9 @@
 #
 # History
 #
+# 04/30/2019	lec
+#	- TR13007/RNA Seq Project
+#
 # 09/07/16	lec
 #	-TR12370 added FK GXD_HTSample._Stage_key
 #
@@ -24,6 +27,8 @@ ALTER TABLE mgd.GXD_Expression ADD FOREIGN KEY (_Stage_key) REFERENCES mgd.GXD_T
 ALTER TABLE mgd.GXD_GelLaneStructure ADD FOREIGN KEY (_Stage_key) REFERENCES mgd.GXD_TheilerStage DEFERRABLE;
 
 ALTER TABLE mgd.GXD_HTSample ADD FOREIGN KEY (_Stage_key) REFERENCES mgd.GXD_TheilerStage DEFERRABLE;
+
+ALTER TABLE mgd.GXD_HTSample_RNASeqCombined ADD FOREIGN KEY (_Stage_key) REFERENCES mgd.GXD_TheilerStage DEFERRABLE;
 
 ALTER TABLE mgd.GXD_ISResultStructure ADD FOREIGN KEY (_Stage_key) REFERENCES mgd.GXD_TheilerStage DEFERRABLE;
 

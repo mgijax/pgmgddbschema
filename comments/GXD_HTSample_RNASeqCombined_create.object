@@ -16,7 +16,7 @@ COMMENT ON COLUMN GXD_HTSample_RNASeqCombined.numberOfBiologicalReplicates IS 't
 
 COMMENT ON COLUMN GXD_HTSample_RNASeqCombined.averageQuantileNormalizedTPM IS 'the average quantile normlized TPM';
 
-COMMENT ON COLUMN GXD_HTSample_RNASeqCombined.note IS '';
+COMMENT ON COLUMN GXD_HTSample_RNASeqCombined.note IS 'to distinguish samples whose differences are not covered by controlled vocabulary terms';
 
 COMMENT ON COLUMN GXD_HTSample_RNASeqCombined.age IS 'textual age';
 

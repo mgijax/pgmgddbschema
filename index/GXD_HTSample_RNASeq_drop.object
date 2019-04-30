@@ -1,7 +1,10 @@
 #!/bin/sh
 
+# 
+# History
 #
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
+# 04/30/2019    lec 
+#       - TR13007/RNA Seq Project
 #
 
 cd `dirname $0` && . ./Configuration

@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# History
+#
+# 04/24/2019	lec
+#	- TR13007/RNA Sequence project
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.GXD_HTSample_RNASeqCombined ADD PRIMARY KEY (_RNASeqCombined_key);
+
+EOSQL
