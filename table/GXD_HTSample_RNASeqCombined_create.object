@@ -13,7 +13,7 @@ create table mgd.GXD_HTSample_RNASeqCombined (
  	_RNASeqCombined_key		int			not null,
 	_Marker_key			int			not null,
 	_Level_key			int			not null,
-	numberOfBiologicalReplicants 	int			not null,
+	numberOfBiologicalReplicates 	int			not null,
 	averageQuantileNormalizedTPM	int 			not null,
 	note				text			null,
         age                     	text                    not null,
