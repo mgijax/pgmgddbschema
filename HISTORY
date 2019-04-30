@@ -1,3 +1,9 @@
+TAG: pgmgddbschema-6-0-14-6
+DATE: 04/30/2019
+STAFF: lec
+CHANGES:
+TR13095/procedure/BIB_getCopyright_create.object
+
 TAG: pgmgddbschema-6-0-14-5
 DATE: 04/24/2019
 STAFF: sc
