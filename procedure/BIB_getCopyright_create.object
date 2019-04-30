@@ -3,6 +3,9 @@
 #
 # History
 #
+# 04/30/2019    lec
+#       - TR13095/add DOI id
+#
 # 08/25/2014    lec
 #       - TR11654/stored procedures for postgres
 #
