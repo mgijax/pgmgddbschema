@@ -2,6 +2,9 @@
 
 # HISTORY
 #
+# 04/30/3019	lec
+#	- TR13007/add ageMin, ageMax
+#
 # 08/01/2016	jsb
 #	- TR 12370 (GXD High-Throughput Indexing)
 
@@ -16,6 +19,8 @@ create table mgd.GXD_HTSample (
 	_Relevance_key		int			not null,
 	name			text			null,
 	age			text			null,
+	ageMin			numeric			null,
+	ageMax			numeric			null,
 	_Organism_key		int			not null,
 	_Sex_key		int			not null,
  	_Emapa_key		int			null,

@@ -59,6 +59,13 @@ THEN
 	FROM PRB_Source
 	WHERE _Source_key = v_key;
 
+ELSIF (v_table = 'GXD_HTSample')
+THEN
+	OPEN age_cursor FOR
+	SELECT _Sample_key, age
+	FROM GXD_HTSample
+	WHERE _Sample_key = v_key;
+
 ELSE
 	RETURN;
 
@@ -90,6 +97,11 @@ LOOP
 	THEN
 		UPDATE PRB_Source 
 		SET ageMin = v_ageMin, ageMax = v_ageMax WHERE _Source_key = v_pkey;
+
+	ELSIF (v_table = 'GXD_HTSample')
+	THEN
+		UPDATE GXD_HTSample
+		SET ageMin = v_ageMin, ageMax = v_ageMax WHERE _Sample_key = v_pkey;
 
 	END IF;
 
