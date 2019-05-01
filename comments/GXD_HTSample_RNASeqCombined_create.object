@@ -10,7 +10,7 @@ COMMENT ON COLUMN GXD_HTSample_RNASeqCombined._RNASeqCombined_key IS 'primary ke
 
 COMMENT ON COLUMN GXD_HTSample_RNASeqCombined._Marker_key IS 'foreign key to MRK_Marker';
 
-COMMENT ON COLUMN GXD_HTSample_RNASeqCombined._Level_key IS 'foreign key to VOC_Term where _Vocab_key = ?? (RNA-Seq TPM Level)';
+COMMENT ON COLUMN GXD_HTSample_RNASeqCombined._Level_key IS 'foreign key to VOC_Term where _Vocab_key = 144 (RNA-Seq TPM Level)';
 
 COMMENT ON COLUMN GXD_HTSample_RNASeqCombined.numberOfBiologicalReplicates IS 'the number of biological replicates';
 
