@@ -24,7 +24,11 @@ BEGIN
 --	NEW
 --
 
-PERFORM MGI_resetAgeMinMax ('GXD_HTSample', NEW._Sample_key);
+IF (TG_OP = 'UPDATE') THEN
+	PERFORM MGI_resetAgeMinMax ('GXD_HTSample', OLD._Sample_key);
+ELSE
+	PERFORM MGI_resetAgeMinMax ('GXD_HTSample', NEW._Sample_key);
+END IF;
 
 RETURN NEW;
 
@@ -35,7 +39,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION GXD_HTSample_ageminmax() TO public;
 
 CREATE TRIGGER GXD_HTSample_ageminmax_trigger
-AFTER INSERT OR UPDATE on GXD_HTSample
+AFTER INSERT OR UPDATE OF age ON GXD_HTSample
 FOR EACH ROW
 EXECUTE PROCEDURE GXD_HTSample_ageminmax();
 
