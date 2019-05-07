@@ -1,0 +1,46 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP TRIGGER IF EXISTS GXD_HTSample_insert_trigger ON GXD_HTSample;
+DROP FUNCTION IF EXISTS GXD_HTSample_insert();
+
+CREATE OR REPLACE FUNCTION GXD_HTSample_insert() RETURNS TRIGGER AS \$\$
+BEGIN
+
+--
+-- NAME: GXD_HTSample_insert()
+--
+-- DESCRIPTOIN:
+--	
+-- After insert of GXD_HTSample post-processing things to do:
+--	1. set the ageMin/ageMax
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+PERFORM MGI_resetAgeMinMax ('GXD_HTSample', NEW._Sample_key);
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION GXD_HTSample_insert() TO public;
+
+CREATE TRIGGER GXD_HTSample_insert_trigger
+AFTER INSERT on GXD_HTSample
+FOR EACH ROW
+EXECUTE PROCEDURE GXD_HTSample_insert();
+
+COMMENT ON FUNCTION mgd.GXD_HTSample_insert() IS 'call post-insert GXD_HTSample processing';
+
+EOSQL
+
