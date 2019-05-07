@@ -39,8 +39,6 @@ ALTER TABLE mgd.MGI_SynonymType DROP CONSTRAINT MGI_SynonymType__Organism_key_fk
 
 ALTER TABLE mgd.MGI_Organism_MGIType DROP CONSTRAINT MGI_Organism_MGIType__Organism_key_fkey CASCADE;
 
-ALTER TABLE mgd.GXD_HTSample_RNASeqCombined DROP CONSTRAINT GXD_HTSample_RNASeqCombined__Organism_key_fkey CASCADE;
-
 ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Organism_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Antibody DROP CONSTRAINT GXD_Antibody__Organism_key_fkey CASCADE;

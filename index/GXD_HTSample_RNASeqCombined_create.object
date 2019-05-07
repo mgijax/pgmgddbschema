@@ -18,16 +18,6 @@ create index GXD_HTSample_RNASeqCombined_idx_Marker_key on mgd.GXD_HTSample_RNAS
 
 create index GXD_HTSample_RNASeqCombined_idx_Level_key on mgd.GXD_HTSample_RNASeqCombined (_Level_key);
 
-create index GXD_HTSample_RNASeqCombined_idx_Organism_key on mgd.GXD_HTSample_RNASeqCombined (_Organism_key);
-
-create index GXD_HTSample_RNASeqCombined_idx_Sex_key on mgd.GXD_HTSample_RNASeqCombined (_Sex_key);
-
-create index GXD_HTSample_RNASeqCombined_idx_Emapa_key on mgd.GXD_HTSample_RNASeqCombined (_Emapa_key);
-
-create index GXD_HTSample_RNASeqCombined_idx_Stage_key on mgd.GXD_HTSample_RNASeqCombined (_Stage_key);
-
-create index GXD_HTSample_RNASeqCombined_idx_Genotype_key on mgd.GXD_HTSample_RNASeqCombined (_Genotype_key);
-
 create index GXD_HTSample_RNASeqCombined_idx_CreatedBy_key on mgd.GXD_HTSample_RNASeqCombined (_CreatedBy_key);
 
 create index GXD_HTSample_RNASeqCombined_idx_ModifiedBy_key on mgd.GXD_HTSample_RNASeqCombined (_ModifiedBy_key);

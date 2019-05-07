@@ -16,20 +16,6 @@ COMMENT ON COLUMN GXD_HTSample_RNASeqCombined.numberOfBiologicalReplicates IS 't
 
 COMMENT ON COLUMN GXD_HTSample_RNASeqCombined.averageQuantileNormalizedTPM IS 'the average quantile normlized TPM';
 
-COMMENT ON COLUMN GXD_HTSample_RNASeqCombined.note IS 'to distinguish samples whose differences are not covered by controlled vocabulary terms';
-
-COMMENT ON COLUMN GXD_HTSample_RNASeqCombined.age IS 'textual age';
-
-COMMENT ON COLUMN GXD_HTSample_RNASeqCombined._Organism_key IS 'foreign key to MGI_Organism, identifying type of organism';
-
-COMMENT ON COLUMN GXD_HTSample_RNASeqCombined._Sex_key IS 'foreign key to VOC_Term, identifying sex';
-
-COMMENT ON COLUMN GXD_HTSample_RNASeqCombined._Emapa_key IS 'foreign key to VOC_Term, identifying the EMAPA structure';
-
-COMMENT ON COLUMN GXD_HTSample_RNASeqCombined._Stage_key IS 'foreign key to GXD_TheilerStage, identifying the Theiler Stage';
-
-COMMENT ON COLUMN GXD_HTSample_RNASeqCombined._Genotype_key IS 'foreign key to GXD_Genotype, identifying the genotype';
-
 COMMENT ON COLUMN GXD_HTSample_RNASeqCombined._CreatedBy_key IS 'user who created the record';
 
 COMMENT ON COLUMN GXD_HTSample_RNASeqCombined.creation_date IS 'date record was created';
