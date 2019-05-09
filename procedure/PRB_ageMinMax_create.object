@@ -135,7 +135,7 @@ ELSE
 
     IF position(',' in timeRange) > 0 THEN
 
-        WHILE timeRange != null LOOP
+        WHILE timeRange IS NOT NULL LOOP
             idx := position(',' in timeRange);
             idx2 := position('-' in timeRange);
 
@@ -172,6 +172,7 @@ ELSE
                 END IF;
 
             ELSE
+
                 -- more timeRanges
                 IF idx > 0 THEN
                     IF minValue > substring(timeRange, 1, idx - 1)::NUMERIC THEN
