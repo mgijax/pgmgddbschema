@@ -12,6 +12,15 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0 | tee -a $LOG
 
 -- mgi_note
 
+-- notes that have no note chunk
+select a.* 
+from mgi_note a
+where not exists (select 1 from mgi_notechunk c where a._note_key = c._note_key)
+;
+delete from mgi_note a
+where not exists (select 1 from mgi_notechunk c where a._note_key = c._note_key)
+;
+
 CREATE TEMP TABLE toDelete1 AS
 select a.*, t._mgitype_key as _mgitype_key_t, t._notetype_key as _notetype_key_t
 from mgi_note a, mgi_notetype t
@@ -35,32 +44,32 @@ WHERE toDelete1._note_key = mgi_note._note_key
 
 -- probes
 
-CREATE TEMP TABLE toDelete2 AS
-select a.* 
-from acc_accession a
-where a._mgitype_key = 3 
-and not exists (select 1 from prb_probe s where a._object_key = s._probe_key)
-;
+--CREATE TEMP TABLE toDelete2 AS
+--select a.* 
+--from acc_accession a
+--where a._mgitype_key = 3 
+--and not exists (select 1 from prb_probe s where a._object_key = s._probe_key)
+--;
 
-select t.*
-from toDelete2 t
-;
+--select t.*
+--from toDelete2 t
+--;
 
-CREATE INDEX toDelete2_idx1 ON toDelete2(_accession_key);
-select * from toDelete2;
+--CREATE INDEX toDelete2_idx1 ON toDelete2(_accession_key);
+--select * from toDelete2;
 
-DELETE FROM acc_accession
-USING toDelete2
-WHERE toDelete2._accession_key = acc_accession._accession_key
-;
+--DELETE FROM acc_accession
+--USING toDelete2
+--WHERE toDelete2._accession_key = acc_accession._accession_key
+--;
 
-select a.*
-from mgi_note a
-where not exists (select 1 from mgi_notechunk c where a._note_key = c._note_key)
-;
-delete from mgi_note a
-where not exists (select 1 from mgi_notechunk c where a._note_key = c._note_key)
-;
+--select a.*
+--from mgi_note a
+--where not exists (select 1 from mgi_notechunk c where a._note_key = c._note_key)
+--;
+--delete from mgi_note a
+--where not exists (select 1 from mgi_notechunk c where a._note_key = c._note_key)
+--;
 
 
 EOSQL
