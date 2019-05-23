@@ -1,0 +1,28 @@
+#!/bin/sh
+
+#
+# History
+#
+# 05/23/2019	lec
+#	- TR13007/RNA-Sequence/Image PWI
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/IMG_ImagePane_Assoc_Allele_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.IMG_ImagePane_Assoc_Allele_View
+as
+select ipa._assoc_key, ipa._imagepane_key, a._allele_key, a.symbol, aa.accID
+from IMG_ImagePane_Assoc ipa, ALL_Allele a, ACC_Accession aa
+where ipa._MGIType_key = 11
+and ipa._Object_key = a._Allele_key
+and a._Allele_key = aa._Object_key
+and aa._MGIType_key = 11
+and aa._Logicaldb_key = 1
+and aa.preferred = 1
+;
+
+EOSQL
