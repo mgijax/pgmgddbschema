@@ -180,6 +180,10 @@ ALTER TABLE mgd.GXD_Index_Stages DROP CONSTRAINT GXD_Index_Stages__IndexAssay_ke
 
 ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__ConditionalMutants_fkey CASCADE;
 
+ALTER TABLE mgd.GXD_HTSample_RNASeqSet DROP CONSTRAINT GXD_HTSample_RNASeqSet__Sex_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample_RNASeqSet DROP CONSTRAINT GXD_HTSample_RNASeqSet__Emapa_key_fkey CASCADE;
+
 ALTER TABLE mgd.GXD_HTSample_RNASeqCombined DROP CONSTRAINT GXD_HTSample_RNASeqCombined__Level_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Sex_key_fkey CASCADE;

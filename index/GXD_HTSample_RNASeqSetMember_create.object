@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# 
+# History
+#
+# 04/30/2019    lec 
+#       - TR13007/RNA Seq Project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CLUSTER mgd.GXD_HTSample_RNASeqSetMember USING GXD_HTSample_RNASeqSetMember_pkey;
+
+create index GXD_HTSample_RNASeqSetMember_idx_RNASeqSet_key on mgd.GXD_HTSample_RNASeqSetMember (_RNASeqSet_key);
+
+create index GXD_HTSample_RNASeqSetMember_idx_Sample_key on mgd.GXD_HTSample_RNASeqSetMember (_Sample_key);
+
+create index GXD_HTSample_RNASeqSetMember_idx_CreatedBy_key on mgd.GXD_HTSample_RNASeqSetMember (_CreatedBy_key);
+
+create index GXD_HTSample_RNASeqSetMember_idx_ModifiedBy_key on mgd.GXD_HTSample_RNASeqSetMember (_ModifiedBy_key);
+
+EOSQL

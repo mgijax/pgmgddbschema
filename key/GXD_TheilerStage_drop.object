@@ -27,6 +27,8 @@ ALTER TABLE mgd.MGI_SetMember_EMAPA DROP CONSTRAINT MGI_SetMember_EMAPA__Stage_k
 
 ALTER TABLE mgd.GXD_ISResultStructure DROP CONSTRAINT GXD_ISResultStructure__Stage_key_fkey CASCADE;
 
+ALTER TABLE mgd.GXD_HTSample_RNASeqSet DROP CONSTRAINT GXD_HTSample_RNASeqSet__Stage_key_fkey CASCADE;
+
 ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Stage_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_GelLaneStructure DROP CONSTRAINT GXD_GelLaneStructure__Stage_key_fkey CASCADE;

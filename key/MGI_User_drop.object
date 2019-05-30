@@ -312,6 +312,14 @@ ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__ModifiedBy_key_fkey CASCADE
 
 ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__CreatedBy_key_fkey CASCADE;
 
+ALTER TABLE mgd.GXD_HTSample_RNASeqSetMember DROP CONSTRAINT GXD_HTSample_RNASeqSetMember__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample_RNASeqSetMember DROP CONSTRAINT GXD_HTSample_RNASeqSetMember__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample_RNASeqSet DROP CONSTRAINT GXD_HTSample_RNASeqSet__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample_RNASeqSet DROP CONSTRAINT GXD_HTSample_RNASeqSet__CreatedBy_key_fkey CASCADE;
+
 ALTER TABLE mgd.GXD_HTSample_RNASeqCombined DROP CONSTRAINT GXD_HTSample_RNASeqCombined__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTSample_RNASeqCombined DROP CONSTRAINT GXD_HTSample_RNASeqCombined__CreatedBy_key_fkey CASCADE;

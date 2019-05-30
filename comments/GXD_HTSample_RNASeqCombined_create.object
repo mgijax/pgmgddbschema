@@ -4,7 +4,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-COMMENT ON TABLE mgd.GXD_HTSample_RNASeqCombined IS 'A record in this table represents an experiment/sample/gene combined biological replicates';
+COMMENT ON TABLE mgd.GXD_HTSample_RNASeqCombined IS 'A record in this table represents a gene/RNASeqSet combination';
 
 COMMENT ON COLUMN GXD_HTSample_RNASeqCombined._RNASeqCombined_key IS 'primary key';
 

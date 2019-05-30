@@ -1,0 +1,23 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_HTSample_RNASeqSetMember IS 'A record in this table represents a GXD_HTSample member of the GXD_HTSample_RNASeqSet';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSetMember._RNASeqSetMember_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSetMember._RNASeqSet_key IS 'foreign key to GXD_HTSample_RNASeq, identifing the set';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSetMember._Sample_key IS 'foreign key to GXD_HTSample, identifying the sample member';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSetMember._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSetMember.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSetMember.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSetMember._ModifiedBy_key IS 'user who last modified the record';
+
+EOSQL

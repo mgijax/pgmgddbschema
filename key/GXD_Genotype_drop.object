@@ -33,6 +33,8 @@ ALTER TABLE mgd.GXD_AlleleGenotype DROP CONSTRAINT GXD_AlleleGenotype__Genotype_
 
 ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__Genotype_key_fkey CASCADE;
 
+ALTER TABLE mgd.GXD_HTSample_RNASeqSet DROP CONSTRAINT GXD_HTSample_RNASeqSet__Genotype_key_fkey CASCADE;
+
 ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Genotype_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Specimen DROP CONSTRAINT GXD_Specimen__Genotype_key_fkey CASCADE;

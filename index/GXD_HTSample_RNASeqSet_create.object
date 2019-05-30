@@ -1,0 +1,37 @@
+#!/bin/sh
+
+# 
+# History
+#
+# 04/30/2019    lec 
+#       - TR13007/RNA Seq Project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CLUSTER mgd.GXD_HTSample_RNASeqSet USING GXD_HTSample_RNASeqSet_pkey;
+
+create index GXD_HTSample_RNASeqSet_idx_Experiment_key on mgd.GXD_HTSample_RNASeqSet (_Experiment_key);
+
+create index GXD_HTSample_RNASeqSet_idx_Organism_key on mgd.GXD_HTSample_RNASeqSet (_Organism_key);
+
+create index GXD_HTSample_RNASeqSet_idx_Sex_key on mgd.GXD_HTSample_RNASeqSet (_Sex_key);
+
+create index GXD_HTSample_RNASeqSet_idx_Emapa_key on mgd.GXD_HTSample_RNASeqSet (_Emapa_key);
+
+create index GXD_HTSample_RNASeqSet_idx_Stage_key on mgd.GXD_HTSample_RNASeqSet (_Stage_key);
+
+create index GXD_HTSample_RNASeqSet_idx_Genotype_key on mgd.GXD_HTSample_RNASeqSet (_Genotype_key);
+
+create index GXD_HTSample_RNASeqSet_idx_age on mgd.GXD_HTSample_RNASeqSet (age);
+
+create index GXD_HTSample_RNASeqSet_idx_note on mgd.GXD_HTSample_RNASeqSet (note);
+
+create index GXD_HTSample_RNASeqSet_idx_CreatedBy_key on mgd.GXD_HTSample_RNASeqSet (_CreatedBy_key);
+
+create index GXD_HTSample_RNASeqSet_idx_ModifiedBy_key on mgd.GXD_HTSample_RNASeqSet (_ModifiedBy_key);
+
+EOSQL

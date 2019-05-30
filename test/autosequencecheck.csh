@@ -29,6 +29,18 @@ select last_value from bib_workflow_status_seq;
 select max(_Assoc_key) from BIB_Workflow_Tag;
 select last_value from bib_workflow_tag_seq;
 
+select max(_rnaseq_key) from GXD_HTSample_RNASeq;
+select last_value from gxd_htsample_rnaseq_seq;
+
+select max(_rnaseqcombined_key) from GXD_HTSample_RNASeqCombined;
+select last_value from gxd_htsample_rnaseqcombined_seq;
+
+select max(_rnaseqset_key) from GXD_HTSample_RNASeqSet;
+select last_value from gxd_htsample_rnaseqset_seq;
+
+select max(_rnaseqsetmember_key) from GXD_HTSample_RNASeqSetMember;
+select last_value from gxd_htsample_rnaseqsetmember_seq;
+
 select max(_Image_key) from IMG_Image;
 select last_value from img_image_seq;
 

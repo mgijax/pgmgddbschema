@@ -1,0 +1,35 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_HTSample_RNASeqSet IS 'A record in this table represents a distinct experiment/age/organism/sex/emapa/stage/genotype/note set/cluster as generated from GXD_HTSample via rnaseqload';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet._RNASeqSet_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet._Experiment_key IS 'foreign key to GXD_HTExperiment'; 
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet.age IS 'textual age';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet._Organism_key IS 'foreign key to MGI_Organism';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet._Sex_key IS 'foreign key to VOC_Term';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet._Emapa_key IS 'foreign key to VOC_Term';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet._Stage_key IS 'foreign key to GXD_TheilerStage';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet._Genotype_key IS 'foreign key to GXD_Genotype';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet.note IS 'sample note from MGI_Note/MGI_NoteChunk where _NoteType_key = 1048';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet._ModifiedBy_key IS 'user who last modified the record';
+
+EOSQL

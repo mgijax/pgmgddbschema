@@ -25,6 +25,8 @@ ALTER TABLE mgd.GXD_Genotype ADD PRIMARY KEY (_Genotype_key);
 
 ALTER TABLE mgd.GXD_HTSample ADD FOREIGN KEY (_Genotype_key) REFERENCES mgd.GXD_Genotype DEFERRABLE;
 
+ALTER TABLE mgd.GXD_HTSample_RNASeqSet ADD FOREIGN KEY (_Genotype_key) REFERENCES mgd.GXD_Genotype DEFERRABLE;
+
 ALTER TABLE mgd.GXD_GelLane ADD FOREIGN KEY (_Genotype_key) REFERENCES mgd.GXD_Genotype DEFERRABLE;
 
 ALTER TABLE mgd.GXD_Specimen ADD FOREIGN KEY (_Genotype_key) REFERENCES mgd.GXD_Genotype DEFERRABLE;
