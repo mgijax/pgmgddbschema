@@ -11,7 +11,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 
-truncate table mgd.GXD_HTSample_RNASeqCombined
+truncate table mgd.GXD_HTSample_RNASeqCombined RESTART IDENTITY CASCADE
 
 ;
 EOSQL
