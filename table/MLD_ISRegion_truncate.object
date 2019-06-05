@@ -6,11 +6,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+truncate table mgd.MLD_ISRegion RESTART IDENTITY CASCADE;
 
-truncate table mgd.MLD_ISRegion
-
-;
 EOSQL

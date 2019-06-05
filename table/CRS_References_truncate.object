@@ -6,11 +6,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+truncate table mgd.CRS_References RESTART IDENTITY CASCADE;
 
-truncate table mgd.CRS_References
-
-;
 EOSQL

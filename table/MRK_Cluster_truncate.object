@@ -8,11 +8,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+truncate table mgd.MRK_Cluster RESTART IDENTITY CASCADE;
 
-truncate table mgd.MRK_Cluster
-
-;
 EOSQL

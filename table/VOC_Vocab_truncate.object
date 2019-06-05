@@ -6,9 +6,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-truncate table mgd.VOC_Vocab;
+truncate table mgd.VOC_Vocab RESTART IDENTITY CASCADE;
 
 EOSQL

@@ -9,11 +9,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+truncate table mgd.BIB_Citation_Cache RESTART IDENTITY CASCADE;
 
-truncate table mgd.BIB_Citation_Cache
-
-;
 EOSQL

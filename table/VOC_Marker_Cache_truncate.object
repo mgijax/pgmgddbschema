@@ -8,8 +8,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-truncate table mgd.VOC_Marker_Cache;
-
-select setval('voc_marker_cache_seq', 1);
+truncate table mgd.VOC_Marker_Cache RESTART IDENTITY CASCADE;
 
 EOSQL

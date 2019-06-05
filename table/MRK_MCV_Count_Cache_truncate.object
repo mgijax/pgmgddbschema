@@ -9,11 +9,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+truncate table mgd.MRK_MCV_Count_Cache RESTART IDENTITY CASCADE;
 
-truncate table mgd.MRK_MCV_Count_Cache
-
-;
 EOSQL

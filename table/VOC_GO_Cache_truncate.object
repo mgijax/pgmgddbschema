@@ -11,8 +11,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-truncate table mgd.VOC_GO_Cache;
-
-select setval('voc_go_cache_seq', 1);
+truncate table mgd.VOC_GO_Cache RESTART IDENTITY CASCADE;
 
 EOSQL
