@@ -1,0 +1,58 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/GXD_Genotype_DataSet_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.GXD_Genotype_DataSet_View
+as
+
+(
+select distinct v._Genotype_key,
+CONCAT(ps.strain,',',a1.symbol,',',a2.symbol) as strain, v._Refs_key
+from GXD_Expression v, GXD_Genotype g, PRB_Strain ps, ALL_Allele a1,
+   GXD_AllelePair ap LEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key)
+where v._Genotype_key = g._Genotype_key
+and g._Strain_key = ps._Strain_key
+and g._Genotype_key = ap._Genotype_key
+and ap._Allele_key_1 = a1._Allele_key
+
+union all
+select distinct t._Object_key,
+CONCAT(ps.strain,',',a1.symbol,',',a2.symbol) as strain, v._Refs_key
+from VOC_Evidence v, VOC_Annot t, GXD_Genotype g, PRB_Strain ps, ALL_Allele a1,
+   GXD_AllelePair ap LEFT OUTER JOIN ALL_Allele a2 on (ap._Allele_key_2 = a2._Allele_key)
+where v._Annot_key = t._Annot_key
+and t._AnnotType_key in (1002,1020)
+and t._Object_key = g._Genotype_key
+and g._Strain_key = ps._Strain_key
+and g._Genotype_key = ap._Genotype_key
+and ap._Allele_key_1 = a1._Allele_key
+
+union all
+select distinct v._Genotype_key, ps.strain, v._Refs_key
+from GXD_Expression v, GXD_Genotype g, PRB_Strain ps
+where v._Genotype_key = g._Genotype_key
+and g._Strain_key = ps._Strain_key
+and not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key)
+
+union all
+select distinct t._Object_key, ps.strain, v._Refs_key
+from VOC_Evidence v, VOC_Annot t, GXD_Genotype g, PRB_Strain ps
+where v._Annot_key = t._Annot_key
+and t._AnnotType_key in (1002,1020)
+and t._Object_key = g._Genotype_key
+and g._Strain_key = ps._Strain_key
+and not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key)
+
+)
+order by strain
+;
+
+EOSQL
