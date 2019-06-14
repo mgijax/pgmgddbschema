@@ -11,6 +11,7 @@ v_genotypeKey int
 )
 RETURNS TABLE (
 	jnum int,
+	jnumid text,
 	short_citation text,
 	dataSet text
 ) AS
@@ -32,6 +33,7 @@ BEGIN
 -- RETURNS:
 --	TABLE
 --	jnum
+--	jnumid
 --	short_citation
 --	dataSet
 --      
@@ -82,11 +84,11 @@ where a._Genotype_key = v_genotypeKey
 CREATE INDEX idx1 ON objects(_Refs_key);
 
 RETURN QUERY
-SELECT b.jnum, b.short_citation, o.dataSet
+SELECT b.jnum, b.jnumid, b.short_citation, o.dataSet
 FROM objects o, BIB_View b
 WHERE o._Refs_key = b._Refs_key
 UNION
-SELECT NULL, o.label, o.dataSet
+SELECT NULL, NULL, o.label, o.dataSet
 FROM objects o
 WHERE o._Refs_key = 0
 ORDER BY jnum
