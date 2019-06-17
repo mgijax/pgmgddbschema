@@ -10,6 +10,7 @@ CREATE OR REPLACE FUNCTION GXD_getGenotypesDataSets (
 v_genotypeKey int
 )
 RETURNS TABLE (
+	_refs_key int,
 	jnum int,
 	jnumid text,
 	short_citation text,
@@ -32,6 +33,7 @@ BEGIN
 --      
 -- RETURNS:
 --	TABLE
+--	_refs_key
 --	jnum
 --	jnumid
 --	short_citation
@@ -84,11 +86,11 @@ where a._Genotype_key = v_genotypeKey
 CREATE INDEX idx1 ON objects(_Refs_key);
 
 RETURN QUERY
-SELECT b.jnum, b.jnumid, b.short_citation, o.dataSet
+SELECT b._refs_key, b.jnum, b.jnumid, b.short_citation, o.dataSet
 FROM objects o, BIB_View b
 WHERE o._Refs_key = b._Refs_key
 UNION
-SELECT NULL, NULL, o.label, o.dataSet
+SELECT NULL, NULL, NULL, o.label, o.dataSet
 FROM objects o
 WHERE o._Refs_key = 0
 ORDER BY jnum
