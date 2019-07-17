@@ -22,22 +22,25 @@ c.jnumID,
 c.numericPart as jnum,  
 c.short_citation, 
 u1.login as createdBy, 
-u2.login as modifiedBy
-from IMG_Image i, ACC_Accession ia, BIB_Citation_Cache c, 
-VOC_Term t1, VOC_Term t2, MGI_User u1, MGI_User u2
-where i._Image_key = ia._Object_key
-and ia._MGIType_key = 9
-and ia._LogicalDB_key = 1
-and ia.prefixPart = 'MGI:'
-and ia.preferred = 1
-and i._ImageClass_key = t1._Term_key
-and i._ImageType_key = t2._Term_key
-and i._Refs_key = c._Refs_key
-and i._CreatedBy_key = u1._User_key
-and i._ModifiedBy_key = u2._User_key
+u2.login as modifiedBy,
+pix.accID as pixID,
+pix.numericPart as pixKey
+from IMG_Image i
+     LEFT OUTER JOIN ACC_Accession pix on (i._Image_key = pix._Object_key
+                and pix._MGIType_key = 9 
+                and pix._LogicalDB_key = 19)
 
+     INNER JOIN ACC_Accession ia on (i._Image_key = ia._Object_key
+	and ia._MGIType_key = 9
+	and ia._LogicalDB_key = 1
+	and ia.prefixPart = 'MGI:'
+	and ia.preferred = 1)
 
-
+     INNER JOIN BIB_Citation_Cache c on (i._Refs_key = c._Refs_key)
+     INNER JOIN VOC_Term t1 on (i._ImageClass_key = t1._Term_key)
+     INNER JOIN VOC_Term t2 on (i._ImageType_key = t2._Term_key)
+     INNER JOIN MGI_User u1 on (i._CreatedBy_key = u1._User_key)
+     INNER JOIN MGI_User u2 on (i._ModifiedBy_key = u2._User_key)
 ;
 
 EOSQL
