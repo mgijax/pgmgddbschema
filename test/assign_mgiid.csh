@@ -12,7 +12,7 @@ touch $LOG
 
 date | tee -a $LOG
  
-./assign_mgi.py | tee -a $LOG
+./assign_mgiid.py | tee -a $LOG
 ./findmgi.csh | tee -a $LOG
 
 date |tee -a $LOG
