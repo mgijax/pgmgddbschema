@@ -1,3 +1,9 @@
+TAG: pgmgddbschema-6-0-14-7
+DATE: 07/31/2019
+STAFF: lec
+CHANGES:
+TR12332/add assign_mgiid.csh/py
+
 TAG: pgmgddbschema-6-0-14-6
 DATE: 04/30/2019
 STAFF: lec
