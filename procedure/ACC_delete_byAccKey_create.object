@@ -49,7 +49,6 @@ BEGIN
 -- if pix id is being deleted...then set img_image.xdim = null, img_image.ydim = null
 IF (SELECT count(*) FROM ACC_Accession a WHERE a._MGIType_key = 9 AND a._Accession_key = v_accKey) >= 1
 THEN
-	RAISE NOTICE 'xDim, yDim...';
 	UPDATE IMG_Image i
 	set xDim = null, yDim = null 
 	FROM ACC_Accession a
