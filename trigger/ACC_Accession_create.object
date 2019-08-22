@@ -41,6 +41,143 @@ THEN
 	;
 END IF;
 
+-- if trying to delete a J:
+IF OLD._MGIType_key = 1 AND OLD._LogicalDB_key = 1 AND OLD.prefixPart = 'J:'
+THEN
+	IF EXISTS (SELECT * FROM ALL_Allele
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in ALL_Allele(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM ALL_CellLine_Derivation
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in ALL_CellLine_Derivation(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM CRS_References
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in CRS_References(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM DAG_DAG
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in DAG_DAG(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM GXD_AntibodyAlias
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in GXD_AntibodyAlias(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM GXD_Assay
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in GXD_Assay(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM GXD_Index
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in GXD_Index(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM IMG_Image
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in IMG_Image(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM MGI_Reference_Assoc
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in MGI_Reference_Assoc(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM MGI_Relationship
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in MGI_Relationship(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM MGI_Synonym
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in MGI_Synonym(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM MLD_Expts
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in MLD_Expts(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM MLD_Notes
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in MLD_Notes(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM MRK_History
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in MRK_History(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM MRK_StrainMarker
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in MRK_StrainMarker(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM PRB_Marker
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in PRB_Marker(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM PRB_Reference
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in PRB_Reference(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM PRB_Source
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in PRB_Source(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM RI_Summary_Expt_Ref
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in RI_Summary_Expt_Ref(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM SEQ_Allele_Assoc
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in SEQ_Allele_Assoc(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM VOC_Evidence
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in VOC_Evidence(s)';
+	END IF;
+
+	IF EXISTS (SELECT * FROM VOC_Vocab
+          	WHERE OLD._Object_key = _Refs_key)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; it is referenced in VOC_Vocab(s)';
+	END IF;
+
+END IF;
+
 RETURN NEW;
 
 END;

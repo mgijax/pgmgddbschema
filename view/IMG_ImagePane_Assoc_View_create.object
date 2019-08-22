@@ -17,7 +17,8 @@ create view mgd.IMG_ImagePane_Assoc_View
 as
 select ip.*, substring(i.figureLabel,1,20) as figureLabel, 
 i._ImageClass_key, t.term,
-a1.accID as mgiID, a2.accID as pixID
+a1.accID as mgiID, a2.accID as pixID,
+i._Image_key
 from IMG_ImagePane_Assoc ip, 
      IMG_ImagePane p, 
      IMG_Image i, 
@@ -40,7 +41,8 @@ union
 
 select ip.*, substring(i.figureLabel,1,20) as figureLabel, 
 i._ImageClass_key, t.term,
-a1.accID as mgiID, null
+a1.accID as mgiID, null,
+i._Image_key
 from IMG_ImagePane_Assoc ip, 
      IMG_ImagePane p, 
      IMG_Image i, 
