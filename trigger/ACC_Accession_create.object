@@ -44,6 +44,12 @@ END IF;
 -- if trying to delete a J:
 IF OLD._MGIType_key = 1 AND OLD._LogicalDB_key = 1 AND OLD.prefixPart = 'J:'
 THEN
+	IF EXISTS (SELECT * FROM BIB_Refs b
+          	WHERE OLD._Object_key = b._Refs_key AND b.isDiscard = 0)
+	THEN
+        	RAISE EXCEPTION E'Cannot delete J:; is-discard = false';
+	END IF;
+
 	IF EXISTS (SELECT * FROM ALL_Allele
           	WHERE OLD._Object_key = _Refs_key)
 	THEN
