@@ -116,6 +116,7 @@ BEGIN
 --	in order to add a distinct MGI accession id
 --	to the NEW object
 --
+--	adds: J:
 --	adds: BIB_Workflow_Status, one row per Group, status = 'Not Routed'
 --	adds: BIB_Workflow_Data, supplimental term = 'No supplemental data' (34026998)
 --	adds: BIB_Workflow_Data, extracted text section = 'body' (48804490)
@@ -127,7 +128,11 @@ BEGIN
 --	NEW
 --
 
+-- create MGI id
 PERFORM ACC_assignMGI(1001, NEW._Refs_key, 'Reference');
+
+-- create J:
+PERFORM ACC_assignJ(1001, NEW._Refs_key, -1);
 
 FOR rec IN
 SELECT _Term_key FROM VOC_Term where _Vocab_key = 127
