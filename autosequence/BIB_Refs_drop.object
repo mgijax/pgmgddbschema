@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#
+# History
+#
+# 08/27/2019	lec
+#       - TR13007/RNA Seq/add bib_refs/autosequencingtracted text changes
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP SEQUENCE IF EXISTS bib_refs_seq CASCADE;
+
+EOSQL
