@@ -23,6 +23,9 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0 | tee -a $LOG
 select max(_Assoc_key) from ALL_Allele_CellLine;
 select last_value from all_allele_cellline_seq;
 
+select max(_Refs_key) from BIB_Refs;
+select last_value from bib_refs_seq;
+
 select max(_Assoc_key) from BIB_Workflow_Status;
 select last_value from bib_workflow_status_seq;
 
