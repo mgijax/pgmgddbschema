@@ -25,7 +25,8 @@ DAG_create.logical \
 SEQ_create.logical \
 GO_create.logical \
 PWI_create.logical \
-BIB_GOXRef_View_create.object
+BIB_GOXRef_View_create.object \
+BIB_AssociatedData_View_create.object
 do
 $i $*
 done
