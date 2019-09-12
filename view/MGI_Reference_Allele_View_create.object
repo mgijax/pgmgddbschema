@@ -28,7 +28,7 @@ and aa._MGIType_key = 11
 and aa._LogicalDB_key = 1
 and aa.preferred = 1
 and a._Marker_key = m._Marker_key
-
+order by a.symbol, t.assocType
 
 ;
 

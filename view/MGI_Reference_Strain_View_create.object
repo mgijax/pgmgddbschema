@@ -20,13 +20,15 @@ create view mgd.MGI_Reference_Strain_View
 as
 select r.*, t.assocType, t.allowOnlyOne,
 c.jnumID, c.numericPart as jnum, c.short_citation, c.isReviewArticle, c.isReviewArticleString,
-u.login as modifiedBy
-from MGI_Reference_Assoc r, MGI_RefAssocType t, BIB_Citation_Cache c, MGI_User u
+u.login as modifiedBy,
+s.strain
+from MGI_Reference_Assoc r, MGI_RefAssocType t, BIB_Citation_Cache c, MGI_User u, PRB_Strain s
 where r._MGIType_key = 10
 and r._RefAssocType_key = t._RefAssocType_key
 and r._Refs_key = c._Refs_key
 and r._ModifiedBy_key = u._User_key
-
+and r._Object_key = s._Strain_key
+order by s.strain, t.assocType
 
 ;
 

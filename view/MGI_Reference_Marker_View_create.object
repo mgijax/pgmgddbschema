@@ -17,14 +17,16 @@ create view mgd.MGI_Reference_Marker_View
 as
 select r.*, t.assocType, t.allowOnlyOne,
 c.jnumID, c.numericPart as jnum, c.short_citation, c.isReviewArticle, c.isReviewArticleString,
-u2.login as modifiedBy, u1.login as createdBy
-from MGI_Reference_Assoc r, MGI_RefAssocType t, BIB_Citation_Cache c, MGI_User u1, MGI_User u2
+u2.login as modifiedBy, u1.login as createdBy,
+m.symbol
+from MGI_Reference_Assoc r, MGI_RefAssocType t, BIB_Citation_Cache c, MGI_User u1, MGI_User u2, MRK_Marker m
 where r._MGIType_key = 2
 and r._RefAssocType_key = t._RefAssocType_key
 and r._Refs_key = c._Refs_key
 and r._CreatedBy_key = u1._User_key
 and r._ModifiedBy_key = u2._User_key
-
+and r._Object_key = m._Marker_key
+order by m.symbol, t.assocType
 
 ;
 
