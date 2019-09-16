@@ -41,7 +41,8 @@ v_userKey int,
 v_mgiTypeKey int,
 v_objectKey int,
 v_refsKey int,
-v_refsType mgi_refassoctype.assocType%TYPE
+v_refsType mgi_refassoctype.assocType%TYPE,
+v_assocKey int DEFAULT null
 )
 RETURNS VOID AS
 \$\$
@@ -91,6 +92,14 @@ THEN
   			PERFORM MGI_insertReferenceAssoc (v_userKey, 11, v_allelekey, v_refsKey, v_refsType);
 		END IF;
 	END LOOP;
+ELSE
+	v_refsTypeKey := _RefAssocType_key FROM MGI_RefAssocType 
+		WHERE _MGIType_key = v_mgiTypeKey AND assocType = v_refsType;
+
+	UPDATE MGI_Reference_Assoc
+	SET _Object_key = v_objectKey, _RefAssocType_key = v_refsTypeKey, _ModifiedBy_key = v_userKey, modification_date = now()
+	WHERE MGI_Reference_Assoc._Assoc_key = v_assocKey;
+
 END IF;
 
 RETURN;
@@ -99,8 +108,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MGI_updateReferenceAssoc(int,int,int,int,text) TO public;
+GRANT EXECUTE ON FUNCTION MGI_updateReferenceAssoc(int,int,int,int,text,int) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_updateReferenceAssoc(int,int,int,int,text) IS 'update the allele/reference associations when an MP/Genotype annotation is added';
+COMMENT ON FUNCTION mgd.MGI_updateReferenceAssoc(int,int,int,int,text,int) IS 'update the allele/reference associations';
 
 EOSQL
