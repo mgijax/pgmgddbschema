@@ -18,7 +18,7 @@ as
 select r.*, t.assocType, t.allowOnlyOne,
 c.jnumID, c.numericPart as jnum, c.short_citation, c.isReviewArticle, c.isReviewArticleString,
 u2.login as modifiedBy, u1.login as createdBy,
-m.symbol
+m.symbol, aa.accID
 from MGI_Reference_Assoc r, MGI_RefAssocType t, BIB_Citation_Cache c, MGI_User u1, MGI_User u2, MRK_Marker m, ACC_Accession aa
 where r._MGIType_key = 2
 and r._RefAssocType_key = t._RefAssocType_key
