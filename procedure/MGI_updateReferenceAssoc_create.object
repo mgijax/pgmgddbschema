@@ -41,14 +41,13 @@ v_userKey int,
 v_mgiTypeKey int,
 v_objectKey int,
 v_refsKey int,
-v_refsType mgi_refassoctype.assocType%TYPE,
+v_refsTypeKey int,
 v_assocKey int DEFAULT null
 )
 RETURNS VOID AS
 \$\$
  
 DECLARE
-v_refsTypeKey int;
 v_allelekey int;
 
 BEGIN
@@ -57,9 +56,6 @@ BEGIN
 
 IF v_mgiTypeKey = 12
 THEN
-	v_refsTypeKey := _RefAssocType_key FROM MGI_RefAssocType 
-		WHERE _MGIType_key = 11 AND assocType = v_refsType;
-
 	FOR v_allelekey IN
 	SELECT _Allele_key FROM GXD_AlleleGenotype WHERE _Genotype_key = v_objectKey
 	LOOP
@@ -93,9 +89,6 @@ THEN
 		END IF;
 	END LOOP;
 ELSE
-	v_refsTypeKey := _RefAssocType_key FROM MGI_RefAssocType 
-		WHERE _MGIType_key = v_mgiTypeKey AND assocType = v_refsType;
-
 	UPDATE MGI_Reference_Assoc
 	SET _Object_key = v_objectKey, _RefAssocType_key = v_refsTypeKey, _ModifiedBy_key = v_userKey, modification_date = now()
 	WHERE MGI_Reference_Assoc._Assoc_key = v_assocKey;
@@ -108,8 +101,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MGI_updateReferenceAssoc(int,int,int,int,text,int) TO public;
+GRANT EXECUTE ON FUNCTION MGI_updateReferenceAssoc(int,int,int,int,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_updateReferenceAssoc(int,int,int,int,text,int) IS 'update the reference associations';
+COMMENT ON FUNCTION mgd.MGI_updateReferenceAssoc(int,int,int,int,int,int) IS 'update the reference associations';
 
 EOSQL
