@@ -15,7 +15,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.MGI_Reference_Assoc USING MGI_Reference_Assoc_pkey;
 
-create unique index MGI_Reference_Assoc_idx_clustered on mgd.MGI_Reference_Assoc (_Refs_key, _Object_key, _MGIType_key, _RefAssocType_key);
+--create unique index MGI_Reference_Assoc_idx_clustered on mgd.MGI_Reference_Assoc (_Refs_key, _Object_key, _MGIType_key, _RefAssocType_key);
 
 create index MGI_Reference_Assoc_idx_Refs_key on mgd.MGI_Reference_Assoc (_Refs_key);
 
