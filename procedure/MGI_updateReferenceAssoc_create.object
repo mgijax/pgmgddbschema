@@ -49,6 +49,7 @@ RETURNS VOID AS
  
 DECLARE
 v_allelekey int;
+v_refsType mgi_refassoctype.assocType%TYPE;
 
 BEGIN
 
@@ -85,10 +86,14 @@ THEN
 				'Mixed', 'Sequence', 'Treatment')
 			;
 		ELSE
+			v_refsType := assocType FROM MGI_RefAssocType WHERE _MGIType_key = '11' 
+					AND _refAssocType_key = v_refsTypeKey;
   			PERFORM MGI_insertReferenceAssoc (v_userKey, 11, v_allelekey, v_refsKey, v_refsType);
 		END IF;
 	END LOOP;
-ELSE
+
+ELSEIF v_assocKey is not null
+THEN
 	UPDATE MGI_Reference_Assoc
 	SET _Object_key = v_objectKey, _RefAssocType_key = v_refsTypeKey, _ModifiedBy_key = v_userKey, modification_date = now()
 	WHERE MGI_Reference_Assoc._Assoc_key = v_assocKey;
