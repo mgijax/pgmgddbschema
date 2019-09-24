@@ -26,9 +26,13 @@ RETURNS VOID AS
 
 DECLARE
 v_noteKey int;
+v_existingnoteTypeKey int;
 
 BEGIN
 
+v_existingnoteTypeKey :=  _notetype_key from MGI_Note where _note_key = v_note_key;
+--raise exception 'v_existingnoteTypeKey: %', v_existingnoteTypeKey;
+--raise exception 'v_noteTypeKey: %', v_noteTypeKey;
 IF v_note_key IS NULL
 THEN
 	v_noteKey := max(_note_key) + 1 from MGI_Note;
@@ -51,11 +55,16 @@ THEN
 ELSE
 
         UPDATE MGI_NoteChunk
-	SET note = v_note, _ModifiedBy_key = v_userKey, modification_date = now()
+	SET note = v_note,  _ModifiedBy_key = v_userKey, modification_date = now()
 	WHERE _Note_key = v_note_key;
 
+	IF v_existingnoteTypeKey != v_noteTypeKey
+	THEN
+	    UPDATE MGI_Note
+	    SET _NoteType_key = v_noteTypeKey
+	    WHERE _Note_key = v_note_key;
+	END IF;
 END IF;
-
 
 END;
 \$\$
