@@ -61,7 +61,9 @@ ELSE
 	IF v_existingnoteTypeKey != v_noteTypeKey
 	THEN
 	    UPDATE MGI_Note
-	    SET _NoteType_key = v_noteTypeKey
+	    SET _NoteType_key = v_noteTypeKey,
+	    _ModifiedBy_key = v_userKey, 
+	    modification_date = now()
 	    WHERE _Note_key = v_note_key;
 	END IF;
 END IF;
