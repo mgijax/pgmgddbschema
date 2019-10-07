@@ -1,0 +1,105 @@
+#!/bin/sh
+
+#
+# History
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/VOC_mergeDupAnnotations_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION VOC_mergeDupAnnotations (
+v_annotTypeKey int,
+v_in_objectKey int
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+
+v_annotKey int;
+v_objectKey int;
+v_termKey int;
+v_annotevidenceKey int;
+v_currentObjectKey int;
+v_prevObjectKey int := 0;
+v_goodAnnotKey int;
+v_badAnnotKey int;
+
+BEGIN
+
+--
+-- NAME: VOC_mergeDupAnnotations
+--
+-- DESCRIPTION:
+--        
+-- Executed from API/AnotationService/process()
+--
+-- A unique VOC_Annotation record is defined by: 
+--	_AnnotType_key	
+--	_Object_key	
+--	_Term_key	
+--	_Qualifier_key	
+--
+-- For given _Object_key, find any duplicate VOC_Annot rows and:
+--
+-- move VOC_Evidence._Annot_key from bad/duplidate VOC_Annot record to "good" VOC_Annot record
+-- delete duplicate VOC_Annot record
+--
+-- INPUT:
+--      
+-- annotTypeKey : VOC_Annot._AnnotType_key
+-- in_objectKey    : VOC_Annot._Object_key
+--
+-- RETURNS:
+--	VOID
+--      
+
+FOR v_annotKey, v_objectKey, v_termKey, v_annotevidenceKey IN
+WITH mpAnnot AS (
+select _annottype_key, _object_key, _term_key, _qualifier_key
+from voc_annot 
+where _annottype_key = v_annotTypeKey
+and _object_key = v_in_objectKey
+group by _annottype_key, _object_key, _term_key, _qualifier_key having count(*) > 1 
+)
+select a._annot_key, a._object_key, a._term_key, e._annotevidence_key
+from mpAnnot m, voc_annot a, voc_evidence e
+where m._object_key = a._object_key
+and m._term_key = a._term_key
+and m._annottype_key = a._annottype_key
+and a._annot_key = e._annot_key
+order by a._object_key, a._term_key, a._annot_key
+
+LOOP
+	v_currentObjectKey := v_in_objectKey;
+
+	IF v_prevObjectKey != v_currentObjectKey
+	THEN
+		v_goodAnnotKey := v_annotKey;
+		v_prevObjectKey := v_currentObjectKey;
+	ELSE
+		v_badAnnotKey := v_annotKey;
+
+		IF v_goodAnnotKey != v_badAnnotKey
+		THEN
+			--RAISE NOTICE 'VOC_Evidence._AnnotEvidence_key=% from _Annot_key=% to _Annot_key=%', v_annotevidenceKey, v_badAnnotKey, v_goodAnnotKey;
+			--RAISE NOTICE 'delete VOC_Annot._Annot_key =%', v_badAnnotKey;
+			UPDATE VOC_Evidence set _annot_key = v_goodAnnotKey where _annotevidence_key = v_annotevidenceKey;
+			DELETE FROM VOC_Annot where _Annot_key = v_badAnnotKey;
+		END IF;
+	END IF;
+
+END LOOP;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION VOC_mergeDupAnnotations(int,int) TO public;
+
+COMMENT ON FUNCTION mgd.VOC_mergeDupAnnotations(int,int) IS 'merge duplicate VOC_Annot/VOC_Evidence rows';
+
+EOSQL
