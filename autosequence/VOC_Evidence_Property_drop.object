@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#
+# History
+#
+# 10/10/2019    lec
+#       - TR13007/RNA Seq/MP Annot module
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP SEQUENCE IF EXISTS voc_evidence_property_seq CASCADE;
+
+EOSQL

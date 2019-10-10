@@ -85,8 +85,8 @@ LOOP
 
 		IF v_goodAnnotKey != v_badAnnotKey
 		THEN
-			--RAISE NOTICE 'VOC_Evidence._AnnotEvidence_key=% from _Annot_key=% to _Annot_key=%', v_annotevidenceKey, v_badAnnotKey, v_goodAnnotKey;
-			--RAISE NOTICE 'delete VOC_Annot._Annot_key =%', v_badAnnotKey;
+			RAISE NOTICE 'VOC_Evidence._AnnotEvidence_key=% from _Annot_key=% to _Annot_key=%', v_annotevidenceKey, v_badAnnotKey, v_goodAnnotKey;
+			RAISE NOTICE 'delete VOC_Annot._Annot_key =%', v_badAnnotKey;
 			UPDATE VOC_Evidence set _annot_key = v_goodAnnotKey where _annotevidence_key = v_annotevidenceKey;
 			DELETE FROM VOC_Annot where _Annot_key = v_badAnnotKey;
 		END IF;

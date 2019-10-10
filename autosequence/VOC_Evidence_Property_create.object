@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 10/10/2019	lec
+#	- TR13007/RNA Seq/MP Annot module
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE voc_evidence_property_seq;    
+ALTER TABLE VOC_Evidence_Property ALTER _EvidenceProperty_key SET DEFAULT NEXTVAL('voc_evidence_property_seq');
+select setval('voc_evidence_property_seq', (select max(_EvidenceProperty_key) from VOC_Evidence_Property));
+
+EOSQL
