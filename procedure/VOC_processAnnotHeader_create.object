@@ -57,6 +57,20 @@ v_headerLabel := _Label_key FROM DAG_Label WHERE label = 'Header';
 v_headerKey := max(_AnnotHeader_key) FROM VOC_AnnotHeader;
 v_maxSeq := 0;
 
+-- if no annotations exist, delete all headers and return
+IF (SELECT count(*) FROM VOC_Annot 
+	WHERE _AnnotType_key = v_annotTypeKey
+	AND _Object_key = v_objectKey) = 0
+THEN
+	DELETE 
+	FROM VOC_AnnotHeader
+	WHERE _AnnotType_key = v_annotTypeKey
+	AND _Object_key = v_objectKey
+	;
+
+	RETURN;
+END IF;
+
 -- set all headers to not-normal
 UPDATE VOC_AnnotHeader
 SET isNormal = 0
