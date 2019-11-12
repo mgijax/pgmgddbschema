@@ -21,26 +21,26 @@ delete from mgi_note a
 where not exists (select 1 from mgi_notechunk c where a._note_key = c._note_key)
 ;
 
-CREATE TEMP TABLE toDelete1 AS
-select a.*, t._mgitype_key as _mgitype_key_t, t._notetype_key as _notetype_key_t
-from mgi_note a, mgi_notetype t
-where a._notetype_key = t._notetype_key
-and a._mgitype_key != t._mgitype_key
-and a._mgitype_key in (12)
-;
+--CREATE TEMP TABLE toDelete1 AS
+--select a.*, t._mgitype_key as _mgitype_key_t, t._notetype_key as _notetype_key_t
+--from mgi_note a, mgi_notetype t
+--where a._notetype_key = t._notetype_key
+--and a._mgitype_key != t._mgitype_key
+--and a._mgitype_key in (12)
+--;
 
-select t.*, n.note 
-from toDelete1 t, mgi_notechunk n
-where t._note_key = n._note_key
-;
+--select t.*, n.note 
+--from toDelete1 t, mgi_notechunk n
+--where t._note_key = n._note_key
+--;
 
-CREATE INDEX toDelete1_idx1 ON toDelete1(_note_key);
-select * from toDelete1;
-
-DELETE FROM mgi_note
-USING toDelete1
-WHERE toDelete1._note_key = mgi_note._note_key
-;
+--CREATE INDEX toDelete1_idx1 ON toDelete1(_note_key);
+--select * from toDelete1;
+--
+--DELETE FROM mgi_note
+--USING toDelete1
+--WHERE toDelete1._note_key = mgi_note._note_key
+--;
 
 -- probes
 
