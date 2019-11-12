@@ -33,8 +33,8 @@ order by n._Object_key, n.sequenceNum
 ;
 
 update MGI_Note n
-from toUpdate u
 set _mgitype_key = 25
+from toUpdate u
 where n._note_key = u._note_key
 ;
 
