@@ -11,7 +11,7 @@ ${PG_MGD_DBSCHEMADIR}/view/BIB_Status_View_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create view BIB_Status_View as
-select r._Refs_key, ap_t.term as ap_status,
+select distinct r._Refs_key, ap_t.term as ap_status,
   go_t.term as go_status,
   gxd_t.term as gxd_status,
   qtl_t.term as qtl_status,
