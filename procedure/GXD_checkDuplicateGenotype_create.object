@@ -27,7 +27,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/GXD_checkDuplicateGenotype_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION GXD_checkDuplicateGenotype (
-v_genotypeKey int
+v_genotypeKey bigint
 )
 RETURNS VOID AS
 \$\$
@@ -209,8 +209,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION GXD_checkDuplicateGenotype(int) TO public;
+GRANT EXECUTE ON FUNCTION GXD_checkDuplicateGenotype(bigint) TO public;
 
-COMMENT ON FUNCTION mgd.GXD_checkDuplicateGenotype(int) IS 'check if _genotype_key is duplicate';
+COMMENT ON FUNCTION mgd.GXD_checkDuplicateGenotype(bigint) IS 'check if _genotype_key is duplicate';
 
 EOSQL
