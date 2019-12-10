@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 12/10/2019	sc
+#	- TR13007/RNA Seq project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE gxd_allelepair_seq;    
+ALTER TABLE GXD_Genotype ALTER _AllelePair_key SET DEFAULT NEXTVAL('gxd_allelepair_seq');
+select setval('gxd_allelepair_seq', (select max(_allelepair_key) from GXD_AllelePair));
+
+EOSQL

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#
+# History
+#
+# 12/10/2019    sc
+#       - TR13007/RNA Seq project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP SEQUENCE IF EXISTS gxd_allelepair_seq CASCADE;
+
+EOSQL

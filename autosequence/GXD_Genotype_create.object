@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 12/10/2019	sc
+#	- TR13007/RNA Seq project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE gxd_genotype_seq;    
+ALTER TABLE GXD_Genotype ALTER _Genotype_key SET DEFAULT NEXTVAL('gxd_genotype_seq');
+select setval('gxd_genotype_seq', (select max(_genotype_key) from GXD_Genotype));
+
+EOSQL

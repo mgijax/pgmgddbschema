@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#
+# History
+#
+# 12/05/2019	sc
+#	- TR13007/RNA-Seq Project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP SEQUENCE IF EXISTS acc_actualdb_seq CASCADE;
+
+EOSQL

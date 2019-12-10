@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 12/5/2019	sc
+#	- TR13007/RNA-Seq Project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE acc_logicaldb_seq;    
+ALTER TABLE ACC_LogicalDB ALTER _LogicalDB_key SET DEFAULT NEXTVAL('acc_logicaldb_seq');
+select setval('acc_logicaldb_seq', (select max(_LogicalDB_key) from ACC_LogicalDB));
+
+EOSQL

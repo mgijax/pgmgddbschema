@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 12/10/2019	sc
+#	- TR13007/RNA Seq project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE prb_strain_seq;    
+ALTER TABLE PRB_Strain ALTER _Strain_key SET DEFAULT NEXTVAL('prb_strain_seq');
+select setval('prb_strain_seq', (select max(_strain_key) from PRB_Strain));
+
+EOSQL
