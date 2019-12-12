@@ -4,6 +4,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP FUNCTION IF EXISTS VOC_copyAnnotEvidenceNotes(int,int,bigint);
+DROP FUNCTION IF EXISTS VOC_copyAnnotEvidenceNotes(int,int);
 
 EOSQL
