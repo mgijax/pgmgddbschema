@@ -296,3 +296,50 @@ EXECUTE PROCEDURE VOC_Evidence_insert();
 COMMENT ON FUNCTION mgd.VOC_Evidence_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
 
 EOSQL
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP TRIGGER IF EXISTS VOC_Evidence_update_trigger ON VOC_Evidence;
+DROP FUNCTION IF EXISTS VOC_Evidence_update();
+
+CREATE OR REPLACE FUNCTION VOC_Evidence_update() RETURNS TRIGGER AS \$\$
+BEGIN
+
+--
+-- NAME: VOC_Evidence_update()
+--
+-- DESCRIPTOIN:
+--	
+-- after update, if there are no more Evidence records to the Annotation, 
+--	then delete the Annotation record as well
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+IF NOT EXISTS (SELECT 1 FROM VOC_Evidence where OLD._Annot_key = VOC_Evidence._Annot_key)
+THEN
+        DELETE FROM VOC_Annot a
+	WHERE a._Annot_key = OLD._Annot_key
+	;
+END IF;
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION VOC_Evidence_update() TO public;
+
+CREATE TRIGGER VOC_Evidence_update_trigger
+AFTER UPDATE on VOC_Evidence
+FOR EACH ROW
+EXECUTE PROCEDURE VOC_Evidence_update();
+
+COMMENT ON FUNCTION mgd.VOC_Evidence_update() IS 'creates a update trigger for this _AnnotEvidence_key row';
+
+EOSQL

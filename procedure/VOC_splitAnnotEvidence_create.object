@@ -1,0 +1,59 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/VOC_splitAnnotEvidence_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION VOC_splitAnnotEvidence (
+v_annotTypeKey int,
+v_annotKey int,
+v_annotEvidenceKey int,
+v_termKey int,
+v_objectKey int,
+v_qualifierKey int
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+
+BEGIN
+
+--
+-- NAME: VOC_splitAnnotEvidence
+--
+-- DESCRIPTION:
+--        
+-- split the v_annotKey/v_annotEvidenceKey into a new annotKey row
+--
+-- called when OLD._Term_key is being updated and there is > 1 existing evidence row
+-- 	create new voc_annot for new/changed term
+--	move current evidence from OLD._Annot_key to NEW._Annot_key
+-- that is, the update of one _Term_key will only change the _Term_key for 1 evidence row
+--
+-- INPUT:
+--      
+-- v_annotKey int
+-- v_annotEvidenceKey int
+--
+-- RETURNS:
+--	VOID
+--      
+
+INSERT INTO VOC_Annot
+VALUES((select nextval('voc_annot_seq')), v_annotTypeKey, v_objectKey, v_termKey, v_qualifierKey, now(), now());
+
+UPDATE VOC_Evidence SET _Annot_key = (select last_value from voc_annot_seq) 
+		WHERE _AnnotEvidence_key = v_annotEvidenceKey;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION VOC_splitAnnotEvidence(int,int,int,int,int,int) TO public;
+
+COMMENT ON FUNCTION mgd.VOC_splitAnnotEvidence(int,int,int,int,int,int) IS 'split annotKey/annotEvidenceKey into a new annotKey row';
+
+EOSQL
