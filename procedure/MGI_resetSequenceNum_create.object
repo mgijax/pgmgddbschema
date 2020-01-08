@@ -204,6 +204,15 @@ THEN
 	ORDER BY sequenceNum
 	;
 
+ELSIF (v_table = 'VOC_AnnotHeaderMP')
+THEN
+	OPEN seq_cursor FOR
+	SELECT _Object_key, sequenceNum
+	FROM VOC_AnnotHeader
+	WHERE _AnnotType_key = 1002 and _Object_key = v_key
+	ORDER BY sequenceNum
+	;
+
 else
 	return;
 
@@ -297,6 +306,11 @@ LOOP
 	THEN
 		UPDATE VOC_Term set sequenceNum = newSeq
 		WHERE _Vocab_key = pkey and sequenceNum = oldSeq;
+
+	ELSIF (v_table = 'VOC_AnnotHeaderMP')
+	THEN
+		UPDATE VOC_AnnotHeader set sequenceNum = newSeq
+		WHERE _AnnotType_key = 1002 and _Object_key = pkey and sequenceNum = oldSeq;
 
 	ELSIF (v_table = 'MGI_SetMember')
 	THEN
