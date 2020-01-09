@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/09/2020	lec
+#	- TR13007/RNA Sequence
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE mgi_setmember_seq;    
+ALTER TABLE MGI_SetMember ALTER _SetMember_key SET DEFAULT NEXTVAL('mgi_setmember_seq');
+select setval('mgi_setmember_seq', (select max(_SetMember_key) from MGI_SetMember));
+--select last_value from mgi_setmember_seq;
+
+EOSQL
