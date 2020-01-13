@@ -1,0 +1,72 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/10/2020    lec 
+#       - TR13007/RNA Sequence project/add Genotype Clipboard for new APIR12223/add Assay/Genotype/Stage to Genotype set/clipboard
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/MGI_addSetMember_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION MGI_addSetMember (
+v_setKey int,
+v_objectKey int,
+v_userKey int,
+v_label text
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_newSetMemberKey int;
+v_newSeqKey int;
+
+BEGIN
+
+--
+-- NAME: MGI_addSetMember
+--
+-- DESCRIPTION:
+--
+-- To add set member to set
+-- (MGI_SetMember, MGI_SetMember_Genotype)
+--        
+-- INPUT:
+--      
+-- v_setKey      : MGI_Set._Set_key
+-- v_objectKey   : should match v_setKey
+-- v_userKey     : MGI_User._User_key
+-- v_label       : MGI_SetMember.label
+--
+-- RETURNS:
+--	VOID
+--
+
+v_newSetMemberKey := max(_SetMember_key) + 1 from MGI_SetMember;
+v_newSeqKey := max(sequenceNum) + 1 from MGI_SetMember where _Set_key = v_setKey;
+
+IF v_newSeqKey is null THEN
+	v_newSeqKey := 1;
+END IF;
+
+INSERT INTO MGI_SetMember
+SELECT v_newSetMemberKey, v_setKey, v_objectKey, v_label, v_newSeqKey, v_userKey, v_userKey, now(), now()
+;
+
+RETURN
+;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MGI_addSetMember(int,int,int,text) TO public;
+
+COMMENT ON FUNCTION mgd.MGI_addSetMember(int,int,int,text) IS 'add Genotype/Stage used in Assay to Genotype Clipboard';
+
+EOSQL
