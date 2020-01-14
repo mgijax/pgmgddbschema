@@ -48,7 +48,7 @@ BEGIN
 --
 
 v_newSetMemberKey := max(_SetMember_key) + 1 from MGI_SetMember;
-v_newSeqKey := max(sequenceNum) + 1 from MGI_SetMember where _Set_key = v_setKey;
+v_newSeqKey := max(sequenceNum) + 1 from MGI_SetMember where _Set_key = v_setKey and _CreatedBy_key = v_userKey;
 
 IF v_newSeqKey is null THEN
 	v_newSeqKey := 1;
