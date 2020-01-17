@@ -54,9 +54,12 @@ IF v_newSeqKey is null THEN
 	v_newSeqKey := 1;
 END IF;
 
-INSERT INTO MGI_SetMember
-SELECT v_newSetMemberKey, v_setKey, v_objectKey, v_label, v_newSeqKey, v_userKey, v_userKey, now(), now()
-;
+-- if _set_key, _object_key, _createdby_key does not exists, then add it
+IF NOT EXISTS (select * from MGI_SetMember where _set_key = v_setKey and _object_key = v_objectKey and _createdby_key = v_userKey) THEN
+	INSERT INTO MGI_SetMember
+	SELECT v_newSetMemberKey, v_setKey, v_objectKey, v_label, v_newSeqKey, v_userKey, v_userKey, now(), now()
+	;
+END IF;
 
 RETURN
 ;
