@@ -12,8 +12,4 @@ DROP TRIGGER IF EXISTS VOC_Term_delete_trigger ON VOC_Term;
 
 DROP FUNCTION IF EXISTS VOC_Term_delete();
 
-DROP TRIGGER IF EXISTS VOC_Term_insert_trigger ON VOC_Term;
-
-DROP FUNCTION IF EXISTS VOC_Term_insert();
-
 EOSQL
