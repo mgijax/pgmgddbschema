@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/20/2019    sc
+#       - TR12963/teleuse-to-mgd_java_api
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP SEQUENCE IF EXISTS voc_term_seq CASCADE;
+
+EOSQL
