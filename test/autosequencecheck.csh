@@ -98,6 +98,9 @@ select last_value from voc_evidence_seq;
 select max(_EvidenceProperty_key) from VOC_Evidence_Property;
 select last_value from voc_evidence_property_seq;
 
+select max(_Term_key) from VOC_Term;
+select last_value from voc_term_seq;
+
 --cache in production are empty
 --select max(_Cache_key) from VOC_Allele_Cache;
 --select last_value from voc_allele_cache_seq;
