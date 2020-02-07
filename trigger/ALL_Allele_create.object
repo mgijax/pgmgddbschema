@@ -114,7 +114,7 @@ AND a._MGIType_key = 11
 
 DELETE FROM MGI_Relationship a
 WHERE a._Object_key_1 = OLD._Allele_key
-AND a._Category_key in (1006)
+AND a._MGIType_key_1 = 11
 ;
 
 DELETE FROM MGI_Synonym a
