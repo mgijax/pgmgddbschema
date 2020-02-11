@@ -22,11 +22,17 @@ DECLARE
 v_annotKey int;
 v_objectKey int;
 v_termKey int;
+v_qualifierKey int;
 v_annotevidenceKey int;
-v_currentObjectKey int;
-v_prevObjectKey int := 0;
-v_goodAnnotKey int;
-v_badAnnotKey int;
+vv_annotKey int;
+vv_objectKey int;
+vv_termKey int;
+vv_qualifierKey int;
+vv_annotevidenceKey int;
+vv_currentObjectKey int;
+vv_prevObjectKey int := 0;
+vv_goodAnnotKey int;
+vv_badAnnotKey int;
 
 BEGIN
 
@@ -57,40 +63,48 @@ BEGIN
 --	VOID
 --      
 
-FOR v_annotKey, v_objectKey, v_termKey, v_annotevidenceKey IN
-WITH mpAnnot AS (
+FOR v_annotTypeKey, v_objectKey, v_termKey, v_qualifierKey IN
 select _annottype_key, _object_key, _term_key, _qualifier_key
 from voc_annot 
 where _annottype_key = v_annotTypeKey
 and _object_key = v_in_objectKey
 group by _annottype_key, _object_key, _term_key, _qualifier_key having count(*) > 1 
-)
-select a._annot_key, a._object_key, a._term_key, e._annotevidence_key
-from mpAnnot m, voc_annot a, voc_evidence e
-where m._object_key = a._object_key
-and m._term_key = a._term_key
-and m._annottype_key = a._annottype_key
-and a._annot_key = e._annot_key
-order by a._object_key, a._term_key, a._annot_key
-
 LOOP
-	v_currentObjectKey := v_in_objectKey;
 
-	IF v_prevObjectKey != v_currentObjectKey
-	THEN
-		v_goodAnnotKey := v_annotKey;
-		v_prevObjectKey := v_currentObjectKey;
-	ELSE
-		v_badAnnotKey := v_annotKey;
+	RAISE NOTICE 'LOOP1: _annottype_key = %, _object_key = %, _term_key = %, _qualifier_key = %', v_annotTypeKey, v_objectKey, v_termKey, v_qualifierKey;
+	vv_prevObjectKey := 0;
 
-		IF v_goodAnnotKey != v_badAnnotKey
+	FOR vv_annotKey, vv_objectKey, vv_termKey, vv_qualifierKey, vv_annotevidenceKey IN
+	select a._annot_key, a._object_key, a._term_key, a._qualifier_key, e._annotevidence_key
+	from voc_annot a, voc_evidence e
+	where a._annottype_key = v_annotTypeKey
+	and a._object_key = v_objectKey
+	and a._term_key =  v_termKey
+	and a._qualifier_key = v_qualifierKey
+	and a._annot_key = e._annot_key
+	order by a._object_key, a._term_key, a._annot_key
+
+	LOOP
+		RAISE NOTICE 'LOOP2: _annot_key = %, _object_key = %, _term_key = %, _qualifier_key = %', vv_annotKey, vv_objectKey, vv_termKey, vv_qualifierKey;
+		vv_currentObjectKey := v_in_objectKey;
+
+		IF vv_prevObjectKey != vv_currentObjectKey
 		THEN
-			RAISE NOTICE 'VOC_Evidence._AnnotEvidence_key=% from _Annot_key=% to _Annot_key=%', v_annotevidenceKey, v_badAnnotKey, v_goodAnnotKey;
-			RAISE NOTICE 'delete VOC_Annot._Annot_key =%', v_badAnnotKey;
-			UPDATE VOC_Evidence set _annot_key = v_goodAnnotKey where _annotevidence_key = v_annotevidenceKey;
-			DELETE FROM VOC_Annot where _Annot_key = v_badAnnotKey;
+			vv_goodAnnotKey := vv_annotKey;
+			vv_prevObjectKey := vv_currentObjectKey;
+		ELSE
+			vv_badAnnotKey := vv_annotKey;
+	
+			IF vv_goodAnnotKey != vv_badAnnotKey
+			THEN
+				RAISE NOTICE 'VOC_Evidence._AnnotEvidence_key=% from _Annot_key=% to _Annot_key=%', vv_annotevidenceKey, vv_badAnnotKey, vv_goodAnnotKey;
+				RAISE NOTICE 'delete VOC_Annot._Annot_key =%', vv_badAnnotKey;
+				UPDATE VOC_Evidence set _annot_key = vv_goodAnnotKey where _annotevidence_key = vv_annotevidenceKey;
+				DELETE FROM VOC_Annot where _Annot_key = vv_badAnnotKey;
+			END IF;
 		END IF;
-	END IF;
+
+	END LOOP;
 
 END LOOP;
 
