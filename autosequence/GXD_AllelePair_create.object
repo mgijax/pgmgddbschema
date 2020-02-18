@@ -13,7 +13,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE SEQUENCE gxd_allelepair_seq;    
-ALTER TABLE GXD_Genotype ALTER _AllelePair_key SET DEFAULT NEXTVAL('gxd_allelepair_seq');
+ALTER TABLE GXD_AllelePair ALTER _AllelePair_key SET DEFAULT NEXTVAL('gxd_allelepair_seq');
 select setval('gxd_allelepair_seq', (select max(_allelepair_key) from GXD_AllelePair));
 
 EOSQL

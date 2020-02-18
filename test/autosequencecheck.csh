@@ -35,6 +35,15 @@ select last_value from bib_workflow_tag_seq;
 select max(_AllelePair_key) from GXD_AllelePair;
 select last_value from gxd_allelepair_seq;
 
+select max(_Antigen_key) from GXD_Antigen;
+select last_value from gxd_antigen_seq;
+
+select max(_Antibody_key) from GXD_Antibody;
+select last_value from gxd_antibody_seq;
+
+select max(_Assay_key) from GXD_Assay;
+select last_value from gxd_assay_seq;
+
 select max(_Genotype_key) from GXD_Genotype;
 select last_value from gxd_genotype_seq;
 
