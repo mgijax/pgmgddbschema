@@ -50,6 +50,9 @@ select last_value from gxd_antibodymarker_seq;
 select max(_Assay_key) from GXD_Assay;
 select last_value from gxd_assay_seq;
 
+select max(_AssayNote_key) from GXD_AssayNote;
+select last_value from gxd_assaynote_seq;
+
 select max(_Genotype_key) from GXD_Genotype;
 select last_value from gxd_genotype_seq;
 
