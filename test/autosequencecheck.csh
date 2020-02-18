@@ -47,11 +47,17 @@ select last_value from gxd_antibodyalias_seq;
 select max(_AntibodyMarker_key) from GXD_AntibodyMarker;
 select last_value from gxd_antibodymarker_seq;
 
+select max(_AntibodyPrep_key) from GXD_AntibodyPrep;
+select last_value from gxd_antibodyprep_seq;
+
 select max(_Assay_key) from GXD_Assay;
 select last_value from gxd_assay_seq;
 
 select max(_AssayNote_key) from GXD_AssayNote;
 select last_value from gxd_assaynote_seq;
+
+select max(_ProbePrep_key) from GXD_ProbePrep;
+select last_value from gxd_probeprep_seq;
 
 select max(_Genotype_key) from GXD_Genotype;
 select last_value from gxd_genotype_seq;
