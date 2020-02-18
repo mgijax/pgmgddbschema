@@ -44,6 +44,9 @@ select last_value from gxd_antibody_seq;
 select max(_AntibodyAlias_key) from GXD_AntibodyAlias;
 select last_value from gxd_antibodyalias_seq;
 
+select max(_AntibodyMarker_key) from GXD_AntibodyMarker;
+select last_value from gxd_antibodymarker_seq;
+
 select max(_Assay_key) from GXD_Assay;
 select last_value from gxd_assay_seq;
 
