@@ -11,6 +11,8 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.GXD_AssayNote USING GXD_AssayNote_pkey;
 
+create index GXD_AssayNote_idx_assay_key on mgd.GXD_AssayNote (_assay_key);
+
 create index GXD_AssayNote_idx_assayNote on mgd.GXD_AssayNote (assayNote);
 
 EOSQL
