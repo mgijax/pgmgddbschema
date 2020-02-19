@@ -11,6 +11,8 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.GXD_InSituResultImage USING GXD_InSituResultImage_pkey;
 
+create index GXD_InSituResultImage_idx_Result_key on mgd.GXD_InSituResultImage (_Result_key);
+
 create index GXD_InSituResultImage_idx_ImagePane_key on mgd.GXD_InSituResultImage (_ImagePane_key);
 
 EOSQL
