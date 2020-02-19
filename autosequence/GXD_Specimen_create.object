@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/18/2020	lec
+#	- TR13204/Infrastructure/TeleUSE->PWI
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE gxd_specimen_seq;    
+ALTER TABLE GXD_Specimen ALTER _Specimen_key SET DEFAULT NEXTVAL('gxd_specimen_seq');
+select setval('gxd_specimen_seq', (select max(_specimen_key) from GXD_Specimen));
+
+EOSQL

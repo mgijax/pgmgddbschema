@@ -59,6 +59,12 @@ select last_value from gxd_assaynote_seq;
 select max(_ProbePrep_key) from GXD_ProbePrep;
 select last_value from gxd_probeprep_seq;
 
+select max(_Specimen_key) from GXD_Specimen;
+select last_value from gxd_specimen_seq;
+
+select max(_Result_key) from GXD_InSituResult;
+select last_value from gxd_result_seq;
+
 select max(_Genotype_key) from GXD_Genotype;
 select last_value from gxd_genotype_seq;
 
