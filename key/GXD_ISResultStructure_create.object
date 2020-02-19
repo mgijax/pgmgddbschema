@@ -11,7 +11,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.GXD_ISResultStructure ADD PRIMARY KEY (_Result_key, _EMAPA_Term_key, _Stage_key);
+ALTER TABLE mgd.GXD_ISResultStructure ADD PRIMARY KEY (_ResultStructure_key);
 
 
 EOSQL

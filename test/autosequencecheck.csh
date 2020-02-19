@@ -65,6 +65,9 @@ select last_value from gxd_specimen_seq;
 select max(_Result_key) from GXD_InSituResult;
 select last_value from gxd_result_seq;
 
+select max(_ResultStructure_key) from GXD_ISResultStructure;
+select last_value from gxd_isresultstructure_seq;
+
 select max(_Genotype_key) from GXD_Genotype;
 select last_value from gxd_genotype_seq;
 
