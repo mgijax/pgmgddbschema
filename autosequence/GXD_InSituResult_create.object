@@ -11,8 +11,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CREATE SEQUENCE gxd_result_seq;    
-ALTER TABLE GXD_InSituResult ALTER _InSituResult_key SET DEFAULT NEXTVAL('gxd_result_seq');
-select setval('gxd_result_seq', (select max(_result_key) from GXD_InSituResult));
+CREATE SEQUENCE gxd_insituresult_seq;    
+ALTER TABLE GXD_InSituResult ALTER _Result_key SET DEFAULT NEXTVAL('gxd_insituresult_seq');
+select setval('gxd_insituresult_seq', (select max(_result_key) from GXD_InSituResult));
 
 EOSQL
