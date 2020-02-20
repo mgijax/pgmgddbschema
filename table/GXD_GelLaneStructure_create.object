@@ -13,6 +13,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.GXD_GelLaneStructure (
+ 	_GelLaneStructure_key          int             not null,
  	_GelLane_key                   int             not null,
         _EMAPA_Term_key                int             not null,
         _Stage_key                     int             not null,

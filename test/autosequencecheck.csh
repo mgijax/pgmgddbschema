@@ -71,6 +71,16 @@ select last_value from gxd_isresultstructure_seq;
 select max(_ResultImage_key) from GXD_InSituResultImage;
 select last_value from gxd_insituresultimage_seq;
 
+select max(_GelLaneStructure_key) from GXD_GelLaneStructure;
+select last_value from gxd_gellanestructure_seq;
+
+select max(_GelRow_key) from GXD_GelRow;
+select last_value from gxd_gelrow_seq;
+
+select max(_GelBand_key) from GXD_GelBand;
+select last_value from gxd_gelband_seq;
+
+select max(_Genotype_key) from GXD_Genotype;
 select max(_Genotype_key) from GXD_Genotype;
 select last_value from gxd_genotype_seq;
 

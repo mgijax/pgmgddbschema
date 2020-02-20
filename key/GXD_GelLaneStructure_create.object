@@ -12,7 +12,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.GXD_GelLaneStructure ADD PRIMARY KEY (_GelLane_key, _EMAPA_Term_key, _Stage_key);
+ALTER TABLE mgd.GXD_GelLaneStructure ADD PRIMARY KEY (_GelLaneStructure_key);
 
 
 EOSQL
