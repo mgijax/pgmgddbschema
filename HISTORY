@@ -1,3 +1,8 @@
+TAG: pgmgddbschema-6-0-15-6
+DATE: 03/09/2020
+STAFF: lec
+CHANGES: TR13213/remove bib_workflow_data/supplimental from procedure/ACC_assignJ_create.object
+
 TAG: pgmgddbschema-6-0-15-5
 TAG: pgmgddbschema-6-0-15-4
 TAG: pgmgddbschema-6-0-15-3
