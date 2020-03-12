@@ -26,6 +26,9 @@ select last_value from all_allele_cellline_seq;
 select max(_CellLine_key) from ALL_CellLine;
 select last_value from all_cellline_seq;
 
+select max(_Derication_key) from ALL_CellLine_Derivation;
+select last_value from all_cellline_derivation_seq;
+
 select max(_Refs_key) from BIB_Refs;
 select last_value from bib_refs_seq;
 
