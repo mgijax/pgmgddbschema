@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/29/2018	sc
+#	- TR122662/GMC Project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE mgi_relationship_seq;    
+ALTER TABLE MGI_Relationship ALTER _Relationship_key SET DEFAULT NEXTVAL('mgi_relationship_seq');
+select setval('mgi_relationship_seq', (select max(_Relationship_key) from MGI_Relationship));
+
+EOSQL
