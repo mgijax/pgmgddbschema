@@ -114,6 +114,9 @@ select last_value from img_imagepane_assoc_seq;
 select max(_Assoc_key) from MGI_Reference_Assoc;
 select last_value from mgi_reference_assoc_seq;
 
+select max(_Relationship_key) from MGI_Relationship;
+select last_value from mgi_relationship_seq;
+
 select max(_Synonym_key) from MGI_Synonym;
 select last_value from mgi_synonym_seq;
 
