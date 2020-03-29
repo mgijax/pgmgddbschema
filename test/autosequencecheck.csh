@@ -20,6 +20,10 @@ touch $LOG
 date | tee -a $LOG
  
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0 | tee -a $LOG
+
+select max(_Allele_key) from ALL_Allele;
+select last_value from all_allele_seq;
+
 select max(_Assoc_key) from ALL_Allele_CellLine;
 select last_value from all_allele_cellline_seq;
 
