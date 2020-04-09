@@ -174,13 +174,13 @@ ALTER TABLE mgd.GXD_ISResultStructure DROP CONSTRAINT GXD_ISResultStructure__EMA
 
 ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__Priority_key_fkey CASCADE;
 
+ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__ConditionalMutants_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample_RNASeqSet DROP CONSTRAINT GXD_HTSample_RNASeqSet__Sex_key_fkey CASCADE;
+
 ALTER TABLE mgd.GXD_Index_Stages DROP CONSTRAINT GXD_Index_Stages__StageID_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Index_Stages DROP CONSTRAINT GXD_Index_Stages__IndexAssay_key_fkey CASCADE;
-
-ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__ConditionalMutants_fkey CASCADE;
-
-ALTER TABLE mgd.GXD_HTSample_RNASeqSet DROP CONSTRAINT GXD_HTSample_RNASeqSet__Sex_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTSample_RNASeqSet DROP CONSTRAINT GXD_HTSample_RNASeqSet__Emapa_key_fkey CASCADE;
 
