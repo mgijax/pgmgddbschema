@@ -18,4 +18,8 @@ create index VOC_Term_EMAPS_idx_emapa on mgd.VOC_Term_EMAPS (_EMAPA_Term_key);
 
 create index VOC_Term_EMAPS_idx_Stage_key on mgd.VOC_Term_EMAPS (_Stage_key);
 
+create index VOC_Term_EMAPS_idx_CreatedBy_key on mgd.VOC_Term_EMAPS (_CreatedBy_key);
+
+create index VOC_Term_EMAPS_idx_ModifiedBy_key on mgd.VOC_Term_EMAPS (_ModifiedBy_key);
+
 EOSQL

@@ -24,6 +24,12 @@ drop index if exists mgd.ALL_Cre_Cache_idx_clustered
 drop index if exists mgd.ALL_Cre_Cache_idx_Allele_key
 ;
 
+drop index if exists mgd.ALL_Cre_Cache_idx_EMAPA_Term_key
+;
+
+drop index if exists mgd.ALL_Cre_Cache_idx_Stage_key
+;
+
 drop index if exists mgd.ALL_Cre_Cache_idx_Assay_key
 ;
 

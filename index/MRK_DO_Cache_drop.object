@@ -24,6 +24,9 @@ drop index if exists mgd.MRK_DO_Cache_idx_Marker_key
 drop index if exists mgd.MRK_DO_Cache_idx_Genotype_key
 ;
 
+drop index if exists mgd.MRK_DO_Cache_idx_Term_key
+;
+
 drop index if exists mgd.MRK_DO_Cache_idx_Refs_key
 ;
 

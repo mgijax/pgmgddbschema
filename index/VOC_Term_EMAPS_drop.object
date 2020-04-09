@@ -21,4 +21,10 @@ drop index if exists mgd.VOC_Term_EMAPS_idx_emapa
 drop index if exists mgd.VOC_Term_EMAPS_idx_Stage_key
 ;
 
+drop index if exists mgd.VOC_Term_EMAPS_idx_CreatedBy_key
+;
+
+drop index if exists mgd.VOC_Term_EMAPS_idx_ModifiedBy_key
+;
+
 EOSQL
