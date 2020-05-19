@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 05/19/2020    lec
+#	- TR13204/Infrastructure project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE all_allele_mutation_seq;    
+ALTER TABLE ALL_Allele_Mutation ALTER _Assoc_key SET DEFAULT NEXTVAL('all_allele_mutation_seq');
+select setval('all_allele_mutation_seq', (select max(_Assoc_key) from ALL_Allele_Mutation));
+
+EOSQL

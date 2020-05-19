@@ -27,6 +27,9 @@ select last_value from all_allele_seq;
 select max(_Assoc_key) from ALL_Allele_CellLine;
 select last_value from all_allele_cellline_seq;
 
+select max(_Assoc_key) from ALL_Allele_Mutation;
+select last_value from all_allele_mutation_seq;
+
 select max(_CellLine_key) from ALL_CellLine;
 select last_value from all_cellline_seq;
 

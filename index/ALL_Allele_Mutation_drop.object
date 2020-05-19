@@ -9,6 +9,9 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+drop index if exists mgd.ALL_Allele_Mutation_idx_Allele_key
+;
+
 drop index if exists mgd.ALL_Allele_Mutation_idx_Mutation_key
 ;
 
