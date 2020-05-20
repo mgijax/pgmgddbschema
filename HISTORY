@@ -1,3 +1,10 @@
+TAG: pgmgddbschema-6-0-15-8
+DATE: 05/20/2020
+STAFF: lec
+CHANGES: 
+key/VOC_Term_drop.object
+gxd_index__conditionalmutants_fkey -> gxd_index__conditionalmutants_key_fkey
+
 TAG: pgmgddbschema-6-0-15-7
 DATE: 03/09/2020
 STAFF: lec
