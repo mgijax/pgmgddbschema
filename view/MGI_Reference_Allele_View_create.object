@@ -15,6 +15,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create view mgd.MGI_Reference_Allele_View
 as
+(
 select r.*, t.assocType, t.allowOnlyOne,
 c.jnumID, c.numericPart as jnum, c.short_citation, c.isReviewArticle, c.isReviewArticleString,
 a.symbol, aa.accID, m.symbol as markerSymbol
@@ -28,7 +29,22 @@ and aa._MGIType_key = 11
 and aa._LogicalDB_key = 1
 and aa.preferred = 1
 and a._Marker_key = m._Marker_key
-order by a.symbol, t.assocType
+union
+select r.*, t.assocType, t.allowOnlyOne,
+c.jnumID, c.numericPart as jnum, c.short_citation, c.isReviewArticle, c.isReviewArticleString,
+a.symbol, aa.accID, null
+from MGI_Reference_Assoc r, MGI_RefAssocType t, ALL_Allele a, ACC_Accession aa, BIB_Citation_Cache c
+where r._MGIType_key = 11
+and r._RefAssocType_key = t._RefAssocType_key
+and r._Refs_key = c._Refs_key
+and r._Object_key = a._Allele_key
+and a._Allele_key = aa._Object_key
+and aa._MGIType_key = 11
+and aa._LogicalDB_key = 1
+and aa.preferred = 1
+and a._Marker_key is null
+)
+order by symbol, assocType
 
 ;
 
