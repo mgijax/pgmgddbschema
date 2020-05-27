@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 05/27/2020	sc
+#	- TR13204/Infrastructure Project/EI-PWI antigen module
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE prb_source_seq;    
+ALTER TABLE PRB_Source ALTER _Source_key SET DEFAULT NEXTVAL('prb_source_seq');
+select setval('prb_source_seq', (select max(_source_key) from PRB_Source));
+
+EOSQL
