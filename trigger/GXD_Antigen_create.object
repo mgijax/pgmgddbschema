@@ -38,6 +38,11 @@ BEGIN
 --	NEW
 --
 
+-- Antigens have uniq sources, delete the source when the antigen is deleted
+DELETE FROM PRB_SOURCE a
+WHERE a._Source_key = OLD._Source_key
+;
+
 DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._Antigen_key
 AND a._MGIType_key = 7
