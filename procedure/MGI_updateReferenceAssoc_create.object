@@ -49,7 +49,7 @@ RETURNS VOID AS
  
 DECLARE
 v_allelekey int;
-v_refsType mgi_refassoctype.assocType%TYPE;
+--v_refsType mgi_refassoctype.assocType%TYPE;
 
 BEGIN
 
@@ -86,9 +86,8 @@ THEN
 				'Mixed', 'Sequence', 'Treatment')
 			;
 		ELSE
-			v_refsType := assocType FROM MGI_RefAssocType WHERE _MGIType_key = '11' 
-					AND _refAssocType_key = v_refsTypeKey;
-  			PERFORM MGI_insertReferenceAssoc (v_userKey, 11, v_allelekey, v_refsKey, v_refsType);
+			--v_refsType := assocType FROM MGI_RefAssocType WHERE _MGIType_key = '11' AND _refAssocType_key = v_refsTypeKey;
+  			PERFORM MGI_insertReferenceAssoc (v_userKey, 11, v_allelekey, v_refsKey, null, v_refsTypeKey);
 		END IF;
 	END LOOP;
 

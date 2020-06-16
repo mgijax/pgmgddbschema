@@ -27,18 +27,21 @@ v_userKey int,
 v_mgiTypeKey int,
 v_objectKey int,
 v_refsKey int,
-v_refsType mgi_refassoctype.assocType%TYPE
+v_refsType mgi_refassoctype.assocType%TYPE,
+v_refsTypeKey int DEFAULT -1
 )
 RETURNS VOID AS
 \$\$
 
 DECLARE
-v_refsTypeKey int;
 v_assocKey int;
 
 BEGIN
 
-v_refsTypeKey := _RefAssocType_key FROM MGI_RefAssocType WHERE _MGIType_key = v_mgiTypeKey AND assocType = v_refsType;
+IF v_refsTypeKey = -1
+THEN
+        v_refsTypeKey := _RefAssocType_key FROM MGI_RefAssocType WHERE _MGIType_key = v_mgiTypeKey AND assocType = v_refsType;
+END IF;
 
 -- Insert record into MGI_Reference_Assoc 
 -- if the reference does not already exist
@@ -82,8 +85,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MGI_insertReferenceAssoc(int,int,int,int,text) TO public;
+GRANT EXECUTE ON FUNCTION MGI_insertReferenceAssoc(int,int,int,int,text,int) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_insertReferenceAssoc(int,int,int,int,text) IS 'create a new mgi_reference_assoc';
+COMMENT ON FUNCTION mgd.MGI_insertReferenceAssoc(int,int,int,int,text,int) IS 'create a new mgi_reference_assoc';
 
 EOSQL
