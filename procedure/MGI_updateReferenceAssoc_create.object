@@ -85,7 +85,7 @@ THEN
 				'Mixed', 'Sequence', 'Treatment')
 			;
 		ELSE
-  			PERFORM MGI_insertReferenceAssoc (v_userKey, 11, v_allelekey, v_refsKey, null, v_refsTypeKey);
+  			PERFORM MGI_insertReferenceAssoc (v_userKey, 11, v_allelekey, v_refsKey, v_refsTypeKey);
 		END IF;
 	END LOOP;
 
