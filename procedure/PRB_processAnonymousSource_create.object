@@ -154,10 +154,8 @@ THEN
        THEN
 	   -- insert a new MSO record using the existing collapsed MSO object
 
-           v_newMSOKey := max(_Source_key) + 1 from PRB_Source;
-
 	   INSERT INTO PRB_Source
-	   SELECT v_newMSOKey, _SegmentType_key, _Vector_key, _Organism_key,
+	   SELECT nextval('prb_source_seq'), _SegmentType_key, _Vector_key, _Organism_key,
 	       _Strain_key, _Tissue_key, _Gender_key, _CellLine_key, _Refs_key,
 	       name, description, age, ageMin, ageMax,
 	       isCuratorEdited, _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date
@@ -214,10 +212,8 @@ THEN
 -- else create a new MSO object
 
 ELSE
-        v_newMSOKey := max(_Source_key) + 1 from PRB_Source;
-
 	INSERT INTO PRB_Source
-	VALUES (v_newMSOKey, v_segmentTypeKey, v_vectorTypeKey, v_organismKey,
+	VALUES (nextval('prb_source_seq'), v_segmentTypeKey, v_vectorTypeKey, v_organismKey,
 	    v_strainKey, v_tissueKey, v_genderKey, v_cellLineKey, NULL, NULL, v_tissueTreatment, v_age,
 	    v_ageMin, v_ageMax, v_isCuratorEdited, v_modifiedBykey, v_modifiedBykey,
 	    now(), now())
