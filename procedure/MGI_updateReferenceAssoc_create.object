@@ -92,7 +92,10 @@ THEN
 ELSEIF v_assocKey is not null
 THEN
 	UPDATE MGI_Reference_Assoc
-	SET _Object_key = v_objectKey, _RefAssocType_key = v_refsTypeKey, _ModifiedBy_key = v_userKey, modification_date = now()
+	SET _Object_key = v_objectKey, 
+                _RefAssocType_key = v_refsTypeKey, 
+                _Refs_key = v_refsKey,
+                _ModifiedBy_key = v_userKey, modification_date = now()
 	WHERE MGI_Reference_Assoc._Assoc_key = v_assocKey;
 
 END IF;
