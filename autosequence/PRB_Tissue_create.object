@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 07/14/2020	sc
+#	- TR13204 - EI -> PWI
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE prb_tissue_seq;    
+ALTER TABLE PRB_Tissue ALTER _Tissue_key SET DEFAULT NEXTVAL('prb_tissue_seq');
+select setval('prb_tissue_seq', (select max(_tissue_key) from PRB_Tissue));
+
+EOSQL

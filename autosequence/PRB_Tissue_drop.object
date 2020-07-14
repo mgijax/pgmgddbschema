@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#
+# History
+#
+# 07/14/2020    sc
+#       - TR13204 - EI -> PWI
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP SEQUENCE IF EXISTS prb_tissue_seq CASCADE;
+
+EOSQL
