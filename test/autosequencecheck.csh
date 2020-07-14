@@ -145,6 +145,9 @@ select last_value from prb_strain_genotype_seq;
 select max(_StrainMarker_key) from PRB_Strain_Marker;
 select last_value from prb_strain_marker_seq;
 
+select max(_Tissue_key) from PRB_Tissue;
+select last_value from prb_tissue_seq;
+
 select max(id) from PWI_Report_Label;
 select last_value from pwi_report_label_id_seq;
 
