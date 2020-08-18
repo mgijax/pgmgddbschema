@@ -114,6 +114,9 @@ LOOP
 		v_cmoffset, v_genomicChromosome, v_startCoordinate, v_endCoordinate, v_strand, v_mapUnits, v_provider, v_version)
 	;
 
+        -- only process 1st value
+        EXIT;
+
 END LOOP;
 
 END;
