@@ -21,6 +21,30 @@ delete from mgi_note a
 where not exists (select 1 from mgi_notechunk c where a._note_key = c._note_key)
 ;
 
+-- notes where _mgitype_key = 13 but voc_term does not exist
+select a.*
+from mgi_note a
+where a._mgitype_key = 13
+and not exists (select 1 from voc_term s where a._object_key = s._term_key)
+;
+
+delete from mgi_note a
+where a._mgitype_key = 13
+and not exists (select 1 from voc_term s where a._object_key = s._term_key)
+;
+
+-- notes where _mgitype_key = 25 but voc_evidence does not exist
+select a.*
+from mgi_note a
+where a._mgitype_key = 25
+and not exists (select 1 from voc_evidence s where a._object_key = s._annotevidence_key)
+;
+
+delete from mgi_note a
+where a._mgitype_key = 25
+and not exists (select 1 from voc_evidence s where a._object_key = s._annotevidence_key)
+;
+
 -- notes that are _mgitype_key = 12 but should be _mgitype_key = 25
 CREATE TEMP TABLE toUpdate AS
 select n.*
@@ -36,6 +60,25 @@ update MGI_Note n
 set _mgitype_key = 25
 from toUpdate u
 where n._note_key = u._note_key
+;
+
+-- mgi_setmembers
+CREATE TEMP TABLE toDeleteSet AS
+select a.*
+from mgi_setmember a, mgi_set aa
+where aa._mgitype_key = 13
+and a._set_key = aa._set_key
+and not exists (select 1 from voc_term s where a._object_key = s._term_key)
+;
+
+select t.* from toDeleteSet t;
+
+CREATE INDEX toDeleteSet_idx1 ON toDeleteSet(_setmember_key);
+select * from toDeleteSet;
+
+DELETE FROM mgi_setmember
+USING toDeleteSet
+WHERE toDeleteSet._setmember_key = mgi_setmember._setmember_key
 ;
 
 -- probes
