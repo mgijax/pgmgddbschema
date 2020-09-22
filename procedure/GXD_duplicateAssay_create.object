@@ -185,7 +185,7 @@ THEN
 
 -- InSitu Results
 
-v_resultStructureKey := max(_ResultStructure_key_key) + 1 FROM GXD_ISResultStructure;
+v_resultStructureKey := max(_ResultStructure_key) + 1 FROM GXD_ISResultStructure;
 v_resultKey := max(_Result_key) + 1 FROM GXD_InSituResult;
 
 CREATE TEMP TABLE isresult_tmp ON COMMIT DROP
