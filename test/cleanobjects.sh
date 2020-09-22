@@ -110,6 +110,8 @@ WHERE toDeleteSet._setmember_key = mgi_setmember._setmember_key
 --where not exists (select 1 from mgi_notechunk c where a._note_key = c._note_key)
 --;
 
+-- delete GO Annotations to withdrawn Markers
+select * from VOC_deleteGOWithdrawn();
 
 EOSQL
 

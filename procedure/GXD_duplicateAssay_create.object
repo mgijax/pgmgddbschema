@@ -40,8 +40,11 @@ DECLARE
 v_antibodyPrepKey int;
 v_probePrepKey int;
 v_newAssayKey int;
+v_newAssayNoteKey int;
 v_specimenKey int;
+v_gelLaneStructureKey int;
 v_gelLaneKey int;
+v_resultStructureKey int;
 v_resultKey int;
 v_gelRowKey int;
 v_gelBandKey int;
@@ -103,6 +106,7 @@ END IF;
 -- Duplicate the Assay
 
 v_newAssayKey := max(_Assay_key) + 1 FROM GXD_Assay;
+v_newAssayNoteKey := max(_AssayNote_key) + 1 FROM GXD_AssayNote;
 
 INSERT INTO GXD_Assay
 SELECT v_newAssayKey, _AssayType_key, _Refs_key, _Marker_key, v_probePrepkey, v_antibodyPrepKey,
@@ -114,7 +118,7 @@ WHERE _Assay_key = v_assayKey
 -- Duplicate the Assay Note
 
 INSERT INTO GXD_AssayNote
-SELECT v_newAssayKey, assayNote, now(), now()
+SELECT v_newAssayNoteKey, v_newAssayKey, assayNote, now(), now()
 FROM GXD_AssayNote
 WHERE _Assay_key = v_assayKey
 ;
@@ -147,6 +151,7 @@ FROM specimen_tmp s
 
 -- Duplicate the Gel Lanes
 
+v_gelLaneStructureKey := max(_GelLaneStructure_key) + 1 FROM GXD_GelLaneStructure;
 v_gelLaneKey := max(_GelLane_key) + 1 FROM GXD_GelLane;
 
 CREATE TEMP TABLE gellane_tmp ON COMMIT DROP
@@ -166,7 +171,7 @@ FROM gellane_tmp s
 ;
 
 INSERT INTO GXD_GelLaneStructure
-SELECT v_gelLaneKey + seq, g._EMAPA_Term_key, g._Stage_key, now(), now()
+SELECT v_gelLaneStructureKey, v_gelLaneKey + seq, g._EMAPA_Term_key, g._Stage_key, now(), now()
 FROM gellane_tmp s, GXD_GelLaneStructure g
 WHERE s._GelLane_key = g._GelLane_key
 ;
@@ -180,6 +185,7 @@ THEN
 
 -- InSitu Results
 
+v_resultStructureKey := max(_ResultStructure_key_key) + 1 FROM GXD_ISResultStructure;
 v_resultKey := max(_Result_key) + 1 FROM GXD_InSituResult;
 
 CREATE TEMP TABLE isresult_tmp ON COMMIT DROP
@@ -206,7 +212,7 @@ WHERE s._Result_key = i._Result_key
 ;
 
 INSERT INTO GXD_ISResultStructure
-SELECT v_resultKey + seq, i._EMAPA_Term_key, i._Stage_key, now(), now()
+SELECT v_resultStructureKey, v_resultKey + seq, i._EMAPA_Term_key, i._Stage_key, now(), now()
 FROM isresult_tmp s, GXD_ISResultStructure i
 WHERE s._Result_key = i._Result_key
 ;
