@@ -208,13 +208,13 @@ FROM isresult_tmp
 ;
 
 INSERT INTO GXD_InSituResultImage
-SELECT v_resultImageKey, v_resultKey + seq, i._ImagePane_key, now(), now()
+SELECT v_resultImageKey + seq, v_resultKey + seq, i._ImagePane_key, now(), now()
 FROM isresult_tmp s, GXD_InSituResultImage i
 WHERE s._Result_key = i._Result_key
 ;
 
 INSERT INTO GXD_ISResultStructure
-SELECT v_resultStructureKey, v_resultKey + seq, i._EMAPA_Term_key, i._Stage_key, now(), now()
+SELECT v_resultStructureKey + seq, v_resultKey + seq, i._EMAPA_Term_key, i._Stage_key, now(), now()
 FROM isresult_tmp s, GXD_ISResultStructure i
 WHERE s._Result_key = i._Result_key
 ;

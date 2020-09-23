@@ -1,6 +1,7 @@
+TAG: pgmgddbschema-6-0-16-5
 TAG: pgmgddbschema-6-0-16-4
 TAG: pgmgddbschema-6-0-16-3
-DATE: 09/22/2020
+DATE: 09/22/2020, 02/23/2020
 STAFF: lec
 fix for autosequence
 procedure/GXD_duplicateAssay_create.object
