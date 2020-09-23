@@ -42,10 +42,7 @@ v_probePrepKey int;
 v_newAssayKey int;
 v_newAssayNoteKey int;
 v_specimenKey int;
-v_gelLaneStructureKey int;
 v_gelLaneKey int;
-v_resultImageKey int;
-v_resultStructureKey int;
 v_resultKey int;
 v_gelRowKey int;
 v_gelBandKey int;
@@ -74,6 +71,7 @@ BEGIN
 -- until we switch over to using autosequence in PWI
 PERFORM (select setval('gxd_insituresultimage_seq', (select max(_resultimage_key) from GXD_InSituResultImage)));
 PERFORM (select setval('gxd_isresultstructure_seq', (select max(_resultstructure_key) from GXD_ISResultStructure)));
+PERFORM (select setval('gxd_gellanestructure_seq', (select max(_gellanestructure_key) from GXD_GelLaneStructure)));
 
 -- Duplicate the Antibody Prep
 
@@ -156,7 +154,6 @@ FROM specimen_tmp s
 
 -- Duplicate the Gel Lanes
 
-v_gelLaneStructureKey := max(_GelLaneStructure_key) + 1 FROM GXD_GelLaneStructure;
 v_gelLaneKey := max(_GelLane_key) + 1 FROM GXD_GelLane;
 
 CREATE TEMP TABLE gellane_tmp ON COMMIT DROP
@@ -176,7 +173,7 @@ FROM gellane_tmp s
 ;
 
 INSERT INTO GXD_GelLaneStructure
-SELECT v_gelLaneStructureKey, v_gelLaneKey + seq, g._EMAPA_Term_key, g._Stage_key, now(), now()
+SELECT nextval('gxd_gellanestructure_seq'), v_gelLaneKey + seq, g._EMAPA_Term_key, g._Stage_key, now(), now()
 FROM gellane_tmp s, GXD_GelLaneStructure g
 WHERE s._GelLane_key = g._GelLane_key
 ;
@@ -190,8 +187,6 @@ THEN
 
 -- InSitu Results
 
---v_resultImageKey := max(_ResultImage_key) + 1 FROM GXD_InSituResultImage;
---v_resultStructureKey := max(_ResultStructure_key) + 1 FROM GXD_ISResultStructure;
 v_resultKey := max(_Result_key) + 1 FROM GXD_InSituResult;
 
 CREATE TEMP TABLE isresult_tmp ON COMMIT DROP
