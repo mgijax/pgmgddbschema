@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/28/2020    lec
+#	- TR13349/Genome Build 39 project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE prb_probe_seq;    
+ALTER TABLE PRB_Probe ALTER _Probe_key SET DEFAULT NEXTVAL('prb_probe_seq');
+select setval('prb_probe_seq', (select max(_probe_key) from PRB_Probe));
+
+EOSQL
