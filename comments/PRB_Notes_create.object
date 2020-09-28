@@ -14,4 +14,6 @@ COMMENT ON COLUMN PRB_Notes.note IS 'note';
 
 COMMENT ON COLUMN PRB_Notes._Probe_key IS 'foreign key to PRB_Probe';
 
+COMMENT ON COLUMN PRB_Notes._Note_key IS 'primary key';
+
 EOSQL

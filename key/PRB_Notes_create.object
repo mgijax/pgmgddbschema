@@ -9,7 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.PRB_Notes ADD PRIMARY KEY (_Probe_key);
+ALTER TABLE mgd.PRB_Notes ADD PRIMARY KEY (_Note_key);
 
 
 EOSQL

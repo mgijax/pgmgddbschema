@@ -24,4 +24,6 @@ COMMENT ON COLUMN PRB_Marker._Refs_key IS 'foreign key to BIB_Refs';
 
 COMMENT ON COLUMN PRB_Marker.relationship IS 'relationship of Probe and Marker (H,E,A,M,P)';
 
+COMMENT ON COLUMN PRB_Marker._Assoc_key IS 'primary key';
+
 EOSQL
