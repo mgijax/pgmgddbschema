@@ -133,6 +133,9 @@ select last_value from mrk_marker_seq;
 select max(_assoc_key) from MRK_History;
 select last_value from mrk_history_seq;
 
+select max(_Alias_key) from PRB_Alias;
+select last_value from prb_alias_seq;
+
 select max(_Assoc_key) from PRB_Marker;
 select last_value from prb_marker_seq;
 
@@ -141,6 +144,9 @@ select last_value from prb_notes_seq;
 
 select max(_Probe_key) from PRB_Probe;
 select last_value from prb_probe_seq;
+
+select max(_Reference_key) from PRB_Reference;
+select last_value from prb_reference_seq;
 
 select max(_Source_key) from PRB_Source;
 select last_value from prb_source_seq;
