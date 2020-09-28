@@ -13,6 +13,8 @@ CLUSTER mgd.PRB_Marker USING PRB_Marker_pkey;
 
 create index PRB_Marker_idx_Probe_key on mgd.PRB_Marker (_Probe_key);
 
+create index PRB_Marker_idx_Marker_key on mgd.PRB_Marker (_Marker_key);
+
 create index PRB_Marker_idx_Refs_key on mgd.PRB_Marker (_Refs_key);
 
 create index PRB_Marker_idx_relationship on mgd.PRB_Marker (relationship);

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/28/2020    lec
+#	- TR13349/Genome Build 39 project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE prb_marker_seq;    
+ALTER TABLE PRB_Marker ALTER _assoc_key SET DEFAULT NEXTVAL('prb_marker_seq');
+select setval('prb_marker_seq', (select max(_assoc_key) from PRB_Marker));
+
+EOSQL
