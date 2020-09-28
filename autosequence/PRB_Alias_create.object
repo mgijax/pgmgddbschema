@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/28/2020    lec
+#	- TR13349/Genome Build 39 project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE prb_alias_seq;    
+ALTER TABLE PRB_Alias ALTER _alias_key SET DEFAULT NEXTVAL('prb_alias_seq');
+select setval('prb_alias_seq', (select max(_alias_key) from PRB_Alias));
+
+EOSQL

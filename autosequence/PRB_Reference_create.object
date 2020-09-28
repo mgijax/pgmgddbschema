@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/28/2020    lec
+#	- TR13349/Genome Build 39 project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE prb_reference_seq;    
+ALTER TABLE PRB_Reference ALTER _reference_key SET DEFAULT NEXTVAL('prb_reference_seq');
+select setval('prb_reference_seq', (select max(_reference_key) from PRB_Reference));
+
+EOSQL
