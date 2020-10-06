@@ -311,29 +311,5 @@ COMMENT ON FUNCTION mgd.ALL_Allele_update() IS 'creates an update trigger';
 
 -------------------------
 
-CREATE OR REPLACE FUNCTION ALL_Allele_update2() RETURNS TRIGGER AS \$\$
-
-BEGIN
-
--- If updating symbol, set needsReview flag for Strain
-
-PERFORM PRB_setStrainReview (NULL, NEW._Allele_key);
-
-RETURN NEW;
-
-END;
-\$\$
-LANGUAGE plpgsql;
-
-GRANT EXECUTE ON FUNCTION ALL_Allele_update2() TO public;
-
-CREATE TRIGGER ALL_Allele_update2_trigger
-AFTER UPDATE OF symbol ON ALL_Allele
-FOR EACH ROW
-EXECUTE PROCEDURE ALL_Allele_update2();
-
-COMMENT ON FUNCTION mgd.ALL_Allele_update2() IS 'creates an update trigger when symbol field is updated';
-
 EOSQL
-
 
