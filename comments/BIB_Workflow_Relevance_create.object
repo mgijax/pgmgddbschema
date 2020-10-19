@@ -1,0 +1,23 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.BIB_Workflow_Relevance IS 'A record in this table represents the Relevance of a Reference by User over time';
+
+COMMENT ON COLUMN BIB_Workflow_Relevance._Refs_key IS 'foreign key to BIB_Refs';
+
+COMMENT ON COLUMN BIB_Workflow_Relevance._Relevance_key IS 'foreign key to VOC_Term where _Vocab_key = 149 (Workflow Relevance)';
+
+COMMENT ON COLUMN BIB_Workflow_Relevance.isCurrent IS 'if 1, then current Relevance for this Reference';
+
+COMMENT ON COLUMN BIB_Workflow_Relevance._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN BIB_Workflow_Relevance.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN BIB_Workflow_Relevance.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN BIB_Workflow_Relevance._ModifiedBy_key IS 'user who last modified the record';
+
+EOSQL

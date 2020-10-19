@@ -80,6 +80,8 @@ ALTER TABLE mgd.BIB_Workflow_Tag DROP CONSTRAINT BIB_Workflow_Tag__Refs_key_fkey
 
 ALTER TABLE mgd.BIB_Workflow_Status DROP CONSTRAINT BIB_Workflow_Status__Refs_key_fkey CASCADE;
 
+ALTER TABLE mgd.BIB_Workflow_Relevance DROP CONSTRAINT BIB_Workflow_Relevance__Refs_key_fkey CASCADE;
+
 ALTER TABLE mgd.BIB_Workflow_Data DROP CONSTRAINT BIB_Workflow_Data__Refs_key_fkey CASCADE;
 
 ALTER TABLE mgd.BIB_Notes DROP CONSTRAINT BIB_Notes__Refs_key_fkey CASCADE;

@@ -218,6 +218,8 @@ ALTER TABLE mgd.GXD_AllelePair DROP CONSTRAINT GXD_AllelePair__Compound_key_fkey
 
 ALTER TABLE mgd.BIB_Workflow_Tag DROP CONSTRAINT BIB_Workflow_Tag__Tag_key_fkey CASCADE;
 
+ALTER TABLE mgd.BIB_Workflow_Relevance DROP CONSTRAINT BIB_Workflow_Relevance__Relevance_key_fkey CASCADE;
+
 ALTER TABLE mgd.BIB_Workflow_Status DROP CONSTRAINT BIB_Workflow_Status__Status_key_fkey CASCADE;
 
 ALTER TABLE mgd.BIB_Workflow_Status DROP CONSTRAINT BIB_Workflow_Status__Group_key_fkey CASCADE;

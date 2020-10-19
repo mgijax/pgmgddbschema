@@ -380,6 +380,10 @@ ALTER TABLE mgd.BIB_Workflow_Data DROP CONSTRAINT BIB_Workflow_Data__ModifiedBy_
 
 ALTER TABLE mgd.BIB_Workflow_Data DROP CONSTRAINT BIB_Workflow_Data__CreatedBy_key_fkey CASCADE;
 
+ALTER TABLE mgd.BIB_Workflow_Relevance DROP CONSTRAINT BIB_Workflow_Relevance__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.BIB_Workflow_Relevance DROP CONSTRAINT BIB_Workflow_Relevance__CreatedBy_key_fkey CASCADE;
+
 ALTER TABLE mgd.BIB_Workflow_Status DROP CONSTRAINT BIB_Workflow_Status__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.BIB_Workflow_Status DROP CONSTRAINT BIB_Workflow_Status__CreatedBy_key_fkey CASCADE;

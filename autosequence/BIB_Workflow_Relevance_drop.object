@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#
+# History
+#
+# 10/19/2020    lec
+#       - TR13349/Build 39 Project/ML Primary Triage
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP SEQUENCE IF EXISTS bib_workflow_relevance_seq CASCADE;
+
+EOSQL
