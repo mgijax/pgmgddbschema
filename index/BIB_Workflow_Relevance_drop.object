@@ -21,6 +21,9 @@ drop index if exists mgd.BIB_Workflow_Relevance_idx_Relevance_key
 drop index if exists mgd.BIB_Workflow_Relevance_idx_isCurrent
 ;
 
+drop index if exists mgd.BIB_Workflow_Relevance_idx_confidence
+;
+
 drop index if exists mgd.BIB_Workflow_Relevance_idx_CreatedBy_key
 ;
 

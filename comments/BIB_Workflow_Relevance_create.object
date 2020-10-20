@@ -12,6 +12,8 @@ COMMENT ON COLUMN BIB_Workflow_Relevance._Relevance_key IS 'foreign key to VOC_T
 
 COMMENT ON COLUMN BIB_Workflow_Relevance.isCurrent IS 'if 1, then current Relevance for this Reference';
 
+COMMENT ON COLUMN BIB_Workflow_Relevance.confidence IS 'confidence values of the predicted relevance classifier';
+
 COMMENT ON COLUMN BIB_Workflow_Relevance._CreatedBy_key IS 'user who created the record';
 
 COMMENT ON COLUMN BIB_Workflow_Relevance.creation_date IS 'date record was created';

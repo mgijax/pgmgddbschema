@@ -20,6 +20,8 @@ create index BIB_Workflow_Relevance_idx_Relevance_key on mgd.BIB_Workflow_Releva
 
 create index BIB_Workflow_Relevance_idx_isCurrent on mgd.BIB_Workflow_Relevance (isCurrent);
 
+create index BIB_Workflow_Relevance_idx_confidence on mgd.BIB_Workflow_Relevance (confidence);
+
 create index BIB_Workflow_Relevance_idx_CreatedBy_key on mgd.BIB_Workflow_Relevance (_CreatedBy_key);
 
 create index BIB_Workflow_Relevance_idx_ModifiedBy_key on mgd.BIB_Workflow_Relevance (_ModifiedBy_key);
