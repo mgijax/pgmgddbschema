@@ -44,10 +44,13 @@ END IF;
 -- if trying to delete a J:
 IF OLD._MGIType_key = 1 AND OLD._LogicalDB_key = 1 AND OLD.prefixPart = 'J:'
 THEN
-	IF EXISTS (SELECT * FROM BIB_Refs b
-          	WHERE OLD._Object_key = b._Refs_key AND b.isDiscard = 0)
+	IF EXISTS (SELECT * FROM BIB_Refs b, BIB_Workflow_Relevance wr
+          	WHERE OLD._Object_key = b._Refs_key 
+                AND b._Refs_key = wr._Refs_key
+                AND wr.isCurrent = 1
+                AND wr._Relevance_key = 70594666)
 	THEN
-        	RAISE EXCEPTION E'Cannot delete J:; is-discard = false';
+        	RAISE EXCEPTION E'Cannot delete J:; relevance status = discard';
 	END IF;
 
 	IF EXISTS (SELECT * FROM ALL_Allele

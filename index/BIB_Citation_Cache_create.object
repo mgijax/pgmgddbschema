@@ -30,4 +30,6 @@ create index BIB_Citation_Cache_idx_pubmedID on mgd.BIB_Citation_Cache (pubmedID
 
 create index BIB_Citation_Cache_idx_doiID on mgd.BIB_Citation_Cache (doiID);
 
+create index BIB_Citation_Cache_idx_Relevance_key on mgd.BIB_Citation_Cache (_Relevance_Key);
+
 EOSQL
