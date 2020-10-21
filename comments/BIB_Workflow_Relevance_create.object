@@ -14,6 +14,8 @@ COMMENT ON COLUMN BIB_Workflow_Relevance.isCurrent IS 'if 1, then current Releva
 
 COMMENT ON COLUMN BIB_Workflow_Relevance.confidence IS 'confidence values of the predicted relevance classifier';
 
+COMMENT ON COLUMN BIB_Workflow_Relevance.version IS 'version of relevance classifier';
+
 COMMENT ON COLUMN BIB_Workflow_Relevance._CreatedBy_key IS 'user who created the record';
 
 COMMENT ON COLUMN BIB_Workflow_Relevance.creation_date IS 'date record was created';
