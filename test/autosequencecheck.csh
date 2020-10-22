@@ -118,6 +118,12 @@ select last_value from img_imagepane_seq;
 select max(_Assoc_key) from IMG_ImagePane_Assoc;
 select last_value from img_imagepane_assoc_seq;
 
+select max(_Organism_key) from MGI_Organism;
+select last_value from mgi_organism_seq;
+
+select max(_Assoc_key) from MGI_Organism_MGIType;
+select last_value from mgi_organism_mgitype_seq;
+
 select max(_Assoc_key) from MGI_Reference_Assoc;
 select last_value from mgi_reference_assoc_seq;
 
@@ -129,6 +135,9 @@ select last_value from mgi_synonym_seq;
 
 select max(_marker_key) from MRK_Marker;
 select last_value from mrk_marker_seq;
+
+select max(_chromosome_key) from MRK_Chromosome;
+select last_value from mrk_chromosome_seq;
 
 select max(_assoc_key) from MRK_History;
 select last_value from mrk_history_seq;
