@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 10/22/2020    lec
+#	- TR13349/Genome Build 39 project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE mgi_organism_mgitype_seq;    
+ALTER TABLE MGI_Organism_MGIType ALTER _Assoc_key SET DEFAULT NEXTVAL('mgi_organism_mgitype_seq');
+select setval('mgi_organism_mgitype_seq', (select max(_Assoc_key) from MGI_Organism_MGIType));
+
+EOSQL

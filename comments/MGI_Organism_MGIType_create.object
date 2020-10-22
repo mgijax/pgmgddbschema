@@ -6,18 +6,20 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 COMMENT ON TABLE mgd.MGI_Organism_MGIType IS 'A record in this table represents the relationship between an Organism and a MGI Type; what Organisms are valid for a given MGI Type. An Organism can be associated with one or more MGI Types. This enables us to generate a list of Organisms by MGI Type. Examples are Orthology, Molecular Segment , GXD Antigen, GXD Antibody, Sequence, Marker.';
 
+COMMENT ON COLUMN MGI_Organism_MGIType._Assoc_key IS 'primary key';
+
+COMMENT ON COLUMN MGI_Organism_MGIType._Organism_key IS 'foreign key to MGI_Organism';
+
+COMMENT ON COLUMN MGI_Organism_MGIType._MGIType_key IS 'foreign key to ACC_MGIType';
+
+COMMENT ON COLUMN MGI_Organism_MGIType.sequenceNum IS 'enables us to define an ordered list of of Organisms for a given MGI Type';
+
 COMMENT ON COLUMN MGI_Organism_MGIType._CreatedBy_key IS 'user who created the record';
 
 COMMENT ON COLUMN MGI_Organism_MGIType.creation_date IS 'date record was created';
 
-COMMENT ON COLUMN MGI_Organism_MGIType._MGIType_key IS 'foreign key to ACC_MGIType';
-
 COMMENT ON COLUMN MGI_Organism_MGIType.modification_date IS 'date record was last modified';
 
 COMMENT ON COLUMN MGI_Organism_MGIType._ModifiedBy_key IS 'user who last modified the record';
-
-COMMENT ON COLUMN MGI_Organism_MGIType._Organism_key IS 'organism (foreign key to MGI_Organism)';
-
-COMMENT ON COLUMN VOC_Term.sequenceNum IS 'enables us to define an ordered list of of Organisms for a given MGI Type';
 
 EOSQL
