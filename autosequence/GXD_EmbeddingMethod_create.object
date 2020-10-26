@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#
+# History
+#
+# 10/26/2020    lec
+#	- TR13349/Genome Build 39 project
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE gxd_embeddingmethod_seq;    
+ALTER TABLE GXD_EmbeddingMethod ALTER _Embedding_key SET DEFAULT NEXTVAL('gxd_embeddingmethod_seq');
+select setval('gxd_embeddingmethod_seq', (select max(_embedding_key) from GXD_EmbeddingMethod));
+
+EOSQL

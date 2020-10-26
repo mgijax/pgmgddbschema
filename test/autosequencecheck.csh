@@ -94,8 +94,28 @@ select max(_GelBand_key) from GXD_GelBand;
 select last_value from gxd_gelband_seq;
 
 select max(_Genotype_key) from GXD_Genotype;
-select max(_Genotype_key) from GXD_Genotype;
 select last_value from gxd_genotype_seq;
+
+select max(_antibodyclass_key) from GXD_AntibodyClass;
+select last_value from gxd_antibodyclass_seq;
+
+select max(_embedding_key) from GXD_EmbeddingMethod;
+select last_value from gxd_embeddingmethod_seq;
+
+select max(_fixation_key) from GXD_FixationMethod;
+select last_value from gxd_fixationmethod_seq;
+
+select max(_gelcontrol_key) from GXD_GelControl;
+select last_value from gxd_gelcontrol_seq;
+
+select max(_label_key) from GXD_Label;
+select last_value from gxd_label_seq;
+
+select max(_pattern_key) from GXD_Pattern;
+select last_value from gxd_pattern_seq;
+
+select max(_visualization_key) from GXD_VisualizationMethod;
+select last_value from gxd_visualizationmethod_seq;
 
 select max(_rnaseq_key) from GXD_HTSample_RNASeq;
 select last_value from gxd_htsample_rnaseq_seq;

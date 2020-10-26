@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#
+# History
+#
+# 10/26/2020    lec
+#	- TR13349/Genome Build 39 project
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE gxd_visualizationmethod_seq;    
+ALTER TABLE GXD_VisualizationMethod ALTER _Visualization_key SET DEFAULT NEXTVAL('gxd_visualizationmethod_seq');
+select setval('gxd_visualizationmethod_seq', (select max(_visualization_key) from GXD_VisualizationMethod));
+
+EOSQL
