@@ -11,6 +11,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-DROP SEQUENCE IF EXISTS gxd_embeddingmethod_seq CASCADE;
+DROP SEQUENCE IF EXISTS gxd_embedding_seq CASCADE;
 
 EOSQL

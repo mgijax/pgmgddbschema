@@ -100,10 +100,10 @@ select max(_antibodyclass_key) from GXD_AntibodyClass;
 select last_value from gxd_antibodyclass_seq;
 
 select max(_embedding_key) from GXD_EmbeddingMethod;
-select last_value from gxd_embeddingmethod_seq;
+select last_value from gxd_embedding_seq;
 
 select max(_fixation_key) from GXD_FixationMethod;
-select last_value from gxd_fixationmethod_seq;
+select last_value from gxd_fixation_seq;
 
 select max(_gelcontrol_key) from GXD_GelControl;
 select last_value from gxd_gelcontrol_seq;
@@ -115,7 +115,7 @@ select max(_pattern_key) from GXD_Pattern;
 select last_value from gxd_pattern_seq;
 
 select max(_visualization_key) from GXD_VisualizationMethod;
-select last_value from gxd_visualizationmethod_seq;
+select last_value from gxd_visualization_seq;
 
 select max(_rnaseq_key) from GXD_HTSample_RNASeq;
 select last_value from gxd_htsample_rnaseq_seq;

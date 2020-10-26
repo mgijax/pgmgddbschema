@@ -11,8 +11,8 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-CREATE SEQUENCE gxd_fixationmethod_seq;    
-ALTER TABLE GXD_FixationMethod ALTER _Fixation_key SET DEFAULT NEXTVAL('gxd_fixationmethod_seq');
-select setval('gxd_fixationmethod_seq', (select max(_fixation_key) from GXD_FixationMethod));
+CREATE SEQUENCE gxd_fixation_seq;    
+ALTER TABLE GXD_FixationMethod ALTER _Fixation_key SET DEFAULT NEXTVAL('gxd_fixation_seq');
+select setval('gxd_fixation_seq', (select max(_fixation_key) from GXD_FixationMethod));
 
 EOSQL
