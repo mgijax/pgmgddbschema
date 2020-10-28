@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 10/28/2020    lec
+#	- TR13349/Genome Build 39 project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE mld_notes_seq;    
+ALTER TABLE MLD_Notes ALTER _note_key SET DEFAULT NEXTVAL('mld_notes_seq');
+select setval('mld_notes_seq', (select max(_note_key) from MLD_Notes));
+
+EOSQL
