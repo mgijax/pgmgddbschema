@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 10/28/2020    lec
+#	- TR13349/Genome Build 39 project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE mld_assay_types_seq;    
+ALTER TABLE MLD_Assay_Types ALTER _assay_type_key SET DEFAULT NEXTVAL('mld_assay_types_seq');
+select setval('mld_assay_types_seq', (select max(_assay_type_key) from MLD_Assay_Types));
+
+EOSQL
