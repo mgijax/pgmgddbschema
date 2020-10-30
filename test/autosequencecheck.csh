@@ -159,13 +159,13 @@ select last_value from mld_assay_types_seq;
 select max(_assoc_key) from MLD_Expt_Marker;
 select last_value from mld_expt_marker_seq;
 
-select max(_note_key) from MLD_Expt_Notes;
+select max(_expt_key) from MLD_Expt_Notes;
 select last_value from mld_expt_notes_seq;
 
 select max(_expt_key) from MLD_Expts;
 select last_value from mld_expts_seq;
 
-select max(_note_key) from MLD_Notes;
+select max(_refs_key) from MLD_Notes;
 select last_value from mld_notes_seq;
 
 select max(_marker_key) from MRK_Marker;
