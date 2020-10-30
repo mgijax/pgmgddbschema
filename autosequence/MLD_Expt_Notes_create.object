@@ -13,7 +13,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE SEQUENCE mld_expt_notes_seq;    
-ALTER TABLE MLD_Expt_Notes ALTER _note_key SET DEFAULT NEXTVAL('mld_expt_notes_seq');
+ALTER TABLE MLD_Expt_Notes ALTER _expt_key SET DEFAULT NEXTVAL('mld_expt_notes_seq');
 select setval('mld_expt_notes_seq', (select max(_note_key) from MLD_Expt_Notes));
 
 EOSQL
