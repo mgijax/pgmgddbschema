@@ -16,7 +16,6 @@ create table mgd.MLD_Expt_Marker (
 	_Allele_key                    int     null,
 	_Assay_Type_key                int     not null,
 	sequenceNum                    int     not null,
-	gene                           text    null,
 	description                    text    null,
 	matrixData                     smallint             not null,
 	creation_date                  timestamp DEFAULT now()        not null,
