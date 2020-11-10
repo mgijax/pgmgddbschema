@@ -139,7 +139,7 @@ do_diff Indexes
 cd ${TOP}/procedure
 rm -f ${TMP_SCHEMA} ${TMP_DB}
 grep -i "^CREATE OR REPLACE FUNCTION " *_create.object | cut -d':' -f2 | cut -d' ' -f5 | sed 's/(//' | sed 's/./\L&/g' | sort > ${TMP_SCHEMA}
-psql -h ${PG_DBSERVER} -d ${PG_DBNAME} -U ${PG_DBUSER} -t --command "\df" | grep -i "^ mgd " | grep -i 'normal' | cut -d'|' -f2 | sed 's/ //g' | sort > ${TMP_DB}
+psql -h ${PG_DBSERVER} -d ${PG_DBNAME} -U ${PG_DBUSER} -t --command "\df" | grep -i "^ mgd " | grep -iv ' trigger ' | cut -d'|' -f2 | sed 's/ //g' | sort > ${TMP_DB}
 do_diff Procedures
 
 #
