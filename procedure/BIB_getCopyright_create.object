@@ -66,7 +66,7 @@ BEGIN
 --      
 
 SELECT
-c.note,
+t.abbreviation,
 r.short_citation,
 r.journal,
 r.jnumID,
@@ -81,14 +81,10 @@ v_jnumID,
 v_year,
 v_pubmedID,
 v_doiID
-FROM BIB_View r, BIB_Citation_Cache cc, VOC_Term t, MGI_Note n, MGI_NoteChunk c
+FROM BIB_View r, BIB_Citation_Cache cc, VOC_Term t
 WHERE r._Refs_key = v_refsKey
 AND r._Refs_key = cc._Refs_key
 AND r.journal = t.term
-AND t._Term_key = n._Object_key
-AND n._MGIType_key = 13
-AND n._NoteType_key = 1026
-AND n._Note_key = c._Note_key
 ;
 
 -- default...copyright equals note
