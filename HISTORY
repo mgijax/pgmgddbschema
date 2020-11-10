@@ -1,3 +1,8 @@
+TAG: pgmgddbschema-6-0-16-9
+DATE: 11/10/2020
+STAFF: dbm
+CHANGES: objectCounter.sh: Fixed procedure parsing for postgres 12
+
 TAG: pgmgddbschema-6-0-16-8
 DATE: 10/06/2020
 STAFF: lec
