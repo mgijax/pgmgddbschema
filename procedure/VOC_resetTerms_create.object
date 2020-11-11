@@ -1,0 +1,52 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/10/2020    lec
+#       TR13349/TR13349/Genome Build 39 project
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/VOC_resetTerms_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION VOC_resetTerms (
+v_vocab_key int
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_term_key int;
+v_seq int;
+
+BEGIN
+
+/* Re-order the sequenceNum field so that the terms are alphanumeric sorted */
+
+v_seq := 1;
+
+FOR v_term_key IN
+SELECT _term_key
+FROM VOC_Term
+WHERE _Vocab_key = v_vocab_key
+ORDER BY term
+LOOP
+    UPDATE VOC_Term SET sequenceNum = v_seq WHERE _Term_key = v_term_key;
+    v_seq := v_seq + 1;
+END LOOP;
+
+RETURN;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION VOC_resetTerms(int) TO public;
+
+COMMENT ON FUNCTION mgd.VOC_resetTerms(int) IS 'resets alphanumeric sortying of term field on specific vocabulary';
+
+EOSQL
