@@ -39,6 +39,9 @@ select last_value from all_cellline_derivation_seq;
 select max(_Refs_key) from BIB_Refs;
 select last_value from bib_refs_seq;
 
+select max(_Assoc_key) from BIB_Workflow_Relevance;
+select last_value from bib_workflow_relevance_seq;
+
 select max(_Assoc_key) from BIB_Workflow_Status;
 select last_value from bib_workflow_status_seq;
 
