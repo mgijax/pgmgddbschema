@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#
+# History
+#
+# 02/18/2020	lec
+#	- TR13204/Infrastructure/TeleUSE->PWI
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE gxd_assaytype_seq;    
+ALTER TABLE GXD_AssayType ALTER _AssayType_key SET DEFAULT NEXTVAL('gxd_assaytype_seq');
+select setval('gxd_assaytype_seq', (select max(_assaytype_key) from GXD_AssayType));
+
+EOSQL

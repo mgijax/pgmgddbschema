@@ -72,6 +72,9 @@ select last_value from gxd_assay_seq;
 select max(_AssayNote_key) from GXD_AssayNote;
 select last_value from gxd_assaynote_seq;
 
+select max(_AssayType_key) from GXD_AssayType;
+select last_value from gxd_assaytype_seq;
+
 select max(_ProbePrep_key) from GXD_ProbePrep;
 select last_value from gxd_probeprep_seq;
 
@@ -79,7 +82,7 @@ select max(_Specimen_key) from GXD_Specimen;
 select last_value from gxd_specimen_seq;
 
 select max(_Result_key) from GXD_InSituResult;
-select last_value from gxd_result_seq;
+select last_value from gxd_insituresult_seq;
 
 select max(_ResultStructure_key) from GXD_ISResultStructure;
 select last_value from gxd_isresultstructure_seq;
