@@ -6,15 +6,17 @@
 
 cd `dirname $0` && . ./Configuration
 
+${PG_MGD_DBSCHEMADIR}/view/PRB_Acc_View_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create view mgd.PRB_Acc_View
 as
-select a.*, l.name as LogicalDB
-from ACC_Accession a, ACC_LogicalDB l
+select a.*, l.name as LogicalDB, p.name as description
+from ACC_Accession a, ACC_LogicalDB l, PRB_Probe p
 where a._MGIType_key = 3
 and a._LogicalDB_key = l._LogicalDB_key
+and a._Object_key = p._Probe_key
 
 
 
