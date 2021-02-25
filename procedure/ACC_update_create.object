@@ -74,10 +74,10 @@ THEN
 ELSE
 
         IF (select count(accid) from acc_accession 
-                where _mgitype_key = 10 and _logicaldb_key = 22 and accid = v_accID 
-                group by accid having count(*) >= 1)
-	THEN
-                RAISE EXCEPTION E'Cannot assign same JR# to > 1 Strain';
+                where _mgitype_key = 10 and _logicaldb_key = v_logicalDB and accid = v_accID
+                group by _logicaldb_key, accid having count(*) >= 1)
+        THEN
+                RAISE EXCEPTION E'Cannot assign same Registry:Accession Id to > 1 Strain';
                 RETURN;
         END IF;
 
