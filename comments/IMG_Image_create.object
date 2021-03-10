@@ -18,8 +18,6 @@ COMMENT ON COLUMN IMG_Image._Image_key IS 'primary key';
 
 COMMENT ON COLUMN IMG_Image._ImageType_key IS 'foreign key to VOC_Term where _Vocab_key = 47 (Image Type)';
 
-COMMENT ON COLUMN IMG_Image._MGIType_key IS 'foreign key to ACC_MGIType';
-
 COMMENT ON COLUMN IMG_Image.modification_date IS 'date record was last modified';
 
 COMMENT ON COLUMN IMG_Image._ModifiedBy_key IS 'user who last modified the record';
