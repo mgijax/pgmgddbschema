@@ -1,0 +1,35 @@
+#!/bin/sh
+
+#
+# History
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/MGI_cleanNote_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION MGI_cleanNote (
+v_noteKey int
+)
+RETURNS VOID AS
+\$\$
+
+BEGIN
+
+update MGI_NoteChunk 
+set note = replace(note,E'\r','') 
+where _note_key = v_noteKey
+and note like E'%\r%'
+;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION MGI_cleanNote(int) TO public;
+
+COMMENT ON FUNCTION mgd.MGI_cleanNote(int) IS 'clean up special characters';
+
+EOSQL

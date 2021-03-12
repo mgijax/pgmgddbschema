@@ -33,6 +33,7 @@ BEGIN
 v_existingnoteTypeKey :=  _notetype_key from MGI_Note where _note_key = v_note_key;
 --raise exception 'v_existingnoteTypeKey: %', v_existingnoteTypeKey;
 --raise exception 'v_noteTypeKey: %', v_noteTypeKey;
+
 IF v_note_key IS NULL
 THEN
 	v_noteKey := max(_note_key) + 1 from MGI_Note;
@@ -67,6 +68,8 @@ ELSE
 	    WHERE _Note_key = v_note_key;
 	END IF;
 END IF;
+
+PERFORM MGI_cleanNote(v_noteKey);
 
 END;
 \$\$
