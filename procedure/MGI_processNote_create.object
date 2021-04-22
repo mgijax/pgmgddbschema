@@ -48,6 +48,8 @@ THEN
 	(_Note_key, sequenceNum, note, _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
 	VALUES (v_noteKey, 1, v_note, v_userKey, v_userKey, now(), now());
 
+        PERFORM MGI_cleanNote(v_noteKey);
+
 ELSEIF v_note IS NULL or v_note = 'null'
 THEN
 
@@ -67,9 +69,9 @@ ELSE
 	    modification_date = now()
 	    WHERE _Note_key = v_note_key;
 	END IF;
-END IF;
 
-PERFORM MGI_cleanNote(v_noteKey);
+        PERFORM MGI_cleanNote(v_note_key);
+END IF;
 
 END;
 \$\$
