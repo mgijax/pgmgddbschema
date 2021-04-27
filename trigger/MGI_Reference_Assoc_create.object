@@ -112,6 +112,7 @@ THEN
     VALUES((select nextval('bib_workflow_status_seq')), NEW._Refs_key, 31576664, 31576673, 1,
 	NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
     ;
+    PERFORM BIB_keepWFRelevance (NEW._Refs_key);
 END IF;
 
 RETURN NEW;
