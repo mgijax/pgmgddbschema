@@ -131,8 +131,9 @@ BEGIN
 -- create MGI id
 PERFORM ACC_assignMGI(1001, NEW._Refs_key, 'Reference');
 
+-- this is now done in the API where it checks bib_workflow_status
 -- create J:
-PERFORM ACC_assignJ(1001, NEW._Refs_key, -1);
+--PERFORM ACC_assignJ(1001, NEW._Refs_key, -1);
 
 FOR rec IN
 SELECT _Term_key FROM VOC_Term where _Vocab_key = 127
