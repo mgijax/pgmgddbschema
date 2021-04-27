@@ -42,7 +42,7 @@ THEN
     WHERE _Refs_key = v_refsKey
     ;   
     INSERT INTO BIB_Workflow_Relevance 
-    VALUES((select nextval('bib_workflow_relevance_seq')), v_refsKey, 70594667, null, null, 1001, 1001, now(), now())
+    VALUES((select nextval('bib_workflow_relevance_seq')), v_refsKey, 70594667, 1, null, null, 1001, 1001, now(), now())
     ;   
 END IF;
 
