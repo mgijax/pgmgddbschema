@@ -60,6 +60,7 @@ LOOP
     VALUES((select nextval('bib_workflow_status_seq')), rec._Refs_key, 31576665, 31576674, 1,  
         1001, 1001, now(), now())
     ;   
+    PERFORM BIB_keepWFRelevance (rec._Refs_key);
 END LOOP;
 
 RETURN;
