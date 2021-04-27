@@ -117,7 +117,7 @@ BEGIN
 --	to the NEW object
 --
 --	adds: J:
---	adds: BIB_Workflow_Status, one row per Group, status = 'Not Routed'
+--	adds: BIB_Workflow_Status, one row per Group, status = 'New'
 --	adds: BIB_Workflow_Data, supplimental term = 'No supplemental data' (34026998)
 --	adds: BIB_Workflow_Data, extracted text section = 'body' (48804490)
 --
@@ -139,13 +139,17 @@ FOR rec IN
 SELECT _Term_key FROM VOC_Term where _Vocab_key = 127
 LOOP
 INSERT INTO BIB_Workflow_Status 
-VALUES((select nextval('bib_workflow_status_seq')), NEW._Refs_key, rec._Term_key, 31576669, 1,  
+VALUES((select nextval('bib_workflow_status_seq')), NEW._Refs_key, rec._Term_key, 71027551, 1,  
 	NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
 ;
 END LOOP;
 
 INSERT INTO BIB_Workflow_Data 
 VALUES((select nextval('bib_workflow_data_seq')), NEW._Refs_key, 0, 34026998, null, 48804490, null, NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
+;
+
+INSERT INTO BIB_Workflow_Relevance
+VALUES((select nextval('bib_workflow_relevance_seq')), NEW._Refs_key, 70594667, 1, null, null, 1001, 1001, now(), now())
 ;
 
 RETURN NEW;
