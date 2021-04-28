@@ -149,7 +149,7 @@ VALUES((select nextval('bib_workflow_data_seq')), NEW._Refs_key, 0, 34026998, nu
 ;
 
 INSERT INTO BIB_Workflow_Relevance
-VALUES((select nextval('bib_workflow_relevance_seq')), NEW._Refs_key, 70594667, 1, null, null, 1001, 1001, now(), now())
+VALUES((select nextval('bib_workflow_relevance_seq')), NEW._Refs_key, 70594667, 1, null, null, NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
 ;
 
 RETURN NEW;
