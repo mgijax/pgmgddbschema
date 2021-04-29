@@ -148,7 +148,7 @@ THEN
     VALUES((select nextval('bib_workflow_status_seq')), NEW._Refs_key, 31576665, 31576674, 1, 
     	NEW._CreatedBy_key, NEW._ModifiedBy_key, now(), now())
     ;
-    PERFORM BIB_keepWFRelevance (NEW._Refs_key);
+    PERFORM BIB_keepWFRelevance (NEW._Refs_key, NEW._CreatedBy_key);
 END IF;
 
 PERFORM ACC_assignMGI(1001, NEW._Assay_key, 'Assay');
