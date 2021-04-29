@@ -15,7 +15,8 @@ ${PG_MGD_DBSCHEMADIR}/procedure/BIB_keepWFRelevance_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION BIB_keepWFRelevance (
-v_refsKey int
+v_refsKey int,
+v_userKey int
 )
 RETURNS VOID AS
 \$\$
@@ -42,7 +43,7 @@ THEN
     WHERE _Refs_key = v_refsKey
     ;   
     INSERT INTO BIB_Workflow_Relevance 
-    VALUES((select nextval('bib_workflow_relevance_seq')), v_refsKey, 70594667, 1, null, null, 1001, 1001, now(), now())
+    VALUES((select nextval('bib_workflow_relevance_seq')), v_refsKey, 70594667, 1, null, null, v_userKey, v_userKey, now(), now())
     ;   
 END IF;
 
@@ -52,8 +53,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION BIB_keepWFRelevance(int) TO public;
+GRANT EXECUTE ON FUNCTION BIB_keepWFRelevance(int,int) TO public;
 
-COMMENT ON FUNCTION mgd.BIB_keepWFRelevance(int) IS 'add the Workflow Relevance = keep';
+COMMENT ON FUNCTION mgd.BIB_keepWFRelevance(int,int) IS 'add the Workflow Relevance = keep';
 
 EOSQL
