@@ -255,7 +255,7 @@ IF (SELECT a._AnnotType_key from VOC_Annot a where NEW._Annot_key = a._Annot_key
        AND rt.assocType != 'Used-FC')
 THEN
     -- Used-FC
-    PERFORM MGI_updateReferenceAssoc (1001, 12, v_objectKey, NEW._Refs_key, 1017, null);
+    PERFORM MGI_updateReferenceAssoc (NEW._CreatedBy_key, 12, v_objectKey, NEW._Refs_key, 1017, null);
 END IF;
 
 -- if this is an MP annotation
