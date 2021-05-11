@@ -10,12 +10,12 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.MLD_Expt_Marker (
+ 	_Assoc_key                     int     not null,
  	_Expt_key                      int     not null,
 	_Marker_key                    int     not null,
 	_Allele_key                    int     null,
 	_Assay_Type_key                int     not null,
 	sequenceNum                    int     not null,
-	gene                           text    null,
 	description                    text    null,
 	matrixData                     smallint             not null,
 	creation_date                  timestamp DEFAULT now()        not null,

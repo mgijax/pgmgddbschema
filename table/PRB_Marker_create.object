@@ -10,6 +10,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.PRB_Marker (
+ 	_Assoc_key                     int             not null,
  	_Probe_key                     int             not null,
 	_Marker_key                    int             not null,
 	_Refs_key                      int             not null,

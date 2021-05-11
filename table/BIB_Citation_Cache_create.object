@@ -27,8 +27,9 @@ create table mgd.BIB_Citation_Cache (
 	citation                   text            not null,
 	short_citation             text            not null,
 	referenceType		   text            not null,
+	_Relevance_key             int             not null,
+	relevanceTerm              text            not null,
 	isReviewArticle            smallint        not null,
-	isReviewArticleString      char(3)         not null,
-	isDiscard	           smallint        not null
+	isReviewArticleString      char(3)         not null
 );
 EOSQL

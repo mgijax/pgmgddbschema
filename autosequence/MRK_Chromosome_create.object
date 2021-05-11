@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 10/22/2020    lec
+#	- TR13349/Genome Build 39 project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE mrk_chromosome_seq;    
+ALTER TABLE MRK_Chromosome ALTER _Chromosome_key SET DEFAULT NEXTVAL('mrk_chromosome_seq');
+select setval('mrk_chromosome_seq', (select max(_Chromosome_key) from MRK_Chromosome));
+--select last_value from mrk_chromosome_seq;
+
+EOSQL

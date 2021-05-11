@@ -152,6 +152,12 @@ ALTER TABLE mgd.BIB_Workflow_Data ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mg
 ALTER TABLE mgd.BIB_Workflow_Data ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
 
 
+ALTER TABLE mgd.BIB_Workflow_Relevance ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
+
+
+ALTER TABLE mgd.BIB_Workflow_Relevance ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
+
+
 ALTER TABLE mgd.BIB_Workflow_Status ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
 
 

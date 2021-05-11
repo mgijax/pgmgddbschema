@@ -33,6 +33,7 @@ BEGIN
 v_existingnoteTypeKey :=  _notetype_key from MGI_Note where _note_key = v_note_key;
 --raise exception 'v_existingnoteTypeKey: %', v_existingnoteTypeKey;
 --raise exception 'v_noteTypeKey: %', v_noteTypeKey;
+
 IF v_note_key IS NULL
 THEN
 	v_noteKey := max(_note_key) + 1 from MGI_Note;
@@ -46,6 +47,8 @@ THEN
 	INSERT INTO MGI_NoteChunk
 	(_Note_key, sequenceNum, note, _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
 	VALUES (v_noteKey, 1, v_note, v_userKey, v_userKey, now(), now());
+
+        PERFORM MGI_cleanNote(v_noteKey);
 
 ELSEIF v_note IS NULL or v_note = 'null'
 THEN
@@ -66,6 +69,8 @@ ELSE
 	    modification_date = now()
 	    WHERE _Note_key = v_note_key;
 	END IF;
+
+        PERFORM MGI_cleanNote(v_note_key);
 END IF;
 
 END;

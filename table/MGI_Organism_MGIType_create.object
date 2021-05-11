@@ -15,6 +15,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.MGI_Organism_MGIType (
+ 	_Assoc_key                     int             not null,
  	_Organism_key                  int             not null,
  	_MGIType_key                   int             not null,
         sequenceNum                    int             not null,

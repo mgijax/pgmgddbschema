@@ -40,6 +40,9 @@ BEGIN
 -- is no MP Annotation snd the group AP/current Workflow Status is *not*
 -- Indexed
 --
+-- if either: 
+-- To set the current Workflow Relevance = keep
+--
 -- INPUT:
 --	None
 --
@@ -65,9 +68,9 @@ LOOP
         AND w._Group_key = 31576664
     ;   
     INSERT INTO BIB_Workflow_Status 
-    VALUES((select nextval('bib_workflow_status_seq')), rec._Refs_key, 31576664, 31576674, 1,  
-        1001, 1001, now(), now())
+    VALUES((select nextval('bib_workflow_status_seq')), rec._Refs_key, 31576664, 31576674, 1, 1001, 1001, now(), now())
     ;   
+    PERFORM BIB_keepWFRelevance (rec._Refs_key, 1001);
 END LOOP;
 
 FOR rec IN
@@ -89,9 +92,9 @@ LOOP
         AND w._Group_key = 31576664
     ;
     INSERT INTO BIB_Workflow_Status
-    VALUES((select nextval('bib_workflow_status_seq')), rec._Refs_key, 31576664, 31576673, 1,
-        1001, 1001, now(), now())
+    VALUES((select nextval('bib_workflow_status_seq')), rec._Refs_key, 31576664, 31576673, 1, 1001, 1001, now(), now())
     ;
+    PERFORM BIB_keepWFRelevance (rec._Refs_key, 1001);
 END LOOP;
 
 

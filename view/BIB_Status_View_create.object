@@ -11,27 +11,39 @@ ${PG_MGD_DBSCHEMADIR}/view/BIB_Status_View_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create view BIB_Status_View as
+
 select distinct r._Refs_key, ap_t.term as ap_status,
   go_t.term as go_status,
   gxd_t.term as gxd_status,
   qtl_t.term as qtl_status,
-  tumor_t.term as tumor_status
+  tumor_t.term as tumor_status,
+  pro_t.term as pro_status
+
 from bib_refs r
+
 left outer join bib_workflow_status ap on (
   r._Refs_key = ap._Refs_key and ap._Group_key = 31576664 and ap.isCurrent = 1)
 left outer join voc_term ap_t on (ap._Status_key = ap_t._Term_key)
+
 left outer join bib_workflow_status go on (
   r._Refs_key = go._Refs_key and go._Group_key = 31576666 and go.isCurrent = 1)
 left outer join voc_term go_t on (go._Status_key = go_t._Term_key)
+
 left outer join bib_workflow_status gxd on (
   r._Refs_key = gxd._Refs_key and gxd._Group_key = 31576665 and gxd.isCurrent = 1)
 left outer join voc_term gxd_t on (gxd._Status_key = gxd_t._Term_key)
+
 left outer join bib_workflow_status qtl on (
   r._Refs_key = qtl._Refs_key and qtl._Group_key = 31576668 and qtl.isCurrent = 1)
 left outer join voc_term qtl_t on (qtl._Status_key = qtl_t._Term_key)
+
 left outer join bib_workflow_status tumor on (
   r._Refs_key = tumor._Refs_key and tumor._Group_key = 31576667 and tumor.isCurrent = 1)
 left outer join voc_term tumor_t on (tumor._Status_key = tumor_t._Term_key)
+
+left outer join bib_workflow_status pro on (
+  r._Refs_key = pro._Refs_key and pro._Group_key = 78678148 and pro.isCurrent = 1)
+left outer join voc_term pro_t on (pro._Status_key = pro_t._Term_key)
 
 ;
 

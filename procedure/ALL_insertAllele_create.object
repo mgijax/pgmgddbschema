@@ -35,7 +35,7 @@ v_strainKey int DEFAULT -1,
 v_amode voc_term.term%TYPE DEFAULT 'Not Specified',
 v_atype voc_term.term%TYPE DEFAULT 'Not Specified',
 v_astatus voc_term.term%TYPE DEFAULT 'Approved',
-v_oldSymbol mld_expt_marker.gene%TYPE DEFAULT null,
+v_oldSymbol mrk_marker.symbol%TYPE DEFAULT null,
 v_transmission voc_term.term%TYPE DEFAULT 'Not Applicable',
 v_collection voc_term.term%TYPE DEFAULT 'Not Specified',
 v_qualifier voc_term.term%TYPE DEFAULT 'Not Specified',
@@ -137,11 +137,11 @@ THEN
         PERFORM MGI_insertReferenceAssoc (v_userKey, 11, v_alleleKey, v_refsKey, 1011);
 END IF;
 
-IF (v_oldSymbol IS NOT NULL) AND (v_markerKey IS NOT NULL)
-THEN
-        UPDATE MLD_Expt_Marker SET _Allele_key = v_alleleKey 
-	WHERE _Marker_key = v_markerKey AND gene = v_oldSymbol;
-END IF;
+--IF (v_oldSymbol IS NOT NULL) AND (v_markerKey IS NOT NULL)
+--THEN
+        --UPDATE MLD_Expt_Marker SET _Allele_key = v_alleleKey 
+	--WHERE _Marker_key = v_markerKey AND gene = v_oldSymbol;
+--END IF;
 
 END;
 

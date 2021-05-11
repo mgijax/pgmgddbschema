@@ -33,4 +33,7 @@ drop index if exists mgd.BIB_Citation_Cache_idx_pubmedID
 drop index if exists mgd.BIB_Citation_Cache_idx_doiID
 ;
 
+drop index if exists mgd.BIB_Citation_Cache_idx_Relevance_Key
+;
+
 EOSQL

@@ -171,6 +171,34 @@ where a._mgitype_key = 12
 and not exists (select 1 from gxd_genotype s where a._object_key = s._genotype_key)
 ;
 
+-- acc_mgitype terms that are no longer used
+-- note:  (30,31,32,33) are SNP and may still be used?
+select m.*
+from acc_mgitype m
+where m._mgitype_key not in (30,31,32,33)
+and not exists (select 1 from ACC_Accession a where m._mgitype_key = a._mgitype_key)
+and not exists (select 1 from DAG_Closure a where m._mgitype_key = a._mgitype_key)
+and not exists (select 1 from DAG_DAG a where m._mgitype_key = a._mgitype_key)
+and not exists (select 1 from IMG_ImagePane_Assoc a where m._mgitype_key = a._mgitype_key)
+and not exists (select 1 from MAP_Coord_Feature a where m._mgitype_key = a._mgitype_key)
+and not exists (select 1 from MAP_Coordinate a where m._mgitype_key = a._mgitype_key)
+and not exists (select 1 from MGI_Note a where m._mgitype_key = a._mgitype_key)
+and not exists (select 1 from MGI_NoteType a where m._mgitype_key = a._mgitype_key)
+and not exists (select 1 from MGI_Organism_MGIType a where m._mgitype_key = a._mgitype_key)
+and not exists (select 1 from MGI_Property a where m._mgitype_key = a._mgitype_key)
+and not exists (select 1 from MGI_PropertyType a where m._mgitype_key = a._mgitype_key)
+and not exists (select 1 from MGI_RefAssocType a where m._mgitype_key = a._mgitype_key)
+and not exists (select 1 from MGI_Reference_Assoc a where m._mgitype_key = a._mgitype_key)
+and not exists (select 1 from MGI_Relationship_Category a where m._mgitype_key = a._mgitype_key_1)
+and not exists (select 1 from MGI_Relationship_Category a where m._mgitype_key = a._mgitype_key_2)
+and not exists (select 1 from MGI_Set a where m._mgitype_key = a._mgitype_key)
+and not exists (select 1 from MGI_Synonym a where m._mgitype_key = a._mgitype_key)
+and not exists (select 1 from MGI_SynonymType a where m._mgitype_key = a._mgitype_key)
+and not exists (select 1 from MGI_TranslationType a where m._mgitype_key = a._mgitype_key)
+and not exists (select 1 from VOC_Annot_Count_Cache a where m._mgitype_key = a._mgitype_key)
+and not exists (select 1 from VOC_AnnotType a where m._mgitype_key = a._mgitype_key)
+;
+
 -- map_coord_feature
 
 select distinct _mgitype_key from map_coord_feature order by _mgitype_key;

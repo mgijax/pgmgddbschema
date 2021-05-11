@@ -11,7 +11,8 @@ v_strainKey int
 )
 RETURNS TABLE (
 	jnum int,
-	dataSet text
+	dataSet text,
+	jnumid text
 ) AS
 \$\$
 
@@ -72,7 +73,7 @@ AND a._Strain_key = v_strainKey
 ;
  
 RETURN QUERY
-SELECT a.jnum, r.dataSet
+SELECT a.jnum, r.dataSet, a.jnumid
 FROM references_tmp r, BIB_View a
 WHERE r._Refs_key = a._Refs_key
 ORDER BY a.jnum

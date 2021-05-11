@@ -158,6 +158,9 @@ ALTER TABLE mgd.ALL_CellLine_Derivation ADD FOREIGN KEY (_Vector_key) REFERENCES
 ALTER TABLE mgd.ALL_Variant_Sequence ADD FOREIGN KEY (_Sequence_Type_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
+ALTER TABLE mgd.BIB_Citation_Cache ADD FOREIGN KEY (_Relevance_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
 ALTER TABLE mgd.BIB_Refs ADD FOREIGN KEY (_ReferenceType_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
@@ -165,6 +168,9 @@ ALTER TABLE mgd.BIB_Workflow_Data ADD FOREIGN KEY (_Supplemental_key) REFERENCES
 
 
 ALTER TABLE mgd.BIB_Workflow_Data ADD FOREIGN KEY (_ExtractedText_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
+ALTER TABLE mgd.BIB_Workflow_Relevance ADD FOREIGN KEY (_Relevance_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
 ALTER TABLE mgd.BIB_Workflow_Status ADD FOREIGN KEY (_Group_key) REFERENCES mgd.VOC_Term DEFERRABLE;

@@ -39,6 +39,9 @@ select last_value from all_cellline_derivation_seq;
 select max(_Refs_key) from BIB_Refs;
 select last_value from bib_refs_seq;
 
+select max(_Assoc_key) from BIB_Workflow_Relevance;
+select last_value from bib_workflow_relevance_seq;
+
 select max(_Assoc_key) from BIB_Workflow_Status;
 select last_value from bib_workflow_status_seq;
 
@@ -69,6 +72,9 @@ select last_value from gxd_assay_seq;
 select max(_AssayNote_key) from GXD_AssayNote;
 select last_value from gxd_assaynote_seq;
 
+select max(_AssayType_key) from GXD_AssayType;
+select last_value from gxd_assaytype_seq;
+
 select max(_ProbePrep_key) from GXD_ProbePrep;
 select last_value from gxd_probeprep_seq;
 
@@ -76,7 +82,7 @@ select max(_Specimen_key) from GXD_Specimen;
 select last_value from gxd_specimen_seq;
 
 select max(_Result_key) from GXD_InSituResult;
-select last_value from gxd_result_seq;
+select last_value from gxd_insituresult_seq;
 
 select max(_ResultStructure_key) from GXD_ISResultStructure;
 select last_value from gxd_isresultstructure_seq;
@@ -94,8 +100,28 @@ select max(_GelBand_key) from GXD_GelBand;
 select last_value from gxd_gelband_seq;
 
 select max(_Genotype_key) from GXD_Genotype;
-select max(_Genotype_key) from GXD_Genotype;
 select last_value from gxd_genotype_seq;
+
+select max(_antibodyclass_key) from GXD_AntibodyClass;
+select last_value from gxd_antibodyclass_seq;
+
+select max(_embedding_key) from GXD_EmbeddingMethod;
+select last_value from gxd_embedding_seq;
+
+select max(_fixation_key) from GXD_FixationMethod;
+select last_value from gxd_fixation_seq;
+
+select max(_gelcontrol_key) from GXD_GelControl;
+select last_value from gxd_gelcontrol_seq;
+
+select max(_label_key) from GXD_Label;
+select last_value from gxd_label_seq;
+
+select max(_pattern_key) from GXD_Pattern;
+select last_value from gxd_pattern_seq;
+
+select max(_visualization_key) from GXD_VisualizationMethod;
+select last_value from gxd_visualization_seq;
 
 select max(_rnaseq_key) from GXD_HTSample_RNASeq;
 select last_value from gxd_htsample_rnaseq_seq;
@@ -118,6 +144,12 @@ select last_value from img_imagepane_seq;
 select max(_Assoc_key) from IMG_ImagePane_Assoc;
 select last_value from img_imagepane_assoc_seq;
 
+select max(_Organism_key) from MGI_Organism;
+select last_value from mgi_organism_seq;
+
+select max(_Assoc_key) from MGI_Organism_MGIType;
+select last_value from mgi_organism_mgitype_seq;
+
 select max(_Assoc_key) from MGI_Reference_Assoc;
 select last_value from mgi_reference_assoc_seq;
 
@@ -127,11 +159,38 @@ select last_value from mgi_relationship_seq;
 select max(_Synonym_key) from MGI_Synonym;
 select last_value from mgi_synonym_seq;
 
+select max(_assay_type_key) from MLD_Assay_Types;
+select last_value from mld_assay_types_seq;
+
+select max(_assoc_key) from MLD_Expt_Marker;
+select last_value from mld_expt_marker_seq;
+
+select max(_expt_key) from MLD_Expts;
+select last_value from mld_expts_seq;
+
 select max(_marker_key) from MRK_Marker;
 select last_value from mrk_marker_seq;
 
+select max(_chromosome_key) from MRK_Chromosome;
+select last_value from mrk_chromosome_seq;
+
 select max(_assoc_key) from MRK_History;
 select last_value from mrk_history_seq;
+
+select max(_Alias_key) from PRB_Alias;
+select last_value from prb_alias_seq;
+
+select max(_Assoc_key) from PRB_Marker;
+select last_value from prb_marker_seq;
+
+select max(_Note_key) from PRB_Notes;
+select last_value from prb_notes_seq;
+
+select max(_Probe_key) from PRB_Probe;
+select last_value from prb_probe_seq;
+
+select max(_Reference_key) from PRB_Reference;
+select last_value from prb_reference_seq;
 
 select max(_Source_key) from PRB_Source;
 select last_value from prb_source_seq;

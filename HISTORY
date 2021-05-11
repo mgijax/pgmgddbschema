@@ -8,6 +8,18 @@ DATE: 11/10/2020
 STAFF: dbm
 CHANGES: objectCounter.sh: Fixed procedure parsing for postgres 12
 
+TAG: pgmgddbschema-6-0-16-?
+DATE: 04/08/2021
+STAFF: lec
+TR13441/Allele deletion despite strain association
+
+these are not used by API yet...
+procedure/BIB_updateWFStatusAP_create.object
+procedure/BIB_updateWFStatusGO_create.object
+procedure/BIB_updateWFStatusGXD_create.object
+procedure/BIB_updateWFStatusQTL_create.object
+>>>>>>> tr13349
+
 TAG: pgmgddbschema-6-0-16-8
 DATE: 10/06/2020
 STAFF: lec

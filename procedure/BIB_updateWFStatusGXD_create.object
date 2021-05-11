@@ -57,9 +57,9 @@ LOOP
         AND w._Group_key = 31576665
     ;   
     INSERT INTO BIB_Workflow_Status 
-    VALUES((select nextval('bib_workflow_status_seq')), rec._Refs_key, 31576665, 31576674, 1,  
-        1001, 1001, now(), now())
+    VALUES((select nextval('bib_workflow_status_seq')), rec._Refs_key, 31576665, 31576674, 1, 1001, 1001, now(), now())
     ;   
+    PERFORM BIB_keepWFRelevance (rec._Refs_key, 1001);
 END LOOP;
 
 RETURN;

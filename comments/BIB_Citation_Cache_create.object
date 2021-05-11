@@ -24,7 +24,11 @@ COMMENT ON COLUMN BIB_Citation_Cache.citation IS 'long citation format';
 
 COMMENT ON COLUMN BIB_Citation_Cache.short_citation IS 'short citation format';
 
-COMMENT ON COLUMN BIB_Citation_Cache.referenceType IS 'foreign key to VOC_Term._Vocab_key = 131';
+COMMENT ON COLUMN BIB_Citation_Cache.referenceType IS 'term of foreign key to VOC_Term._Vocab_key = 131';
+
+COMMENT ON COLUMN BIB_Citation_Cache._Relevance_key IS 'foreign key to VOC_Term._Vocab_key = 149';
+
+COMMENT ON COLUMN BIB_Citation_Cache.relevanceTerm IS 'term of foreign key to VOC_Term._Vocab_key = 149';
 
 COMMENT ON COLUMN BIB_Citation_Cache.isReviewArticle IS 'is this a review article?';
 

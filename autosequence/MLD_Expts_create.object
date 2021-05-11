@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 10/28/2020    lec
+#	- TR13349/Genome Build 39 project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE mld_expts_seq;    
+ALTER TABLE MLD_Expts ALTER _expt_key SET DEFAULT NEXTVAL('mld_expts_seq');
+select setval('mld_expts_seq', (select max(_expt_key) from MLD_Expts));
+
+EOSQL

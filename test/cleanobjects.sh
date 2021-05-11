@@ -1,5 +1,15 @@
 #!/bin/sh
 
+#
+# run at end of any mgidbmigration/MGI_part1.csh
+#
+# this will clean up any obsolete:
+# 1. MGI_Note/MGI_NoteChunk data
+# 2. MGI_SetMember
+# 3. GO Annotations to withdrawn Markers (VOC_deleteGOWithdrawn())
+# 4. GXD_ProbePrep objects that are obsolete/no longer used by any assay (gxdprobeprep.csh)
+#
+
 cd `dirname $0` && . ./Configuration
 
 LOG=$0.log

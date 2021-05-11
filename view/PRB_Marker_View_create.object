@@ -12,7 +12,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create view mgd.PRB_Marker_View
 as
 select g._Probe_key, p.name, g._Marker_key, m.symbol, m.chromosome, g.relationship,
-g._Refs_key, b.numericPart as jnum, b.short_citation, u.login as modifiedBy, g.modification_date
+g._Refs_key, b.numericPart as jnum, b.short_citation, u.login as modifiedBy, g.modification_date, g._modifiedby_key
 from PRB_Probe p, PRB_Marker g, MRK_Marker m, BIB_Citation_Cache b, MGI_User u
 where p._Probe_key = g._Probe_key
 and g._Marker_key = m._Marker_key

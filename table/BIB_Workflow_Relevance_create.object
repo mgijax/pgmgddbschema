@@ -1,0 +1,28 @@
+#!/bin/sh
+
+#
+# History
+#
+# 10/19/2020	lec
+#	- TR13349/Build 39 Project/ML Primary Triage
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.BIB_Workflow_Relevance (
+ 	_Assoc_key                     int                      not null,
+ 	_Refs_key                      int                      not null,
+ 	_Relevance_key                 int                      not null,
+	isCurrent                      smallint DEFAULT 1       not null,
+        confidence                     double precision         null,
+        version                        text                     null,
+	_CreatedBy_key                 int DEFAULT 1001         not null,
+	_ModifiedBy_key                int DEFAULT 1001         not null,
+	creation_date                  timestamp DEFAULT now()  not null,
+	modification_date              timestamp DEFAULT now()  not null 
+);
+
+EOSQL

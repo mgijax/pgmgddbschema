@@ -1,0 +1,60 @@
+#!/bin/sh
+
+#
+# History
+#
+# 04/27/2021
+#       - TR13349/Build 39/Lit Triage
+#
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/BIB_keepWFRelevance_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION BIB_keepWFRelevance (
+v_refsKey int,
+v_userKey int
+)
+RETURNS VOID AS
+\$\$
+ 
+BEGIN
+
+--
+-- NAME: BIB_keepWFRelevance
+--
+-- DESCRIPTION:
+--        
+-- To set the current Workflow Relevance = keep, if it does not already exist
+--
+-- INPUT:
+--	None
+--
+-- RETURNS:
+--	VOID
+--      
+
+IF (SELECT count(*) FROM BIB_Workflow_Relevance WHERE isCurrent = 1 AND _Relevance_key != 70594667 AND _Refs_key = v_refsKey) > 0
+THEN
+    UPDATE BIB_Workflow_Relevance w set isCurrent = 0 
+    WHERE _Refs_key = v_refsKey
+    ;   
+    INSERT INTO BIB_Workflow_Relevance 
+    VALUES((select nextval('bib_workflow_relevance_seq')), v_refsKey, 70594667, 1, null, null, v_userKey, v_userKey, now(), now())
+    ;   
+END IF;
+
+RETURN;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION BIB_keepWFRelevance(int,int) TO public;
+
+COMMENT ON FUNCTION mgd.BIB_keepWFRelevance(int,int) IS 'add the Workflow Relevance = keep';
+
+EOSQL
