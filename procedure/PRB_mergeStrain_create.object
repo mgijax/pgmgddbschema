@@ -335,8 +335,13 @@ LOOP
 
 	v_note2 := c.note from MGI_Note n, MGI_NoteChunk c WHERE n._MGIType_key = 10 and n._NoteType_key = v_noteTypeKey and n._Object_key = v_oldStrainKey and n._Note_key = c._Note_key;
 
+        IF v_note1 != v_note2 
+        THEN
+                v_note1 = v_note1 || E'\n' || v_note2;
+        END IF;
+
 	UPDATE MGI_NoteChunk c
-	SET note = v_note1 || E'\n' || v_note2
+	SET note = v_note1
 	FROM MGI_Note n
 	WHERE n._MGIType_key = 10 
 	      AND n._NoteType_key = v_noteTypeKey 
