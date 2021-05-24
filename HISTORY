@@ -1,3 +1,9 @@
+TAG: pgmgddbschema-6-0-17-3
+DATE: 05/24/2021
+STAFF: sc
+TR13349/Genome Build 39
+renamed MGI_addSetMember_delete.object to MGI_addSetMember_drop.object
+
 TAG: pgmgddbschema-6-0-17-2
 DATE: 05/19/2021
 STAFF: lec
