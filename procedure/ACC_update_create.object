@@ -73,13 +73,13 @@ THEN
 	select ACC_delete_byAccKey (v_accKey);
 ELSE
 
-        IF (select count(accid) from acc_accession 
-                where _mgitype_key = 10 and _logicaldb_key = v_logicalDB and accid = v_accID
-                group by _logicaldb_key, accid having count(*) >= 1)
-        THEN
-                RAISE EXCEPTION E'Cannot assign same Registry:Accession Id to > 1 Strain';
-                RETURN;
-        END IF;
+        --IF (select count(accid) from acc_accession 
+        --        where _mgitype_key = 10 and _logicaldb_key = v_logicalDB and accid = v_accID
+        --        group by _logicaldb_key, accid having count(*) >= 1)
+        --THEN
+        --        RAISE EXCEPTION E'Cannot assign same Registry:Accession Id to > 1 Strain';
+        --        RETURN;
+        --END IF;
 
         -- split accession id INTO prefixPart/numericPart
 
