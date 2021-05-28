@@ -35,6 +35,7 @@ CREATE OR REPLACE FUNCTION ACC_update (
 v_userKey int,
 v_accKey int,
 v_accID acc_accession.accid%TYPE,
+v_private int DEFAULT 0,
 v_origRefsKey int DEFAULT -1,
 v_refsKey int DEFAULT -1
 )
@@ -61,6 +62,7 @@ BEGIN
 -- v_accID       : ACC_Accession.accID
 -- v_origRefsKey : original ACC_AccessionReference._Refs_key
 -- v_refsKey     : new ACC_AccessionReference._Refs_key
+-- v_private     : ACC_Accessioin.private
 --
 -- RETURNS:
 --	VOID
@@ -72,15 +74,6 @@ IF v_accID IS NULL
 THEN
 	select ACC_delete_byAccKey (v_accKey);
 ELSE
-
-        --IF (select count(accid) from acc_accession 
-        --        where _mgitype_key = 10 and _logicaldb_key = v_logicalDB and accid = v_accID
-        --        group by _logicaldb_key, accid having count(*) >= 1)
-        --THEN
-        --        RAISE EXCEPTION E'Cannot assign same Registry:Accession Id to > 1 Strain';
-        --        RETURN;
-        --END IF;
-
         -- split accession id INTO prefixPart/numericPart
 
         SELECT * FROM ACC_split(v_accID) INTO v_prefixPart, v_numericPart;
@@ -103,6 +96,7 @@ ELSE
 	       	set accID = v_accID,
 		   	prefixPart = v_prefixPart,
 		   	numericPart = null,
+                        private = v_private,
 		   	_ModifiedBy_key = v_userKey,
 		   	modification_date = now()
 	       	where _Accession_key = v_accKey;
@@ -111,6 +105,7 @@ ELSE
 	       	set accID = v_accID,
 		   	prefixPart = v_prefixPart,
 		   	numericPart = v_numericPart::integer,
+                        private = v_private,
 		   	_ModifiedBy_key = v_userKey,
 		   	modification_date = now()
 	       	where _Accession_key = v_accKey;
@@ -131,8 +126,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION ACC_update(int,int,text,int,int) TO public;
+GRANT EXECUTE ON FUNCTION ACC_update(int,int,text,int,int,int) TO public;
 
-COMMENT ON FUNCTION mgd.ACC_update(int,int,text,int,int) IS 'update acc_accession row';
+COMMENT ON FUNCTION mgd.ACC_update(int,int,text,int,int,int) IS 'update acc_accession row';
 
 EOSQL
