@@ -77,9 +77,11 @@ VALUES (v_assocKey, v_refsKey, v_objectKey, v_mgiTypeKey, v_refsTypeKey,
 --
 -- if the v_refsKey does not have a J:, then add it
 --
-IF EXISTS (SELECT 1 FROM BIB_Citation_Cache 
-        WHERE _Refs_key = v_refsKey
-        AND jnumid IS NULL)
+IF NOT EXISTS (SELECT 1 FROM ACC_Accession 
+        WHERE _Object_key = v_refsKey
+        AND _LogicalDB_key = 1
+        AND _MGIType_key = 1
+        AND prefixPart = 'J:')
 THEN
         PERFORM ACC_assignJ(1001, v_refsKey, -1);
 END IF;
