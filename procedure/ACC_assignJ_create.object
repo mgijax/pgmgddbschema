@@ -54,6 +54,18 @@ THEN
 	END IF;
 END IF;
 
+--
+-- if this object already has a J:, return/do nothing
+--
+IF EXISTS (SELECT 1 FROM ACC_Accession
+        WHERE _Object_key = v_objectKey
+        AND _LogicalDB_key = 1
+        AND _MGIType_key = 1
+        AND prefixPart = 'J:')
+THEN
+        RETURN;
+END IF;
+
 PERFORM ACC_assignMGI (v_userKey, v_objectKey, 'Reference', 'J:', v_nextMGI);
 
 RETURN;
