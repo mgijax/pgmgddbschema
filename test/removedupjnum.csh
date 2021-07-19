@@ -48,7 +48,8 @@ using toDelete
 where toDelete._accession_key = acc_accession._accession_key
 ;
 
-select * from BIB_reloadCache();
+-- don't need to rebuild cache
+--select * from BIB_reloadCache();
 
 with dups as (
 select a._object_key
