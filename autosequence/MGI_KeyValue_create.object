@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#
+# History
+#
+# 07/19/2021    sc
+#       - WTS2-431 Load GEO raw samples
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE mgi_keyvalue_seq;    
+
+ALTER TABLE MGI_KeyValue ALTER _KeyValue_key SET DEFAULT NEXTVAL('mgi_keyvalue_seq');
+
+select setval('mgi_keyvalue_seq', (select max(_KeyValue_key) from MGI_KeyValue));
+
+EOSQL

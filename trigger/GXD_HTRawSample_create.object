@@ -1,0 +1,68 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP TRIGGER IF EXISTS GXD_HTRawSample_delete_trigger ON GXD_HTRawSample;
+DROP FUNCTION IF EXISTS GXD_HTRawSample_delete();
+
+CREATE OR REPLACE FUNCTION GXD_HTRawSample_delete() RETURNS TRIGGER AS \$\$
+BEGIN
+
+--
+-- NAME: GXD_HTRawSample_delete()
+--
+-- DESCRIPTOIN:
+--	
+-- the template creates a trigger for all tables that use:
+--	_Object_key
+--	_MGIType_key
+--
+-- because these tables cannot use referencial integrity due
+-- to the fact that their primary key is not necessarily the
+-- member of the _Object_key/_MGIType_key table
+--
+-- . remove the statements that are not active for your table
+-- . add the statements that are being active for your table
+--
+-- or you may keep all statements in the trigger even if your table
+-- does not currently utilize them.
+--
+-- An example of a table that only needs ACC_Accession : MGI_Organism
+--
+-- INPUT:
+--	none
+--
+-- RETURNS:
+--	NEW
+--
+
+
+DELETE FROM MGI_KeyValue a
+WHERE a._Object_key = OLD._RawSample_key
+AND a._MGIType_key = 47
+;
+
+DELETE FROM ACC_Accession a
+WHERE a._Object_key = OLD._RawSample_key
+AND a._MGIType_key = 47
+;
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION GXD_HTRawSample_delete() TO public;
+
+CREATE TRIGGER GXD_HTRawSample_delete_trigger
+AFTER DELETE on GXD_HTRawSample
+FOR EACH ROW
+EXECUTE PROCEDURE GXD_HTRawSample_delete();
+
+COMMENT ON FUNCTION mgd.GXD_HTRawSample_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
+
+EOSQL
+

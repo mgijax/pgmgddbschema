@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#
+# History
+#
+# 07/19/2021    sc
+#       - WTS2-431 Load GEO raw samples
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+ALTER TABLE mgd.MGI_KeyValue DROP CONSTRAINT MGI_KeyValue_pkey CASCADE;
+
+EOSQL

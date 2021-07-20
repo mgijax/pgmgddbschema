@@ -1,0 +1,31 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_HTRawSample IS 'A record in this table represents one high-througput expression raw sample.  There can be zero or more raw samples per experiment (GXD_HTExperiment) Many other raw experiment attributes are stored as key:value pairs (MGI_KeyValue)'
+;
+
+COMMENT ON COLUMN GXD_HTRawSample._RawSample_key IS 'primary key'
+;
+
+COMMENT ON COLUMN GXD_HTRawSample._Experiment_key IS 'foreign key to GXD_HTExperiment'
+;
+
+COMMENT ON COLUMN GXD_HTRawSample.accID IS 'raw sample accession ID'
+;
+
+COMMENT ON COLUMN GXD_HTRawSample._CreatedBy_key IS 'foreign key to MGI_User, user who created the record'
+;
+
+COMMENT ON COLUMN GXD_HTRawSample.creation_date IS 'date record was created'
+;
+
+COMMENT ON COLUMN GXD_HTRawSample._ModifiedBy_key IS 'foreign key to MGI_User, user who last modified the record'
+;
+
+COMMENT ON COLUMN GXD_HTRawSample.modification_date IS 'date record was last modified'
+;
+
+EOSQL

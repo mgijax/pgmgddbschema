@@ -1,0 +1,32 @@
+#!/bin/sh
+
+#
+# History
+#
+# 07/19/2021    sc
+#       - WTS2-431 Load GEO raw samples
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index if exists mgd.MGI_KeyValue_idx_MGIType_key
+;
+
+drop index if exists mgd.MGI_KeyValue_idx_ObjectKeySequenceNum
+;
+
+drop index if exists mgd.MGI_KeyValue_idx_key
+;
+
+drop index if exists mgd.MGI_KeyValue_idx_value
+;
+
+drop index if exists mgd.MGI_KeyValue_idx_CreatedBy_key
+;
+
+drop index if exists mgd.MGI_KeyValue_idx_ModifiedBy_key
+;
+
+EOSQL

@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#
+# History
+#
+# 07/19/2021    sc
+#       - WTS2-431 Load GEO raw samples
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE gxd_htrawsample_seq;    
+
+ALTER TABLE GXD_HTRawSample ALTER _RawSample_key SET DEFAULT NEXTVAL('gxd_htrawsample_seq');
+
+select setval('gxd_htrawsample_seq', (select max(_RawSample_key) from GXD_HTRawSample));
+
+EOSQL

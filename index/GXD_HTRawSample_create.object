@@ -1,0 +1,29 @@
+#!/bin/sh
+
+#
+# History
+#
+# 07/19/2021    sc
+#       - WTS2-431 Load GEO raw samples
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CLUSTER mgd.GXD_HTRawSample USING GXD_HTRawSample_pkey;
+
+create index GXD_HTRawSample_idx_RawSample_key on mgd.GXD_HTRawSample (_RawSample_key);
+
+create index GXD_HTRawSample_idx_accID on mgd.GXD_HTRawSample (accID);
+
+create index GXD_HTRawSample_idx_CreatedBy_key on mgd.GXD_HTRawSample (_CreatedBy_key);
+
+create index GXD_HTRawSample_idx_ModifiedBy_key on mgd.GXD_HTRawSample (_ModifiedBy_key);
+
+create index GXD_HTRawSample_idx_creation_date on mgd.GXD_HTRawSample (creation_date);
+
+create index GXD_HTRawSample_idx_modification_date on mgd.GXD_HTRawSample (modification_date);
+
+EOSQL

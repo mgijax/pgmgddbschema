@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# HISTORY
+#
+# 07/19/2021    sc
+#       - WTS2-431 Load GEO raw samples
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.GXD_HTRawSample (
+ 	_RawSample_key		int		         	not null,
+	_Experiment_key		int            			not null,
+	accID   		text				null,
+	_CreatedBy_key		int DEFAULT 1001		not null,
+	_ModifiedBy_key		int DEFAULT 1001		not null,
+	creation_date		timestamp DEFAULT now()		not null,
+	modification_date	timestamp DEFAULT now()		not null 
+);
+EOSQL

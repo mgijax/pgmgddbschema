@@ -1,0 +1,19 @@
+#!/bin/sh
+
+# HISTORY
+#
+# 07/19/2021    sc
+#       - WTS2-431 Load GEO raw samples
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop table mgd.GXD_HTRawSample
+
+CASCADE
+;
+EOSQL

@@ -1,0 +1,29 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.MGI_KeyValue IS 'A record in this table represents ordered key-value pairs (strings), associated with an object of a specific MGI Type.'; 
+
+COMMENT ON COLUMN MGI_KeyValue._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN MGI_KeyValue.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN MGI_KeyValue.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN MGI_KeyValue._ModifiedBy_key IS 'user who last modified the record';
+
+COMMENT ON COLUMN MGI_KeyValue._MGIType_key IS 'foreign key to ACC_MGIType';
+
+COMMENT ON COLUMN MGI_KeyValue._Object_key IS 'foreign key to any object defined in ACC_MGIType';
+
+COMMENT ON COLUMN MGI_KeyValue.sequenceNum IS 'sequence number for ordering records';
+
+COMMENT ON COLUMN MGI_KeyValue.key IS 'string key';
+
+COMMENT ON COLUMN MGI_KeyValue.value IS 'string value';
+
+COMMENT ON COLUMN MGI_KeyValue._KeyValue_key IS 'primary key';
+
+EOSQL
