@@ -3,6 +3,9 @@
 #
 # History
 #
+# 07/19/2021    sc
+#       - WTS2-431 Load GEO raw samples
+
 # 02/13/2015    sc
 #       - TR 11771; Misc project Hybrid/HGNC human/mouse homology
 #
@@ -98,5 +101,6 @@ ALTER TABLE mgd.MGI_TranslationType ADD FOREIGN KEY (_MGIType_key) REFERENCES mg
 
 ALTER TABLE mgd.VOC_AnnotType ADD FOREIGN KEY (_MGIType_key) REFERENCES mgd.ACC_MGIType DEFERRABLE;
 
+ALTER TABLE mgd.MGI_KeyValue ADD FOREIGN KEY (_MGIType_key) REFERENCES mgd.ACC_MGIType DEFERRABLE;
 
 EOSQL

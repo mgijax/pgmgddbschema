@@ -2,6 +2,9 @@
 #
 # History
 #
+# 07/19/2021    sc
+#       - WTS2-431 Load GEO raw samples
+#
 # 02/25/2014    sc
 #       - TR11560 - added MGI_Relationship_Category FKs
 #
@@ -69,4 +72,5 @@ ALTER TABLE mgd.DAG_Closure DROP CONSTRAINT DAG_Closure__MGIType_key_fkey CASCAD
 ALTER TABLE mgd.ACC_Accession DROP CONSTRAINT ACC_Accession__MGIType_key_fkey CASCADE;
 ALTER TABLE mgd.ACC_MGIType DROP CONSTRAINT ACC_MGIType_pkey CASCADE;
 
+ALTER TABLE mgd.MGI_KeyValue DROP CONSTRAINT MGI_KeyValue__MGIType_key_fkey CASCADE;
 EOSQL

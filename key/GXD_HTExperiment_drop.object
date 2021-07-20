@@ -16,4 +16,6 @@ ALTER TABLE mgd.GXD_HTSample_RNASeqSet DROP CONSTRAINT GXD_HTSample__Experiment_
 
 ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment_pkey CASCADE;
 
+ALTER TABLE mgd.GXD_HTRawSample DROP CONSTRAINT GXD_HTRawSample__Experiment_key_fkey CASCADE;
+
 EOSQL

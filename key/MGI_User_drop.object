@@ -3,6 +3,9 @@
 #
 # History
 #
+# 07/19/2021    sc
+#       - WTS2-431 Load GEO raw samples
+#
 # 04/30/2019	lec
 #	- TR13007/RNA Seq Project
 #
@@ -447,5 +450,9 @@ ALTER TABLE mgd.ACC_Accession DROP CONSTRAINT ACC_Accession__ModifiedBy_key_fkey
 ALTER TABLE mgd.ACC_Accession DROP CONSTRAINT ACC_Accession__CreatedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_User DROP CONSTRAINT MGI_User_pkey CASCADE;
+
+ALTER TABLE mgd.MGI_KeyValue DROP CONSTRAINT MGI_KeyValue__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_KeyValue DROP CONSTRAINT MGI_KeyValue__CreatedBy_key_fkey CASCADE;
 
 EOSQL
