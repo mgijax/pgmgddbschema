@@ -228,6 +228,12 @@ select last_value from voc_evidence_property_seq;
 select max(_Term_key) from VOC_Term;
 select last_value from voc_term_seq;
 
+select max(_KeyValue_key) from MGI_KeyValue;
+select last_value from mgi_keyvalue_seq;
+
+select max(_RawSample_key) from GXD_HTRawSample;
+select last_value from gxd_htrawsample_seq;
+
 --cache in production are empty
 --select max(_Cache_key) from VOC_Allele_Cache;
 --select last_value from voc_allele_cache_seq;
