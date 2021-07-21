@@ -12,7 +12,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.MGI_Property ADD PRIMARY KEY (_KeyValue_key);
+ALTER TABLE mgd.MGI_KeyValue ADD PRIMARY KEY (_KeyValue_key);
 
 
 EOSQL
