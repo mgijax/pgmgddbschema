@@ -14,7 +14,7 @@ ${PG_MGD_DBSCHEMADIR}/procedure/GXD_addEMAPASet_drop.object
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CREATE OR REPLACE FUNCTION GXD_addEMAPASet (
-v_userKey int,
+v_createdBy mgi_user.name%TYPE,
 v_assayKey int
 )
 RETURNS VOID AS
@@ -24,6 +24,7 @@ DECLARE
 v_newSetMemberKey int;
 v_newSetMemberEmapaKey int;
 v_newSeqKey int;
+v_userKey int;
 
 BEGIN
 
@@ -37,7 +38,7 @@ BEGIN
 --        
 -- INPUT:
 --      
--- v_userKey  : MGI_User._User_key
+-- v_createdBy : MGI_User.name
 -- v_assayKey : GXD_Assay._Assay_key
 --
 -- RETURNS:
@@ -54,6 +55,7 @@ BEGIN
 
 v_newSetMemberKey := max(_SetMember_key) FROM MGI_SetMember;
 v_newSetMemberEmapaKey := max(_SetMember_EMAPA_key) FROM MGI_SetMember_EMAPA;
+v_userKey = _user_key from MGI_User where login = v_createdBy;
 v_newSeqKey := max(sequenceNum) FROM MGI_SetMember where _Set_key = 1046 and _CreatedBy_key = v_userKey;
 
 IF v_newSetMemberEmapaKey is null THEN
@@ -111,8 +113,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION GXD_addEMAPASet(int,int) TO public;
+GRANT EXECUTE ON FUNCTION GXD_addEMAPASet(text,int) TO public;
 
-COMMENT ON FUNCTION mgd.GXD_addEMAPASet(int,int) IS 'add EMAPA/Stage used in Assay to EMAPA Clipboard';
+COMMENT ON FUNCTION mgd.GXD_addEMAPASet(text,int) IS 'add EMAPA/Stage used in Assay to EMAPA Clipboard';
 
 EOSQL
