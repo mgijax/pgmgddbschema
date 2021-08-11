@@ -22,8 +22,6 @@ create index MGI_KeyValue_idx_ObjectKeySequenceNum on mgd.MGI_KeyValue (_Object_
 
 create index MGI_KeyValue_idx_key on mgd.MGI_KeyValue (key);
 
-create index MGI_KeyValue_idx_value on mgd.MGI_KeyValue (value);
-
 create index MGI_KeyValue_idx_CreatedBy_key on mgd.MGI_KeyValue (_CreatedBy_key);
 
 create index MGI_KeyValue_idx_ModifiedBy_key on mgd.MGI_KeyValue (_ModifiedBy_key);
