@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/20/2021
+#       - sc YAKS project
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE gxd_isresultcelltype_seq;    
+ALTER TABLE GXD_ISResultCellType ALTER _ResultCellType_key SET DEFAULT NEXTVAL('gxd_isresultcelltype_seq');
+select setval('gxd_isresultcelltype_seq', (select max(_resultcelltype_key) from GXD_ISResultCellType));
+
+EOSQL

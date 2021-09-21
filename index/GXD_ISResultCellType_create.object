@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/20/2021
+#       - sc YAKS project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CLUSTER mgd.GXD_ISResultCellType USING GXD_ISResultCellType_pkey;
+
+create index GXD_ISResultCellType_idx_Result_key on mgd.GXD_ISResultCellType (_Result_key);
+
+create index GXD_ISResultCellType_idx_CellType_Term_key on mgd.GXD_ISResultCellType (_CellType_Term_key);
+
+EOSQL

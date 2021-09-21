@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/20/2021
+#       - sc YAKS project
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop table mgd.GXD_ISResultCellType
+
+CASCADE
+;
+EOSQL

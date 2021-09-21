@@ -1,0 +1,19 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_ISResultCellType IS 'Defines relationship between an In Situ Result and a Cell Type.  One In Situ Result can have one or more Cell Types associated with it.
+
+See GXD_InSituResult
+
+COMMENT ON COLUMN GXD_ISResultCellType.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_ISResultCellType.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN GXD_ISResultCellType._Result_key IS 'foreign key to GXD_InSituResult';
+
+COMMENT ON COLUMN GXD_ISResultCellType._CellType_Term_key IS 'foreign key to VOC_Term where _Vocab_key = 102 (Cell Ontology)';
+
+EOSQL
