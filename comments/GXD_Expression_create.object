@@ -22,6 +22,8 @@ COMMENT ON COLUMN GXD_Expression._Marker_key IS 'foreign key to MRK_Marker';
 
 COMMENT ON COLUMN GXD_Expression._EMAPA_Term_key IS 'foreign key to VOC_Term where _Vocab_key = 90 (EMAPA)';
 
+COMMENT ON COLUMN GXD_Expression._CellType_Term_key IS 'foreign key to VOC_Term where _Vocab_key = 102 (Cell Ontology)';
+
 COMMENT ON COLUMN GXD_Expression._Stage_key IS 'foreign key to GXD_TheilerStage';
 
 COMMENT ON COLUMN GXD_Expression._Specimen_key IS 'foreign key to GXD_Specimen';

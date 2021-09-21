@@ -42,6 +42,8 @@ COMMENT ON COLUMN ALL_Cre_Cache.name IS 'Allele name';
 
 COMMENT ON COLUMN ALL_Cre_Cache._EMAPA_Term_key IS 'foreign key to VOC_Term where _Vocab_key = 90 (EMAPA)';
 
+COMMENT ON COLUMN ALL_Cre_Cache._CellType_Term_key IS 'foreign key to VOC_Term where _Vocab_key = 102 (Cell Ontology)';
+
 COMMENT ON COLUMN ALL_Cre_Cache._Stage_key IS 'foreign key to GXD_TheilerStage';
 
 COMMENT ON COLUMN ALL_Cre_Cache.emapaTerm IS 'term from VOC_Term where _Vocab_key = 90';

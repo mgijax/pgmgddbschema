@@ -3,6 +3,9 @@
 #
 # History
 #
+# 09/20/2021   sc
+#       - YAKS project cell type epic add _CellType_Term_key
+#
 # 10/17/2018	lec
 #	- TR12904/add resultNote
 #
@@ -36,6 +39,7 @@ create table mgd.GXD_Expression (
 	_Genotype_key                  int             not null,
 	_Marker_key                    int             not null,
 	_EMAPA_Term_key                int             not null,
+        _CellType_Term_key             int             not null,
 	_Stage_key                     int             not null,
 	_Specimen_key		       int	       null,
 	_GelLane_key		       int	       null,

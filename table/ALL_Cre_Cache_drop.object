@@ -3,6 +3,9 @@
 #
 # History
 #
+# 09/20/2021   sc
+#       - YAKS project cell type epic add _CellType_Term_key
+#
 # 04/18/2013    lec
 #       - TR11248/add 'age'
 #

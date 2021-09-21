@@ -30,6 +30,8 @@ create index ALL_Cre_Cache_idx_Allele_key on mgd.ALL_Cre_Cache (_Allele_key);
 
 create index ALL_Cre_Cache_idx_EMAPA_Term_key on mgd.ALL_Cre_Cache (_EMAPA_Term_key);
 
+create index ALL_Cre_Cache_idx_CellType_Term_key on mgd.ALL_Cre_Cache (_CellType_Term_key);
+
 create index ALL_Cre_Cache_idx_Stage_key on mgd.ALL_Cre_Cache (_Stage_key);
 
 create index ALL_Cre_Cache_idx_Assay_key on mgd.ALL_Cre_Cache (_Assay_key);
