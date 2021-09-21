@@ -93,6 +93,9 @@ select last_value from gxd_insituresultimage_seq;
 select max(_GelLaneStructure_key) from GXD_GelLaneStructure;
 select last_value from gxd_gellanestructure_seq;
 
+select max(_ResultCellType_key) from GXD_ISResultCellType;
+select last_value from gxd_isresultcelltype_seq;
+
 select max(_GelRow_key) from GXD_GelRow;
 select last_value from gxd_gelrow_seq;
 
