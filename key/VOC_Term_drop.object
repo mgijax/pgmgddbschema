@@ -269,6 +269,8 @@ ALTER TABLE mgd.ALL_Allele DROP CONSTRAINT ALL_Allele__Mode_key_fkey CASCADE;
 
 ALTER TABLE mgd.ALL_Allele DROP CONSTRAINT ALL_Allele__MarkerAllele_Status_key_fkey CASCADE;
 
+ALTER TABLE mgd.GXD_ISResultCellType DROP CONSTRAINT GXD_ISResultCellType__CellType_Term_key CASCADE;
+
 ALTER TABLE mgd.VOC_Term DROP CONSTRAINT VOC_Term_pkey CASCADE;
 
 EOSQL
