@@ -126,6 +126,15 @@ select last_value from gxd_pattern_seq;
 select max(_visualization_key) from GXD_VisualizationMethod;
 select last_value from gxd_visualization_seq;
 
+select max(_experiment_key) from GXD_HTExperiment;
+select last_value from gxd_htexperiment_seq;
+
+select max(_experimentvariable_key) from GXD_HTExperimentVariable;
+select last_value from gxd_htexperimentvariable_seq;
+
+select max(_sample_key) from GXD_HTSample;
+select last_value from gxd_htsample_seq;
+
 select max(_rnaseq_key) from GXD_HTSample_RNASeq;
 select last_value from gxd_htsample_rnaseq_seq;
 
