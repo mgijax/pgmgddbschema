@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/30/2021    lec
+#       - yaks/add autosequence
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE gxd_htsample_seq;    
+
+ALTER TABLE GXD_HTSample ALTER _Sample_key SET DEFAULT NEXTVAL('gxd_htsample_seq');
+
+select setval('gxd_htsample_seq', (select max(_Sample_key) from GXD_HTSample));
+
+EOSQL

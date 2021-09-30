@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/30/2021    lec
+#       - yaks/add autosequence
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP SEQUENCE IF EXISTS gxd_htsample_seq CASCADE;
+
+EOSQL
