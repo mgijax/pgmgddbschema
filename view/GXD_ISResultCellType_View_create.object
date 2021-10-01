@@ -1,0 +1,25 @@
+#!/bin/sh
+
+#
+# 10/01/2021    lec
+#       - yaks/cell types
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/GXD_ISResultCellType_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.GXD_ISResultCellType_View
+as
+select r._Specimen_key, r.sequenceNum, g.*, s.term, s.term as displayIt
+from GXD_InSituResult r, GXD_ISResultCellType g, VOC_Term s
+where r._Result_key = g._Result_key
+and g._CellType_Term_key = s._Term_key
+
+
+
+;
+
+EOSQL

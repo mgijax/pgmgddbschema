@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#
+# 10/01/2021    lec
+#       - yaks/cell types
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+
+drop view if exists mgd.GXD_ISResultCellType_View
+
+CASCADE
+;
+EOSQL
