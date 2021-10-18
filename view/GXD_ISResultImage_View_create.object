@@ -34,7 +34,8 @@ and p._Image_key = a._Object_key
 and a._Logicaldb_key = 1
 and a._MGIType_key = 9
 and p._Image_key = aa._Object_key 
-and aa._mgitype_Key = 19
+and aa._logicaldb_key = 19
+and aa._mgitype_Key = 9
 
 ;
 
