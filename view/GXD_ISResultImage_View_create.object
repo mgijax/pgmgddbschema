@@ -14,7 +14,7 @@ create view mgd.GXD_ISResultImage_View
 as
 /* figurepaneLabel is the concatenation of figureLabel and paneLabel for display purposes */
 select r._Specimen_key, r.sequenceNum, i.*, concat(m.figureLabel,p.paneLabel) as figurepaneLabel,
-p._Image_key, p.paneLabel, m.figureLabel, m.xDim, m.yDim, a.accID, null
+p._Image_key, p.paneLabel, m.figureLabel, m.xDim, m.yDim, a.accID, null as pixID
 from GXD_InSituResult r, GXD_InSituResultImage i, IMG_ImagePane p, IMG_Image m, ACC_Accession a
 where r._Result_key = i._Result_key
 and i._ImagePane_key = p._ImagePane_key
