@@ -20,15 +20,12 @@ create view mgd.IMG_ImagePaneGXD_View
 as
 select r._Image_key, r._Refs_key, i._ImagePane_key, 
 concat(r.figureLabel,i.paneLabel) as paneLabel,
-c.jnumID, c.jnum, c.short_citation, a.accID
-from IMG_Image r, IMG_ImagePane i, BIB_All_View c, ACC_Accession a
+c.jnumID, c.jnum, c.short_citation
+from IMG_Image r, IMG_ImagePane i, BIB_All_View c
 where r._ImageClass_key = 6481781
 and r._Image_key = i._Image_key
 and r._ImageType_key = 1072158
 and r._Refs_key = c._Refs_key
-and i._Image_key = a._Object_key
-and a._Logicaldb_key = 1
-and a._MGIType_key = 9
 
 
 
