@@ -30,7 +30,6 @@ GXD_GelBand_View_create.object \
 GXD_GelLaneStructure_View_create.object \
 GXD_GelLane_View_create.object \
 GXD_GelRow_View_create.object \
-GXD_GelImage_View_create.object \
 GXD_Genotype_Acc_View_create.object \
 GXD_Genotype_DataSet_View_create.object \
 GXD_Genotype_Summary_View_create.object \
