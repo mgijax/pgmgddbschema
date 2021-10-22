@@ -35,6 +35,7 @@ GXD_Genotype_DataSet_View_create.object \
 GXD_Genotype_Summary_View_create.object \
 GXD_ISResultImage_View_create.object \
 GXD_ISResultStructure_View_create.object \
+GXD_ISResultCellType_View_create.object \
 GXD_InSituResult_View_create.object \
 GXD_Index_View_create.object \
 GXD_ProbePrep_View_create.object \
