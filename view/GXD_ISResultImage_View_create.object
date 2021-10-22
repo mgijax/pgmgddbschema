@@ -22,7 +22,7 @@ and p._Image_key = m._Image_key
 and p._Image_key = a._Object_key
 and a._Logicaldb_key = 1
 and a._MGIType_key = 9
-and not exists (select from acc_accession aa where p._Image_key = aa._Object_key and aa._mgitype_Key = 19)
+and not exists (select from acc_accession aa where p._Image_key = aa._Object_key and aa._mgitype_Key = 9 and aa._Logicaldb_key = 19)
 union
 select r._Specimen_key, r.sequenceNum, i.*, concat(m.figureLabel,p.paneLabel) as figurepaneLabel,
 p._Image_key, p.paneLabel, p.x, p.y, p.width, p.height, m.figureLabel, m.xDim, m.yDim, a.accID, aa.numericpart as pixID
