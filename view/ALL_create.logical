@@ -1,4 +1,4 @@
-#!/bin/csh -f
+#!/bin/sh
 
 #
 # Logical Group Script
@@ -8,22 +8,9 @@
 # Order is important!
 #
 
-cd `dirname $0`
+cd `dirname $0` && . ./Configuration
 
-foreach i (\
-ALL_Acc_View_create.object \
-ALL_Allele_CellLine_View_create.object \
-ALL_Allele_Driver_View_create.object \
-ALL_Allele_Mutation_View_create.object \
-ALL_Allele_SubType_View_create.object \
-ALL_Allele_View_create.object \
-ALL_CellLine_Acc_View_create.object \
-ALL_CellLine_View_create.object \
-ALL_CellLine_Derivation_View_create.object \
-ALL_Derivation_Summary_View_create.object \
-ALL_Summary_View_create.object \
-ALL_Genotype_View_create.object \
-ALL_Annot_View_create.object \
-)
+for i in ALL*_create.object
+do
 $i $*
-end
+done

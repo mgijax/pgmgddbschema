@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh
 
 #
 # Logical Group Script
@@ -6,23 +6,14 @@
 # Executes all VOC*_create.object scripts
 #
 
-cd `dirname $0` && . ./Configuration
+cd `dirname $0`
 
-for i in \
+foreach i (\
 VOC_Term_View_create.object \
-VOC_AnnotHeader_View_create.object \
 VOC_Annot_View_create.object \
-VOC_EvidenceProperty_View_create.object \
 VOC_Evidence_View_create.object \
 VOC_Term_Acc_View_create.object \
-VOC_Term_CellLine_View_create.object \
-VOC_Term_MCV_View_create.object \
 VOC_Term_RepQualifier_View_create.object \
-VOC_Term_StrainAllele_View_create.object \
-VOC_Term_StrainSpecies_View_create.object \
-VOC_Term_Summary_View_create.object \
-VOC_VocabDAG_View_create.object \
-VOC_Vocab_View_create.object
-do
+)
 $i $*
-done
+end

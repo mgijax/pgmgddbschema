@@ -10,14 +10,7 @@
 
 cd `dirname $0` && . ./Configuration
 
-for i in \
-SEQ_Allele_Assoc_View_create.object \
-SEQ_Allele_View_create.object \
-SEQ_Sequence_Acc_View_create.object \
-SEQ_Marker_Cache_View_create.object \
-SEQ_Probe_Cache_View_create.object \
-SEQ_Sequence_View_create.object \
-SEQ_Summary_View_create.object
+for i in SEQ*create.object
 do
 $i $*
 done

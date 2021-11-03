@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/csh
 
 #
 # Logical Group Script
@@ -8,31 +8,23 @@
 # Order is important!
 #
 
-cd `dirname $0` && . ./Configuration
+cd `dirname $0`
 
-for i in \
+foreach i (\
 PRB_Source_Acc_View_create.object \
 PRB_Source_View_create.object \
-PRB_AccNoRef_View_create.object \
-PRB_AccRefNoSeq_View_create.object \
 PRB_AccRef_View_create.object \
 PRB_Acc_View_create.object \
 PRB_Marker_View_create.object \
-PRB_Parent_View_create.object \
 PRB_Probe_View_create.object \
-PRB_RFLV_View_create.object \
-PRB_Reference_View_create.object \
-PRB_SourceRef_View_create.object \
-PRB_Source_Summary_View_create.object \
 PRB_Strain_View_create.object \
 PRB_Strain_Acc_View_create.object \
 PRB_Strain_Attribute_View_create.object \
-PRB_Strain_NeedsReview_View_create.object \
 PRB_Strain_Genotype_View_create.object \
 PRB_Strain_Marker_View_create.object \
+PRB_Strain_NeedsReview_View_create.object \
 PRB_Strain_Summary_View_create.object \
-PRB_Tissue_Summary_View_create.object 
-do
+)
 $i $*
-done
+end
 

@@ -15,16 +15,12 @@ GXD_create.logical \
 PRB_create.logical \
 ACC_create.logical \
 ALL_create.logical \
-CRS_create.logical \
 MRK_create.logical \
 IMG_create.logical \
 MGI_create.logical \
-RI_create.logical \
 MLD_create.logical \
 DAG_create.logical \
 SEQ_create.logical \
-GO_create.logical \
-PWI_create.logical \
 BIB_GOXRef_View_create.object \
 BIB_AssociatedData_View_create.object
 do
