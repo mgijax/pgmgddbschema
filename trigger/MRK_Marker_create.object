@@ -210,7 +210,7 @@ END IF;
 -- No duplicates
 IF (SELECT count(*) FROM MRK_Marker WHERE _Organism_key = 1 AND _Marker_Status_key in (1,3) AND symbol = NEW.symbol) > 1
 THEN
-    RAISE EXCEPTION E'MRK_Marker_insert_trigger: Symbol "%" already exists', NEW.symbol;
+    RAISE EXCEPTION E'Symbol "%" already exists\n', NEW.symbol;
     RETURN NEW;
 END IF;
 
@@ -219,7 +219,7 @@ INSERT INTO MRK_Current VALUES(New._Marker_key, NEW._Marker_key, now(), now());
 
 IF NOT FOUND
 THEN
-    RAISE EXCEPTION E'MRK_Marker_insert_trigger: MRK_Current';
+    RAISE EXCEPTION E'MRK_Current is not found';
     RETURN NEW;
 END IF;
 
@@ -239,7 +239,7 @@ END IF;
 
 --IF NOT FOUND
 --THEN
-    --RAISE EXCEPTION E'MRK_Marker_insert_trigger: MRK_insertHistory';
+    --RAISE EXCEPTION E'MRK_insertHistory is not found';
     --RETURN NEW;
 --END IF;
 
@@ -262,7 +262,7 @@ THEN
 
         IF NOT FOUND
         THEN
-                RAISE EXCEPTION E'MRK_Marker_insert_trigger: ALL_createWildType';
+                RAISE EXCEPTION E'ALL_createWildType';
                 RETURN NEW;
         END IF;
 END IF;
@@ -305,7 +305,7 @@ END IF;
 -- No duplicates
 IF (SELECT count(*) FROM MRK_Marker WHERE _Organism_key = 1 AND _Marker_Status_key in (1,3) AND symbol = NEW.symbol) > 1
 THEN
-    RAISE EXCEPTION E'MRK_Marker_update_trigger: Symbol "%" already exists', NEW.symbol;
+    RAISE EXCEPTION E'Symbol "%" already exists', NEW.symbol;
     RETURN NEW;
 END IF;
 
@@ -329,7 +329,7 @@ IF OLD._Marker_Status_key in (3)
 	AND _Refs_key = 22864
 	)
 THEN
-	RAISE NOTICE E'MRK_Marker_update_trigger: Symbol is using J:23000';
+	RAISE NOTICE E'Symbol is using J:23000';
 END IF;
 
 --
@@ -360,7 +360,7 @@ THEN
 
         IF NOT FOUND
         THEN
-                RAISE EXCEPTION E'MRK_Marker_update_trigger: ALL_createWildType';
+                RAISE EXCEPTION E'ALL_createWildType';
                 RETURN NEW;
         END IF;
 END IF;
@@ -388,7 +388,7 @@ IF OLD._Marker_Status_key in (1) AND NEW._Marker_Status_key in (3)
 	     OR EXISTS (SELECT 1 FROM WKS_Rosetta WHERE NEW._Marker_key = _Marker_key)
 	     )
 THEN
-	RAISE EXCEPTION E'MRK_Marker_update_trigger: Cannot change "official" to "reserved" because Marker has annotations';
+	RAISE EXCEPTION E'Cannot change "official" to "reserved" because Marker has annotations';
 	RETURN NEW;
 END IF;
 
@@ -400,7 +400,7 @@ THEN
 
         IF NOT FOUND
         THEN
-                RAISE EXCEPTION E'MRK_Marker_update_trigger: PRB_setStrainReview';
+                RAISE EXCEPTION E'PRB_setStrainReview';
                 RETURN NEW;
         END IF;
 END IF;
