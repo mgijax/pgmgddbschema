@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/03/2021	lec
+#	- wts2-458/adding pwi errors
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE mgi_translation_seq;    
+ALTER TABLE MGI_Translation ALTER _Translation_key SET DEFAULT NEXTVAL('mgi_translation_seq');
+select setval('mgi_translation_seq', (select max(_Translation_key) from MGI_Translation));
+--select last_value from mgi_translation_seq;
+
+EOSQL

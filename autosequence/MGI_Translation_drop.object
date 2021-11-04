@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/03/2021    lec
+#       - wts2-458/adding pwi errors
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP SEQUENCE IF EXISTS mgi_translation_seq CASCADE;
+
+EOSQL
