@@ -14,3 +14,6 @@ for i in ALL*_create.object
 do
 $i $*
 done
+
+./ALL_Genotype_View_create.object
+./ALL_Annot_View_create.object
