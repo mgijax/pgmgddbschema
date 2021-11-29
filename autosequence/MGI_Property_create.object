@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/29/2021    lec
+#       - WTS2-431 Load GEO raw samples
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE mgi_property_seq;    
+
+ALTER TABLE MGI_Property ALTER _Property_key SET DEFAULT NEXTVAL('mgi_property_seq');
+
+select setval('mgi_property_seq', (select max(_Property_key) from MGI_Property));
+
+EOSQL
