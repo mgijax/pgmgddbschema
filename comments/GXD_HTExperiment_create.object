@@ -36,6 +36,8 @@ COMMENT ON COLUMN GXD_HTExperiment.initial_curated_date IS 'date record was firs
 
 COMMENT ON COLUMN GXD_HTExperiment.last_curated_date IS 'date record was last curated';
 
+COMMENT ON COLUMN GXD_HTExperiment.confidence IS 'classifier confidence for evaluation state';
+
 COMMENT ON COLUMN GXD_HTExperiment._CreatedBy_key IS 'foreign key to MGI_User; user who created the record';
 
 COMMENT ON COLUMN GXD_HTExperiment.creation_date IS 'date record was created';
