@@ -73,40 +73,6 @@ and wr._Relevance_key = wt._Term_key
 
 DELETE FROM BIB_Citation_Cache;
 
-ELSIF (v_refsKey = -2)
-THEN
-
-CREATE TEMP TABLE toAdd ON COMMIT DROP
-AS SELECT r._Refs_key, null::int as numericPart, null::text as jnumID, a.accID, null::text as pubmedID, null::text as doiID, 
-r.journal, 
-coalesce(r.journal, '') || ' ' || coalesce(r.date, '') || ';' ||  
-coalesce(r.vol, '') || '(' || coalesce(r.issue, '') || '):' ||  
-coalesce(r.pgs, '') as citation, 
-coalesce(r._primary, '') || ', ' || coalesce(r.journal, '') || ' ' ||  
-coalesce(r.date, '') || ';' || coalesce(r.vol, '') || '(' ||  
-coalesce(r.issue, '') || '):' || coalesce(r.pgs, '') as short_citation,
-s.term as referenceType, 
-wr._Relevance_key,
-wt.term as relevanceTerm,
-r.isReviewArticle, 
-case when isReviewArticle = 1 then 'Yes' else 'No' end
-FROM BIB_Refs r, VOC_Term s, ACC_Accession a, BIB_Workflow_Relevance wr, VOC_Term wt
-WHERE r._ReferenceType_key = s._Term_key 
-AND r._Refs_key = a._Object_key 
-AND a._MGIType_key = 1 
-AND a._LogicalDB_key = 1 
-AND a.prefixPart =  'MGI:'
-and r._Refs_key = wr._Refs_key
-and wr.isCurrent = 1
-and wr._Relevance_key = wt._Term_key
-AND not exists (select 1 from BIB_Citation_Cache c where r._Refs_key = c._Refs_key)
-;
-
-DELETE FROM BIB_Citation_Cache r
-USING toAdd t
-WHERE t._Refs_key = r._Refs_key
-;
-
 ELSE
 
 CREATE TEMP TABLE toAdd ON COMMIT DROP
