@@ -81,7 +81,7 @@ BEGIN
 --	VOID
 --      
 
-v_alleleKey := max(_Allele_key) + 1 from ALL_Allele;
+v_alleleKey := nextval('all_allele_seq');
 
 IF v_createdBy IS NULL
 THEN
