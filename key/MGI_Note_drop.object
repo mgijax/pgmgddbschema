@@ -8,7 +8,6 @@
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.MGI_NoteChunk DROP CONSTRAINT MGI_NoteChunk__Note_key_fkey CASCADE;
 ALTER TABLE mgd.MGI_Note DROP CONSTRAINT MGI_Note_pkey CASCADE;
 
 EOSQL

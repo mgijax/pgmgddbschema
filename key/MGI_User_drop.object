@@ -279,10 +279,6 @@ ALTER TABLE mgd.MGI_NoteType DROP CONSTRAINT MGI_NoteType__ModifiedBy_key_fkey C
 
 ALTER TABLE mgd.MGI_NoteType DROP CONSTRAINT MGI_NoteType__CreatedBy_key_fkey CASCADE;
 
-ALTER TABLE mgd.MGI_NoteChunk DROP CONSTRAINT MGI_NoteChunk__ModifiedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_NoteChunk DROP CONSTRAINT MGI_NoteChunk__CreatedBy_key_fkey CASCADE;
-
 ALTER TABLE mgd.MGI_Note DROP CONSTRAINT MGI_Note__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_Note DROP CONSTRAINT MGI_Note__CreatedBy_key_fkey CASCADE;

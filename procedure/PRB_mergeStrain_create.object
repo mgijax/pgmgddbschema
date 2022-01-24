@@ -331,22 +331,20 @@ LOOP
 		WHERE _MGIType_key = 10 and _NoteType_key = v_noteTypeKey and _Object_key = v_oldStrainKey)
     THEN
 
-    	v_note1 := c.note from MGI_Note n, MGI_NoteChunk c WHERE n._MGIType_key = 10 and n._NoteType_key = v_noteTypeKey and n._Object_key = v_newStrainKey and n._Note_key = c._Note_key;
+    	v_note1 := n.note from MGI_Note n WHERE n._MGIType_key = 10 and n._NoteType_key = v_noteTypeKey and n._Object_key = v_newStrainKey;
 
-	v_note2 := c.note from MGI_Note n, MGI_NoteChunk c WHERE n._MGIType_key = 10 and n._NoteType_key = v_noteTypeKey and n._Object_key = v_oldStrainKey and n._Note_key = c._Note_key;
+	v_note2 := n.note from MGI_Note n WHERE n._MGIType_key = 10 and n._NoteType_key = v_noteTypeKey and n._Object_key = v_oldStrainKey;
 
         IF v_note1 != v_note2 
         THEN
                 v_note1 = v_note1 || E'\n' || v_note2;
         END IF;
 
-	UPDATE MGI_NoteChunk c
+	UPDATE MGI_Note
 	SET note = v_note1
-	FROM MGI_Note n
-	WHERE n._MGIType_key = 10 
-	      AND n._NoteType_key = v_noteTypeKey 
-	      AND n._Object_key = v_newStrainKey 
-	      AND n._Note_key = c._Note_key
+	WHERE _MGIType_key = 10 
+	      AND _NoteType_key = v_noteTypeKey 
+	      AND _Object_key = v_newStrainKey 
 	;
 
 	DELETE FROM MGI_Note WHERE _MGIType_key = 10 and _NoteType_key = v_noteTypeKey and _Object_key = v_oldStrainKey;

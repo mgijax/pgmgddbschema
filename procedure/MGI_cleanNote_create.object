@@ -18,7 +18,7 @@ RETURNS VOID AS
 
 BEGIN
 
-update MGI_NoteChunk 
+update MGI_Note 
 set note = replace(note,E'\r','') 
 where _note_key = v_noteKey
 and note like E'%\r%'

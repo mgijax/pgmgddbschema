@@ -37,7 +37,7 @@ BEGIN
 v_noteKey = max(_Note_key) from MGI_Note;
 
 CREATE TEMP TABLE toAdd ON COMMIT DROP
-AS SELECT row_number() over (order by _Note_key) as id, _Note_key, _NoteType_key
+AS SELECT row_number() over (order by _Note_key) as id, _Note_key, _NoteType_key, note
 FROM MGI_Note
 WHERE _MGIType_key = 25
 AND _Object_key = v_fromAnnotEvidenceKey
@@ -46,14 +46,8 @@ AND _Object_key = v_fromAnnotEvidenceKey
 CREATE INDEX idx1 ON toAdd(_Note_key);
 
 INSERT INTO MGI_Note
-SELECT v_noteKey + id, (select last_value from voc_evidence_seq), 25, _NoteType_key, v_userKey, v_userKey, now(), now()
+SELECT v_noteKey + id, (select last_value from voc_evidence_seq), 25, _NoteType_key, note, v_userKey, v_userKey, now(), now()
 FROM toAdd
-;
-
-INSERT INTO MGI_NoteChunk
-SELECT v_noteKey + id, c.sequenceNum, c.note, v_userKey, v_userKey, now(), now()
-FROM toAdd t, MGI_NoteChunk c
-WHERE t._Note_key = c._Note_key
 ;
 
 DROP TABLE IF EXISTS toAdd;

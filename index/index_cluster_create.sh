@@ -82,7 +82,6 @@ CLUSTER mgd.MAP_Coord_Collection USING MAP_Coord_Collection_pkey;
 CLUSTER mgd.MAP_Coord_Feature USING MAP_Coord_Feature_pkey;
 CLUSTER mgd.MAP_Coordinate USING MAP_Coordinate_pkey;
 CLUSTER mgd.MGI_AttributeHistory USING MGI_AttributeHistory_pkey;
-CLUSTER mgd.MGI_NoteChunk USING MGI_NoteChunk_pkey;
 CLUSTER mgd.MGI_NoteType USING MGI_NoteType_pkey;
 CLUSTER mgd.MGI_Note USING MGI_Note_idx_clustered;
 CLUSTER mgd.MGI_Organism_MGIType USING MGI_Organism_MGIType_pkey;

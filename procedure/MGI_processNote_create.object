@@ -19,7 +19,7 @@ v_note_key int,
 v_objectKey int,
 v_mgiTypeKey int,
 v_noteTypeKey int,
-v_note mgi_notechunk.note%TYPE
+v_note mgi_note.note%TYPE
 )
 RETURNS VOID AS
 \$\$
@@ -39,38 +39,22 @@ THEN
 	v_noteKey := max(_note_key) + 1 from MGI_Note;
 
 	INSERT INTO MGI_Note
-	(_Note_key, _Object_key, _MGIType_key, _NoteType_key, 
+	(_Note_key, _Object_key, _MGIType_key, _NoteType_key, note,
 	 _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
-	VALUES (v_noteKey, v_objectKey, v_mgiTypeKey, v_noteTypeKey,
+	VALUES (v_noteKey, v_objectKey, v_mgiTypeKey, v_noteTypeKey, v_note,
 		v_userKey, v_userKey, now(), now());
-
-	INSERT INTO MGI_NoteChunk
-	(_Note_key, sequenceNum, note, _CreatedBy_key, _ModifiedBy_key, creation_date, modification_date)
-	VALUES (v_noteKey, 1, v_note, v_userKey, v_userKey, now(), now());
-
-        PERFORM MGI_cleanNote(v_noteKey);
 
 ELSEIF v_note IS NULL or v_note = 'null'
 THEN
-
 	DELETE FROM MGI_Note where _Note_key = v_note_key;
-
 ELSE
-
-        UPDATE MGI_NoteChunk
-	SET note = v_note,  _ModifiedBy_key = v_userKey, modification_date = now()
+	UPDATE MGI_Note
+	SET note = v_note,
+        _NoteType_key = v_noteTypeKey,
+	_ModifiedBy_key = v_userKey, 
+	modification_date = now()
 	WHERE _Note_key = v_note_key;
 
-	IF v_existingnoteTypeKey != v_noteTypeKey
-	THEN
-	    UPDATE MGI_Note
-	    SET _NoteType_key = v_noteTypeKey,
-	    _ModifiedBy_key = v_userKey, 
-	    modification_date = now()
-	    WHERE _Note_key = v_note_key;
-	END IF;
-
-        PERFORM MGI_cleanNote(v_note_key);
 END IF;
 
 END;
@@ -79,6 +63,6 @@ LANGUAGE plpgsql;
 
 GRANT EXECUTE ON FUNCTION MGI_processNote(int,int,int,int,int,text) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_processNote(int,int,int,int,int,text) IS 'create a new note in the mgi_note/mgi_notechunk table';
+COMMENT ON FUNCTION mgd.MGI_processNote(int,int,int,int,int,text) IS 'create a new note in the mgi_note table';
 
 EOSQL

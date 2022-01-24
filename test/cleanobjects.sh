@@ -4,7 +4,7 @@
 # run at end of any mgidbmigration/MGI_part1.csh
 #
 # this will clean up any obsolete:
-# 1. MGI_Note/MGI_NoteChunk data
+# 1. MGI_Note data
 # 2. MGI_SetMember
 # 3. GO Annotations to withdrawn Markers (VOC_deleteGOWithdrawn())
 # 4. GXD_ProbePrep objects that are obsolete/no longer used by any assay (gxdprobeprep.csh)
@@ -21,15 +21,6 @@ date | tee -a $LOG
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0 | tee -a $LOG
 
 -- mgi_note
-
--- notes that have no note chunk
-select a.* 
-from mgi_note a
-where not exists (select 1 from mgi_notechunk c where a._note_key = c._note_key)
-;
-delete from mgi_note a
-where not exists (select 1 from mgi_notechunk c where a._note_key = c._note_key)
-;
 
 -- notes where _mgitype_key = 13 but voc_term does not exist
 select a.*
@@ -111,15 +102,6 @@ WHERE toDeleteSet._setmember_key = mgi_setmember._setmember_key
 --USING toDelete2
 --WHERE toDelete2._accession_key = acc_accession._accession_key
 --;
-
---select a.*
---from mgi_note a
---where not exists (select 1 from mgi_notechunk c where a._note_key = c._note_key)
---;
---delete from mgi_note a
---where not exists (select 1 from mgi_notechunk c where a._note_key = c._note_key)
---;
-
 
 -- non-mouse/set to private = 0
 -- 27 | RefSeq
