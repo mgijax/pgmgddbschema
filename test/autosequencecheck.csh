@@ -162,7 +162,7 @@ select last_value from img_imagepane_assoc_seq;
 select max(_KeyValue_key) from MGI_KeyValue;
 select last_value from mgi_keyvalue_seq;
 
-select max(_Property_key) from MGI_Note;
+select max(_Note_key) from MGI_Note;
 select last_value from mgi_note_seq;
 
 select max(_Property_key) from MGI_Property;
