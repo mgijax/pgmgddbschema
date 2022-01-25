@@ -36,7 +36,7 @@ v_existingnoteTypeKey :=  _notetype_key from MGI_Note where _note_key = v_note_k
 
 IF v_note_key IS NULL
 THEN
-	v_noteKey := max(_note_key) + 1 from MGI_Note;
+        v_noteKey := nextval('mgi_note_seq');
 
 	INSERT INTO MGI_Note
 	(_Note_key, _Object_key, _MGIType_key, _NoteType_key, note,
