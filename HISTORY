@@ -578,7 +578,6 @@ STAFF: lec
 CHANGES:
 1) index/ALL_CellLine_Derivation
 add indexes to _vector_key & _vectortype_key
-2) index/MGI_NoteChunk ; comment out note index
 
 TAG: pgmgddbschema-6-0-2-6
 DATE: 12/14/2015
