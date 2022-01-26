@@ -104,7 +104,6 @@ WHERE _MGIType_key = 2 AND _Object_key = v_oldKey
 
 UPDATE ALL_Allele SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 UPDATE ALL_Knockout_Cache SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
-UPDATE MRK_Anchors SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 UPDATE MGI_Synonym SET _Object_key = v_newKey WHERE _MGIType_key = 2 AND _Object_key = v_oldKey ;
 UPDATE MRK_Notes SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 

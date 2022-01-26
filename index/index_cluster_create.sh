@@ -120,7 +120,6 @@ CLUSTER mgd.MLD_RI2Point USING MLD_RI2Point_pkey;
 CLUSTER mgd.MLD_RIData USING MLD_RIData_pkey;
 CLUSTER mgd.MLD_RI USING MLD_RI_pkey;
 CLUSTER mgd.MLD_Statistics USING MLD_Statistics_pkey;
-CLUSTER mgd.MRK_Anchors USING MRK_Anchors_pkey;
 CLUSTER mgd.MRK_Chromosome USING MRK_Chromosome_idx_clustered;
 CLUSTER mgd.MRK_EventReason USING MRK_EventReason_pkey;
 CLUSTER mgd.MRK_Event USING MRK_Event_pkey;
