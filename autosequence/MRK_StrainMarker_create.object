@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/26/2022	lec
+#	- wts2-767/mgi_notechunk/mgi_note merge
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE mrk_strainmarker_seq;    
+ALTER TABLE MRK_StrainMarker ALTER _StrainMarker_key SET DEFAULT NEXTVAL('mrk_strainmarker_seq');
+select setval('mrk_strainmarker_seq', (select max(_StrainMarker_key) from MRK_StrainMarker));
+--select last_value from mrk_strainmarker_seq;
+
+EOSQL

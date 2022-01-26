@@ -201,6 +201,9 @@ select last_value from mrk_chromosome_seq;
 select max(_assoc_key) from MRK_History;
 select last_value from mrk_history_seq;
 
+select max(_strainmarker_key) from MRK_StrainMarker;
+select last_value from mrk_strainmarker_seq;
+
 select max(_Alias_key) from PRB_Alias;
 select last_value from prb_alias_seq;
 
