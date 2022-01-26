@@ -78,6 +78,14 @@ LOOP
 	-- see PRB_ageMinMex for exceptions
 	SELECT * FROM PRB_ageMinMax(v_age) into v_ageMin, v_ageMax;
 
+        -- no ageMin/ageMax null values
+        -- commented out; there are dependcies upstream that are expecting null
+        --IF (v_ageMin is null)
+        --THEN
+                --v_ageMin := -1;
+                --v_ageMax := -1;
+        --END IF;
+
 	IF (v_table = 'GXD_Expression')
 	THEN
 		UPDATE GXD_Expression 
