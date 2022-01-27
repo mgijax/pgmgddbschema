@@ -54,7 +54,7 @@ where a._Annot_key = e._Annot_key
 and e._AnnotEvidence_key = n._Object_key
 and a._annottype_key = 1020
 and n._mgitype_key = 12
-order by n._Object_key, n.sequenceNum
+order by n._Object_key
 ;
 
 update MGI_Note n
