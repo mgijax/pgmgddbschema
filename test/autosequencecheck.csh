@@ -180,6 +180,9 @@ select last_value from mgi_reference_assoc_seq;
 select max(_Relationship_key) from MGI_Relationship;
 select last_value from mgi_relationship_seq;
 
+select max(_RelationshipProperty_key) from MGI_Relationship_Property;
+select last_value from mgi_relationship_property_seq;
+
 select max(_Synonym_key) from MGI_Synonym;
 select last_value from mgi_synonym_seq;
 
