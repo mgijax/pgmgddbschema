@@ -195,6 +195,12 @@ select last_value from mld_expt_marker_seq;
 select max(_expt_key) from MLD_Expts;
 select last_value from mld_expts_seq;
 
+select max(_cluster_key) from MRK_Cluster;
+select last_value from mrk_cluster_seq;
+
+select max(_clustermember_key) from MRK_ClusterMember;
+select last_value from mrk_clustermember_seq;
+
 select max(_marker_key) from MRK_Marker;
 select last_value from mrk_marker_seq;
 
