@@ -173,6 +173,8 @@ ALTER TABLE mgd.IMG_Image DROP CONSTRAINT IMG_Image__ImageClass_key_fkey CASCADE
 
 ALTER TABLE mgd.IMG_Image DROP CONSTRAINT IMG_Image__ImageType_key_fkey CASCADE;
 
+ALTER TABLE mgd.GXD_ISResultCellType DROP CONSTRAINT GXD_ISResultCellType__CellType_Term_key_fkey CASCADE;
+
 ALTER TABLE mgd.GXD_ISResultStructure DROP CONSTRAINT GXD_ISResultStructure__EMAPA_Term_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__Priority_key_fkey CASCADE;
@@ -211,9 +213,9 @@ ALTER TABLE mgd.GXD_Genotype DROP CONSTRAINT GXD_Genotype__ExistsAs_key_fkey CAS
 
 ALTER TABLE mgd.GXD_GelLaneStructure DROP CONSTRAINT GXD_GelLaneStructure__EMAPA_Term_key_fkey CASCADE;
 
-ALTER TABLE mgd.GXD_GelLaneStructure DROP CONSTRAINT GXD_GelLaneStructure__EMAPA_Term_key_fkey CASCADE;
+ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__EMAPA_Term_key_fkey CASCADE;
 
-ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__CellType_key_fkey CASCADE;
+ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__CellType_Term_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Assay DROP CONSTRAINT GXD_Assay__ReporterGene_key_fkey CASCADE;
 
@@ -241,7 +243,7 @@ ALTER TABLE mgd.ALL_Cre_Cache DROP CONSTRAINT ALL_Cre_Cache__Allele_Type_key_fke
 
 ALTER TABLE mgd.ALL_Cre_Cache DROP CONSTRAINT ALL_Cre_Cache__EMAPA_Term_key_fkey CASCADE;
 
-ALTER TABLE mgd.ALL_Cre_Cache DROP CONSTRAINT ALL_Cre_Cache__CellType_key_fkey CASCADE;
+ALTER TABLE mgd.ALL_Cre_Cache DROP CONSTRAINT ALL_Cre_Cache__CellType_Term_key_fkey CASCADE;
 
 ALTER TABLE mgd.ALL_Variant_Sequence DROP CONSTRAINT ALL_Variant_Sequence__Sequence_Type_key_fkey CASCADE;
 
@@ -268,8 +270,6 @@ ALTER TABLE mgd.ALL_Allele DROP CONSTRAINT ALL_Allele__Allele_Type_key_fkey CASC
 ALTER TABLE mgd.ALL_Allele DROP CONSTRAINT ALL_Allele__Mode_key_fkey CASCADE;
 
 ALTER TABLE mgd.ALL_Allele DROP CONSTRAINT ALL_Allele__MarkerAllele_Status_key_fkey CASCADE;
-
-ALTER TABLE mgd.GXD_ISResultCellType DROP CONSTRAINT GXD_ISResultCellType__CellType_Term_key CASCADE;
 
 ALTER TABLE mgd.VOC_Term DROP CONSTRAINT VOC_Term_pkey CASCADE;
 
