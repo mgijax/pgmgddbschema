@@ -1,3 +1,10 @@
+TAG: pgmgddbschema-6-0-18-4
+DATE: 02/09/2022
+STAFF: lec
+Yet Another Kitchen Sink (YAKS)
+key/VOC_Term_create.object, VOC_Term_drop.object
+_celltype_term_key issues
+
 TAG: pgmgddbschema-6-0-18-3
 TAG: pgmgddbschema-6-0-18-2
 TAG: pgmgddbschema-6-0-18-1
