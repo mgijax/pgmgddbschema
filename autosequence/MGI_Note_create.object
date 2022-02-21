@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/24/2022    lec
+#       - WTS2-767/merge MGI_Note/MGI_NoteChunk
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE mgi_note_seq;    
+
+ALTER TABLE MGI_Note ALTER _Note_key SET DEFAULT NEXTVAL('mgi_note_seq');
+
+select setval('mgi_note_seq', (select max(_Note_key) from MGI_Note));
+
+EOSQL

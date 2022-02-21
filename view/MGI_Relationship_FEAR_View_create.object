@@ -3,21 +3,32 @@
 #
 # History
 #
+# 02/10/2022    lec
+#       Cre & more
+#
+# originally part of 'fearload'
+# these features are being edited via the pwi
+# this view added to the mgd_java_api as an entity
+#
+# 1003 | mutation_involves  
+# 1004 | expresses_component
+#
 
 cd `dirname $0` && . ./Configuration
 
-${PG_MGD_DBSCHEMADIR}/view/MGI_Relationship_MarkerTSS_View_drop.object
+${PG_MGD_DBSCHEMADIR}/view/MGI_Relationship_FEAR_View_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create view mgd.MGI_Relationship_FEAR_View
 as
 select r.*, v1.name as categoryTerm, v2.term as relationshipTerm, v3.term as qualifierTerm, v4.term as evidenceTerm,
-a1.symbol as allele1, m2.symbol as marker2,
-c.jnumID, c.numericPart as jnum, c.short_citation, u2.login as modifiedBy, u1.login as createdBy
+a1.symbol as alleleSymbol, m2.symbol as markerSymbol,
+c.jnumID, c.numericPart as jnum, c.short_citation, u2.login as modifiedBy, u1.login as createdBy, 
+aa.accID as alleleAccId, ma.accID as markerAccId
 from MGI_Relationship r, BIB_Citation_Cache c, MGI_User u1, MGI_User u2, 
 	MGI_Relationship_Category v1, VOC_Term v2, VOC_Term v3, VOC_Term v4,
-	ALL_Allele a1, MRK_Marker m2
+	ALL_Allele a1, MRK_Marker m2, ACC_Accession aa, ACC_Accession ma
 where r._Category_key in (1003, 1004)
 and r._Category_key = v1._Category_key
 and r._RelationshipTerm_key = v2._Term_key
@@ -28,8 +39,14 @@ and r._Object_key_2 = m2._Marker_key
 and r._Refs_key = c._Refs_key
 and r._CreatedBy_key = u1._User_key
 and r._ModifiedBy_key = u2._User_key
-
-
+and r._Object_key_1 = aa._Object_key
+and aa._MGIType_key = 11
+and aa._LogicalDB_key = 1
+and aa.preferred = 1
+and r._Object_key_2 = ma._Object_key
+and ma._MGIType_key = 2
+and ma._LogicalDB_key = 1
+and ma.preferred = 1
 
 ;
 

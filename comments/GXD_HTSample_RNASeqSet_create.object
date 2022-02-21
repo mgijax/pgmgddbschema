@@ -22,7 +22,7 @@ COMMENT ON COLUMN GXD_HTSample_RNASeqSet._Stage_key IS 'foreign key to GXD_Theil
 
 COMMENT ON COLUMN GXD_HTSample_RNASeqSet._Genotype_key IS 'foreign key to GXD_Genotype';
 
-COMMENT ON COLUMN GXD_HTSample_RNASeqSet.note IS 'sample note from MGI_Note/MGI_NoteChunk where _NoteType_key = 1048';
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet.note IS 'sample note from MGI_Note where _NoteType_key = 1048';
 
 COMMENT ON COLUMN GXD_HTSample_RNASeqSet._CreatedBy_key IS 'user who created the record';
 

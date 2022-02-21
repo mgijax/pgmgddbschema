@@ -162,6 +162,9 @@ select last_value from img_imagepane_assoc_seq;
 select max(_KeyValue_key) from MGI_KeyValue;
 select last_value from mgi_keyvalue_seq;
 
+select max(_Note_key) from MGI_Note;
+select last_value from mgi_note_seq;
+
 select max(_Property_key) from MGI_Property;
 select last_value from mgi_property_seq;
 
@@ -177,6 +180,9 @@ select last_value from mgi_reference_assoc_seq;
 select max(_Relationship_key) from MGI_Relationship;
 select last_value from mgi_relationship_seq;
 
+select max(_RelationshipProperty_key) from MGI_Relationship_Property;
+select last_value from mgi_relationship_property_seq;
+
 select max(_Synonym_key) from MGI_Synonym;
 select last_value from mgi_synonym_seq;
 
@@ -189,6 +195,12 @@ select last_value from mld_expt_marker_seq;
 select max(_expt_key) from MLD_Expts;
 select last_value from mld_expts_seq;
 
+select max(_cluster_key) from MRK_Cluster;
+select last_value from mrk_cluster_seq;
+
+select max(_clustermember_key) from MRK_ClusterMember;
+select last_value from mrk_clustermember_seq;
+
 select max(_marker_key) from MRK_Marker;
 select last_value from mrk_marker_seq;
 
@@ -197,6 +209,9 @@ select last_value from mrk_chromosome_seq;
 
 select max(_assoc_key) from MRK_History;
 select last_value from mrk_history_seq;
+
+select max(_strainmarker_key) from MRK_StrainMarker;
+select last_value from mrk_strainmarker_seq;
 
 select max(_Alias_key) from PRB_Alias;
 select last_value from prb_alias_seq;

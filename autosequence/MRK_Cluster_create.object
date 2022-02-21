@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#
+# History
+#
+# 01/27/2022    lec
+#	- wts2-767/mgi_notechunk/mgi_note merge
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE mrk_cluster_seq;    
+ALTER TABLE MRK_Cluster ALTER _Cluster_key SET DEFAULT NEXTVAL('mrk_cluster_seq');
+select setval('mrk_cluster_seq', (select max(_Cluster_key) from MRK_Cluster));
+--select last_value from mrk_cluster_seq;
+
+EOSQL

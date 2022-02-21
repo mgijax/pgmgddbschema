@@ -13,7 +13,6 @@ for i in \
 do
 MGI_AttributeHistory_drop.object \
 MGI_Note_drop.object \
-MGI_NoteChunk_drop.object \
 MGI_NoteType_drop.object \
 MGI_Organism_drop.object \
 MGI_Organism_MGIType_drop.object \

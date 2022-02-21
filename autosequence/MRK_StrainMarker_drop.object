@@ -3,8 +3,8 @@
 #
 # History
 #
-# 05/13/2002	lec
-#	- TR 1463; SAO
+# 01/26/2022    lec
+#       - wts2-767/mgi_notechunk/mgi_note merge
 #
 
 cd `dirname $0` && . ./Configuration
@@ -12,7 +12,6 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.MGI_NoteChunk ADD PRIMARY KEY (_Note_key, sequenceNum);
-
+DROP SEQUENCE IF EXISTS mrk_strainmarker_seq CASCADE;
 
 EOSQL

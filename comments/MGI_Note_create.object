@@ -22,4 +22,6 @@ COMMENT ON COLUMN MGI_Note._NoteType_key IS 'foreign key to MGI_NoteType';
 
 COMMENT ON COLUMN MGI_Note._Object_key IS 'foreign key to any object defined in ACC_MGIType';
 
+COMMENT ON COLUMN MGI_Note.note IS 'note';
+
 EOSQL
