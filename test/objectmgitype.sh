@@ -173,9 +173,11 @@ and not exists (select 1 from gxd_genotype s where a._object_key = s._genotype_k
 
 -- acc_mgitype terms that are no longer used
 -- note:  (30,31,32,33) are SNP and may still be used?
+-- 39 = MRK_Cluster was used by homoogene which is retired
+-- looks like we can remove ACC_MGIType where _mgitype_key = 39
 select m.*
 from acc_mgitype m
-where m._mgitype_key not in (30,31,32,33)
+where m._mgitype_key not in (30,31,32,33,39)
 and not exists (select 1 from ACC_Accession a where m._mgitype_key = a._mgitype_key)
 and not exists (select 1 from DAG_Closure a where m._mgitype_key = a._mgitype_key)
 and not exists (select 1 from DAG_DAG a where m._mgitype_key = a._mgitype_key)
