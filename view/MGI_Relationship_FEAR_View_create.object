@@ -25,7 +25,7 @@ as
 select r.*, v1.name as categoryTerm, v2.term as relationshipTerm, v3.term as qualifierTerm, v4.term as evidenceTerm,
 a1.symbol as alleleSymbol, m2.symbol as markerSymbol,
 c.jnumID, c.numericPart as jnum, c.short_citation, u2.login as modifiedBy, u1.login as createdBy, 
-aa.accID as alleleAccId, ma.accID as markerAccId
+aa.accID as alleleAccId, ma.accID as markerAccID
 from MGI_Relationship r, BIB_Citation_Cache c, MGI_User u1, MGI_User u2, 
 	MGI_Relationship_Category v1, VOC_Term v2, VOC_Term v3, VOC_Term v4,
 	ALL_Allele a1, MRK_Marker m2, ACC_Accession aa, ACC_Accession ma
