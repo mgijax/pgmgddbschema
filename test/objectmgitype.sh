@@ -408,6 +408,13 @@ where aa._mgitype_key = 13
 and a._set_key = aa._set_key
 and not exists (select 1 from voc_term s where a._object_key = s._term_key)
 ;
+select a.*
+from mgi_setmember a, mgi_set aa
+where aa._mgitype_key = 12
+and a._set_key = aa._set_key
+and not exists (select 1 from gxd_genotype s where a._object_key = s._genotype_key)
+;
+
 
 -- mgi_synonym
 
