@@ -549,6 +549,11 @@ where a._mgitype_key = 47
 and not exists (select 1 from gxd_htrawsample s where a._object_key = s._rawsample_key)
 ;
 
+-- mgi_notetype
+select nt.* from mgi_notetype nt
+where not exists (select 1 from mgi_note n where nt._notetype_key = n._notetype_key)
+;
+
 EOSQL
 
 date |tee -a $LOG
