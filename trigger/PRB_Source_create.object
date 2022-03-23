@@ -95,39 +95,3 @@ COMMENT ON FUNCTION mgd.PRB_Source_delete() IS 'creates a delete trigger for thi
 
 EOSQL
 
-cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
-
-DROP TRIGGER IF EXISTS PRB_Source_insert_trigger ON PRB_Source;
-DROP FUNCTION IF EXISTS PRB_Source_insert();
-
-CREATE OR REPLACE FUNCTION PRB_Source_insert() RETURNS TRIGGER AS \$\$
-BEGIN
-
---
--- NAME: PRB_Source_insert()
---
--- DESCRIPTOIN:
---
--- INPUT:
---	none
---
--- RETURNS:
---	NEW
---
-
-RETURN NEW;
-
-END;
-\$\$
-LANGUAGE plpgsql;
-
-GRANT EXECUTE ON FUNCTION PRB_Source_insert() TO public;
-
-CREATE TRIGGER PRB_Source_insert_trigger
-AFTER INSERT ON PRB_Source
-FOR EACH ROW
-EXECUTE PROCEDURE PRB_Source_insert();
-
-COMMENT ON FUNCTION mgd.PRB_Source_insert() IS 'creates an insert trigger to call acc_assignmgi()/default values';
-
-EOSQL
