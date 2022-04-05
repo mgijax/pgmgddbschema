@@ -26,6 +26,8 @@ COMMENT ON COLUMN GXD_HTSample._Stage_key IS 'foreign key to GXD_TheilerStage, i
 
 COMMENT ON COLUMN GXD_HTSample._Genotype_key IS 'foreign key to GXD_Genotype, identifying the genotype of the sample';
 
+COMMENT ON COLUMN GXD_HTSample._CellType_Term_key IS 'foreign key to VOC_Term where _Vocab_key = 102 (Cell Ontology)';
+
 COMMENT ON COLUMN GXD_HTSample._CreatedBy_key IS 'foreign key to MGI_User; user who created the record';
 
 COMMENT ON COLUMN GXD_HTSample.creation_date IS 'date record was created';

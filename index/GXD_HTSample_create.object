@@ -24,6 +24,8 @@ create index GXD_HTSample_idx_Stage_key on mgd.GXD_HTSample (_Stage_key);
 
 create index GXD_HTSample_idx_Genotype_key on mgd.GXD_HTSample (_Genotype_key);
 
+create index GXD_HTSample_idx_CellType_Term_key on mgd.GXD_HTSample (_CellType_Term_key);
+
 create index GXD_HTSample_idx_CreatedBy_key on mgd.GXD_HTSample (_CreatedBy_key);
 
 create index GXD_HTSample_idx_ModifiedBy_key on mgd.GXD_HTSample (_ModifiedBy_key);
