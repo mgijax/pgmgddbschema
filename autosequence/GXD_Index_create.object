@@ -1,0 +1,15 @@
+#!/bin/sh
+
+#
+# History
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE gxd_index_seq;    
+ALTER TABLE GXD_Index ALTER _Index_key SET DEFAULT NEXTVAL('gxd_index_seq');
+select setval('gxd_index_seq', (select max(_index_key) from GXD_Index));
+
+EOSQL

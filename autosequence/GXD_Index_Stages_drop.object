@@ -1,0 +1,13 @@
+#!/bin/sh
+
+#
+# History
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP SEQUENCE IF EXISTS gxd_indexstage_seq CASCADE;
+
+EOSQL
