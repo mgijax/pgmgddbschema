@@ -150,6 +150,12 @@ select last_value from gxd_htsample_rnaseqset_seq;
 select max(_rnaseqsetmember_key) from GXD_HTSample_RNASeqSetMember;
 select last_value from gxd_htsample_rnaseqsetmember_seq;
 
+select max(_Index_key) from GXD_Index;
+select last_value from gxd_index_seq;
+
+select max(_IndexStage_key) from GXD_Index_Stages;
+select last_value from gxd_index_stages_seq;
+
 select max(_Image_key) from IMG_Image;
 select last_value from img_image_seq;
 
