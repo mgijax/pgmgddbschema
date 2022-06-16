@@ -1,0 +1,29 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/GXD_GenotypeAnnotHeader_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.GXD_GenotypeAnnotHeader_View
+as
+
+select a._annot_key as annotKey, a._object_key as genotypeKey, t.term, t._term_key as termKey, h.term as headerTerm, h._term_key as headerTermKey
+from VOC_Annot a, VOC_Term t, VOC_VocabDAG vd, DAG_Node d, DAG_Closure dc, DAG_Node dh, VOC_Term h
+where a._AnnotType_key = 1002
+and a._Term_key = t._Term_key
+and t._Vocab_key = vd._Vocab_key
+and vd._DAG_key = d._DAG_key
+and t._Term_key = d._Object_key
+and d._Node_key = dc._Descendent_key
+and dc._Ancestor_key = dh._Node_key
+and dh._Label_key = 3
+and dh._Object_key = h._Term_key
+;
+
+EOSQL
