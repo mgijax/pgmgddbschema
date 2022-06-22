@@ -147,13 +147,7 @@ ALTER TABLE mgd.MGI_User DROP CONSTRAINT MGI_User__UserType_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_User DROP CONSTRAINT MGI_User__UserStatus_key_fkey CASCADE;
 
-ALTER TABLE mgd.MGI_UserRole DROP CONSTRAINT MGI_UserRole__Role_key_fkey CASCADE;
-
 ALTER TABLE mgd.MGI_User DROP CONSTRAINT MGI_User__Group_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_RoleTask DROP CONSTRAINT MGI_RoleTask__Task_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_RoleTask DROP CONSTRAINT MGI_RoleTask__Role_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_Relationship_Property DROP CONSTRAINT MGI_Relationship_Property__PropertyName_key_fkey CASCADE;
 

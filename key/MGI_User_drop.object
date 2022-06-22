@@ -199,10 +199,6 @@ ALTER TABLE mgd.MRK_BiotypeMapping DROP CONSTRAINT MRK_BiotypeMapping__ModifiedB
 
 ALTER TABLE mgd.MRK_BiotypeMapping DROP CONSTRAINT MRK_BiotypeMapping__CreatedBy_key_fkey CASCADE;
 
-ALTER TABLE mgd.MGI_UserRole DROP CONSTRAINT MGI_UserRole__ModifiedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_UserRole DROP CONSTRAINT MGI_UserRole__CreatedBy_key_fkey CASCADE;
-
 ALTER TABLE mgd.MGI_User DROP CONSTRAINT MGI_User__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_User DROP CONSTRAINT MGI_User__CreatedBy_key_fkey CASCADE;
@@ -234,10 +230,6 @@ ALTER TABLE mgd.MGI_SetMember_EMAPA DROP CONSTRAINT MGI_SetMember_EMAPA__Created
 ALTER TABLE mgd.MGI_Set DROP CONSTRAINT MGI_Set__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_Set DROP CONSTRAINT MGI_Set__CreatedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_RoleTask DROP CONSTRAINT MGI_RoleTask__ModifiedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.MGI_RoleTask DROP CONSTRAINT MGI_RoleTask__CreatedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_Relationship_Property DROP CONSTRAINT MGI_Relationship_Property__ModifiedBy_key_fkey CASCADE;
 
