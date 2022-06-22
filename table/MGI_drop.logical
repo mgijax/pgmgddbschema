@@ -18,14 +18,12 @@ MGI_Organism_drop.object \
 MGI_Organism_MGIType_drop.object \
 MGI_Reference_Assoc_drop.object \
 MGI_RefAssocType_drop.object \
-MGI_RoleTask_drop.object \
 MGI_Set_drop.object \
 MGI_SetMember_drop.object \
 MGI_Synonym_drop.object \
 MGI_SynonymType_drop.object \
 MGI_Translation_drop.object \
 MGI_TranslationType_drop.object \
-MGI_UserRole_drop.object \
 MGI_User_drop.object \
 MGI_VocAssociation_drop.object \
 MGI_VocAssociationType_drop.object \
