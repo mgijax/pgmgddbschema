@@ -13,7 +13,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create view mgd.GXD_GenotypeAnnotHeader_View
 as
 
-select a._annot_key as annotKey, t.term, t._term_key as termKey, t.sequenceNum, h.term as headerTerm, h._term_key as headerTermKey
+select a._annot_key as annotKey, t.term, t._term_key as termKey, t.sequenceNum as termSequenceNum, h.term as headerTerm, h._term_key as headerTermKey
 from VOC_Annot a, VOC_Term t, VOC_VocabDAG vd, DAG_Node d, DAG_Closure dc, DAG_Node dh, VOC_Term h
 where a._AnnotType_key = 1002
 and a._Term_key = t._Term_key
