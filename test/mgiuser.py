@@ -1,11 +1,7 @@
-#
-# Report:
-#       Enter TR # and describe report inputs/output
-#
-# History:
-#
-# lec	01/18/99
-#	- created
+
+# only run on TEST server first!
+# this will clea up/delete MGI_User that are not used elsewhere in the database
+# it will use foreign key constrains to skip/ignore/*not* delete a MGI_User
 #
  
 import sys 
