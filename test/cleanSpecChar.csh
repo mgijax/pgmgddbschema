@@ -7,7 +7,7 @@
 # This is all handled by API or individual loads.
 #
 
-cd `dirname $0` && source ./Configuration
+cd `dirname $0`
 
 echo "Clean up ${MGD_DBSERVER}.${MGD_DBNAME}.MGI_Note"
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
