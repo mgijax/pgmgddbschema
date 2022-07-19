@@ -12,10 +12,10 @@ ALTER TABLE mgd.GXD_HTExperimentVariable DROP CONSTRAINT GXD_HTExperimentVariabl
 
 ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Experiment_key_fkey CASCADE;
 
-ALTER TABLE mgd.GXD_HTSample_RNASeqSet DROP CONSTRAINT GXD_HTSample__Experiment_key_fkey CASCADE;
-
-ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment_pkey CASCADE;
+ALTER TABLE mgd.GXD_HTSample_RNASeqSet DROP CONSTRAINT GXD_HTSample_RNASeqSet__Experiment_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTRawSample DROP CONSTRAINT GXD_HTRawSample__Experiment_key_fkey CASCADE;
 
-EOSQL
+ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment_pkey CASCADE;
+
+
