@@ -5,8 +5,6 @@
 cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__Source_key_fkey CASCADE;
-
 ALTER TABLE mgd.SEQ_Source_Assoc DROP CONSTRAINT SEQ_Source_Assoc__Source_key_fkey CASCADE;
 
 ALTER TABLE mgd.PRB_Probe DROP CONSTRAINT PRB_Probe__Source_key_fkey CASCADE;
