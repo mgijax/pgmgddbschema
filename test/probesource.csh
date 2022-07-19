@@ -23,14 +23,12 @@ select count(*) from PRB_Source;
 select g.* 
 from PRB_Source g 
 where not exists (select 1 from GXD_Antigen a where g._Source_key = a._Source_key)
-and not exists (select 1 from GXD_HTExperiment a where g._Source_key = a._Source_key)
 and not exists (select 1 from PRB_Probe a where g._Source_key = a._Source_key)
 and not exists (select 1 from SEQ_Source_Assoc a where g._Source_key = a._Source_key)
 ;
 
 delete from PRB_Source g
 where not exists (select 1 from GXD_Antigen a where g._Source_key = a._Source_key)
-and not exists (select 1 from GXD_HTExperiment a where g._Source_key = a._Source_key)
 and not exists (select 1 from PRB_Probe a where g._Source_key = a._Source_key)
 and not exists (select 1 from SEQ_Source_Assoc a where g._Source_key = a._Source_key)
 ;
@@ -38,7 +36,6 @@ and not exists (select 1 from SEQ_Source_Assoc a where g._Source_key = a._Source
 select g.* 
 from PRB_Source g 
 where not exists (select 1 from GXD_Antigen a where g._Source_key = a._Source_key)
-and not exists (select 1 from GXD_HTExperiment a where g._Source_key = a._Source_key)
 and not exists (select 1 from PRB_Probe a where g._Source_key = a._Source_key)
 and not exists (select 1 from SEQ_Source_Assoc a where g._Source_key = a._Source_key)
 ;
