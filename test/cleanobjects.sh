@@ -145,5 +145,8 @@ EOSQL
 # will delete probeprep objects that are obsolete/no longer used by any assay
 ./gxdprobeprep.csh | tee -a $LOG
 
+# will delete prb_source objects that are obsolete/no longer used
+./probesource.csh | tee -a $LOG
+
 date |tee -a $LOG
 
