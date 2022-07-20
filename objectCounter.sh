@@ -81,7 +81,6 @@ do_diff ()
         if [ `cat ${TMP_DIFF} | grep "crs_typings__cross_key_fkey" | wc -l` -gt 0 ]
         then
                 echo ""
-                echo "No difference"
         else
                 echo ""
                 echo "Missing from the database:"
