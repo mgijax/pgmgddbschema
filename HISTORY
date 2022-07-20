@@ -1,3 +1,4 @@
+TAG: pgmgddbschema-6-0-21-4
 TAG: pgmgddbschema-6-0-21-3
 TAG: pgmgddbschema-6-0-21-2
 DATE: 07/19/2022
@@ -5,6 +6,7 @@ STAFF: lec
 wts2-940/PWI/Strain : add Private = Yes validation
 added probesource.csh
 added GXD_HTExperiment to key/PRB_Source
+added Sequences to procedure/PRB_getStrainDataSets_create.object
 
 TAG: pgmgddbschema-6-0-21-1
 DATE: 07/01/2022

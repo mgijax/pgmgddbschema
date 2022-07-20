@@ -59,6 +59,11 @@ UNION
 SELECT DISTINCT a._RISet_key, 'RI Set' as dataSet
 FROM RI_RISet a 
 WHERE a._Strain_key_2 = v_strainKey
+UNION
+SELECT DISTINCT a._Sequence_key, 'Sequence' as dataSet
+FROM PRB_Source s, SEQ_Source_Assoc a
+WHERE s._Strain_key = v_strainKey
+AND s._Source_key = a._Source_key
 ;
 
 RETURN QUERY
@@ -97,6 +102,12 @@ UNION
 SELECT p._Object_key::char(30), p.dataset
 FROM objects_tmp p
 WHERE p.dataSet = 'RI Set'
+UNION
+SELECT a.accID, p.dataset
+FROM objects_tmp p, ACC_Accession a
+WHERE p.dataSet = 'Sequence'
+AND p._Object_key = a._Object_key
+AND a._MGIType_key = 19 
 ;
 
 END;
