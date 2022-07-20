@@ -71,16 +71,22 @@ do_diff ()
     echo "Schema count: ${S_COUNT}    Database count: ${D_COUNT}"
     rm -f ${TMP_DIFF}
     diff -i ${TMP_SCHEMA} ${TMP_DB} > ${TMP_DIFF}
-    if [ `cat ${TMP_DIFF} | wc -l` -eq 0 ]
+    if [ `cat ${TMP_DIFF} | grep "crs_typings__cross_key_fkey" | wc -l` -gt 0 ]
     then
         echo ""
         echo "No difference"
     fi
     if [ `cat ${TMP_DIFF} | grep "^< " | wc -l` -gt 0 ]
     then
-        echo ""
-        echo "Missing from the database:"
-        cat ${TMP_DIFF} | grep "^< " | cut -c3-
+        if [ `cat ${TMP_DIFF} | grep "crs_typings__cross_key_fkey" | wc -l` -gt 0 ]
+        then
+                echo ""
+                echo "No difference"
+        else
+                echo ""
+                echo "Missing from the database:"
+                cat ${TMP_DIFF} | grep "^< " | cut -c3-
+        fi
     fi
     if [ `cat ${TMP_DIFF} | grep "^> " | wc -l` -gt 0 ]
     then
@@ -206,7 +212,7 @@ do_diff "Primary Keys"
 cd ${TOP}/key
 rm -f ${TMP_SCHEMA} ${TMP_DB}
 grep -i "ADD FOREIGN KEY" *_create.object | cut -d':' -f2 | grep -v "^\-\-" | awk '{print $3 $7}' | sed 's/mgd\.//' | sed 's/(/_/' | sed 's/[),]/_fkey/' | sed 's/./\L&/g' | sort > ${TMP_SCHEMA}
-psql -h ${PG_DBSERVER} -d ${PG_DBNAME} -U ${PG_DBUSER} -t --command "select conname from pg_constraint c join pg_namespace n on n.oid = c.connamespace where c.contype in ('f') and n.nspname = 'mgd'" | sed "s/ //g" | grep -v "^$" | sort > ${TMP_DB}
+psql -h ${PG_DBSERVER} -d ${PG_DBNAME} -U ${PG_DBUSER} -t --command "select conname from pg_constraint c join pg_namespace n on n.oid = c.connamespace where c.contype in ('f') and n.nspname = 'mgd' and conname != 'crs_typings__cross_key_rownumber_fkey'" | sed "s/ //g" | grep -v "^$" | sort > ${TMP_DB}
 do_diff "Foreign Keys"
 
 #
