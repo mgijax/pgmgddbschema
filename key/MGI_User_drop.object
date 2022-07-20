@@ -303,6 +303,10 @@ ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__ModifiedBy_key_fkey CASCADE
 
 ALTER TABLE mgd.GXD_Index DROP CONSTRAINT GXD_Index__CreatedBy_key_fkey CASCADE;
 
+ALTER TABLE mgd.GXD_HTRawSample DROP CONSTRAINT GXD_HTRawSample__ModifiedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTRawSample DROP CONSTRAINT GXD_HTRawSample__CreatedBy_key_fkey CASCADE;
+
 ALTER TABLE mgd.GXD_HTSample_RNASeqSetMember DROP CONSTRAINT GXD_HTSample_RNASeqSetMember__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTSample_RNASeqSetMember DROP CONSTRAINT GXD_HTSample_RNASeqSetMember__CreatedBy_key_fkey CASCADE;
@@ -437,10 +441,10 @@ ALTER TABLE mgd.ACC_Accession DROP CONSTRAINT ACC_Accession__ModifiedBy_key_fkey
 
 ALTER TABLE mgd.ACC_Accession DROP CONSTRAINT ACC_Accession__CreatedBy_key_fkey CASCADE;
 
-ALTER TABLE mgd.MGI_User DROP CONSTRAINT MGI_User_pkey CASCADE;
-
 ALTER TABLE mgd.MGI_KeyValue DROP CONSTRAINT MGI_KeyValue__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.MGI_KeyValue DROP CONSTRAINT MGI_KeyValue__CreatedBy_key_fkey CASCADE;
+
+ALTER TABLE mgd.MGI_User DROP CONSTRAINT MGI_User_pkey CASCADE;
 
 EOSQL
