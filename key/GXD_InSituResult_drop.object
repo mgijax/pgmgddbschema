@@ -7,9 +7,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.GXD_InSituResultImage DROP CONSTRAINT GXD_InSituResultImage__Result_key_fkey CASCADE;
 
-ALTER TABLE mgd.GXD_ISResultCellType DROP CONSTRAINT GXD_ISResultCellType__Result_key CASCADE;
+ALTER TABLE mgd.GXD_ISResultCellType DROP CONSTRAINT GXD_ISResultCellType__Result_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_ISResultStructure DROP CONSTRAINT GXD_ISResultStructure__Result_key_fkey CASCADE;
+
 ALTER TABLE mgd.GXD_InSituResult DROP CONSTRAINT GXD_InSituResult_pkey CASCADE;
 
 EOSQL
