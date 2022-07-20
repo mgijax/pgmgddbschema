@@ -71,7 +71,7 @@ do_diff ()
     echo "Schema count: ${S_COUNT}    Database count: ${D_COUNT}"
     rm -f ${TMP_DIFF}
     diff -i ${TMP_SCHEMA} ${TMP_DB} > ${TMP_DIFF}
-    if [ `cat ${TMP_DIFF} | grep "crs_typings__cross_key_fkey" | wc -l` -gt 0 ]
+    if [ `cat ${TMP_DIFF} | wc -l` -eq 0 ]
     then
         echo ""
         echo "No difference"
@@ -81,6 +81,7 @@ do_diff ()
         if [ `cat ${TMP_DIFF} | grep "crs_typings__cross_key_fkey" | wc -l` -gt 0 ]
         then
                 echo ""
+                echo "No difference"
         else
                 echo ""
                 echo "Missing from the database:"
