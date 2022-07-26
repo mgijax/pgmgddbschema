@@ -32,7 +32,7 @@ and _mgitype_key not in (25)
 group by accid 
 having count(*) > 1
 )
-select a._accession_key, a.accid, a.prefixpart, a.numericpart, a._logicaldb_key, a._object_key, a._mgitype_key, a._createdby_key, a.creation_date
+select a.*
 from acc_accession a, mgiid m
 where m.accid = a.accid
 ;
