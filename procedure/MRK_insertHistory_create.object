@@ -18,7 +18,7 @@ markerKey bigint,
 historyKey bigint,
 refKey int,
 eventKey int,
-eventReasonKey int DEFAULT -1,
+eventReasonKey int DEFAULT 106563610,   -- Not Specified
 name mrk_history.name%TYPE DEFAULT null,
 event_date timestamp DEFAULT null,
 createdByKey int DEFAULT null,

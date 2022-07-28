@@ -77,7 +77,7 @@ THEN
         RETURN;
 END IF;
 
-PERFORM MRK_mergeWithdrawal (v_userKey, v_oldKey, v_newKey, v_refsKey, 4, v_eventReasonKey, v_addAsSynonym);
+PERFORM MRK_mergeWithdrawal (v_userKey, v_oldKey, v_newKey, v_refsKey, 106563607, v_eventReasonKey, v_addAsSynonym);
 
 IF NOT FOUND
 THEN

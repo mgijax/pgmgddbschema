@@ -137,6 +137,10 @@ ALTER TABLE mgd.MRK_BiotypeMapping DROP CONSTRAINT MRK_BiotypeMapping__MCVTerm_k
 
 ALTER TABLE mgd.MRK_BiotypeMapping DROP CONSTRAINT MRK_BiotypeMapping__PrimaryMCVTerm_key_fkey CASCADE;
 
+ALTER TABLE mgd.History DROP CONSTRAINT MRK_History__Marker_Event_key_fkey CASCADE;
+
+ALTER TABLE mgd.History DROP CONSTRAINT MRK_History__Marker_EventReason_key_fkey CASCADE;
+
 ALTER TABLE mgd.MRK_Cluster DROP CONSTRAINT MRK_Cluster__ClusterSource_key_fkey CASCADE;
 
 ALTER TABLE mgd.MRK_Cluster DROP CONSTRAINT MRK_Cluster__ClusterType_key_fkey CASCADE;

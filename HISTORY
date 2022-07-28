@@ -1,3 +1,17 @@
+TAG: pgmgddbschema-6-0-22-1
+DATE: 07/28/2022
+STAFF: lec
+wts2-761/MGD db cleanup - MRK_Event/MRK_EventReason
+#       deleted:    all MRK_EventReason_create.object
+#       deleted:    all MRK_Event_create.object
+#       modified:   key/VOC_Term_create.object
+#       modified:   key/VOC_Term_drop.object
+#       modified:   procedure/MRK_alleleWithdrawal_create.object
+#       modified:   procedure/MRK_deleteWithdrawal_create.object
+#       modified:   procedure/MRK_insertHistory_create.object
+#       modified:   procedure/MRK_simpleWithdrawal_create.object
+#       modified:   view/MRK_History_View_create.object
+
 TAG: pgmgddbschema-6-0-21-4
 TAG: pgmgddbschema-6-0-21-3
 TAG: pgmgddbschema-6-0-21-2

@@ -14,17 +14,17 @@ create view mgd.MRK_History_View
 as
 select h.*, 
 cast(h.event_date as char(10)) as event_display, 
-e.event, er.eventReason, 
+e.term as event, er.term as eventReason, 
 m1.symbol as history, m1.name as historyName, m2.symbol, m2.name as markerName,
 u1.login as createdBy, u2.login as modifiedBy,
 c.short_citation,
 c.jnumID
 from MRK_History h
 	LEFT OUTER JOIN BIB_Citation_Cache c on (h._Refs_key = c._Refs_key), 
-MRK_Event e, MRK_EventReason er, MRK_Marker m1, MRK_Marker m2,
+VOC_Term e, VOC_Term er, MRK_Marker m1, MRK_Marker m2,
 MGI_User u1, MGI_User u2
-where h._Marker_Event_key = e._Marker_Event_key
-and h._Marker_EventReason_key = er._Marker_EventReason_key
+where h._Marker_Event_key = e._Term_key
+and h._Marker_EventReason_key = er._Term_key
 and h._Marker_key = m2._Marker_key
 and h._History_key = m1._Marker_key
 and h._CreatedBy_key = u1._User_key
