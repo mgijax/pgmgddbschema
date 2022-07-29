@@ -1,5 +1,6 @@
+TAG: pgmgddbschema-6-0-22-2
 TAG: pgmgddbschema-6-0-22-1
-DATE: 07/28/2022
+DATE: 07/29/2022
 STAFF: lec
 wts2-761/MGD db cleanup - MRK_Event/MRK_EventReason
 #       deleted:    all MRK_EventReason_create.object
