@@ -6,7 +6,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 COMMENT ON TABLE mgd.GXD_GelBand IS 'Defines a Gel Band for a given Gel Lane and Gel Row.  A band is assigned a strength.
 
-See GXD_GelLane, GXD_GelRow, GXD_Strength.';
+See GXD_GelLane, GXD_GelRow.';
 
 COMMENT ON COLUMN GXD_GelBand.bandNote IS 'textual information';
 
@@ -20,6 +20,6 @@ COMMENT ON COLUMN GXD_GelBand._GelRow_key IS 'foreign key to GXD_GelRow';
 
 COMMENT ON COLUMN GXD_GelBand.modification_date IS 'date record was last modified';
 
-COMMENT ON COLUMN GXD_GelBand._Strength_key IS 'foreign key to GXD_Strength';
+COMMENT ON COLUMN GXD_GelBand._Strength_key IS 'foreign key to VOC_Term';
 
 EOSQL

@@ -14,9 +14,9 @@ COMMENT ON COLUMN MRK_History.event_date IS 'date of the nomenclature event';
 
 COMMENT ON COLUMN MRK_History._History_key IS 'foreign key to MRK_Marker';
 
-COMMENT ON COLUMN MRK_History._Marker_Event_key IS 'foreign key to MRK_Event';
+COMMENT ON COLUMN MRK_History._Marker_Event_key IS 'foreign key to VOC_Term';
 
-COMMENT ON COLUMN MRK_History._Marker_EventReason_key IS 'foreign key to MRK_EventReason';
+COMMENT ON COLUMN MRK_History._Marker_EventReason_key IS 'foreign key to VOC_Term';
 
 COMMENT ON COLUMN MRK_History._Marker_key IS 'foreign key to MRK_Marker';
 
