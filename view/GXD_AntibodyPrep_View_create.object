@@ -12,12 +12,12 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create view mgd.GXD_AntibodyPrep_View
 as
-select a._Assay_key, ap.*, s.secondary, l.label, ab.antibodyName, ac.accID
-from GXD_Assay a, GXD_AntibodyPrep ap, GXD_Secondary s, GXD_Label l,
+select a._Assay_key, ap.*, s.term as secondary, l.term as label, ab.antibodyName, ac.accID
+from GXD_Assay a, GXD_AntibodyPrep ap, VOC_Term s, VOC_Term l,
 GXD_Antibody ab, ACC_Accession ac
 where a._AntibodyPrep_key = ap._AntibodyPrep_key
-and ap._Secondary_key = s._Secondary_key
-and ap._Label_key = l._Label_key
+and ap._Secondary_key = s._Term_key
+and ap._Label_key = l._Term_key
 and ap._Antibody_key = ab._Antibody_key
 and ab._Antibody_key = ac._Object_key
 and ac._MGIType_key = 6

@@ -12,11 +12,11 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create view mgd.GXD_Specimen_View
 as
-select s.*, e.embeddingMethod, f.fixation, ps.strain, a.accID as mgiID
-from GXD_Specimen s, GXD_EmbeddingMethod e, GXD_FixationMethod f, 
+select s.*, e.term as embeddingMethod, f.term as fixation, ps.strain, a.accID as mgiID
+from GXD_Specimen s, VOC_Term e, VOC_Term f, 
 	GXD_Genotype g, PRB_Strain ps, ACC_Accession a
-where s._Embedding_key = e._Embedding_key
-and s._Fixation_key = f._Fixation_key
+where s._Embedding_key = e._Term_key
+and s._Fixation_key = f._Term_key
 and s._Genotype_key = g._Genotype_key
 and g._Strain_key = ps._Strain_key
 and s._Genotype_key = a._Object_key

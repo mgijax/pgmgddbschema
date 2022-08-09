@@ -12,10 +12,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create view mgd.GXD_GelLane_View
 as
-select l.*, t.rnaType, ps.strain, c.gelLaneContent, a.accID as mgiID
-from GXD_GelLane l, GXD_GelRNAType t, GXD_GelControl c, GXD_Genotype g, PRB_Strain ps, ACC_Accession a
-where l._GelRNAType_key = t._GelRNAType_key
-and l._GelControl_key = c._GelControl_key
+select l.*, t.term as rnaType, ps.strain, c.term as gelLaneContent, a.accID as mgiID
+from GXD_GelLane l, VOC_Term t, VOC_Term c, GXD_Genotype g, PRB_Strain ps, ACC_Accession a
+where l._GelRNAType_key = t._Term_key
+and l._GelControl_key = c._Term_key
 and l._Genotype_key = g._Genotype_key
 and g._Strain_key = ps._Strain_key
 and g._Genotype_key = a._Object_key

@@ -183,6 +183,44 @@ ALTER TABLE mgd.GXD_Index_Stages DROP CONSTRAINT GXD_Index_Stages__StageID_key_f
 
 ALTER TABLE mgd.GXD_Index_Stages DROP CONSTRAINT GXD_Index_Stages__IndexAssay_key_fkey CASCADE;
 
+ALTER TABLE mgd.GXD_Genotype DROP CONSTRAINT GXD_Genotype__ExistsAs_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_GelLaneStructure DROP CONSTRAINT GXD_GelLaneStructure__EMAPA_Term_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__EMAPA_Term_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__CellType_Term_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_Assay DROP CONSTRAINT GXD_Assay__ReporterGene_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_Antibody DROP CONSTRAINT GXD_Antibody__AntibodyClass_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_AntibodyPrep DROP CONSTRAINT GXD_AntibodyPrep__Label_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_AntibodyPrep DROP CONSTRAINT GXD_AntibodyPrep__Secondary_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_GelLane DROP CONSTRAINT GXD_GelLane__GelControl_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_GelLane DROP CONSTRAINT GXD_GelLane__GelRNAType_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_GelRow DROP CONSTRAINT GXD_GelRow__GelUnits_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_InSituResult DROP CONSTRAINT GXD_InSituResult__Pattern_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_ProbePrep DROP CONSTRAINT GXD_ProbePrep__Label_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_ProbePrep DROP CONSTRAINT GXD_ProbePrep__Sense_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_ProbePrep DROP CONSTRAINT GXD_ProbePrep__Visualization_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_Specimen DROP CONSTRAINT GXD_Specimen__Embedding_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_Specimen DROP CONSTRAINT GXD_Specimen__Fixation_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_AllelePair DROP CONSTRAINT GXD_AllelePair__PairState_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_AllelePair DROP CONSTRAINT GXD_AllelePair__Compound_key_fkey CASCADE;
+
 ALTER TABLE mgd.GXD_HTSample_RNASeqSet DROP CONSTRAINT GXD_HTSample_RNASeqSet__Sex_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTSample_RNASeqSet DROP CONSTRAINT GXD_HTSample_RNASeqSet__Emapa_key_fkey CASCADE;
@@ -208,20 +246,6 @@ ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__CurationState
 ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__StudyType_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTExperiment DROP CONSTRAINT GXD_HTExperiment__ExperimentType_key_fkey CASCADE;
-
-ALTER TABLE mgd.GXD_Genotype DROP CONSTRAINT GXD_Genotype__ExistsAs_key_fkey CASCADE;
-
-ALTER TABLE mgd.GXD_GelLaneStructure DROP CONSTRAINT GXD_GelLaneStructure__EMAPA_Term_key_fkey CASCADE;
-
-ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__EMAPA_Term_key_fkey CASCADE;
-
-ALTER TABLE mgd.GXD_Expression DROP CONSTRAINT GXD_Expression__CellType_Term_key_fkey CASCADE;
-
-ALTER TABLE mgd.GXD_Assay DROP CONSTRAINT GXD_Assay__ReporterGene_key_fkey CASCADE;
-
-ALTER TABLE mgd.GXD_AllelePair DROP CONSTRAINT GXD_AllelePair__PairState_key_fkey CASCADE;
-
-ALTER TABLE mgd.GXD_AllelePair DROP CONSTRAINT GXD_AllelePair__Compound_key_fkey CASCADE;
 
 ALTER TABLE mgd.BIB_Workflow_Tag DROP CONSTRAINT BIB_Workflow_Tag__Tag_key_fkey CASCADE;
 

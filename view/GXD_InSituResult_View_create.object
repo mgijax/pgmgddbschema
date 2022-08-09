@@ -12,10 +12,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create view mgd.GXD_InSituResult_View
 as
-select r.*, s.strength, p.pattern
-from GXD_InSituResult r, GXD_Strength s, GXD_Pattern p
+select r.*, s.strength, p.term as pattern
+from GXD_InSituResult r, GXD_Strength s, VOC_Term p
 where r._Strength_key = s._Strength_key
-and r._Pattern_key = p._Pattern_key
+and r._Pattern_key = p._Term_key
 
 
 
