@@ -22,8 +22,12 @@ usersql = ""
 for r in results:
     usersql += "delete from mgi_user where _user_key = " + str(r['_user_key']) + ";\n"
 
-print(usersql)
-db.sql(usersql, None)
-db.commit()
+    #print(usersql)
+    try:
+            db.sql(usersql, None)
+            db.commit()
+    except:
+            print('user is being used: ', str(r['_user_key']))
+
 db.useOneConnection(0)
 

@@ -201,6 +201,9 @@ ALTER TABLE mgd.GXD_AllelePair ADD FOREIGN KEY (_PairState_key) REFERENCES mgd.V
 ALTER TABLE mgd.GXD_Antibody ADD FOREIGN KEY (_AntibodyClass_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
+ALTER TABLE mgd.GXD_Antibody ADD FOREIGN KEY (_AntibodyType_key) REFERENCES mgd.VOC_Term DEFERRABLE;
+
+
 ALTER TABLE mgd.GXD_AntibodyPrep ADD FOREIGN KEY (_Label_key) REFERENCES mgd.VOC_Term DEFERRABLE;
 
 
