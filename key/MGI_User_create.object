@@ -3,6 +3,9 @@
 #
 # History
 #
+# 09/08/2022    sc
+#       - WTS2-492 add GXD_HTSample_RNASeqSet_Cache
+
 # 07/19/2021    sc
 #       - WTS2-431 Load GEO raw samples
 
@@ -260,6 +263,12 @@ ALTER TABLE mgd.GXD_HTSample_RNASeqSetMember ADD FOREIGN KEY (_ModifiedBy_key) R
 
 
 ALTER TABLE mgd.GXD_HTSample_RNASeqSetMember ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
+
+
+ALTER TABLE mgd.GXD_HTSample_RNASeqSet_Cache ADD FOREIGN KEY (_ModifiedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
+
+
+ALTER TABLE mgd.GXD_HTSample_RNASeqSet_Cache ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
 
 
 ALTER TABLE mgd.GXD_HTRawSample ADD FOREIGN KEY (_CreatedBy_key) REFERENCES mgd.MGI_User DEFERRABLE;
