@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/13/2022    lec
+#	- wts2-888/PWI: Move Remaining Pages from Flask+SQLAlchemy to Angular+Java API
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE prb_allele_seq;    
+ALTER TABLE PRB_Allele ALTER _allele_key SET DEFAULT NEXTVAL('prb_allele_seq');
+select setval('prb_allele_seq', (select max(_allele_key) from PRB_Allele));
+
+EOSQL
