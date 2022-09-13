@@ -1,0 +1,27 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/07/2022    sc
+#       - WTS2-492 Add RNA seq data to the Gene Expression Tissue Summary Page (TR13254)
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop index if exists mgd.GXD_HTSample_RNASeqSet_Cache_idx_RNASeqCombined_key
+;
+
+drop index if exists mgd.GXD_HTSample_RNASeqSet_Cache_idx_RNASeqSet_key
+;
+
+drop index if exists mgd.GXD_HTSample_RNASeqSet_Cache_idx_CreatedBy_key
+;
+
+drop index if exists mgd.GXD_HTSample_RNASeqSet_Cache_idx_ModifiedBy_key
+;
+
+EOSQL

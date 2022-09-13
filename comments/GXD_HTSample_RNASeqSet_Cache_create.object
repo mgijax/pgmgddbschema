@@ -1,0 +1,23 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+COMMENT ON TABLE mgd.GXD_HTSample_RNASeqSet_Cache IS 'A join  table to provide easy access to RNASeqSet and RNASeqSet_Combined data';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet_Cache._Assoc_key IS 'primary key';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet_Cache._RNASeqSet_key IS 'foreign key to GXD_HTSample_RNASeqSet';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet_Cache._RNASeqSetCombined_key IS 'foreign key to GXD_HTSample_RNASeqCombined';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet._CreatedBy_key IS 'user who created the record';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet.creation_date IS 'date record was created';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet.modification_date IS 'date record was last modified';
+
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet._ModifiedBy_key IS 'user who last modified the record';
+
+EOSQL

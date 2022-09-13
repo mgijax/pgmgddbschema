@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# HISTORY
+#
+# 09/07/2022	sc
+#	- WTS2-492 Add RNA seq data to the Gene Expression Tissue Summary Page (TR13254)
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create table mgd.GXD_HTSample_RNASeqSet_Cache (
+        _Assoc_key                      int                     not null,
+ 	_RNASeqCombined_key		int			not null,
+        _RNASeqSet_key                  int                     not null,
+	_CreatedBy_key			int DEFAULT 1001	not null,
+	_ModifiedBy_key			int DEFAULT 1001	not null,
+	creation_date			timestamp DEFAULT now()	not null,
+	modification_date		timestamp DEFAULT now()	not null 
+);
+EOSQL
