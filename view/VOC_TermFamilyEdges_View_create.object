@@ -16,12 +16,9 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create view mgd.VOC_TermFamilyEdges_View
 as
 
+-- select every edge where both the parent and child nodes are in the voc_termfamily_view table
 -- used by API to build term family domain for PWI/Vocabulary/DAG display
 -- example : select * from VOC_TermFamilyEdges_View where accid = 'MP:0001260'
-
--- Now that we have the nodes, get the edges.
---  We want every edge where both the parent and child nodes are
---  in the nodeFamily table
 
 select e._edge_key, tf1.accid, ec._object_key as _child_key, ep._object_key as _parent_key, dl.label
 from
