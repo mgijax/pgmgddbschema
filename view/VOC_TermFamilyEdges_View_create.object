@@ -23,7 +23,7 @@ as
 --  We want every edge where both the parent and child nodes are
 --  in the nodeFamily table
 
-select tf1._term_key, e._edge_key, tf1.accid, ec._object_key as _child_key, ep._object_key as _parent_key, dl.label
+select e._edge_key, tf1.accid, ec._object_key as _child_key, ep._object_key as _parent_key, dl.label
 from
   dag_edge e,
   dag_node ec,
