@@ -1,0 +1,78 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/14/2022	lec
+#	- wts2-888/crm-410/adding new views to support PWI: add getTermByMPId to API for Vocabulary
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/VOC_TermFamily_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.VOC_TermFamily_View
+as
+
+-- used by API to build term family domain for PWI/Vocabulary/DAG display
+-- example: select * from VOC_TermFamily_View where accid = 'MP:0001260'
+
+-- build up table of terms we need, which contains the term's ancestors, siblings, immediate children, and the term itself
+
+-- ancestors - terms reachable through DAG_Closure._ancestorobject_key
+select a.accid, anc.*
+from 
+  voc_term anc,
+  dag_closure dc,
+  acc_accession a
+where dc._descendentobject_key = a._object_key
+  and a._mgitype_key = 13
+  and dc._ancestorobject_key = anc._term_key
+
+union
+
+-- siblings - terms that have a parent in common with the term of interest
+select a.accid, sib.*
+from 
+  voc_term sib,
+  dag_edge e1,
+  dag_node e1c,
+  dag_edge e2,
+  dag_node e2c,
+  acc_accession a
+where e1._child_key = e1c._node_key
+and e1c._object_key = sib._term_key
+and e2._child_key = e2c._node_key
+and e2c._object_key = a._object_key
+and a._mgitype_key = 13
+and e1._parent_key = e2._parent_key
+
+union
+
+-- immediate children - terms that have me as a parent
+select a.accid, kid.*
+from
+  voc_term kid,
+  dag_edge e,
+  dag_node nc,
+  dag_node np,
+  acc_accession a
+where e._child_key = nc._node_key
+and nc._object_key = kid._term_key
+and e._parent_key = np._node_key
+and np._object_key = a._object_key
+and a._mgitype_key = 13
+
+union
+
+-- the term
+select a.accid, t.*
+from acc_accession a, voc_term t
+where a._mgitype_key = 13
+and a._object_key = t._term_key
+
+;
+
+EOSQL

@@ -1,0 +1,43 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/14/2022	lec
+#	- wts2-888/crm-410/adding new views to support PWI: add getTermByMPId to API for Vocabulary
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/VOC_TermFamilyEdges_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.VOC_TermFamilyEdges_View
+as
+
+-- used by API to build term family domain for PWI/Vocabulary/DAG display
+-- example : select * from VOC_TermFamilyEdges_View where accid = 'MP:0001260'
+
+-- Now that we have the nodes, get the edges.
+--  We want every edge where both the parent and child nodes are
+--  in the nodeFamily table
+
+select tf1.accid, ec._object_key as _child_key, ep._object_key as _parent_key, dl.label
+from
+  dag_edge e,
+  dag_node ec,
+  dag_node ep,
+  dag_label dl,
+  voc_termfamily_view tf1,
+  voc_termfamily_view tf2
+where e._child_key = ec._node_key
+and e._parent_key = ep._node_key
+and e._label_key = dl._label_key
+and ec._object_key = tf1._term_key
+and ep._object_key = tf2. _term_key
+and tf1.accid = tf2.accid
+order by ec._object_key, ep._object_key
+;
+
+EOSQL
