@@ -10,7 +10,7 @@ COMMENT ON COLUMN GXD_HTSample_RNASeqSet_Cache._Assoc_key IS 'primary key';
 
 COMMENT ON COLUMN GXD_HTSample_RNASeqSet_Cache._RNASeqSet_key IS 'foreign key to GXD_HTSample_RNASeqSet';
 
-COMMENT ON COLUMN GXD_HTSample_RNASeqSet_Cache._RNASeqSetCombined_key IS 'foreign key to GXD_HTSample_RNASeqCombined';
+COMMENT ON COLUMN GXD_HTSample_RNASeqSet_Cache._RNASeqCombined_key IS 'foreign key to GXD_HTSample_RNASeqCombined';
 
 COMMENT ON COLUMN GXD_HTSample_RNASeqSet._CreatedBy_key IS 'user who created the record';
 
