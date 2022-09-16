@@ -20,7 +20,7 @@ as
 -- used by API to build term family domain for PWI/Vocabulary/DAG display
 -- example : select * from VOC_TermFamilyEdges_View where accid = 'MP:0001260'
 
-select e._edge_key, tf1.searchid, tf1.accid, ec._object_key as _child_key, ep._object_key as _parent_key, dl.label
+select e._edge_key, tf1.searchid, ec._object_key as _child_key, ep._object_key as _parent_key, dl.label
 from
   dag_edge e,
   dag_node ec,
