@@ -33,7 +33,7 @@ and e._parent_key = ep._node_key
 and e._label_key = dl._label_key
 and ec._object_key = tf1._term_key
 and ep._object_key = tf2. _term_key
-and tf1.accid = tf2.accid
+and tf1.parentid = tf2.parentid
 order by ec._object_key, ep._object_key
 ;
 
