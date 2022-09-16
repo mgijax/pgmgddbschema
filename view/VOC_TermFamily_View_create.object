@@ -21,7 +21,7 @@ as
 -- example: select * from VOC_TermFamily_View where accid = 'MP:0001260'
 
 -- ancestors - terms reachable through DAG_Closure._ancestorobject_key
-select a.accid as parentid, aa.accid, anc.*
+select a.accid as searchid, aa.accid, anc.*
 from 
   voc_term anc,
   dag_closure dc,
@@ -37,7 +37,7 @@ where dc._descendentobject_key = a._object_key
 union
 
 -- siblings - terms that have a parent in common with the term of interest
-select a.accid as parentid, aa.accid, sib.*
+select a.accid as searchid, aa.accid, sib.*
 from 
   voc_term sib,
   dag_edge e1,
@@ -59,7 +59,7 @@ where e1._child_key = e1c._node_key
 union
 
 -- immediate children - terms that have me as a parent
-select a.accid as parentid, aa.accid, kid.*
+select a.accid as searchid, aa.accid, kid.*
 from
   voc_term kid,
   dag_edge e,
@@ -79,7 +79,7 @@ where e._child_key = nc._node_key
 union
 
 -- term itself
-select a.accid as parentid, a.accid, t.*
+select a.accid as searchid, a.accid, t.*
 from acc_accession a, voc_term t
 where a._mgitype_key = 13
   and a._object_key = t._term_key
