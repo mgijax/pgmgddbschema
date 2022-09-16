@@ -32,6 +32,7 @@ where dc._descendentobject_key = a._object_key
   and dc._ancestorobject_key = anc._term_key
   and anc._term_key = aa._object_key
   and aa._mgitype_key = 13
+  and aa.preferred = 1
 
 union
 
@@ -53,6 +54,7 @@ where e1._child_key = e1c._node_key
   and e1._parent_key = e2._parent_key
   and sib._term_key = aa._object_key
   and aa._mgitype_key = 13
+  and aa.preferred = 1
 
 union
 
@@ -72,6 +74,7 @@ where e._child_key = nc._node_key
   and a._mgitype_key = 13
   and kid._term_key = aa._object_key
   and aa._mgitype_key = 13
+  and aa.preferred = 1
   
 union
 
