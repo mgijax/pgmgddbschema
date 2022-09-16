@@ -21,56 +21,65 @@ as
 -- example: select * from VOC_TermFamily_View where accid = 'MP:0001260'
 
 -- ancestors - terms reachable through DAG_Closure._ancestorobject_key
-select a.accid, anc.*
+select a.accid as parentid, aa.accid, anc.*
 from 
   voc_term anc,
   dag_closure dc,
-  acc_accession a
+  acc_accession a,
+  acc_accession aa
 where dc._descendentobject_key = a._object_key
   and a._mgitype_key = 13
   and dc._ancestorobject_key = anc._term_key
+  and anc._term_key = aa._object_key
+  and aa._mgitype_key = 13
 
 union
 
 -- siblings - terms that have a parent in common with the term of interest
-select a.accid, sib.*
+select a.accid as parentid, aa.accid, sib.*
 from 
   voc_term sib,
   dag_edge e1,
   dag_node e1c,
   dag_edge e2,
   dag_node e2c,
-  acc_accession a
+  acc_accession a,
+  acc_accession aa
 where e1._child_key = e1c._node_key
-and e1c._object_key = sib._term_key
-and e2._child_key = e2c._node_key
-and e2c._object_key = a._object_key
-and a._mgitype_key = 13
-and e1._parent_key = e2._parent_key
+  and e1c._object_key = sib._term_key
+  and e2._child_key = e2c._node_key
+  and e2c._object_key = a._object_key
+  and a._mgitype_key = 13
+  and e1._parent_key = e2._parent_key
+  and sib._term_key = aa._object_key
+  and aa._mgitype_key = 13
 
 union
 
 -- immediate children - terms that have me as a parent
-select a.accid, kid.*
+select a.accid as parentid, aa.accid, kid.*
 from
   voc_term kid,
   dag_edge e,
   dag_node nc,
   dag_node np,
-  acc_accession a
+  acc_accession a,
+  acc_accession aa
 where e._child_key = nc._node_key
-and nc._object_key = kid._term_key
-and e._parent_key = np._node_key
-and np._object_key = a._object_key
-and a._mgitype_key = 13
-
+  and nc._object_key = kid._term_key
+  and e._parent_key = np._node_key
+  and np._object_key = a._object_key
+  and a._mgitype_key = 13
+  and kid._term_key = aa._object_key
+  and aa._mgitype_key = 13
+  
 union
 
 -- term itself
-select a.accid, t.*
+select a.accid as parentid, a.accid, t.*
 from acc_accession a, voc_term t
 where a._mgitype_key = 13
-and a._object_key = t._term_key
+  and a._object_key = t._term_key
 
 ;
 
