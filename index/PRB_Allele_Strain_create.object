@@ -1,6 +1,10 @@
 #!/bin/sh
 
 # HISTORY
+#
+#     09/21/2022 - sc  - added idx_clustered  (wts2-888)
+#               because added _AlleleStrain_key PK
+#
 #     09/16/2008 - jsb - removed PRB_Allele_Strain_idx_Allele_key (TR 9037)
 #
 
@@ -11,6 +15,8 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.PRB_Allele_Strain USING PRB_Allele_Strain_pkey;
 
+create unique index PRB_Allele_Strain_idx_clustered on mgd.PRB_Allele_Strain (_Allele_key, _Strain_key);
+
 create index PRB_Allele_Strain_idx_Strain_key on mgd.PRB_Allele_Strain (_Strain_key);
 
 create index PRB_Allele_Strain_idx_CreatedBy_key on mgd.PRB_Allele_Strain (_CreatedBy_key);
@@ -18,3 +24,5 @@ create index PRB_Allele_Strain_idx_CreatedBy_key on mgd.PRB_Allele_Strain (_Crea
 create index PRB_Allele_Strain_idx_ModifiedBy_key on mgd.PRB_Allele_Strain (_ModifiedBy_key);
 
 EOSQL
+
+

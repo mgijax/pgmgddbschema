@@ -9,7 +9,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-ALTER TABLE mgd.PRB_Allele_Strain ADD PRIMARY KEY (_Allele_key, _Strain_key);
+ALTER TABLE mgd.PRB_Allele_Strain ADD PRIMARY KEY (_AlleleStrain_key);
 
 
 EOSQL

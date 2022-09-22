@@ -12,6 +12,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.PRB_Allele_Strain (
+        _AlleleStrain_key                     int             not null,
  	_Allele_key                    int             not null,
 	_Strain_key                    int             not null,
 	_CreatedBy_key                 int DEFAULT 1001             not null,
