@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/21/2022    sc
+#       - WTS2-888 PWI Probe Detail
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE prb_allele_strain_seq;    
+ALTER TABLE PRB_Allele_Strain ALTER _allelestrain_key SET DEFAULT NEXTVAL('prb_allele_strain_seq');
+select setval('prb_allele_strain_seq', (select max(_allelestrain_key) from PRB_Allele_Strain));
+
+EOSQL

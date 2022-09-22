@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/21/2022    sc
+#       - WTS2-888 PWI Probe Detail
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP SEQUENCE IF EXISTS prb_allele_strain_seq CASCADE;
+
+EOSQL
