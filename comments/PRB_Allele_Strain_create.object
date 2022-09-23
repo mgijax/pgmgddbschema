@@ -10,7 +10,7 @@ See PRB_Allele, PRB_RFLV, PRB_Strain.';
 
 COMMENT ON COLUMN PRB_Allele_Strain._AlleleStrain_key IS 'primary key';
 
-COMMENT ON COLUMN PRB_Allele_Strain._Allele_key IS 'foreign key to ALL_Allele';
+COMMENT ON COLUMN PRB_Allele_Strain._Allele_key IS 'foreign key to PRB_Allele';
 
 COMMENT ON COLUMN PRB_Allele_Strain._CreatedBy_key IS 'user who created the record';
 
