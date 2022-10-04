@@ -32,7 +32,7 @@ and a._logicaldb_key = 1
      AND not exists(select 1 from MRK_History h
         where m._Marker_key = h._History_key
         AND m._Marker_key = h._Marker_key
-        AND h._Marker_Event_key = 1
+        AND h._Marker_Event_key = 106563604
         )
 order by m.symbol
 ;
