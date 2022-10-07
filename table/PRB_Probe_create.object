@@ -13,6 +13,7 @@ create table mgd.PRB_Probe (
  	_Probe_key                     int             not null,
 	name                           text            not null,
 	derivedFrom                    int             null,
+	ampPrimer                      int             null,
 	_Source_key                    int             not null,
 	_Vector_key                    int             not null,
 	_SegmentType_key               int             not null,

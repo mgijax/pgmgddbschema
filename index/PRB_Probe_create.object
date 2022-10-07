@@ -17,6 +17,8 @@ create index PRB_Probe_idx_Source_key on mgd.PRB_Probe (_Source_key);
 
 create index PRB_Probe_idx_derivedFrom on mgd.PRB_Probe (derivedFrom);
 
+create index PRB_Probe_idx_ampPrimer on mgd.PRB_Probe (ampPrimer);
+
 create index PRB_Probe_idx_Vector_key on mgd.PRB_Probe (_Vector_key);
 
 create index PRB_Probe_idx_name on mgd.PRB_Probe (name);

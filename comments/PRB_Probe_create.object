@@ -14,6 +14,8 @@ COMMENT ON COLUMN PRB_Probe.creation_date IS 'date record was created';
 
 COMMENT ON COLUMN PRB_Probe.derivedFrom IS 'foreign key to PRB_Probe; parent';
 
+COMMENT ON COLUMN PRB_Probe.ampPrimer IS 'foreign key to PRB_Probe; segment type = primer';
+
 COMMENT ON COLUMN PRB_Probe.insertSite IS 'site of probe on the vector';
 
 COMMENT ON COLUMN PRB_Probe.insertSize IS 'size of probe';

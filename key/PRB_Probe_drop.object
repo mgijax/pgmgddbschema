@@ -12,6 +12,8 @@ ALTER TABLE mgd.SEQ_Probe_Cache DROP CONSTRAINT SEQ_Probe_Cache__Probe_key_fkey 
 
 ALTER TABLE mgd.PRB_Reference DROP CONSTRAINT PRB_Reference__Probe_key_fkey CASCADE;
 
+ALTER TABLE mgd.PRB_Probe DROP CONSTRAINT PRB_Probe_ampPrimer_fkey CASCADE;
+
 ALTER TABLE mgd.PRB_Probe DROP CONSTRAINT PRB_Probe_derivedFrom_fkey CASCADE;
 
 ALTER TABLE mgd.PRB_Notes DROP CONSTRAINT PRB_Notes__Probe_key_fkey CASCADE;

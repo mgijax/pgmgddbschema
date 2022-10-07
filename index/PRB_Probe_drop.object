@@ -15,6 +15,9 @@ drop index if exists mgd.PRB_Probe_idx_clustered
 drop index if exists mgd.PRB_Probe_idx_Source_key
 ;
 
+drop index if exists mgd.PRB_Probe_idx_ampPrimer
+;
+
 drop index if exists mgd.PRB_Probe_idx_derivedFrom
 ;
 
