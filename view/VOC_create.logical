@@ -14,6 +14,9 @@ VOC_Annot_View_create.object \
 VOC_Evidence_View_create.object \
 VOC_Term_Acc_View_create.object \
 VOC_Term_RepQualifier_View_create.object \
+VOC_Annot_View_create.object \
+VOC_TermFamily_View_create.object \
+VOC_TermFamilyEdges_View_create.object \
 )
 $i $*
 end
