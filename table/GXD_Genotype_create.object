@@ -5,6 +5,9 @@
 # 11/29/2001 lec
 #	- TR 2239/PhenoSlim; added isConditional, createdBy, modifiedBy
 #
+# "note" field is never used; this table uses the mgi_note table
+# "note" field can be removed next time there is another schema change
+#
 
 cd `dirname $0` && . ./Configuration
 
