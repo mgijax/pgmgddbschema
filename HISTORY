@@ -1,3 +1,9 @@
+TAG: pgmgddbschema-6-0-22-12
+DATE: 11/14/2022
+STAFF: lec
+PRB_processAnonymousSource_create.object
+removed permission check for MGI_UserTask_View, which no longer exists
+
 TAG: pgmgddbschema-6-0-22-11
 DATE: 11/10/2022
 STAFF: lec
