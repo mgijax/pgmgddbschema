@@ -124,16 +124,6 @@ THEN
 
    v_newMSOKey := v_msoKey;
 
-   IF (select v_verifyOrganismEdit) = 1 and
-      (select _Organism_key from PRB_Source where _Source_key = v_msoKey) != v_organismKey and
-      not exists (select 1 from MGI_UserTask_View
-                  where usertask = 'molecular source:organism'
-                  and login = current_user)
-   THEN
-	RAISE EXCEPTION E'You do not have permission to modify this Source''s Organism.';
-	RETURN;
-   END IF;
-
    IF (select _SegmentType_key from PRB_Source where _Source_key = v_msoKey) != v_segmentTypeKey or
       (select _Vector_key from PRB_Source where _Source_key = v_msoKey) != v_vectorTypeKey or
       (select _Organism_key from PRB_Source where _Source_key = v_msoKey) != v_organismKey or
