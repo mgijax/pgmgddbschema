@@ -1,0 +1,26 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/17/2020    lec
+#	- wts2-896/New Relationship Category: QTL-to-Candidate Gene
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/MGI_Relationship_MarkerQTLInteraction2_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MGI_Relationship_MarkerQTLInteraction2_View
+as
+select distinct r._Object_key_2 as markerKey, m.symbol
+from MGI_Relationship r, MRK_Marker m
+where r._Category_key = 1010
+and r._Object_key_2 = m._Marker_key
+order by symbol
+
+;
+
+EOSQL
