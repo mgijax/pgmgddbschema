@@ -15,7 +15,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create view mgd.MGI_Relationship_MarkerQTLInteraction_View
 as
-select distinct _object_key_1, _object_key_2, m1.symbol as symbol1, m2.symbol as symbol2
+select distinct r._Object_key_1, r._Object_key_2, m1.symbol as symbol1, m2.symbol as symbol2
 from MGI_Relationship r, MRK_Marker m1, MRK_Marker m2
 where r._Category_key = 1010
 and r._Object_key_1 = m1._Marker_key
