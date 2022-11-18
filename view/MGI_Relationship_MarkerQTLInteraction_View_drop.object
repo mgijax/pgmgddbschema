@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# History
+#
+# 11/17/2020    lec
+#	- wts2-896/New Relationship Category: QTL-to-Candidate Gene
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop view if exists mgd.MGI_Relationship_MarkerQTLInteraction_View
+
+CASCADE
+;
+EOSQL
