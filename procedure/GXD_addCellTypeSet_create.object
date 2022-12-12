@@ -1,0 +1,95 @@
+#!/bin/sh
+
+#
+# History
+#
+# 12/09/2022    lec 
+#       - wts2-1069/add Assay/Cell Ontology to Cell Ontology set/clipboard
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/GXD_addCellTypeSet_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION GXD_addCellTypeSet (
+v_createdBy mgi_user.name%TYPE,
+v_assayKey int
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_newSetMemberKey int;
+v_newSeqKey int;
+v_userKey int;
+
+BEGIN
+
+--
+-- NAME: GXD_addCellTypeSet
+--
+-- DESCRIPTION:
+--
+-- To add Assay/Cell Types to Cell Ontology set for the clipboard
+-- (MGI_SetMember)
+--        
+-- INPUT:
+--      
+-- v_createdBy : MGI_User.name
+-- v_assayKey : GXD_Assay._Assay_key
+--
+-- RETURNS:
+--	VOID
+--
+
+--
+-- find existing Cell Ontology terms by Assay
+-- add them to MGI_SetMember (clipboard)
+--
+-- exclude existing Cell Ontology terms that already exist in the clipboard
+-- that is, do not add dupliate structures to the clipboard
+--
+
+v_newSetMemberKey := max(_SetMember_key) FROM MGI_SetMember;
+v_userKey = _user_key from MGI_User where login = v_createdBy;
+v_newSeqKey := max(sequenceNum) FROM MGI_SetMember where _Set_key = 1059 and _CreatedBy_key = v_userKey;
+
+IF v_newSeqKey is null THEN
+	v_newSeqKey := 0;
+END IF;
+
+CREATE TEMP TABLE set_tmp ON COMMIT DROP
+AS (
+SELECT row_number() over (ORDER BY s.term) as seq,
+       s._celltype_term_key, s.term, min(s.sequenceNum) as sequenceNum
+FROM GXD_ISResultCellType_View s
+WHERE s._Assay_key = v_assayKey
+AND NOT EXISTS (SELECT 1 FROM MGI_SetMember ms
+	WHERE ms._Set_key = 1059
+	AND ms._Object_key = s._celltype_term_key
+	AND ms._CreatedBy_key = v_userKey
+	)
+GROUP BY s._celltype_term_key, s.term
+)
+ORDER BY term
+;
+
+INSERT INTO MGI_SetMember
+SELECT v_newSetMemberKey + seq, 1059, s._celltype_term_key, null, v_newSeqKey + seq, v_userKey, v_userKey, now(), now()
+FROM set_tmp s
+;
+
+RETURN
+;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION GXD_addCellTypeSet(text,int) TO public;
+
+COMMENT ON FUNCTION mgd.GXD_addCellTypeSet(text,int) IS 'add Cell Ontology used in Assay to Cell Ontology Clipboard';
+
+EOSQL

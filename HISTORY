@@ -1,3 +1,10 @@
+TAG: pgmgddbschema-6-0-22-1?
+DATE: 12/12/2022
+STAFF: lec
+wts2-1069/Add Assay Cells to Cell Type Clipboard button
+procedure/GXD_addCellTypeSet_create.object
+procedure/GXD_addCellTypeSet_drop.object
+
 TAG: pgmgddbschema-6-0-22-14
 TAG: pgmgddbschema-6-0-22-13
 DATE: 11/22/2022, 11/23/2022
