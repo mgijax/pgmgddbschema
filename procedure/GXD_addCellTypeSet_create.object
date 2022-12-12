@@ -77,7 +77,7 @@ ORDER BY term
 ;
 
 INSERT INTO MGI_SetMember
-SELECT v_newSetMemberKey + seq, 1059, s._celltype_term_key, null, v_newSeqKey + seq, v_userKey, v_userKey, now(), now()
+SELECT v_newSetMemberKey + seq, 1059, s._celltype_term_key, s.term, v_newSeqKey + seq, v_userKey, v_userKey, now(), now()
 FROM set_tmp s
 ;
 
