@@ -18,12 +18,10 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create view mgd.IMG_ImagePaneAllele_View
 as
-select al._allele_key, a1.accid as alleleid, i.figurelabel, assoc.symbol, a2.accid as alleleid2
-from all_allele al, img_image i, acc_accession a1, img_imagepane ip, img_imagepane_assoc ipa,
-img_imagepane_assoc ipall, all_allele assoc, acc_accession a2
-where a1._mgitype_key = 11
-and a1._object_key = al._allele_key
-and a1._object_key = ipa._object_key
+select ipall._assoc_key, a._allele_key, i.figurelabel, assoc.symbol, aa.accid as alleleid
+from all_allele a, img_image i, img_imagepane ip, img_imagepane_assoc ipa,
+img_imagepane_assoc ipall, all_allele assoc, acc_accession aa
+where a._allele_key = ipa._object_key
 and i._image_key = ip._image_key
 and ip._imagepane_key = ipa._imagepane_key
 and ipa._mgitype_key = 11
@@ -31,8 +29,8 @@ and i._imagetype_key = 1072158
 and ipa._imagepane_key = ipall._imagepane_key
 and ipall._mgitype_key = 11
 and ipall._object_key = assoc._allele_key
-and ipall._object_key = a2._object_key
-and a2._mgitype_key = 11
+and ipall._object_key = aa._object_key
+and aa._mgitype_key = 11
 order by i.figurelabel, assoc.symbol
 
 ;
