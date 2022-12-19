@@ -1,0 +1,32 @@
+#!/bin/sh
+
+#
+# History
+#
+# 12/16/2022	lec
+#	- wts2-888/PWI: Move Remaining Pages from Flask+SQLAlchemy to Angular+Java API
+#
+# only include Image Panes for Full Size Images
+# only include Genotype Images
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/IMG_ImagePaneGenotype_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+ 
+create view mgd.IMG_ImagePaneGenotype_View
+as
+select distinct ipa._imagepane_key, ipa._object_key, ipav._allele_key, s.strain, n.note as alleleComposition
+from img_imagepane_assoc ipa, gxd_genotype g, prb_strain s, mgi_note n, img_imagepaneallele_view ipav
+where ipa._mgitype_key = 12
+and ipa._object_key = g._genotype_key
+and g._strain_key = s._strain_key
+and g._genotype_key = n._object_key
+and n._notetype_key = 1016
+and n._mgitype_key = 12
+and ipa._imagepane_key = ipav._imagepane_key
+;
+
+EOSQL
