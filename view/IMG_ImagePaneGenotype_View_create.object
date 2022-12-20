@@ -18,7 +18,7 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
  
 create view mgd.IMG_ImagePaneGenotype_View
 as
-select distinct ipa._imagepane_key, ipav._allele_key, s.strain, n.note as alleleComposition
+select distinct ipa._assoc_key, ipa._imagepane_key, ipav._allele_key, ipav.figureLabel, s.strain, n.note as alleleComposition
 from img_imagepane_assoc ipa, gxd_genotype g, prb_strain s, mgi_note n, img_imagepaneallele_view ipav
 where ipa._mgitype_key = 12
 and ipa._object_key = g._genotype_key
