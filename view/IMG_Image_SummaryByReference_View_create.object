@@ -6,6 +6,8 @@
 # 12/16/2022	lec
 #	- wts2-888/PWI: Move Remaining Pages from Flask+SQLAlchemy to Angular+Java API
 #
+# class = Expression
+# type = Full Size
 
 cd `dirname $0` && . ./Configuration
 
@@ -26,8 +28,7 @@ from bib_citation_cache c, img_imagepane p, img_image i,
 gxd_insituresultimage gri, gxd_insituresult gr, gxd_specimen s, gxd_assay a, gxd_assaytype t,
 acc_accession a1, acc_accession a2, acc_accession a3,
 acc_accession a4, mrk_marker m
-where c._refs_key = 443881
-and c._refs_key = i._refs_key
+where c._refs_key = i._refs_key
 and i._imageclass_key = 6481781
 and i._imagetype_key = 1072158
 and i._image_key = p._image_key
@@ -61,8 +62,7 @@ from bib_citation_cache c, img_imagepane p, img_image i,
 gxd_insituresultimage gri, gxd_insituresult gr, gxd_specimen s, gxd_assay a, gxd_assaytype t,
 acc_accession a1, acc_accession a3,
 acc_accession a4, mrk_marker m
-where c._refs_key = 443881
-and c._refs_key = i._refs_key
+where c._refs_key = i._refs_key
 and i._imageclass_key = 6481781
 and i._imagetype_key = 1072158
 and i._image_key = p._image_key
@@ -98,8 +98,7 @@ from bib_citation_cache c, img_imagepane p, img_image i,
 gxd_assay a, gxd_assaytype t,
 acc_accession a1, acc_accession a2, acc_accession a3,
 acc_accession a4, mrk_marker m
-where c._refs_key = 443881
-and c._refs_key = i._refs_key
+where c._refs_key = i._refs_key
 and i._imageclass_key = 6481781
 and i._imagetype_key = 1072158
 and i._image_key = p._image_key
@@ -130,8 +129,7 @@ from bib_citation_cache c, img_imagepane p, img_image i,
 gxd_assay a, gxd_assaytype t,
 acc_accession a1, acc_accession a3,
 acc_accession a4, mrk_marker m
-where c._refs_key = 443881
-and c._refs_key = i._refs_key
+where c._refs_key = i._refs_key
 and i._imageclass_key = 6481781
 and i._imagetype_key = 1072158
 and i._image_key = p._image_key
