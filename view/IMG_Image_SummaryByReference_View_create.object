@@ -1,0 +1,163 @@
+#!/bin/sh
+
+#
+# History
+#
+# 12/16/2022	lec
+#	- wts2-888/PWI: Move Remaining Pages from Flask+SQLAlchemy to Angular+Java API
+#
+# only include Image Panes for Full Size Images
+# only include Allele Images
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/IMG_Image_SummaryByReference_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.IMG_Image_SummaryByReference_View
+as
+(
+select i._refs_key, c.jnumid, p._imagepane_key,
+i.figureLabel, i.xdim, i.ydim,
+p.paneLabel, p.x, p.y , p.width, p.height, s.specimenLabel, s.specimenNote,
+a1.accid as imageid, a2.accid as pixid, a3.accid as assayid,
+a4.accid as markerid, m.symbol,
+t.assayType
+from bib_citation_cache c, img_imagepane p, img_image i,
+gxd_insituresultimage gri, gxd_insituresult gr, gxd_specimen s, gxd_assay a, gxd_assaytype t,
+acc_accession a1, acc_accession a2, acc_accession a3,
+acc_accession a4, mrk_marker m
+where c._refs_key = 443881
+and c._refs_key = i._refs_key
+and i._imageclass_key = 6481781
+and i._imagetype_key = 1072158
+and i._image_key = p._image_key
+and p._imagepane_key = gri._imagepane_key
+and gri._result_key = gr._result_key
+and gr._specimen_key = s._specimen_key
+and s._assay_key = a._assay_key
+and a._assaytype_key = t._assaytype_key
+and i._image_key = a1._object_key
+and a1._mgitype_key = 9
+and a1._logicaldb_key = 1
+and i._image_key = a2._object_key
+and a2._mgitype_key = 9
+and a2._logicaldb_key = 19
+and a._assay_key = a3._object_key
+and a3._mgitype_key = 8
+and a3._logicaldb_key = 1
+and a._marker_key = a4._object_key
+and a4._mgitype_key = 2
+and a4._logicaldb_key = 1
+and a4.preferred = 1
+and a._marker_key = m._marker_key
+union
+select i._refs_key, c.jnumid, p._imagepane_key,
+i.figureLabel, i.xdim, i.ydim,
+p.paneLabel, p.x, p.y , p.width, p.height, s.specimenLabel, s.specimenNote,
+a1.accid as imageid, null, a3.accid as assayid,
+a4.accid as markerid, m.symbol,
+t.assayType
+from bib_citation_cache c, img_imagepane p, img_image i,
+gxd_insituresultimage gri, gxd_insituresult gr, gxd_specimen s, gxd_assay a, gxd_assaytype t,
+acc_accession a1, acc_accession a3,
+acc_accession a4, mrk_marker m
+where c._refs_key = 443881
+and c._refs_key = i._refs_key
+and i._imageclass_key = 6481781
+and i._imagetype_key = 1072158
+and i._image_key = p._image_key
+and p._imagepane_key = gri._imagepane_key
+and gri._result_key = gr._result_key
+and gr._specimen_key = s._specimen_key
+and s._assay_key = a._assay_key
+and a._assaytype_key = t._assaytype_key
+and i._image_key = a1._object_key
+and a1._mgitype_key = 9
+and a1._logicaldb_key = 1
+and a._assay_key = a3._object_key
+and a3._mgitype_key = 8
+and a3._logicaldb_key = 1
+and a._marker_key = a4._object_key
+and a4._mgitype_key = 2
+and a4._logicaldb_key = 1
+and a4.preferred = 1
+and a._marker_key = m._marker_key
+and not exists (select 1 from acc_accession a2
+        where i._image_key = a2._object_key
+        and a2._mgitype_key = 9
+        and a2._logicaldb_key = 19
+        )
+union
+select i._refs_key, c.jnumid, p._imagepane_key,
+i.figureLabel, i.xdim, i.ydim,
+p.paneLabel, p.x, p.y, p.width, p.height, null, null,
+a1.accid as imageid, a2.accid as pixid, a3.accid as assayid,
+a4.accid as markerid, m.symbol,
+t.assayType
+from bib_citation_cache c, img_imagepane p, img_image i,
+gxd_assay a, gxd_assaytype t,
+acc_accession a1, acc_accession a2, acc_accession a3,
+acc_accession a4, mrk_marker m
+where c._refs_key = 443881
+and c._refs_key = i._refs_key
+and i._imageclass_key = 6481781
+and i._imagetype_key = 1072158
+and i._image_key = p._image_key
+and p._imagepane_key = a._imagepane_key
+and a._assaytype_key = t._assaytype_key
+and i._image_key = a1._object_key
+and a1._mgitype_key = 9
+and a1._logicaldb_key = 1
+and i._image_key = a2._object_key
+and a2._mgitype_key = 9
+and a2._logicaldb_key = 19
+and a._assay_key = a3._object_key
+and a3._mgitype_key = 8
+and a3._logicaldb_key = 1
+and a._marker_key = a4._object_key
+and a4._mgitype_key = 2
+and a4._logicaldb_key = 1
+and a4.preferred = 1
+and a._marker_key = m._marker_key
+union
+select i._refs_key, c.jnumid, p._imagepane_key,
+i.figureLabel, i.xdim, i.ydim,
+p.paneLabel, p.x, p.y, p.width, p.height, null, null,
+a1.accid as imageid, null, a3.accid as assayid,
+a4.accid as markerid, m.symbol,
+t.assayType
+from bib_citation_cache c, img_imagepane p, img_image i,
+gxd_assay a, gxd_assaytype t,
+acc_accession a1, acc_accession a3,
+acc_accession a4, mrk_marker m
+where c._refs_key = 443881
+and c._refs_key = i._refs_key
+and i._imageclass_key = 6481781
+and i._imagetype_key = 1072158
+and i._image_key = p._image_key
+and p._imagepane_key = a._imagepane_key
+and a._assaytype_key = t._assaytype_key
+and i._image_key = a1._object_key
+and a1._mgitype_key = 9
+and a1._logicaldb_key = 1
+and a._assay_key = a3._object_key
+and a3._mgitype_key = 8
+and a3._logicaldb_key = 1
+and a._marker_key = a4._object_key
+and a4._mgitype_key = 2
+and a4._logicaldb_key = 1
+and a4.preferred = 1
+and a._marker_key = m._marker_key
+and not exists (select 1 from acc_accession a2
+        where i._image_key = a2._object_key
+        and a2._mgitype_key = 9
+        and a2._logicaldb_key = 19
+        )
+)
+order by figureLabel, paneLabel
+;
+
+EOSQL
