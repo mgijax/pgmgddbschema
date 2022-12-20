@@ -6,9 +6,6 @@
 # 12/16/2022	lec
 #	- wts2-888/PWI: Move Remaining Pages from Flask+SQLAlchemy to Angular+Java API
 #
-# only include Image Panes for Full Size Images
-# only include Allele Images
-#
 
 cd `dirname $0` && . ./Configuration
 
