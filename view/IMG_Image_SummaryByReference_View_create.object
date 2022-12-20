@@ -8,6 +8,9 @@
 #
 # class = Expression
 # type = Full Size
+# insitu or gel
+# may/may not contain pixid
+#
 
 cd `dirname $0` && . ./Configuration
 
