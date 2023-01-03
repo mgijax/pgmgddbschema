@@ -12,12 +12,16 @@
 # may/may not contain pixid
 #
 # jnumid is used in an Assay and union
+#
 # 1: assay = insitu, image is used in speciment/results, pixid exists
 # 2: assay = insitu, image is used in speciment/results, pixid does not exist
+#
 # 3: assay = gel, image is used in gel, pix id exists
 # 4: assay = gel, image is used in gel, pix id does not exist
+#
 # 5: assay = insitu, image is not used in results, pixid exists
 # 6: assay = insitu, image is not used in results, pixid does not exist
+#
 # 7: assay = gel, image is not used in gel, pixid exists
 # 8: assay = gel, image is not used in gel, pixid does not exist
 #
