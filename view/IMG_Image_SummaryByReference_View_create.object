@@ -28,17 +28,15 @@ a1.accid as imageid, a2.accid as pixid, a3.accid as assayid,
 a4.accid as markerid, m.symbol,
 t.assayType
 from bib_citation_cache c, img_imagepane p, img_image i,
-gxd_insituresultimage gri, gxd_insituresult gr, gxd_specimen s, gxd_assay a, gxd_assaytype t,
+gxd_assay a, gxd_specimen s, gxd_assaytype t,
 acc_accession a1, acc_accession a2, acc_accession a3,
 acc_accession a4, mrk_marker m
 where c._refs_key = i._refs_key
 and i._imageclass_key = 6481781
 and i._imagetype_key = 1072158
 and i._image_key = p._image_key
-and p._imagepane_key = gri._imagepane_key
-and gri._result_key = gr._result_key
-and gr._specimen_key = s._specimen_key
-and s._assay_key = a._assay_key
+and c._refs_key = a._refs_key
+and a._assay_key = s._assay_key
 and a._assaytype_key = t._assaytype_key
 and i._image_key = a1._object_key
 and a1._mgitype_key = 9
@@ -62,17 +60,15 @@ a1.accid as imageid, null, a3.accid as assayid,
 a4.accid as markerid, m.symbol,
 t.assayType
 from bib_citation_cache c, img_imagepane p, img_image i,
-gxd_insituresultimage gri, gxd_insituresult gr, gxd_specimen s, gxd_assay a, gxd_assaytype t,
+gxd_assay a, gxd_specimen s, gxd_assaytype t,
 acc_accession a1, acc_accession a3,
 acc_accession a4, mrk_marker m
 where c._refs_key = i._refs_key
 and i._imageclass_key = 6481781
 and i._imagetype_key = 1072158
 and i._image_key = p._image_key
-and p._imagepane_key = gri._imagepane_key
-and gri._result_key = gr._result_key
-and gr._specimen_key = s._specimen_key
-and s._assay_key = a._assay_key
+and c._refs_key = a._refs_key
+and a._assay_key = s._assay_key
 and a._assaytype_key = t._assaytype_key
 and i._image_key = a1._object_key
 and a1._mgitype_key = 9
