@@ -101,7 +101,8 @@ where c._refs_key = i._refs_key
 and i._imageclass_key = 6481781
 and i._imagetype_key = 1072158
 and i._image_key = p._image_key
-and p._imagepane_key = a._imagepane_key
+and c._refs_key = a._refs_key
+and a._assaytype_key in (2,4,5,8)
 and a._assaytype_key = t._assaytype_key
 and i._image_key = a1._object_key
 and a1._mgitype_key = 9
@@ -132,7 +133,8 @@ where c._refs_key = i._refs_key
 and i._imageclass_key = 6481781
 and i._imagetype_key = 1072158
 and i._image_key = p._image_key
-and p._imagepane_key = a._imagepane_key
+and c._refs_key = a._refs_key
+and a._assaytype_key in (2,4,5,8)
 and a._assaytype_key = t._assaytype_key
 and i._image_key = a1._object_key
 and a1._mgitype_key = 9
