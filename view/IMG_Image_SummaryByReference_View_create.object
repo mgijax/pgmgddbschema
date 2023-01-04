@@ -14,8 +14,8 @@
 # jnumid is used in an Assay and union
 #
 # 1: assay = insitu, image is used in speciment/results
-# 2: assay = gel, image is used in gel
-# 3: assay = insitu, image is not used in results
+# 2: assay = insitu, image is not used in results
+# 3: assay = gel, image is used in gel
 # 4: assay = gel, image is not used in gel
 #
 
@@ -66,43 +66,7 @@ and a4._logicaldb_key = 1
 and a4.preferred = 1
 and a._marker_key = m._marker_key
 
--- 2: assay = gel, image is used in gel
-union
-select i._refs_key, c.jnumid, p._imagepane_key,
-i.figureLabel, i.xdim, i.ydim,
-p.paneLabel, p.x, p.y, p.width, p.height, null, null,
-a1.accid as imageid, a2.accid as pixid, a3.accid as assayid,
-a4.accid as markerid, m.symbol,
-t.assayType
-from bib_citation_cache c, img_imagepane p,
-img_image i
-        left outer join acc_accession a2 on (i._image_key = a2._object_key
-                and a2._mgitype_key = 9
-                and a2._logicaldb_key = 19
-        )
-,
-gxd_assay a, gxd_assaytype t,
-acc_accession a1, acc_accession a3,
-acc_accession a4, mrk_marker m
-where c._refs_key = i._refs_key
-and i._imageclass_key = 6481781
-and i._imagetype_key = 1072158
-and i._image_key = p._image_key
-and p._imagepane_key = a._imagepane_key
-and a._assaytype_key = t._assaytype_key
-and i._image_key = a1._object_key
-and a1._mgitype_key = 9
-and a1._logicaldb_key = 1
-and a._assay_key = a3._object_key
-and a3._mgitype_key = 8
-and a3._logicaldb_key = 1
-and a._marker_key = a4._object_key
-and a4._mgitype_key = 2
-and a4._logicaldb_key = 1
-and a4.preferred = 1
-and a._marker_key = m._marker_key
-
--- 3: assay = insitu, image is not used in results
+-- 2: assay = insitu, image is not used in results
 union
 select i._refs_key, c.jnumid, p._imagepane_key,
 i.figureLabel, i.xdim, i.ydim,
@@ -127,6 +91,44 @@ and i._image_key = p._image_key
 and c._refs_key = a._refs_key
 and a._assay_key = s._assay_key
 and not exists (select 1 from gxd_insituresult gr where s._specimen_key = gr._specimen_key)
+and a._assaytype_key = t._assaytype_key
+and i._image_key = a1._object_key
+and a1._mgitype_key = 9
+and a1._logicaldb_key = 1
+and a._assay_key = a3._object_key
+and a3._mgitype_key = 8
+and a3._logicaldb_key = 1
+and a._marker_key = a4._object_key
+and a4._mgitype_key = 2
+and a4._logicaldb_key = 1
+and a4.preferred = 1
+and a._marker_key = m._marker_key
+
+-- 3: assay = gel, image is used in gel
+union
+select i._refs_key, c.jnumid, p._imagepane_key,
+i.figureLabel, i.xdim, i.ydim,
+p.paneLabel, p.x, p.y, p.width, p.height, null, null,
+a1.accid as imageid, a2.accid as pixid, a3.accid as assayid,
+a4.accid as markerid, m.symbol,
+t.assayType
+from bib_citation_cache c, img_imagepane p,
+img_image i
+        left outer join acc_accession a2 on (i._image_key = a2._object_key
+                and a2._mgitype_key = 9
+                and a2._logicaldb_key = 19
+        )
+,
+gxd_assay a, gxd_assaytype t,
+acc_accession a1, acc_accession a3,
+acc_accession a4, mrk_marker m
+where c._refs_key = i._refs_key
+and i._imageclass_key = 6481781
+and i._imagetype_key = 1072158
+and i._image_key = p._image_key
+and c._refs_key = a._refs_key
+and a._assaytype_key in (2,4,5,8)
+and a._imagepane_key = p._imagepane_key
 and a._assaytype_key = t._assaytype_key
 and i._image_key = a1._object_key
 and a1._mgitype_key = 9
