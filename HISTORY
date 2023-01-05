@@ -1,8 +1,9 @@
 TAG: pgmgddbschema-6-0-22-??
 DATE: ?
 STAFF: lec
-wts2-888/fl2-109/PWI: Move Remaining Pages from Flask+SQLAlchemy to Angular+Java API
+wts2-888/fl2-109/fl12-111/PWI: Move Remaining Pages from Flask+SQLAlchemy to Angular+Java API
 view/IMG_Image_SummaryByReference_View_create.object
+view/ALL_SummaryByMarker_View_create.object
 
 TAG: pgmgddbschema-6-0-22-16
 DATE: 12/22/2022
