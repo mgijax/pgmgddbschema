@@ -1,35 +1,35 @@
 #!/bin/sh
 
 #
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
+# History
+#
+# 1. mpAnnots = null, disesase annotations = not null
+# 2. mpAnnots = null, disesase annotations = null
+# 3. mpAnnots = 'has data', disesase annotations = not null
+# 4. mpAnnots = 'has data', disesase annotations = null
+# 5. mpAnnots = 'no abnormal phenotype observed', disesase annotations = not null
+# 6. mpAnnots = 'no abnormal phenotype observed', disesase annotations = null
+#
+# select * from ALL_SummaryByReference_View where jnumid = 'J:64364'
 #
 
 cd `dirname $0` && . ./Configuration
 
-${PG_MGD_DBSCHEMADIR}/view/ALL_Summary_View_drop.object
+${PG_MGD_DBSCHEMADIR}/view/ALL_SummaryByReference_View_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create view mgd.ALL_Summary_View
+create view mgd.ALL_SummaryByReference_View
 as
-select a.*,
-a2.accID as mgiID,
-t.term as subType,
-al.symbol || ', ' || al.name as description,
-al.symbol as short_description
-from ACC_Accession a, ACC_Accession a2, ALL_Allele al, VOC_Term t
-where a._MGIType_key = 11
-and a.private = 0
-and a._Object_key = a2._Object_key
-and a2._LogicalDB_key = 1
-and a2._MGIType_key = 11
-and a2.prefixPart = 'MGI:'
-and a2.preferred = 1
-and a._Object_key = al._Allele_key
-and al._Allele_Type_key = t._Term_key
-
-
-
+WITH refs AS (
+select distinct r._object_key, c.jnumid
+from mgi_reference_assoc r, bib_citation_cache c
+where c._refs_key = r._refs_key
+and r._mgitype_key = 11
+)
+select r.jnumid, a.*
+from refs r, all_summarybymarker_view a
+where r._object_key = a._allele_key
 ;
 
 EOSQL
