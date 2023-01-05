@@ -3,10 +3,12 @@
 #
 # History
 #
-# 1. mpAnnots = 'has data', disesase annotations = not null
-# 2. mpAnnots = 'has data', disesase annotations = null
-# 3. mpAnnots = 'no abnormal phenotype observed', disesase annotations = not null
-# 4. mpAnnots = 'no abnormal phenotype observed', disesase annotations = null, c.jnumid
+# 1. mpAnnots = null, disesase annotations = not null
+# 2. mpAnnots = null, disesase annotations = null
+# 3. mpAnnots = 'has data', disesase annotations = not null
+# 4. mpAnnots = 'has data', disesase annotations = null
+# 5. mpAnnots = 'no abnormal phenotype observed', disesase annotations = not null
+# 6. mpAnnots = 'no abnormal phenotype observed', disesase annotations = null
 #
 # select * from ALL_SummaryByReference_View where jnumid = 'J:64364'
 #
