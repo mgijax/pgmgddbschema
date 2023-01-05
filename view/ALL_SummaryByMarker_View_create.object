@@ -22,7 +22,7 @@
 
 cd `dirname $0` && . ./Configuration
 
-2${PG_MGD_DBSCHEMADIR}/view/ALL_SummaryByMarker_View_drop.object
+${PG_MGD_DBSCHEMADIR}/view/ALL_SummaryByMarker_View_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
@@ -35,6 +35,8 @@ from all_allele a, acc_accession aa, voc_term t1, voc_term t2,
 gxd_allelegenotype g, voc_annot va, voc_term vt
 where a._marker_key = aa._object_key
 and aa._mgitype_key = 2
+and aa._logicaldb_key = 1
+and aa.preferred = 1
 and a._transmission_key = t1._term_key
 and a._allele_status_key = t2._term_key
 and a._allele_key = g._allele_key
@@ -54,6 +56,8 @@ select distinct aa.accid, a._allele_key, a.symbol, t1.term as transmission, t2.t
 from all_allele a, acc_accession aa, voc_term t1, voc_term t2
 where a._marker_key = aa._object_key
 and aa._mgitype_key = 2
+and aa._logicaldb_key = 1
+and aa.preferred = 1
 and a._transmission_key = t1._term_key
 and a._allele_status_key = t2._term_key
 and not exists(select 1 from gxd_allelegenotype g, voc_annot va
@@ -75,6 +79,8 @@ from all_allele a, acc_accession aa, voc_term t1, voc_term t2,
 gxd_allelegenotype g, voc_annot va, voc_term vt
 where a._marker_key = aa._object_key
 and aa._mgitype_key = 2
+and aa._logicaldb_key = 1
+and aa.preferred = 1
 and a._transmission_key = t1._term_key
 and a._allele_status_key = t2._term_key
 and a._allele_key = g._allele_key
@@ -95,6 +101,8 @@ select distinct aa.accid, a._allele_key, a.symbol, t1.term as transmission, t2.t
 from all_allele a, acc_accession aa, voc_term t1, voc_term t2
 where a._marker_key = aa._object_key
 and aa._mgitype_key = 2
+and aa._logicaldb_key = 1
+and aa.preferred = 1
 and a._transmission_key = t1._term_key
 and a._allele_status_key = t2._term_key
 and not exists(select 1 from gxd_allelegenotype g, voc_annot va
@@ -117,6 +125,8 @@ from all_allele a, acc_accession aa, voc_term t1, voc_term t2,
 gxd_allelegenotype g, voc_annot va, voc_term vt
 where a._marker_key = aa._object_key
 and aa._mgitype_key = 2
+and aa._logicaldb_key = 1
+and aa.preferred = 1
 and a._transmission_key = t1._term_key
 and a._allele_status_key = t2._term_key
 and a._allele_key = g._allele_key
@@ -143,6 +153,8 @@ select distinct aa.accid, a._allele_key, a.symbol, t1.term as transmission, t2.t
 from all_allele a, acc_accession aa, voc_term t1, voc_term t2
 where a._marker_key = aa._object_key
 and aa._mgitype_key = 2
+and aa._logicaldb_key = 1
+and aa.preferred = 1
 and a._transmission_key = t1._term_key
 and a._allele_status_key = t2._term_key
 and not exists(select 1 from gxd_allelegenotype g, voc_annot va
