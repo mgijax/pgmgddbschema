@@ -20,7 +20,57 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create view mgd.ALL_SummaryByReference_View
 as
 (
--- 1. mpAnnots = 'has data', disesase annotations = not null
+-- 1. mpAnnots = null, disesase annotations = not null
+select distinct c.jnumid, aa.accid, a._allele_key, a.symbol, t1.term as transmission, t2.term as alleleStatus, array_to_string(array_agg(distinct vt.term),',') as diseaseAnnots, null as mpAnnots
+from all_allele a, acc_accession aa, voc_term t1, voc_term t2, mgi_reference_assoc r, bib_citation_cache c,
+gxd_allelegenotype g, voc_annot va, voc_term vt
+where a._marker_key = aa._object_key
+and aa._mgitype_key = 2
+and aa._logicaldb_key = 1
+and aa.preferred = 1
+and a._allele_key = r._object_key
+and r._mgitype_key = 11
+and r._refs_key = c._refs_key
+and a._transmission_key = t1._term_key
+and a._allele_status_key = t2._term_key
+and a._allele_key = g._allele_key
+and g._genotype_key = va._object_key
+and va._annottype_key = 1020
+and va._term_key = vt._term_key
+and not exists (select 1 from gxd_allelegenotype g, voc_annot va 
+        where a._allele_key = g._allele_key 
+        and g._genotype_key = va._object_key 
+        and va._annottype_key = 1002
+        )
+group by aa.accid, a._allele_key, a.symbol, t1.term, t2.term, c.jnumid
+
+-- 2. mpAnnots = null, disesase annotations = null
+union
+select distinct c.jnumid, aa.accid, a._allele_key, a.symbol, t1.term as transmission, t2.term as alleleStatus, null, null
+from all_allele a, acc_accession aa, voc_term t1, voc_term t2, mgi_reference_assoc r, bib_citation_cache c
+where a._marker_key = aa._object_key
+and aa._mgitype_key = 2
+and aa._logicaldb_key = 1
+and aa.preferred = 1
+and a._allele_key = r._object_key
+and r._mgitype_key = 11
+and r._refs_key = c._refs_key
+and a._transmission_key = t1._term_key
+and a._allele_status_key = t2._term_key
+and not exists(select 1 from gxd_allelegenotype g, voc_annot va
+        where a._allele_key = g._allele_key
+        and g._genotype_key = va._object_key
+        and va._annottype_key = 1020
+        )
+and not exists (select 1 from gxd_allelegenotype g, voc_annot va 
+        where a._allele_key = g._allele_key 
+        and g._genotype_key = va._object_key 
+        and va._annottype_key = 1002
+        )
+group by aa.accid, a._allele_key, a.symbol, t1.term, t2.term, c.jnumid
+
+-- 3. mpAnnots = 'has data', disesase annotations = not null
+union
 select distinct c.jnumid, aa.accid, a._allele_key, a.symbol, t1.term as transmission, t2.term as alleleStatus, array_to_string(array_agg(distinct vt.term),',') as diseaseAnnots, 'has data' as mpAnnots
 from all_allele a, acc_accession aa, voc_term t1, voc_term t2,
 gxd_allelegenotype g, voc_annot va, voc_term vt, mgi_reference_assoc r, bib_citation_cache c
@@ -45,7 +95,7 @@ and exists (select 1 from gxd_allelegenotype g, voc_annot va
         )
 group by aa.accid, a._allele_key, a.symbol, t1.term, t2.term, c.jnumid
 
--- 2. mpAnnots = 'has data', disesase annotations = null
+-- 4. mpAnnots = 'has data', disesase annotations = null
 union
 select distinct c.jnumid, aa.accid, a._allele_key, a.symbol, t1.term as transmission, t2.term as alleleStatus, null, 'has data'
 from all_allele a, acc_accession aa, voc_term t1, voc_term t2, mgi_reference_assoc r, bib_citation_cache c
@@ -71,7 +121,7 @@ and exists (select 1 from gxd_allelegenotype g, voc_annot va
         )
 group by aa.accid, a._allele_key, a.symbol, t1.term, t2.term, c.jnumid
 
--- 3. mpAnnots = 'no abnormal phenotype observed', disesase annotations = not null
+-- 5. mpAnnots = 'no abnormal phenotype observed', disesase annotations = not null
 union
 select distinct c.jnumid, aa.accid, a._allele_key, a.symbol, t1.term as transmission, t2.term as alleleStatus, array_to_string(array_agg(distinct vt.term),','), 'no abnormal phenotype observed'
 from all_allele a, acc_accession aa, voc_term t1, voc_term t2, mgi_reference_assoc r, bib_citation_cache c,
@@ -103,7 +153,7 @@ and exists (select 1 from gxd_allelegenotype g, voc_annot va
         )
 group by aa.accid, a._allele_key, a.symbol, t1.term, t2.term, c.jnumid
 
--- 4. mpAnnots = 'no abnormal phenotype observed', disesase annotations = null, c.jnumid
+-- 6. mpAnnots = 'no abnormal phenotype observed', disesase annotations = null, c.jnumid
 union
 select distinct c.jnumid, aa.accid, a._allele_key, a.symbol, t1.term as transmission, t2.term as alleleStatus, null, 'no abnormal phenotype observed'
 from all_allele a, acc_accession aa, voc_term t1, voc_term t2, mgi_reference_assoc r, bib_citation_cache c
