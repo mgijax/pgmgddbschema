@@ -3,8 +3,11 @@
 #
 # History
 #
+# 01/06/2023	lec
+#	- wts2-888/fl2-109/PWI: Move Remaining Pages from Flask+SQLAlchemy to Angular+Java API
+#
 # 12/16/2022	lec
-#	- wts2-888/PWI: Move Remaining Pages from Flask+SQLAlchemy to Angular+Java API
+#	- wts2-888/fl2-85/PWI: Move Remaining Pages from Flask+SQLAlchemy to Angular+Java API
 #
 # class = Expression
 # type = Full Size
