@@ -22,11 +22,8 @@
 # if Image is not being used in Annotation, 
 #       then specimenLabel, assayid, markerid, symbol, assayType, specimenNote are null
 #
-# 5: assay = insitu, image is not used in results, pixid exists
-# 6: assay = insitu, image is not used in results, pixid does not exist
-#
-# 7: assay = gel, image is not used in gel, pixid exists
-# 8: assay = gel, image is not used in gel, pixid does not exist
+# 5: assay = insitu or gel, image is not used, pixid exists
+# 6: assay = insitu or gel, image is not used, pixid does not exist
 #
 
 cd `dirname $0` && . ./Configuration
@@ -39,7 +36,7 @@ create view mgd.IMG_Image_SummaryByReference_View
 as
 (
 -- 1: assay = insitu, image is used in speciment/results, pixid exists
-select i._refs_key, c.jnumid, p._imagepane_key,
+select distinct i._refs_key, c.jnumid, p._imagepane_key,
 i.figureLabel, i.xdim, i.ydim,
 p.paneLabel, p.x, p.y , p.width, p.height, s.specimenLabel, s.specimenNote,
 a1.accid as imageid, a2.accid as pixid, a3.accid as assayid,
@@ -75,7 +72,7 @@ and a._marker_key = m._marker_key
 
 -- 2: assay = insitu, image is used in speciment/results, pixid does not exist
 union
-select i._refs_key, c.jnumid, p._imagepane_key,
+select distinct i._refs_key, c.jnumid, p._imagepane_key,
 i.figureLabel, i.xdim, i.ydim,
 p.paneLabel, p.x, p.y , p.width, p.height, s.specimenLabel, s.specimenNote,
 a1.accid as imageid, null, a3.accid as assayid,
@@ -113,7 +110,7 @@ and not exists (select 1 from acc_accession a2
 
 -- 3: assay = gel, image is used in gel, pix id exists
 union
-select i._refs_key, c.jnumid, p._imagepane_key,
+select distinct i._refs_key, c.jnumid, p._imagepane_key,
 i.figureLabel, i.xdim, i.ydim,
 p.paneLabel, p.x, p.y, p.width, p.height, null, null,
 a1.accid as imageid, a2.accid as pixid, a3.accid as assayid,
@@ -146,7 +143,7 @@ and a._marker_key = m._marker_key
 
 -- 4: assay = gel, image is used in gel, pix id does not exist
 union
-select i._refs_key, c.jnumid, p._imagepane_key,
+select distinct i._refs_key, c.jnumid, p._imagepane_key,
 i.figureLabel, i.xdim, i.ydim,
 p.paneLabel, p.x, p.y, p.width, p.height, null, null,
 a1.accid as imageid, null, a3.accid as assayid,
@@ -179,9 +176,9 @@ and not exists (select 1 from acc_accession a2
         and a2._logicaldb_key = 19
         )
 
--- 5: assay = insitu, image is not used in results, pixid exists
+-- 5: assay = insitu or gel, image is not used, pixid exists
 union
-select i._refs_key, c.jnumid, p._imagepane_key,
+select distinct i._refs_key, c.jnumid, p._imagepane_key,
 i.figureLabel, i.xdim, i.ydim,
 p.paneLabel, p.x, p.y , p.width, p.height, null, null,
 a1.accid as imageid, a2.accid as pixid, null, null, null, null
@@ -201,6 +198,11 @@ and not exists (select 1 from gxd_assay a, gxd_specimen s, gxd_insituresult gr, 
         and gr._result_key = gri._result_key
         and gri._imagepane_key = p._imagepane_key
         )
+and a._imagepane_key is null
+and not exists (select 1 from gxd_assay a
+        where i._refs_key = a._refs_key
+        and a._imagepane_key = p._imagepane_key
+        )
 and i._image_key = a1._object_key
 and a1._mgitype_key = 9
 and a1._logicaldb_key = 1
@@ -208,9 +210,9 @@ and i._image_key = a2._object_key
 and a2._mgitype_key = 9
 and a2._logicaldb_key = 19
 
--- 6: assay = insitu, image is not used in results, pixid does not exist
+-- 6: assay = insitu or gel, image is not used, pixid does not exist
 union
-select i._refs_key, c.jnumid, p._imagepane_key,
+select distinct i._refs_key, c.jnumid, p._imagepane_key,
 i.figureLabel, i.xdim, i.ydim,
 p.paneLabel, p.x, p.y , p.width, p.height, null, null,
 a1.accid as imageid, null, null, null, null, null
@@ -230,55 +232,6 @@ and not exists (select 1 from gxd_assay a, gxd_specimen s, gxd_insituresult gr, 
         and gr._result_key = gri._result_key
         and gri._imagepane_key = p._imagepane_key
         )
-and i._image_key = a1._object_key
-and a1._mgitype_key = 9
-and a1._logicaldb_key = 1
-and not exists (select 1 from acc_accession a2
-        where i._image_key = a2._object_key
-        and a2._mgitype_key = 9
-        and a2._logicaldb_key = 19
-        )
-
--- 7: assay = gel, image is not used in gel, pixid exists
-union
-select i._refs_key, c.jnumid, p._imagepane_key,
-i.figureLabel, i.xdim, i.ydim,
-p.paneLabel, p.x, p.y, p.width, p.height, null, null,
-a1.accid as imageid, a2.accid as pixid, null, null, null, null
-from bib_citation_cache c, img_imagepane p, img_image i,
-gxd_assay a, acc_accession a1, acc_accession a2
-where c._refs_key = i._refs_key
-and i._imageclass_key = 6481781
-and i._imagetype_key = 1072158
-and i._image_key = p._image_key
-and c._refs_key = a._refs_key
-and a._assaytype_key in (2,4,5,8)
-and a._imagepane_key is null
-and not exists (select 1 from gxd_assay a
-        where i._refs_key = a._refs_key
-        and a._imagepane_key = p._imagepane_key
-        )
-and i._image_key = a1._object_key
-and a1._mgitype_key = 9
-and a1._logicaldb_key = 1
-and i._image_key = a2._object_key
-and a2._mgitype_key = 9
-and a2._logicaldb_key = 19
-
--- 8: assay = gel, image is not used in gel, pixid does not exist
-union
-select i._refs_key, c.jnumid, p._imagepane_key,
-i.figureLabel, i.xdim, i.ydim,
-p.paneLabel, p.x, p.y, p.width, p.height, null, null,
-a1.accid as imageid, null, null, null, null, null
-from bib_citation_cache c, img_imagepane p, img_image i,
-gxd_assay a, acc_accession a1
-where c._refs_key = i._refs_key
-and i._imageclass_key = 6481781
-and i._imagetype_key = 1072158
-and i._image_key = p._image_key
-and c._refs_key = a._refs_key
-and a._assaytype_key in (2,4,5,8)
 and a._imagepane_key is null
 and not exists (select 1 from gxd_assay a
         where i._refs_key = a._refs_key
