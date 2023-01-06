@@ -19,6 +19,9 @@
 # 3: assay = gel, image is used in gel, pix id exists
 # 4: assay = gel, image is used in gel, pix id does not exist
 #
+# if Image is not being used in Annotation, 
+#       then specimenLabel, assayid, markerid, symbol, assayType, specimenNote are null
+#
 # 5: assay = insitu, image is not used in results, pixid exists
 # 6: assay = insitu, image is not used in results, pixid does not exist
 #
@@ -183,8 +186,7 @@ i.figureLabel, i.xdim, i.ydim,
 p.paneLabel, p.x, p.y , p.width, p.height, null, null,
 a1.accid as imageid, a2.accid as pixid, null, null, null, null
 from bib_citation_cache c, img_imagepane p, img_image i,
-gxd_assay a, gxd_specimen s, gxd_assaytype t,
-acc_accession a1, acc_accession a2
+gxd_assay a, gxd_specimen s, acc_accession a1, acc_accession a2
 where c._refs_key = i._refs_key
 and i._imageclass_key = 6481781
 and i._imagetype_key = 1072158
@@ -199,7 +201,6 @@ and not exists (select 1 from gxd_assay a, gxd_specimen s, gxd_insituresult gr, 
         and gr._result_key = gri._result_key
         and gri._imagepane_key = p._imagepane_key
         )
-and a._assaytype_key = t._assaytype_key
 and i._image_key = a1._object_key
 and a1._mgitype_key = 9
 and a1._logicaldb_key = 1
@@ -214,7 +215,7 @@ i.figureLabel, i.xdim, i.ydim,
 p.paneLabel, p.x, p.y , p.width, p.height, null, null,
 a1.accid as imageid, null, null, null, null, null
 from bib_citation_cache c, img_imagepane p, img_image i,
-gxd_assay a, gxd_specimen s, gxd_assaytype t, acc_accession a1
+gxd_assay a, gxd_specimen s, acc_accession a1
 where c._refs_key = i._refs_key
 and i._imageclass_key = 6481781
 and i._imagetype_key = 1072158
@@ -229,7 +230,6 @@ and not exists (select 1 from gxd_assay a, gxd_specimen s, gxd_insituresult gr, 
         and gr._result_key = gri._result_key
         and gri._imagepane_key = p._imagepane_key
         )
-and a._assaytype_key = t._assaytype_key
 and i._image_key = a1._object_key
 and a1._mgitype_key = 9
 and a1._logicaldb_key = 1
@@ -246,8 +246,7 @@ i.figureLabel, i.xdim, i.ydim,
 p.paneLabel, p.x, p.y, p.width, p.height, null, null,
 a1.accid as imageid, a2.accid as pixid, null, null, null, null
 from bib_citation_cache c, img_imagepane p, img_image i,
-gxd_assay a, gxd_assaytype t,
-acc_accession a1, acc_accession a2
+gxd_assay a, acc_accession a1, acc_accession a2
 where c._refs_key = i._refs_key
 and i._imageclass_key = 6481781
 and i._imagetype_key = 1072158
@@ -259,7 +258,6 @@ and not exists (select 1 from gxd_assay a
         where i._refs_key = a._refs_key
         and a._imagepane_key = p._imagepane_key
         )
-and a._assaytype_key = t._assaytype_key
 and i._image_key = a1._object_key
 and a1._mgitype_key = 9
 and a1._logicaldb_key = 1
@@ -274,7 +272,7 @@ i.figureLabel, i.xdim, i.ydim,
 p.paneLabel, p.x, p.y, p.width, p.height, null, null,
 a1.accid as imageid, null, null, null, null, null
 from bib_citation_cache c, img_imagepane p, img_image i,
-gxd_assay a, gxd_assaytype t, acc_accession a1
+gxd_assay a, acc_accession a1
 where c._refs_key = i._refs_key
 and i._imageclass_key = 6481781
 and i._imagetype_key = 1072158
@@ -286,7 +284,6 @@ and not exists (select 1 from gxd_assay a
         where i._refs_key = a._refs_key
         and a._imagepane_key = p._imagepane_key
         )
-and a._assaytype_key = t._assaytype_key
 and i._image_key = a1._object_key
 and a1._mgitype_key = 9
 and a1._logicaldb_key = 1
