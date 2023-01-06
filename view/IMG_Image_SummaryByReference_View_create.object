@@ -19,7 +19,7 @@
 # 3: assay = gel, image is used in gel, pix id exists
 # 4: assay = gel, image is used in gel, pix id does not exist
 #
-# if Image is not being used in Annotation, then set specimenLabel, assayid, markerid, symbol, assayType, specimenNote = null
+# if image is not being used, then set specimenLabel, specimenNote, assayid, markerid, symbol, assayType = null
 # 5: assay = insitu or gel, image is not used, pixid exists
 # 6: assay = insitu or gel, image is not used, pixid does not exist
 #
