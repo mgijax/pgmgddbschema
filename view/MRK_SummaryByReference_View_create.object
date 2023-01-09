@@ -36,8 +36,30 @@ and m._marker_key = va._object_key
 and va._annottype_key = 1011
 and va._term_key = vt._term_key
 group by aa.jnumid, m._marker_key, m.symbol, m.name, a.accid, t1.status, t2.name, vt.term
+union
+select distinct aa.jnumid, m._marker_key, m.symbol, m.name, a.accid, t1.status as markerStatus, t2.name as markerType,
+null,
+array_to_string(array_agg(distinct s.synonym),',') as synonyms
+from bib_citation_cache aa, mrk_reference r, 
+mrk_marker m
+        left outer join mgi_synonym s on (m._marker_key = s._object_key and s._mgitype_key = 2)
+        , 
+acc_accession a, mrk_status t1, mrk_types t2
+where aa._refs_key = r._refs_key
+and r._marker_key = m._marker_key
+and m._marker_key = a._object_key
+and a._mgitype_key = 2
+and a._logicaldb_key = 1
+and a.preferred = 1
+and m._marker_status_key = t1._marker_status_key
+and m._marker_type_key = t2._marker_type_key
+and not exists (select 1 from voc_annot va
+        where m._marker_key = va._object_key
+        and va._annottype_key = 1011
+        )
+group by aa.jnumid, m._marker_key, m.symbol, m.name, a.accid, t1.status, t2.name
 )
-order by symbol
+order by markerstatus, symbol
 ;
 
 EOSQL
