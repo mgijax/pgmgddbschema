@@ -1,0 +1,93 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/GXD_Antibody_SummaryBy_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.GXD_Antibody_SummaryBy_View
+as
+(
+select a._antibody_key, a.antibodyName, a.antibodynote, t1.term as antibodyclass, t2.term as antibodytype, a1.accid as antibodyid, o1.commonname as antibodyorganism,
+a2.accid as markerid, am._marker_key, m.symbol,
+a3.accid as antigenid, ag.antigenname, ag.regioncovered, o2.commonname as antigenorganism, ag.antigennote,
+array_to_string(array_agg(distinct al.alias),',') as aliases,
+rc1.jnumid, rc1.short_citation,
+array_to_string(array_agg(rc2.jnumid||','||rc2.short_citation),'|') as jnumids
+from GXD_Antibody a
+        left outer join GXD_AntibodyAlias al on (a._antibody_key = al._antibody_key)
+        , 
+GXD_AntibodyMarker am, ACC_Accession a1, ACC_Accession a2,
+VOC_Term t1, VOC_Term t2, MGI_Organism o1,
+GXD_Antigen ag, PRB_Source ps, MGI_Organism o2, ACC_Accession a3,
+MRK_Marker m, MGI_Reference_Assoc r, BIB_Citation_Cache rc1, BIB_Citation_Cache rc2
+where a._antibody_key = am._antibody_key
+and a._antibody_key = a1._object_key
+and a1._mgitype_key = 6
+and a1._logicaldb_key = 1
+and am._marker_key = a2._object_key
+and a2._mgitype_key = 2
+and a2._logicaldb_key = 1
+and a2.preferred = 1
+and am._Marker_key = m._Marker_key
+and a._antibodyclass_key = t1._term_key
+and a._antibodytype_key = t2._term_key
+and a._organism_key = o1._organism_key
+and a._antigen_key = ag._antigen_key
+and ag._source_key = ps._source_key
+and ps._organism_key = o2._organism_key
+and a._antigen_key = a3._object_key
+and a3._mgitype_key = 7
+and a3._logicaldb_key = 1
+and a._antibody_key = r._object_key
+and r._mgitype_key = 6
+and r._refassoctype_key = 1026
+and r._refs_key = rc._refs_key
+group by a._antibody_key, a.antibodyName, a.antibodynote, t1.term, t2.term, a1.accid, o1.commonname,
+a2.accid, am._marker_key, m.symbol,
+a3.accid, ag.antigenname, ag.regioncovered, o2.commonname, ag.antigennote
+
+union
+select a._antibody_key, a.antibodyName, a.antibodynote, t1.term as antibodyclass, t2.term as antibodytype, a1.accid as antibodyid, o1.commonname as antibodyorganism,
+null, null, null,
+a3.accid as antigenid, ag.antigenname, ag.regioncovered, o2.commonname as antigenorganism, ag.antigennote,
+array_to_string(array_agg(distinct al.alias),',') as aliases,
+rc2.jnumid, rc2.short_citation,
+array_to_string(array_agg(rc.jnumid||','||rc.short_citation),'|') as jnumids
+from GXD_Antibody a
+        left outer join GXD_AntibodyAlias al on (a._antibody_key = al._antibody_key)
+        , 
+ACC_Accession a1,
+VOC_Term t1, VOC_Term t2, MGI_Organism o1,
+GXD_Antigen ag, PRB_Source ps, MGI_Organism o2, ACC_Accession a3,
+MGI_Reference_Assoc r, BIB_Citation_Cache rc
+where a._antibody_key = a1._object_key
+and a1._mgitype_key = 6
+and a1._logicaldb_key = 1
+and a._antibodyclass_key = t1._term_key
+and a._antibodytype_key = t2._term_key
+and a._organism_key = o1._organism_key
+and a._antigen_key = ag._antigen_key
+and ag._source_key = ps._source_key
+and ps._organism_key = o2._organism_key
+and a._antigen_key = a3._object_key
+and a3._mgitype_key = 7
+and a3._logicaldb_key = 1
+and a._antibody_key = r._object_key
+and r._mgitype_key = 6
+--and r._refassoctype_key = 1026
+and r._refs_key = rc._refs_key
+and not exists (select 1 from GXD_AntibodyMarker am where a._antibody_key = am._antibody_key)
+group by a._antibody_key, a.antibodyName, a.antibodynote, t1.term, t2.term, a1.accid, o1.commonname,
+a3.accid, ag.antigenname, ag.regioncovered, o2.commonname, ag.antigennote
+
+)
+order by antibodyName, antibodyid
+;
+
+EOSQL
