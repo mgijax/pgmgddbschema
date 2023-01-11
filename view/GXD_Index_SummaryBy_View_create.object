@@ -13,7 +13,7 @@ select distinct g._index_key, a1.accid as markerid, m._marker_key, m.symbol, m.n
 t1.term as indexAssay, t2.term as age,
 t3.term as priority, t4.term as conditional, 
 case when exists (select 1 from gxd_expression gx where gx._assaytype_key not in (10,11) and gx._refs_key = g._refs_key) then 1 else 0 end as isFullCoded,
-bc.jnumid, bc.short_citation
+bc.jnumid, bc.short_citation, g.comments
 from gxd_index g, gxd_index_stages gs, mrk_marker m, acc_accession a1, mrk_status s, mrk_types t, bib_citation_cache bc,
 voc_term t1, voc_term t2, voc_term t3, voc_term t4
 where g._marker_key = m._marker_key
