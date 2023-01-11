@@ -38,6 +38,7 @@ GXD_ISResultImage_View_create.object \
 GXD_ISResultStructure_View_create.object \
 GXD_ISResultCellType_View_create.object \
 GXD_InSituResult_View_create.object \
+GXD_Index_SummaryBy_View_create.object \
 GXD_Index_View_create.object \
 GXD_ProbePrep_View_create.object \
 GXD_Specimen_View_create.object \
