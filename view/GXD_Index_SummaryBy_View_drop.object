@@ -10,7 +10,7 @@ cd `dirname $0` && . ./Configuration
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 
-drop view if exists mgd.GXD_Index_SummaryByMarker_View
+drop view if exists mgd.GXD_Index_SummaryBy_View
 
 CASCADE
 ;

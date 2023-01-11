@@ -2,11 +2,11 @@
 
 cd `dirname $0` && . ./Configuration
 
-${PG_MGD_DBSCHEMADIR}/view/GXD_Index_SummaryByMarker_View_drop.object
+${PG_MGD_DBSCHEMADIR}/view/GXD_Index_SummaryBy_View_drop.object
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create view mgd.GXD_Index_SummaryByMarker_View
+create view mgd.GXD_Index_SummaryBy_View
 as
 (
 select distinct g._index_key, a1.accid as markerid, m._marker_key, m.symbol, m.name, s.status as markerStatus, t.name as markerType,
