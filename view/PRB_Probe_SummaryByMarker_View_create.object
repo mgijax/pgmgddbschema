@@ -17,7 +17,7 @@ as
 select distinct p._probe_key, p.name, m._marker_key, m.symbol, a1.accid as probeid, a2.accid as markerid, t1.term as segmenttype, 
 p.primer1sequence, p.primer2sequence, o.commonname,
 array_to_string(array_agg(distinct pa.alias),'|') as aliases,
-array_to_string(array_agg(distinct bc.jnumid),'|') as refereneces, null as parentid, null as parentname
+array_to_string(array_agg(distinct bc.jnumid),'|') as jnumids, null as parentid, null as parentname
 from PRB_Probe p, PRB_Marker pm, MRK_Marker m, ACC_Accession a1, ACC_Accession a2, VOC_Term t1, PRB_Source s, MGI_Organism o, 
 PRB_Reference r left outer join PRB_Alias pa on (r._reference_key = pa._reference_key), BIB_Citation_Cache bc
 where p._probe_key = pm._probe_key
@@ -42,7 +42,7 @@ union
 select distinct p._probe_key, p.name, m._marker_key, m.symbol, a1.accid as probeid, a2.accid as markerid, t1.term as segmenttype, 
 p.primer1sequence, p.primer2sequence, o.commonname,
 array_to_string(array_agg(distinct pa.alias),'|') as aliases,
-array_to_string(array_agg(distinct bc.jnumid),',') as refereneces,
+array_to_string(array_agg(distinct bc.jnumid),',') as jnumids,
 a3.accid as parentid, pr.name as parentname
 from PRB_Probe p, PRB_Marker pm, MRK_Marker m, ACC_Accession a1, ACC_Accession a2, VOC_Term t1, PRB_Source s, MGI_Organism o,
 PRB_Reference r left outer join PRB_Alias pa on (r._reference_key = pa._reference_key), BIB_Citation_Cache bc,
