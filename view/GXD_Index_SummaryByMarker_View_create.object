@@ -1,0 +1,36 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/GXD_Index_SummaryByMarker_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.GXD_Index_SummaryByMarker_View
+as
+(
+select distinct g._index_key, a1.accid as markerid, m._marker_key, m.symbol, m.name, s.status as markerStatus, t.name as markerType,
+t1.term as indexAssay, t2.term as age,
+t3.term as priority, t4.term as conditional, 
+case when exists (select 1 from gxd_expression gx where gx._assaytype_key not in (10,11) and gx._refs_key = g._refs_key) then 1 else 0 end as isFullCoded,
+bc.jnumid, bc.short_citation
+from gxd_index g, gxd_index_stages gs, mrk_marker m, acc_accession a1, mrk_status s, mrk_types t, bib_citation_cache bc,
+voc_term t1, voc_term t2, voc_term t3, voc_term t4
+where g._marker_key = m._marker_key
+and g._marker_key = a1._object_key
+and a1._mgitype_key = 2
+and a1._logicaldb_key = 1
+and a1.preferred = 1
+and m._marker_status_key = s._marker_status_key
+and m._marker_type_key = t._marker_type_key
+and g._index_key = gs._index_key
+and gs._indexassay_key = t1._term_key
+and gs._stageid_key = t2._term_key
+and g._refs_key = bc._refs_key
+and g._priority_key = t3._term_key
+and g._conditionalmutants_key = t4._term_key
+
+)
+order by short_citation, indexAssay
+;
+
