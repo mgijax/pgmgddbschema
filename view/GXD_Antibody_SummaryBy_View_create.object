@@ -53,7 +53,7 @@ group by a._antibody_key, a.antibodyName, t1.term, t2.term, o1.commonname, am._m
         a3.accid, ag.antigenname, ag.regioncovered, o2.commonname, ag.antigennote,
         m.symbol, rc.jnumid, rc.short_citation
 )
-order by antibodyname, antibodyid
+order by lower(antibodyname), antibodyid
 ;
 
 EOSQL

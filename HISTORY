@@ -1,3 +1,11 @@
+TAG: pgmgddbschema-6-0-22-??
+DATE: 01/11/2023
+STAFF: lec
+wts2-888/fl2-120/PWI page revamp: Antibody Summary - API component
+wts2-888/fl2-123/PWI page revamp: Probe Summary - API component
+view/GXD_Antibody_SummaryBy_View_create.object
+view/PRB_Probe_SummaryByMarker_View_create.object
+
 TAG: pgmgddbschema-6-0-22-21
 DATE: 01/10/2023
 STAFF: lec
