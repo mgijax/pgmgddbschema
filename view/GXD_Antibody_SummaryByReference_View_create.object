@@ -18,7 +18,7 @@ select a._antibody_key, a.antibodyName, a.antibodynote, t1.term as antibodyclass
 a2.accid as markerid, am._marker_key, m.symbol,
 a3.accid as antigenid, ag.antigenname, ag.regioncovered, o2.commonname as antigenorganism, ag.antigennote,
 array_to_string(array_agg(distinct al.alias),',') as aliases,
-r._refassoctype_key, rc.jnumid, rc.short_citation
+rc.jnumid, rc.short_citation
 from GXD_Antibody a
         left outer join GXD_AntibodyAlias al on (a._antibody_key = al._antibody_key)
         , 
@@ -46,18 +46,19 @@ and a3._mgitype_key = 7
 and a3._logicaldb_key = 1
 and a._antibody_key = r._object_key
 and r._mgitype_key = 6
+and r._refassoctype_key = 1026
 and r._refs_key = rc._refs_key
 group by a._antibody_key, a.antibodyName, a.antibodynote, t1.term, t2.term, a1.accid, o1.commonname,
 a2.accid, am._marker_key, m.symbol,
 a3.accid, ag.antigenname, ag.regioncovered, o2.commonname, ag.antigennote, 
-r._refassoctype_key, rc.jnumid, rc.short_citation
+rc.jnumid, rc.short_citation
 
 union
 select a._antibody_key, a.antibodyName, a.antibodynote, t1.term as antibodyclass, t2.term as antibodytype, a1.accid as antibodyid, o1.commonname as antibodyorganism,
 null, null, null,
 a3.accid as antigenid, ag.antigenname, ag.regioncovered, o2.commonname as antigenorganism, ag.antigennote,
 array_to_string(array_agg(distinct al.alias),',') as aliases,
-r._refassoctype_key, rc.jnumid, rc.short_citation
+rc.jnumid, rc.short_citation
 from GXD_Antibody a
         left outer join GXD_AntibodyAlias al on (a._antibody_key = al._antibody_key)
         , 
@@ -79,11 +80,12 @@ and a3._mgitype_key = 7
 and a3._logicaldb_key = 1
 and a._antibody_key = r._object_key
 and r._mgitype_key = 6
+and r._refassoctype_key = 1026
 and r._refs_key = rc._refs_key
 and not exists (select 1 from GXD_AntibodyMarker am where a._antibody_key = am._antibody_key)
 group by a._antibody_key, a.antibodyName, a.antibodynote, t1.term, t2.term, a1.accid, o1.commonname,
 a3.accid, ag.antigenname, ag.regioncovered, o2.commonname, ag.antigennote,
-r._refassoctype_key, rc.jnumid, rc.short_citation
+rc.jnumid, rc.short_citation
 
 )
 order by antibodyName, antibodyid
