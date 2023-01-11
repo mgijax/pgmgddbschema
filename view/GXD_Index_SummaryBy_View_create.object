@@ -31,6 +31,6 @@ and g._priority_key = t3._term_key
 and g._conditionalmutants_key = t4._term_key
 
 )
-order by short_citation, indexAssay
+order by symbol, short_citation, indexAssay
 ;
 
