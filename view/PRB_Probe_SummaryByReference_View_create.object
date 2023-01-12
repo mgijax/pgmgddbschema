@@ -3,17 +3,19 @@
 #
 # History
 #
+# 
+#
 
 cd `dirname $0` && . ./Configuration
 
-${PG_MGD_DBSCHEMADIR}/view/PRB_Probe_SummaryByMarker_View_drop.object
+${PG_MGD_DBSCHEMADIR}/view/PRB_Probe_SummaryByReference_View_drop.objecti
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-create view mgd.PRB_Probe_SummaryByMarker_View
+create view mgd.PRB_Probe_SummaryByReference_View
 as
 (
--- derivedFrom = null
+-- marker = not null, derivedFrom = null
 select distinct p._probe_key, p.name, m.symbol, a1.accid as probeid, a2.accid as markerid, t1.term as segmenttype, 
 p.primer1sequence, p.primer2sequence, o.commonname,
 array_to_string(array_agg(distinct pa.alias),'|') as aliases,
@@ -38,7 +40,7 @@ and r._refs_key = bc._refs_key
 and p.derivedFrom is null
 group by p._probe_key, p.name, m.symbol, a1.accid, a2.accid, t1.term, p.primer1sequence, p.primer2sequence, o.commonname, parentid, parentname
 
--- derivedFrom = not null
+-- marker = not null, derivedFrom = not null
 union
 select distinct p._probe_key, p.name, m.symbol, a1.accid as probeid, a2.accid as markerid, t1.term as segmenttype, 
 p.primer1sequence, p.primer2sequence, o.commonname,
@@ -68,6 +70,53 @@ and pr._probe_key = a3._object_key
 and a3._mgitype_key = 3
 and a3._logicaldb_key = 1
 group by p._probe_key, p.name, m.symbol, a1.accid, a2.accid, t1.term, p.primer1sequence, p.primer2sequence, o.commonname, parentid, parentname
+
+-- marker = null, derivedFrom = null
+union
+select distinct p._probe_key, p.name, null, a1.accid as probeid, null, t1.term as segmenttype, 
+p.primer1sequence, p.primer2sequence, o.commonname,
+array_to_string(array_agg(distinct pa.alias),'|') as aliases,
+array_to_string(array_agg(distinct bc.jnumid),'|') as jnumids, null as parentid, null as parentname
+from PRB_Probe p, ACC_Accession a1, VOC_Term t1, PRB_Source s, MGI_Organism o, 
+PRB_Reference r left outer join PRB_Alias pa on (r._reference_key = pa._reference_key), BIB_Citation_Cache bc
+where p._probe_key = a1._object_key
+and a1._mgitype_key = 3
+and a1._logicaldb_key = 1
+and a1.preferred = 1
+and p._segmenttype_key = t1._term_key
+and p._source_key = s._source_key
+and s._organism_key = o._organism_key
+and p._probe_key = r._probe_key
+and r._refs_key = bc._refs_key
+and p.derivedFrom is null
+and not exists (select 1 from PRB_Marker pm where p._probe_key = pm._probe_key)
+group by p._probe_key, p.name, a1.accid, t1.term, p.primer1sequence, p.primer2sequence, o.commonname, parentid, parentname
+
+-- marker = null, derivedFrom = not null
+union
+select distinct p._probe_key, p.name, null, a1.accid as probeid, null, t1.term as segmenttype, 
+p.primer1sequence, p.primer2sequence, o.commonname,
+array_to_string(array_agg(distinct pa.alias),'|') as aliases,
+array_to_string(array_agg(distinct bc.jnumid),',') as jnumids,
+a3.accid as parentid, pr.name as parentname
+from PRB_Probe p, ACC_Accession a1, VOC_Term t1, PRB_Source s, MGI_Organism o,
+PRB_Reference r left outer join PRB_Alias pa on (r._reference_key = pa._reference_key), BIB_Citation_Cache bc,
+PRB_Probe pr, ACC_Accession a3
+where p._probe_key = a1._object_key
+and a1._mgitype_key = 3
+and a1._logicaldb_key = 1
+and a1.preferred = 1
+and p._segmenttype_key = t1._term_key
+and p._source_key = s._source_key
+and s._organism_key = o._organism_key
+and p._probe_key = r._probe_key
+and r._refs_key = bc._refs_key
+and p.derivedFrom = pr._probe_key
+and pr._probe_key = a3._object_key
+and a3._mgitype_key = 3
+and a3._logicaldb_key = 1
+and not exists (select 1 from PRB_Marker pm where p._probe_key = pm._probe_key)
+group by p._probe_key, p.name, a1.accid, t1.term, p.primer1sequence, p.primer2sequence, o.commonname, parentid, parentname
 )
 order by name
 ;
