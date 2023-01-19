@@ -13,7 +13,8 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create view mgd.GXD_AssayResult_Summary_View
 as
 select a1.accid as assayid, ga._assay_key, ga._refs_key, ga._assaytype_key, ga._marker_key,
-ga._celltype_term_key, ga.age, 
+a4.accid as celltypeid, ga._celltype_term_key, ct.term as celltype,
+ga.age, 
 a3.accid as structureid, ga.strength, 
 ga.expressed, ga.resultnote,
 aa.jnumid,
@@ -21,7 +22,6 @@ gat.assaytype,
 gat.sequenceNum,
 a2.accid as markerid,
 m.symbol as markerSymbol,
-ct.term as celltype,
 'TS' || ga._stage_key || ':' || t1.term as structure,
 gs.specimenLabel,
 gg.isconditional,
