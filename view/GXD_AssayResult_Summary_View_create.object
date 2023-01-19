@@ -20,20 +20,23 @@ ga.expressed, ga.resultnote,
 aa.jnumid,
 gat.assaytype,
 gat.sequenceNum,
+pt.term as pattern,
 a2.accid as markerid,
 m.symbol as markerSymbol,
 'TS' || ga._stage_key || ':' || t1.term as structure,
 gs.specimenLabel,
 gg.isconditional,
-gga._allele_key_1, as1.symbol as alleleSymbol1,
-gga._allele_key_2, as2.symbol as alleleSymbol2
+n.note as alleleDetailNote
 from gxd_expression ga
         left outer join voc_term ct on (ga._celltype_term_key = ct._term_key)
         left outer join gxd_specimen gs on (ga._specimen_key = gs._specimen_key)
+        left outer join gxd_insituresult gi on (gs._specimen_key = gi._specimen_key)
+        left outer join voc_term pt on (gi._pattern_key = pt._term_key)
         left outer join gxd_genotype gg on (ga._genotype_key = gg._genotype_key)
-        left outer join gxd_allelepair gga on (ga._genotype_key = gga._genotype_key)
-        left outer join all_allele as1 on (gga._allele_key_1 = as1._allele_key)
-        left outer join all_allele as2 on (gga._allele_key_2 = as2._allele_key)
+        left outer join mgi_note n on (gg._genotype_key = n._object_key
+                        and n._mgitype_key = 12
+                        and n._notetype_key = 1016
+                        )
         left outer join acc_accession a4 on (
                 ga._celltype_term_key = a4._object_key
                 and a4._mgitype_key = 13
