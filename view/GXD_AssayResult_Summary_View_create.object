@@ -1,0 +1,67 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/GXD_AssayResult_Summary_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.GXD_AssayResult_Summary_View
+as
+select a1.accid as assayid, ga._assay_key, ga._refs_key, ga._assaytype_key, ga._marker_key,
+ga._celltype_term_key, ga.age, 
+a3.accid as structureid, ga.strength, 
+ga.expressed, ga.resultnote,
+aa.jnumid,
+gat.assaytype,
+gat.sequenceNum,
+a2.accid as markerid,
+m.symbol as markerSymbol,
+ct.term as celltype,
+'TS' || ga._stage_key || ':' || t1.term as structure,
+gs.specimenLabel,
+gg.isconditional,
+gga._allele_key_1, as1.symbol as alleleSymbol1,
+gga._allele_key_2, as2.symbol as alleleSymbol2
+from gxd_expression ga
+        left outer join voc_term ct on (ga._celltype_term_key = ct._term_key)
+        left outer join gxd_specimen gs on (ga._specimen_key = gs._specimen_key)
+        left outer join gxd_genotype gg on (ga._genotype_key = gg._genotype_key)
+        left outer join gxd_allelepair gga on (ga._genotype_key = gga._genotype_key)
+        left outer join all_allele as1 on (gga._allele_key_1 = as1._allele_key)
+        left outer join all_allele as2 on (gga._allele_key_2 = as2._allele_key)
+        left outer join acc_accession a4 on (
+                ga._celltype_term_key = a4._object_key
+                and a4._mgitype_key = 13
+                and a4._logicaldb_key = 173
+                )
+,
+bib_citation_cache aa,
+acc_accession a1,
+acc_accession a2,
+acc_accession a3,
+gxd_assaytype gat,
+mrk_marker m,
+voc_term t1
+where aa._refs_key = ga._refs_key
+and ga._assay_key = a1._object_key
+and a1._mgitype_key = 8
+and a1._logicaldb_key = 1
+and ga._marker_key = m._marker_key
+and ga._marker_key = a2._object_key
+and a2._mgitype_key = 2
+and a2._logicaldb_key = 1
+and a2.preferred = 1
+and ga._assaytype_key = gat._assaytype_key
+and ga._emapa_term_key = t1._term_key
+and ga._emapa_term_key = a3._object_key
+and a3._mgitype_key = 13
+and a3._logicaldb_key = 169
+order by _stage_key, t1.term, celltype, markerSymbol, sequenceNum, assayid, specimenLabel
+;
+
+EOSQL
