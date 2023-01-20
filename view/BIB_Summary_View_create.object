@@ -1,0 +1,55 @@
+#!/bin/sh
+
+#
+# 01/19/2022    lec
+#       wts888/fl2-138
+#       - remove BIB_AssociatedData_View
+#       - remove unused "exists" : has_go, has_mapping, has_strain
+#       - remove BIB_AssociatedData_View from API 
+#               entities/ReferneceSummary.java, Reference.java
+#               translator/ReferenceTranslator.java
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/BIB_Summary_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.BIB_Summary_View
+as
+
+select c.*, r.authors, r.title, r.year, r.vol, r.abstract, 
+
+  case when exists (select 1 from MGI_Reference_Assoc mr where r._Refs_key = mr._Refs_key and mr._MGIType_key = 11) then 1
+    else 0 end as has_alleles,
+
+  case when exists (select 1 from MGI_Reference_Assoc mr where r._Refs_key = mr._Refs_key and mr._MGIType_key = 6) then 1
+    else 0 end as has_antibodies,
+
+  case when exists (select 1 from GXD_Expression e where r._Refs_key = e._Refs_key) then 1
+    else 0 end as has_gxdassays,
+
+  case when exists (select 1 from GXD_Expression e where r._Refs_key = e._Refs_key) then 1
+    else 0 end as has_gxdresults,
+
+  case when exists (select 1 from GXD_Expression e where r._Refs_key = e._Refs_key and e._Specimen_key is not null) then 1
+    else 0 end as has_gxdspecimens,
+
+  case when exists (select 1 from GXD_Index gi where r._Refs_key = gi._Refs_key) then 1
+    else 0 end as has_gxdindex,
+
+  case when exists (select 1 from IMG_Image ii where r._Refs_key = ii._Refs_key and ii._ImageClass_key = 6481781) then 1
+    else 0 end as has_gxdimages,
+
+  case when exists (select 1 from MRK_Reference m where r._Refs_key = m._Refs_key) then 1
+    else 0 end as has_markers,
+
+  case when exists (select 1 from PRB_Reference p where r._Refs_key = p._Refs_key) then 1
+    else 0 end as has_probes
+
+from BIB_Citation_Cache c, BIB_Refs r
+where c._refs_key = r._refs_key
+;
+
+EOSQL
