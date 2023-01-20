@@ -1,7 +1,10 @@
 #!/bin/sh
 
 #
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
+# 1 : insitu assays, genotype with allele note
+# 2 : insitu assays, genotype with no allele note
+# 3 : gel assays, genotype with allele note
+# 4 : gel assays, genotype with no allele note
 #
 
 cd `dirname $0` && . ./Configuration
@@ -13,42 +16,132 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create view mgd.GXD_AssayResult_Summary_View
 as
 (
-select a1.accid as assayid, ga._assay_key, ga._refs_key, ga._assaytype_key, ga._marker_key,
-a4.accid as celltypeid, ga._celltype_term_key, ct.term as celltype,
-ga.age, 
-a3.accid as structureid, ga.strength, 
-ga.expressed, ga.resultnote,
-aa.jnumid,
-gat.assaytype,
-gat.sequenceNum,
-pt.term as pattern,
-a2.accid as markerid,
-m.symbol as markerSymbol,
-'TS' || ga._stage_key || ':' || t1.term as structure,
+select distinct a1.accid as assayid, ga._assay_key, ga._refs_key, ga._assaytype_key, ga._marker_key,
+ga._stage_key, 'TS' || ga._stage_key || ':' || et.term as structure, a3.accid as structureid,
+ga.age, ga.strength, ga.resultnote,
+aa.jnumid, gat.assaytype, gat.sequenceNum, pt.term as pattern,
+a2.accid as markerid, m.symbol as markerSymbol,
 gs.specimenLabel,
 gg.isconditional,
+a4.accid as celltypeid, ga._celltype_term_key, ct.term as celltype,
 n.note as alleleDetailNote
 from gxd_expression ga
         left outer join voc_term ct on (ga._celltype_term_key = ct._term_key)
-        left outer join gxd_specimen gs on (ga._specimen_key = gs._specimen_key)
-        left outer join gxd_insituresult gi on (gs._specimen_key = gi._specimen_key)
-        left outer join voc_term pt on (gi._pattern_key = pt._term_key)
         left outer join acc_accession a4 on (
                 ga._celltype_term_key = a4._object_key
                 and a4._mgitype_key = 13
                 and a4._logicaldb_key = 173
                 )
-,
-gxd_genotype gg,
-bib_citation_cache aa,
-acc_accession a1,
-acc_accession a2,
-acc_accession a3,
-gxd_assaytype gat,
-mrk_marker m,
-voc_term t1,
-mgi_note n
-where ga._genotype_key = gg._genotype_key
+        ,
+     gxd_genotype gg,
+     mgi_note n,
+     gxd_specimen gs,
+     gxd_insituresult gi,
+     bib_citation_cache aa,
+     acc_accession a1,
+     acc_accession a2,
+     acc_accession a3,
+     gxd_assaytype gat,
+     mrk_marker m,
+     voc_term et,
+     voc_term pt
+where ga._specimen_key is not null
+and ga._genotype_key = gg._genotype_key
+and aa._refs_key = ga._refs_key
+and ga._assay_key = a1._object_key
+and a1._mgitype_key = 8
+and a1._logicaldb_key = 1
+and ga._marker_key = m._marker_key
+and ga._marker_key = a2._object_key
+and a2._mgitype_key = 2
+and a2._logicaldb_key = 1
+and a2.preferred = 1
+and ga._emapa_term_key = a3._object_key
+and a3._mgitype_key = 13
+and a3._logicaldb_key = 169
+and ga._assaytype_key = gat._assaytype_key
+and ga._emapa_term_key = et._term_key
+and ga._specimen_key = gs._specimen_key
+and gs._specimen_key = gi._specimen_key
+and gi._pattern_key = pt._term_key
+and gg._genotype_key = n._object_key
+and n._mgitype_key = 12
+and n._notetype_key = 1016
+union
+select distinct a1.accid as assayid, ga._assay_key, ga._refs_key, ga._assaytype_key, ga._marker_key,
+ga._stage_key, 'TS' || ga._stage_key || ':' || et.term as structure, a3.accid as structureid,
+ga.age, ga.strength, ga.resultnote,
+aa.jnumid, gat.assaytype, gat.sequenceNum, pt.term as pattern,
+a2.accid as markerid, m.symbol as markerSymbol,
+gs.specimenLabel,
+gg.isconditional,
+a4.accid as celltypeid, ga._celltype_term_key, ct.term as celltype,
+null
+from gxd_expression ga
+        left outer join voc_term ct on (ga._celltype_term_key = ct._term_key)
+        left outer join acc_accession a4 on (
+                ga._celltype_term_key = a4._object_key
+                and a4._mgitype_key = 13
+                and a4._logicaldb_key = 173
+                )
+        ,
+     gxd_genotype gg,
+     gxd_specimen gs,
+     gxd_insituresult gi,
+     bib_citation_cache aa,
+     acc_accession a1,
+     acc_accession a2,
+     acc_accession a3,
+     gxd_assaytype gat,
+     mrk_marker m,
+     voc_term et,
+     voc_term pt
+where ga._specimen_key is not null
+and ga._genotype_key = gg._genotype_key
+and aa._refs_key = ga._refs_key
+and ga._assay_key = a1._object_key
+and a1._mgitype_key = 8
+and a1._logicaldb_key = 1
+and ga._marker_key = m._marker_key
+and ga._marker_key = a2._object_key
+and a2._mgitype_key = 2
+and a2._logicaldb_key = 1
+and a2.preferred = 1
+and ga._emapa_term_key = a3._object_key
+and a3._mgitype_key = 13
+and a3._logicaldb_key = 169
+and ga._assaytype_key = gat._assaytype_key
+and ga._emapa_term_key = et._term_key
+and ga._specimen_key = gs._specimen_key
+and gs._specimen_key = gi._specimen_key
+and gi._pattern_key = pt._term_key
+and not exists (select 1 from mgi_note n 
+        where gg._genotype_key = n._object_key
+        and n._mgitype_key = 12
+        and n._notetype_key = 1016
+        )
+union
+select distinct a1.accid as assayid, ga._assay_key, ga._refs_key, ga._assaytype_key, ga._marker_key,
+ga._stage_key, 'TS' || ga._stage_key || ':' || et.term as structure, a3.accid as structureid,
+ga.age, ga.strength, ga.resultnote,
+aa.jnumid, gat.assaytype, gat.sequenceNum, null,
+a2.accid as markerid, m.symbol as markerSymbol,
+null,
+gg.isconditional,
+null, ga._celltype_term_key, null,
+n.note as alleleDetailNote
+from gxd_expression ga,
+     gxd_genotype gg,
+     mgi_note n,
+     bib_citation_cache aa,
+     acc_accession a1,
+     acc_accession a2,
+     acc_accession a3,
+     gxd_assaytype gat,
+     mrk_marker m,
+     voc_term et
+where ga._specimen_key is null
+and ga._genotype_key = gg._genotype_key
 and aa._refs_key = ga._refs_key
 and ga._assay_key = a1._object_key
 and a1._mgitype_key = 8
@@ -59,15 +152,55 @@ and a2._mgitype_key = 2
 and a2._logicaldb_key = 1
 and a2.preferred = 1
 and ga._assaytype_key = gat._assaytype_key
-and ga._emapa_term_key = t1._term_key
+and ga._emapa_term_key = et._term_key
 and ga._emapa_term_key = a3._object_key
 and a3._mgitype_key = 13
 and a3._logicaldb_key = 169
 and gg._genotype_key = n._object_key
 and n._mgitype_key = 12
 and n._notetype_key = 1016
+union
+select distinct a1.accid as assayid, ga._assay_key, ga._refs_key, ga._assaytype_key, ga._marker_key,
+ga._stage_key, 'TS' || ga._stage_key || ':' || et.term as structure, a3.accid as structureid,
+ga.age, ga.strength, ga.resultnote,
+aa.jnumid, gat.assaytype, gat.sequenceNum, null,
+a2.accid as markerid, m.symbol as markerSymbol,
+null,
+gg.isconditional,
+null, ga._celltype_term_key, null,
+null
+from gxd_expression ga,
+     gxd_genotype gg,
+     bib_citation_cache aa,
+     acc_accession a1,
+     acc_accession a2,
+     acc_accession a3,
+     gxd_assaytype gat,
+     mrk_marker m,
+     voc_term et
+where ga._specimen_key is null
+and ga._genotype_key = gg._genotype_key
+and aa._refs_key = ga._refs_key
+and ga._assay_key = a1._object_key
+and a1._mgitype_key = 8
+and a1._logicaldb_key = 1
+and ga._marker_key = m._marker_key
+and ga._marker_key = a2._object_key
+and a2._mgitype_key = 2
+and a2._logicaldb_key = 1
+and a2.preferred = 1
+and ga._emapa_term_key = a3._object_key
+and a3._mgitype_key = 13
+and a3._logicaldb_key = 169
+and ga._assaytype_key = gat._assaytype_key
+and ga._emapa_term_key = et._term_key
+and not exists (select 1 from mgi_note n 
+        where gg._genotype_key = n._object_key
+        and n._mgitype_key = 12
+        and n._notetype_key = 1016
+        )
 )
-order by _stage_key, t1.term, celltype, markerSymbol, sequenceNum, assayid, specimenLabel
+order by _stage_key, structure, celltype, markerSymbol, sequenceNum, assayid, specimenLabel
 ;
 
 EOSQL
