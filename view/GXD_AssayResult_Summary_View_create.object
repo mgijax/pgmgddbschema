@@ -61,7 +61,6 @@ and a3._logicaldb_key = 169
 and ga._assaytype_key = gat._assaytype_key
 and ga._emapa_term_key = et._term_key
 and ga._specimen_key = gs._specimen_key
-and gs._specimen_key = gi._specimen_key
 and gg._genotype_key = n._object_key
 and n._mgitype_key = 12
 and n._notetype_key = 1016
@@ -85,7 +84,6 @@ from gxd_expression ga
         ,
      gxd_genotype gg,
      gxd_specimen gs,
-     gxd_insituresult gi,
      bib_citation_cache aa,
      acc_accession a1,
      acc_accession a2,
@@ -110,7 +108,6 @@ and a3._logicaldb_key = 169
 and ga._assaytype_key = gat._assaytype_key
 and ga._emapa_term_key = et._term_key
 and ga._specimen_key = gs._specimen_key
-and gs._specimen_key = gi._specimen_key
 and not exists (select 1 from mgi_note n 
         where gg._genotype_key = n._object_key
         and n._mgitype_key = 12
