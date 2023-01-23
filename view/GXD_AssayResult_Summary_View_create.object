@@ -19,7 +19,7 @@ as
 select distinct a1.accid as assayid, ga._assay_key, ga._refs_key, ga._assaytype_key, ga._marker_key,
 ga._stage_key, 'TS' || ga._stage_key || ':' || et.term as structure, a3.accid as structureid,
 ga.age, ga.strength, ga.resultnote,
-aa.jnumid, gat.assaytype, gat.sequenceNum, pt.term as pattern,
+aa.jnumid, gat.assaytype, gat.sequenceNum,
 a2.accid as markerid, m.symbol as markerSymbol,
 gs.specimenLabel,
 gg.isconditional,
@@ -43,8 +43,7 @@ from gxd_expression ga
      acc_accession a3,
      gxd_assaytype gat,
      mrk_marker m,
-     voc_term et,
-     voc_term pt
+     voc_term et
 where ga._specimen_key is not null
 and ga._genotype_key = gg._genotype_key
 and aa._refs_key = ga._refs_key
@@ -63,7 +62,6 @@ and ga._assaytype_key = gat._assaytype_key
 and ga._emapa_term_key = et._term_key
 and ga._specimen_key = gs._specimen_key
 and gs._specimen_key = gi._specimen_key
-and gi._pattern_key = pt._term_key
 and gg._genotype_key = n._object_key
 and n._mgitype_key = 12
 and n._notetype_key = 1016
@@ -71,7 +69,7 @@ union
 select distinct a1.accid as assayid, ga._assay_key, ga._refs_key, ga._assaytype_key, ga._marker_key,
 ga._stage_key, 'TS' || ga._stage_key || ':' || et.term as structure, a3.accid as structureid,
 ga.age, ga.strength, ga.resultnote,
-aa.jnumid, gat.assaytype, gat.sequenceNum, pt.term as pattern,
+aa.jnumid, gat.assaytype, gat.sequenceNum, 
 a2.accid as markerid, m.symbol as markerSymbol,
 gs.specimenLabel,
 gg.isconditional,
@@ -94,8 +92,7 @@ from gxd_expression ga
      acc_accession a3,
      gxd_assaytype gat,
      mrk_marker m,
-     voc_term et,
-     voc_term pt
+     voc_term et
 where ga._specimen_key is not null
 and ga._genotype_key = gg._genotype_key
 and aa._refs_key = ga._refs_key
@@ -114,7 +111,6 @@ and ga._assaytype_key = gat._assaytype_key
 and ga._emapa_term_key = et._term_key
 and ga._specimen_key = gs._specimen_key
 and gs._specimen_key = gi._specimen_key
-and gi._pattern_key = pt._term_key
 and not exists (select 1 from mgi_note n 
         where gg._genotype_key = n._object_key
         and n._mgitype_key = 12
@@ -124,7 +120,7 @@ union
 select distinct a1.accid as assayid, ga._assay_key, ga._refs_key, ga._assaytype_key, ga._marker_key,
 ga._stage_key, 'TS' || ga._stage_key || ':' || et.term as structure, a3.accid as structureid,
 ga.age, ga.strength, ga.resultnote,
-aa.jnumid, gat.assaytype, gat.sequenceNum, null,
+aa.jnumid, gat.assaytype, gat.sequenceNum, 
 a2.accid as markerid, m.symbol as markerSymbol,
 null,
 gg.isconditional,
@@ -163,7 +159,7 @@ union
 select distinct a1.accid as assayid, ga._assay_key, ga._refs_key, ga._assaytype_key, ga._marker_key,
 ga._stage_key, 'TS' || ga._stage_key || ':' || et.term as structure, a3.accid as structureid,
 ga.age, ga.strength, ga.resultnote,
-aa.jnumid, gat.assaytype, gat.sequenceNum, null,
+aa.jnumid, gat.assaytype, gat.sequenceNum, 
 a2.accid as markerid, m.symbol as markerSymbol,
 null,
 gg.isconditional,
