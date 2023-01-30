@@ -85,6 +85,8 @@ and ma._MGIType_key = 2
 and ma._LogicalDB_key in (55, 114)
 and ma.preferred = 1
 and m2._Organism_key != 1
+-- allele is not a recombniase
+and not exists (select 1 from VOC_Annot va where va._AnnotType_key = 1014 and r._Object_key_1 = va._Object_key and va._Term_key = 11025588)
 ;
 
 EOSQL
