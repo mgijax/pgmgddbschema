@@ -12,6 +12,7 @@
 #
 # 1003 | mutation_involves  
 # 1004 | expresses_component
+# 1006 | driver_component
 #
 
 cd `dirname $0` && . ./Configuration
@@ -47,7 +48,6 @@ and aa._LogicalDB_key = 1
 and aa.preferred = 1
 and r._Object_key_2 = ma._Object_key
 and ma._MGIType_key = 2
-and ma._LogicalDB_key = 1
 and ma.preferred = 1
 
 ;
