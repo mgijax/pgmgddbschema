@@ -71,7 +71,7 @@ from MGI_Relationship r
         BIB_Citation_Cache c, MGI_User u1, MGI_User u2, 
 	MGI_Relationship_Category v1, VOC_Term v2, VOC_Term v3, VOC_Term v4,
 	ALL_Allele a, MRK_Marker m, ACC_Accession aa, MGI_Organism o
-where r._Category_key in (1006)
+where r._Category_key in (1004,1006)
 and r._Category_key = v1._Category_key
 and r._RelationshipTerm_key = v2._Term_key
 and r._Qualifier_key = v3._Term_key
