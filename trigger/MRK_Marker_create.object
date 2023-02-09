@@ -201,16 +201,16 @@ BEGIN
 --      NEW 
 --
 
--- No duplicates
-IF (SELECT count(*) FROM MRK_Marker WHERE _Marker_Status_key in (1,3) AND symbol = NEW.symbol) > 1
-THEN
-    RAISE EXCEPTION E'Symbol "%" already exists\n', NEW.symbol;
-    RETURN NEW;
-END IF;
-
 -- Only Mouse Markers use the rest of this trigger
 IF (NEW._Organism_key != 1)
 THEN
+    RETURN NEW;
+END IF;
+
+-- No duplicates
+IF (SELECT count(*) FROM MRK_Marker WHERE _Organism_key = 1 AND _Marker_Status_key in (1,3) AND symbol = NEW.symbol) > 1
+THEN
+    RAISE EXCEPTION E'Symbol "%" already exists\n', NEW.symbol;
     RETURN NEW;
 END IF;
 
