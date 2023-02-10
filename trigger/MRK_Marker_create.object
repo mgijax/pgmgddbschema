@@ -201,7 +201,7 @@ BEGIN
 --      NEW 
 --
 
--- Only Mouse Markers use this trigger
+-- Only Mouse Markers use the rest of this trigger
 IF (NEW._Organism_key != 1)
 THEN
     RETURN NEW;
