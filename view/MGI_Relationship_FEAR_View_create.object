@@ -71,7 +71,7 @@ from MGI_Relationship r
         BIB_Citation_Cache c, MGI_User u1, MGI_User u2, 
 	MGI_Relationship_Category v1, VOC_Term v2, VOC_Term v3, VOC_Term v4,
 	ALL_Allele a, MRK_Marker m, ACC_Accession aa, MGI_Organism o
-where r._Category_key in (1004)
+where r._Category_key in (1004,1006)
 and r._Category_key = v1._Category_key
 and r._RelationshipTerm_key = v2._Term_key
 and r._Qualifier_key = v3._Term_key
@@ -88,45 +88,6 @@ and aa._MGIType_key = 11
 and aa._LogicalDB_key = 1
 and aa.preferred = 1
 
-union
-
--- non-mouse, may/may not have ldb = 55 (Entrez Gene), 114 (SGD)
-select r.*, v1.name as categoryTerm, v2.term as relationshipTerm, v3.term as qualifierTerm, v4.term as evidenceTerm,
-a.symbol as alleleSymbol, m.symbol as markerSymbol,
-c.jnumID, c.numericPart as jnum, c.short_citation, u2.login as modifiedBy, u1.login as createdBy, 
-aa.accID as alleleAccId, ma.accID as markerAccID, o._organism_key, o.commonname as organism
-from MGI_Relationship r 
-        left outer join ACC_Accession ma on (
-                r._Object_key_2 = ma._Object_key
-                and ma._MGIType_key = 2
-                and ma._LogicalDB_key in (55, 114)
-                and ma.preferred = 1
-        ),
-        BIB_Citation_Cache c, MGI_User u1, MGI_User u2, 
-	MGI_Relationship_Category v1, VOC_Term v2, VOC_Term v3, VOC_Term v4,
-	ALL_Allele a, MRK_Marker m, ACC_Accession aa, MGI_Organism o
-where r._Category_key in (1006)
-and r._Category_key = v1._Category_key
-and r._RelationshipTerm_key = v2._Term_key
-and r._Qualifier_key = v3._Term_key
-and r._Evidence_key = v4._Term_key
-and r._Object_key_1 = a._Allele_key
-and r._Object_key_2 = m._Marker_key
-and m._Organism_key != 1
-and m._Organism_key = o._Organism_key
-and r._Refs_key = c._Refs_key
-and r._CreatedBy_key = u1._User_key
-and r._ModifiedBy_key = u2._User_key
-and r._Object_key_1 = aa._Object_key
-and aa._MGIType_key = 11
-and aa._LogicalDB_key = 1
-and aa.preferred = 1
--- allele is not a recombniase
-and not exists (select 1 from VOC_Annot va 
-        where va._AnnotType_key = 1014 
-        and r._Object_key_1 = va._Object_key 
-        and va._Term_key = 11025588
-        )
 ;
 
 EOSQL
