@@ -17,7 +17,8 @@ CREATE OR REPLACE FUNCTION MGI_addSetMember (
 v_setKey int,
 v_objectKey int,
 v_userKey int,
-v_label text
+v_label text,
+v_stageKey int DEFAULT 0
 )
 RETURNS VOID AS
 \$\$
@@ -25,6 +26,7 @@ RETURNS VOID AS
 DECLARE
 v_newSetMemberKey int;
 v_newSeqKey int;
+v_newSetMemberEmapaKey int;
 
 BEGIN
 
@@ -42,6 +44,7 @@ BEGIN
 -- v_objectKey   : should match v_setKey
 -- v_userKey     : MGI_User._User_key
 -- v_label       : MGI_SetMember.label
+-- v_stageKey    : GXD_TheilerStage._Stage_key
 --
 -- RETURNS:
 --	VOID
@@ -49,6 +52,7 @@ BEGIN
 
 v_newSetMemberKey := max(_SetMember_key) + 1 from MGI_SetMember;
 v_newSeqKey := max(sequenceNum) + 1 from MGI_SetMember where _Set_key = v_setKey and _CreatedBy_key = v_userKey;
+v_newSetMemberEmapaKey := max(_SetMember_Emapa_key) + 1 from MGI_SetMember_EMAPA;
 
 IF v_newSeqKey is null THEN
 	v_newSeqKey := 1;
@@ -59,6 +63,13 @@ IF NOT EXISTS (select * from MGI_SetMember where _set_key = v_setKey and _object
 	INSERT INTO MGI_SetMember
 	SELECT v_newSetMemberKey, v_setKey, v_objectKey, v_label, v_newSeqKey, v_userKey, v_userKey, now(), now()
 	;
+
+        IF v_stageKey != 0 THEN
+                INSERT INTO MGI_SetMember_EMAPA
+                SELECT v_newSetMemberEmapaKey, v_newSetMemberKey, v._stageKey, v_userKey, v_userKey, now(), now()
+                ;
+        END IF;
+
 END IF;
 
 RETURN
@@ -68,8 +79,8 @@ END;
 \$\$
 LANGUAGE plpgsql;
 
-GRANT EXECUTE ON FUNCTION MGI_addSetMember(int,int,int,text) TO public;
+GRANT EXECUTE ON FUNCTION MGI_addSetMember(int,int,int,text,int) TO public;
 
-COMMENT ON FUNCTION mgd.MGI_addSetMember(int,int,int,text) IS 'add Genotype/Stage used in Assay to Genotype Clipboard';
+COMMENT ON FUNCTION mgd.MGI_addSetMember(int,int,int,text,int) IS 'add set member to mgi_setmember & mgi_setmember_emapa';
 
 EOSQL
