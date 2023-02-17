@@ -68,7 +68,7 @@ IF v_setKey != 1046 AND
 
 END IF;
 
-IF v_setKey != 1046 AND
+IF v_setKey == 1046 AND
         NOT EXISTS (select * from MGI_SetMember s, MGI_SetMember_EMAPA e
                 where s._set_key = v_setKey 
                 and s._object_key = v_objectKey 
