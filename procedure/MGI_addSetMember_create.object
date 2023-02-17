@@ -66,6 +66,7 @@ IF v_setKey != 1046 AND
         SELECT v_newSetMemberKey, v_setKey, v_objectKey, v_label, v_newSeqKey, v_userKey, v_userKey, now(), now()
         ;
 
+        RETURN;
 END IF;
 
 IF v_setKey == 1046 AND
@@ -84,10 +85,9 @@ IF v_setKey == 1046 AND
                 SELECT v_newSetMemberEmapaKey, v_newSetMemberKey, v._stageKey, v_userKey, v_userKey, now(), now()
                 ;
 
-END IF;
+        RETURN;
 
-RETURN
-;
+END IF;
 
 END;
 \$\$
