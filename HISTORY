@@ -2,9 +2,11 @@ TAG: pgmgddbschema-6-0-22-??
 DATE: 01/18/2023
 STAFF: lec
 wts2-888/fl2-138/PWI page revamp: Reference Summary - API component
+wts2-888/revamp EMAPA/Cell Type clipboard
 view/BIB_Summary_View_create.object
 view/BIB_Summary_View_create.object
 drop view if exists mgd.BIB_AssociatedData;
+
 
 TAG: pgmgddbschema-6-0-22-22
 DATE: 01/18/2023
