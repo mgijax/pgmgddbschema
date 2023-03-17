@@ -17,11 +17,10 @@ create view mgd.MGI_Synonym_MusMarker_View
 as
 select s.*, t._Organism_key, t.synonymType, t.allowOnlyOne, 
 c.jnumID, c.numericPart as jnum, c.short_citation, u2.login as modifiedBy, u1.login as createdBy
-from MGI_Synonym s, MGI_SynonymType t, BIB_Citation_Cache c, MGI_User u1, MGI_User u2
+from MGI_Synonym s left outer join BIB_Citation_Cache c on (s._Refs_key = c._Refs_key), MGI_SynonymType t, MGI_User u1, MGI_User u2
 where s._SynonymType_key = t._SynonymType_key
 and t._MGIType_key = 2
 and t._Organism_key = 1
-and s._Refs_key = c._Refs_key
 and s._CreatedBy_key = u1._User_key
 and s._ModifiedBy_key = u2._User_key
 
