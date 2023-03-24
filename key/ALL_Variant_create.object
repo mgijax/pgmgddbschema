@@ -11,9 +11,9 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.ALL_Variant ADD PRIMARY KEY (_Variant_key);
 
-ALTER TABLE mgd.ALL_Variant_Sequence ADD FOREIGN KEY (_Variant_key) REFERENCES mgd.ALL_Variant ON DELETE CASCADE DEFERRABLE;
-
 ALTER TABLE mgd.ALL_Variant ADD FOREIGN KEY (_SourceVariant_key) REFERENCES mgd.ALL_Variant DEFERRABLE;
+
+ALTER TABLE mgd.ALL_Variant_Sequence ADD FOREIGN KEY (_Variant_key) REFERENCES mgd.ALL_Variant ON DELETE CASCADE DEFERRABLE;
 
 
 EOSQL
