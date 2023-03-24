@@ -17,6 +17,7 @@ ACC_create.logical \
 ALL_create.logical \
 MRK_create.logical \
 IMG_create.logical \
+MAP_create.logical \
 MGI_create.logical \
 MLD_create.logical \
 DAG_create.logical \
