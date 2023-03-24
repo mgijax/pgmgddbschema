@@ -6,7 +6,7 @@ wts2-888/revamp EMAPA/Cell Type clipboard
 view/BIB_Summary_View_create.object
 view/BIB_Summary_View_create.object
 drop view if exists mgd.BIB_AssociatedData;
-
+view/MAP_GM_Coord_Feature_View_create.object (sc)
 
 TAG: pgmgddbschema-6-0-22-22
 DATE: 01/18/2023
