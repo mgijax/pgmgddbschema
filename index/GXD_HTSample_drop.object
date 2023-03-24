@@ -30,6 +30,9 @@ drop index if exists mgd.GXD_HTSample_idx_Stage_key
 drop index if exists mgd.GXD_HTSample_idx_Genotype_key
 ;
 
+drop index if exists mgd.GXD_HTSample_idx_CellType_Term_key
+;
+
 drop index if exists mgd.GXD_HTSample_idx_CreatedBy_key
 ;
 
