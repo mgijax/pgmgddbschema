@@ -15,8 +15,21 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create view mgd.MAP_GM_Coord_Feature_View
 as
-select c.name as collectionName, f._feature_key, a1.accid as seqID, ch._chromosome_key, ch.chromosome as genomicChromosome, f._object_key as _sequence_key, f.startcoordinate, f.endcoordinate, f.strand, f._createdby_key, f._modifiedby_key, f.creation_date, f.modification_date
-from map_coord_collection c, map_coordinate mc, map_coord_feature f, mrk_chromosome ch, acc_accession a1
+select f._feature_key, 
+    c.name as collectionName,
+    a1.accid as seqID, 
+    ch._chromosome_key, 
+    ch.chromosome as genomicChromosome, 
+    f._object_key as _sequence_key, 
+    f.startcoordinate, 
+    f.endcoordinate, 
+    f.strand, 
+    f._createdby_key, 
+    f._modifiedby_key, 
+    f.creation_date, 
+    f.modification_date
+from map_coord_collection c, map_coordinate mc, map_coord_feature f, 
+    mrk_chromosome ch, acc_accession a1
 where c.name in ('NCBI Gene Model', 'VISTA Gene Model', 'Ensembl Reg Gene Model', 'Ensembl Gene Model')
 and c._collection_key  = mc._collection_key
 and mc._object_key = ch._chromosome_key
