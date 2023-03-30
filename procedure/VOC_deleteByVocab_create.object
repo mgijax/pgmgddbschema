@@ -1,8 +1,12 @@
 #!/bin/sh
 
 #
+# EXPLAIN (ANALYZE, BUFFERS, TIMING)
+#
 # History
 #
+# 03/30/2023    lec
+#       wts2-1147/fl2-270/added VOC_deleteByVocab_create.object ; used by vocload/loadTerm.py
 #
 
 cd `dirname $0` && . ./Configuration
@@ -27,8 +31,11 @@ BEGIN
 --
 -- DESCRIPTION:
 --        
+--      delete all terms of the given v_vocabKey by iteration.
+--      This seems to work a lot faster than just using the _vocab_key.
+--
 -- INPUT:
---	None
+--	v_vocabKey : VOC_Term._Vccab_key
 --
 -- RETURNS:
 --	VOID
@@ -54,3 +61,4 @@ GRANT EXECUTE ON FUNCTION VOC_deleteByVocab(int) TO public;
 COMMENT ON FUNCTION mgd.VOC_deleteByVocab(int) IS 'delete all vocabulary terms by _vocab_key';
 
 EOSQL
+
