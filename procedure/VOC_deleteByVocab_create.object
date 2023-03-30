@@ -1,0 +1,56 @@
+#!/bin/sh
+
+#
+# History
+#
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/VOC_deleteByVocab_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION VOC_deleteByVocab (
+v_vocabKey int
+)
+RETURNS VOID AS
+\$\$
+ 
+DECLARE
+rec record;
+
+BEGIN
+
+--
+-- NAME: VOC_deleteByVocab
+--
+-- DESCRIPTION:
+--        
+-- INPUT:
+--	None
+--
+-- RETURNS:
+--	VOID
+--      
+
+FOR rec IN
+SELECT t._term_key
+FROM VOC_Term t
+WHERE t._vocab_key = v_vocabKey
+LOOP
+    --RAISE NOTICE '_term_key = %', rec._term_key;
+    DELETE FROM VOC_Term where _Vocab_key = v_vocabKey and _Term_key = rec._term_key;   
+END LOOP;
+
+RETURN;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION VOC_deleteByVocab(int) TO public;
+
+COMMENT ON FUNCTION mgd.VOC_deleteByVocab(int) IS 'delete all vocabulary terms by _vocab_key';
+
+EOSQL

@@ -1,0 +1,182 @@
+#!/bin/sh
+
+#
+# History
+#
+# The MP Annotations column has 3 possible values:
+#       (1,2) blank - there are no annotations.
+#       (3,4) has data - there is at least 1 MP annotation to an "abnormal" term.
+#       (5,6) no abnormal phenotype observed - all annotations have the "norm" qualifier. 
+#       NOTE: this includes annotations to MP:0003012 "no phenotypic analysis".
+#
+# 1. mpAnnots = null, disesase annotations = not null
+# 2. mpAnnots = null, disesase annotations = null
+# 3. mpAnnots = 'has data', disesase annotations = not null
+# 4. mpAnnots = 'has data', disesase annotations = null
+# 5. mpAnnots = 'no abnormal phenotype observed', disesase annotations = not null
+# 6. mpAnnots = 'no abnormal phenotype observed', disesase annotations = null
+#
+# select * from ALL_SummaryByMarker_View where accid = 'MGI:97490'
+# select * from ALL_SummaryByMarker_View where accid = 'MGI:1856228'
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/ALL_SummaryByMarker_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.ALL_SummaryByMarker_View
+as
+(
+-- 1. mpAnnots = null, disesase annotations = not null
+select distinct aa.accid, a._allele_key, a.symbol, t1.term as transmission, t2.term as alleleStatus, array_to_string(array_agg(distinct vt.term),',') as diseaseAnnots, null as mpAnnots
+from all_allele a, acc_accession aa, voc_term t1, voc_term t2,
+gxd_allelegenotype g, voc_annot va, voc_term vt
+where a._marker_key = aa._object_key
+and aa._mgitype_key = 2
+and aa._logicaldb_key = 1
+and aa.preferred = 1
+and a._transmission_key = t1._term_key
+and a._allele_status_key = t2._term_key
+and a._allele_key = g._allele_key
+and g._genotype_key = va._object_key
+and va._annottype_key = 1020
+and va._term_key = vt._term_key
+and not exists (select 1 from gxd_allelegenotype g, voc_annot va 
+        where a._allele_key = g._allele_key 
+        and g._genotype_key = va._object_key 
+        and va._annottype_key = 1002
+        )
+group by aa.accid, a._allele_key, a.symbol, t1.term, t2.term
+
+-- 2. mpAnnots = null, disesase annotations = null
+union
+select distinct aa.accid, a._allele_key, a.symbol, t1.term as transmission, t2.term as alleleStatus, null, null
+from all_allele a, acc_accession aa, voc_term t1, voc_term t2
+where a._marker_key = aa._object_key
+and aa._mgitype_key = 2
+and aa._logicaldb_key = 1
+and aa.preferred = 1
+and a._transmission_key = t1._term_key
+and a._allele_status_key = t2._term_key
+and not exists(select 1 from gxd_allelegenotype g, voc_annot va
+        where a._allele_key = g._allele_key
+        and g._genotype_key = va._object_key
+        and va._annottype_key = 1020
+        )
+and not exists (select 1 from gxd_allelegenotype g, voc_annot va 
+        where a._allele_key = g._allele_key 
+        and g._genotype_key = va._object_key 
+        and va._annottype_key = 1002
+        )
+group by aa.accid, a._allele_key, a.symbol, t1.term, t2.term
+
+-- 3. mpAnnots = 'has data', disesase annotations = not null
+union
+select distinct aa.accid, a._allele_key, a.symbol, t1.term as transmission, t2.term as alleleStatus, array_to_string(array_agg(distinct vt.term),','), 'has data'
+from all_allele a, acc_accession aa, voc_term t1, voc_term t2,
+gxd_allelegenotype g, voc_annot va, voc_term vt
+where a._marker_key = aa._object_key
+and aa._mgitype_key = 2
+and aa._logicaldb_key = 1
+and aa.preferred = 1
+and a._transmission_key = t1._term_key
+and a._allele_status_key = t2._term_key
+and a._allele_key = g._allele_key
+and g._genotype_key = va._object_key
+and va._annottype_key = 1020
+and va._term_key = vt._term_key
+and exists (select 1 from gxd_allelegenotype g, voc_annot va
+            where a._allele_key = g._allele_key
+            and g._genotype_key = va._object_key
+            and va._annottype_key = 1002
+            and va._qualifier_key = 2181423
+        )
+group by aa.accid, a._allele_key, a.symbol, t1.term, t2.term
+
+-- 4. mpAnnots = 'has data', disesase annotations = null
+union
+select distinct aa.accid, a._allele_key, a.symbol, t1.term as transmission, t2.term as alleleStatus, null, 'has data'
+from all_allele a, acc_accession aa, voc_term t1, voc_term t2
+where a._marker_key = aa._object_key
+and aa._mgitype_key = 2
+and aa._logicaldb_key = 1
+and aa.preferred = 1
+and a._transmission_key = t1._term_key
+and a._allele_status_key = t2._term_key
+and not exists(select 1 from gxd_allelegenotype g, voc_annot va
+        where a._allele_key = g._allele_key
+        and g._genotype_key = va._object_key
+        and va._annottype_key = 1020
+        )
+and exists (select 1 from gxd_allelegenotype g, voc_annot va
+            where a._allele_key = g._allele_key
+            and g._genotype_key = va._object_key
+            and va._annottype_key = 1002
+            and va._qualifier_key = 2181423
+        )
+group by aa.accid, a._allele_key, a.symbol, t1.term, t2.term
+
+-- 5. mpAnnots = 'no abnormal phenotype observed', disesase annotations = not null
+union
+select distinct aa.accid, a._allele_key, a.symbol, t1.term as transmission, t2.term as alleleStatus, array_to_string(array_agg(distinct vt.term),','), 'no abnormal phenotype observed'
+from all_allele a, acc_accession aa, voc_term t1, voc_term t2,
+gxd_allelegenotype g, voc_annot va, voc_term vt
+where a._marker_key = aa._object_key
+and aa._mgitype_key = 2
+and aa._logicaldb_key = 1
+and aa.preferred = 1
+and a._transmission_key = t1._term_key
+and a._allele_status_key = t2._term_key
+and a._allele_key = g._allele_key
+and g._genotype_key = va._object_key
+and va._annottype_key = 1020
+and va._term_key = vt._term_key
+and not exists (select 1 from gxd_allelegenotype g, voc_annot va
+            where a._allele_key = g._allele_key
+            and g._genotype_key = va._object_key
+            and va._annottype_key = 1002
+            and va._qualifier_key = 2181423
+        )
+and exists (select 1 from gxd_allelegenotype g, voc_annot va
+            where a._allele_key = g._allele_key
+            and g._genotype_key = va._object_key
+            and va._annottype_key = 1002
+            and va._qualifier_key = 2181424
+        )
+group by aa.accid, a._allele_key, a.symbol, t1.term, t2.term
+
+-- 6. mpAnnots = 'no abnormal phenotype observed', disesase annotations = null
+union
+select distinct aa.accid, a._allele_key, a.symbol, t1.term as transmission, t2.term as alleleStatus, null, 'no abnormal phenotype observed'
+from all_allele a, acc_accession aa, voc_term t1, voc_term t2
+where a._marker_key = aa._object_key
+and aa._mgitype_key = 2
+and aa._logicaldb_key = 1
+and aa.preferred = 1
+and a._transmission_key = t1._term_key
+and a._allele_status_key = t2._term_key
+and not exists(select 1 from gxd_allelegenotype g, voc_annot va
+        where a._allele_key = g._allele_key
+        and g._genotype_key = va._object_key
+        and va._annottype_key = 1020
+        )
+and not exists (select 1 from gxd_allelegenotype g, voc_annot va
+            where a._allele_key = g._allele_key
+            and g._genotype_key = va._object_key
+            and va._annottype_key = 1002
+            and va._qualifier_key = 2181423
+        )
+and exists (select 1 from gxd_allelegenotype g, voc_annot va
+            where a._allele_key = g._allele_key
+            and g._genotype_key = va._object_key
+            and va._annottype_key = 1002
+            and va._qualifier_key = 2181424
+        )
+group by aa.accid, a._allele_key, a.symbol, t1.term, t2.term
+)
+order by transmission desc, alleleStatus, symbol
+;
+
+EOSQL
