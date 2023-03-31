@@ -1,8 +1,0 @@
-create index bib_idx_CreatedBy_key on mgd.bib (_CreatedBy_key);
-
-create index bib_idx_ModifiedBy_key on mgd.bib (_ModifiedBy_key);
-
-create index bib_idx_creation_date on mgd.bib (creation_date);
-
-create index bib_idx_modification_date on mgd.bib (modification_date);
-
