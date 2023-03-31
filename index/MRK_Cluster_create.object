@@ -1,11 +1,16 @@
 #!/bin/sh
 
 # HISTORY
+#
+# 03/31/2023    lec
+# tables does not have index on purpose: _Createdby_key, _ModifiedBy_key, creation_date, modification_date
+# saving some space; no need to add index if it is not used
+# feel free to add these indexes, if necessary
+#
 #     12/04/2012 - sc - initial addition for TR6519
 #
 
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 

@@ -1,7 +1,13 @@
 #!/bin/sh
 
 # HISTORY
-#    09/16/2008 - jsb - added for search tool release
+#
+# 03/31/2023    lec
+# tables does not have index on purpose: _Createdby_key, _ModifiedBy_key, creation_date, modification_date
+# saving some space; no need to add index if it is not used
+# feel free to add these indexes, if necessary
+#
+# 09/16/2008 - jsb - added for search tool release
 #
 
 cd `dirname $0` && . ./Configuration

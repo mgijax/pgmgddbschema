@@ -3,6 +3,11 @@
 #
 # History
 #
+# 03/31/2023    lec
+# tables does not have index on purpose: _Createdby_key, _ModifiedBy_key, creation_date, modification_date
+# saving some space; no need to add index if it is not used
+# feel free to add these indexes, if necessary
+#
 # 9/16/2008 - jsb - removed SEQ_Coord_Cache_idx_Map_key (TR 9037)
 # 10/24/2003	lec
 #	- TR 1463; SAO
