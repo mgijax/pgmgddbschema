@@ -15,8 +15,4 @@ drop index if exists mgd.SEQ_GeneTrap_idx_VectorEnd_key;
 
 drop index if exists mgd.SEQ_GeneTrap_idx_ReverseComp_key;
 
-drop index if exists mgd.SEQ_GeneTrap_idx_CreatedBy_key;
-
-drop index if exists mgd.SEQ_GeneTrap_idx_ModifiedBy_key;
-
 EOSQL
