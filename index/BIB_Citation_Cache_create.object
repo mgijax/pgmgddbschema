@@ -26,6 +26,8 @@ create index BIB_Citation_Cache_idx_numericPart on mgd.BIB_Citation_Cache (numer
 
 create index BIB_Citation_Cache_idx_jnumID on mgd.BIB_Citation_Cache (jnumID);
 
+create index BIB_Citation_Cache_idx_mgiID on mgd.BIB_Citation_Cache (mgiID);
+
 create index BIB_Citation_Cache_idx_pubmedID on mgd.BIB_Citation_Cache (pubmedID);
 
 create index BIB_Citation_Cache_idx_doiID on mgd.BIB_Citation_Cache (doiID);

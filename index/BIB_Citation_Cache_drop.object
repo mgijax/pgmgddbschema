@@ -27,6 +27,9 @@ drop index if exists mgd.BIB_Citation_Cache_idx_numericPart
 drop index if exists mgd.BIB_Citation_Cache_idx_jnumID
 ;
 
+drop index if exists mgd.BIB_Citation_Cache_idx_mgiID
+;
+
 drop index if exists mgd.BIB_Citation_Cache_idx_pubmedID
 ;
 
