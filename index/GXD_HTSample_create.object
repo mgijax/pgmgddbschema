@@ -5,7 +5,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.GXD_HTSample USING GXD_HTSample_pkey;
@@ -29,5 +28,9 @@ create index GXD_HTSample_idx_CellType_Term_key on mgd.GXD_HTSample (_CellType_T
 create index GXD_HTSample_idx_CreatedBy_key on mgd.GXD_HTSample (_CreatedBy_key);
 
 create index GXD_HTSample_idx_ModifiedBy_key on mgd.GXD_HTSample (_ModifiedBy_key);
+
+create index GXD_HTSample_idx_creation_date on mgd.GXD_HTSample (creation_date);
+
+create index GXD_HTSample_idx_modification_date on mgd.GXD_HTSample (modification_date);
 
 EOSQL

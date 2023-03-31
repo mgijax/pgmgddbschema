@@ -26,4 +26,12 @@ create index ALL_CellLine_Derivation_idx_pcl on mgd.ALL_CellLine_Derivation (_Pa
 
 create index ALL_CellLine_Derivation_idx_DerivationType_key on mgd.ALL_CellLine_Derivation (_DerivationType_key, _ParentCellLine_key, _Creator_key);
 
+create index ALL_CellLine_Derivation_idx_CreatedBy_key on mgd.ALL_CellLine_Derivation (_CreatedBy_key);
+
+create index ALL_CellLine_Derivation_idx_ModifiedBy_key on mgd.ALL_CellLine_Derivation (_ModifiedBy_key);
+
+create index ALL_CellLine_Derivation_idx_creation_date on mgd.ALL_CellLine_Derivation (creation_date);
+
+create index ALL_CellLine_Derivation_idx_modification_date on mgd.ALL_CellLine_Derivation (modification_date);
+
 EOSQL

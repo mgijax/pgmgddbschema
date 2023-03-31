@@ -1,0 +1,9 @@
+
+drop index if exists mgd.bib_idx_CreatedBy_key;
+
+drop index if exists mgd.bib_idx_ModifiedBy_key;
+
+drop index if exists mgd.bib_idx_creation_date;
+
+drop index if exists mgd.bib_idx_modification_date;
+

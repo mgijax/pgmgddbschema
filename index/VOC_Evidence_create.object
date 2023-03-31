@@ -1,11 +1,6 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
@@ -20,5 +15,9 @@ create index VOC_Evidence_idx_Refs_key on mgd.VOC_Evidence (_Refs_key);
 create index VOC_Evidence_idx_CreatedBy_key on mgd.VOC_Evidence (_CreatedBy_key);
 
 create index VOC_Evidence_idx_ModifiedBy_key on mgd.VOC_Evidence (_ModifiedBy_key);
+
+create index VOC_Evidence_idx_creation_date on mgd.VOC_Evidence (creation_date);
+
+create index VOC_Evidence_idx_modification_date on mgd.VOC_Evidence (modification_date);
 
 EOSQL

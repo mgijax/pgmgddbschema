@@ -21,4 +21,8 @@ create index ALL_Variant_idx_CreatedBy_key on mgd.ALL_Variant (_CreatedBy_key);
 
 create index ALL_Variant_idx_ModifiedBy_key on mgd.ALL_Variant (_ModifiedBy_key);
 
+create index ALL_Variant_idx_creation_date on mgd.ALL_Variant (creation_date);
+
+create index ALL_Variant_idx_modification_date on mgd.ALL_Variant (modification_date);
+
 EOSQL

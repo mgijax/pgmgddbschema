@@ -1,42 +1,31 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.GXD_HTSample_idx_Experiment_key
-;
+drop index if exists mgd.GXD_HTSample_idx_Experiment_key;
 
-drop index if exists mgd.GXD_HTSample_idx_Relevance_key
-;
+drop index if exists mgd.GXD_HTSample_idx_Relevance_key;
 
-drop index if exists mgd.GXD_HTSample_idx_Organism_key
-;
+drop index if exists mgd.GXD_HTSample_idx_Organism_key;
 
-drop index if exists mgd.GXD_HTSample_idx_Sex_key
-;
+drop index if exists mgd.GXD_HTSample_idx_Sex_key;
 
-drop index if exists mgd.GXD_HTSample_idx_Emapa_key
-;
+drop index if exists mgd.GXD_HTSample_idx_Emapa_key;
 
-drop index if exists mgd.GXD_HTSample_idx_Stage_key
-;
+drop index if exists mgd.GXD_HTSample_idx_Stage_key;
 
-drop index if exists mgd.GXD_HTSample_idx_Genotype_key
-;
+drop index if exists mgd.GXD_HTSample_idx_Genotype_key;
 
-drop index if exists mgd.GXD_HTSample_idx_CellType_Term_key
-;
+drop index if exists mgd.GXD_HTSample_idx_CellType_Term_key;
 
-drop index if exists mgd.GXD_HTSample_idx_CreatedBy_key
-;
+drop index if exists mgd.GXD_HTSample_idx_CreatedBy_key;
 
-drop index if exists mgd.GXD_HTSample_idx_ModifiedBy_key
-;
+drop index if exists mgd.GXD_HTSample_idx_ModifiedBy_key;
+
+drop index if exists mgd.GXD_HTSample_idx_creation_date;
+
+drop index if exists mgd.GXD_HTSample_idx_modification_date;
 
 EOSQL

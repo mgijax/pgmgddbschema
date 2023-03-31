@@ -45,6 +45,12 @@ create index ACC_Accession_idx_CreatedBy_key on mgd.ACC_Accession (_CreatedBy_ke
 create index ACC_Accession_idx_ModifiedBy_key on mgd.ACC_Accession (_ModifiedBy_key);
 
 
+create index ACC_Accession_idx_creation_date on mgd.ACC_Accession (creation_date);
+
+
+create index ACC_Accession_idx_modification_date on mgd.ACC_Accession (modification_date);
+
+
 create index ACC_Accession_0 on mgd.ACC_Accession (lower(accID));
 
 

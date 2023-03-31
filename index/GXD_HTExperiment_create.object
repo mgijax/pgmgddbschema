@@ -5,7 +5,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.GXD_HTExperiment USING GXD_HTExperiment_pkey;
@@ -31,5 +30,7 @@ create index GXD_HTExperiment_idx_CreatedBy_key on mgd.GXD_HTExperiment (_Create
 create index GXD_HTExperiment_idx_ModifiedBy_key on mgd.GXD_HTExperiment (_ModifiedBy_key);
 
 create index GXD_HTExperiment_idx_creation_date on mgd.GXD_HTExperiment (creation_date);
+
+create index GXD_HTExperiment_idx_modification_date on mgd.GXD_HTExperiment (modification_date);
 
 EOSQL

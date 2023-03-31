@@ -27,4 +27,8 @@ create index BIB_Refs_idx_CreatedBy_key on mgd.BIB_Refs (_CreatedBy_key);
 
 create index BIB_Refs_idx_ModifiedBy_key on mgd.BIB_Refs (_ModifiedBy_key);
 
+create index BIB_Refs_idx_creation_date on mgd.BIB_Refs (creation_date);
+
+create index BIB_Refs_idx_modification_date on mgd.BIB_Refs (modification_date);
+
 EOSQL

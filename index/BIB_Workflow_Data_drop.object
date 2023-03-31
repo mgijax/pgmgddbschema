@@ -9,25 +9,22 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.BIB_Workflow_Data_idx_hasPDF
-;
+drop index if exists mgd.BIB_Workflow_Data_idx_hasPDF;
 
-drop index if exists mgd.BIB_Workflow_Data_idx_Refs_key
-;
+drop index if exists mgd.BIB_Workflow_Data_idx_Refs_key;
 
-drop index if exists mgd.BIB_Workflow_Data_idx_Supplemental_key
-;
+drop index if exists mgd.BIB_Workflow_Data_idx_Supplemental_key;
 
-drop index if exists mgd.BIB_Workflow_Data_idx_ExtractedText_key
-;
+drop index if exists mgd.BIB_Workflow_Data_idx_ExtractedText_key;
 
-drop index if exists mgd.BIB_Workflow_Data_idx_CreatedBy_key
-;
+drop index if exists mgd.BIB_Workflow_Data_idx_CreatedBy_key;
 
-drop index if exists mgd.BIB_Workflow_Data_idx_ModifiedBy_key
-;
+drop index if exists mgd.BIB_Workflow_Data_idx_ModifiedBy_key;
+
+drop index if exists mgd.BIB_Workflow_Data_idx_creation_date;
+
+drop index if exists mgd.BIB_Workflow_Data_idx_modification_date;
 
 EOSQL

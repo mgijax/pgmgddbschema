@@ -15,34 +15,28 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.ALL_Cre_Cache_idx_clustered
-;
+drop index if exists mgd.ALL_Cre_Cache_idx_clustered;
 
-drop index if exists mgd.ALL_Cre_Cache_idx_Allele_key
-;
+drop index if exists mgd.ALL_Cre_Cache_idx_Allele_key;
 
-drop index if exists mgd.ALL_Cre_Cache_idx_EMAPA_Term_key
-;
+drop index if exists mgd.ALL_Cre_Cache_idx_EMAPA_Term_key;
 
-drop index if exists mgd.ALL_Cre_Cache_idx_CellType_Term_key
-;
+drop index if exists mgd.ALL_Cre_Cache_idx_CellType_Term_key;
 
-drop index if exists mgd.ALL_Cre_Cache_idx_Stage_key
-;
+drop index if exists mgd.ALL_Cre_Cache_idx_Stage_key;
 
-drop index if exists mgd.ALL_Cre_Cache_idx_Assay_key
-;
+drop index if exists mgd.ALL_Cre_Cache_idx_Assay_key;
 
-drop index if exists mgd.ALL_Cre_Cache_idx_Allele_Type_key
-;
+drop index if exists mgd.ALL_Cre_Cache_idx_Allele_Type_key;
 
-drop index if exists mgd.ALL_Cre_Cache_idx_CreatedBy_key
-;
+drop index if exists mgd.ALL_Cre_Cache_idx_CreatedBy_key;
 
-drop index if exists mgd.ALL_Cre_Cache_idx_ModifiedBy_key
-;
+drop index if exists mgd.ALL_Cre_Cache_idx_ModifiedBy_key;
+
+drop index if exists mgd.ALL_Cre_Cache_idx_creation_date;
+
+drop index if exists mgd.ALL_Cre_Cache_idx_modification_date;
 
 EOSQL

@@ -13,4 +13,8 @@ CLUSTER mgd.BIB_Notes USING BIB_Notes_pkey;
 
 --create index BIB_Notes_idx_note on mgd.BIB_Notes (note);
 
+create index BIB_Notes_idx_creation_date on mgd.BIB_Notes (creation_date);
+
+create index BIB_Notes_idx_modification_date on mgd.BIB_Notes (modification_date);
+
 EOSQL

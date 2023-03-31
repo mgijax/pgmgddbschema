@@ -6,7 +6,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.GXD_Assay USING GXD_Assay_pkey;
@@ -28,5 +27,9 @@ create index GXD_Assay_idx_ReporterGene_key on mgd.GXD_Assay (_ReporterGene_key)
 create index GXD_Assay_idx_CreatedBy_key on mgd.GXD_Assay (_CreatedBy_key);
 
 create index GXD_Assay_idx_ModifiedBy_key on mgd.GXD_Assay (_ModifiedBy_key);
+
+create index GXD_Assay_idx_creation_date on mgd.GXD_Assay (creation_date);
+
+create index GXD_Assay_idx_modification_date on mgd.GXD_Assay (modification_date);
 
 EOSQL

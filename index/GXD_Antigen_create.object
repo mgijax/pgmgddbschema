@@ -13,4 +13,12 @@ CLUSTER mgd.GXD_Antigen USING GXD_Antigen_pkey;
 
 create index GXD_Antigen_idx_Source_key on mgd.GXD_Antigen (_Source_key);
 
+create index GXD_Antigen_idx_CreatedBy_key on mgd.GXD_Antigen (_CreatedBy_key);
+
+create index GXD_Antigen_idx_ModifiedBy_key on mgd.GXD_Antigen (_ModifiedBy_key);
+
+create index GXD_Antigen_idx_creation_date on mgd.GXD_Antigen (creation_date);
+
+create index GXD_Antigen_idx_modification_date on mgd.GXD_Antigen (modification_date);
+
 EOSQL

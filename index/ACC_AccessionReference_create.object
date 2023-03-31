@@ -17,4 +17,8 @@ create index ACC_AccessionReference_idx_CreatedBy_key on mgd.ACC_AccessionRefere
 
 create index ACC_AccessionReference_idx_ModifiedBy_key on mgd.ACC_AccessionReference (_ModifiedBy_key);
 
+create index ACC_AccessionReference_idx_creation_date on mgd.ACC_AccessionReference (creation_date);
+
+create index ACC_AccessionReference_idx_modification_date on mgd.ACC_AccessionReference (modification_date);
+
 EOSQL

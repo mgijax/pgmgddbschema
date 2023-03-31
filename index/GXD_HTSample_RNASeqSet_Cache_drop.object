@@ -9,19 +9,14 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.GXD_HTSample_RNASeqSet_Cache_idx_RNASeqCombined_key
-;
+drop index if exists mgd.GXD_HTSample_RNASeqSet_Cache_idx_RNASeqCombined_key;
 
-drop index if exists mgd.GXD_HTSample_RNASeqSet_Cache_idx_RNASeqSet_key
-;
+drop index if exists mgd.GXD_HTSample_RNASeqSet_Cache_idx_RNASeqSet_key;
 
-drop index if exists mgd.GXD_HTSample_RNASeqSet_Cache_idx_CreatedBy_key
-;
+drop index if exists mgd.GXD_HTSample_RNASeqSet_Cache_idx_CreatedBy_key;
 
-drop index if exists mgd.GXD_HTSample_RNASeqSet_Cache_idx_ModifiedBy_key
-;
+drop index if exists mgd.GXD_HTSample_RNASeqSet_Cache_idx_ModifiedBy_key;
 
 EOSQL

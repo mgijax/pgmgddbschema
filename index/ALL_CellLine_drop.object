@@ -6,25 +6,22 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.ALL_CellLine_idx_Strain_key
-;
+drop index if exists mgd.ALL_CellLine_idx_Strain_key;
 
-drop index if exists mgd.ALL_CellLine_idx_cellLine
-;
+drop index if exists mgd.ALL_CellLine_idx_cellLine;
 
-drop index if exists mgd.ALL_CellLine_idx_CreatedBy_key
-;
+drop index if exists mgd.ALL_CellLine_idx_Derivation_key;
 
-drop index if exists mgd.ALL_CellLine_idx_ModifiedBy_key
-;
+drop index if exists mgd.ALL_CellLine_idx_CellLine_Type_key;
 
-drop index if exists mgd.ALL_CellLine_idx_Derivation_key
-;
+drop index if exists mgd.ALL_CellLine_idx_CreatedBy_key;
 
-drop index if exists mgd.ALL_CellLine_idx_CellLine_Type_key
-;
+drop index if exists mgd.ALL_CellLine_idx_ModifiedBy_key;
+
+drop index if exists mgd.ALL_CellLine_idx_creation_date;
+
+drop index if exists mgd.ALL_CellLine_idx_modification_date;
 
 EOSQL

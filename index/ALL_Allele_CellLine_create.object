@@ -18,4 +18,8 @@ create index ALL_Allele_CellLine_idx_CreatedBy_key on mgd.ALL_Allele_CellLine (_
 
 create index ALL_Allele_CellLine_idx_ModifiedBy_key on mgd.ALL_Allele_CellLine (_ModifiedBy_key);
 
+create index ALL_Allele_CellLine_idx_creation_date on mgd.ALL_Allele_CellLine (creation_date);
+
+create index ALL_Allele_CellLine_idx_modification_date on mgd.ALL_Allele_CellLine (modification_date);
+
 EOSQL

@@ -9,13 +9,18 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.GO_Tracking_idx_CompletedBy_key
-;
+drop index if exists mgd.GO_Tracking_idx_CompletedBy_key;
 
-drop index if exists mgd.GO_Tracking_idx_completion_date
-;
+drop index if exists mgd.GO_Tracking_idx_completion_date;
+
+drop index if exists mgd.GO_Tracking_idx_CreatedBy_key;
+
+drop index if exists mgd.GO_Tracking_idx_ModifiedBy_key;
+
+drop index if exists mgd.GO_Tracking_idx_creation_date;
+
+drop index if exists mgd.GO_Tracking_idx_modification_date;
 
 EOSQL

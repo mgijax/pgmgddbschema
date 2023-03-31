@@ -13,7 +13,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.MRK_Marker USING MRK_Marker_pkey;
@@ -33,5 +32,9 @@ create index MRK_Marker_idx_symbol on mgd.MRK_Marker (symbol);
 create index MRK_Marker_idx_CreatedBy_key on mgd.MRK_Marker (_CreatedBy_key);
 
 create index MRK_Marker_idx_ModifiedBy_key on mgd.MRK_Marker (_ModifiedBy_key);
+
+create index MRK_Marker_idx_creation_date on mgd.MRK_Marker (creation_date);
+
+create index MRK_Marker_idx_modification_date on mgd.MRK_Marker (modification_date);
 
 EOSQL

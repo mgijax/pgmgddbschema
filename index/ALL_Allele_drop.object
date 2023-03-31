@@ -9,43 +9,34 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.ALL_Allele_idx_clustered
-;
+drop index if exists mgd.ALL_Allele_idx_clustered;
 
-drop index if exists mgd.ALL_Allele_idx_Allele_Type_key
-;
+drop index if exists mgd.ALL_Allele_idx_Allele_Type_key;
 
-drop index if exists mgd.ALL_Allele_idx_Strain_key
-;
+drop index if exists mgd.ALL_Allele_idx_Strain_key;
 
-drop index if exists mgd.ALL_Allele_idx_Mode_key
-;
+drop index if exists mgd.ALL_Allele_idx_Mode_key;
 
-drop index if exists mgd.ALL_Allele_idx_name
-;
+drop index if exists mgd.ALL_Allele_idx_name;
 
-drop index if exists mgd.ALL_Allele_idx_symbol
-;
+drop index if exists mgd.ALL_Allele_idx_symbol;
 
-drop index if exists mgd.ALL_Allele_idx_Allele_Status_key
-;
+drop index if exists mgd.ALL_Allele_idx_Allele_Status_key;
 
-drop index if exists mgd.ALL_Allele_idx_MarkerAllele_Status_key
-;
+drop index if exists mgd.ALL_Allele_idx_MarkerAllele_Status_key;
 
-drop index if exists mgd.ALL_Allele_idx_CreatedBy_key
-;
+drop index if exists mgd.ALL_Allele_idx_Transmission_key;
 
-drop index if exists mgd.ALL_Allele_idx_ModifiedBy_key
-;
+drop index if exists mgd.ALL_Allele_idx_Collection_key;
 
-drop index if exists mgd.ALL_Allele_idx_Transmission_key
-;
+drop index if exists mgd.ALL_Allele_idx_CreatedBy_key;
 
-drop index if exists mgd.ALL_Allele_idx_Collection_key
-;
+drop index if exists mgd.ALL_Allele_idx_ModifiedBy_key;
+
+drop index if exists mgd.ALL_Allele_idx_creation_date;
+
+drop index if exists mgd.ALL_Allele_idx_modification_date;
 
 EOSQL

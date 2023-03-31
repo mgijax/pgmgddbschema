@@ -15,28 +15,20 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.BIB_Citation_Cache_idx_journal
-;
+drop index if exists mgd.BIB_Citation_Cache_idx_journal;
 
-drop index if exists mgd.BIB_Citation_Cache_idx_numericPart
-;
+drop index if exists mgd.BIB_Citation_Cache_idx_numericPart;
 
-drop index if exists mgd.BIB_Citation_Cache_idx_jnumID
-;
+drop index if exists mgd.BIB_Citation_Cache_idx_jnumID;
 
-drop index if exists mgd.BIB_Citation_Cache_idx_mgiID
-;
+drop index if exists mgd.BIB_Citation_Cache_idx_mgiID;
 
-drop index if exists mgd.BIB_Citation_Cache_idx_pubmedID
-;
+drop index if exists mgd.BIB_Citation_Cache_idx_pubmedID;
 
-drop index if exists mgd.BIB_Citation_Cache_idx_doiID
-;
+drop index if exists mgd.BIB_Citation_Cache_idx_doiID;
 
-drop index if exists mgd.BIB_Citation_Cache_idx_Relevance_Key
-;
+drop index if exists mgd.BIB_Citation_Cache_idx_Relevance_Key;
 
 EOSQL
