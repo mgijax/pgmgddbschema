@@ -9,13 +9,16 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.SEQ_Allele_Assoc_idx_Allele_key
-;
+drop index if exists mgd.SEQ_Allele_Assoc_idx_Allele_key;
 
-drop index if exists mgd.SEQ_Allele_Assoc_idx_Sequence_key
-;
+drop index if exists mgd.SEQ_Allele_Assoc_idx_Sequence_key;
 
-drop index if exists mgd.SEQ_Allele_Assoc_idx_Qualifier_key
-;
+drop index if exists mgd.SEQ_Allele_Assoc_idx_Qualifier_key;
+
+drop index if exists mgd.SEQ_Allele_Assoc_idx_Refs_key;
+
+drop index if exists mgd.SEQ_Allele_Assoc_idx_CreatedBy_key;
+
+drop index if exists mgd.SEQ_Allele_Assoc_idx_ModifiedBy_key;
 
 EOSQL
