@@ -21,7 +21,7 @@ create index BIB_Workflow_Data_idx_Refs_key on mgd.BIB_Workflow_Data (_Refs_key)
 
 create index BIB_Workflow_Data_idx_Supplemental_key on mgd.BIB_Workflow_Data (_Supplemental_key);
 
-create index BIB_Workflow_Data_idx_ExtractedText_key on mgd.BIB_Workflow_Data (_Supplemental_key);
+create index BIB_Workflow_Data_idx_ExtractedText_key on mgd.BIB_Workflow_Data (_ExtractedText_key);
 
 create index BIB_Workflow_Data_idx_CreatedBy_key on mgd.BIB_Workflow_Data (_CreatedBy_key);
 
