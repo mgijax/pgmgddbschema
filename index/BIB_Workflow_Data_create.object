@@ -27,8 +27,4 @@ create index BIB_Workflow_Data_idx_CreatedBy_key on mgd.BIB_Workflow_Data (_Crea
 
 create index BIB_Workflow_Data_idx_ModifiedBy_key on mgd.BIB_Workflow_Data (_ModifiedBy_key);
 
-create index BIB_Workflow_Data_idx_creation_date on mgd.BIB_Workflow_Data (creation_date);
-
-create index BIB_Workflow_Data_idx_modification_date on mgd.BIB_Workflow_Data (modification_date);
-
 EOSQL

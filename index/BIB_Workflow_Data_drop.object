@@ -23,8 +23,4 @@ drop index if exists mgd.BIB_Workflow_Data_idx_CreatedBy_key;
 
 drop index if exists mgd.BIB_Workflow_Data_idx_ModifiedBy_key;
 
-drop index if exists mgd.BIB_Workflow_Data_idx_creation_date;
-
-drop index if exists mgd.BIB_Workflow_Data_idx_modification_date;
-
 EOSQL
