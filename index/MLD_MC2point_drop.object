@@ -1,9 +1,5 @@
 #!/bin/sh
 
-# HISTORY
-#    09/16/2008 - jsb - removed idx_Expt_key
-#
-
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0

@@ -1,20 +1,17 @@
 #!/bin/sh
 
-# HISTORY
-#    09/16/2008 - jsb - removed MLD_Expt_Marker_idx_Expt_key
-#
-
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.MLD_Expt_Marker USING MLD_Expt_Marker_pkey;
 
+create index MLD_Expt_Marker_idx_Expt_key on mgd.MLD_Expt_Marker (_Expt_key);
+
+create index MLD_Expt_Marker_idx_Marker_key on mgd.MLD_Expt_Marker (_Marker_key);
+
 create index MLD_Expt_Marker_idx_Allele_key on mgd.MLD_Expt_Marker (_Allele_key);
 
 create index MLD_Expt_Marker_idx_Assay_Type_key on mgd.MLD_Expt_Marker (_Assay_Type_key);
-
-create index MLD_Expt_Marker_idx_Marker_key on mgd.MLD_Expt_Marker (_Marker_key);
 
 EOSQL

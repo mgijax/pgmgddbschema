@@ -1,11 +1,6 @@
 #!/bin/sh
 
-# HISTORY
-#    09/16/2008 - jsb - removed MLD_Hit_idx_Expt_key_fk
-#
-
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
