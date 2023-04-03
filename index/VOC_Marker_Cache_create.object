@@ -12,7 +12,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.VOC_Marker_Cache USING VOC_Marker_Cache_pkey;

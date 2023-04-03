@@ -14,7 +14,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.VOC_GO_Cache USING VOC_GO_Cache_pkey;
