@@ -71,9 +71,6 @@ and d._ParentCellLine_key = p._CellLine_key
 and p._Strain_key = s._Strain_key
 and a._CreatedBy_key = u1._User_key
 and a._ModifiedBy_key = u2._User_key
-
-
-
 ;
 
 EOSQL

@@ -6,12 +6,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+drop view if exists mgd.PRB_Strain_NeedsReview_View CASCADE;
 
-drop view if exists mgd.PRB_Strain_NeedsReview_View
-
-CASCADE
-;
 EOSQL
