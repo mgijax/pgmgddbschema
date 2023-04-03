@@ -7,7 +7,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.ALL_CellLine_Derivation USING ALL_CellLine_Derivation_pkey;

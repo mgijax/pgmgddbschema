@@ -5,7 +5,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.ALL_Allele_CellLine USING ALL_Allele_CellLine_pkey;

@@ -14,7 +14,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.BIB_Workflow_Data USING BIB_Workflow_Data_pkey;

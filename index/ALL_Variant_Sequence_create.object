@@ -6,7 +6,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.ALL_Variant_Sequence USING ALL_Variant_Sequence_pkey;
