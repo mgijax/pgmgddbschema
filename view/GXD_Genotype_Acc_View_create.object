@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/GXD_Genotype_Acc_View_drop.object
@@ -19,9 +15,6 @@ and a.prefixPart = 'MGI:'
 and a._LogicalDB_key = l._LogicalDB_key
 and a._Object_key = g._Genotype_key
 and g._Strain_key = s._Strain_key
-
-
-
 ;
 
 EOSQL

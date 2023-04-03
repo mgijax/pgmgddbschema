@@ -32,7 +32,6 @@ and ipall._object_key = assoc._allele_key
 and ipall._object_key = aa._object_key
 and aa._mgitype_key = 11
 order by i.figurelabel, assoc.symbol
-
 ;
 
 EOSQL

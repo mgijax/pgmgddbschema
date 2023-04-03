@@ -1,11 +1,6 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
@@ -32,9 +27,6 @@ from PRB_Probe p
      	INNER JOIN MGI_User u1 on (p._CreatedBy_key = u1._User_key)
      	INNER JOIN MGI_User u2 on (p._ModifiedBy_key = u2._User_key)
      	LEFT OUTER JOIN PRB_Probe p2 on (p.derivedFrom = p2._Probe_key)
-
-
-
 ;
 
 EOSQL

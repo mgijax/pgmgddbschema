@@ -20,9 +20,6 @@ union
 select distinct _genotype_key, _allele_key_2 as _allele_key
 from gxd_allelepair
 where _allele_key_2 is not null
-
-
-
 ;
 
 EOSQL

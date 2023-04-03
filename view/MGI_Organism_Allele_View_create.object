@@ -19,8 +19,6 @@ select s.*, s.commonName || ' (' || s.latinName || ')' as organism
 from MGI_Organism s, MGI_Organism_MGIType t
 where s._Organism_key = t._Organism_key
 and t._MGIType_key = 11
-
-
 ;
 
 EOSQL

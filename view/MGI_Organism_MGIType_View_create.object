@@ -22,8 +22,6 @@ select st.*, s.commonName, s.latinName, t.name as typeName
 from MGI_Organism_MGIType st, MGI_Organism s, ACC_MGIType t
 where st._Organism_key = s._Organism_key
 and st._MGIType_key = t._MGIType_key
-
-
 ;
 
 EOSQL

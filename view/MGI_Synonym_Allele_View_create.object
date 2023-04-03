@@ -22,9 +22,6 @@ where s._SynonymType_key = t._SynonymType_key
 and t._MGIType_key = 11
 and s._Refs_key = c._Refs_key
 and s._ModifiedBy_key = u1._User_key
-
-
-
 ;
 
 EOSQL

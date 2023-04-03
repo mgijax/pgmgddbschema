@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/IMG_Image_Summary2_View_drop.object
@@ -32,7 +28,6 @@ and a._MGIType_key = 9
 and p._Image_key = aa._Object_key 
 and aa._logicaldb_key = 19
 and aa._mgitype_Key = 9
-
 ;
 
 EOSQL

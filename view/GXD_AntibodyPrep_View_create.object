@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/GXD_AntibodyPrep_View_drop.object
@@ -24,9 +20,6 @@ and ac._MGIType_key = 6
 and ac._LogicalDB_key = 1
 and ac.prefixPart = 'MGI:'
 and ac.preferred = 1
-
-
-
 ;
 
 EOSQL

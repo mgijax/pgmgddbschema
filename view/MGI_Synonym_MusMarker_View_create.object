@@ -23,9 +23,6 @@ and t._MGIType_key = 2
 and t._Organism_key = 1
 and s._CreatedBy_key = u1._User_key
 and s._ModifiedBy_key = u2._User_key
-
-
-
 ;
 
 EOSQL

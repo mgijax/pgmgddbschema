@@ -19,9 +19,6 @@ select v.name, t.*
 from VOC_Vocab v, VOC_Term t
 where v.name = 'Representative Sequence Qualifier'
 and v._Vocab_key = t._Vocab_key
-
-
-
 ;
 
 EOSQL

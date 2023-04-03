@@ -1,11 +1,6 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
@@ -18,9 +13,6 @@ where s._Species_key = sp._Term_key
 and s._StrainType_key = st._Term_key
 and s._CreatedBy_key = u1._User_key
 and s._ModifiedBy_key = u2._User_key
-
-
-
 ;
 
 EOSQL

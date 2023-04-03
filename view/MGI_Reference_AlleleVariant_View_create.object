@@ -21,8 +21,6 @@ from MGI_Reference_Assoc r, MGI_RefAssocType t, BIB_Citation_Cache c
 where r._MGIType_key = 45
 and r._RefAssocType_key = t._RefAssocType_key
 and r._Refs_key = c._Refs_key
-
-
 ;
 
 EOSQL

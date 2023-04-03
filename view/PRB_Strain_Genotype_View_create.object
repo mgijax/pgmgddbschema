@@ -37,9 +37,6 @@ and a._LogicalDB_Key = 1
 and s._Genotype_key = g._Genotype_key
 and g._Strain_key = gs._Strain_key
 and s._ModifiedBy_key = u._User_key
-
-
-
 ;
 
 EOSQL

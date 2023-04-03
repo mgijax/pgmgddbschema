@@ -28,9 +28,6 @@ and ac._MGIType_key = 3
 and ac._LogicalDB_key = 1
 and ac.prefixPart = 'MGI:'
 and ac.preferred = 1
-
-
-
 ;
 
 EOSQL

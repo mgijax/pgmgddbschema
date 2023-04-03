@@ -26,9 +26,6 @@ and t2._Vocab_key = v2._Vocab_key
 and v2.name = 'User Type'
 and u._CreatedBy_key = u1._User_key
 and u._ModifiedBy_key = u2._User_key
-
-
-
 ;
 
 EOSQL

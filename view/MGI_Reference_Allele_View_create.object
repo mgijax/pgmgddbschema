@@ -45,7 +45,6 @@ and aa.preferred = 1
 and a._Marker_key is null
 )
 order by symbol, assocType
-
 ;
 
 EOSQL

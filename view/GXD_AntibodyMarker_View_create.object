@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/GXD_AntibodyMarker_View_drop.object
@@ -16,9 +12,6 @@ select a._Antibody_key, a.antibodyName, am._Marker_key, m.symbol, m.chromosome
 from GXD_Antibody a, GXD_AntibodyMarker am, MRK_Marker m
 where a._Antibody_key = am._Antibody_key
 and am._Marker_key = m._Marker_key
-
-
-
 ;
 
 EOSQL

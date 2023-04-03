@@ -29,7 +29,6 @@ and gs._stageid_key = t2._term_key
 and g._refs_key = bc._refs_key
 and g._priority_key = t3._term_key
 and g._conditionalmutants_key = t4._term_key
-
 )
 order by symbol, short_citation, sequenceNum
 ;

@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/GXD_Antigen_View_drop.object
@@ -25,9 +21,6 @@ and a.preferred = 1
 and g._Source_key = s._Source_key
 and g._CreatedBy_key = u1._User_key
 and g._ModifiedBy_key = u2._User_key
-
-
-
 ;
 
 EOSQL

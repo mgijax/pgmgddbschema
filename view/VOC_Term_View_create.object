@@ -25,8 +25,6 @@ from VOC_Term t
      LEFT OUTER JOIN ACC_Accession a on (t._Term_key = a._Object_key
 		and a._MGIType_key = 13
 		and a.preferred = 1)
-
-
 ;
 
 EOSQL

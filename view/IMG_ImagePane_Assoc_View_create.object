@@ -60,9 +60,6 @@ and not exists (select 1 from ACC_Accession a2
 	where p._Image_key = a2._Object_key 
 	and a2._MGIType_key = 9 
 	and a2._LogicalDB_key = 19)
-
-
-
 ;
 
 EOSQL

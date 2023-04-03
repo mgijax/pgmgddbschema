@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/MRK_Summary_View_drop.object
@@ -28,9 +24,6 @@ and a2._LogicalDB_key = 1
 and a2._MGIType_key = 2
 and a2.prefixPart = 'MGI:'
 and a2.preferred = 1
-
-
-
 ;
 
 EOSQL

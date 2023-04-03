@@ -87,7 +87,6 @@ and r._Object_key_1 = aa._Object_key
 and aa._MGIType_key = 11
 and aa._LogicalDB_key = 1
 and aa.preferred = 1
-
 ;
 
 EOSQL

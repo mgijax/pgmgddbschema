@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/GXD_ISResultStructure_View_drop.object
@@ -18,9 +14,6 @@ from GXD_InSituResult r, GXD_ISResultStructure g, VOC_Term s, GXD_TheilerStage t
 where r._Result_key = g._Result_key
 and g._EMAPA_Term_key = s._Term_key
 and g._Stage_key = t._Stage_key
-
-
-
 ;
 
 EOSQL
