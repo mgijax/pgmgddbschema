@@ -20,7 +20,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.MRK_Location_Cache USING MRK_Location_Cache_pkey;

@@ -1,20 +1,18 @@
 #!/bin/sh
 
-# HISTORY
-#    09/16/2008 - jsb - removed MRK_History_idx_Marker_key (TR 9037)
-#
-
 cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.MRK_History USING MRK_History_pkey;
 
-create index MRK_History_idx_History_key on mgd.MRK_History (_History_key);
+create index MRK_History_idx_Marker_key on mgd.MRK_History (_Marker_key);
 
 create index MRK_History_idx_Marker_Event_key on mgd.MRK_History (_Marker_Event_key);
 
 create index MRK_History_idx_Marker_EventReason_key on mgd.MRK_History (_Marker_EventReason_key);
+
+create index MRK_History_idx_History_key on mgd.MRK_History (_History_key);
 
 create index MRK_History_idx_Refs_key on mgd.MRK_History (_Refs_key);
 

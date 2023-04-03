@@ -8,7 +8,6 @@
 # saving some space; no need to add index if it is not used
 # feel free to add these indexes, if necessary
 #
-# 09/16/2008 - jsb - removed MRK_Chromosome_idx_Organism_key (TR 9037)
 # 08/14/2002	lec
 #	- TR 1463; SAO; Species renamed to Organism
 #

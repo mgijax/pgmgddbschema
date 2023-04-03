@@ -6,14 +6,11 @@
 # 02/11/2016	lec
 #	- add extra indexes
 #
-# 04/29/2008 - jsb - removed solo index on mgd._Marker_key, added MRK_Label_idx_label
-#
 # 02/14/2003 lec
 #	- TR 1892
 #
 
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
