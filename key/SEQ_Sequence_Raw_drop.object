@@ -1,4 +1,5 @@
 #!/bin/sh
+
 #
 # History
 #
@@ -8,8 +9,11 @@
 # 05/13/2002	lec
 #	- TR 1463; SAO
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
 ALTER TABLE mgd.SEQ_Sequence_Raw DROP CONSTRAINT SEQ_Sequence_Raw_pkey CASCADE;
 
 EOSQL

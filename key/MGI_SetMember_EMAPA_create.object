@@ -9,10 +9,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.MGI_SetMember_EMAPA ADD PRIMARY KEY (_SetMember_EMAPA_key);
-
 
 EOSQL

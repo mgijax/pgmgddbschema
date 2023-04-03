@@ -15,7 +15,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.GXD_TheilerStage ADD PRIMARY KEY (_Stage_key);
@@ -39,7 +38,5 @@ ALTER TABLE mgd.VOC_Term_EMAPA ADD FOREIGN KEY (startStage) REFERENCES mgd.GXD_T
 ALTER TABLE mgd.VOC_Term_EMAPA ADD FOREIGN KEY (endStage) REFERENCES mgd.GXD_TheilerStage DEFERRABLE;
 
 ALTER TABLE mgd.VOC_Term_EMAPS ADD FOREIGN KEY (_Stage_key) REFERENCES mgd.GXD_TheilerStage DEFERRABLE;
-
-
 
 EOSQL

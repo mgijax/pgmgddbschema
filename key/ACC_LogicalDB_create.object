@@ -1,25 +1,15 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#	kstone - manually edited, do no regenerate	
-#
-
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.ACC_LogicalDB ADD PRIMARY KEY (_LogicalDB_key);
 
-
 ALTER TABLE mgd.ACC_ActualDB ADD FOREIGN KEY (_LogicalDB_key) REFERENCES mgd.ACC_LogicalDB ON DELETE CASCADE DEFERRABLE;
-
 
 ALTER TABLE mgd.ACC_Accession ADD FOREIGN KEY (_LogicalDB_key) REFERENCES mgd.ACC_LogicalDB DEFERRABLE;
 
-
 ALTER TABLE mgd.VOC_Vocab ADD FOREIGN KEY (_LogicalDB_key) REFERENCES mgd.ACC_LogicalDB DEFERRABLE;
-
 
 EOSQL

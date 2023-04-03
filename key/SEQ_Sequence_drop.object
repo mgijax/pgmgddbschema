@@ -1,4 +1,5 @@
 #!/bin/sh
+
 #
 # History
 # 01/18/2010 - jsb - added SEQ_Sequence_Assoc
@@ -11,7 +12,9 @@
 # 05/13/2002	lec
 #	- TR 1463; SAO
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.SEQ_Source_Assoc DROP CONSTRAINT SEQ_Source_Assoc__Sequence_key_fkey CASCADE;
@@ -33,6 +36,7 @@ ALTER TABLE mgd.SEQ_Coord_Cache DROP CONSTRAINT SEQ_Coord_Cache__Sequence_key_fk
 ALTER TABLE mgd.SEQ_Allele_Assoc DROP CONSTRAINT SEQ_Allele_Assoc__Sequence_key_fkey CASCADE;
 
 ALTER TABLE mgd.SEQ_GeneTrap DROP CONSTRAINT SEQ_GeneTrap__Sequence_key_fkey CASCADE;
+
 ALTER TABLE mgd.SEQ_Sequence DROP CONSTRAINT SEQ_Sequence_pkey CASCADE;
 
 EOSQL

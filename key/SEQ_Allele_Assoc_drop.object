@@ -1,8 +1,12 @@
 #!/bin/sh
+
 # History:
 #	11/15/07 - jsb - initially for Gene Trap LF (MGI 4.0) release - TR7493
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
 ALTER TABLE mgd.SEQ_Allele_Assoc DROP CONSTRAINT SEQ_Allele_Assoc_pkey CASCADE;
 
 EOSQL

@@ -9,13 +9,10 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.MGI_SynonymType ADD PRIMARY KEY (_SynonymType_key);
 
-
 ALTER TABLE mgd.MGI_Synonym ADD FOREIGN KEY (_SynonymType_key) REFERENCES mgd.MGI_SynonymType DEFERRABLE;
-
 
 EOSQL
