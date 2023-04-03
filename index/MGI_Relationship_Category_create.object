@@ -19,8 +19,4 @@ CLUSTER mgd.MGI_Relationship_Category USING MGI_Relationship_Category_pkey;
 
 create index MGI_Relationship_Category_idx_name on mgd.MGI_Relationship_Category (name);
 
-create index MGI_Relationship_Category_idx_CreatedBy_key on mgd.MGI_Relationship_Category (_CreatedBy_key);
-
-create index MGI_Relationship_Category_idx_ModifiedBy_key on mgd.MGI_Relationship_Category (_ModifiedBy_key);
-
 EOSQL
