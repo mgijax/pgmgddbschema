@@ -6,28 +6,20 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.DAG_Closure_idx_clustered
-;
+drop index if exists mgd.DAG_Closure_idx_clustered;
 
-drop index if exists mgd.DAG_Closure_idx_MGIType_key
-;
+drop index if exists mgd.DAG_Closure_idx_MGIType_key;
 
-drop index if exists mgd.DAG_Closure_idx_Ancestor_key
-;
+drop index if exists mgd.DAG_Closure_idx_Ancestor_key;
 
-drop index if exists mgd.DAG_Closure_idx_Descendent_key
-;
+drop index if exists mgd.DAG_Closure_idx_Descendent_key;
 
-drop index if exists mgd.DAG_Closure_idx_DescendentObject_key
-;
+drop index if exists mgd.DAG_Closure_idx_DescendentObject_key;
 
-drop index if exists mgd.DAG_Closure_idx_AncestorLabel_key
-;
+drop index if exists mgd.DAG_Closure_idx_AncestorLabel_key;
 
-drop index if exists mgd.DAG_Closure_idx_DescendentLabel_key
-;
+drop index if exists mgd.DAG_Closure_idx_DescendentLabel_key;
 
 EOSQL

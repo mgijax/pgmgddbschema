@@ -9,28 +9,20 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.MGI_Property_idx_PropertyType_key
-;
+drop index if exists mgd.MGI_Property_idx_PropertyType_key;
 
-drop index if exists mgd.MGI_Property_idx_PropertyTerm_key
-;
+drop index if exists mgd.MGI_Property_idx_PropertyTerm_key;
 
-drop index if exists mgd.MGI_Property_idx_Object_key
-;
+drop index if exists mgd.MGI_Property_idx_Object_key;
 
-drop index if exists mgd.MGI_Property_idx_MGIType_key
-;
+drop index if exists mgd.MGI_Property_idx_MGIType_key;
 
-drop index if exists mgd.MGI_Property_idx_value
-;
+drop index if exists mgd.MGI_Property_idx_value;
 
-drop index if exists mgd.MGI_Property_idx_CreatedBy_key
-;
+drop index if exists mgd.MGI_Property_idx_CreatedBy_key;
 
-drop index if exists mgd.MGI_Property_idx_ModifiedBy_key
-;
+drop index if exists mgd.MGI_Property_idx_ModifiedBy_key;
 
 EOSQL

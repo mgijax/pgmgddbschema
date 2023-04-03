@@ -6,25 +6,18 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.PRB_Marker_idx_Probe_key
-;
+drop index if exists mgd.PRB_Marker_idx_Probe_key;
 
-drop index if exists mgd.PRB_Marker_idx_Marker_key
-;
+drop index if exists mgd.PRB_Marker_idx_Marker_key;
 
-drop index if exists mgd.PRB_Marker_idx_Refs_key
-;
+drop index if exists mgd.PRB_Marker_idx_Refs_key;
 
-drop index if exists mgd.PRB_Marker_idx_relationship
-;
+drop index if exists mgd.PRB_Marker_idx_relationship;
 
-drop index if exists mgd.PRB_Marker_idx_CreatedBy_key
-;
+drop index if exists mgd.PRB_Marker_idx_CreatedBy_key;
 
-drop index if exists mgd.PRB_Marker_idx_ModifiedBy_key
-;
+drop index if exists mgd.PRB_Marker_idx_ModifiedBy_key;
 
 EOSQL

@@ -6,13 +6,10 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.GXD_InSituResultImage_idx_Result_key
-;
+drop index if exists mgd.GXD_InSituResultImage_idx_Result_key;
 
-drop index if exists mgd.GXD_InSituResultImage_idx_ImagePane_key
-;
+drop index if exists mgd.GXD_InSituResultImage_idx_ImagePane_key;
 
 EOSQL

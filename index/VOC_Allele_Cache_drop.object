@@ -6,13 +6,10 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.VOC_Allele_Cache_idx_Allele_key
-;
+drop index if exists mgd.VOC_Allele_Cache_idx_Allele_key;
 
-drop index if exists mgd.VOC_Allele_Cache_idx_annotType
-;
+drop index if exists mgd.VOC_Allele_Cache_idx_annotType;
 
 EOSQL

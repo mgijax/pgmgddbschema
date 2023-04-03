@@ -14,25 +14,18 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.MRK_Label_idx_clustered
-;
+drop index if exists mgd.MRK_Label_idx_clustered;
 
-drop index if exists mgd.MRK_Label_idx_label
-;
+drop index if exists mgd.MRK_Label_idx_label;
 
-drop index if exists mgd.MRK_Label_idx_Label_Status_key
-;
+drop index if exists mgd.MRK_Label_idx_Label_Status_key;
 
-drop index if exists mgd.MRK_Label_idx_Organism_key
-;
+drop index if exists mgd.MRK_Label_idx_Organism_key;
 
-drop index if exists mgd.MRK_Label_idx_priority
-;
+drop index if exists mgd.MRK_Label_idx_priority;
 
-drop index if exists mgd.MRK_Label_0
-;
+drop index if exists mgd.MRK_Label_0;
 
 EOSQL

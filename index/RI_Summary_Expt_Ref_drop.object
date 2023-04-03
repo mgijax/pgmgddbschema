@@ -6,13 +6,10 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.RI_Summary_Expt_Ref_idx_Expt_key
-;
+drop index if exists mgd.RI_Summary_Expt_Ref_idx_Expt_key;
 
-drop index if exists mgd.RI_Summary_Expt_Ref_idx_Refs_key
-;
+drop index if exists mgd.RI_Summary_Expt_Ref_idx_Refs_key;
 
 EOSQL

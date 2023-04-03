@@ -9,34 +9,24 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.SEQ_Sequence_idx_clustered
-;
+drop index if exists mgd.SEQ_Sequence_idx_clustered;
 
-drop index if exists mgd.SEQ_Sequence_idx_SequenceType_key
-;
+drop index if exists mgd.SEQ_Sequence_idx_SequenceType_key;
 
-drop index if exists mgd.SEQ_Sequence_idx_SequenceQuality_key
-;
+drop index if exists mgd.SEQ_Sequence_idx_SequenceQuality_key;
 
-drop index if exists mgd.SEQ_Sequence_idx_SequenceStatus_key
-;
+drop index if exists mgd.SEQ_Sequence_idx_SequenceStatus_key;
 
-drop index if exists mgd.SEQ_Sequence_idx_SequenceProvider_key
-;
+drop index if exists mgd.SEQ_Sequence_idx_SequenceProvider_key;
 
-drop index if exists mgd.SEQ_Sequence_idx_length
-;
+drop index if exists mgd.SEQ_Sequence_idx_length;
 
-drop index if exists mgd.SEQ_Sequence_idx_seqrecord_date
-;
+drop index if exists mgd.SEQ_Sequence_idx_seqrecord_date;
 
-drop index if exists mgd.SEQ_Sequence_idx_CreatedBy_key
-;
+drop index if exists mgd.SEQ_Sequence_idx_CreatedBy_key;
 
-drop index if exists mgd.SEQ_Sequence_idx_ModifiedBy_key
-;
+drop index if exists mgd.SEQ_Sequence_idx_ModifiedBy_key;
 
 EOSQL

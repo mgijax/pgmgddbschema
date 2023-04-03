@@ -9,22 +9,16 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.VOC_Term_EMAPA_idx_parent
-;
+drop index if exists mgd.VOC_Term_EMAPA_idx_parent;
 
-drop index if exists mgd.VOC_Term_EMAPA_idx_startStage
-;
+drop index if exists mgd.VOC_Term_EMAPA_idx_startStage ;
 
-drop index if exists mgd.VOC_Term_EMAPA_idx_endStage
-;
+drop index if exists mgd.VOC_Term_EMAPA_idx_endStage;
 
-drop index if exists mgd.VOC_Term_EMAPA_idx_CreatedBy_key
-;
+drop index if exists mgd.VOC_Term_EMAPA_idx_CreatedBy_key;
 
-drop index if exists mgd.VOC_Term_EMAPA_idx_ModifiedBy_key
-;
+drop index if exists mgd.VOC_Term_EMAPA_idx_ModifiedBy_key;
 
 EOSQL

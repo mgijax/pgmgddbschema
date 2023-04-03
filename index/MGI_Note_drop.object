@@ -10,22 +10,16 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.MGI_Note_idx_clustered
-;
+drop index if exists mgd.MGI_Note_idx_clustered;
 
-drop index if exists mgd.MGI_Note_idx_MGIType_key
-;
+drop index if exists mgd.MGI_Note_idx_MGIType_key;
 
-drop index if exists mgd.MGI_Note_idx_NoteType_key
-;
+drop index if exists mgd.MGI_Note_idx_NoteType_key;
 
-drop index if exists mgd.MGI_Note_idx_CreatedBy_key
-;
+drop index if exists mgd.MGI_Note_idx_CreatedBy_key;
 
-drop index if exists mgd.MGI_Note_idx_ModifiedBy_key
-;
+drop index if exists mgd.MGI_Note_idx_ModifiedBy_key;
 
 EOSQL
