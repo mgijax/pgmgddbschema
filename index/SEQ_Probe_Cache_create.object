@@ -8,14 +8,11 @@
 # saving some space; no need to add index if it is not used
 # feel free to add these indexes, if necessary
 #
-# 09/16/2008 - jsb - removed SEQ_Probe_Cache_idx_Sequence_key (TR 9037); added _Sequence_key
-# 	to SEQ_Probe_Cache_idx_Probe_key (TR 9062)
 # 10/24/2003	lec
 #	- TR 1463; SAO
 #
 
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 

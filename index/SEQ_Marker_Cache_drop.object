@@ -6,8 +6,6 @@
 # 02/16/2010    lec
 #       - TR 9239; add idx_BiotypeConflict_key
 #
-# 09/16/2008 - jsb - removed idx_Sequence_key (TR 9037)
-#
 # 05/13/2002	lec
 #	- TR 1463; SAO
 #
