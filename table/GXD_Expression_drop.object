@@ -12,12 +12,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+drop table mgd.GXD_Expression CASCADE;
 
-drop table mgd.GXD_Expression
-
-CASCADE
-;
 EOSQL

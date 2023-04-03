@@ -9,12 +9,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+drop table mgd.VOC_Term_EMAPS CASCADE;
 
-drop table mgd.VOC_Term_EMAPS
-
-CASCADE
-;
 EOSQL

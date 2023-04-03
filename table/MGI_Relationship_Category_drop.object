@@ -9,12 +9,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+drop table mgd.MGI_Relationship_Category CASCADE;
 
-drop table mgd.MGI_Relationship_Category
-
-CASCADE
-;
 EOSQL

@@ -9,12 +9,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+drop table mgd.MRK_MCV_Cache CASCADE;
 
-drop table mgd.MRK_MCV_Cache
-
-CASCADE
-;
 EOSQL
