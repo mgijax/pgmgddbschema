@@ -6,8 +6,6 @@
 # 02/11/2016	lec
 #	- add extra indexes
 #
-# 09/16/2008 - jsb - removed idx_MGIType_key (TR 9037)
-#
 
 cd `dirname $0` && . ./Configuration
 
