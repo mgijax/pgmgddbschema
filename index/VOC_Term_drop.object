@@ -23,6 +23,10 @@ drop index if exists mgd.VOC_Term_idx_CreatedBy_key;
 
 drop index if exists mgd.VOC_Term_idx_ModifiedBy_key;
 
+drop index if exists mgd.VOC_Term_idx_creation_date;
+
+drop index if exists mgd.VOC_Term_idx_modification_date;
+
 drop index if exists mgd.VOC_Term_0;
 
 EOSQL
