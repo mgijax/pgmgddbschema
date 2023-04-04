@@ -1,8 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
 # History
 #
 # 01/20/2010	lec
@@ -10,7 +7,6 @@
 #
 
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
@@ -24,4 +20,5 @@ create table mgd.GXD_ProbePrep (
 	creation_date                  timestamp DEFAULT now()        not null,
 	modification_date              timestamp DEFAULT now()        not null 
 );
+
 EOSQL

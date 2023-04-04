@@ -9,7 +9,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.VOC_GO_Cache (
@@ -20,4 +19,5 @@ create table mgd.VOC_GO_Cache (
 	accID                      text       not null,
 	term                       text       not null
 );
+
 EOSQL

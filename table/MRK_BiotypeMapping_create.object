@@ -20,7 +20,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.MRK_BiotypeMapping (
@@ -36,4 +35,5 @@ create table mgd.MRK_BiotypeMapping (
 	creation_date                  timestamp DEFAULT now()        not null,
 	modification_date              timestamp DEFAULT now()        not null 
 );
+
 EOSQL
