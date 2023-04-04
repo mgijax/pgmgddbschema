@@ -1,0 +1,21 @@
+# 03/31/2023    lec
+# tables does not have index on purpose: _Createdby_key, _ModifiedBy_key, creation_date, modification_date 
+# saving some space; not need to add index if it is not used
+# feel free to add these indexes, if necessary
+
+ACC_ActualDB_create.object
+ACC_LogicalDB_create.object
+ACC_MGIType_create.object
+BIB_Workflow_Data_create.object _Reate
+MRK_Chromosome_create.object
+MRK_Cluster_create.object
+MGI_Relationship_Category_create.object
+SEQ_GeneTrap_create.object
+ALL_Cre_Cache_create.object
+ALL_Knockout_Cache_create.object
+MRK_Location_Cache_create.object
+MRK_MCV_Cache_create.object
+MRK_MCV_Count_Cache_create.object
+SEQ_Coord_Cache_create.object
+SEQ_Marker_Cache_create.object
+SEQ_Probe_Cache_create.object
