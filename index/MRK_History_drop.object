@@ -18,6 +18,8 @@ drop index if exists mgd.MRK_History_idx_CreatedBy_key;
 
 drop index if exists mgd.MRK_History_idx_ModifiedBy_key;
 
+drop index if exists mgd.MRK_History_idx_event_date;
+
 drop index if exists mgd.MRK_History_idx_creation_date;
 
 drop index if exists mgd.MRK_History_idx_modification_date;

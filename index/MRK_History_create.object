@@ -20,6 +20,8 @@ create index MRK_History_idx_CreatedBy_key on mgd.MRK_History (_CreatedBy_key);
 
 create index MRK_History_idx_ModifiedBy_key on mgd.MRK_History (_ModifiedBy_key);
 
+create index MRK_History_idx_event_date on mgd.MRK_History (event_date);
+
 create index MRK_History_idx_creation_date on mgd.MRK_History (creation_date);
 
 create index MRK_History_idx_modification_date on mgd.MRK_History (modification_date);
