@@ -38,6 +38,13 @@ BEGIN
 --	NEW
 --
 
+-- delete GXD_AntibodyPrep records if they are no longer used in Assays
+-- then the system should allow the probe to be deleted
+DELETE FROM GXD_AntibodyPrep p
+WHERE p._Antibody_key = OLD._Antibody_key
+AND NOT EXISTS (SELECT 1 FROM GXD_Assay a WHERE p._AntibodyPrep_key = a._AntibodyPrep_key)
+;
+
 DELETE FROM IMG_ImagePane_Assoc a
 WHERE a._Object_key = OLD._Antibody_key
 AND a._MGIType_key = 6
@@ -78,7 +85,7 @@ WHERE a._Object_key = OLD._Antibody_key
 AND a._MGIType_key = 6
 ;
 
-RETURN NEW;
+RETURN OLD;
 
 END;
 \$\$
@@ -87,7 +94,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION GXD_Antibody_delete() TO public;
 
 CREATE TRIGGER GXD_Antibody_delete_trigger
-AFTER DELETE on GXD_Antibody
+BEFORE DELETE on GXD_Antibody
 FOR EACH ROW
 EXECUTE PROCEDURE GXD_Antibody_delete();
 
