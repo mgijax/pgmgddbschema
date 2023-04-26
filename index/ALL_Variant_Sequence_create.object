@@ -6,7 +6,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.ALL_Variant_Sequence USING ALL_Variant_Sequence_pkey;
@@ -18,5 +17,9 @@ create index ALL_Variant_Sequence_idx_Sequence_Type_key on mgd.ALL_Variant_Seque
 create index ALL_Variant_Sequence_idx_CreatedBy_key on mgd.ALL_Variant_Sequence (_CreatedBy_key);
 
 create index ALL_Variant_Sequence_idx_ModifiedBy_key on mgd.ALL_Variant_Sequence (_ModifiedBy_key);
+
+create index ALL_Variant_Sequence_idx_creation_date on mgd.ALL_Variant_Sequence (creation_date);
+
+create index ALL_Variant_Sequence_idx_modification_date on mgd.ALL_Variant_Sequence (modification_date);
 
 EOSQL

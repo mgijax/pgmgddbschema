@@ -30,9 +30,6 @@ and m._Marker_Status_key = ms._Marker_Status_key
 and m._Marker_Type_key = mt._Marker_Type_key
 and m._CreatedBy_key = u1._User_key
 and m._ModifiedBy_key = u2._User_key
-
-
-
 ;
 
 EOSQL

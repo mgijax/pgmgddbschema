@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/SEQ_Sequence_Acc_View_drop.object
@@ -16,9 +12,6 @@ select a.*, l.name as LogicalDB
 from ACC_Accession a, ACC_LogicalDB l
 where a._MGIType_key = 19
 and a._LogicalDB_key = l._LogicalDB_key
-
-
-
 ;
 
 EOSQL

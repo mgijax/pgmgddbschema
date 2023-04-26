@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/GXD_AntibodyAliasRef_View_drop.object
@@ -16,9 +12,6 @@ select a.antibodyName, aa.*, c.jnumID, c.numericPart as jnum, c.short_citation
 from GXD_Antibody a, GXD_AntibodyAlias aa, BIB_Citation_Cache c
 where a._Antibody_key = aa._Antibody_key
 and aa._Refs_key = c._Refs_key
-
-
-
 ;
 
 EOSQL

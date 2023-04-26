@@ -12,7 +12,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.VOC_Term USING VOC_Term_pkey;
@@ -26,6 +25,10 @@ create index VOC_Term_idx_Vocab_key on mgd.VOC_Term (_Vocab_key);
 create index VOC_Term_idx_CreatedBy_key on mgd.VOC_Term (_CreatedBy_key);
 
 create index VOC_Term_idx_ModifiedBy_key on mgd.VOC_Term (_ModifiedBy_key);
+
+create index VOC_Term_idx_creation_date on mgd.VOC_Term (creation_date);
+
+create index VOC_Term_idx_modification_date on mgd.VOC_Term (modification_date);
 
 create index VOC_Term_0 on mgd.VOC_Term (lower(term));
 

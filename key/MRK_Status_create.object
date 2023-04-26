@@ -9,13 +9,10 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.MRK_Status ADD PRIMARY KEY (_Marker_Status_key);
 
-
 ALTER TABLE mgd.MRK_Marker ADD FOREIGN KEY (_Marker_Status_key) REFERENCES mgd.MRK_Status DEFERRABLE;
-
 
 EOSQL

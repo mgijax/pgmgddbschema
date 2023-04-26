@@ -9,29 +9,20 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+drop index if exists mgd.MRK_BiotypeMapping_idx_biotypevocab_key;
 
-drop index if exists mgd.MRK_BiotypeMapping_idx_biotypevocab_key
-;
+drop index if exists mgd.MRK_BiotypeMapping_idx_biotypeterm_key;
 
-drop index if exists mgd.MRK_BiotypeMapping_idx_biotypeterm_key
-;
+drop index if exists mgd.MRK_BiotypeMapping_idx_MCVTerm_key;
 
-drop index if exists mgd.MRK_BiotypeMapping_idx_MCVTerm_key
-;
+drop index if exists mgd.MRK_BiotypeMapping_idx_PrimaryMCVTerm_key;
 
-drop index if exists mgd.MRK_BiotypeMapping_idx_PrimaryMCVTerm_key
-;
+drop index if exists mgd.MRK_BiotypeMapping_idx_Marker_Type_key;
 
-drop index if exists mgd.MRK_BiotypeMapping_idx_Marker_Type_key
-;
+drop index if exists mgd.MRK_BiotypeMapping_idx_CreatedBy_key;
 
-drop index if exists mgd.MRK_BiotypeMapping_idx_CreatedBy_key
-;
-
-drop index if exists mgd.MRK_BiotypeMapping_idx_ModifiedBy_key
-;
+drop index if exists mgd.MRK_BiotypeMapping_idx_ModifiedBy_key;
 
 EOSQL

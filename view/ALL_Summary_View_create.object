@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/ALL_Summary_View_drop.object
@@ -27,9 +23,6 @@ and a2.prefixPart = 'MGI:'
 and a2.preferred = 1
 and a._Object_key = al._Allele_key
 and al._Allele_Type_key = t._Term_key
-
-
-
 ;
 
 EOSQL

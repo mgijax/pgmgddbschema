@@ -16,10 +16,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.MAP_Coord_Feature ADD PRIMARY KEY (_Feature_key);
-
 
 EOSQL

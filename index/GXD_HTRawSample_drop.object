@@ -9,25 +9,18 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.GXD_HTRawSample_idx_Experiment_key
-;
+drop index if exists mgd.GXD_HTRawSample_idx_RawSample_key;
 
-drop index if exists mgd.GXD_HTRawSample_idx_accID
-;
+drop index if exists mgd.GXD_HTRawSample_idx_accID;
 
-drop index if exists mgd.GXD_HTRawSample_idx_CreatedBy_key
-;
+drop index if exists mgd.GXD_HTRawSample_idx_CreatedBy_key;
 
-drop index if exists mgd.GXD_HTRawSample_idx_ModifiedBy_key
-;
+drop index if exists mgd.GXD_HTRawSample_idx_ModifiedBy_key;
 
-drop index if exists mgd.GXD_HTRawSample_idx_creation_date
-;
+drop index if exists mgd.GXD_HTRawSample_idx_creation_date;
 
-drop index if exists mgd.GXD_HTRawSample_idx_modification_date
-;
+drop index if exists mgd.GXD_HTRawSample_idx_modification_date;
 
 EOSQL

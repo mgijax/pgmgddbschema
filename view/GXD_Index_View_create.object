@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/GXD_Index_View_drop.object
@@ -19,9 +15,6 @@ where i._Marker_key = m._Marker_key
 and i._Refs_key = c._Refs_key
 and i._CreatedBy_key = u1._User_key
 and i._ModifiedBy_key = u2._User_key
-
-
-
 ;
 
 EOSQL

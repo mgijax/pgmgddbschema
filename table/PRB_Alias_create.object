@@ -1,11 +1,6 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
@@ -18,4 +13,5 @@ create table mgd.PRB_Alias (
 	creation_date                  timestamp DEFAULT now()        not null,
 	modification_date              timestamp DEFAULT now()        not null 
 );
+
 EOSQL

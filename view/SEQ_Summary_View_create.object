@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/SEQ_Summary_View_drop.object
@@ -22,9 +18,6 @@ where a._MGIType_key = 19
 and a.private = 0
 and a._Object_key = s._Sequence_key
 and s._SequenceType_key = v1._Term_key
-
-
-
 ;
 
 EOSQL

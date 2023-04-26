@@ -7,13 +7,10 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.MRK_Cluster ADD PRIMARY KEY (_Cluster_key);
 
-
 ALTER TABLE mgd.MRK_ClusterMember ADD FOREIGN KEY (_Cluster_key) REFERENCES mgd.MRK_Cluster ON DELETE CASCADE DEFERRABLE;
-
 
 EOSQL

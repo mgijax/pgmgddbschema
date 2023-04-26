@@ -1,14 +1,18 @@
 #!/bin/sh
+
 #
 # History
 #
 # 09/29/2004	lec
 #	- TR 5686
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.MGI_Synonym DROP CONSTRAINT MGI_Synonym__SynonymType_key_fkey CASCADE;
+
 ALTER TABLE mgd.MGI_SynonymType DROP CONSTRAINT MGI_SynonymType_pkey CASCADE;
 
 EOSQL

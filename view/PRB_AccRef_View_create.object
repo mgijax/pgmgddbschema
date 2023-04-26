@@ -22,9 +22,6 @@ and a._LogicalDB_key = l._LogicalDB_key
 and a._MGIType_key = m._MGIType_key
 and a._Object_key = r._Probe_key
 and ar._Refs_key = r._Refs_key
-
-
-
 ;
 
 EOSQL

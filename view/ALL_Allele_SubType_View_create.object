@@ -20,9 +20,6 @@ from ALL_Allele a, VOC_Annot va, VOC_Term t
 where a._Allele_key = va._Object_key
 and va._AnnotType_key = 1014
 and va._Term_key = t._Term_key
-
-
-
 ;
 
 EOSQL

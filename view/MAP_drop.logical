@@ -1,0 +1,14 @@
+#!/bin/csh -f
+
+#
+# Logical Group Script
+#
+# Executes all MAP*_drop.object scripts
+#
+
+cd `dirname $0`
+
+foreach i (MAP*_drop.object)
+$i $*
+end
+

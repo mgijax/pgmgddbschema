@@ -6,51 +6,36 @@
 # 02/16/2010    lec
 #       - TR 9239; add idx_BiotypeConflict_key
 #
-# 09/16/2008 - jsb - removed idx_Sequence_key (TR 9037)
-#
 # 05/13/2002	lec
 #	- TR 1463; SAO
 #
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.SEQ_Marker_Cache_idx_clustered
-;
+drop index if exists mgd.SEQ_Marker_Cache_idx_clustered;
 
-drop index if exists mgd.SEQ_Marker_Cache_idx_Marker_key
-;
+drop index if exists mgd.SEQ_Marker_Cache_idx_Marker_key;
 
-drop index if exists mgd.SEQ_Marker_Cache_idx_Organism_key
-;
+drop index if exists mgd.SEQ_Marker_Cache_idx_Organism_key;
 
-drop index if exists mgd.SEQ_Marker_Cache_idx_Refs_key
-;
+drop index if exists mgd.SEQ_Marker_Cache_idx_Refs_key;
 
-drop index if exists mgd.SEQ_Marker_Cache_idx_SequenceProvider_key
-;
+drop index if exists mgd.SEQ_Marker_Cache_idx_SequenceProvider_key;
 
-drop index if exists mgd.SEQ_Marker_Cache_idx_SequenceType_key
-;
+drop index if exists mgd.SEQ_Marker_Cache_idx_SequenceType_key;
 
-drop index if exists mgd.SEQ_Marker_Cache_idx_LogicalDB_key
-;
+drop index if exists mgd.SEQ_Marker_Cache_idx_LogicalDB_key;
 
-drop index if exists mgd.SEQ_Marker_Cache_idx_Qualifier_key
-;
+drop index if exists mgd.SEQ_Marker_Cache_idx_Qualifier_key;
 
-drop index if exists mgd.SEQ_Marker_Cache_idx_Marker_Type_key
-;
+drop index if exists mgd.SEQ_Marker_Cache_idx_Marker_Type_key;
 
-drop index if exists mgd.SEQ_Marker_Cache_idx_BiotypeConflict_key
-;
+drop index if exists mgd.SEQ_Marker_Cache_idx_BiotypeConflict_key;
 
-drop index if exists mgd.SEQ_Marker_Cache_idx_accID
-;
+drop index if exists mgd.SEQ_Marker_Cache_idx_accID;
 
-drop index if exists mgd.SEQ_Marker_Cache_idx_annotation_date
-;
+drop index if exists mgd.SEQ_Marker_Cache_idx_annotation_date;
 
 EOSQL

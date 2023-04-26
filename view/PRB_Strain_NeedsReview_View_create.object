@@ -10,7 +10,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create view mgd.PRB_Strain_NeedsReview_View
@@ -20,9 +19,6 @@ select va.*, vt.term
 from VOC_Annot va, VOC_Term vt
 where va._AnnotType_key = 1008 
       and va._Term_key = vt._Term_key
-
-
-
 ;
 
 EOSQL

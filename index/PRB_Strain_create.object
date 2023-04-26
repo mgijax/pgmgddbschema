@@ -1,11 +1,6 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
@@ -20,5 +15,9 @@ create index PRB_Strain_idx_strain on mgd.PRB_Strain (strain);
 create index PRB_Strain_idx_CreatedBy_key on mgd.PRB_Strain (_CreatedBy_key);
 
 create index PRB_Strain_idx_ModifiedBy_key on mgd.PRB_Strain (_ModifiedBy_key);
+
+create index PRB_Strain_idx_creation_date on mgd.PRB_Strain (creation_date);
+
+create index PRB_Strain_idx_modification_date on mgd.PRB_Strain (modification_date);
 
 EOSQL

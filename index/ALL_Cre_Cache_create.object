@@ -3,6 +3,11 @@
 #
 # History
 #
+# 03/31/2023    lec
+# tables does not have index on purpose: _Createdby_key, _ModifiedBy_key, creation_date, modification_date
+# saving some space; no need to add index if it is not used
+# feel free to add these indexes, if necessary
+#
 # 01/07/2016    lec 
 #       - TR12223/converting _structure_key -> _emapa_term_key/_stage_key
 #
@@ -18,13 +23,11 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create index ALL_Cre_Cache_idx_clustered on mgd.ALL_Cre_Cache (_Allele_key, _EMAPA_Term_key, _Stage_key, _Assay_key, expressed);
 
-CLUSTER mgd.ALL_Cre_Cache USING ALL_Cre_Cache_idx_clustered
-;
+CLUSTER mgd.ALL_Cre_Cache USING ALL_Cre_Cache_idx_clustered;
 
 create index ALL_Cre_Cache_idx_Allele_key on mgd.ALL_Cre_Cache (_Allele_key);
 
@@ -37,9 +40,5 @@ create index ALL_Cre_Cache_idx_Stage_key on mgd.ALL_Cre_Cache (_Stage_key);
 create index ALL_Cre_Cache_idx_Assay_key on mgd.ALL_Cre_Cache (_Assay_key);
 
 create index ALL_Cre_Cache_idx_Allele_Type_key on mgd.ALL_Cre_Cache (_Allele_Type_key);
-
-create index ALL_Cre_Cache_idx_CreatedBy_key on mgd.ALL_Cre_Cache (_CreatedBy_key);
-
-create index ALL_Cre_Cache_idx_ModifiedBy_key on mgd.ALL_Cre_Cache (_ModifiedBy_key);
 
 EOSQL

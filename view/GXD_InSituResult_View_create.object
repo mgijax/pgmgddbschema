@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/GXD_InSituResult_View_drop.object
@@ -16,9 +12,6 @@ select r.*, s.term as strength, p.term as pattern
 from GXD_InSituResult r, VOC_Term s, VOC_Term p
 where r._Strength_key = s._Term_key
 and r._Pattern_key = p._Term_key
-
-
-
 ;
 
 EOSQL

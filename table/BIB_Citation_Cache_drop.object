@@ -9,12 +9,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+drop table mgd.BIB_Citation_Cache CASCADE;
 
-drop table mgd.BIB_Citation_Cache
-
-CASCADE
-;
 EOSQL

@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/MRK_Current_View_drop.object
@@ -16,9 +12,6 @@ select c.*, m1.symbol as current_symbol, m2.symbol, m1.chromosome, m1._Marker_Ty
 from MRK_Current c, MRK_Marker m1, MRK_Marker m2
 where c._Marker_key = m2._Marker_key
 and c._Current_key = m1._Marker_key
-
-
-
 ;
 
 EOSQL

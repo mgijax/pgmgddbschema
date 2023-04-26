@@ -1,42 +1,27 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_Experiment_key
-;
+drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_Experiment_key;
 
-drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_Organism_key
-;
+drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_Organism_key;
 
-drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_Sex_key
-;
+drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_Sex_key;
 
-drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_Emapa_key
-;
+drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_Emapa_key;
 
-drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_Stage_key
-;
+drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_Stage_key;
 
-drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_Genotype_key
-;
+drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_Genotype_key;
 
-drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_age
-;
+drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_age;
 
-drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_note
-;
+drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_note;
 
-drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_CreatedBy_key
-;
+drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_CreatedBy_key;
 
-drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_ModifiedBy_key
-;
+drop index if exists mgd.GXD_HTSample_RNASeqSet_idx_ModifiedBy_key;
 
 EOSQL

@@ -83,9 +83,6 @@ and a.prefixPart = 'MGI:'
 and a.preferred = 1
 and a._LogicalDB_key = l._LogicalDB_key
 and not exists (select 1 from GXD_AllelePair ap where g._Genotype_key = ap._Genotype_key)
-
-
-
 ;
 
 EOSQL

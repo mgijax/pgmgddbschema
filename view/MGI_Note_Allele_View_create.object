@@ -22,10 +22,6 @@ and t._MGIType_key = 11
 and n._MGIType_key = m._MGIType_key
 and n._CreatedBy_key = u1._User_key
 and n._ModifiedBy_key = u2._User_key
-
-
-
-
 ;
 
 EOSQL

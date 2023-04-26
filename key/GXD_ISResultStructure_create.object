@@ -13,5 +13,4 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.GXD_ISResultStructure ADD PRIMARY KEY (_ResultStructure_key);
 
-
 EOSQL

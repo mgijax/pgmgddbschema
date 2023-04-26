@@ -1,13 +1,10 @@
 #!/bin/sh
 
 #
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
 # NOTE that PRB_Allele._Allele_key is *not* the same as ALL_Allele._Allele_key
 #
 
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
@@ -20,4 +17,5 @@ create table mgd.PRB_Allele_Strain (
 	creation_date                  timestamp DEFAULT now()        not null,
 	modification_date              timestamp DEFAULT now()        not null 
 );
+
 EOSQL

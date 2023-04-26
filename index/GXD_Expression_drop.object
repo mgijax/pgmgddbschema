@@ -17,49 +17,34 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.GXD_Expression_idx_clustered
-;
+drop index if exists mgd.GXD_Expression_idx_clustered;
 
-drop index if exists mgd.GXD_Expression_idx_Assay_key
-;
+drop index if exists mgd.GXD_Expression_idx_Assay_key;
 
-drop index if exists mgd.GXD_Expression_idx_Refs_key
-;
+drop index if exists mgd.GXD_Expression_idx_Refs_key;
 
-drop index if exists mgd.GXD_Expression_idx_Refs_etc_key
-;
+drop index if exists mgd.GXD_Expression_idx_Refs_etc_key;
 
-drop index if exists mgd.GXD_Expression_idx_AssayType_key
-;
+drop index if exists mgd.GXD_Expression_idx_AssayType_key;
 
-drop index if exists mgd.GXD_Expression_idx_Genotype_key
-;
+drop index if exists mgd.GXD_Expression_idx_Genotype_key;
 
-drop index if exists mgd.GXD_Expression_idx_Marker_key
-;
+drop index if exists mgd.GXD_Expression_idx_Marker_key;
 
-drop index if exists mgd.GXD_Expression_idx_GenotypeGXD_key
-;
+drop index if exists mgd.GXD_Expression_idx_GenotypeGXD_key;
 
-drop index if exists mgd.GXD_Expression_idx_EMAPA_Term_key
-;
+drop index if exists mgd.GXD_Expression_idx_EMAPA_Term_key;
 
-drop index if exists mgd.GXD_Expression_idx_CellType_Term_key
-;
+drop index if exists mgd.GXD_Expression_idx_CellType_Term_key;
 
-drop index if exists mgd.GXD_Expression_idx_Stage_key
-;
+drop index if exists mgd.GXD_Expression_idx_Stage_key;
 
-drop index if exists mgd.GXD_Expression_idx_Specimen_key
-;
+drop index if exists mgd.GXD_Expression_idx_Specimen_key;
 
-drop index if exists mgd.GXD_Expression_idx_EMAPA_Term_etc_key
-;
+drop index if exists mgd.GXD_Expression_idx_EMAPA_Term_etc_key;
 
-drop index if exists mgd.GXD_Expression_idx_GelLane_key
-;
+drop index if exists mgd.GXD_Expression_idx_GelLane_key;
 
 EOSQL

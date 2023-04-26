@@ -1,8 +1,6 @@
 #!/bin/sh
 
 #
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
 # 05/27/2009	lec
 #	TT 9665; add assay key
 #
@@ -21,9 +19,6 @@ where b._Strength_key = s._Term_key
 and b._GelLane_key = l._GelLane_key
 and b._GelRow_key = r._GelRow_key
 and r._Assay_key = l._Assay_key
-
-
-
 ;
 
 EOSQL

@@ -9,10 +9,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.WKS_Rosetta ADD PRIMARY KEY (_Rosetta_key);
-
 
 EOSQL

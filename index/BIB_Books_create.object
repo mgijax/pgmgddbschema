@@ -1,14 +1,13 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.BIB_Books USING BIB_Books_pkey;
+
+create index BIB_Books_idx_creation_date on mgd.BIB_Books (creation_date);
+
+create index BIB_Books_idx_modification_date on mgd.BIB_Books (modification_date);
 
 EOSQL

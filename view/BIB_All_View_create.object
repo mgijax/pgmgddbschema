@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/BIB_All_View_drop.object
@@ -16,9 +12,6 @@ select r.*,
 c.referenceType, c.jnumID, c.numericPart as jnum, c.citation, c.short_citation
 from BIB_Refs r, BIB_Citation_Cache c
 where r._Refs_key = c._Refs_key
-
-
-
 ;
 
 EOSQL

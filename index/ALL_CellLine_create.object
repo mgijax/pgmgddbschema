@@ -15,12 +15,16 @@ create index ALL_CellLine_idx_Strain_key on mgd.ALL_CellLine (_Strain_key);
 
 create index ALL_CellLine_idx_cellLine on mgd.ALL_CellLine (cellLine);
 
+create index ALL_CellLine_idx_Derivation_key on mgd.ALL_CellLine (_Derivation_key, _CellLine_key);
+
+create index ALL_CellLine_idx_CellLine_Type_key on mgd.ALL_CellLine (_CellLine_Type_key, _Derivation_key, _CellLine_key);
+
 create index ALL_CellLine_idx_CreatedBy_key on mgd.ALL_CellLine (_CreatedBy_key);
 
 create index ALL_CellLine_idx_ModifiedBy_key on mgd.ALL_CellLine (_ModifiedBy_key);
 
-create index ALL_CellLine_idx_Derivation_key on mgd.ALL_CellLine (_Derivation_key, _CellLine_key);
+create index ALL_CellLine_idx_creation_date on mgd.ALL_CellLine (creation_date);
 
-create index ALL_CellLine_idx_CellLine_Type_key on mgd.ALL_CellLine (_CellLine_Type_key, _Derivation_key, _CellLine_key);
+create index ALL_CellLine_idx_modification_date on mgd.ALL_CellLine (modification_date);
 
 EOSQL

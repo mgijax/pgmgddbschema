@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/MRK_Acc_View_drop.object
@@ -17,9 +13,6 @@ from ACC_Accession a, ACC_LogicalDB l, MRK_Marker m
 where a._MGIType_key = 2
 and a._LogicalDB_key = l._LogicalDB_key
 and a._Object_key = m._Marker_key
-
-
-
 ;
 
 EOSQL

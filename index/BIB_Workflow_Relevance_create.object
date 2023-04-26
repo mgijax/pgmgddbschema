@@ -9,7 +9,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.BIB_Workflow_Relevance USING BIB_Workflow_Relevance_pkey;
@@ -25,5 +24,9 @@ create index BIB_Workflow_Relevance_idx_confidence on mgd.BIB_Workflow_Relevance
 create index BIB_Workflow_Relevance_idx_CreatedBy_key on mgd.BIB_Workflow_Relevance (_CreatedBy_key);
 
 create index BIB_Workflow_Relevance_idx_ModifiedBy_key on mgd.BIB_Workflow_Relevance (_ModifiedBy_key);
+
+create index BIB_Workflow_Relevance_idx_creation_date on mgd.BIB_Workflow_Relevance (creation_date);
+
+create index BIB_Workflow_Relevance_idx_modification_date on mgd.BIB_Workflow_Relevance (modification_date);
 
 EOSQL

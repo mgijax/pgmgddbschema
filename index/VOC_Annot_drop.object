@@ -11,25 +11,18 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.VOC_Annot_idx_clustered
-;
+drop index if exists mgd.VOC_Annot_idx_clustered;
 
-drop index if exists mgd.VOC_Annot_idx_AnnotType_key
-;
+drop index if exists mgd.VOC_Annot_idx_AnnotType_key;
 
-drop index if exists mgd.VOC_Annot_idx_Object_key
-;
+drop index if exists mgd.VOC_Annot_idx_Object_key;
 
-drop index if exists mgd.VOC_Annot_idx_Term_key
-;
+drop index if exists mgd.VOC_Annot_idx_Term_key;
 
-drop index if exists mgd.VOC_Annot_idx_Term_etc_key
-;
+drop index if exists mgd.VOC_Annot_idx_Term_etc_key;
 
-drop index if exists mgd.VOC_Annot_idx_Qualifier_key
-;
+drop index if exists mgd.VOC_Annot_idx_Qualifier_key;
 
 EOSQL

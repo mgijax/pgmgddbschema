@@ -12,10 +12,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.VOC_Term_EMAPA ADD PRIMARY KEY (_Term_key);
-
 
 EOSQL

@@ -3,12 +3,16 @@
 # 
 # History
 #
+# 03/31/2023    lec
+# tables does not have index on purpose: _Createdby_key, _ModifiedBy_key, creation_date, modification_date
+# saving some space; no need to add index if it is not used
+# feel free to add these indexes, if necessary
+#
 # 09/07/2022    sc
 #       - WTS2-492 Add RNA seq data to the Gene Expression Tissue Summary Page (TR13254)
 #
 
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 

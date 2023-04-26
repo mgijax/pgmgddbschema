@@ -1,36 +1,27 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.BIB_Refs_idx_isprimary
-;
+drop index if exists mgd.BIB_Refs_idx_isprimary;
 
-drop index if exists mgd.BIB_Refs_idx_authors
-;
+drop index if exists mgd.BIB_Refs_idx_authors;
 
-drop index if exists mgd.BIB_Refs_idx_year
-;
+drop index if exists mgd.BIB_Refs_idx_year;
 
-drop index if exists mgd.BIB_Refs_idx_journal
-;
+drop index if exists mgd.BIB_Refs_idx_journal;
 
-drop index if exists mgd.BIB_Refs_idx_title
-;
+drop index if exists mgd.BIB_Refs_idx_title;
 
-drop index if exists mgd.BIB_Refs_idx_ReferenceType_key
-;
+drop index if exists mgd.BIB_Refs_idx_ReferenceType_key;
 
-drop index if exists mgd.BIB_Refs_idx_CreatedBy_key
-;
+drop index if exists mgd.BIB_Refs_idx_CreatedBy_key;
 
-drop index if exists mgd.BIB_Refs_idx_ModifiedBy_key
-;
+drop index if exists mgd.BIB_Refs_idx_ModifiedBy_key;
+
+drop index if exists mgd.BIB_Refs_idx_creation_date;
+
+drop index if exists mgd.BIB_Refs_idx_modification_date;
 
 EOSQL

@@ -9,7 +9,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.MRK_StrainMarker ADD PRIMARY KEY (_StrainMarker_key);

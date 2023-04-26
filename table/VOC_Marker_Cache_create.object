@@ -6,14 +6,14 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-/* cache of which markers are associated with with vocabulary terms */
+/* cache of which markers are associated with vocabulary terms */
 create table mgd.VOC_Marker_Cache (
 	_Cache_key      SERIAL,
  	_Term_key	int		not null,
 	_Marker_key	int		not null,
 	annotType	text		not null
 );
+
 EOSQL

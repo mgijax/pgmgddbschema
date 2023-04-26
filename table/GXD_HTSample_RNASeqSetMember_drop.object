@@ -8,12 +8,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+drop table mgd.GXD_HTSample_RNASeqSetMember CASCADE;
 
-drop table mgd.GXD_HTSample_RNASeqSetMember
-
-CASCADE
-;
 EOSQL

@@ -7,7 +7,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.GXD_HTSample_RNASeqSet_Cache ADD PRIMARY KEY (_Assoc_key);

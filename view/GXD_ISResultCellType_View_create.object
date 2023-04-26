@@ -18,9 +18,6 @@ from GXD_InSituResult r, GXD_ISResultCellType g, VOC_Term s, GXD_Specimen gs
 where r._Result_key = g._Result_key
 and g._CellType_Term_key = s._Term_key
 and r._Specimen_key = gs._Specimen_key
-
-
-
 ;
 
 EOSQL

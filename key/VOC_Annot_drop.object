@@ -1,11 +1,11 @@
 #!/bin/sh
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.VOC_Evidence DROP CONSTRAINT VOC_Evidence__Annot_key_fkey CASCADE;
+
 ALTER TABLE mgd.VOC_Annot DROP CONSTRAINT VOC_Annot_pkey CASCADE;
 
 EOSQL

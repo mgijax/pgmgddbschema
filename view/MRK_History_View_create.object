@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/MRK_History_View_drop.object
@@ -29,9 +25,6 @@ and h._Marker_key = m2._Marker_key
 and h._History_key = m1._Marker_key
 and h._CreatedBy_key = u1._User_key
 and h._ModifiedBy_key = u2._User_key
-
-
-
 ;
 
 EOSQL

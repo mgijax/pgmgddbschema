@@ -6,11 +6,8 @@
 # 01/07/2016    lec 
 #       - TR12223/converting _structure_key -> _emapa_term_key/_stage_key
 #
-# 09/16/2008 - jsb - removed GXD_ISResultStructure_idx_Result_key (TR 9037)
-#
 
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 

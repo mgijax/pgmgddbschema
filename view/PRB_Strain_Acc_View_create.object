@@ -1,11 +1,6 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
@@ -15,9 +10,6 @@ select a.*, l.name as LogicalDB
 from ACC_Accession a, ACC_LogicalDB l
 where a._MGIType_key = 10
 and a._LogicalDB_key = l._LogicalDB_key
-
-
-
 ;
 
 EOSQL

@@ -9,7 +9,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.GO_Tracking USING GO_Tracking_pkey;
@@ -17,5 +16,13 @@ CLUSTER mgd.GO_Tracking USING GO_Tracking_pkey;
 create index GO_Tracking_idx_CompletedBy_key on mgd.GO_Tracking (_CompletedBy_key);
 
 create index GO_Tracking_idx_completion_date on mgd.GO_Tracking (completion_date);
+
+create index GO_Tracking_idx_CreatedBy_key on mgd.GO_Tracking (_CreatedBy_key);
+
+create index GO_Tracking_idx_ModifiedBy_key on mgd.GO_Tracking (_ModifiedBy_key);
+
+create index GO_Tracking_idx_creation_date on mgd.GO_Tracking (creation_date);
+
+create index GO_Tracking_idx_modification_date on mgd.GO_Tracking (modification_date);
 
 EOSQL

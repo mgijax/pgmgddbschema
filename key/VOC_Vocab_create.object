@@ -15,43 +15,30 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.VOC_Vocab ADD PRIMARY KEY (_Vocab_key);
 
-
 ALTER TABLE mgd.VOC_VocabDAG ADD FOREIGN KEY (_Vocab_key) REFERENCES mgd.VOC_Vocab ON DELETE CASCADE DEFERRABLE;
-
 
 ALTER TABLE mgd.VOC_AnnotType ADD FOREIGN KEY (_Vocab_key) REFERENCES mgd.VOC_Vocab ON DELETE CASCADE DEFERRABLE;
 
-
 ALTER TABLE mgd.MGI_PropertyType ADD FOREIGN KEY (_Vocab_key) REFERENCES mgd.VOC_Vocab DEFERRABLE;
-
 
 ALTER TABLE mgd.MGI_Relationship_Category ADD FOREIGN KEY (_RelationshipVocab_key) REFERENCES mgd.VOC_Vocab DEFERRABLE;
 
-
 ALTER TABLE mgd.MGI_Relationship_Category ADD FOREIGN KEY (_QualifierVocab_key) REFERENCES mgd.VOC_Vocab DEFERRABLE;
-
 
 ALTER TABLE mgd.MGI_Relationship_Category ADD FOREIGN KEY (_EvidenceVocab_key) REFERENCES mgd.VOC_Vocab DEFERRABLE;
 
-
 ALTER TABLE mgd.MGI_TranslationType ADD FOREIGN KEY (_Vocab_key) REFERENCES mgd.VOC_Vocab DEFERRABLE;
-
 
 ALTER TABLE mgd.MRK_BiotypeMapping ADD FOREIGN KEY (_biotypevocab_key) REFERENCES mgd.VOC_Vocab DEFERRABLE;
 
-
 ALTER TABLE mgd.VOC_Term ADD FOREIGN KEY (_Vocab_key) REFERENCES mgd.VOC_Vocab DEFERRABLE;
-
 
 ALTER TABLE mgd.VOC_AnnotType ADD FOREIGN KEY (_EvidenceVocab_key) REFERENCES mgd.VOC_Vocab DEFERRABLE;
 
-
 ALTER TABLE mgd.VOC_AnnotType ADD FOREIGN KEY (_QualifierVocab_key) REFERENCES mgd.VOC_Vocab DEFERRABLE;
-
 
 EOSQL

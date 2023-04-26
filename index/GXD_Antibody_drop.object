@@ -12,19 +12,22 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.GXD_Antibody_idx_AntibodyClass_key
-;
+drop index if exists mgd.GXD_Antibody_idx_AntibodyClass_key;
 
-drop index if exists mgd.GXD_Antibody_idx_AntibodyType_key
-;
+drop index if exists mgd.GXD_Antibody_idx_AntibodyType_key;
 
-drop index if exists mgd.GXD_Antibody_idx_Organism_key
-;
+drop index if exists mgd.GXD_Antibody_idx_Organism_key;
 
-drop index if exists mgd.GXD_Antibody_idx_Antigen_key
-;
+drop index if exists mgd.GXD_Antibody_idx_Antigen_key;
+
+drop index if exists mgd.GXD_Antibody_idx_CreatedBy_key;
+
+drop index if exists mgd.GXD_Antibody_idx_ModifiedBy_key;
+
+drop index if exists mgd.GXD_Antibody_idx_creation_date;
+
+drop index if exists mgd.GXD_Antibody_idx_modification_date;
 
 EOSQL

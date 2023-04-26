@@ -9,7 +9,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.BIB_Workflow_Status USING BIB_Workflow_Status_pkey;
@@ -25,5 +24,9 @@ create index BIB_Workflow_Status_idx_isCurrent on mgd.BIB_Workflow_Status (isCur
 create index BIB_Workflow_Status_idx_CreatedBy_key on mgd.BIB_Workflow_Status (_CreatedBy_key);
 
 create index BIB_Workflow_Status_idx_ModifiedBy_key on mgd.BIB_Workflow_Status (_ModifiedBy_key);
+
+create index BIB_Workflow_Status_idx_creation_date on mgd.BIB_Workflow_Status (creation_date);
+
+create index BIB_Workflow_Status_idx_modification_date on mgd.BIB_Workflow_Status (modification_date);
 
 EOSQL

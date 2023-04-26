@@ -35,9 +35,6 @@ and ab._Organism_key = ae._Organism_key
 and ab._Antigen_key = ag._Antigen_key
 and ab._CreatedBy_key = u1._User_key
 and ab._ModifiedBy_key = u2._User_key
-
-
-
 ;
 
 EOSQL

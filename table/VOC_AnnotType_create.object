@@ -9,7 +9,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 create table mgd.VOC_AnnotType (
@@ -22,4 +21,5 @@ create table mgd.VOC_AnnotType (
 	creation_date              timestamp DEFAULT now()        not null,
 	modification_date          timestamp DEFAULT now()        not null 
 );
+
 EOSQL

@@ -9,10 +9,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.IMG_ImagePane_Assoc ADD PRIMARY KEY (_Assoc_key);
-
 
 EOSQL

@@ -12,7 +12,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.MGI_NoteType USING MGI_NoteType_pkey;

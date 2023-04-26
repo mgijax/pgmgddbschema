@@ -6,7 +6,9 @@
 # 10/21/2015    lec
 #       - TR12070/12116/biotypes
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.MRK_BiotypeMapping DROP CONSTRAINT MRK_BiotypeMapping_pkey CASCADE;

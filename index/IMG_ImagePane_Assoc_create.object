@@ -2,13 +2,11 @@
 
 #
 # History
-# 09/16/2008 - jsb - removed designation of IMG_ImagePane_Assoc_idx_Assoc_key (TR 9062)
 # 06/14/2005	lec
 #	- TR 3557
 #
 
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 

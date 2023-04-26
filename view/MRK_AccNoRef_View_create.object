@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/MRK_AccNoRef_View_drop.object
@@ -24,7 +20,6 @@ and a._Object_key = ma._Marker_key
 and ma._Marker_Type_key = mt._Marker_Type_key
 and not exists (select r.* from ACC_AccessionReference r where a._Accession_key = r._Accession_key)
 and a._LogicalDB_key not in (117,118)
-
 ;
 
 EOSQL

@@ -7,28 +7,28 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-drop index if exists mgd.ALL_CellLine_Derivation_idx_Creator_key
-;
+drop index if exists mgd.ALL_CellLine_Derivation_idx_Creator_key;
 
-drop index if exists mgd.ALL_CellLine_Derivation_idx_Refs_key
-;
+drop index if exists mgd.ALL_CellLine_Derivation_idx_Refs_key;
 
-drop index if exists mgd.ALL_CellLine_Derivation_idx_Vector_key
-;
+drop index if exists mgd.ALL_CellLine_Derivation_idx_Vector_key;
 
-drop index if exists mgd.ALL_CellLine_Derivation_idx_VectorType_key
-;
+drop index if exists mgd.ALL_CellLine_Derivation_idx_VectorType_key;
 
-drop index if exists mgd.ALL_CellLine_Derivation_idx_name
-;
+drop index if exists mgd.ALL_CellLine_Derivation_idx_name;
 
-drop index if exists mgd.ALL_CellLine_Derivation_idx_pcl
-;
+drop index if exists mgd.ALL_CellLine_Derivation_idx_pcl;
 
-drop index if exists mgd.ALL_CellLine_Derivation_idx_DerivationType_key
-;
+drop index if exists mgd.ALL_CellLine_Derivation_idx_DerivationType_key;
+
+drop index if exists mgd.ALL_CellLine_Derivation_idx_CreatedBy_key;
+
+drop index if exists mgd.ALL_CellLine_Derivation_idx_ModifiedBy_key;
+
+drop index if exists mgd.ALL_CellLine_Derivation_idx_creation_date;
+
+drop index if exists mgd.ALL_CellLine_Derivation_idx_modification_date;
 
 EOSQL

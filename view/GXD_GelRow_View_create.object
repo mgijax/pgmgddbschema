@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/GXD_GelRow_View_drop.object
@@ -16,9 +12,6 @@ as
 select l.*, to_char(l.size, '9999.99') as size_str, u.term as units
 from GXD_GelRow l, VOC_Term u
 where l._GelUnits_key = u._Term_key
-
-
-
 ;
 
 EOSQL

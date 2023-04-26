@@ -15,10 +15,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.ALL_Cre_Cache ADD PRIMARY KEY (_Cache_key);
-
 
 EOSQL

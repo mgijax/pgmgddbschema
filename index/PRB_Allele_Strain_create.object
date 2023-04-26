@@ -2,14 +2,11 @@
 
 # HISTORY
 #
-#     09/21/2022 - sc  - added idx_clustered  (wts2-888)
+# 09/21/2022 - sc  - added idx_clustered  (wts2-888)
 #               because added _AlleleStrain_key PK
-#
-#     09/16/2008 - jsb - removed PRB_Allele_Strain_idx_Allele_key (TR 9037)
 #
 
 cd `dirname $0` && . ./Configuration
-
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 

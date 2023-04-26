@@ -9,12 +9,8 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
+drop table mgd.BIB_Workflow_Tag CASCADE;
 
-drop table mgd.BIB_Workflow_Tag
-
-CASCADE
-;
 EOSQL

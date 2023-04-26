@@ -9,7 +9,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.GXD_AllelePair USING GXD_AllelePair_pkey;
@@ -33,5 +32,9 @@ create index GXD_AllelePair_idx_Compound_key on mgd.GXD_AllelePair (_Compound_ke
 create index GXD_AllelePair_idx_CreatedBy_key on mgd.GXD_AllelePair (_CreatedBy_key);
 
 create index GXD_AllelePair_idx_ModifiedBy_key on mgd.GXD_AllelePair (_ModifiedBy_key);
+
+create index GXD_AllelePair_idx_creation_date on mgd.GXD_AllelePair (creation_date);
+
+create index GXD_AllelePair_idx_modification_date on mgd.GXD_AllelePair (modification_date);
 
 EOSQL

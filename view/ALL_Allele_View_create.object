@@ -45,9 +45,6 @@ where a._Allele_Status_key = t._Term_key
 	and a._Strain_key = s._Strain_key
 	and a._CreatedBy_key = u1._User_key
 	and a._ModifiedBy_key = u2._User_key
-
-
-
 ;
 
 EOSQL

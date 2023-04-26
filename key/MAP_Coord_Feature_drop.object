@@ -1,4 +1,5 @@
 #!/bin/sh
+
 #
 # History
 #
@@ -12,8 +13,11 @@
 # 10/15/2003	lec
 #	- TR 1463; SAO
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
 ALTER TABLE mgd.MAP_Coord_Feature DROP CONSTRAINT MAP_Coord_Feature_pkey CASCADE;
 
 EOSQL

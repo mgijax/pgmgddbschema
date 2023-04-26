@@ -5,7 +5,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.ALL_Allele_CellLine USING ALL_Allele_CellLine_pkey;
@@ -17,5 +16,9 @@ create index ALL_Allele_CellLine_idx_MutantCellLine_key on mgd.ALL_Allele_CellLi
 create index ALL_Allele_CellLine_idx_CreatedBy_key on mgd.ALL_Allele_CellLine (_CreatedBy_key);
 
 create index ALL_Allele_CellLine_idx_ModifiedBy_key on mgd.ALL_Allele_CellLine (_ModifiedBy_key);
+
+create index ALL_Allele_CellLine_idx_creation_date on mgd.ALL_Allele_CellLine (creation_date);
+
+create index ALL_Allele_CellLine_idx_modification_date on mgd.ALL_Allele_CellLine (modification_date);
 
 EOSQL

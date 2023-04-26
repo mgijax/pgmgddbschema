@@ -12,7 +12,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.IMG_Image USING IMG_Image_pkey;
@@ -28,5 +27,9 @@ create index IMG_Image_idx_ThumbnailImage_key on mgd.IMG_Image (_ThumbnailImage_
 create index IMG_Image_idx_CreatedBy_key on mgd.IMG_Image (_CreatedBy_key);
 
 create index IMG_Image_idx_ModifiedBy_key on mgd.IMG_Image (_ModifiedBy_key);
+
+create index IMG_Image_idx_creation_date on mgd.IMG_Image (creation_date);
+
+create index IMG_Image_idx_modification_date on mgd.IMG_Image (modification_date);
 
 EOSQL

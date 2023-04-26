@@ -85,7 +85,7 @@ WHERE a._Object_key = OLD._Probe_key
 AND a._MGIType_key = 3
 ;
 
-RETURN NEW;
+RETURN OLD;
 
 END;
 \$\$
@@ -94,7 +94,7 @@ LANGUAGE plpgsql;
 GRANT EXECUTE ON FUNCTION PRB_Probe_delete() TO public;
 
 CREATE TRIGGER PRB_Probe_delete_trigger
-AFTER DELETE on PRB_Probe
+BEFORE DELETE on PRB_Probe
 FOR EACH ROW
 EXECUTE PROCEDURE PRB_Probe_delete();
 

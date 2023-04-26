@@ -1,4 +1,5 @@
 #!/bin/sh
+
 #
 # History
 #
@@ -9,7 +10,9 @@
 #	- TR 6812; added VOC_GO_Cache
 #
 #
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.MGI_Relationship_Category DROP CONSTRAINT MGI_Relationship_Category__RelationshipDAG_key_fkey CASCADE;
@@ -23,6 +26,7 @@ ALTER TABLE mgd.DAG_Node DROP CONSTRAINT DAG_Node__DAG_key_fkey CASCADE;
 ALTER TABLE mgd.DAG_Edge DROP CONSTRAINT DAG_Edge__DAG_key_fkey CASCADE;
 
 ALTER TABLE mgd.DAG_Closure DROP CONSTRAINT DAG_Closure__DAG_key_fkey CASCADE;
+
 ALTER TABLE mgd.DAG_DAG DROP CONSTRAINT DAG_DAG_pkey CASCADE;
 
 EOSQL

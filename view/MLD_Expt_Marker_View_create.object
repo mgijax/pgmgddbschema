@@ -44,8 +44,6 @@ from BIB_View c
 			and aa._MGIType_key = 2
 			and aa._LogicalDB_key = 1
 			and aa.preferred = 1)
-
-
 ;
 
 EOSQL

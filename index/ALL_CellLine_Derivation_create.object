@@ -7,7 +7,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.ALL_CellLine_Derivation USING ALL_CellLine_Derivation_pkey;
@@ -25,5 +24,13 @@ create index ALL_CellLine_Derivation_idx_name on mgd.ALL_CellLine_Derivation (na
 create index ALL_CellLine_Derivation_idx_pcl on mgd.ALL_CellLine_Derivation (_ParentCellLine_key, _Derivation_key);
 
 create index ALL_CellLine_Derivation_idx_DerivationType_key on mgd.ALL_CellLine_Derivation (_DerivationType_key, _ParentCellLine_key, _Creator_key);
+
+create index ALL_CellLine_Derivation_idx_CreatedBy_key on mgd.ALL_CellLine_Derivation (_CreatedBy_key);
+
+create index ALL_CellLine_Derivation_idx_ModifiedBy_key on mgd.ALL_CellLine_Derivation (_ModifiedBy_key);
+
+create index ALL_CellLine_Derivation_idx_creation_date on mgd.ALL_CellLine_Derivation (creation_date);
+
+create index ALL_CellLine_Derivation_idx_modification_date on mgd.ALL_CellLine_Derivation (modification_date);
 
 EOSQL

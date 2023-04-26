@@ -6,7 +6,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.SEQ_Allele_Assoc USING SEQ_Allele_Assoc_pkey;
@@ -16,5 +15,11 @@ create index SEQ_Allele_Assoc_idx_Sequence_key on mgd.SEQ_Allele_Assoc (_Sequenc
 create index SEQ_Allele_Assoc_idx_Allele_key on mgd.SEQ_Allele_Assoc (_Allele_key);
 
 create index SEQ_Allele_Assoc_idx_Qualifier_key on mgd.SEQ_Allele_Assoc (_Qualifier_key);
+
+create index SEQ_Allele_Assoc_idx_Refs_key on mgd.SEQ_Allele_Assoc (_Refs_key);
+
+create index SEQ_Allele_Assoc_idx_CreatedBy_key on mgd.SEQ_Allele_Assoc (_CreatedBy_key);
+
+create index SEQ_Allele_Assoc_idx_ModifiedBy_key on mgd.SEQ_Allele_Assoc (_ModifiedBy_key);
 
 EOSQL

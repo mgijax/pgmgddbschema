@@ -6,7 +6,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 drop index if exists mgd.ALL_Variant_idx_Allele_key;
@@ -18,5 +17,9 @@ drop index if exists mgd.ALL_Variant_idx_Strain_key;
 drop index if exists mgd.ALL_Variant_idx_CreatedBy_key;
 
 drop index if exists mgd.ALL_Variant_idx_ModifiedBy_key;
+
+drop index if exists mgd.ALL_Variant_idx_creation_date;
+
+drop index if exists mgd.ALL_Variant_idx_modification_date;
 
 EOSQL

@@ -1,8 +1,7 @@
 #!/bin/sh
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
+
 cd `dirname $0` && . ./Configuration
+
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.PRB_Ref_Notes DROP CONSTRAINT PRB_Ref_Notes__Reference_key_fkey CASCADE;
@@ -10,6 +9,7 @@ ALTER TABLE mgd.PRB_Ref_Notes DROP CONSTRAINT PRB_Ref_Notes__Reference_key_fkey 
 ALTER TABLE mgd.PRB_RFLV DROP CONSTRAINT PRB_RFLV__Reference_key_fkey CASCADE;
 
 ALTER TABLE mgd.PRB_Alias DROP CONSTRAINT PRB_Alias__Reference_key_fkey CASCADE;
+
 ALTER TABLE mgd.PRB_Reference DROP CONSTRAINT PRB_Reference_pkey CASCADE;
 
 EOSQL

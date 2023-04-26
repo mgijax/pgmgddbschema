@@ -12,7 +12,6 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.PRB_Strain_Marker USING PRB_Strain_Marker_pkey;

@@ -26,10 +26,6 @@ where r._ImageClass_key = 6481781
 and r._Image_key = i._Image_key
 and r._ImageType_key = 1072158
 and r._Refs_key = c._Refs_key
-
-
-
-
 ;
 
 EOSQL

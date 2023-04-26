@@ -1,9 +1,5 @@
 #!/bin/sh
 
-#
-# This file was generated automatically by dbschemaScripts.py -- edit with care.
-#
-
 cd `dirname $0` && . ./Configuration
 
 ${PG_MGD_DBSCHEMADIR}/view/DAG_Node_View_drop.object
@@ -16,9 +12,6 @@ select n.*, d.name as dag, d.abbreviation as dagAbbrev, vd._Vocab_key
 from DAG_Node n, DAG_DAG d, VOC_VocabDAG vd
 where n._DAG_key = d._DAG_key
 and d._DAG_key = vd._DAG_key
-
-
-
 ;
 
 EOSQL

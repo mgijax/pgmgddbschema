@@ -18,9 +18,6 @@ as
 select *
 from MGI_SynonymType
 where _MGIType_key = 10
-
-
-
 ;
 
 EOSQL

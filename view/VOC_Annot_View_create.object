@@ -23,9 +23,6 @@ from VOC_Annot v, VOC_Term_View t, VOC_AnnotType a, VOC_Term q
 where v._Term_key = t._Term_key
 and v._AnnotType_key = a._AnnotType_key
 and v._Qualifier_key = q._Term_key
-
-
-
 ;
 
 EOSQL

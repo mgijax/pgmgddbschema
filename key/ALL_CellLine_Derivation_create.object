@@ -5,13 +5,10 @@
 
 cd `dirname $0` && . ./Configuration
 
-
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 ALTER TABLE mgd.ALL_CellLine_Derivation ADD PRIMARY KEY (_Derivation_key);
 
-
 ALTER TABLE mgd.ALL_CellLine ADD FOREIGN KEY (_Derivation_key) REFERENCES mgd.ALL_CellLine_Derivation DEFERRABLE;
-
 
 EOSQL
