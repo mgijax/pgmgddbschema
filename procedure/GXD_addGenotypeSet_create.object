@@ -1,0 +1,122 @@
+#!/bin/sh
+
+#
+# History
+#
+# 05/09/2023    lec 
+#       - wts2-1173/GXD Assay Module - Image Clipboard & another Button
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/procedure/GXD_addGenotypeSet_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION GXD_addGenotypeSet (
+v_createdBy mgi_user.name%TYPE,
+v_assayKey int
+)
+RETURNS VOID AS
+\$\$
+
+DECLARE
+v_newSetMemberKey int;
+v_newSeqKey int;
+v_userKey int;
+
+BEGIN
+
+--
+-- NAME: GXD_addGenotypeSet
+--
+-- DESCRIPTION:
+--
+-- To add Assay/Genotypes to Genotype set for the clipboard
+-- (MGI_SetMember)
+--        
+-- INPUT:
+--      
+-- v_createdBy : MGI_User.name
+-- v_assayKey : GXD_Assay._Assay_key
+--
+-- RETURNS:
+--	VOID
+--
+
+--
+-- find existing Genotype by Assay
+-- add them to MGI_SetMember (clipboard)
+--
+-- exclude existing Genotype that already exist in the clipboard
+-- that is, do not add dupliate structures to the clipboard
+--
+
+v_newSetMemberKey := max(_SetMember_key) FROM MGI_SetMember;
+v_userKey = _user_key from MGI_User where login = v_createdBy;
+v_newSeqKey := max(sequenceNum) FROM MGI_SetMember where _Set_key = 1055 and _CreatedBy_key = v_userKey;
+
+IF v_newSeqKey is null THEN
+	v_newSeqKey := 0;
+END IF;
+
+CREATE TEMP TABLE set_tmp ON COMMIT DROP
+AS (
+SELECT row_number() over (ORDER BY ps.strain) as seq,
+        g._genotype_key, ps.strain, concat(ps.strain,',',a0.symbol,',',aa0.symbol) as genotypeDisplay
+FROM GXD_Assay ga, GXD_Specimen s, GXD_Genotype g
+        LEFT OUTER JOIN prb_strain ps on (g._strain_key = ps._strain_key)
+        LEFT OUTER JOIN gxd_allelepair ap0 on (g._genotype_key = ap0._genotype_key)
+        LEFT OUTER JOIN all_allele a0 on (ap0._allele_key_1 = a0._allele_key)
+        LEFT OUTER JOIN all_allele aa0 on (ap0._allele_key_2 = aa0._allele_key)
+, MRK_Marker m0
+where ga._assay_key = v_assayKey
+and ga._assay_key = s._assay_key
+and s._genotype_key = g._genotype_key
+and ga._marker_key = m0._marker_key
+AND NOT EXISTS (SELECT 1 FROM MGI_SetMember ms
+	WHERE ms._Set_key = 1055
+	AND ms._Object_key = s._genotype_key
+	AND ms._CreatedBy_key = v_userKey
+	)
+GROUP BY g._genotype_key, ps.strain, genotypeDisplay
+UNION
+SELECT row_number() over (ORDER BY ps.strain) as seq,
+        g._genotype_key, ps.strain, concat(ps.strain,',',a0.symbol,',',aa0.symbol) as genotypeDisplay
+FROM GXD_Assay ga, GXD_GelLane s, GXD_Genotype g
+        LEFT OUTER JOIN prb_strain ps on (g._strain_key = ps._strain_key)
+        LEFT OUTER JOIN gxd_allelepair ap0 on (g._genotype_key = ap0._genotype_key)
+        LEFT OUTER JOIN all_allele a0 on (ap0._allele_key_1 = a0._allele_key)
+        LEFT OUTER JOIN all_allele aa0 on (ap0._allele_key_2 = aa0._allele_key)
+, MRK_Marker m0
+where ga._assay_key = v_assayKey
+and ga._assay_key = s._assay_key
+and s._genotype_key = g._genotype_key
+and ga._marker_key = m0._marker_key
+AND NOT EXISTS (SELECT 1 FROM MGI_SetMember ms
+	WHERE ms._Set_key = 1055
+	AND ms._Object_key = s._genotype_key
+	AND ms._CreatedBy_key = v_userKey
+	)
+GROUP BY g._genotype_key, ps.strain, genotypeDisplay
+)
+ORDER BY genotypeDisplay
+;
+
+INSERT INTO MGI_SetMember
+SELECT v_newSetMemberKey + seq, 1055, s._genotype_key, genotypeDisplay, v_newSeqKey + seq, v_userKey, v_userKey, now(), now()
+FROM set_tmp s
+;
+
+RETURN
+;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION GXD_addGenotypeSet(text,int) TO public;
+
+COMMENT ON FUNCTION mgd.GXD_addGenotypeSet(text,int) IS 'add Genotype used in Assay to Genotype Clipboard';
+
+EOSQL
