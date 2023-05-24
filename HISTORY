@@ -1,3 +1,9 @@
+TAG: pgmgddbschema-6-0-22-30
+DATE: 05/24/2023
+STAFF: lec
+wts2-1188/fl2-363/Unable to add multiple notes to a single MP term in P-WI MP Annotation Module
+had to remove trigger/MGI_Note_drop.object, MGI_Note_create.object
+
 TAG: pgmgddbschema-6-0-22-29
 DATE: 05/15/2023
 STAFF: lec
