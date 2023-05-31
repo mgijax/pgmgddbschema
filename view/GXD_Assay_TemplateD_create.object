@@ -36,7 +36,7 @@ and a1._refs_key = a2._refs_key
 and gi1._imagepane_key = gi2._imagepane_key
 and a1._assay_key != ea2._object_key
 and a1._marker_key != a2._marker_key
-group by s1.sequenceNum, s1._specimen_key, s1.specimenlabel, a1._assay_key, a1._assaytype_key, a1._refs_key, a1._marker_key having count(*) >= 1
+group by s1.sequenceNum, s1._specimen_key, s1.specimenlabel, a1._assay_key, a1._assaytype_key, a1._refs_key, a1._marker_key having count(*) > 1
 )
 select distinct ss.sequenceNum, ss._specimen_key, ss.specimenlabel, ss._assay_key, ss._assaytype_key,
 array_to_string(array_agg(distinct ea2.accid),'|') as assays,
