@@ -1,0 +1,9 @@
+#!/bin/sh
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop view if exists mgd.GXD_Assay_TemplateC_View CASCADE;
+
+EOSQL
