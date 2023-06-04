@@ -105,27 +105,6 @@ select last_value from gxd_gelband_seq;
 select max(_Genotype_key) from GXD_Genotype;
 select last_value from gxd_genotype_seq;
 
-select max(_antibodyclass_key) from GXD_AntibodyClass;
-select last_value from gxd_antibodyclass_seq;
-
-select max(_embedding_key) from GXD_EmbeddingMethod;
-select last_value from gxd_embedding_seq;
-
-select max(_fixation_key) from GXD_FixationMethod;
-select last_value from gxd_fixation_seq;
-
-select max(_gelcontrol_key) from GXD_GelControl;
-select last_value from gxd_gelcontrol_seq;
-
-select max(_label_key) from GXD_Label;
-select last_value from gxd_label_seq;
-
-select max(_pattern_key) from GXD_Pattern;
-select last_value from gxd_pattern_seq;
-
-select max(_visualization_key) from GXD_VisualizationMethod;
-select last_value from gxd_visualization_seq;
-
 select max(_experiment_key) from GXD_HTExperiment;
 select last_value from gxd_htexperiment_seq;
 
@@ -154,7 +133,7 @@ select max(_Index_key) from GXD_Index;
 select last_value from gxd_index_seq;
 
 select max(_IndexStage_key) from GXD_Index_Stages;
-select last_value from gxd_index_stages_seq;
+select last_value from gxd_indexstage_seq;
 
 select max(_Image_key) from IMG_Image;
 select last_value from img_image_seq;
@@ -248,12 +227,6 @@ select last_value from prb_strain_marker_seq;
 
 select max(_Tissue_key) from PRB_Tissue;
 select last_value from prb_tissue_seq;
-
-select max(id) from PWI_Report_Label;
-select last_value from pwi_report_label_id_seq;
-
-select max(id) from PWI_Report;
-select last_value from pwi_report_id_seq;
 
 select max(_Assoc_key) from SEQ_Source_Assoc;
 select last_value from seq_source_assoc_seq;
