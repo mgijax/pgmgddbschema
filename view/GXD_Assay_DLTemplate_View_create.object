@@ -9,7 +9,8 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 create view mgd.GXD_Assay_DLTemplate_View
 as
 
-select distinct s1.sequenceNum, s1._specimen_key, s1.specimenlabel, s1._assay_key, a1._assaytype_key as at1, a2._assaytype_key as at2, m2._marker_key, m2.symbol, ea2.accid
+select distinct s1.sequenceNum, s1._specimen_key, s1.specimenlabel, s1._assay_key, 
+a1._assaytype_key as at1, a2._assaytype_key as at2, m2._marker_key, m2.symbol, ea2.accid
 from gxd_assay a1, gxd_specimen s1, gxd_insituresult gs1, gxd_insituresultimage gi1,
 gxd_assay a2, acc_accession ea2, mrk_marker m2,
 gxd_specimen s2, gxd_insituresult gs2, gxd_insituresultimage gi2
