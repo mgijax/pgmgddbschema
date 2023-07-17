@@ -29,6 +29,7 @@ select accid from acc_accession
 where _logicaldb_key = 1 
 and prefixpart = 'MGI:' 
 and _mgitype_key not in (25)
+and preferred = 1
 group by accid 
 having count(*) > 1
 )
