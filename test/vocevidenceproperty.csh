@@ -3,7 +3,22 @@
 #
 # purpose:
 #
-# check if there are any Mouse Markers that do not have their MCV/Marker (1011) Feature Type
+# check if there are no Annotations for:
+#
+# 1003 | InterPro/Marker
+# 1007 | PIRSF/Marker
+# 1008 | Strain/Needs Review
+# 1009 | Strain/Attributes
+# 1011 | MCV/Marker
+# 1014 | Allele/Subtype
+# 1017 | Protein Ontology/Marker
+# 1020 | DO/Genotype
+# 1021 | DO/Allele
+# 1022 | DO/Human Marker
+# 1024 | HPO/DO
+# 1025 | MCV/StrainMarker
+# 1026 | Allele Variant Type
+# 1027 | Allele Variant Effect
 #
 
 if ( ${?MGICONFIG} == 0 ) then
