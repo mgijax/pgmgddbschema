@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# remove GXD_ProbePrep rows that no longer used by GXD_Assay
+# GXD_ProbePrep rows that no longer used by GXD_Assay
 #
 
 cd `dirname $0` && . ./Configuration
