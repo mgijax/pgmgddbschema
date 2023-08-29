@@ -3,6 +3,10 @@
 #
 # History
 #
+# 08/29/2023    lec
+#       - wts2-1155/GOC taking over GOA mouse, GOA human, etc.
+#       used by annotload/once removed from annotload, drop/remove from schema
+#
 # 12/29/2016	lec
 #	- TR10674/delete GO annotations of withdrawn markers
 #
