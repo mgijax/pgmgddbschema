@@ -27,7 +27,7 @@ select c.*, r.authors, r.title, r.year, r.vol, r.abstract,
   case when exists (select 1 from MGI_Reference_Assoc mr where r._Refs_key = mr._Refs_key and mr._MGIType_key = 6) then 1
     else 0 end as has_antibodies,
 
-  case when exists (select 1 from GXD_Expression e where r._Refs_key = e._Refs_key) then 1
+  case when exists (select 1 from GXD_Assay e where r._Refs_key = e._Refs_key) then 1
     else 0 end as has_gxdassays,
 
   case when exists (select 1 from GXD_Expression e where r._Refs_key = e._Refs_key) then 1
