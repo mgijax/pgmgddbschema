@@ -1,3 +1,10 @@
+TAG: pgmgddbschema-6-0-22-3?
+DATE: 09/19/2023
+STAFF: lec
+wts2-393/Disease to reference annotation
+view/MGI_Reference_DOID_View_create.object
+view/MGI_Reference_DOID_View_drop.object
+
 TAG: pgmgddbschema-6-0-22-33
 DATE: 09/11/2023
 STAFF: lec
