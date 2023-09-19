@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/19/2023	lec
+#       wts2-393/Disease to reference annotation
+#
+
+cd `dirname $0` && . ./Configuration
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+drop view if exists mgd.MGI_Reference_DOID_View CASCADE;
+
+EOSQL

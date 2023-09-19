@@ -1,0 +1,35 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/19/2023    lec
+#	- wts2-393/Disease to reference annotation
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/MGI_Reference_DOID_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MGI_Reference_DOID_View
+as
+select r.*, t.assocType, t.allowOnlyOne,
+c.jnumID, c.numericPart as jnum, c.short_citation, c.isReviewArticle, c.isReviewArticleString,
+u.login as modifiedBy,
+vt.term, aa.accID
+from MGI_Reference_Assoc r, MGI_RefAssocType t, BIB_Citation_Cache c, MGI_User u, VOC_Term vt, ACC_Accession aa
+where r._MGIType_key = 13
+and r._RefAssocType_key = t._RefAssocType_key
+and r._Refs_key = c._Refs_key
+and r._ModifiedBy_key = u._User_key
+and r._Object_key = vt._term_key
+and vt._term_key = aa._Object_key
+and aa._MGIType_key = 13
+and aa._LogicalDB_key = 191
+and aa.preferred = 1 
+order by vt.term, t.assocType
+;
+
+EOSQL
