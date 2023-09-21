@@ -1,9 +1,11 @@
-TAG: pgmgddbschema-6-0-22-3?
-DATE: 09/19/2023
+TAG: pgmgddbschema-6-0-22-34
+DATE: 09/21/2023
 STAFF: lec
+wts2-1283/fl2-546/marker module/cannot add synonym
 wts2-393/Disease to reference annotation
 view/MGI_Reference_DOID_View_create.object
 view/MGI_Reference_DOID_View_drop.object
+trigger/MRK_Marker_create.object
 
 TAG: pgmgddbschema-6-0-22-33
 DATE: 09/11/2023
