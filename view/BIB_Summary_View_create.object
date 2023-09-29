@@ -1,6 +1,11 @@
 #!/bin/sh
 
 #
+# 09/29/2023
+#       wts2-1292/fl2-567/pwi specimen summary: problem generating link on ref detail unless results associated
+#       GXD_Expression -> GXD_Assay
+#       so the view will return any Assay, not just those in the cache
+#
 # 01/19/2022    lec
 #       wts888/fl2-138
 #       - remove BIB_AssociatedData_View
