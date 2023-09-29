@@ -30,10 +30,10 @@ select c.*, r.authors, r.title, r.year, r.vol, r.abstract,
   case when exists (select 1 from GXD_Assay e where r._Refs_key = e._Refs_key) then 1
     else 0 end as has_gxdassays,
 
-  case when exists (select 1 from GXD_Expression e where r._Refs_key = e._Refs_key) then 1
+  case when exists (select 1 from GXD_Assay e where r._Refs_key = e._Refs_key) then 1
     else 0 end as has_gxdresults,
 
-  case when exists (select 1 from GXD_Expression e where r._Refs_key = e._Refs_key and e._Specimen_key is not null) then 1
+  case when exists (select 1 from GXD_Assay e where r._Refs_key = e._Refs_key and e._Specimen_key is not null) then 1
     else 0 end as has_gxdspecimens,
 
   case when exists (select 1 from GXD_Index gi where r._Refs_key = gi._Refs_key) then 1
@@ -51,7 +51,7 @@ select c.*, r.authors, r.title, r.year, r.vol, r.abstract,
   case when exists (select 1 from MLD_Expts e where r._Refs_key = e._Refs_key and exptType in ('TEXT-QTL', 'TEXT-Physical Mapping', 'TEXT-Congenic', 'TEXT-QTL-Candidate Genes', 'TEXT-Meta Analysis', 'TEXT', 'TEXT-Genetic Cross')) then 1
     else 0 end as has_mapping,
 
-  case when exists (select 1 from GXD_Expression g where g._Refs_key = r._Refs_key) 
+  case when exists (select 1 from GXD_Assay g where g._Refs_key = r._Refs_key) 
         or exists (select 1 from VOC_Evidence e, VOC_Annot a where e._Refs_key = r._Refs_key and e._Annot_key = a._Annot_key and a._AnnotType_key = 1002)
         or exists (select 1 from MRK_DO_Cache g where g._Refs_key = r._Refs_key)
         then 1
