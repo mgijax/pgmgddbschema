@@ -62,9 +62,6 @@
 # 11/15/2007 - jsb - added ALL_Cache, SEQ_Allele_Assoc, SEQ_AdditionalInfo,
 # 	ALL_CellLine_Derivation, and ALL_CellLine
 #
-# 10/19/2006	lec
-#	- TR 6812; added VOC_GO_Cache
-#
 # 05/13/2002	lec
 #	- TR 1463; SAO
 #
@@ -104,8 +101,6 @@ ALTER TABLE mgd.SEQ_Marker_Cache ADD FOREIGN KEY (_SequenceProvider_key) REFEREN
 ALTER TABLE mgd.SEQ_Marker_Cache ADD FOREIGN KEY (_SequenceType_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE DEFERRABLE;
 
 ALTER TABLE mgd.SEQ_Marker_Cache ADD FOREIGN KEY (_BiotypeConflict_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE DEFERRABLE;
-
-ALTER TABLE mgd.VOC_GO_Cache ADD FOREIGN KEY (_Term_key) REFERENCES mgd.VOC_Term ON DELETE CASCADE DEFERRABLE;
 
 --
 -- no cascading deletes

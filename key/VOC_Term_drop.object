@@ -46,8 +46,6 @@
 # 09/16/2008 - jsb - added VOC_Marker_Cache and VOC_Annot_Count_Cache
 # 11/15/2007 - jsb - added ALL_Cache, SEQ_Allele_Assoc, SEQ_AdditionalInfo,
 # 	ALL_CellLine_Derivation, and ALL_CellLine
-# 10/19/2006	lec
-#	- TR 6812; added VOC_GO_Cache
 #
 # 05/13/2002	lec
 #	- TR 1463; SAO
@@ -68,8 +66,6 @@ ALTER TABLE mgd.VOC_Term_EMAPA DROP CONSTRAINT VOC_Term_EMAPA__DefaultParent_key
 ALTER TABLE mgd.VOC_Term_EMAPA DROP CONSTRAINT VOC_Term_EMAPA__Term_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_Marker_Cache DROP CONSTRAINT VOC_Marker_Cache__Term_key_fkey CASCADE;
-
-ALTER TABLE mgd.VOC_GO_Cache DROP CONSTRAINT VOC_GO_Cache__Term_key_fkey CASCADE;
 
 ALTER TABLE mgd.VOC_Evidence_Property DROP CONSTRAINT VOC_Evidence_Property__PropertyTerm_key_fkey CASCADE;
 

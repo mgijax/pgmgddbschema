@@ -89,8 +89,6 @@ AND NOT EXISTS (SELECT 1 FROM VOC_Evidence e2
 -- now delete all annotations to the old key that we haven't moved to the new key 
 DELETE FROM VOC_Annot WHERE _Term_key = oldKey;
 
-DELETE FROM VOC_GO_Cache WHERE _Term_key = oldKey;
-
 -- c.  delete the old term (this will delete the DAG_Node as well)        
 DELETE FROM VOC_Term WHERE _Term_key = oldKey;
 

@@ -250,9 +250,6 @@ select last_value from voc_term_seq;
 --select max(_Cache_key) from VOC_Annot_Count_Cache;
 --select last_value from voc_annot_count_cache_seq;
 
---select max(_Cache_key) from VOC_GO_Cache;
---select last_value from voc_go_cache_seq;
-
 --select max(_Cache_key) from VOC_Marker_Cache;
 --select last_value from voc_marker_cache_seq;
 
