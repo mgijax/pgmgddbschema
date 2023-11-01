@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#
+# History
+#
+# 10/25/2023	lec
+#	wts2-1311/improve lib_py_postgres/product changes
+#       part of the lib_py_postgres/vocload -> procedure/VOC_processAnnotHeaderAll_create.object
+#       need to add auto-sequence for VOC_AnnotHeader
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE SEQUENCE voc_annotheader_seq;    
+ALTER TABLE VOC_AnnotHeader ALTER _Annot_key SET DEFAULT NEXTVAL('voc_annot_seq');
+select setval('voc_annotheader_seq', (select max(_AnnotHeader_key) from VOC_AnnotHeader));
+
+EOSQL

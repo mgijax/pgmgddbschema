@@ -3,8 +3,10 @@
 #
 # History
 #
-# lec 01/24/2008
-#	- TR8216, fix selection of "toAdd" table
+# 10/25/2023    lec
+#       wts2-1311/fl2-604/improve lib_py_postgres/fix VOC_processAnnotHeaderAll_create.object
+#       converted to postgres
+#       if VOC_AnnotHeader exists for _object_key that is not in VOC_Annot._Annottype_key = v_annottype, then delete
 #
 
 cd `dirname $0` && . ./Configuration
@@ -21,9 +23,10 @@ RETURNS VOID AS
 
 DECLARE
 v_headerLabel int;
-v_headerKey int;
 v_pkey int;
 v_objectKey int;
+v_termKey int;
+v_isNormal smallint;
 v_oldSeq int;	-- current sequence number
 v_newSeq int;	-- new sequence number
 v_prevObjectKey int;
@@ -47,19 +50,13 @@ BEGIN
 --      
 
 v_headerLabel := _Label_key FROM DAG_Label WHERE label = 'Header';
-v_headerKey := max(_AnnotHeader_key) FROM VOC_AnnotHeader;
-
-IF v_headerKey = null
-THEN
-	v_headerKey := 1000;
-END IF;
 
 -- set of 'new' headers based on most recent annotation update 
 -- need to check if any ancestors are header terms
 -- AND if the annotated term is itself a header term 
 
 CREATE TEMP TABLE set0 ON COMMIT DROP 
-AS SELECT DISTINCT a._Object_key, h._Term_key, h.sequenceNum, a._Qualifier_key, isNormal = 0
+AS SELECT DISTINCT a._Object_key, h._Term_key, h.sequenceNum, a._Qualifier_key, 0 as isNormal
 FROM VOC_Annot a, VOC_Term t, VOC_VocabDAG vd, DAG_Node d, DAG_Closure dc, DAG_Node dh, VOC_Term h
 WHERE a._AnnotType_key = v_annotTypeKey
 AND a._Term_key = t._Term_key
@@ -71,7 +68,7 @@ AND dc._Ancestor_key = dh._Node_key
 AND dh._Label_key = v_headerLabel
 AND dh._Object_key = h._Term_key
 UNION
-SELECT DISTINCT a._Object_key, h._Term_key, h.sequenceNum, a._Qualifier_key, isNormal = 0
+SELECT DISTINCT a._Object_key, h._Term_key, h.sequenceNum, a._Qualifier_key, 0 as isNormal
 FROM VOC_Annot a, VOC_Term t, VOC_VocabDAG vd, DAG_Node d, DAG_Closure dc, DAG_Node dh, VOC_Term h
 WHERE a._AnnotType_key = v_annotTypeKey
 AND a._Term_key = t._Term_key
@@ -82,7 +79,7 @@ AND d._Node_key = dc._Descendent_key
 AND dc._Descendent_key = dh._Node_key
 AND dh._Label_key = v_headerLabel
 AND dh._Object_key = h._Term_key
-ORDER BY a._Object_key, h.sequenceNum
+ORDER BY _Object_key, sequenceNum
 ;
 
 CREATE INDEX set0_idx1 ON set0(_Term_key);
@@ -138,6 +135,11 @@ AS SELECT s2._AnnotHeader_key
 FROM set2 s2
 WHERE not EXISTS
 (SELECT 1 FROM set1 s1 WHERE s2._Term_key = s1._Term_key AND s2._Object_key = s1._Object_key)
+-- if VOC_AnnotHeader exists for _object_key that is not in VOC_Annot._Annottype_key = v_annottype, then delete
+UNION
+SELECT h._AnnotHeader_key
+FROM VOC_AnnotHeader h
+WHERE NOT EXISTS (SELECT 1 FROM VOC_Annot g WHERE g._AnnotType_key = v_annotTypeKey and h._object_key = g._object_key)
 ;
 
 CREATE INDEX toDelete_idx1 ON toDelete(_AnnotHeader_key);
@@ -160,7 +162,7 @@ CREATE INDEX set3_idx2 ON set3(_Object_key);
 
 -- any headers in set1 that are not in set3 are added 
 CREATE TEMP TABLE toAdd ON COMMIT DROP
-AS SELECT 1 as SERIAL, _Object_key, _Term_key, sequenceNum, isNorma
+AS SELECT 1 as SERIAL, _Object_key, _Term_key, sequenceNum, isNormal
 FROM set1 s1
 WHERE NOT EXISTS (SELECT 1 FROM set3 s3 WHERE s1._Term_key = s3._Term_key AND s1._Object_key = s3._Object_key)
 ORDER BY s1._Object_key, s1.sequenceNum
@@ -177,35 +179,47 @@ AND s1._Object_key = s3._Object_key
 AND s1._Term_key = s3._Term_key
 ;
 
--- get the maximum sequence number for existing headers 
+-- get the maximum sequence number for existing headers
 CREATE TEMP TABLE maxSequence ON COMMIT DROP
 AS SELECT max(sequenceNum) as maxSeq, _Object_key
 FROM set3
 group by _Object_key
 ;
 
--- get the maximum sequence number for any new headers 
+-- get the maximum sequence number for any new headers
 INSERT INTO maxSequence SELECT DISTINCT 0, _Object_key FROM toAdd t
 WHERE not EXISTS (SELECT 1 FROM set3 s WHERE t._Object_key = s._Object_key)
 ;
 
-CREATE INDEX idx1 on maxSequence(_Object_key)
+CREATE INDEX max_idx1 on maxSequence(_Object_key)
 ;
 
-INSERT INTO VOC_AnnotHeader
-SELECT v_headerKey + i, v_annotTypeKey, t._Object_key, t._Term_key, m.maxSeq + i, isNormal,
-1001, 1001, NULL, NULL, current_date, current_date
-FROM toAdd t, maxSequence m
+-- insert new header info into VOC_AnnotHeader
+FOR v_annotTypeKey, v_objectKey, v_termKey, v_isNormal, v_newSeq IN
+SELECT v_annotTypeKey, t._Object_key, t._Term_key, t.isNormal, m.maxSeq
+FROM toAdd t, maxSequence m 
 WHERE t._Object_key = m._Object_key
-;
+LOOP 
+        v_newSeq := v_newSeq + 1;
+        INSERT INTO VOC_AnnotHeader values (nextval('voc_annotheader_seq'), v_annotTypeKey, v_objectKey, v_termKey, v_newSeq, v_isNormal,
+                1001, 1001, NULL, NULL, current_date, current_date)
+        ;
+END LOOP;
 
 -- automatically approve all annotations with one header 
 CREATE TEMP TABLE toApprove ON COMMIT DROP
-AS SELECT _AnnotHeader_key
+AS
+WITH oneheader AS
+(
+SELECT _Object_key
 FROM VOC_AnnotHeader
-WHERE _AnnotType_key = v_annotTypeKey
+WHERE _AnnotType_key = 1002
 AND _ApprovedBy_key is null
 group by _Object_key having count(*) = 1
+)
+SELECT v._AnnotHeader_key
+FROM oneheader o, VOC_AnnotHeader v
+WHERE o._Object_key = v._Object_key
 ;
 
 CREATE INDEX toApprove_idx1 ON toApprove(_AnnotHeader_key);
@@ -261,6 +275,11 @@ LOOP
     v_prevObjectKey := v_objectKey;
 
 END LOOP;
+
+-- if VOC_AnnotHeader exists for _object_key that is not in VOC_Annot._Annottype_key = v_annottype, then delete
+--DELETE from VOC_AnnotHeader h
+--WHERE NOT EXISTS (SELECT 1 FROM VOC_Annot g WHERE g._AnnotType_key = v_annotTypeKey and h._object_key = g._object_key)
+--;
 
 END;
 \$\$
