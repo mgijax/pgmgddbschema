@@ -234,6 +234,9 @@ select last_value from seq_source_assoc_seq;
 select max(_Annot_key) from VOC_Annot;
 select last_value from voc_annot_seq;
 
+select max(_AnnotHeader_key) from VOC_AnnotHeader;
+select last_value from voc_annotheader_seq;
+
 select max(_AnnotEvidence_key) from VOC_Evidence;
 select last_value from voc_evidence_seq;
 
