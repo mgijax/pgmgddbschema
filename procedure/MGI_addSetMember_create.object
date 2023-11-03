@@ -73,6 +73,18 @@ END IF;
 -- if _set_key, _object_key, _createdby_key, _stage_key does not exists, then add it
 -- for sets that require MGI_SetMember_EMAPA
 
+-- this check is being handled by PWI, but if could also live in this sp
+-- currently, this is commented out, but can be uncomment, if needed
+-- see wts2-1311/fl2-615/improve lib_py_postgres/PWI-EMAPS issue/wrong terms
+-- EMAPS term (_vocab_key = 91) cannot be used; can only use EMAPA term (_vocab_key = 90)
+--IF v_setKey = 1046 AND
+        --EXISTS (select * from VOC_Term t
+                --where t._term_key = v_objectKey 
+                --and t._vocab_key = 91) THEN
+        --RAISE EXCEPTION 'MGI_addSetMember/this EMAPS term cannot be used: _set_key = 1046, _object_key = %', v_objectKey;
+        --RETURN;
+--END IF;
+
 IF v_setKey = 1046 AND
         NOT EXISTS (select * from MGI_SetMember s, MGI_SetMember_EMAPA e
                 where s._set_key = v_setKey 
@@ -92,6 +104,8 @@ IF v_setKey = 1046 AND
         RETURN;
 
 END IF;
+
+RETURN;
 
 END;
 \$\$
