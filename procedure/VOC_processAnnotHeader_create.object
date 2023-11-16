@@ -27,7 +27,6 @@ RETURNS VOID AS
 
 DECLARE
 v_headerLabel int;
-v_headerKey int;
 v_maxSeq int;
 v_pkey int;	-- primary key of records to update
 v_oldSeq int;	-- current sequence number
@@ -54,7 +53,6 @@ BEGIN
 --	VOID
 
 v_headerLabel := _Label_key FROM DAG_Label WHERE label = 'Header';
-v_headerKey := max(_AnnotHeader_key) FROM VOC_AnnotHeader;
 v_maxSeq := 0;
 
 -- if no annotations exist, delete all headers and return
@@ -176,7 +174,7 @@ AND s1._Term_key = s3._Term_key
 ;
 
 INSERT INTO VOC_AnnotHeader 
-SELECT v_headerKey + id, v_annotTypeKey, v_objectKey, _Term_key, v_maxSeq + id, isNormal,
+SELECT nextval('voc_annotheader_seq'), v_annotTypeKey, v_objectKey, _Term_key, v_maxSeq + id, isNormal,
 	v_userKey, v_userKey, NULL, NULL, now(), now()
 FROM toAdd
 ;

@@ -20,11 +20,10 @@ results = db.sql('select _user_key, login, name from mgi_user order by _user_key
 
 usersql = ""
 for r in results:
-    usersql += "delete from mgi_user where _user_key = " + str(r['_user_key']) + ";\n"
-
-    #print(usersql)
+    usersql = "delete from mgi_user where _user_key = " + str(r['_user_key']) + ";\n"
     try:
-            db.sql(usersql, None)
+            print(usersql)
+            #db.sql(usersql, None)
             db.commit()
     except:
             print('user is being used: ', str(r['_user_key']))
