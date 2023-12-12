@@ -23,9 +23,8 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0 | tee -a $LOG
 SELECT a.accID, m.symbol as oldSymbol, m.name as oldName
 FROM MRK_Marker m, ACC_Accession a
 WHERE m._Organism_key = 1 
-     AND m._Marker_Status_key = 1
 and m._marker_key = a._object_key
-and m._marker_status_key in (1,3)
+and m._marker_status_key in (1)
 and a._mgitype_key = 2
 and a.preferred = 1
 and a._logicaldb_key = 1
