@@ -3,6 +3,10 @@
 #
 # History
 #
+# 02/07/2024    lec
+#       - wts2-1398/fl2-734/Allele driver curation
+#       remove recombinase attribute/subtype check
+#
 # 11/16/2017	lec
 #	- TR12662/GMC/Driver Gene
 #
@@ -21,12 +25,6 @@ from MGI_Relationship r, MRK_Marker m, MGI_Organism o
 where r._Category_key = 1006
 and r._Object_key_2 = m._Marker_key
 and m._Organism_key = o._Organism_key
--- recombinase attribute/subtype
-and exists (select 1 from VOC_Annot va
-        where va._AnnotType_key = 1014
-        and r._Object_key_1 = va._Object_key
-        and va._Term_key = 11025588
-)
 ;
 
 EOSQL
