@@ -1,0 +1,69 @@
+#!/bin/sh
+
+#
+# This file was generated automatically by dbschemaScripts.py -- edit with care.
+#
+
+cd `dirname $0` && . ./Configuration
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.PRB_Strain_Reference_View
+as
+
+SELECT DISTINCT m._Strain_key, e._Refs_key, 'Mapping' as dataSet
+FROM MLD_Expts e, MLD_InSitu m
+WHERE e._Expt_key = m._Expt_key
+
+UNION
+SELECT DISTINCT m._Strain_key, e._Refs_key, 'Mapping' as dataSet
+FROM MLD_Expts e, MLD_FISH m
+WHERE e._Expt_key = m._Expt_key
+
+
+UNION
+SELECT DISTINCT c._femaleStrain_key as _Strain_key, e._Refs_key, 'Mapping' as dataSet
+FROM MLD_Expts e, MLD_Matrix m, CRS_Cross c
+WHERE e._Expt_key = m._Expt_key
+AND m._Cross_key = c._Cross_key
+
+UNION
+SELECT DISTINCT c._maleStrain_key as _Strain_key, e._Refs_key, 'Mapping' as dataSet
+FROM MLD_Expts e, MLD_Matrix m, CRS_Cross c
+WHERE e._Expt_key = m._Expt_key
+AND m._Cross_key = c._Cross_key
+
+UNION
+SELECT DISTINCT c._StrainHO_key as _Strain_key, e._Refs_key, 'Mapping' as dataSet
+FROM MLD_Expts e, MLD_Matrix m, CRS_Cross c
+WHERE e._Expt_key = m._Expt_key
+AND m._Cross_key = c._Cross_key
+
+UNION
+SELECT DISTINCT c._StrainHT_key as _Strain_key, e._Refs_key, 'Mapping' as dataSet
+FROM MLD_Expts e, MLD_Matrix m, CRS_Cross c
+WHERE e._Expt_key = m._Expt_key
+AND m._Cross_key = c._Cross_key
+
+UNION
+SELECT DISTINCT s._Strain_key, x._Refs_key, 'Expression' as dataSet
+FROM GXD_Genotype s, GXD_Expression x
+WHERE s._Genotype_key = x._Genotype_key
+
+UNION
+SELECT DISTINCT s._Strain_key, r._Refs_key, 'RFLP' as dataSet
+FROM PRB_Reference r, PRB_RFLV v, PRB_Allele a, PRB_Allele_Strain s
+WHERE r._Reference_key = v._Reference_key
+AND v._RFLV_key = a._RFLV_key
+AND a._Allele_key = s._Allele_key
+
+UNION
+SELECT DISTINCT a._Strain_key, r._Refs_key, 'Allele' as dataSet
+FROM ALL_Allele a, MGI_Reference_Assoc r
+WHERE a._Allele_key = r._Object_key
+AND r._MGIType_key = 11
+
+;
+
+EOSQL
