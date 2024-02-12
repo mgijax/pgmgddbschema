@@ -18,64 +18,11 @@ RETURNS TABLE (
 
 BEGIN
 
-CREATE TEMP TABLE references_tmp ON COMMIT DROP
-AS SELECT DISTINCT e._Refs_key, 'Mapping' as dataSet
-FROM MLD_Expts e, MLD_InSitu m
-WHERE e._Expt_key = m._Expt_key
-AND m._Strain_key = v_strainKey
-UNION
-SELECT DISTINCT e._Refs_key, 'Mapping' as dataSet
-FROM MLD_Expts e, MLD_FISH m
-WHERE e._Expt_key = m._Expt_key
-AND m._Strain_key = v_strainKey
-UNION
-SELECT DISTINCT e._Refs_key, 'Mapping' as dataSet
-FROM MLD_Expts e, MLD_Matrix m, CRS_Cross c
-WHERE e._Expt_key = m._Expt_key
-AND m._Cross_key = c._Cross_key
-AND c._femaleStrain_key = v_strainKey
-UNION
-SELECT DISTINCT e._Refs_key, 'Mapping' as dataSet
-FROM MLD_Expts e, MLD_Matrix m, CRS_Cross c
-WHERE e._Expt_key = m._Expt_key
-AND m._Cross_key = c._Cross_key
-AND c._maleStrain_key = v_strainKey
-UNION
-SELECT DISTINCT e._Refs_key, 'Mapping' as dataSet
-FROM MLD_Expts e, MLD_Matrix m, CRS_Cross c
-WHERE e._Expt_key = m._Expt_key
-AND m._Cross_key = c._Cross_key
-AND c._StrainHO_key = v_strainKey
-UNION
-SELECT DISTINCT e._Refs_key, 'Mapping' as dataSet
-FROM MLD_Expts e, MLD_Matrix m, CRS_Cross c
-WHERE e._Expt_key = m._Expt_key
-AND m._Cross_key = c._Cross_key
-AND c._StrainHT_key = v_strainKey
-UNION
-SELECT DISTINCT x._Refs_key, 'Expression' as dataSet
-FROM GXD_Genotype s, GXD_Expression x
-WHERE s._Strain_key = v_strainKey
-AND s._Genotype_key = x._Genotype_key
-UNION
-SELECT DISTINCT r._Refs_key, 'RFLP' as dataSet
-FROM PRB_Reference r, PRB_RFLV v, PRB_Allele a, PRB_Allele_Strain s
-WHERE r._Reference_key = v._Reference_key
-AND v._RFLV_key = a._RFLV_key
-AND a._Allele_key = s._Allele_key
-AND s._Strain_key = v_strainKey
-UNION
-SELECT DISTINCT r._Refs_key, 'Allele' as dataSet
-FROM ALL_Allele a, MGI_Reference_Assoc r
-WHERE a._Allele_key = r._Object_key
-AND r._MGIType_key = 11
-AND a._Strain_key = v_strainKey
-;
- 
 RETURN QUERY
 SELECT a.jnum, r.dataSet, a.jnumid
-FROM references_tmp r, BIB_View a
-WHERE r._Refs_key = a._Refs_key
+FROM prb_strain_reference_view r, BIB_View a
+WHERE r._Strain_key = v_strainKey
+AND r._Refs_key = a._Refs_key
 ORDER BY a.jnum
 ;
 
