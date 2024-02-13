@@ -23,6 +23,7 @@ PRB_Strain_Attribute_View_create.object \
 PRB_Strain_Genotype_View_create.object \
 PRB_Strain_Marker_View_create.object \
 PRB_Strain_NeedsReview_View_create.object \
+PRB_Strain_Reference_View_create.object \
 )
 $i $*
 end

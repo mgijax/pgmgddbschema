@@ -1,3 +1,4 @@
+TAG: pgmgddbschema-6-0-23-3
 TAG: pgmgddbschema-6-0-23-2
 DATE: 02/12/2024
 STAFF: jer
@@ -5,6 +6,7 @@ wts2-1404/fl2-741 Factor out the query for getting references for a strain into 
 #       added:   view/PRB_Strain_Reference_View_create.object
 #       added:   view/PRB_Strain_Reference_View_drop.object
 #       modified: procedure/PRB_getStrainReferences_create.object
+#       modified: view/PRB_create.logical
 
 TAG: pgmgddbschema-6-0-23-1
 DATE: 02/07/2024
