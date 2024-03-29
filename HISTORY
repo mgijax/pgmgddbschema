@@ -1,3 +1,10 @@
+TAG: pgmgddbschema-6-0-23-4
+DATE: 03/29/2024
+STAFF: lec
+wts2-1155/GOC taking over GOA mouse, GOA human, etc.
+#       deleted:    VOC_deleteGOWithdrawn_create.object
+#       deleted:    VOC_deleteGOWithdrawn_drop.object
+
 TAG: pgmgddbschema-6-0-23-3
 TAG: pgmgddbschema-6-0-23-2
 DATE: 02/12/2024
