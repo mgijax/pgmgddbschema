@@ -541,13 +541,13 @@ and not exists (select 1 from voc_term s where a._object_key = s._term_key)
 
 -- mgi_keyvalue
 
-select distinct _mgitype_key from mgi_keyvalue order by _mgitype_key;
+--select distinct _mgitype_key from mgi_keyvalue order by _mgitype_key;
 
-select a.*
-from mgi_keyvalue a
-where a._mgitype_key = 47
-and not exists (select 1 from gxd_htrawsample s where a._object_key = s._rawsample_key)
-;
+--select a.*
+--from mgi_keyvalue a
+--where a._mgitype_key = 47
+--and not exists (select 1 from gxd_htrawsample s where a._object_key = s._rawsample_key)
+--;
 
 -- mgi_notetype
 select nt.* from mgi_notetype nt
