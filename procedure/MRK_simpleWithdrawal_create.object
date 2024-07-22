@@ -211,6 +211,30 @@ THEN
 	RETURN;
 END IF;
 
+--
+-- Set the preferred bit to 0 for all MGI Acc# brought over from old symbol if
+-- the new symbol already contains a preferred MGI Acc#.
+-- Associate all Accession numbers w/ new symbol.
+--
+
+RAISE NOTICE E'\nChecking for changes to ACC_Accession';
+IF (SELECT count(*) 
+    FROM ACC_Accession 
+    WHERE _MGIType_key = 2 
+	AND prefixPart = 'MGI:' 
+	AND _LogicalDB_key = 1 
+	AND _Object_key = v_oldKey 
+	AND preferred = 1) > 0
+THEN
+        RAISE NOTICE E'\nMoving old Marker/ACCID to new Marker';
+	UPDATE ACC_Accession 
+	SET _Object_key = v_oldKey, preferred = 0
+	WHERE _LogicalDB_key = 1 
+	AND _MGIType_key = 2 
+	AND _Object_key = v_newKey
+	;
+END IF;
+
 RETURN;
 
 END;

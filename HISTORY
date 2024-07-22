@@ -1,3 +1,9 @@
+TAG: pgmgddbschema-6-0-24-1
+DATE: 07/22/2024
+STAFF: lec
+MRK_simpleWithdrawal_create.object/make sure accession ids of old marker is moved to new marker
+#        modified:   MRK_simpleWithdrawal_create.object
+
 TAG: pgmgddbschema-6-0-23-4
 DATE: 03/29/2024
 STAFF: lec
