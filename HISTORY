@@ -1,3 +1,10 @@
+TAG: pgmgddbschema-6-0-24-2
+DATE: 09/20/2024
+STAFF: lec
+E4G/Marker Relationship
+#       modified:   view/MGI_Relationship_FEARByMarker_View_create.object
+#       modified:   view/MGI_Relationship_FEARByMarker_View_drop.object
+
 TAG: pgmgddbschema-6-0-24-1
 DATE: 07/22/2024
 STAFF: lec

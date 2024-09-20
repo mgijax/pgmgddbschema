@@ -1,0 +1,57 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/20/2024    lec
+#       - E4G/PWI/Marker Relationship
+#
+# originally part of 'fearload'
+# these features are being edited via the pwi
+# this view added to the mgd_java_api as an entity
+#
+# 1002 | cluster_has_member
+#
+
+cd `dirname $0` && . ./Configuration
+
+${PG_MGD_DBSCHEMADIR}/view/MGI_Relationship_FEARByMarker_View_drop.object
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+create view mgd.MGI_Relationship_FEARByMarker_View
+as
+
+-- mouse, ldb = 1
+select r.*, v1.name as categoryTerm, v2.term as relationshipTerm, v3.term as qualifierTerm, v4.term as evidenceTerm,
+m1.symbol as markerSymbol1, m2.symbol as markerSymbol2,
+c.jnumID, c.numericPart as jnum, c.short_citation, u2.login as modifiedBy, u1.login as createdBy, 
+a1.accID as markerAccId1, a2.accID as markerAccId2, o._organism_key, o.commonname as organism
+from MGI_Relationship r, BIB_Citation_Cache c, MGI_User u1, MGI_User u2, 
+	MGI_Relationship_Category v1, VOC_Term v2, VOC_Term v3, VOC_Term v4,
+	MRK_Marker m1, MRK_Marker m2, ACC_Accession a1, ACC_Accession a2,
+        MGI_Organism o
+where r._Category_key in (1002)
+and r._Category_key = v1._Category_key
+and r._RelationshipTerm_key = v2._Term_key
+and r._Qualifier_key = v3._Term_key
+and r._Evidence_key = v4._Term_key
+and r._Object_key_1 = m1._Marker_key
+and r._Object_key_2 = m2._Marker_key
+and m2._Organism_key = 1
+and m2._Organism_key = o._Organism_key
+and r._Refs_key = c._Refs_key
+and r._CreatedBy_key = u1._User_key
+and r._ModifiedBy_key = u2._User_key
+and r._Object_key_1 = a1._Object_key
+and a1._MGIType_key = 2
+and a1._LogicalDB_key = 1
+and a1.preferred = 1
+and r._Object_key_2 = a2._Object_key
+and a2._MGIType_key = 2
+and a2._LogicalDB_key = 1
+and a2.preferred = 1
+
+;
+
+EOSQL
