@@ -11,6 +11,7 @@
 # this view added to the mgd_java_api as an entity
 #
 # 1002 | cluster_has_member
+# 1013 | regulates_expression
 #
 
 cd `dirname $0` && . ./Configuration
@@ -31,7 +32,7 @@ from MGI_Relationship r, BIB_Citation_Cache c, MGI_User u1, MGI_User u2,
 	MGI_Relationship_Category v1, VOC_Term v2, VOC_Term v3, VOC_Term v4,
 	MRK_Marker m1, MRK_Marker m2, ACC_Accession a1, ACC_Accession a2,
         MGI_Organism o
-where r._Category_key in (1002)
+where r._Category_key in (1002,1013)
 and r._Category_key = v1._Category_key
 and r._RelationshipTerm_key = v2._Term_key
 and r._Qualifier_key = v3._Term_key
