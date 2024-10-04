@@ -1,5 +1,5 @@
-TAG: pgmgddbschema-6-0-24-?
-DATE: 10/03/3024
+TAG: pgmgddbschema-6-0-24-3
+DATE: 10/04/3024
 STAFF: lec
 wts2-419/Regulatory region and cluster member to marker relationship (TR12804)" ; git push
 #       modified:   view/MGI_Relationship_FEARByMarker_View_create.object
