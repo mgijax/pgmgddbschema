@@ -27,6 +27,16 @@ select r._Refs_key,
 	and a._AnnotType_key = 1000
 	) then 1 else 0 end as has_go,
 
+  case when exists (select 1 from BIB_Citation_Cache c
+        where r._Refs_key = c._Refs_key
+        and exists (select 1 from GXD_HTExperiment e, MGI_Property p
+                where e._curationstate_key = 20475421
+                and e._experiment_key = p._object_key
+                and p._mgitype_key = 42
+                and c.pubmedid = p.value
+                )
+        ) then 1 else 0 end as has_gxdht,
+
   case when exists (select 1 from GXD_Index gi where r._Refs_key = gi._Refs_key) then 1
     else 0 end as has_gxdindex,
 
