@@ -229,13 +229,15 @@ ALTER TABLE mgd.GXD_HTSample_RNASeqSet DROP CONSTRAINT GXD_HTSample_RNASeqSet__E
 
 ALTER TABLE mgd.GXD_HTSample_RNASeqCombined DROP CONSTRAINT GXD_HTSample_RNASeqCombined__Level_key_fkey CASCADE;
 
-ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__CellType_Term_key_fkey CASCADE;
+ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Emapa_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Sex_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Relevance_key_fkey CASCADE;
 
-ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__Emapa_key_fkey CASCADE;
+ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__CellType_Term_key_fkey CASCADE;
+
+ALTER TABLE mgd.GXD_HTSample DROP CONSTRAINT GXD_HTSample__RNASeqType_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_HTExperimentVariable DROP CONSTRAINT GXD_HTExperimentVariable__Term_key_fkey CASCADE;
 
