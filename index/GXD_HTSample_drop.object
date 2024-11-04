@@ -20,6 +20,8 @@ drop index if exists mgd.GXD_HTSample_idx_Genotype_key;
 
 drop index if exists mgd.GXD_HTSample_idx_CellType_Term_key;
 
+drop index if exists mgd.GXD_HTSample_idx_RNASeqType_key;
+
 drop index if exists mgd.GXD_HTSample_idx_CreatedBy_key;
 
 drop index if exists mgd.GXD_HTSample_idx_ModifiedBy_key;

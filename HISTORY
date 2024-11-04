@@ -5,6 +5,8 @@ wts2-1539/e4g-57/GXD RNA-Seq Type/Schema/Migration
 #       modified:   table/GXD_HTSample_create.object
 #       modified:   key/VOC_Term_create.object
 #       modified:   key/VOC_Term_drop.object
+#       modified:   index/GXD_HTSample_create.object
+#       modified:   index/GXD_HTSample_drop.object
 
 TAG: pgmgddbschema-6-0-24-4
 DATE: 10/24/3024
