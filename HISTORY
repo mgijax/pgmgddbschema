@@ -1,3 +1,10 @@
+TAG: pgmgddbschema-6-0-24-6
+DATE: 11/22/3024
+STAFF: lec
+wts2-1584/e4g-83/can't edit two markers in Marker Module
+the Feature Type of the withdrawn marker was not being deleted from VOC_Annot
+#	modified:   procedure/MRK_updateKeys_create.object
+
 TAG: pgmgddbschema-6-0-24-5
 DATE: 11/01/3024
 STAFF: lec

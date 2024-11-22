@@ -192,11 +192,13 @@ PERFORM VOC_mergeAnnotations (1000, v_oldKey, v_newKey);
 -- Update Annotations - 06/17/2003 - TR 4902 - InterPro/Marker 
 PERFORM VOC_mergeAnnotations (1003, v_oldKey, v_newKey);
 
--- Delete roll-up annotations
+-- Delete other annotations
+-- 1011 : MCV/Marker
 -- 1015 : Mammalian Phenotype/Marker (Derived)
 -- 1023 : DO/Marker (Derived)
 --
 
+DELETE FROM VOC_Annot WHERE _AnnotType_key = 1011 AND _Object_key = v_oldKey;
 DELETE FROM VOC_Annot WHERE _AnnotType_key = 1015 AND _Object_key = v_oldKey;
 DELETE FROM VOC_Annot WHERE _AnnotType_key = 1023 AND _Object_key = v_oldKey;
 
