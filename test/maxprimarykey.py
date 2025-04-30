@@ -29,7 +29,15 @@ for r in results:
     results = db.sql('select max(%s) as maxCount from %s' % (r['column_name'], r['table_name']), 'auto')
     maxKey = results[0]['maxCount']
 
-    #if maxKey > 20000000:
-    print(str(maxKey), r['table_name'], r['column_name'])
+    if maxKey == None:
+        continue
 
+    if r['table_name'] == 'mgi_dbinfo':
+        continue
+
+    try:
+        if int(maxKey) > 1200000000:
+            print(maxKey, r['table_name'], r['column_name'])
+    except:
+        pass
 

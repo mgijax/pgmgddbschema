@@ -20,6 +20,7 @@ touch $LOG
 date | tee -a $LOG
  
 rm -rf maxprimarykey.counts
-$PYTHON maxprimarykey.py | sort -n > maxprimarykey.counts
+#$PYTHON maxprimarykey.py | sort -n > maxprimarykey.counts
+$PYTHON maxprimarykey.py | tee -a $LOG
 
 date |tee -a $LOG
