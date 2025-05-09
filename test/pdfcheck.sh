@@ -13,7 +13,7 @@ touch $LOG
  
 date | tee -a $LOG
 
-./pdfcheck.py | tee -a $LOG
+${PYTHON} pdfcheck.py | tee -a $LOG
 
 while IFS= read -r line
 do

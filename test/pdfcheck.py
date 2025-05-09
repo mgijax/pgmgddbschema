@@ -1,5 +1,3 @@
-#!/usr/local/bin/python
-
 '''
 #
 # Check if BIB_Workflow_Data.hasPDF = 1 
@@ -19,7 +17,7 @@ def checkMGDToPDF():
 
     global mgiLookup
 
-    outFile = open('pdfcheck2.out', 'w')
+    outFile = open('pdfcheck.out', 'w')
 
     results = db.sql('''
     select d._Refs_key, a.numericPart
@@ -35,7 +33,7 @@ def checkMGDToPDF():
 
     for r in results:
         outFile.write(str(r['numericPart']) + '.pdf\n')
-	mgiLookup.append(r['numericPart'])
+    mgiLookup.append(r['numericPart'])
 
     outFile.close()
 
@@ -47,14 +45,14 @@ def checkPDFToMGD():
 
     rootdir = os.getenv('LITTRIAGE_MASTER')
 
-    print rootdir
+    print(rootdir)
 
     for dirs, subdirs, files in os.walk(rootdir):
         for file in files:
-	    mgiId = file
-	    mgiId = mgiId.replace('.pdf', '')
-	    if mgiId not in mgiLookup:
-	        print mgiId
+	        mgiId = file
+	        mgiId = mgiId.replace('.pdf', '')
+	        if mgiId not in mgiLookup:
+	            print(mgiId)
 
     return 0
 
