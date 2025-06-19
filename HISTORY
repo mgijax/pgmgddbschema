@@ -1,12 +1,12 @@
 TAG: pgmgddbschema-6-0-24-6
-DATE: 11/22/3024
+DATE: 11/22/2024
 STAFF: lec
 wts2-1584/e4g-83/can't edit two markers in Marker Module
 the Feature Type of the withdrawn marker was not being deleted from VOC_Annot
 #	modified:   procedure/MRK_updateKeys_create.object
 
 TAG: pgmgddbschema-6-0-24-5
-DATE: 11/01/3024
+DATE: 11/01/2024
 STAFF: lec
 wts2-1539/e4g-57/GXD RNA-Seq Type/Schema/Migration
 #       modified:   table/GXD_HTSample_create.object
@@ -16,13 +16,13 @@ wts2-1539/e4g-57/GXD RNA-Seq Type/Schema/Migration
 #       modified:   index/GXD_HTSample_drop.object
 
 TAG: pgmgddbschema-6-0-24-4
-DATE: 10/24/3024
+DATE: 10/24/2024
 STAFF: lec
 wts2-1565/e4g-39/GXD HT: Missing PMIDs
 #       modified:   view/BIB_AssociatedData_View_create.object
 
 TAG: pgmgddbschema-6-0-24-3
-DATE: 10/04/3024
+DATE: 10/04/2024
 STAFF: lec
 wts2-419/Regulatory region and cluster member to marker relationship (TR12804)" ; git push
 #       modified:   view/MGI_Relationship_FEARByMarker_View_create.object
