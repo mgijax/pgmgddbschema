@@ -93,6 +93,18 @@ from voc_term v
 where v.note like E'\\x01%'
 ;
 
+--VOC_Evidence_Property
+select v.*
+from VOC_Evidence_Property v
+where v.value like E'\\x01%'
+;
+
+--MGI_Property
+select v.*
+from MGI_Property v
+where v.value like E'\\x01%'
+;
+
 --GXD_HTSample_RNASeqSet
 
 --MLD_Expt_Notes
