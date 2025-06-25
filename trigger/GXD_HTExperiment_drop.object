@@ -12,4 +12,8 @@ DROP TRIGGER IF EXISTS GXD_HTExperiment_delete_trigger ON GXD_HTExperiment;
 
 DROP FUNCTION IF EXISTS GXD_HTExperiment_delete();
 
+DROP TRIGGER IF EXISTS GXD_HTExperiment_update_trigger ON GXD_HTExperiment;
+
+DROP FUNCTION IF EXISTS GXD_HTExperiment_update();
+
 EOSQL

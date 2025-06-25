@@ -61,7 +61,92 @@ AFTER DELETE on GXD_HTExperiment
 FOR EACH ROW
 EXECUTE PROCEDURE GXD_HTExperiment_delete();
 
-COMMENT ON FUNCTION mgd.GXD_HTExperiment_delete() IS 'creates a delete trigger for this _Object_key/_MGIType_key table';
+COMMENT ON FUNCTION mgd.GXD_HTExperiment_delete() IS 'creates a delete trigger for this table';
 
 EOSQL
 
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+DROP TRIGGER IF EXISTS GXD_HTExperiment_update_trigger ON GXD_HTExperiment;
+DROP FUNCTION IF EXISTS GXD_HTExperiment_update();
+
+CREATE OR REPLACE FUNCTION GXD_HTExperiment_update() RETURNS TRIGGER AS \$\$
+
+DECLARE
+rec record;
+
+BEGIN
+
+--
+-- NAME: GXD_HTExperiment_update_trigger()
+--
+-- DESCRIPTION:
+--        
+-- To set the group GXDHT (114000000)/current Workflow Status = Indexed (31576673)
+--
+-- if the Reference exists in GXD_HTExperiment -> MGI_Property.value
+-- and the GXD_HTExperiment Curation Status = Done (20475421)
+-- and the group GXDHT/current Workflow Status is *not* Indexed
+--
+-- INPUT:
+--	None
+--
+-- RETURNS:
+--	NEW
+--      
+
+FOR rec IN
+SELECT c._Refs_key, c.pubmedid
+FROM GXD_HTExperiment e, MGI_Property p, BIB_Citation_Cache c, BIB_Workflow_Status b
+WHERE NEW._Experiment_key = e._Experiment_key
+AND e._CurationState_key = 20475421
+AND e._Experiment_key = p._Object_key
+AND p._mgitype_key = 42
+AND p._propertyterm_key = 20475430
+AND p.value = c.pubmedid
+AND c._refs_key = b._refs_key
+AND b.isCurrent = 1
+AND b._Group_key = 114000000
+AND b._Status_key != 31576673
+LOOP
+    UPDATE BIB_Workflow_Status w set isCurrent = 0 
+    WHERE rec._Refs_key = w._Refs_key
+        AND w._Group_key = 114000000
+    ;   
+    INSERT INTO BIB_Workflow_Status 
+    VALUES((select nextval('bib_workflow_status_seq')), rec._Refs_key, 114000000, 31576673, 1, 1001, 1001, now(), now())
+    ;   
+    PERFORM BIB_keepWFRelevance (rec._Refs_key, 1001);
+
+    --
+    -- if the v_refsKey does not have a J:, then add it
+    --
+    IF NOT EXISTS (SELECT 1 FROM ACC_Accession
+            WHERE _Object_key = rec._Refs_key
+            AND _LogicalDB_key = 1
+            AND _MGIType_key = 1
+            AND prefixPart = 'J:')
+    THEN
+            PERFORM ACC_assignJ(1001, rec._Refs_key, -1);
+            PERFORM BIB_reloadCache(rec._Refs_key);
+    END IF;
+
+END LOOP;
+
+RETURN NEW;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION GXD_HTExperiment_update() TO public;
+
+CREATE TRIGGER GXD_HTExperiment_update_trigger
+--AFTER UPDATE OF _CurationState_key on GXD_HTExperiment
+AFTER INSERT or UPDATE on GXD_HTExperiment
+FOR EACH ROW
+EXECUTE PROCEDURE GXD_HTExperiment_update();
+
+COMMENT ON FUNCTION mgd.GXD_HTExperiment_update() IS 'creates a update trigger for this table';
+
+EOSQL
