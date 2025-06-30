@@ -28,6 +28,9 @@ group by monthly
 order by monthly
 ;
 
+select r.year, count(r._refs_key) from BIB_Refs r group by year
+;
+
 EOSQL
 
 date |tee -a $LOG
