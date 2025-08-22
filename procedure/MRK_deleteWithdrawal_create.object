@@ -89,6 +89,18 @@ AND m._Marker_key = a._Marker_key
 AND a.isWildType = 1 
 ;
 
+-- Remove old symbol' from GXD_HTSample_RNASeq
+DELETE FROM GXD_HTSample_RNASeq a
+USING MRK_Marker m
+WHERE m._Marker_key = v_oldKey
+AND m._Marker_key = a._Marker_key
+;
+DELETE FROM GXD_HTSample_RNASeqCombined a
+USING MRK_Marker m
+WHERE m._Marker_key = v_oldKey
+AND m._Marker_key = a._Marker_key
+;
+
 -- Remove MGI_Relationships that are annotated to this Marker
 
 CREATE TEMP TABLE toDelete ON COMMIT DROP
