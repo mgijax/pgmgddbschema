@@ -116,6 +116,9 @@ UPDATE GXD_AlleleGenotype SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKe
 UPDATE GXD_Assay SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 UPDATE GXD_Expression SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 UPDATE WKS_Rosetta SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+--comment out; this takes too long due to the number of rows and the PWI cannot handle it; see rnaseqload/bin/processWithdrawnMarkers.csh
+--UPDATE GXD_HTSample_RNASeq SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
+--UPDATE GXD_HTSample_RNASeqCombined SET _Marker_key = v_newKey WHERE _Marker_key = v_oldKey ;
 
 -- GXD_AntibodyMarker may contain potential duplicates 
 
