@@ -1,3 +1,9 @@
+TAG: pgmgddbschema-6-0-26-2
+DATE: 12/12/2025
+STAFF: lec
+reimplemeneted for postgres 18
+	modified:   view/BIB_GOXRef_View_create.object
+
 TAG: pgmgddbschema-6-0-26-1
 DATE: 09/02/2025
 STAFF: lec
