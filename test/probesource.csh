@@ -3,7 +3,7 @@
 #
 # remove PRB_Source rows that no longer used by GXD_Assay
 #
-# ../key/PRB_Source_create.object:ALTER TABLE mgd.GXD_Antigen ADD FOREIGN KEY (_Source_key) REFERENCES mgd.PRB_Source DEFERRABLE;
+# ../key/PRB_Source_create.object:ALTER TABLE mgd.GXD_Antibody ADD FOREIGN KEY (_Source_key) REFERENCES mgd.PRB_Source DEFERRABLE;
 # ../key/PRB_Source_create.object:ALTER TABLE mgd.PRB_Probe ADD FOREIGN KEY (_Source_key) REFERENCES mgd.PRB_Source DEFERRABLE;
 # ../key/PRB_Source_create.object:ALTER TABLE mgd.SEQ_Source_Assoc_Assoc ADD FOREIGN KEY (_Source_key) REFERENCES mgd.PRB_Source DEFERRABLE;
 #
@@ -22,20 +22,20 @@ select count(*) from PRB_Source;
 
 select g.* 
 from PRB_Source g 
-where not exists (select 1 from GXD_Antigen a where g._Source_key = a._Source_key)
+where not exists (select 1 from GXD_Antibody a where g._Source_key = a._Source_key)
 and not exists (select 1 from PRB_Probe a where g._Source_key = a._Source_key)
 and not exists (select 1 from SEQ_Source_Assoc a where g._Source_key = a._Source_key)
 ;
 
 delete from PRB_Source g
-where not exists (select 1 from GXD_Antigen a where g._Source_key = a._Source_key)
+where not exists (select 1 from GXD_Antibody a where g._Source_key = a._Source_key)
 and not exists (select 1 from PRB_Probe a where g._Source_key = a._Source_key)
 and not exists (select 1 from SEQ_Source_Assoc a where g._Source_key = a._Source_key)
 ;
 
 select g.* 
 from PRB_Source g 
-where not exists (select 1 from GXD_Antigen a where g._Source_key = a._Source_key)
+where not exists (select 1 from GXD_Antibody a where g._Source_key = a._Source_key)
 and not exists (select 1 from PRB_Probe a where g._Source_key = a._Source_key)
 and not exists (select 1 from SEQ_Source_Assoc a where g._Source_key = a._Source_key)
 ;

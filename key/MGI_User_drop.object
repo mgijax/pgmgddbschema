@@ -349,10 +349,6 @@ ALTER TABLE mgd.GXD_Assay DROP CONSTRAINT GXD_Assay__ModifiedBy_key_fkey CASCADE
 
 ALTER TABLE mgd.GXD_Assay DROP CONSTRAINT GXD_Assay__CreatedBy_key_fkey CASCADE;
 
-ALTER TABLE mgd.GXD_Antigen DROP CONSTRAINT GXD_Antigen__ModifiedBy_key_fkey CASCADE;
-
-ALTER TABLE mgd.GXD_Antigen DROP CONSTRAINT GXD_Antigen__CreatedBy_key_fkey CASCADE;
-
 ALTER TABLE mgd.GXD_Antibody DROP CONSTRAINT GXD_Antibody__ModifiedBy_key_fkey CASCADE;
 
 ALTER TABLE mgd.GXD_Antibody DROP CONSTRAINT GXD_Antibody__CreatedBy_key_fkey CASCADE;

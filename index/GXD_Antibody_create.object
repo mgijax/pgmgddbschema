@@ -25,7 +25,7 @@ create index GXD_Antibody_idx_AntibodyType_key on mgd.GXD_Antibody (_AntibodyTyp
 
 create index GXD_Antibody_idx_Organism_key on mgd.GXD_Antibody (_Organism_key);
 
-create index GXD_Antibody_idx_Antigen_key on mgd.GXD_Antibody (_Antigen_key);
+create index GXD_Antibody_idx_Source_key on mgd.PRB_Source (_Source_key);
 
 create index GXD_Antibody_idx_CreatedBy_key on mgd.GXD_Antibody (_CreatedBy_key);
 

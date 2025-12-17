@@ -117,7 +117,7 @@ ELSE
     
     IF NOT EXISTS (select 1 from SEQ_Source_Assoc where _Source_key = v_msoKey) and
        NOT EXISTS (select 1 from PRB_Probe where _Source_key = v_msoKey) and
-       NOT EXISTS (select 1 from GXD_Antigen where _Source_key = v_msoKey)
+       NOT EXISTS (select 1 from GXD_Antibody where _Source_key = v_msoKey)
     THEN
         DELETE FROM PRB_Source WHERE _Source_key = v_msoKey;
     END IF;

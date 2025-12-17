@@ -22,7 +22,6 @@ select * from PRB_Notes where note like E'%gender%';
 select * from PRB_Ref_Notes where note like E'%gender%';
 
 select * from GXD_Antibody where antibodyNote like E'%gender%';
-select * from GXD_Antigen where antigenNote like E'%gender%';
 select * from GXD_AssayNote where assayNote like E'%gender%';
 select * from GXD_Expression where resultNote like E'%gender%';
 select * from GXD_GelBand where bandNote like E'%gender%';

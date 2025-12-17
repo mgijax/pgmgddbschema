@@ -10,13 +10,19 @@ COMMENT ON COLUMN GXD_Antibody._AntibodyClass_key IS 'foreign key to GXD_Antibod
 
 COMMENT ON COLUMN GXD_Antibody._Antibody_key IS 'primary key';
 
+COMMENT ON COLUMN GXD_Antibody._AntibodyType_key IS 'foreign key to GXD_AntibodyType';
+
+COMMENT ON COLUMN GXD_Antibody._Organism_key IS 'organism (foreign key to MGI_Organism)';
+
+COMMENT ON COLUMN GXD_Antibody._Source_key IS 'foreign key to PRB_Source';
+
 COMMENT ON COLUMN GXD_Antibody.antibodyName IS 'name of Antibody';
 
 COMMENT ON COLUMN GXD_Antibody.antibodyNote IS 'note';
 
-COMMENT ON COLUMN GXD_Antibody._AntibodyType_key IS 'foreign key to GXD_AntibodyType';
+COMMENT ON COLUMN GXD_Antibody.antigenNote IS 'note';
 
-COMMENT ON COLUMN GXD_Antibody._Antigen_key IS 'foreign key to GXD_Antigen';
+COMMENT ON COLUMN GXD_Antibody.regionCovered IS 'region covered';
 
 COMMENT ON COLUMN GXD_Antibody._CreatedBy_key IS 'user who created the record';
 
@@ -25,7 +31,5 @@ COMMENT ON COLUMN GXD_Antibody.creation_date IS 'date record was created';
 COMMENT ON COLUMN GXD_Antibody.modification_date IS 'date record was last modified';
 
 COMMENT ON COLUMN GXD_Antibody._ModifiedBy_key IS 'user who last modified the record';
-
-COMMENT ON COLUMN GXD_Antibody._Organism_key IS 'organism (foreign key to MGI_Organism)';
 
 EOSQL

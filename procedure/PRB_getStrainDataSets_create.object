@@ -40,8 +40,8 @@ AS SELECT p._Probe_key as _Object_key, 'Molecular Segment' as dataSet
 FROM source_tmp s, PRB_Probe p
 WHERE s._Source_key = p._Source_key
 UNION
-SELECT DISTINCT a._Antigen_key, 'Antigen' as dataSet
-FROM source_tmp s, GXD_Antigen a 
+SELECT DISTINCT a._Antibody_key, 'Antibody' as dataSet
+FROM source_tmp s, GXD_Antibody a 
 WHERE s._Source_key = a._Source_key
 UNION
 SELECT DISTINCT a._Allele_key, 'Allele' as dataSet
@@ -76,8 +76,8 @@ AND a._LogicalDB_key = 1
 AND a.preferred = 1
 UNION
 SELECT a.accID, p.dataSet
-FROM objects_tmp p, GXD_Antigen_Acc_View a
-WHERE p.dataSet = 'Antigen'
+FROM objects_tmp p, GXD_Antibody_Acc_View a
+WHERE p.dataSet = 'Antibody'
 AND p._Object_key = a._Object_key
 AND a.prefixPart = 'MGI:'
 AND a._LogicalDB_key = 1

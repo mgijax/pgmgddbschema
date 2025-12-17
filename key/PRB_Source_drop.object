@@ -8,7 +8,7 @@ ALTER TABLE mgd.SEQ_Source_Assoc DROP CONSTRAINT SEQ_Source_Assoc__Source_key_fk
 
 ALTER TABLE mgd.PRB_Probe DROP CONSTRAINT PRB_Probe__Source_key_fkey CASCADE;
 
-ALTER TABLE mgd.GXD_Antigen DROP CONSTRAINT GXD_Antigen__Source_key_fkey CASCADE;
+ALTER TABLE mgd.GXD_Antibody DROP CONSTRAINT GXD_Antibody__Source_key_fkey CASCADE;
 
 ALTER TABLE mgd.PRB_Source DROP CONSTRAINT PRB_Source_pkey CASCADE;
 

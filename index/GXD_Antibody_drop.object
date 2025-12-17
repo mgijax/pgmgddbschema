@@ -20,7 +20,7 @@ drop index if exists mgd.GXD_Antibody_idx_AntibodyType_key;
 
 drop index if exists mgd.GXD_Antibody_idx_Organism_key;
 
-drop index if exists mgd.GXD_Antibody_idx_Antigen_key;
+drop index if exists mgd.GXD_Antibody_idx_Source_key;
 
 drop index if exists mgd.GXD_Antibody_idx_CreatedBy_key;
 

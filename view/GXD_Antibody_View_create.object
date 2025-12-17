@@ -20,10 +20,9 @@ create view mgd.GXD_Antibody_View
 as
 select ab.*, a.accID as mgiID, a.prefixPart, a.numericPart, 
 ac.term as class, ap.term as antibodyType, ae.commonName as antibodySpecies, 
-ag.antigenName, ag.regionCovered, ag.antigenNote,
 u1.login as createdBy, u2.login as modifiedBy
 from GXD_Antibody ab, ACC_Accession a, VOC_Term ac, VOC_Term ap,
-MGI_Organism ae, GXD_Antigen ag, MGI_User u1, MGI_User u2
+MGI_Organism ae, MGI_User u1, MGI_User u2
 where ab._Antibody_key = a._Object_key
 and a._MGIType_key = 6
 and a._LogicalDB_key = 1
@@ -32,7 +31,6 @@ and a.preferred = 1
 and ab._AntibodyClass_key = ac._Term_key
 and ab._AntibodyType_key = ap._Term_key
 and ab._Organism_key = ae._Organism_key
-and ab._Antigen_key = ag._Antigen_key
 and ab._CreatedBy_key = u1._User_key
 and ab._ModifiedBy_key = u2._User_key
 ;
