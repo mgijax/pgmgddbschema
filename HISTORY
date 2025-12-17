@@ -1,3 +1,47 @@
+TAG: pgmgddbschema-6-0-
+DATE: 
+STAFF: lec
+wts2-1780/Move gxd_antigen info to gxd_antibody
+
+        deleted:    autosequence/GXD_Antigen_create.object
+        deleted:    autosequence/GXD_Antigen_drop.object
+        deleted:    comments/GXD_Antigen_create.object
+        deleted:    index/GXD_Antigen_create.object
+        deleted:    index/GXD_Antigen_drop.object
+        deleted:    key/GXD_Antigen_create.object
+        deleted:    key/GXD_Antigen_drop.object
+        deleted:    table/GXD_Antigen_create.object
+        deleted:    table/GXD_Antigen_drop.object
+        deleted:    table/GXD_Antigen_truncate.object
+        deleted:    trigger/GXD_Antigen_create.object
+        deleted:    trigger/GXD_Antigen_drop.object
+        deleted:    view/GXD_AntibodyAntigen_View_create.object
+        deleted:    view/GXD_AntibodyAntigen_View_drop.object
+        deleted:    view/GXD_Antigen_Acc_View_create.object
+        deleted:    view/GXD_Antigen_Acc_View_drop.object
+        deleted:    view/GXD_Antigen_Summary_View_create.object
+        deleted:    view/GXD_Antigen_Summary_View_drop.object
+        deleted:    view/GXD_Antigen_View_create.object
+        deleted:    view/GXD_Antigen_View_drop.object
+
+        modified:   comments/GXD_Antibody_create.object
+        modified:   index/GXD_Antibody_create.object
+        modified:   index/GXD_Antibody_drop.object
+        modified:   key/MGI_User_create.object
+        modified:   key/MGI_User_drop.object
+        modified:   key/PRB_Source_create.object
+        modified:   key/PRB_Source_drop.object
+        modified:   procedure/PRB_getStrainDataSets_create.object
+        modified:   procedure/PRB_processProbeSource_create.object
+        modified:   procedure/PRB_processSequenceSource_create.object
+        modified:   table/GXD_Antibody_create.object
+        modified:   test/autosequencecheck.csh
+        modified:   test/clearnGender.csh
+        modified:   test/probesource.csh
+        modified:   view/GXD_Antibody_View_create.object
+        modified:   view/GXD_create.logical
+
+
 TAG: pgmgddbschema-6-0-26-2
 DATE: 12/12/2025
 STAFF: lec
