@@ -18,9 +18,9 @@ COMMENT ON COLUMN GXD_Antibody._Source_key IS 'foreign key to PRB_Source';
 
 COMMENT ON COLUMN GXD_Antibody.antibodyName IS 'name of Antibody';
 
-COMMENT ON COLUMN GXD_Antibody.antibodyNote IS 'note';
+COMMENT ON COLUMN GXD_Antibody.antibodyNote IS 'antibody note';
 
-COMMENT ON COLUMN GXD_Antibody.antigenNote IS 'note';
+COMMENT ON COLUMN GXD_Antibody.antigenNote IS 'anitgen note';
 
 COMMENT ON COLUMN GXD_Antibody.regionCovered IS 'region covered';
 
