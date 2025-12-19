@@ -4,7 +4,7 @@ cd `dirname $0` && . ./Configuration
 
 cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
-COMMENT ON TABLE mgd.MGI_Organism_MGIType IS 'A record in this table represents the relationship between an Organism and a MGI Type; what Organisms are valid for a given MGI Type. An Organism can be associated with one or more MGI Types. This enables us to generate a list of Organisms by MGI Type. Examples are Orthology, Molecular Segment , GXD Antigen, GXD Antibody, Sequence, Marker.';
+COMMENT ON TABLE mgd.MGI_Organism_MGIType IS 'A record in this table represents the relationship between an Organism and a MGI Type; what Organisms are valid for a given MGI Type. An Organism can be associated with one or more MGI Types. This enables us to generate a list of Organisms by MGI Type. Examples are Orthology, Molecular Segment, GXD Antibody, Sequence, Marker.';
 
 COMMENT ON COLUMN MGI_Organism_MGIType._Assoc_key IS 'primary key';
 
