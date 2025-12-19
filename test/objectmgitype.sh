@@ -67,12 +67,6 @@ and not exists (select 1 from gxd_antibody s where a._object_key = s._antibody_k
 
 select a.*
 from acc_accession a
-where a._mgitype_key = 7
-and not exists (select 1 from gxd_antigen s where a._object_key = s._antigen_key)
-;
-
-select a.*
-from acc_accession a
 where a._mgitype_key = 8
 and not exists (select 1 from gxd_assay s where a._object_key = s._assay_key)
 ;
