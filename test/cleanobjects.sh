@@ -6,8 +6,7 @@
 # this will clean up any obsolete:
 # 1. MGI_Note data
 # 2. MGI_SetMember
-# 3. GO Annotations to withdrawn Markers (VOC_deleteGOWithdrawn())
-# 4. GXD_ProbePrep objects that are obsolete/no longer used by any assay (gxdprobeprep.csh)
+# 3. GXD_ProbePrep objects that are obsolete/no longer used by any assay (gxdprobeprep.csh)
 #
 
 cd `dirname $0` && . ./Configuration
@@ -132,9 +131,6 @@ WHERE toDeleteSet._setmember_key = mgi_setmember._setmember_key
 -- from toUpdate1 t
 -- where t._accession_key = a._accession_key
 -- ;
-
--- delete GO Annotations to withdrawn Markers
-select * from VOC_deleteGOWithdrawn();
 
 EOSQL
 
