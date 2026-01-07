@@ -14,7 +14,7 @@ COMMENT ON COLUMN GXD_Antibody._AntibodyType_key IS 'foreign key to GXD_Antibody
 
 COMMENT ON COLUMN GXD_Antibody._Organism_key IS 'organism (foreign key to MGI_Organism)';
 
-COMMENT ON COLUMN GXD_Antibody._Source_key IS 'foreign key to PRB_Source';
+COMMENT ON COLUMN GXD_Antibody._Source_key IS 'foreign key to PRB_Source of the Antigen';
 
 COMMENT ON COLUMN GXD_Antibody.antibodyName IS 'name of Antibody';
 
