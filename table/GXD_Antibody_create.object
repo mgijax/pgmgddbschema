@@ -3,6 +3,9 @@
 #
 # History
 #
+# 01/14/2026	lec
+#	- wts2-1780/Move gxd_antigen information to gxd_antibody table and remove gxd_antigen table from database
+#
 # 03/22/2011
 # 	- TR 9782/never removed _Refs_key
 #
