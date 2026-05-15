@@ -8,6 +8,8 @@ COMMENT ON TABLE mgd.GXD_HTSample_RNASeqCombined IS 'A record in this table repr
 
 COMMENT ON COLUMN GXD_HTSample_RNASeqCombined._RNASeqCombined_key IS 'primary key';
 
+COMMENT ON COLUMN GXD_HTSample_RNASeqCombined._RNASeqSet_key IS 'foreign key to GXD_HTSample_RNASeqSet';
+
 COMMENT ON COLUMN GXD_HTSample_RNASeqCombined._Marker_key IS 'foreign key to MRK_Marker';
 
 COMMENT ON COLUMN GXD_HTSample_RNASeqCombined._Level_key IS 'foreign key to VOC_Term where _Vocab_key = 144 (RNA-Seq TPM Level)';

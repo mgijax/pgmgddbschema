@@ -14,6 +14,8 @@ cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
 
 CLUSTER mgd.GXD_HTSample_RNASeqCombined USING GXD_HTSample_RNASeqCombined_pkey;
 
+create index GXD_HTSample_RNASeqCombined_idx_RNASeqSet_key on mgd.GXD_HTSample_RNASeqCombined (_RNASeqSet_key);
+
 create index GXD_HTSample_RNASeqCombined_idx_Marker_key on mgd.GXD_HTSample_RNASeqCombined (_Marker_key);
 
 create index GXD_HTSample_RNASeqCombined_idx_Level_key on mgd.GXD_HTSample_RNASeqCombined (_Level_key);
