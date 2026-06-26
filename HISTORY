@@ -1,3 +1,41 @@
+TAG: pgmgddbschema-6-0-29-1
+DATE: 06/26/2026
+STAFF: lec
+wts2-1854/Baseline RNA-Seq Load
+
+	autosequence/GXD_HTSample_RNASeqSet_Cache_create.object
+	autosequence/GXD_HTSample_RNASeqSet_Cache_drop.object   
+	comments/GXD_HTSample_RNASeqCombined_create.object      
+	comments/GXD_HTSample_RNASeqSet_Cache_create.object     
+	comments/GXD_HTSample_create.object                     
+	index/GXD_HTSample_RNASeqCombined_create.object         
+	index/GXD_HTSample_RNASeqCombined_drop.object           
+	index/GXD_HTSample_RNASeqSet_Cache_create.object        
+	index/GXD_HTSample_RNASeqSet_Cache_drop.object          
+	key/GXD_HTSample_RNASeqCombined_create.object           
+	key/GXD_HTSample_RNASeqCombined_drop.object             
+	key/GXD_HTSample_RNASeqSet_Cache_create.object          
+	key/GXD_HTSample_RNASeqSet_Cache_drop.object            
+	key/GXD_HTSample_RNASeqSet_create.object                
+	key/GXD_HTSample_RNASeqSet_drop.object                  
+	key/MGI_User_create.object                              
+	key/MGI_User_drop.object                                
+	table/GXD_HTSample_RNASeqCombined_create.object         
+	table/GXD_HTSample_RNASeqSet_Cache_create.object        
+	table/GXD_HTSample_RNASeqSet_Cache_drop.object          
+	table/GXD_HTSample_RNASeqSet_Cache_truncate.object      
+	table/GXD_HTSample_RNASeqSet_create.object              
+	delete mode 100755 autosequence/GXD_HTSample_RNASeqSet_Cache_create.object
+	delete mode 100755 autosequence/GXD_HTSample_RNASeqSet_Cache_drop.object
+	delete mode 100755 comments/GXD_HTSample_RNASeqSet_Cache_create.object
+	delete mode 100755 index/GXD_HTSample_RNASeqSet_Cache_create.object
+	delete mode 100755 index/GXD_HTSample_RNASeqSet_Cache_drop.object
+	delete mode 100755 key/GXD_HTSample_RNASeqSet_Cache_create.object
+	delete mode 100755 key/GXD_HTSample_RNASeqSet_Cache_drop.object
+	delete mode 100755 table/GXD_HTSample_RNASeqSet_Cache_create.object
+	delete mode 100755 table/GXD_HTSample_RNASeqSet_Cache_drop.object
+	delete mode 100755 table/GXD_HTSample_RNASeqSet_Cache_truncate.object
+
 TAG: pgmgddbschema-6-0-27-1
 DATE: 01/15/2026
 STAFF: lec
