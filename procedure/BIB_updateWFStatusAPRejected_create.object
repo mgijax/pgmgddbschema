@@ -1,0 +1,70 @@
+#!/bin/sh
+
+#
+# History
+#
+# 09/23/2026    lec 
+#       - TR12250/Lit Triage
+#
+#
+
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+DROP FUNCTION IF EXISTS BIB_updateWFStatusAPRejected();
+EOSQL
+
+cat - <<EOSQL | ${PG_DBUTILS}/bin/doisql.csh $0
+
+CREATE OR REPLACE FUNCTION BIB_updateWFStatusAPRejected (
+)
+RETURNS VOID AS
+\$\$
+ 
+DECLARE
+rec record;
+
+BEGIN
+
+--
+-- INPUT:
+--	None
+--
+-- For records meeting these criteria, move the AP Status to “Rejected”
+-- 1) Attribute of Review = “Yes”
+-- 2) AP status of “New” or “Not Routed” 
+-- 3) Relevance = “Discard”
+--
+-- RETURNS:
+--	VOID
+--      
+
+FOR rec IN
+SELECT c._Refs_key
+from bib_citation_cache c, bib_workflow_status ap
+where c.isReviewArticle = 1
+and c._relevance_key = 70594666
+and c._refs_key = ap._refs_key
+and ap.isCurrent = 1
+and ap._group_key = 31576664
+and ap._status_key in (71027551,31576669)
+LOOP
+    UPDATE BIB_Workflow_Status w set isCurrent = 0 
+    WHERE rec._Refs_key = w._Refs_key
+        AND w._Group_key = 31576664
+    ;   
+    INSERT INTO BIB_Workflow_Status 
+    VALUES((select nextval('bib_workflow_status_seq')), rec._Refs_key, 31576664, 31576672, 1, 1001, 1001, now(), now())
+    ;   
+END LOOP;
+
+RETURN;
+
+END;
+\$\$
+LANGUAGE plpgsql;
+
+GRANT EXECUTE ON FUNCTION BIB_updateWFStatusAPRejected() TO public;
+
+COMMENT ON FUNCTION mgd.BIB_updateWFStatusAPRejected() IS 'update the Workflow Status for group AP';
+
+EOSQL
